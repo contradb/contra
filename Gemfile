@@ -43,3 +43,6 @@ group :development, :test do
   gem 'spring'
 end
 
+  # Helpers for Twitter Bootstrap
+  gem 'bootstrap-sass', '~> 3.3.5'
+  gem 'sprockets-rails', '~> 2.3.2'
