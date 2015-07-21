@@ -1,0 +1,15 @@
+learn how to test
+
+
+
+users has-many dances
+dances are text (ha ha)
+users may publish their dance
+
+An "accessible dance" is any published dance or any dance that user owns.
+  anyone can see any accessible dance
+  users may comment on, bookmark, or upvote any accessible dance
+  users may copy an accessible dance ("fork")
+
+
+build a production server
