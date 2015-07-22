@@ -11,5 +11,8 @@ An "accessible dance" is any published dance or any dance that user owns.
   users may comment on, bookmark, or upvote any accessible dance
   users may copy an accessible dance ("fork")
 
+Grep through for comments with 'XXX' and resolve them
 
 build a production server
+
+
