@@ -47,6 +47,11 @@ group :development, :test do
 
 end
 
+group :test do
+  gem 'capybara', '~> 2.1.0'
+end
+
+
 # Helpers for Twitter Bootstrap
 gem 'bootstrap-sass', '~> 3.3.5'
 gem 'sprockets-rails', '~> 2.3.2'
