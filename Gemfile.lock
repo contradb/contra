@@ -49,7 +49,7 @@ GEM
     builder (3.2.2)
     byebug (5.0.0)
       columnize (= 0.9.0)
-    capybara (2.1.0)
+    capybara (2.2.1)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
@@ -188,7 +188,7 @@ PLATFORMS
 DEPENDENCIES
   bootstrap-sass (~> 3.3.5)
   byebug
-  capybara (~> 2.1.0)
+  capybara (~> 2.2.0)
   coffee-rails (~> 4.1.0)
   devise
   jbuilder (~> 2.0)
