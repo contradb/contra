@@ -1,5 +1,20 @@
 == README
 
+=== ContraDB
+
+This is an online database for managing contra dance choreography. The
+intended users are dance choreographers and callers and (if comments
+ever become a thing) opinionated dancers. Eventually cool things can
+be done mining dances for combinations and stuff, but for now the plan
+is for me and people like to me to design dance programs from a
+library of dances encoded in a standardized format. 
+
+Since this project is being written and does nothing useful yet, there is no documentation on how to install it. 
+
+=== Boilerplate suggestions for improving this file, from Rails:
+
+
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
