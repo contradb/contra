@@ -1,18 +1,17 @@
-learn how to test
+A user has-many dances, and has an ID.
+A choreographer has-many dances, and has an ID.
+A dance has one user ID, one choreographer ID, one start-type
+(improper, beckett, beckett-reverse, proper, or indecent), up to 8
+figures (encoded as strings), and some notes (text).
 
-
-
-A user has-many dances
-A user has-many choreographers
-A choreographer is a string and it has many dances
-A dance has one user, one choreographer, one start-type
-(e.g. improper), up to 8 figures (encoded as strings), and some notes (text)
-
-
-users may copy another user's dance ("fork"). This also adds the
-choreographer to that user's choreographer table, if not already present
+Users may copy another user's dance (a "fork"). 
+Dances may only be edited by the controlling user; however,
+choreographers are global and are largely immutable except by user 0,
+who can rename and delete them.
 
 Grep through for comments with 'XXX' and resolve them
+
+learn how to test
 
 build a production server
 

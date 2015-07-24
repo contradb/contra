@@ -16,7 +16,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="dance-edit.svg">
+   sodipodi:docname="dance-edit.svg"
+   inkscape:export-filename="/home/dm/ruby/contra/mockup/dance-edit.png"
+   inkscape:export-xdpi="200"
+   inkscape:export-ydpi="200">
   <defs
      id="defs4">
     <linearGradient
@@ -427,7 +430,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="1.7981587"
      inkscape:cx="424.71442"
-     inkscape:cy="830.20205"
+     inkscape:cy="785.71209"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -444,7 +447,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
