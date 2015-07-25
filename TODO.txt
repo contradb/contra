@@ -1,13 +1,26 @@
-A user has-many dances, and has an ID.
-A choreographer has-many dances, and has an ID.
-A dance has one user ID, one choreographer ID, one start-type
+
+
+== MODEL ==
+
+A user has-many dances, has an pkID, and a bunch of other stuff.
+
+A choreographer has-many dances, and has a pkID. Choreographer #1 is
+"unknown".
+
+A dance has one user ID, one title, one choreographer ID, one start-type
 (improper, beckett, beckett-reverse, proper, or indecent), up to 8
-figures (encoded as strings), and some notes (text).
+figures (encoded as strings), and some notes (text). It should
+probably primary key on (user, title), but that'd take work, so it'll
+just have a pkID. 
 
 Users may copy another user's dance (a "fork"). 
 Dances may only be edited by the controlling user; however,
 choreographers are global and are largely immutable except by user 0,
-who can rename and delete them.
+who can rename and delete them. There might be locking issues with
+this, but they don't seem too heinous. 
+
+== OTHER TASKS ==
+
 
 Grep through for comments with 'XXX' and resolve them
 
