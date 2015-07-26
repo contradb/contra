@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :dances
   resources :choreographers
   devise_for :users
   get 'welcome/index'
