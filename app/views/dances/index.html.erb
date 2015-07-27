@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th>Title</th>
+      <th>Choreographer</th>
       <th>Start type</th>
       <th>Figure1</th>
       <th>Figure2</th>
@@ -24,6 +25,7 @@
     <% @dances.each do |dance| %>
       <tr>
         <td><%= dance.title %></td>
+        <td><%= dance.choreographer.name %></td>
         <td><%= dance.start_type %></td>
         <td><%= dance.figure1 %></td>
         <td><%= dance.figure2 %></td>
@@ -41,6 +43,25 @@
     <% end %>
   </tbody>
 </table>
+
+<br>
+<br>
+
+
+<p>params = 
+<%= params %>
+</p>
+
+
+
+<p>@dances = 
+<%= @dances.all %>
+</p>
+
+<p>current_user = 
+<%= current_user.dances %>
+</p>
+
 
 <br>
 

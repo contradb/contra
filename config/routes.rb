@@ -2,6 +2,10 @@ Rails.application.routes.draw do
   resources :dances
   resources :choreographers
   devise_for :users
+  # /users/1 kinda collides with /users/sign_in created by devise
+  # above.  especially if "1" gets replaced with "bradley-smith", and
+  # Bradley changes his name to "sign_in".
+  resources :users, only: [:show]
   get 'welcome/index'
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -21,9 +21,12 @@
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li><%= link_to 'My Dances', dances_path %></li>
+	      <% if user_signed_in? %>
+              <li><%= link_to 'Profile', current_user %></li>
+	      <% end %>
               <li><%= link_to 'Dances', dances_path %></li>
-              <li><a href="#">People</a></li>
+              <li><%= link_to 'Choreographers', choreographers_path %></li>
+	      <!-- link to browse users would be nice too -->
             </ul>
             <ul class="nav navbar-nav navbar-right">
 	      <% if user_signed_in? %>

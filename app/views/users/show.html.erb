@@ -1,27 +1,27 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @choreographer.name %>
-</p>
+<h1>
+  <%= @user.email %>
+</h1>
 
 <table>
   <thead>
     <tr>
       <th>Title</th>
+      <th>Choreographer</th>
       <th>Start type</th>
-      <th>User</th>
-      <th colspan="3"></th>
+      <th colspan="2"></th>
     </tr>
   </thead>
 
   <tbody>
-    <% @choreographer.dances.each do |dance| %>
+    <% @user.dances.each do |dance| %>
       <tr>
-        <td><%= dance.title %></td>
+
+        <td><%= link_to dance.title, dance %></td>
+        <td><%= link_to dance.choreographer.name, dance.choreographer %></td>
         <td><%= dance.start_type %></td>
-        <td><%= dance.user.email %></td>
-        <td><%= link_to 'Show', dance %></td>
+        <td></td>
         <td><%= link_to 'Edit', edit_dance_path(dance) %></td>
         <td><%= link_to 'Destroy', dance, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
@@ -30,5 +30,3 @@
 </table>
 
 
-<%= link_to 'Edit', edit_choreographer_path(@choreographer) %> |
-<%= link_to 'Back', choreographers_path %>
