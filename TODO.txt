@@ -22,6 +22,12 @@ this, but they don't seem too heinous.
 == OTHER TASKS ==
 
 
+give users human-readable names, and remove all public spillage of email
+
+make the dance editor
+
+make views not suck in general
+
 Grep through for comments with 'XXX' and resolve them
 
 learn how to test

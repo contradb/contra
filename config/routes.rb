@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   # /users/1 kinda collides with /users/sign_in created by devise
   # above.  especially if "1" gets replaced with "bradley-smith", and
   # Bradley changes his name to "sign_in".
-  resources :users, only: [:show]
+  resources :users, only: [:show, :index]
   get 'welcome/index'
 
   # The priority is based upon order of creation: first created -> highest priority.
