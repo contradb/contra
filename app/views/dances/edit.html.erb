@@ -1,6 +1,73 @@
 <h1>Editing Dance</h1>
 
-<%= render 'form' %>
+
+<p id=<%= "foo" %>> foo paragraph</p>
+<%= "edit_dance_#{@dance.id}"
+    %>
+
+
+<!-- content_tag :form, "avacado", { 
+      class: :edit_dance, 
+      id: "edit_dance_#{@dance.id}", 
+      action: "/dances/#{@dance.id}",
+      "accept-charset" => "UTF-8",
+      method: "post"} -->
+
+<form class="edit_dance" id="edit_dance_1" action="/dances/1" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="_method" value="patch" /><input type="hidden" name="authenticity_token" value="GUCpt7x3RmBVvZ4kBqZjcJvbrvDg7qLEORa+p9E3pwj3LrpCIVetGhyC9MIYYq9wkWzk8TA0vPYfDPsaGQrWQw==" />
+
+
+
+  <div class="field">
+    <input type="text" value="Box the Gnat Contra" name="dance[title]" id="dance_title" />
+  </div>
+  <div class="field">
+    <label for="dance_start_type">Start type</label><br>
+    <input type="text" value="improper" name="dance[start_type]" id="dance_start_type" />
+  </div>
+  <div class="field">
+    <label for="dance_figure1">Figure1</label><br>
+    <input type="text" name="dance[figure1]" id="dance_figure1" />
+  </div>
+  <div class="field">
+    <label for="dance_figure2">Figure2</label><br>
+    <input type="text" name="dance[figure2]" id="dance_figure2" />
+  </div>
+  <div class="field">
+    <label for="dance_figure3">Figure3</label><br>
+    <input type="text" name="dance[figure3]" id="dance_figure3" />
+  </div>
+  <div class="field">
+    <label for="dance_figure4">Figure4</label><br>
+    <input type="text" name="dance[figure4]" id="dance_figure4" />
+  </div>
+  <div class="field">
+    <label for="dance_figure5">Figure5</label><br>
+    <input type="text" name="dance[figure5]" id="dance_figure5" />
+  </div>
+  <div class="field">
+    <label for="dance_figure6">Figure6</label><br>
+    <input type="text" name="dance[figure6]" id="dance_figure6" />
+  </div>
+  <div class="field">
+    <label for="dance_figure7">Figure7</label><br>
+    <input type="text" name="dance[figure7]" id="dance_figure7" />
+  </div>
+  <div class="field">
+    <label for="dance_figure8">Figure8</label><br>
+    <input type="text" name="dance[figure8]" id="dance_figure8" />
+  </div>
+  <div class="field">
+    <label for="dance_notes">Notes</label><br>
+    <textarea name="dance[notes]" id="dance_notes">
+</textarea>
+  </div>
+  <div class="actions">
+    <input type="submit" name="commit" value="Update Dance" />
+  </div>
+</form>
+
+
+
 
 <%= link_to 'Show', @dance %> |
 <%= link_to 'Back', dances_path %>

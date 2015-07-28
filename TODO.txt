@@ -1,4 +1,19 @@
 
+== THE QUEUE OF TASKS ==
+
+make the dance editor
+
+make a dance copy link
+
+give users human-readable names, and remove all public spillage of email
+
+make views not suck in general
+
+Grep through for comments with 'XXX' and resolve them
+
+learn how to test
+
+build a production server
 
 == MODEL ==
 
@@ -18,22 +33,6 @@ Dances may only be edited by the controlling user; however,
 choreographers are global and are largely immutable except by user 0,
 who can rename and delete them. There might be locking issues with
 this, but they don't seem too heinous. 
-
-== OTHER TASKS ==
-
-
-give users human-readable names, and remove all public spillage of email
-
-make the dance editor
-
-make views not suck in general
-
-Grep through for comments with 'XXX' and resolve them
-
-learn how to test
-
-build a production server
-
 
 ________________________________________________________________
 
