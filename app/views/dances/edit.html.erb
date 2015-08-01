@@ -1,34 +1,6 @@
 <h1>Editing Dance</h1>
 
-<%= content_tag( :form, { 
-      class: :edit_dance, 
-      id: "edit_dance_#{@dance.id}", 
-      action: "/dances/#{@dance.id}",
-      "accept-charset" => "UTF-8",
-      method: "post"}) +
-    tag( :input, {name: "utf-8", type: "hidden", value: "&#x2713;" } ) +
-    tag( :input, {name: "_method", type: "hidden", value: "patch"} ) + 
-    tag( :input, {name: "authenticity_token", type: "hidden", value: form_authenticity_token })
-    %>
-<input name="utf8" type="hidden" value="&#x2713;" />
-<input type="hidden" name="_method" value="patch" />
-<input type="hidden" name="authenticity_token" value="GUCpt7x3RmBVvZ4kBqZjcJvbrvDg7qLEORa+p9E3pwj3L
-<form class="edit_dance" id="edit_dance_1" action="/dances/1" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="_method" value="patch" /><input type="hidden" name="authenticity_token" value="GUCpt7x3RmBVvZ4kBqZjcJvbrvDg7qLEORa+p9E3pwj3LrpCIVetGhyC9MIYYq9wkWzk8TA0vPYfDPsaGQrWQw==" />
-
-
-<%= content_tag( :div, tag( :input, {type: "text", value: @dance.title, name="dance[title]" id="dance_title"}), class: "field" ) %>
-<div> Choreographer </div> 
-<%= content_tag( :div, tag( :input, {type: "text", value: @dance.start_type, name="dance[start_type]" id="dance_start_types"}), class: "field" ) %>
-<%= content_tag( :div, tag( :input, {type: "textarea", value: @dance.dance_notes, name="dance[dance_notes]" id="dance_notes"}), class: "field" ) %>
-<div> Figures </div>
-
-  <div class="actions">
-    <input type="submit" name="commit" value="Update Dance" />
-  </div>
-</form> XXX THIS TAG MARKS WHERE THE FORM CONTENT TAG SHOULD END
-
-
-
+<%= render 'form' %>
 
 <%= link_to 'Show', @dance %> |
 <%= link_to 'Back', dances_path %>

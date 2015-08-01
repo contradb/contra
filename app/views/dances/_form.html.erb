@@ -11,14 +11,38 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <h1 class="field">
     <%= f.label :title %><br>
     <%= f.text_field :title %>
+  </h1>
+  <div class="field">
+    <%= f.label "by" %><br>
+    <%= f.select :choreographer_id, Choreographer.all.map {|c| [c.name,c.id]} %>
   </div>
   <div class="field">
     <%= f.label :start_type %><br>
     <%= f.text_field :start_type %>
   </div>
+
+  <% for figure_idx in (1..8) do %>
+    <div class="figure_edit" id=figure_edit_<%= figure_idx %> >
+      <%= figure_idx %>:
+      <%= tag( :input, {value: 8, min: 0, max: 16, class: "beat_edit", type: "number"} ) %>
+      <%= selects = []
+          for i in 0...DancesHelper::WHO.length
+            selects.push content_tag( :option, DancesHelper::WHO[i], 
+                                      i.zero? ? {value: i, selected: "selected"} : {value: i})
+          end
+          content_tag( :select, selects.join( " " ).html_safe, {class: "who_edit"} ) 
+       %>
+      <%= content_tag( :select, move_menu_options( :everybody ).html_safe, {class: "move_edit"} ) %>
+    </div>
+
+
+
+  <% end %> 
+
+
   <div class="field">
     <%= f.label :figure1 %><br>
     <%= f.text_field :figure1 %>
