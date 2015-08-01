@@ -35,7 +35,10 @@
           end
           content_tag( :select, selects.join( " " ).html_safe, {class: "who_edit"} ) 
        %>
+      <%= tag( :input, {type: "checkbox", class: "balance_edit"}) %>
       <%= content_tag( :select, move_menu_options( :everybody ).html_safe, {class: "move_edit"} ) %>
+      <%= content_tag( :select, options_html(DancesHelper::RotationMenuLabels).html_safe, class: "rotations_edit") %>
+      <%= content_tag( :select, options_html((1..6).to_a.map{|x|"#{pluralize(x,'place')}"}).html_safe, class: "places_edit") %>
     </div>
 
 

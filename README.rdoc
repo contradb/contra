@@ -3,13 +3,32 @@
 === ContraDB
 
 This is an online database for managing contra dance choreography. The
-intended users are dance choreographers and callers and (if comments
-ever become a thing) opinionated dancers. Eventually cool things can
-be done mining dances for combinations and stuff, but for now the plan
-is for me and people like to me to design dance programs from a
-library of dances encoded in a standardized format. 
+intended users are dance callers, dance choreographers, and
+opinionated dancers. Users create, edit, and delete their own dances,
+as well as copying and viewing other user's dances.
 
-Since this project is being written and does nothing useful yet, there is no documentation on how to install it. 
+Once the dance community has programatic multi-user cloud access to a
+large library of dances, the following cool potential features can be
+implemented on top of the core functionality:
+
+1) Creating a "program" of dances for a night, where a program of
+dances is asked to have certain properties. For example, when teaching
+an auditorium of completely new dancers, we needed a program without
+the popular but confusing moves "chain", "right/left
+through", or "hays".
+
+2) User comments and moderation of dances. 
+
+3) Search for dances for certain properties - e.g. "dances with more
+than two swings".
+
+4) Mining dances for combinations, and using that information to do
+interesting heuristics like semi-random dances that feel plausible but
+that never repeat.
+
+Since this project is being written and does nothing very exciting
+yet, there is no documentation on how to install it. It's just a
+vanilla rails app, though, so have at it.
 
 === Boilerplate suggestions for improving this file, from Rails:
 

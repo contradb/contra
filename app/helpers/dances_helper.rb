@@ -1,4 +1,12 @@
+# encoding: UTF-8
+
 module DancesHelper
+
+  # stuck here because I need a UTF-8 file to stick it in. Sorry. 
+  RotationMenuLabels = ["once", "1½",:___,"¼","½","¾","once","1¼","1½;","1¾","twice"]
+
+
+
   # IMPORTANT: this constant is manually synced to the equivalent server-side constant
   # in dances.coffee!
   WHO = [:everybody, :partner, :neighbor, :ladles, :gentlespoons, :ones, :twos].freeze;
@@ -55,4 +63,20 @@ module DancesHelper
           # content_tag( :option, "twos",         {value: 77} )
   end
 
+
+  # Take a list of symbols/strings, return a string of html including some option tags.
+  # Random feature: if :___ is passed, it means enter an option separator
+  # Random feature: accepts integers
+  def options_html(labels,default=(labels and !labels.length.zero? and labels[0]))
+    (labels.map {|label| 
+       if (:___ == label)
+       then content_tag(:option, "──────────", disabled: "disabled" )
+       else content_tag(:option, label, if (default===label)
+                                        then {selected: "selected", value: label}
+                                        else {value: label}
+                                        end
+                       )
+       end
+     }).join(" ");
+  end
 end

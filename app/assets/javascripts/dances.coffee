@@ -7,6 +7,15 @@
 # in dances_helper.rb!
 WHO = ["everybody", "partner", "neighbor", "ladles", "gentlespoons", "ones", "twos"]
 
+# returns values [type, default]
+move_parameter = (move) ->
+  switch move
+    when "circle_left", "circle_right"       then ["places",3]
+    when "star_left", "star_right"           then ["places",4]
+    when "allemande_right", "allemande_left" then ["rotations", 1.5]
+    when "do_si_do", "see_saw"               then ["rotations", 1]
+
+
 move_menu_options = (v) ->
   who = switch 
           when (v < 0) or (v>=WHO.length) then "everybody" # shouldn't ever happen
