@@ -7,6 +7,12 @@
 # in dances_helper.rb!
 WHO = ["everybody", "partner", "neighbor", "ladles", "gentlespoons", "ones", "twos"]
 
+# If adding here, be sure to add one or more "who" reactors in move_menu_options too,
+# and there'll probably be a ruby-side version of this list that needs to be manually synced
+# as well. 
+MOVES = ["circle_left", "circle_right", "star_left", "star_right", "petronella", "balance_the_ring", "to_ocean_wave", "right_left_through", "swing", "do_si_do", "see_saw", "allemande_right", "allemande_left", "gypsy_right_shoulder", "gypsy_left_shoulder", "pull_by_right", "pull_by_left", "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl", "chain", "mad_robin", "hey", "half_a_hey", "allemande_left_with_orbit", "allemande_right_with_orbit"] 
+
+# not yet called XXX
 # returns values [type, default]
 move_parameter = (move) ->
   switch move
@@ -14,13 +20,36 @@ move_parameter = (move) ->
     when "star_left", "star_right"           then ["places",4]
     when "allemande_right", "allemande_left" then ["rotations", 1.5]
     when "do_si_do", "see_saw"               then ["rotations", 1]
+    when "gypsy_left_shoulder"               then ["rotations", 1]
+    when "gypsy_right_shoulder"              then ["rotations", 1]
+    when "allemande_right_with_orbit"        then ["rotations", 1.5]
+    when "allemande_left_with_orbit"         then ["rotations", 1.5]
+    else [nil, 0]
 
 
-move_menu_options = (v) ->
-  who = switch 
-          when (v < 0) or (v>=WHO.length) then "everybody" # shouldn't ever happen
-          else WHO[v]
+# some moves care about places, some moves care about rotations, and
+# some moves care about neither, but none care about both. (It's just
+# syntactic sugar)
+move_cares_about_rotations = (move) ->
+    switch move
+      when "do_si_do", "see_saw", "allemande_right", "allemande_left" then true
+      else false
+
+move_cares_about_rotations = (move) ->
+    switch move
+      when "do_si_do", "see_saw", "allemande_right", "allemande_left", "gypsy_right_shoulder", "gypsy_left_shoulder" then true
+      else false
+
+move_cares_about_places = (move) ->
+    switch move
+      when "circle_left", "circle_right", "star_left", "star_right" then true
+      else false
+
+
+move_menu_options = (who) ->
   labels = switch who
+             # if adding to this list, be sure to add the move to the MOVES array above,
+             # and follow instructions there. 
              when "everybody" then [
                "circle_left", "circle_right", "star_left", "star_right", "petronella",
                "balance_the_ring", "to_ocean_wave", "right_left_through"]
@@ -33,11 +62,42 @@ move_menu_options = (v) ->
                "do_si_do", "see_saw", "allemande_right", "allemande_left",
                "gypsy_right_shoulder", "gypsy_left_shoulder",
                "chain", "pull_by_right", "pull_by_left",
-               "mad_robin", "hey", "half_a_hey", 
-               "allemande_left_with_orbit", "allemande_right_with_orbit"]
+               # "allemande_left_with_orbit", "allemande_right_with_orbit",
+               "mad_robin", "hey", "half_a_hey"]
              when "ones", "twos" then ["swing"]
-  console.log(who)
   ("<option>"+label+"</option>" for label in labels).join(" ")
+
+editor_to_string = ($editor) ->
+  who       = $editor.find(".who_edit").val()
+  move      = $editor.find(".move_edit").val()
+  beats     = $editor.find(".beat_edit").val()
+  balance   = $editor.find(".balance_edit").prop("checked")
+  rotations = $editor.find(".rotations_edit").val()
+  places    = $editor.find(".places_edit").val()
+  degrees   = switch
+              when move_cares_about_places(move) then "#{places} degrees "
+              when move_cares_about_rotations(move) then "#{rotations} degrees "
+              else ""
+  if balance then balance_s = "balance+" else balance_s = "" 
+  "#{who} #{balance_s}#{move} #{degrees}for #{beats}"
+
  
+# takes DOM who editor 
+manage_who_change = (who) ->
+  $move = $( who ).siblings(".move_edit")
+  $move.html(move_menu_options( who.value))
+  manage_move_change($move[0])
+
+# takes DOM move editor 
+manage_move_change = (move) ->
+    $move = $(move)
+    $move.siblings(".rotations_edit").toggle( move_cares_about_rotations( $move.val() ) )
+    $move.siblings(".places_edit").toggle   ( move_cares_about_places(    $move.val() ) )
+
 $ ->
-  $(".who_edit").change((e) -> $( e.target ).siblings(".move_edit").html(move_menu_options( e.target.value)))
+  $(".who_edit").change((e) -> manage_who_change e.target)
+  $(".move_edit").change((e) -> manage_move_change e.target)
+  # cool! change() gets called on contailers when children get edited!
+
+  $(".figure_edit").change((e) -> 
+    console.log( "editor string: "+editor_to_string( $(e.target).closest(".figure_edit") ))) 
