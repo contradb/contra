@@ -12,12 +12,13 @@ WHO = ["everybody", "partner", "neighbor", "ladles", "gentlespoons", "ones", "tw
 # and there'll probably be a ruby-side version of this list that needs to be manually synced
 # as well. 
 # MOVES elements must be composed of letters, digits, or underscores
-MOVES = ["circle_left", "circle_right", "star_left", "star_right", "petronella", "balance_the_ring", "to_ocean_wave", "right_left_through", "swing", "do_si_do", "see_saw", "allemande_right", "allemande_left", "gypsy_right_shoulder", "gypsy_left_shoulder", "pull_by_right", "pull_by_left", "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl", "chain", "mad_robin", "hey", "half_a_hey", "allemande_left_with_orbit", "allemande_right_with_orbit"] 
+MOVES = ["circle_left", "circle_right", "star_left", "star_right", "petronella", "balance_the_ring", "to_ocean_wave", "right_left_through", "swing", "do_si_do", "see_saw", "allemande_right", "allemande_left", "gypsy_right_shoulder", "gypsy_left_shoulder", "pull_by_right", "pull_by_left", "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl", "chain", "mad_robin", 
+  #"allemande_left_with_orbit", "allemande_right_with_orbit",
+  "hey", "half_a_hey", "balance", "figure-8", "custom"] 
 
 # not yet called XXX
 # returns values [type, default]
 move_parameter = (move) ->
-  console.log("move_parameter(#{move})")
   switch move
     when "circle_left", "circle_right"       then ["places","270"]
     when "star_left", "star_right"           then ["places","360"]
@@ -35,17 +36,17 @@ move_parameter = (move) ->
 # syntactic sugar)
 move_cares_about_rotations = (move) ->
     switch move
-      when "do_si_do", "see_saw", "allemande_right", "allemande_left" then true
-      else false
-
-move_cares_about_rotations = (move) ->
-    switch move
       when "do_si_do", "see_saw", "allemande_right", "allemande_left", "gypsy_right_shoulder", "gypsy_left_shoulder" then true
       else false
 
 move_cares_about_places = (move) ->
     switch move
       when "circle_left", "circle_right", "star_left", "star_right" then true
+      else false
+
+move_cares_about_balance = (move) ->
+    switch move
+      when "petronella", "swing", "pull_by_right", "pull_by_left", "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl", "custom" then true
       else false
 
 
@@ -60,67 +61,124 @@ move_menu_options = (who) ->
                "do_si_do", "see_saw", "allemande_right", "allemande_left",
                "gypsy_right_shoulder", "gypsy_left_shoulder",
                "pull_by_right", "pull_by_left", 
-               "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl"]
+               "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl",
+               "balance"]
              when "ladles", "gentlespoons" then [ "chain",
                "do_si_do", "see_saw", "allemande_right", "allemande_left",
                "gypsy_right_shoulder", "gypsy_left_shoulder",
                "chain", "pull_by_right", "pull_by_left",
                # "allemande_left_with_orbit", "allemande_right_with_orbit",
-               "mad_robin", "hey", "half_a_hey"]
-             when "ones", "twos" then ["swing"]
+               "mad_robin", "hey", "half_a_hey",
+               "balance"]
+             when "ones", "twos" then ["swing","figure-8"]
+  labels.push("custom") # custom is always available
   ("<option>"+label+"</option>" for label in labels).join(" ")
 
-editor_to_string = ($editor) ->
+figure_editor_get_figure = ($editor) ->
   who       = $editor.find(".who_edit").val()
   move      = $editor.find(".move_edit").val()
   beats     = $editor.find(".beat_edit").val()
   balance   = $editor.find(".balance_edit").prop("checked")
   rotations = $editor.find(".rotations_edit").val()
   places    = $editor.find(".places_edit").val()
-  degrees   = switch
-              when move_cares_about_places(move) then "#{places} degrees "
-              when move_cares_about_rotations(move) then "#{rotations} degrees "
-              else ""
-  if balance then balance_s = "balance+" else balance_s = "" 
-  "#{who} #{balance_s}#{move} #{degrees}for #{beats}"
-
+  notes    = $editor.find(".notes_edit").val()
+  o = new Object();
+  o["who"] = who
+  o["move"] = move
+  o["beats"] = parseInt beats
+  o["balance"] = true if balance
+  if move_cares_about_places(move)    then o["degrees"] = parseInt places
+  if move_cares_about_rotations(move) then o["degrees"] = parseInt rotations
+  if notes then o["notes"] = notes
+  return o
  
+figure_editor_set_figure = ($editor, figure) ->
+  $who = $editor.find(".who_edit")
+  $who.val(figure["who"])
+  manage_who_change($who[0])
+  $move = $editor.find(".move_edit")
+  $move.val(figure["move"])
+  manage_move_change($move[0])
+  $editor.find(".beat_edit").val(figure["beats"].toString())
+  $editor.find(".balance_edit").prop("checked",true) if figure["balance"]
+  degrees = if figure["degrees"] then figure["degrees"].toString() else null 
+  $editor.find(".rotations_edit").val(degrees) if degrees && move_cares_about_rotations(figure["move"])
+  $editor.find(".places_edit").val(degrees)  if degrees && move_cares_about_places(figure["move"])
+  $editor.find(".notes_edit").val(figure["notes"])
+  return $editor
+  
+
+find_buddy_editor = ($editor, selector) ->
+  $($editor.closest(".figure_edit")).find( selector )
+
 # takes DOM who editor 
 # builds move menu
 manage_who_change = (who) ->
-  console.log("manage_who_change()")
-  $move = $( who ).siblings(".move_edit")
+  $move = find_buddy_editor(who, ".move_edit")
   $move.html(move_menu_options( who.value))
   manage_move_change($move[0])
 
 # takes DOM move editor 
 manage_move_change = (move) ->
-    console.log("manage_move_change()")
     $move = $(move)
-    $move.siblings(".rotations_edit").toggle( move_cares_about_rotations( $move.val() ) )
-    $move.siblings(".rotations_edit").val(move_parameter($move.val())[1])
-    $move.siblings(".places_edit").toggle   ( move_cares_about_places(    $move.val() ) )
-    $move.siblings(".places_edit").val(move_parameter($move.val())[1])
+    find_buddy_editor($move,".rotations_edit").toggle( move_cares_about_rotations( $move.val() ) )
+    find_buddy_editor($move,".rotations_edit").val(move_parameter($move.val())[1])
+    find_buddy_editor($move,".places_edit").toggle   ( move_cares_about_places(    $move.val() ) )
+    find_buddy_editor($move,".places_edit").val(move_parameter($move.val())[1])
+    find_buddy_editor($move,".balance_edit").prop("disabled", !move_cares_about_balance($move.val()))
 
-parse_figure_string = (str) ->
-  # parse a string into object
-  # parsing strategy: use javascript regexp facility
-  # str input example
-  # ladles allemande_left 360 degrees for 8
-  # str format
-  # WHO ["balance+"]MOVE ["\d+ degrees"] for "\d+"
-  a = /(\w+)\W+(balance\+)?(\w+)\W+(\d+\W+degrees\W+)?for\W+(\d+)/.exec(str)
-  console.log("tried '#{str}'")
-  if a then   console.log("matched #{a}") else console.log ("did not match")
 
+initialize_figure_editor = ( e, i ) ->
+  console.log("initialize_figure_editor() enter")
+  $e = $(e) # the figure editor
+  id = trailing_number_from_string( $e.attr('id') )
+  $f = $e.closest("form").find(".figure_hidden_#{id}") # the text form
+  s  = $e.val()
+  o  = if s then jQuery.parseJSON(s) else new Object()
+  console.log("setting beats = #{o['beats']}")
+  find_buddy_editor($e,".beat_editor").val(o["beats"] || 8)
+  $who = find_buddy_editor($e,".who_edit")
+  $who.val(o["who"] || "everybody")
+  manage_who_change( $who[0] )
+  find_buddy_editor($e,".balance_edit").prop("checked", o["balance"]) if o["balance"]
+  find_buddy_editor($e,".move_edit").val(o["move"] || "circle_left")
+  find_buddy_editor($e,".rotations_edit").val(o["rotations"] || "360") if o["rotations"]
+  find_buddy_editor($e,".places_edit").val(o["places"] || "360") if o["places"]
+  find_buddy_editor($e,".notes_edit").val(o["notes"]) if o["notes"]
+  return e
+
+trailing_number_from_string = (s) ->
+  digs = /\d+$/.exec(s)
+  if digs then parseInt(digs) else 0 
+
+  
+
+
+# after a change the figure editor, adjust the hidden form
+# to hold the JSON representation of that figure. 
+sync_figure_editor = (dom_ed) ->
+  $fig_ed = $(dom_ed).closest(".figure_edit")
+  json = JSON.stringify( figure_editor_get_figure( $fig_ed ))
+  id = trailing_number_from_string( $fig_ed.attr('id') )
+  $form = $fig_ed.closest("form").find(".figure_hidden_#{id}")
+  $form.val(json)
 
 $ ->
+  console.log("initializing #{$('.who_edit').length}/8 who editors")
   $(".who_edit").change((e) -> manage_who_change e.target)
   $(".move_edit").change((e) -> manage_move_change e.target)
-  $(".who_edit").each((i) -> manage_who_change( this )) # workaround until we can load defaults from DB?
+  if (0==$('.figure_edit').length) then console.log("hxxola "+$("body").length)
+  console.log("initializing #{$('.figure_edit').length}/8 figure editors from db...")
+  $(".figure_edit").each((i) -> initialize_figure_editor( this, i ))
+  console.log("...figure editors supposedly initialized from db")
+  $(".figure_edit").change((e) -> sync_figure_editor(e.target))
   # cool! change() gets called on contailers when children get edited!
-
-  $(".figure_edit").change((e) -> 
-    console.log( "editor string: "+editor_to_string( $(e.target).closest(".figure_edit") ))) 
-  $(".figure_edit").change((e) -> parse_figure_string(editor_to_string( $(e.target).closest(".figure_edit") )))
+  #$(".figure_edit").change((e) -> 
+    # log whats going on
+    # console.log( "editor string: "+JSON.stringify( figure_editor_get_figure( $(e.target).closest(".figure_edit") )))
+    #to debug the editor, uncomment the following line. It sets the last editor to be 
+    # the value of the last editor to accept a change. It tests JSON and whatnot. 
+    #figure_editor_set_figure($("#figure_edit_8"), figure_editor_get_figure( $(e.target).closest(".figure_edit") ))
+    # ) 
+  
 

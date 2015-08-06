@@ -27,6 +27,7 @@ module DancesHelper
   # in dances.coffee!
   WHO = [:everybody, :partner, :neighbor, :ladles, :gentlespoons, :ones, :twos].freeze;
 
+  # XXX uncalled?
   # this has GOT to be obsolete and needs a client-side...XXX
   BALANCEABLE = {petronella: true, balance_the_ring: true,
     box_the_gnat: true, swat_the_flea: true, california_twirl: true, arizona_twirl: true,
@@ -34,6 +35,7 @@ module DancesHelper
   }.freeze
 
 
+  ## Is this even called anymore? XXX
   # Take a list of option specifiers, where a spec can be:
   # :___ - it means add an option separator here  
   # symbol or string - add an option with label and value set to the symbol or string

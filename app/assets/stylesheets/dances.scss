@@ -1,3 +1,11 @@
 // Place all the styles related to the dances controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.figure_edits th { text-align: center }
+.figure_edits td { text-align: center }
+.beat_edit      {width:4em;}
+.move_edit      {width:12em;}
+.rotations_edit {width:6em;}
+.places_edit    {width:6em;}
+.notes_edit    {width:18em;}

@@ -1,7 +1,9 @@
 
 == THE QUEUE OF TASKS ==
 
-make the dance editor
+Fill in empty default forms on new dance.
+Worry about field length
+Prettyfy JSON display on the server side
 
 make a dance copy link
 

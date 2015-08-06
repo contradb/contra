@@ -24,68 +24,64 @@
     <%= f.text_field :start_type %>
   </div>
 
-  <% for figure_idx in (1..8) do %>
-    <div class="figure_edit" id=figure_edit_<%= figure_idx %> >
-      <%= figure_idx %>:
-      <%= tag( :input, {value: 8, min: 0, max: 16, class: "beat_edit", type: "number"} ) %>
-      <%= selects = []
-          for who in DancesHelper::WHO
-            selects.push content_tag( :option, who, 
-                                      who===DancesHelper::WHO[0] ? {value: who, selected: "selected"} : {value: who})
-          end
-          content_tag( :select, selects.join( " " ).html_safe, {class: "who_edit"} ) 
-       %>
-      <%= tag( :input, {type: "checkbox", class: "balance_edit"}) %>
-      <%= content_tag( :select, "", {class: "move_edit"} ) %>
-      <%= content_tag( :select, 
-                       options_html(DancesHelper::RotationMenuLabels.map {|x| 
-                         [x,rotation_to_degrees(x)]}
-                     ).html_safe, class: "rotations_edit") %>
-      <%= content_tag( :select, options_html((1..8).to_a.map{|x|["#{pluralize(x,'place')}",x*90]}).html_safe, class: "places_edit") %>
+
+  <table class="figure_edits">
+    <thead>
+      <tr>
+        <th></th>
+        <th>beats</th>
+        <th>who</th>
+        <th>B+</th>
+        <th>move</th>
+        <th>turn</th>
+        <th>notes</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+
+
+        <% for figure_idx in (1..8) do %>
+           <tr class="figure_edit" id=figure_edit_<%= figure_idx %> >
+             <td><%= figure_idx %></td>
+             <td><%= tag( :input, {value: 8, min: 0, max: 16, class: "beat_edit", type: "number"} ) %></td>
+             <td><%= selects = []
+                 for who in DancesHelper::WHO
+                   selects.push content_tag( :option, who, 
+                                             who===DancesHelper::WHO[0] ? {value: who, selected: "selected"} : {value: who})
+                 end
+                 content_tag( :select, selects.join( " " ).html_safe, {class: "who_edit"} ) 
+              %></td>
+             <td><%= tag( :input, {type: "checkbox", class: "balance_edit"}) %></td>
+             <td><%= content_tag( :select, "", {class: "move_edit"} ) %></td>
+             <td><%= content_tag( :select, 
+                              options_html(DancesHelper::RotationMenuLabels.map {|x| 
+                                [x,rotation_to_degrees(x)]}
+                            ).html_safe, class: "rotations_edit") %>
+             <%= content_tag( :select, options_html((1..8).to_a.map{|x|["#{pluralize(x,'place')}",x*90]}).html_safe, class: "places_edit") %></td>
+             <td><%= tag( :input, {value: "", class: "notes_edit", type: "text", maxlength: 100} ) %></td>
+           </tr>
+
+
+
+        <% end %> 
+    </tbody>
+  </table>
+
+
+  <% for i in (1..8) do %>
+    <div class="field"> <!--  hidden="hidden" -->
+      <%= f.text_field ("figure"+i.to_s).intern(), class: "figure_hidden_#{i}" %>
     </div>
+  <% end %>
 
-
-
-  <% end %> 
-
-
-  <div class="field" hidden="hidden">
-    <%= f.label :figure1 %><br>
-    <%= f.text_field :figure1 %>
-  </div>
-  <div class="field" hidden="hidden">
-    <%= f.label :figure2 %><br>
-    <%= f.text_field :figure2 %>
-  </div>
-  <div class="field" hidden="hidden">
-    <%= f.label :figure3 %><br>
-    <%= f.text_field :figure3 %>
-  </div>
-  <div class="field" hidden="hidden">
-    <%= f.label :figure4 %><br>
-    <%= f.text_field :figure4 %>
-  </div>
-  <div class="field" hidden="hidden">
-    <%= f.label :figure5 %><br>
-    <%= f.text_field :figure5 %>
-  </div>
-  <div class="field" hidden="hidden">
-    <%= f.label :figure6 %><br>
-    <%= f.text_field :figure6 %>
-  </div>
-  <div class="field" hidden="hidden">
-    <%= f.label :figure7 %><br>
-    <%= f.text_field :figure7 %>
-  </div>
-  <div class="field" hidden="hidden">
-    <%= f.label :figure8 %><br>
-    <%= f.text_field :figure8 %>
-  </div>
   <div class="field">
     <%= f.label :notes %><br>
     <%= f.text_area :notes %>
   </div>
+
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit class: "update_dance" %>
   </div>
 <% end %>
