@@ -16,7 +16,6 @@ Rails.application.configure do
   # Complain about unsent mail
   config.action_mailer.raise_delivery_errors = true
 
-  # XXX halp! fix me for production -dm 07-20-2015
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
   # Print deprecation notices to the Rails logger.

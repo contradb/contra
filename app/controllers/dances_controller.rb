@@ -15,6 +15,7 @@ class DancesController < ApplicationController
   # GET /dances/new
   def new
     @dance = Dance.new
+    @dance.title ||= "New Dance"
   end
 
   # GET /dances/1/edit

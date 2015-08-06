@@ -14,9 +14,8 @@ WHO = ["everybody", "partner", "neighbor", "ladles", "gentlespoons", "ones", "tw
 # MOVES elements must be composed of letters, digits, or underscores
 MOVES = ["circle_left", "circle_right", "star_left", "star_right", "petronella", "balance_the_ring", "to_ocean_wave", "right_left_through", "swing", "do_si_do", "see_saw", "allemande_right", "allemande_left", "gypsy_right_shoulder", "gypsy_left_shoulder", "pull_by_right", "pull_by_left", "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl", "chain", "mad_robin", 
   #"allemande_left_with_orbit", "allemande_right_with_orbit",
-  "hey", "half_a_hey", "balance", "figure-8", "custom"] 
+  "hey", "half_a_hey", "balance", "figure-8", "long_lines", "custom"] 
 
-# not yet called XXX
 # returns values [type, default]
 move_parameter = (move) ->
   switch move
@@ -55,8 +54,8 @@ move_menu_options = (who) ->
              # if adding to this list, be sure to add the move to the MOVES array above,
              # and follow instructions there. 
              when "everybody" then [
-               "circle_left", "circle_right", "star_left", "star_right", "petronella",
-               "balance_the_ring", "to_ocean_wave", "right_left_through"]
+               "circle_left", "circle_right", "star_left", "star_right", "long_lines", 
+               "petronella", "balance_the_ring", "to_ocean_wave", "right_left_through"]
              when "partner", "neighbor" then [ "swing",
                "do_si_do", "see_saw", "allemande_right", "allemande_left",
                "gypsy_right_shoulder", "gypsy_left_shoulder",
@@ -133,7 +132,8 @@ initialize_figure_editor = ( e, i ) ->
   $e = $(e) # the figure editor
   id = trailing_number_from_string( $e.attr('id') )
   $f = $e.closest("form").find(".figure_hidden_#{id}") # the text form
-  s  = $e.val()
+  s  = $f.val()
+  console.log("looking at JSON '#{s}'")
   o  = if s then jQuery.parseJSON(s) else new Object()
   console.log("setting beats = #{o['beats']}")
   find_buddy_editor($e,".beat_editor").val(o["beats"] || 8)
@@ -167,7 +167,7 @@ $ ->
   console.log("initializing #{$('.who_edit').length}/8 who editors")
   $(".who_edit").change((e) -> manage_who_change e.target)
   $(".move_edit").change((e) -> manage_move_change e.target)
-  if (0==$('.figure_edit').length) then console.log("hxxola "+$("body").length)
+  if (0==$('.figure_edit').length) then console.log("hola "+$("body").length)
   console.log("initializing #{$('.figure_edit').length}/8 figure editors from db...")
   $(".figure_edit").each((i) -> initialize_figure_editor( this, i ))
   console.log("...figure editors supposedly initialized from db")

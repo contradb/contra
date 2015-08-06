@@ -11,10 +11,10 @@
     </div>
   <% end %>
 
-  <h1 class="field">
-    <%= f.label :title %><br>
-    <%= f.text_field :title %>
-  </h1>
+  <div class="field">
+    <%= f.label :title %>
+    <h1><%= f.text_field :title %></h1>
+  </div>
   <div class="field">
     <%= f.label "by" %><br>
     <%= f.select :choreographer_id, Choreographer.all.map {|c| [c.name,c.id]} %>
@@ -71,14 +71,14 @@
 
 
   <% for i in (1..8) do %>
-    <div class="field"> <!--  hidden="hidden" -->
+    <div class="field" hidden="hidden">
       <%= f.text_field ("figure"+i.to_s).intern(), class: "figure_hidden_#{i}" %>
     </div>
   <% end %>
 
   <div class="field">
     <%= f.label :notes %><br>
-    <%= f.text_area :notes %>
+    <%= f.text_area :notes, class: "per_dance_notes_edit"%>
   </div>
 
   <div class="actions">

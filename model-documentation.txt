@@ -1,22 +1,3 @@
-
-== THE QUEUE OF TASKS ==
-
-Fill in empty default forms on new dance.
-Worry about field length
-Prettyfy JSON display on the server side
-
-make a dance copy link
-
-give users human-readable names, and remove all public spillage of email
-
-make views not suck in general
-
-Grep through for comments with 'XXX' and resolve them
-
-learn how to test
-
-build a production server
-
 == MODEL ==
 
 A user has-many dances, has an pkID, and a bunch of other stuff.
