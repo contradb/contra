@@ -12,15 +12,23 @@ begin
       if !o
       then "<em>messed-up figure</em>".html_safe
       else 
-        who     = o['who']     || ''
         move    = o['move']    || ''
+        who     = if move_cares_about_who(move) then o['who'] else '' end
         beats   = o['beats']   || nil
         notes   = o['notes']   || nil
-        degrees = o['degrees'] ? o['degrees'].to_s + " degrees" : ""
+        degrees = o['degrees']
+        deg_txt = if !degrees
+                  then ""
+                  elsif move_cares_about_places(move)
+                  then "#{degrees_to_places(degrees)} places"
+                  elsif move_cares_about_rotations(move)
+                  then "#{degrees_to_rotation(degrees)}"
+                  else "#{degrees} degrees"
+                  end
         balance = if o['balance'] then 'balance + ' else '' end
         beat_str = beats == 8 ? "" : "for #{beats}"
         if beats > 0
-          then "#{who} #{balance}#{move} #{degrees} #{beat_str} #{notes}"
+          then "#{who} #{balance}#{move} #{deg_txt} #{beat_str} #{notes}"
           else "<em>sssh</em>".html_safe
         end
       end

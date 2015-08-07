@@ -17,11 +17,47 @@ module DancesHelper
     "1½" => 540,
     "1¾" => 630,
     "2"  => 720
-  }
+  }.freeze
   def rotation_to_degrees(label) 
     ROTATION_TO_DEGREES[label.to_s] || 0
   end
 
+
+  DEGREES_TO_ROTATION = {
+    360  => "once",
+    720  => "twice",
+    0    => "0",
+    90   => "¼",
+    180  => "½",
+    270  => "¾",
+  # 360  => "1",
+    450  => "1¼",
+    540  => "1½",
+    630  => "1¾",
+  # 720  => "2"
+  }.freeze
+  def degrees_to_rotation(d) 
+    DEGREES_TO_ROTATION[d] || (fail "bad degrees #{d}")
+  end
+
+  def degrees_to_places(d)
+    d/90
+  end
+
+  # you! manually sync changes to dances.coffee!
+  def move_cares_about_rotations(s)
+    [:do_si_do, :see_saw, :allemande_right, :allemande_left, :gypsy_right_shoulder, :gypsy_left_shoulder].include?(s.intern)
+  end
+
+  # you! manually sync changes to dances.coffee!
+  def move_cares_about_places(s)
+    [:circle_left, :circle_right, :star_left, :star_right].include?(s.intern)
+  end
+
+  # print "everyone" or whatever when the move is shown
+  def move_cares_about_who(s)
+    s.intern != :long_lines
+  end
 
   # IMPORTANT: this constant is manually synced to the equivalent server-side constant
   # in dances.coffee!

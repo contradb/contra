@@ -26,50 +26,13 @@
   <p><strong><%= i %></strong>:<%= render partial: "figure", object: @dance["figure"+i.to_s] %></p>
 <% end %>
 
-<p>
-  <span>Figure1:</span>
-  <%= render partial: "figure", object: @dance.figure1 %>
-</p>
 
-<p>
-  <span>Figure2:</span>
-  <%= @dance.figure2 %>
-</p>
-
-<p>
-  <span>Figure3:</span>
-  <%= @dance.figure3 %>
-</p>
-
-<p>
-  <span>Figure4:</span>
-  <%= @dance.figure4 %>
-</p>
-
-<p>
-  <span>Figure5:</span>
-  <%= @dance.figure5 %>
-</p>
-
-<p>
-  <span>Figure6:</span>
-  <%= @dance.figure6 %>
-</p>
-
-<p>
-  <span>Figure7:</span>
-  <%= @dance.figure7 %>
-</p>
-
-<p>
-  <span>Figure8:</span>
-  <%= @dance.figure8 %>
-</p>
-
+<% if @dance.notes.strip.length > 0 %>
 <p>
   <span>Notes:</span>
   <%= @dance.notes %>
 </p>
+<% end %>
 
 <%= link_to 'Edit', edit_dance_path(@dance) %> |
 <%= link_to 'Back', dances_path %>

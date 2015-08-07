@@ -33,11 +33,13 @@ move_parameter = (move) ->
 # some moves care about places, some moves care about rotations, and
 # some moves care about neither, but none care about both. (It's just
 # syntactic sugar)
+# NOTE: this function is duplicated rubyside in dances_helper.rb. Sync them.
 move_cares_about_rotations = (move) ->
     switch move
       when "do_si_do", "see_saw", "allemande_right", "allemande_left", "gypsy_right_shoulder", "gypsy_left_shoulder" then true
       else false
 
+# NOTE: this function is duplicated rubyside in dances_helper.rb. Sync them.
 move_cares_about_places = (move) ->
     switch move
       when "circle_left", "circle_right", "star_left", "star_right" then true
