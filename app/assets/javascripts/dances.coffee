@@ -128,22 +128,22 @@ manage_move_change = (move) ->
 
 
 initialize_figure_editor = ( e, i ) ->
-  console.log("initialize_figure_editor() enter")
   $e = $(e) # the figure editor
   id = trailing_number_from_string( $e.attr('id') )
   $f = $e.closest("form").find(".figure_hidden_#{id}") # the text form
   s  = $f.val()
-  console.log("looking at JSON '#{s}'")
   o  = if s then jQuery.parseJSON(s) else new Object()
-  console.log("setting beats = #{o['beats']}")
-  find_buddy_editor($e,".beat_editor").val(o["beats"] || 8)
   $who = find_buddy_editor($e,".who_edit")
   $who.val(o["who"] || "everybody")
   manage_who_change( $who[0] )
   find_buddy_editor($e,".balance_edit").prop("checked", o["balance"]) if o["balance"]
-  find_buddy_editor($e,".move_edit").val(o["move"] || "circle_left")
+  manage_move_change(
+    find_buddy_editor($e,".move_edit").val(o["move"] || "circle_left"))
   find_buddy_editor($e,".rotations_edit").val(o["rotations"] || "360") if o["rotations"]
   find_buddy_editor($e,".places_edit").val(o["places"] || "360") if o["places"]
+  # many Bothans died to bring us this expression:
+  beats = if "beats" of o then o["beats"] else 8 
+  find_buddy_editor($e,".beat_edit").val(beats)
   find_buddy_editor($e,".notes_edit").val(o["notes"]) if o["notes"]
   return e
 

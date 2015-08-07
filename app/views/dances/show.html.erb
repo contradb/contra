@@ -19,9 +19,16 @@
   <%= @dance.start_type %>
 </p>
 
+
+
+
+<% (1..8).each do |i| %>
+  <p><strong><%= i %></strong>:<%= render partial: "figure", object: @dance["figure"+i.to_s] %></p>
+<% end %>
+
 <p>
   <span>Figure1:</span>
-  <%= @dance.figure1 %>
+  <%= render partial: "figure", object: @dance.figure1 %>
 </p>
 
 <p>

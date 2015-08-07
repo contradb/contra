@@ -1,0 +1,32 @@
+<span class="show_figure">
+<%= 
+begin
+  if ( /^\s*$/ =~ figure)
+  then "<em>empty figure</em>".html_safe
+  else 
+    begin
+      o = JSON.parse figure
+    rescue JSON::ParserError => e
+      "ParserError '#{e}' on '#{figure}'"
+    else
+      if !o
+      then "<em>messed-up figure</em>".html_safe
+      else 
+        who     = o['who']     || ''
+        move    = o['move']    || ''
+        beats   = o['beats']   || nil
+        notes   = o['notes']   || nil
+        degrees = o['degrees'] ? o['degrees'].to_s + " degrees" : ""
+        balance = if o['balance'] then 'balance + ' else '' end
+        beat_str = beats == 8 ? "" : "for #{beats}"
+        if beats > 0
+          then "#{who} #{balance}#{move} #{degrees} #{beat_str} #{notes}"
+          else "<em>sssh</em>".html_safe
+        end
+      end
+    end
+  end
+end
+%>
+</span>
+
