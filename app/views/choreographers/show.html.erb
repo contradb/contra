@@ -1,15 +1,15 @@
 <p id="notice"><%= notice %></p>
 
-<div>Choreographer:</div>
 <h1>
   <%= @choreographer.name %>
 </h1>
 
 
-<div>Dances:</div>
 <%= render partial: "dances/showtable", object: @choreographer.dances, 
     locals: {choreographer: false} %>
 
 
-<%= link_to 'Edit', edit_choreographer_path(@choreographer) %> |
-<%= link_to 'Back', choreographers_path %>
+
+<%= new_dance_button_html({choreographer_id: @choreographer.id}) %>
+<br>
+

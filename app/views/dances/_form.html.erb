@@ -17,7 +17,12 @@
   </div>
   <div class="field">
     <%= f.label "by" %><br>
-    <%= f.select :choreographer_id, Choreographer.all.map {|c| [c.name,c.id]} %>
+    <%= begin
+          options_sans_params = Choreographer.all.map {|c| [c.name,c.id]}
+          options_with_params = options_for_select(options_sans_params, params[:choreographer_id])
+          options = params[:choreographer_id] ? options_with_params : options_sans_params
+          f.select :choreographer_id, options
+        end %>
   </div>
   <div class="field">
     <%= f.label :start_type %><br>

@@ -14,13 +14,12 @@
   by <strong> <%= link_to @dance.choreographer.name, @dance.choreographer %></strong>
 </p>
 
+<p>[Edit button] | [Copy button]</p>
+
 <p>
   <span>Start type:</span>
   <%= @dance.start_type %>
 </p>
-
-
-
 
 <% (1..8).each do |i| %>
   <p><strong><%= i %></strong>:<%= render partial: "figure", object: @dance["figure"+i.to_s] %></p>
@@ -34,5 +33,4 @@
 </p>
 <% end %>
 
-<%= link_to 'Edit', edit_dance_path(@dance) %> |
-<%= link_to 'Back', dances_path %>
+

@@ -1,13 +1,12 @@
 <p id="notice"><%= notice %></p>
 
-<h1>All Dances</h1>
+<h1>Dances</h1>
 
 
 <%= render partial: "showtable", object: @dances %>
 
 
-<br>
-<br>
-<br>
 
-<%= link_to 'New Dance', new_dance_path %>
+
+
+<%= new_dance_button_html %>
