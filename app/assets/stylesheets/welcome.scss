@@ -1,3 +1,33 @@
 // Place all the styles related to the welcome controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+
+// I can't figure out how to override Bootstrap's color choices using 
+// classes alone, so I'm going for the cheap shot. Hey, at least I didn't
+// use inline styles. :P        -dm 08-09-2015
+#contra_splash_jumbotron {
+    color: white;
+}
+
+
+.contra_splash_jumbotron {
+    background-image: asset-data-url("top-down2.jpg");
+    background-position: 0% 35%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
+    text-color: white;
+    text-shadow: black 0.3em 0.3em 0.3em;
+}
+
+.contra_splash_jumbotron > h1 {
+    color: white;
+    text-color: white;
+}
+
+.contra_splash_jumbotron > p {
+    color: white;
+    text-color: white;
+}
