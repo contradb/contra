@@ -4,13 +4,15 @@
   <%= @user.email %>
 </h1>
 
-<%= render partial: "dances/showtable", object: @user.dances, 
-    locals: {user: false} %>
-
 <%= if current_user.id == @user.id 
     then new_dance_button_html()
     else ''
     end
 %>
+
+
+<%= render partial: "dances/showtable", object: @user.dances, 
+    locals: {user: false} %>
+
 
 

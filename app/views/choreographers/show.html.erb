@@ -5,11 +5,14 @@
 </h1>
 
 
+<%= new_dance_button_html({choreographer_id: @choreographer.id}) %>
+
+
 <%= render partial: "dances/showtable", object: @choreographer.dances, 
     locals: {choreographer: false} %>
 
 
 
-<%= new_dance_button_html({choreographer_id: @choreographer.id}) %>
-<br>
+
+
 

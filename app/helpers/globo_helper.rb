@@ -20,11 +20,11 @@ module GloboHelper
 
   def new_dance_button_html(choreographer_id: nil)
     link_to '<span>'.html_safe + new_icon_html() + ' New Dance</span>'.html_safe, 
-            new_dance_path({choreographer_id: choreographer_id}), {class: "btn btn-default btn-md", type: "button"}
+            new_dance_path({choreographer_id: choreographer_id}), {class: "btn btn-default btn-md contra-btn-midpage", type: "button"}
   end
   def new_choreographer_button_html()
     link_to '<span>'.html_safe + new_icon_html() + ' New Choreographer</span>'.html_safe, 
-            new_choreographer_path, {class: "btn btn-default btn-md", type: "button"}
+            new_choreographer_path, {class: "btn btn-default btn-md contra-btn-midpage", type: "button"}
   end
 
 end
