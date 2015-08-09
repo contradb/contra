@@ -71,6 +71,6 @@ class DancesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def dance_params
-      params.require(:dance).permit(:title, :choreographer_id, :start_type, :figure1, :figure2, :figure3, :figure4, :figure5, :figure6, :figure7, :figure8, :notes)
+      params.require(:dance).permit(:title, :choreographer_id, :start_type, :figure1, :figure2, :figure3, :figure4, :figure5, :figure6, :figure7, :figure8, :notes, :copy_dance_id)
     end
 end

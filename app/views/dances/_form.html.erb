@@ -11,22 +11,39 @@
     </div>
   <% end %>
 
+<% if params[:copy_dance_id] then
+     copy_dance = Dance.find(params[:copy_dance_id])
+   else
+     copy_dance = nil
+   end 
+
+
+%>
+
+<% if copy_dance then %>
+<p>Composing a variation of <strong><%= copy_dance.title %></strong><p>
+<% end %>
+
   <div class="field">
     <%= f.label :title %>
-    <h1><%= f.text_field :title %></h1>
+    <h1><%= if copy_dance 
+            then f.text_field :title, {value: copy_dance.title + ' variation'} 
+            else f.text_field :title 
+            end %></h1>
   </div>
   <div class="field">
     <%= f.label "by" %><br>
     <%= begin
           options_sans_params = Choreographer.all.map {|c| [c.name,c.id]}
-          options_with_params = options_for_select(options_sans_params, params[:choreographer_id])
-          options = params[:choreographer_id] ? options_with_params : options_sans_params
+          param_default       = params[:choreographer_id] || (copy_dance && copy_dance.choreographer_id)
+          options_with_params = options_for_select(options_sans_params, param_default)
+          options = param_default ? options_with_params : options_sans_params
           f.select :choreographer_id, options
         end %>
   </div>
   <div class="field">
     <%= f.label :start_type %><br>
-    <%= f.text_field :start_type %>
+    <%= f.text_field :start_type, copy_dance ? {value: copy_dance.start_type} : {} %>
   </div>
 
 
@@ -77,13 +94,20 @@
 
   <% for i in (1..8) do %>
     <div class="field" hidden="hidden">
-      <%= f.text_field ("figure"+i.to_s).intern(), class: "figure_hidden_#{i}" %>
+      <%= begin
+            figureN = ("figure"+i.to_s).intern()
+            h = {class: "figure_hidden_#{i}"}.merge(copy_dance ? {value: copy_dance[figureN]} : {})
+            f.text_field figureN, h
+          end %>
     </div>
   <% end %>
 
   <div class="field">
     <%= f.label :notes %><br>
-    <%= f.text_area :notes, class: "per_dance_notes_edit"%>
+    <%= begin
+          h = {value: copy_dance ? copy_dance.notes : ''}.merge(copy_dance ? {class: "per_dance_notes_edit"} : {})
+          f.text_area :notes, h
+        end  %>
   </div>
 
   <div class="actions">
