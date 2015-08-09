@@ -1,0 +1,67 @@
+<% 
+title         = local_assigns.fetch(:title,true) 
+choreographer = local_assigns.fetch(:choreographer,true) 
+user          = local_assigns.fetch(:user,true) 
+start_type    = local_assigns.fetch(:start_type,true) 
+figures       = local_assigns.fetch(:figures,false) 
+notes         = local_assigns.fetch(:notes,true) 
+
+%>
+
+
+
+<table class="table table-striped table-bordered table-hover table-condensed dance-table-nonfluid">
+  <thead>
+    <tr>
+      <th colspan="3">Actions</th>
+      <% if title then %>         <th>Title</th>         <% end %>
+      <% if choreographer then %> <th>Choreographer</th> <% end %>
+      <% if user then %>          <th>User</th>          <% end %>
+      <% if start_type then %>    <th>Start type</th>    <% end %>
+      <% if figures then %>
+                                  <th>1</th> 
+                                  <th>2</th>
+                                  <th>3</th>
+                                  <th>4</th>
+                                  <th>5</th>
+                                  <th>6</th>
+                                  <th>7</th>
+                                  <th>8</th>
+      <% end %>
+      <% if notes then %>         <th>Notes</th>         <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%
+      dances = showtable
+      dances.each do |dance| %>
+      <tr>
+
+        <td><%= link_to '<span class="glyphicon glyphicon-list" aria-label="view"  aria-label="view" data-toggle="tooltip" data-placement="left" title="view">'.html_safe, dance %>
+           
+          </span> </td>               
+        <td><%= link_to '<span class="glyphicon glyphicon-edit" aria-label="edit"  aria-label="edit" data-toggle="tooltip" data-placement="left" title="edit">'.html_safe, edit_dance_path(dance) %>
+           
+          </span> </td>               
+        <td><%= link_to '<span class="glyphicon glyphicon-trash" aria-label="delete" data-toggle="tooltip" data-placement="left" title="delete">'.html_safe, dance, method: :delete, data: { confirm: "Delete '#{dance.title}?'" } %></td>
+
+
+        <% if title then %>         
+          <td><strong><%= link_to dance.title, dance %></td></strong><% end %>
+        <% if choreographer then %> 
+          <td><%= link_to dance.choreographer.name, dance.choreographer %></td><% end %>
+        <% if user then %>
+          <td><%= link_to dance.user.email, dance.user %></td>         <% end %>
+        <% if start_type then %>    <td><%= dance.start_type %></td>         <% end %>
+        <% if figures then
+           (1..8).each do |i| %>       
+           <td><%= render partial: "dances/figure", object: dance["figure"+i.to_s], locals: {terse: true} %></td>
+        <%   end
+           end %>                              
+        <% if notes then %>           <td><%= dance.notes %></td>            <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

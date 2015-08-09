@@ -4,29 +4,7 @@
   <%= @user.email %>
 </h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Choreographer</th>
-      <th>Start type</th>
-      <th colspan="2"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @user.dances.each do |dance| %>
-      <tr>
-
-        <td><%= link_to dance.title, dance %></td>
-        <td><%= link_to dance.choreographer.name, dance.choreographer %></td>
-        <td><%= dance.start_type %></td>
-        <td></td>
-        <td><%= link_to 'Edit', edit_dance_path(dance) %></td>
-        <td><%= link_to 'Destroy', dance, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= render partial: "dances/showtable", object: @user.dances, 
+    locals: {user: false} %>
 
 

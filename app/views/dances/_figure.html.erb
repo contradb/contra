@@ -1,40 +1,21 @@
-<span class="show_figure">
+<% terse = local_assigns.fetch(:terse,false) %>
+
+
+<span class="show_figure" 
+
+
+  <%# If we're in terse mode, then expand the whole figure in a mouseover tooltip %>
+  <% if terse then %>
+    data-toggle="tooltip" data-placement="left" title="<%= figure_txt(figure, terse: false) %>"
+  <% end %>
+>
+
+
 <%= 
-begin
-  if ( /^\s*$/ =~ figure)
-  then "<em>empty figure</em>".html_safe
-  else 
-    begin
-      o = JSON.parse figure
-    rescue JSON::ParserError => e
-      "ParserError '#{e}' on '#{figure}'"
-    else
-      if !o
-      then "<em>messed-up figure</em>".html_safe
-      else 
-        move    = o['move']    || ''
-        who     = if move_cares_about_who(move) then o['who'] else '' end
-        beats   = o['beats']   || nil
-        notes   = o['notes']   || nil
-        degrees = o['degrees']
-        deg_txt = if !degrees
-                  then ""
-                  elsif move_cares_about_places(move)
-                  then "#{degrees_to_places(degrees)} places"
-                  elsif move_cares_about_rotations(move)
-                  then "#{degrees_to_rotation(degrees)}"
-                  else "#{degrees} degrees"
-                  end
-        balance = if o['balance'] then 'balance + ' else '' end
-        beat_str = beats == 8 ? "" : "for #{beats}"
-        if beats > 0
-          then "#{who} #{balance}#{move} #{deg_txt} #{beat_str} #{notes}"
-          else "<em>sssh</em>".html_safe
-        end
-      end
-    end
-  end
-end
+
+  figure_txt(figure, terse: terse)
+
+
 %>
 </span>
 

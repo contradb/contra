@@ -1,68 +1,13 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Listing Dances</h1>
+<h1>All Dances</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Choreographer</th>
-      <th>Start type</th>
-      <th>Figure1</th>
-      <th>Figure2</th>
-      <th>Figure3</th>
-      <th>Figure4</th>
-      <th>Figure5</th>
-      <th>Figure6</th>
-      <th>Figure7</th>
-      <th>Figure8</th>
-      <th>Notes</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
 
-  <tbody>
-    <% @dances.each do |dance| %>
-      <tr>
-        <td><%= dance.title %></td>
-        <td><%= dance.choreographer.name %></td>
-        <td><%= dance.start_type %></td>
-        <td><%= dance.figure1 %></td>
-        <td><%= dance.figure2 %></td>
-        <td><%= dance.figure3 %></td>
-        <td><%= dance.figure4 %></td>
-        <td><%= dance.figure5 %></td>
-        <td><%= dance.figure6 %></td>
-        <td><%= dance.figure7 %></td>
-        <td><%= dance.figure8 %></td>
-        <td><%= dance.notes %></td>
-        <td><%= link_to 'Show', dance %></td>
-        <td><%= link_to 'Edit', edit_dance_path(dance) %></td>
-        <td><%= link_to 'Destroy', dance, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= render partial: "showtable", object: @dances %>
+
 
 <br>
 <br>
-
-
-<p>params = 
-<%= params %>
-</p>
-
-
-
-<p>@dances = 
-<%= @dances.all %>
-</p>
-
-<p>current_user = 
-<%= current_user.dances %>
-</p>
-
-
 <br>
 
 <%= link_to 'New Dance', new_dance_path %>
