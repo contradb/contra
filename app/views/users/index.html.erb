@@ -16,7 +16,7 @@
     <% @users.each do |user| %>
       <tr>
         <td><%= link_to view_icon_html, user %></td>
-        <td><%= link_to user.email, user %></td>
+        <td><%= link_to user.name, user %></td>
         <td class="text-right"><%= user.dances.length %></td>
       </tr>
     <% end %>

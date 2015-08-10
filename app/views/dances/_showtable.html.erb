@@ -53,7 +53,7 @@ dances = showtable
         <% if choreographer then %> 
           <td><%= link_to dance.choreographer.name, dance.choreographer %></td><% end %>
         <% if user then %>
-          <td><%= link_to dance.user.email, dance.user %></td>         <% end %>
+          <td><%= link_to dance.user.name, dance.user %></td>         <% end %>
         <% if start_type then %>    <td><%= dance.start_type %></td>         <% end %>
         <% if figures then
            (1..8).each do |i| %>       
