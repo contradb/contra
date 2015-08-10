@@ -42,10 +42,17 @@ dances = showtable
     <% dances.each do |dance| %>
       <tr>
 
-        <td><%= link_to view_icon_html, dance %> </span> </td>               
-        <td><%= link_to edit_icon_html, edit_dance_path(dance) %> </span> </td>               
-        <td><%= link_to copy_icon_html, new_dance_path({copy_dance_id: dance.id}) %> </span> </td>               
-        <td><%= link_to delete_icon_html, dance, method: :delete, data: { confirm: "Delete '#{dance.title}?'" } %></td>
+        <td><%= link_to view_icon_html, dance %></td>               
+        <td><%= link_to copy_icon_html, new_dance_path({copy_dance_id: dance.id}) %></td>               
+        <td><%= if (signed_in? && (current_user.id == dance.user_id))
+                then link_to(edit_icon_html, edit_dance_path(dance))
+                else "" 
+                end
+                %></td>               
+        <td><%= if (signed_in? && (current_user.id == dance.user_id))
+                then link_to(delete_icon_html, dance, method: :delete, data: { confirm: "Delete '#{dance.title}?'" })
+                else ""
+                end %></td>
 
 
         <% if title then %>         

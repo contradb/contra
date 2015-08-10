@@ -1,5 +1,7 @@
 class ChoreographersController < ApplicationController
   before_action :set_choreographer, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:new, :edit, :update, :destroy]
+  before_action :authenticate_administrator!, only: [:edit, :update, :destroy]
 
   # GET /choreographers
   # GET /choreographers.json
