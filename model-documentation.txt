@@ -5,11 +5,13 @@ A user has-many dances, has an pkID, and a bunch of other stuff.
 A choreographer has-many dances, and has a pkID. Choreographer #1 is
 "unknown".
 
-A dance has one user ID, one title, one choreographer ID, one start-type
-(improper, beckett, beckett-reverse, proper, or indecent), up to 8
-figures (encoded as strings), and some notes (text). It should
-probably primary key on (user, title), but that'd take work, so it'll
-just have a pkID. 
+A dance has one user ID, one title, one choreographer ID, one
+start-type (improper, beckett, beckett-reverse, proper, or
+indecent)("start_type" should have been called "formation", and it's
+been changed in the GUI, but not in the model), up to 8 figures
+(encoded as strings), and some notes (text). It should probably
+primary key on (user, title), but that'd take work, so it'll just have
+a pkID.
 
 Users may copy another user's dance (a "fork"). 
 Dances may only be edited by the controlling user; however,
