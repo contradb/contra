@@ -6,6 +6,7 @@
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true %>
+    <p>e.g. 'jane@gmail.com'</p>
   </div>
 
   <div class="field">
@@ -16,10 +17,10 @@
 
   <div class="field">
     <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
     <%= f.password_field :password, autocomplete: "off" %>
+    <% if @minimum_password_length %>
+    <p><em>(<%= @minimum_password_length %> characters minimum)</em></p>
+    <% end %>
   </div>
 
   <div class="field">
@@ -32,4 +33,4 @@
   </div>
 <% end %>
 
-<%= render "devise/shared/links" %>
+
