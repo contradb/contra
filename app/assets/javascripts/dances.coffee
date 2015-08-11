@@ -166,13 +166,10 @@ sync_figure_editor = (dom_ed) ->
   $form.val(json)
 
 $ ->
-  console.log("initializing #{$('.who_edit').length}/8 who editors")
+  console.log("initializing figure editors ... even if we're not editing any figures.")
   $(".who_edit").change((e) -> manage_who_change e.target)
   $(".move_edit").change((e) -> manage_move_change e.target)
-  if (0==$('.figure_edit').length) then console.log("hola "+$("body").length)
-  console.log("initializing #{$('.figure_edit').length}/8 figure editors from db...")
   $(".figure_edit").each((i) -> initialize_figure_editor( this, i ))
-  console.log("...figure editors supposedly initialized from db")
   $(".figure_edit").change((e) -> sync_figure_editor(e.target))
   # cool! change() gets called on contailers when children get edited!
   #$(".figure_edit").change((e) -> 
