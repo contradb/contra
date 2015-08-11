@@ -12,7 +12,12 @@
   by <strong> <%= link_to @dance.choreographer.name, @dance.choreographer %></strong>
 </p>
 
-<p>[Edit button] | [Copy button]</p>
+
+
+<%= if (signed_in? && (current_user.id == @dance.user_id)) then
+    edit_dance_button_html(@dance) end %>
+<%= copy_dance_button_html(@dance) %>
+
 
 <p>
   <span>Start type:</span>

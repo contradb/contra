@@ -21,13 +21,23 @@ module GloboHelper
 
 
 
+  BUTTON_HTML_ATTR = {class: "btn btn-default btn-md contra-btn-midpage", type: "button"}
+
   def new_dance_button_html(choreographer_id: nil)
     link_to '<span>'.html_safe + new_icon_html() + ' New Dance</span>'.html_safe, 
-            new_dance_path({choreographer_id: choreographer_id}), {class: "btn btn-default btn-md contra-btn-midpage", type: "button"}
+            new_dance_path({choreographer_id: choreographer_id}), BUTTON_HTML_ATTR
+  end
+  def edit_dance_button_html(dance)
+    link_to '<span>'.html_safe + edit_icon_html() + ' Edit Dance</span>'.html_safe, 
+            edit_dance_path(dance), BUTTON_HTML_ATTR
+  end
+  def copy_dance_button_html(dance)
+    link_to '<span>'.html_safe + copy_icon_html() + ' Copy Dance</span>'.html_safe, 
+            new_dance_path(copy_dance_id: dance), BUTTON_HTML_ATTR
   end
   def new_choreographer_button_html()
     link_to '<span>'.html_safe + new_icon_html() + ' New Choreographer</span>'.html_safe, 
-            new_choreographer_path, {class: "btn btn-default btn-md contra-btn-midpage", type: "button"}
+            new_choreographer_path, BUTTON_HTML_ATTR
   end
 
 end
