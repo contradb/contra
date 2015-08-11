@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150809210131) do
+ActiveRecord::Schema.define(version: 20150811183820) do
 
   create_table "choreographers", force: :cascade do |t|
     t.string   "name"
@@ -26,14 +26,14 @@ ActiveRecord::Schema.define(version: 20150809210131) do
     t.string   "title"
     t.integer  "choreographer_id"
     t.string   "start_type"
-    t.string   "figure1"
-    t.string   "figure2"
-    t.string   "figure3"
-    t.string   "figure4"
-    t.string   "figure5"
-    t.string   "figure6"
-    t.string   "figure7"
-    t.string   "figure8"
+    t.text     "figure1"
+    t.text     "figure2"
+    t.text     "figure3"
+    t.text     "figure4"
+    t.text     "figure5"
+    t.text     "figure6"
+    t.text     "figure7"
+    t.text     "figure8"
     t.text     "notes"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
