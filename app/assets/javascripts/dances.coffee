@@ -126,7 +126,10 @@ manage_move_change = (move) ->
     find_buddy_editor($move,".rotations_edit").val(move_parameter($move.val())[1])
     find_buddy_editor($move,".places_edit").toggle   ( move_cares_about_places(    $move.val() ) )
     find_buddy_editor($move,".places_edit").val(move_parameter($move.val())[1])
-    find_buddy_editor($move,".balance_edit").prop("disabled", !move_cares_about_balance($move.val()))
+    be = 
+    find_buddy_editor($move,".balance_edit")
+    be.prop("disabled", !move_cares_about_balance($move.val()))
+    be.prop("checked",  be.prop("checked") && move_cares_about_balance($move.val()))
 
 
 initialize_figure_editor = ( e, i ) ->
