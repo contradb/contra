@@ -39,5 +39,4 @@ module GloboHelper
     link_to '<span>'.html_safe + new_icon_html() + ' New Choreographer</span>'.html_safe, 
             new_choreographer_path, BUTTON_HTML_ATTR
   end
-
 end

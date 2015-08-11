@@ -1,6 +1,12 @@
 <div class="jumbotron contra_splash_jumbotron" id="contra_splash_jumbotron">
   <div class="container">
     <h1>ContraDB</h1>
-    <p>Build and Share Contra Dances</p>
+    <p>Find and Share Contra Dances</p>
+    <% if !signed_in? then %>
+     <div class="btn-group" role="group"><%= sign_up_button_html() + login_button_html() %></div>
+    <% end %>
+
+
+
   </div>
 </div>

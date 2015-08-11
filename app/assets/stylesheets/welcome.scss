@@ -11,23 +11,23 @@
     color: white;
 }
 
-
 .contra_splash_jumbotron {
-    background-image: asset-data-url("top-down2.jpg");
+    background-image: asset-data-url("top-down3.jpg");
     background-position: 0% 35%;
     background-size: cover;
     background-repeat: no-repeat;
-    color: white;
-    text-color: white;
-    text-shadow: black 0.3em 0.3em 0.3em;
+    background-color: #BBB;
+    text-shadow: #666 0.3em 0.3em 0.3em;
 }
 
-.contra_splash_jumbotron > h1 {
-    color: white;
-    text-color: white;
+.contra_splash_jumbotron h1 {
+    color: #111 !important;
 }
 
-.contra_splash_jumbotron > p {
-    color: white;
-    text-color: white;
+.contra_splash_jumbotron p {
+    color: #111;
+}
+
+.contra_splash_jumbotron .btn {
+      text-shadow: none;
 }
