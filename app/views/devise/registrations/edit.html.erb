@@ -1,45 +1,82 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<div class="container">
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <%# there is some strangeness going on with p versus div tags in the
+  layout. They should probably all be styled divs, but I'm pretty
+  exhausted by fighting styles all night, and this looks good enough
+  to me. %>
+
+
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <h2 class="col-sm-10">Edit <%= resource_name.to_s.humanize %></h2>
+  </div>
+
+
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= devise_error_messages! %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
-  </div>
+  <p class="row field">
+    <P class="col-sm-2 contra-label">Email:</p> 
+    <%= f.email_field :email, autofocus: true, class: "col-sm-6" %>
+    <p class="col-sm-4 understated">e.g. 'jane@gmail.com'</p>
+  </p>
 
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-    <p>e.g. 'Cary Ravitz'</p>
-  </div>
+  <p class="row field">
+    <P class="col-sm-2 contra-label">Name:</p> 
+    <%= f.text_field :name, class: "col-sm-6" %>
+    <p class="col-sm-4 understated">e.g. 'Cary Ravitz'</p>
+  </p>
 
   <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+  <p class="row"><div class="col-sm-2"></p><div class="col-sm-10">Currently waiting confirmation for: <%= resource.unconfirmed_email %></div></p>
   <% end %>
 
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "off" %>
+  <p class="row field">
+    <p class="col-sm-2 contra-label">New Password:</p> 
+    <%= f.password_field :password, autocomplete: "off", class: "col-sm-6" %>
+    <p class="col-sm-4 understated">leave blank if you don't want to change it</p>
+  </p>
+
+  <p class="row field">
+    <p class="col-sm-2 contra-label">New Password Confirm:</p> 
+    <%= f.password_field :password_confirmation, autocomplete: "off", class: "col-sm-6" %>
+    <p class="col-sm-4 understated"></p>
+  </p>
+
+  <p class="row field">
+    <p class="col-sm-2 contra-label">Current Password:</p> 
+    <%= f.password_field :current_password, autocomplete: "off", class: "col-sm-6" %>
+    <p class="col-sm-4 understated">* required</p>
+  </p>
+
+  <p class="row actions">
+    <p class="col-sm-2"></p> 
+    <%= f.submit "Update", class: "col-sm-2 btn btn-success btn-med" %>
+  </p>
+
+
+  <div class="row">
+    <div class="col-sm-12"></div>
   </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <h2 class="col-sm-10">Delete Account</h2>
   </div>
 
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "off" %>
-  </div>
+  <p class="row">
+    <p class="col-sm-2"></p>
+    <%=
+    button_to "Delete",
+              registration_path(resource_name), 
+              {class: "col-sm-2 btn btn-danger btn-med", data: {confirm: "Really delete account?"}, method: :delete} 
+       %>
+  </p>
 
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
 
-<h3>Cancel my account</h3>
+  <% end %>
 
-<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
 
+
+</div>
 
