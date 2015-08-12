@@ -32,9 +32,22 @@
 
 .contra-btn-midpage {margin-bottom: 1em;}
 
-// debugging
+// debugging aid
 .yellow {background-color: #FF3}
 
 .contra-label { font-weight: bold; }
 
 .understated { color: #888; }
+
+.notice { 
+  font-weight: bold;
+  text-align: center;
+}
+
+
+.alert { 
+  font-weight: bold;
+  text-align: center;
+  font-weight: bold;
+  color: #F43;
+}
