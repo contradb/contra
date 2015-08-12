@@ -1,26 +1,53 @@
-<h2>Log in</h2>
+<div class="container" style="max-width: 40em">
+
+
+
+  <%# so all these elements get padding 15px on the sides, which looks
+  terrible when some of the elements have a border on the outside
+  (e.g. email-feild) and some don't (e.g. h2). I'm just wrapping the
+  bordered elements in a <p> tag. That's what I've done in other
+  files. The alternative 'right way' might be to override bootstrap? %>
+
+  <div class="row">
+    <p class="col-sm-4"></p>
+    <h2 class="col-sm-8">Login</h2>
+  </div>
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
-  </div>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-  </div>
+  <p class="row field">
+    <p class="col-sm-4 contra-label">Email:</p> 
+    <%= f.email_field :email, autofocus: true, class: "col-sm-8" %>
+  </p>
 
-  <% if devise_mapping.rememberable? -%>
-    <div class="field">
+  <p class="row field">
+    <p class="col-sm-4 contra-label">Password:</p> 
+    <%= f.password_field :password, autocomplete: "off", class:"col-sm-8" %>
+  </p>
+
+  <p class="row">
+    <div class="col-sm-4"></div>
+    <%= f.submit "Login", class: "col-sm-2 actions btn btn-success btn-med" %>
+    <% if devise_mapping.rememberable? -%>
+    <div class="field col-sm-6">
       <%= f.check_box :remember_me %>
       <%= f.label :remember_me %>
     </div>
-  <% end -%>
+    <% end %>
+  </p>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
 <% end %>
 
-<%= render "devise/shared/links" %>
+  <p class="row">
+    <div class="col-sm-4"></div>
+
+    <%= link_to "Sign up", new_registration_path(resource_name), class: "btn btn-default btn-med col-sm-2" %>
+    <%= link_to "Forgot password?", new_password_path(resource_name), class: "btn btn-default btn-med col-sm-4" %><br />
+
+<%# instead of the above, we should call 
+    render "devise/shared/links" 
+    but I am mixing presentation and content like a chump here, so
+    I'll just inline the buttons I actually want. DRY. issue filed.
+    https://github.com/dcmorse/contra/issues/39
+%>
+</div>
