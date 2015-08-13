@@ -165,6 +165,7 @@ sync_figure_editor = (dom_ed) ->
   $fig_ed = $(dom_ed).closest(".figure_edit")
   json = JSON.stringify( figure_editor_get_figure( $fig_ed ))
   id = trailing_number_from_string( $fig_ed.attr('id') )
+  console.log("figure #{id} has #{json}");
   $form = $fig_ed.closest("form").find(".figure_hidden_#{id}")
   $form.val(json)
 
@@ -173,14 +174,7 @@ $ ->
   $(".who_edit").change((e) -> manage_who_change e.target)
   $(".move_edit").change((e) -> manage_move_change e.target)
   $(".figure_edit").each((i) -> initialize_figure_editor( this, i ))
-  $(".figure_edit").change((e) -> sync_figure_editor(e.target))
   # cool! change() gets called on contailers when children get edited!
-  #$(".figure_edit").change((e) -> 
-    # log whats going on
-    # console.log( "editor string: "+JSON.stringify( figure_editor_get_figure( $(e.target).closest(".figure_edit") )))
-    #to debug the editor, uncomment the following line. It sets the last editor to be 
-    # the value of the last editor to accept a change. It tests JSON and whatnot. 
-    #figure_editor_set_figure($("#figure_edit_8"), figure_editor_get_figure( $(e.target).closest(".figure_edit") ))
-    # ) 
+  $(".figure_edit").change((e) -> sync_figure_editor(e.target))
   
 
