@@ -6,4 +6,8 @@ module WelcomeHelper
   def login_button_html()
     link_to 'Login', new_user_session_path, WELCOME_BTN_ATTR
   end
+  def about_button_html()
+    link_to 'About', about_path, WELCOME_BTN_ATTR
+  end
+
 end

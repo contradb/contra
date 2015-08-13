@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'about/index'
+
   resources :dances
   resources :choreographers
   devise_for :users
@@ -7,6 +9,8 @@ Rails.application.routes.draw do
   # Bradley changes his name to "sign_in".
   resources :users, only: [:show, :index]
   get 'welcome/index'
+
+  get 'about' => 'about#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
