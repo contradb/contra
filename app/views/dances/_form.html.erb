@@ -1,3 +1,10 @@
+
+  <%# Layout the editor in a twelve-column grid. If we've got plenty
+  of space, then labels take the left column. If space is tight, they
+  take the two leftmost columns.  %>
+
+
+<div class="container contra-dance-edit">
 <%= form_for(@dance) do |f| %>
   <% if @dance.errors.any? %>
     <div id="error_explanation">
@@ -20,43 +27,51 @@
 
 %>
 
-<% if copy_dance then %>
-<p>Composing a variation of <strong><%= copy_dance.title %></strong><p>
-<% end %>
-
-  <div class="field">
-    <%= f.label :title %>
-    <h1><%= if copy_dance 
-            then f.text_field :title, {value: copy_dance.title + ' variation'} 
-            else f.text_field :title 
-            end %></h1>
+  <% if copy_dance then %>
+  <div class="row">
+    <div class="col-md-1 col-xs-2"></div>
+    <div class="col-md-11 col-xs-10">Composing a variation of <strong><%= copy_dance.title %></strong></div>
   </div>
-  <div class="field">
-    <%= f.label "by" %><br>
+  <% end %>
+
+
+  <div class="row field">
+    <div class="contra-label col-md-1 col-xs-2">Title</div>
+    <%= if copy_dance 
+        then f.text_field :title, {class: "dance-title-edit col-md-11 col-xs-10", value: copy_dance.title + ' variation'}
+        else f.text_field :title, {class: "dance-title-edit col-md-11 col-xs-10"}
+        end %>
+  </div>
+  <div class="row field">
+    <%= f.label "by", class: "col-md-1 col-xs-2" %>
     <%= begin
           options_sans_params = Choreographer.all.map {|c| [c.name,c.id]}
           param_default       = params[:choreographer_id] || (copy_dance && copy_dance.choreographer_id)
           options_with_params = options_for_select(options_sans_params, param_default)
           options = param_default ? options_with_params : options_sans_params
-          f.select :choreographer_id, options
+          f.select :choreographer_id, options,  {}, {class: "col-md-11 col-xs-10"}
         end %>
   </div>
-  <div class="field">
-    <%= f.label :formation %><br>
-    <%= f.text_field :start_type, copy_dance ? {value: copy_dance.start_type} : {} %>
+  <div class="row field">
+    <%= f.label :formation, class: "col-md-1 col-xs-2" %>
+    <%= f.text_field :start_type, {class: "col-md-11 col-xs-10"}.merge(copy_dance ? {value: copy_dance.start_type} : {}) %>
   </div>
 
 
-  <table class="figure_edits">
+  <%# Here we got "off grid" and switch to a table of the same total width. The grid was just
+      being too damn wonky.  %>
+
+  <div class="row">
+  <table class="figure_edits col-md-12 col-xs-12">
     <thead>
-      <tr>
-        <th></th>
-        <th>beats</th>
-        <th>who</th>
-        <th>B+</th>
-        <th>move</th>
-        <th>turn</th>
-        <th>notes</th>
+      <tr>                                     <!-- 12 twelfths -->
+        <th style="width:  8.33333%">#</th>      <!-- 1 -->
+        <th style="width:  8.33333%">beats</th>   <!-- 1 -->
+        <th style="width: 16.66667%">who</th>   <!-- 2. -->
+        <th style="width:  2.77778%">B+</th>      <!-- 1/3 -->
+        <th style="width: 16.66667%">move</th>   <!-- 2 -->
+        <th style="width: 16.66667%">turn</th>    <!-- 2 -->
+        <th style="width: 30.55557">notes</th>   <!-- 3.6667 -->
       </tr>
     </thead>
 
@@ -66,7 +81,7 @@
 
         <% for figure_idx in (1..8) do %>
            <tr class="figure_edit" id=figure_edit_<%= figure_idx %> >
-             <td><%= figure_idx %></td>
+             <td style="text-align: center"><%= figure_idx %> </td>
              <td><%= tag( :input, {value: 8, min: 0, max: 16, class: "beat_edit", type: "number"} ) %></td>
              <td><%= selects = []
                  for who in DancesHelper::WHO
@@ -90,7 +105,7 @@
         <% end %> 
     </tbody>
   </table>
-
+  </div>
 
   <% for i in (1..8) do %>
     <div class="field" hidden="hidden">
@@ -102,15 +117,22 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :notes %><br>
+  <div class="row field">
+    <%= f.label :notes, class: "col-md-1 col-xs-2"%>
     <%= begin
-          h = {value: copy_dance ? copy_dance.notes : ''}.merge(copy_dance ? {class: "per_dance_notes_edit"} : {})
+
+          h = {value: '', class: 'per_dance_notes_edit col-md-11 col-xs-10'};
+          if copy_dance then
+            h[:value] = copy_dance.notes
+          end
           f.text_area :notes, h
         end  %>
   </div>
+  <br>
 
-  <div class="actions">
-    <%= f.submit class: "update_dance" %>
+  <div class="row actions">
+    <div class="col-md-1 col-xs-2"></div>
+    <%= f.submit class: "update_dance", class: "col-md-3 col-xs-10 btn btn-md btn-success" %>
   </div>
 <% end %>
+</div>

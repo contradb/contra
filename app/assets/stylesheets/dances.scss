@@ -3,15 +3,19 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .figure_edits th { text-align: center }
-.figure_edits td { text-align: center }
-.beat_edit      {width:4em;}
-.move_edit      {width:12em;}
-.rotations_edit {width:6em;}
-.places_edit    {width:6em;}
-.notes_edit    {width:18em;}
+.figure_edits td {  }
+.beat_edit      {width:90%;}
+.balance_edit      {}
+.who_edit       {width:90%;}
+.move_edit      {width:90%;}
+.rotations_edit {width:90%;}
+.places_edit    {width:90%;}
+.notes_edit     {width:100%;}
 
 .figure_edits {margin-bottom: 2em;}
 
-.per_dance_notes_edit {width: 48em; height: 8em;}
+.per_dance_notes_edit {height: 8em;}
 
 
+.dance-title-edit { font-size: 225%; font-weight: bold;}
+.contra-dance-edit .row { margin-bottom: 10px; }
