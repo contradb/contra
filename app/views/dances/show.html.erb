@@ -14,9 +14,10 @@
 
 
 
-<%= if (signed_in? && (current_user.id == @dance.user_id)) then
-    edit_dance_button_html(@dance) end %>
 <%= copy_dance_button_html(@dance) %>
+<%= if (signed_in? && (current_user.id == @dance.user_id)) then
+    edit_dance_button_html(@dance) + delete_dance_button_html(@dance)
+    end %>
 
 
 <p>

@@ -31,6 +31,10 @@ module GloboHelper
     link_to '<span>'.html_safe + edit_icon_html() + ' Edit Dance</span>'.html_safe, 
             edit_dance_path(dance), BUTTON_HTML_ATTR
   end
+  def delete_dance_button_html(dance)
+    link_to '<span>'.html_safe + delete_icon_html() + ' Delete Dance</span>'.html_safe, 
+            dance, BUTTON_HTML_ATTR.merge({method: :delete, data: { confirm: "Delete '#{dance.title}?'" }})
+  end
   def copy_dance_button_html(dance)
     link_to '<span>'.html_safe + copy_icon_html() + ' Copy Dance</span>'.html_safe, 
             new_dance_path(copy_dance_id: dance), BUTTON_HTML_ATTR

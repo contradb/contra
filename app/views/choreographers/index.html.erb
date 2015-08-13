@@ -27,7 +27,7 @@
               <td><%= link_to edit_icon_html, edit_choreographer_path(choreographer) %></td>
               <td><%= link_to delete_icon_html, choreographer, method:
                       :delete, data: { confirm: 
-                      "Delete Coreographer #{choreographer.name}? Really? Are you sure? Remember that if their dance count is non-zero this is going to be BAD." } %></td>
+                      "Delete Choreographer #{choreographer.name}?\n\n All their dances will become choreographed by 'unknown'." } %></td>
        <%   end end
           end %>
               <td><%= link_to choreographer.name, choreographer %></td>
