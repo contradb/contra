@@ -14,11 +14,13 @@
 
 
 
-<%= copy_dance_button_html(@dance) %>
+<div class="btn-group">
+<%= copy_dance_button_html(@dance, label: "Copy") %>
 <%= if (signed_in? && (current_user.id == @dance.user_id)) then
-    edit_dance_button_html(@dance) + delete_dance_button_html(@dance)
+    edit_dance_button_html(@dance, label: "Edit") +
+    delete_dance_button_html(@dance, label: "Delete")
     end %>
-
+</div>
 
 <p>
   <span>Formation:</span>
