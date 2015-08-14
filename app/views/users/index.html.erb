@@ -4,7 +4,6 @@
 <table class="table table-striped table-bordered table-hover table-condensed contra-table-nonfluid">
   <thead>
     <tr>
-      <th></th>
       <th>Email</th>
       <th>Dance Count</th>
     </tr>
@@ -13,7 +12,6 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
-        <td><%= link_to view_icon_html, user %></td>
         <td><%= link_to user.name, user %></td>
         <td class="text-right"><%= user.dances.length %></td>
       </tr>
