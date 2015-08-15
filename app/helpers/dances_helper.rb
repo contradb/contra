@@ -57,14 +57,8 @@ module DancesHelper
 
   # IMPORTANT: this constant is manually synced to the equivalent server-side constant
   # in dances.coffee!
-  WHO = [:everybody, :partner, :neighbor, :ladles, :gentlespoons, :ones, :twos].freeze;
+  WHO = [:everybody, :partner, :neighbor, :ladles, :gentlespoons, :ones, :twos, :centers].freeze;
 
-  # XXX uncalled?
-  # this has GOT to be obsolete and needs a client-side...XXX
-  BALANCEABLE = {petronella: true, balance_the_ring: true,
-    box_the_gnat: true, swat_the_flea: true, california_twirl: true, arizona_twirl: true,
-    swing: true, pull_by_left: true, pull_by_right: true,
-  }.freeze
 
 
   ## Is this even called anymore? XXX

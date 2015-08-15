@@ -6,7 +6,7 @@
 # IMPORTANT: this constant is manually synced to the equivalent server-side constant
 # in dances_helper.rb!
 # WHOs elements must be composed of letters, digits, or underscores
-WHO = ["everybody", "partner", "neighbor", "ladles", "gentlespoons", "ones", "twos"]
+WHO = ["everybody", "partner", "neighbor", "ladles", "gentlespoons", "ones", "twos", "centers"]
 
 # If adding here, be sure to add one or more "who" reactors in move_menu_options too,
 # and there'll probably be a ruby-side version of this list that needs to be manually synced
@@ -14,7 +14,7 @@ WHO = ["everybody", "partner", "neighbor", "ladles", "gentlespoons", "ones", "tw
 # MOVES elements must be composed of letters, digits, or underscores
 MOVES = ["circle_left", "circle_right", "star_left", "star_right", "petronella", "balance_the_ring", "to_ocean_wave", "right_left_through", "swing", "do_si_do", "see_saw", "allemande_right", "allemande_left", "gypsy_right_shoulder", "gypsy_left_shoulder", "pull_by_right", "pull_by_left", "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl", "chain", "mad_robin", 
   #"allemande_left_with_orbit", "allemande_right_with_orbit",
-  "hey", "half_a_hey", "balance", "figure-8", "long_lines", "custom"] 
+  "hey", "half_a_hey", "balance", "figure-8", "long_lines", "slide_right_rory_o_moore", "slide_left_rory_o_moore", "custom"] 
 
 # returns values [type, default]
 move_parameter = (move) ->
@@ -47,7 +47,7 @@ move_cares_about_places = (move) ->
 
 move_cares_about_balance = (move) ->
     switch move
-      when "petronella", "swing", "pull_by_right", "pull_by_left", "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl", "custom" then true
+      when "petronella", "swing", "pull_by_right", "pull_by_left", "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl", "slide_right_rory_o_moore", "slide_left_rory_o_moore", "custom" then true
       else false
 
 
@@ -57,7 +57,9 @@ move_menu_options = (who) ->
              # and follow instructions there. 
              when "everybody" then [
                "circle_left", "circle_right", "star_left", "star_right", "long_lines", 
-               "petronella", "balance_the_ring", "to_ocean_wave", "right_left_through"]
+               "petronella", "balance_the_ring", "to_ocean_wave", 
+               "slide_right_rory_o_moore", "slide_left_rory_o_moore", # as in Rory'o'Moore
+               "right_left_through"]
              when "partner", "neighbor" then [ "swing",
                "do_si_do", "see_saw", "allemande_right", "allemande_left",
                "gypsy_right_shoulder", "gypsy_left_shoulder",
@@ -72,6 +74,9 @@ move_menu_options = (who) ->
                "mad_robin", "hey", "half_a_hey",
                "balance"]
              when "ones", "twos" then ["swing","figure-8"]
+             when "centers" then ["swing",
+                          "allemande_right", "allemande_left",
+                          "slide_right_rory_o_moore", "slide_left_rory_o_moore"]
   labels.push("custom") # custom is always available
   ("<option>"+label+"</option>" for label in labels).join(" ")
 
