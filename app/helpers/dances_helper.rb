@@ -57,7 +57,7 @@ module DancesHelper
 
   # IMPORTANT: this constant is manually synced to the equivalent server-side constant
   # in dances.coffee!
-  WHO = [:everybody, :partner, :neighbor, :ladles, :gentlespoons, :ones, :twos, :centers].freeze;
+  WHO = [:'', :everybody, :partner, :neighbor, :ladles, :gentlespoons, :ones, :twos, :centers].freeze;
 
 
 

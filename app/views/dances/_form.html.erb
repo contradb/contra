@@ -3,6 +3,8 @@
   of space, then labels take the left column. If space is tight, they
   take the two leftmost columns.  %>
 
+  <% debug_figure_json = true %>
+
 
 <div class="container contra-dance-edit">
 <%= form_for(@dance) do |f| %>
@@ -107,15 +109,26 @@
   </table>
   </div>
 
+  <% if debug_figure_json then  %>
+  <div class="row">
+    <div class="col-md-1 col-xs-2" style="text-align: center">#</div>
+    <div class="col-md-11 col-xs-10"><strong style="color: red">debug_figure_json = true </strong></div>
+  </div>
+  <% end %> 
+
+  <div class="row">
   <% for i in (1..8) do %>
-    <div class="field" hidden="hidden">
+    <div class="col-md-1 col-xs-2" style="text-align: center"><%= i %></div>
+    <div class="field" 
+         <%= debug_figure_json ?  '' : 'hidden="hidden"' %> >
       <%= begin
             figureN = ("figure"+i.to_s).intern()
-            h = {class: "figure_hidden_#{i}"}.merge(copy_dance ? {value: copy_dance[figureN]} : {})
+            h = {class: "figure_hidden_#{i} col-md-11 col-xs-10"}.merge(copy_dance ? {value: copy_dance[figureN]} : {})
             f.text_field figureN, h
           end %>
     </div>
   <% end %>
+  </div>
 
   <div class="row field">
     <%= f.label :notes, class: "col-md-1 col-xs-2"%>

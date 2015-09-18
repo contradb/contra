@@ -6,7 +6,7 @@
 # IMPORTANT: this constant is manually synced to the equivalent server-side constant
 # in dances_helper.rb!
 # WHOs elements must be composed of letters, digits, or underscores
-WHO = ["everybody", "partner", "neighbor", "ladles", "gentlespoons", "ones", "twos", "centers"]
+WHO = ["", "everybody", "partner", "neighbor", "ladles", "gentlespoons", "ones", "twos", "centers"]
 
 # If adding here, be sure to add one or more "who" reactors in move_menu_options too,
 # and there'll probably be a ruby-side version of this list that needs to be manually synced
@@ -55,6 +55,7 @@ move_menu_options = (who) ->
   labels = switch who
              # if adding to this list, be sure to add the move to the MOVES array above,
              # and follow instructions there. 
+             when "" then []
              when "everybody" then [
                "circle_left", "circle_right", "star_left", "star_right", "long_lines", 
                "petronella", "balance_the_ring", "to_ocean_wave", 
@@ -77,7 +78,7 @@ move_menu_options = (who) ->
              when "centers" then ["swing",
                           "allemande_right", "allemande_left",
                           "slide_right_rory_o_moore", "slide_left_rory_o_moore"]
-  labels.push("custom") # custom is always available
+  labels.push("custom") unless who=="" # custom is almost always available
   ("<option>"+label+"</option>" for label in labels).join(" ")
 
 figure_editor_get_figure = ($editor) ->
@@ -96,6 +97,7 @@ figure_editor_get_figure = ($editor) ->
   if move_cares_about_places(move)    then o["degrees"] = parseInt places
   if move_cares_about_rotations(move) then o["degrees"] = parseInt rotations
   if notes then o["notes"] = notes
+  console.log("figure_editor_get_figure(#{$editor}) => #{JSON.stringify(o)}")
   return o
  
 figure_editor_set_figure = ($editor, figure) ->
@@ -121,7 +123,7 @@ find_buddy_editor = ($editor, selector) ->
 # builds move menu
 manage_who_change = (who) ->
   $move = find_buddy_editor(who, ".move_edit")
-  $move.html(move_menu_options( who.value))
+  $move.html(move_menu_options(who.value))
   manage_move_change($move[0])
 
 # takes DOM move editor 
@@ -140,11 +142,13 @@ manage_move_change = (move) ->
 initialize_figure_editor = ( e, i ) ->
   $e = $(e) # the figure editor
   id = trailing_number_from_string( $e.attr('id') )
+  console.log("initialize_figure_editor \##{id}")
   $f = $e.closest("form").find(".figure_hidden_#{id}") # the text form
+  console.log("$f =  #{$f}");
   s  = $f.val()
   o  = if s then jQuery.parseJSON(s) else new Object()
   $who = find_buddy_editor($e,".who_edit")
-  $who.val(o["who"] || "everybody")
+  $who.val(o["who"] || "")
   manage_who_change( $who[0] )
   find_buddy_editor($e,".balance_edit").prop("checked", o["balance"]) if o["balance"]
   manage_move_change(
@@ -155,6 +159,10 @@ initialize_figure_editor = ( e, i ) ->
   beats = if "beats" of o then o["beats"] else 8 
   find_buddy_editor($e,".beat_edit").val(beats)
   find_buddy_editor($e,".notes_edit").val(o["notes"]) if o["notes"]
+  # fix bug where untouched figure editors were getting sent back to server untouched,
+  # when they should be "circle left 3 places" or whatever the current default move is.
+  console.log("maybe syncing with no defaults #{s} #{'' == s}")
+  if "" == s then sync_figure_editor(s) # wrong!
   return e
 
 trailing_number_from_string = (s) ->
@@ -170,7 +178,7 @@ sync_figure_editor = (dom_ed) ->
   $fig_ed = $(dom_ed).closest(".figure_edit")
   json = JSON.stringify( figure_editor_get_figure( $fig_ed ))
   id = trailing_number_from_string( $fig_ed.attr('id') )
-  console.log("figure #{id} has #{json}");
+  console.log("sync_figure_editor #{id} gets json #{json}");
   $form = $fig_ed.closest("form").find(".figure_hidden_#{id}")
   $form.val(json)
 
