@@ -163,8 +163,6 @@ trailing_number_from_string = (s) ->
   digs = /\d+$/.exec(s)
   if digs then parseInt(digs) else 0 
 
-  
-
 
 # after a change the figure editor, adjust the hidden form
 # to hold the JSON representation of that figure. 
@@ -177,7 +175,7 @@ sync_figure_editor = (dom_ed) ->
   $form.val(json)
 
 $ ->
-  console.log("initializing figure editors ... even if we're not editing any figures.")
+  console.log("initializing figure editors ... even if we're not editing any figures - say because we're not in the dance editor.")
   $(".who_edit").change((e) -> manage_who_change e.target)
   $(".move_edit").change((e) -> manage_move_change e.target)
   $(".figure_edit").each((i) -> initialize_figure_editor( this, i ))

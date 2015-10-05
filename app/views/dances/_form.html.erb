@@ -3,7 +3,7 @@
   of space, then labels take the left column. If space is tight, they
   take the two leftmost columns.  %>
 
-  <% debug_figure_json = true %>
+  <% debug_figure_json = false %>
 
 
 <div class="container contra-dance-edit">
@@ -134,9 +134,9 @@
 
   <div class="row field">
     <%= f.label :notes, class: "col-md-1 col-xs-2"%>
-    <%= begin
 
-          h = {value: '', class: 'per_dance_notes_edit col-md-11 col-xs-10'};
+    <%= begin
+          h = {class: 'per_dance_notes_edit col-md-11 col-xs-10'};
           if copy_dance then
             h[:value] = copy_dance.notes
           end
