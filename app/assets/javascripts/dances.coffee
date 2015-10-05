@@ -133,8 +133,7 @@ manage_move_change = (move) ->
     find_buddy_editor($move,".rotations_edit").val(move_parameter($move.val())[1])
     find_buddy_editor($move,".places_edit").toggle   ( move_cares_about_places(    $move.val() ) )
     find_buddy_editor($move,".places_edit").val(move_parameter($move.val())[1])
-    be = 
-    find_buddy_editor($move,".balance_edit")
+    be = find_buddy_editor($move,".balance_edit")
     be.prop("disabled", !move_cares_about_balance($move.val()))
     be.prop("checked",  be.prop("checked") && move_cares_about_balance($move.val()))
 
@@ -142,27 +141,22 @@ manage_move_change = (move) ->
 initialize_figure_editor = ( e, i ) ->
   $e = $(e) # the figure editor
   id = trailing_number_from_string( $e.attr('id') )
-  console.log("initialize_figure_editor \##{id}")
   $f = $e.closest("form").find(".figure_hidden_#{id}") # the text form
-  console.log("$f =  #{$f}");
   s  = $f.val()
   o  = if s then jQuery.parseJSON(s) else new Object()
+  console.log("initialize_figure_editor \##{id} #{$f} to #{s}")
   $who = find_buddy_editor($e,".who_edit")
   $who.val(o["who"] || "")
   manage_who_change( $who[0] )
   find_buddy_editor($e,".balance_edit").prop("checked", o["balance"]) if o["balance"]
   manage_move_change(
     find_buddy_editor($e,".move_edit").val(o["move"] || "circle_left"))
-  find_buddy_editor($e,".rotations_edit").val(o["rotations"] || "360") if o["rotations"]
-  find_buddy_editor($e,".places_edit").val(o["places"] || "360") if o["places"]
+  find_buddy_editor($e,".rotations_edit").val(o["degrees"] || "360") if o["degrees"]
+  find_buddy_editor($e,".places_edit").val(o["degrees"] || "360") if o["degrees"]
   # many Bothans died to bring us this expression:
   beats = if "beats" of o then o["beats"] else 8 
   find_buddy_editor($e,".beat_edit").val(beats)
   find_buddy_editor($e,".notes_edit").val(o["notes"]) if o["notes"]
-  # fix bug where untouched figure editors were getting sent back to server untouched,
-  # when they should be "circle left 3 places" or whatever the current default move is.
-  console.log("maybe syncing with no defaults #{s} #{'' == s}")
-  if "" == s then sync_figure_editor(s) # wrong!
   return e
 
 trailing_number_from_string = (s) ->
