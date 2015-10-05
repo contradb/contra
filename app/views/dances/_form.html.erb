@@ -118,7 +118,9 @@
 
   <div class="row">
   <% for i in (1..8) do %>
-    <div class="col-md-1 col-xs-2" style="text-align: center"><%= i %></div>
+    <% if debug_figure_json then  %>
+      <div class="col-md-1 col-xs-2" style="text-align: center"><%= i %></div>
+    <% end %> 
     <div class="field" 
          <%= debug_figure_json ?  '' : 'hidden="hidden"' %> >
       <%= begin
