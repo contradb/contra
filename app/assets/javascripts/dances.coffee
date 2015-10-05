@@ -14,7 +14,7 @@ WHO = ["", "everybody", "partner", "neighbor", "ladles", "gentlespoons", "ones",
 # MOVES elements must be composed of letters, digits, or underscores
 MOVES = ["circle_left", "circle_right", "star_left", "star_right", "petronella", "balance_the_ring", "to_ocean_wave", "right_left_through", "swing", "do_si_do", "see_saw", "allemande_right", "allemande_left", "gypsy_right_shoulder", "gypsy_left_shoulder", "pull_by_right", "pull_by_left", "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl", "chain", "mad_robin", 
   #"allemande_left_with_orbit", "allemande_right_with_orbit",
-  "hey", "half_a_hey", "balance", "figure-8", "long_lines", "slide_right_rory_o_moore", "slide_left_rory_o_moore", "custom"] 
+  "hey", "half_a_hey", "balance", "figure_8", "long_lines", "slide_right_rory_o_moore", "slide_left_rory_o_moore", "custom"] 
 
 # returns values [type, default]
 move_parameter = (move) ->
@@ -74,7 +74,7 @@ move_menu_options = (who) ->
                # "allemande_left_with_orbit", "allemande_right_with_orbit",
                "mad_robin", "hey", "half_a_hey",
                "balance"]
-             when "ones", "twos" then ["swing","figure-8"]
+             when "ones", "twos" then ["swing","figure_8"]
              when "centers" then ["swing",
                           "allemande_right", "allemande_left",
                           "slide_right_rory_o_moore", "slide_left_rory_o_moore"]
