@@ -8,13 +8,14 @@
 # WHOs elements must be composed of letters, digits, or underscores
 WHO = ["", "everybody", "partner", "neighbor", "ladles", "gentlespoons", "ones", "twos", "centers"]
 
-# If adding here, be sure to add one or more "who" reactors in move_menu_options too,
-# and there'll probably be a ruby-side version of this list that needs to be manually synced
-# as well. 
-# MOVES elements must be composed of letters, digits, or underscores
-MOVES = ["circle_left", "circle_right", "star_left", "star_right", "petronella", "balance_the_ring", "to_ocean_wave", "right_left_through", "swing", "do_si_do", "see_saw", "allemande_right", "allemande_left", "gypsy_right_shoulder", "gypsy_left_shoulder", "pull_by_right", "pull_by_left", "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl", "chain", "mad_robin", 
-  #"allemande_left_with_orbit", "allemande_right_with_orbit",
-  "hey", "half_a_hey", "balance", "figure_8", "long_lines", "slide_right_rory_o_moore", "slide_left_rory_o_moore", "promenade_across", "custom"] 
+# This is not actually used, I'm pretty sure, so stop maintaining it after October 2015
+# # If adding here, be sure to add one or more "who" reactors in move_menu_options too,
+# # and there'll probably be a ruby-side version of this list that needs to be manually synced
+# # as well. 
+# # MOVES elements must be composed of letters, digits, or underscores
+# MOVES = ["circle_left", "circle_right", "star_left", "star_right", "petronella", "balance_the_ring", "to_ocean_wave", "right_left_through", "swing", "do_si_do", "see_saw", "allemande_right", "allemande_left", "gypsy_right_shoulder", "gypsy_left_shoulder", "pull_by_right", "pull_by_left", "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl", "chain", "mad_robin", 
+#   #"allemande_left_with_orbit", "allemande_right_with_orbit",
+#   "hey", "half_a_hey", "balance", "figure_8", "long_lines", "slide_right_rory_o_moore", "slide_left_rory_o_moore", "promenade_across", "star_promenade", "butterfly_whirl", "gypsy_star_gents_backup", "gypsy_star_ladies_backup", "roll_away", "cross_trails", "down_the_hall", "up_the_hall", "contra_corners", "custom"] 
 
 # returns values [type, default]
 move_parameter = (move) ->
