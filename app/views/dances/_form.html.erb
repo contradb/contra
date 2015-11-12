@@ -66,14 +66,15 @@
   <div class="row">
   <table class="figure_edits col-md-12 col-xs-12">
     <thead>
-      <tr>                                     <!-- 12 twelfths -->
-        <th style="width:  8.33333%">#</th>      <!-- 1 -->
+      <tr>                                       <!-- 12 twelfths -->
+        <th style="width:  8.33333%">#</th>       <!-- 1 -->
         <th style="width:  8.33333%">beats</th>   <!-- 1 -->
-        <th style="width: 16.66667%">who</th>   <!-- 2. -->
-        <th style="width:  2.77778%">B+</th>      <!-- 1/3 -->
-        <th style="width: 16.66667%">move</th>   <!-- 2 -->
+        <th style="width: 16.66667%">formation</th><!-- 2 -->
+        <th style="width: 16.66667%">who</th>     <!-- 2. -->
+        <th style="width:  2.77778%">B+</th>      <!-- 0.333 -->
+        <th style="width: 13.33333%">move</th>    <!-- 1.667 -->
         <th style="width: 16.66667%">turn</th>    <!-- 2 -->
-        <th style="width: 30.55557">notes</th>   <!-- 3.6667 -->
+        <th style="width: 16.66667%">notes</th>    <!-- 2 -->
       </tr>
     </thead>
 
@@ -85,6 +86,15 @@
            <tr class="figure_edit" id=figure_edit_<%= figure_idx %> >
              <td style="text-align: center"><%= figure_idx %> </td>
              <td><%= tag( :input, {value: 8, min: 0, max: 16, class: "beat_edit", type: "number"} ) %></td>
+             <td><select class="formation_edit">
+                 <option value="unspecified" selected="selected"></option>
+                 <option value="square">square</option>
+                 <option value="short_lines">short lines</option>
+                 <option value="short_wavy_lines">short wavy lines</option>
+                 <option value="long_wavy_lines">long wavy lines</option>
+                 <option value="long_wavy_line">long wavy line</option>
+                 <option value="custom">custom</option>
+                 </select></td>
              <td><%= selects = []
                  for who in DancesHelper::WHO
                    selects.push content_tag( :option, who, 
@@ -99,6 +109,7 @@
                                 [x,rotation_to_degrees(x)]}
                             ).html_safe, class: "rotations_edit") %>
              <%= content_tag( :select, options_html((1..8).to_a.map{|x|["#{pluralize(x,'place')}",x*90]}).html_safe, class: "places_edit") %></td>
+
              <td><%= tag( :input, {value: "", class: "notes_edit", type: "text", maxlength: 100} ) %></td>
            </tr>
 

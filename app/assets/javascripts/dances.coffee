@@ -8,15 +8,6 @@
 # WHOs elements must be composed of letters, digits, or underscores
 WHO = ["", "everybody", "partner", "neighbor", "ladles", "gentlespoons", "ones", "twos", "centers"]
 
-# This is not actually used, I'm pretty sure, so stop maintaining it after October 2015
-# # If adding here, be sure to add one or more "who" reactors in move_menu_options too,
-# # and there'll probably be a ruby-side version of this list that needs to be manually synced
-# # as well. 
-# # MOVES elements must be composed of letters, digits, or underscores
-# MOVES = ["circle_left", "circle_right", "star_left", "star_right", "petronella", "balance_the_ring", "to_ocean_wave", "right_left_through", "swing", "do_si_do", "see_saw", "allemande_right", "allemande_left", "gypsy_right_shoulder", "gypsy_left_shoulder", "pull_by_right", "pull_by_left", "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl", "chain", "mad_robin", 
-#   #"allemande_left_with_orbit", "allemande_right_with_orbit",
-#   "hey", "half_a_hey", "balance", "figure_8", "long_lines", "slide_right_rory_o_moore", "slide_left_rory_o_moore", "promenade_across", "star_promenade", "butterfly_whirl", "gypsy_star_gents_backup", "gypsy_star_ladies_backup", "roll_away", "cross_trails", "down_the_hall", "up_the_hall", "contra_corners", "custom"] 
-
 # returns values [type, default]
 move_parameter = (move) ->
   switch move
@@ -52,34 +43,87 @@ move_cares_about_balance = (move) ->
       else false
 
 
-move_menu_options = (who) ->
-  labels = switch who
-             # if adding to this list, be sure to add the move to the MOVES array above,
-             # and follow instructions there. 
-             when "" then []
-             when "everybody" then [
-               "circle_left", "circle_right", "star_left", "star_right", "long_lines", 
-               "petronella", "balance_the_ring", "to_ocean_wave", 
-               "slide_right_rory_o_moore", "slide_left_rory_o_moore", # as in Rory'o'Moore
-               "right_left_through"]
-             when "partner", "neighbor" then [ "swing",
-               "do_si_do", "see_saw", "allemande_right", "allemande_left",
-               "gypsy_right_shoulder", "gypsy_left_shoulder",
-               "pull_by_right", "pull_by_left", 
-               "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl",
-               "promenade_across",
-               "balance"]
-             when "ladles", "gentlespoons" then [ "chain",
-               "do_si_do", "see_saw", "allemande_right", "allemande_left",
-               "gypsy_right_shoulder", "gypsy_left_shoulder",
-               "chain", "pull_by_right", "pull_by_left",
-               # "allemande_left_with_orbit", "allemande_right_with_orbit",
-               "mad_robin", "hey", "half_a_hey",
-               "balance"]
-             when "ones", "twos" then ["swing","figure_8"]
-             when "centers" then ["swing",
-                          "allemande_right", "allemande_left",
-                          "slide_right_rory_o_moore", "slide_left_rory_o_moore"]
+
+move_menu_options = (formation,who) ->
+  console.log("formation = "+formation)
+  labels =
+    switch formation
+      when "short_lines" then (
+        switch who
+          when "" then []
+          when "everybody" then [
+            "down_the_hall","up_the_hall"]
+          else []
+        )
+      when "short_wavy_lines" then (
+        switch who
+          when "" then []
+          when "everybody" then [
+            "slide_right_rory_o_moore", "slide_left_rory_o_moore",
+            "allemande_and_orbit","hey", "half_a_hey"]
+          when  "ladles", "gentlespoons","partner", "neighbor","centers","ones","twos" then [ "swing",
+            "do_si_do", "see_saw", "allemande_right", "allemande_left",
+            "gypsy_right_shoulder", "gypsy_left_shoulder",
+            "pull_by_right", "pull_by_left", 
+            "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl",
+            ]
+          else []
+        )
+      when "long_wavy_lines" then (
+        switch who
+          when "" then []
+          when "everybody" then [
+            "box_circulate",
+            "slide_right_rory_o_moore", "slide_left_rory_o_moore",
+            "hey", "half_a_hey"]
+          when  "partner", "neighbor" then [ "swing",
+            "allemande_right", "allemande_left","do_si_do", "see_saw",
+            "gypsy_right_shoulder", "gypsy_left_shoulder",
+            "pull_by_right", "pull_by_left", 
+            "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl",
+            ]
+          else []
+        )
+      when "long_wavy_line" then (
+        switch who
+          when "" then []
+          when  "ladles","gentlespoons" then [ "balance","swing",
+            "slide_right_rory_o_moore", "slide_left_rory_o_moore",
+            "allemande_right", "allemande_left","do_si_do", "see_saw",
+            "gypsy_right_shoulder", "gypsy_left_shoulder",
+            "pull_by_right", "pull_by_left", 
+            "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl",
+            ]
+          else []
+        )
+      else # "square" or "unspecified" or "custom"
+        switch who
+          when "" then []
+          when "everybody" then [
+            "circle_left", "circle_right", "star_left", "star_right", "long_lines", 
+            "petronella", "balance_the_ring", "to_ocean_wave", 
+            "slide_right_rory_o_moore", "slide_left_rory_o_moore", # as in Rory'o'Moore
+            "right_left_through"]
+          when "partner", "neighbor" then [ "swing",
+            "do_si_do", "see_saw", "allemande_right", "allemande_left",
+            "gypsy_right_shoulder", "gypsy_left_shoulder",
+            "pull_by_right", "pull_by_left", 
+            "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl",
+            "promenade_across",
+            "balance"]
+          when "ladles", "gentlespoons" then [ "chain",
+            "do_si_do", "see_saw", "allemande_right", "allemande_left",
+            "gypsy_right_shoulder", "gypsy_left_shoulder",
+            "chain", "pull_by_right", "pull_by_left",
+            # "allemande_left_with_orbit", "allemande_right_with_orbit",
+            "mad_robin", "hey", "half_a_hey",
+            "balance"]
+          when "ones", "twos" then ["swing","figure_8"]
+          # does this belong in formation="square"? I don't think so....:
+          when "centers" then ["swing",
+                       "allemande_right", "allemande_left",
+                       "slide_right_rory_o_moore", "slide_left_rory_o_moore"]
+    
   labels.push("custom") unless who=="" # custom is almost always available
   ("<option>"+label+"</option>" for label in labels).join(" ")
 
@@ -90,7 +134,8 @@ figure_editor_get_figure = ($editor) ->
   balance   = $editor.find(".balance_edit").prop("checked")
   rotations = $editor.find(".rotations_edit").val()
   places    = $editor.find(".places_edit").val()
-  notes    = $editor.find(".notes_edit").val()
+  formation = $editor.find(".formation_edit").val()
+  notes     = $editor.find(".notes_edit").val()
   o = new Object();
   o["who"] = who
   o["move"] = move
@@ -98,35 +143,28 @@ figure_editor_get_figure = ($editor) ->
   o["balance"] = true if balance
   if move_cares_about_places(move)    then o["degrees"] = parseInt places
   if move_cares_about_rotations(move) then o["degrees"] = parseInt rotations
+  o["formation"] = formation if (formation != "")
   if notes then o["notes"] = notes
-  console.log("figure_editor_get_figure(#{$editor}) => #{JSON.stringify(o)}")
+  # console.log("figure_editor_get_figure(#{$editor}) => #{JSON.stringify(o)}")
   return o
  
-figure_editor_set_figure = ($editor, figure) ->
-  $who = $editor.find(".who_edit")
-  $who.val(figure["who"])
-  manage_who_change($who[0])
-  $move = $editor.find(".move_edit")
-  $move.val(figure["move"])
-  manage_move_change($move[0])
-  $editor.find(".beat_edit").val(figure["beats"].toString())
-  $editor.find(".balance_edit").prop("checked",true) if figure["balance"]
-  degrees = if figure["degrees"] then figure["degrees"].toString() else null 
-  $editor.find(".rotations_edit").val(degrees) if degrees && move_cares_about_rotations(figure["move"])
-  $editor.find(".places_edit").val(degrees)  if degrees && move_cares_about_places(figure["move"])
-  $editor.find(".notes_edit").val(figure["notes"])
-  return $editor
-  
-
 find_buddy_editor = ($editor, selector) ->
   $($editor.closest(".figure_edit")).find( selector )
 
 # takes DOM who editor 
-# builds move menu
-manage_who_change = (who) ->
-  $move = find_buddy_editor(who, ".move_edit")
-  $move.html(move_menu_options(who.value))
+manage_who_change = (who) -> rebuild_move_menu(who)
+manage_formation_change = (formation) -> rebuild_move_menu(formation)
+
+
+# thing can be a dom element or jquery element somewhere in the figure editor
+rebuild_move_menu = (thing) ->
+  $thing = $(thing)
+  $move = find_buddy_editor($thing, ".move_edit")
+  who_value = find_buddy_editor($thing, ".who_edit").val()
+  figure_value = find_buddy_editor($thing, ".formation_edit").val()
+  $move.html(move_menu_options(figure_value,who_value))
   manage_move_change($move[0])
+
 
 # takes DOM move editor 
 manage_move_change = (move) ->
@@ -146,7 +184,7 @@ initialize_figure_editor = ( e, i ) ->
   $f = $e.closest("form").find(".figure_hidden_#{id}") # the text form
   s  = $f.val()
   o  = if s then jQuery.parseJSON(s) else new Object()
-  console.log("initialize_figure_editor \##{id} #{$f} to #{s}")
+  # console.log("initialize_figure_editor \##{id} #{$f} to #{s}")
   $who = find_buddy_editor($e,".who_edit")
   $who.val(o["who"] || "")
   manage_who_change( $who[0] )
@@ -158,6 +196,7 @@ initialize_figure_editor = ( e, i ) ->
   # many Bothans died to bring us this expression:
   beats = if "beats" of o then o["beats"] else 8 
   find_buddy_editor($e,".beat_edit").val(beats)
+  find_buddy_editor($e,".formation_edit").val(o["formation"]) if o["formation"]
   find_buddy_editor($e,".notes_edit").val(o["notes"]) if o["notes"]
   return e
 
@@ -172,12 +211,13 @@ sync_figure_editor = (dom_ed) ->
   $fig_ed = $(dom_ed).closest(".figure_edit")
   json = JSON.stringify( figure_editor_get_figure( $fig_ed ))
   id = trailing_number_from_string( $fig_ed.attr('id') )
-  console.log("sync_figure_editor #{id} gets json #{json}");
+  # console.log("sync_figure_editor #{id} gets json #{json}");
   $form = $fig_ed.closest("form").find(".figure_hidden_#{id}")
   $form.val(json)
 
 $ ->
   console.log("initializing figure editors ... even if we're not editing any figures - say because we're not in the dance editor.")
+  $(".formation_edit").change((e) -> manage_formation_change e.target)
   $(".who_edit").change((e) -> manage_who_change e.target)
   $(".move_edit").change((e) -> manage_move_change e.target)
   $(".figure_edit").each((i) -> initialize_figure_editor( this, i ))
