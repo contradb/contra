@@ -96,7 +96,7 @@ def figure_txt(figure, terse: false) # takes a string, returns a string
       if !o
       then terse ? "error" : "messed-up figure".html_safe
       else 
-        
+        formation = if ['','square','unspecified', 'custom'].include? ( o['formation'] || '' ) then '' else 'in '+o['formation']+' ' end
         move    = if o['move'] and (o['move'] != 'custom') then o['move'] else '' end
         who     = if "everybody" === o['who'] 
                     then '' 
@@ -132,7 +132,7 @@ def figure_txt(figure, terse: false) # takes a string, returns a string
                   end
         beat_str = ((beats == 8) || terse) ? "" : "for #{beats}"
         if beats > 0
-          then "#{who} #{balance}#{move} #{deg_txt} #{beat_str} #{notes}"
+          then "#{formation}#{who} #{balance}#{move} #{deg_txt} #{beat_str} #{notes}"
           else terse ? "" : "~".html_safe
         end
       end
