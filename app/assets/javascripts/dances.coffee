@@ -45,7 +45,6 @@ move_cares_about_balance = (move) ->
 
 
 move_menu_options = (formation,who) ->
-  console.log("formation = "+formation)
   labels =
     switch formation
       when "short_lines" then (
