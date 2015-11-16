@@ -178,11 +178,17 @@ manage_move_change = (move) ->
 
 
 initialize_figure_editor = ( e, i ) ->
+  console.log ("initialize_figure_editor enter")
   $e = $(e) # the figure editor
+  console.log ("initialize_figure_editor 1")
   id = trailing_number_from_string( $e.attr('id') )
   $f = $e.closest("form").find(".figure_hidden_#{id}") # the text form
+  console.log ("initialize_figure_editor 3")
   s  = $f.val()
+  console.log ("initialize_figure_editor 4___"+s)
+  console.log ("initialize_figure_editor 5___")
   o  = if s then jQuery.parseJSON(s) else new Object()
+  console.log ("initialize_figure_editor 6")
   # console.log("initialize_figure_editor \##{id} #{$f} to #{s}")
   $who = find_buddy_editor($e,".who_edit")
   $who.val(o["who"] || "")
@@ -192,11 +198,14 @@ initialize_figure_editor = ( e, i ) ->
     find_buddy_editor($e,".move_edit").val(o["move"] || "circle_left"))
   find_buddy_editor($e,".rotations_edit").val(o["degrees"] || "360") if o["degrees"]
   find_buddy_editor($e,".places_edit").val(o["degrees"] || "360") if o["degrees"]
+  console.log ("initialize_figure_editor 10")
+
   # many Bothans died to bring us this expression:
   beats = if "beats" of o then o["beats"] else 8 
   find_buddy_editor($e,".beat_edit").val(beats)
   find_buddy_editor($e,".formation_edit").val(o["formation"]) if o["formation"]
   find_buddy_editor($e,".notes_edit").val(o["notes"]) if o["notes"]
+  console.log ("initialize_figure_editor 15")
   return e
 
 trailing_number_from_string = (s) ->
@@ -217,10 +226,14 @@ sync_figure_editor = (dom_ed) ->
 $ ->
   console.log("initializing figure editors ... even if we're not editing any figures - say because we're not in the dance editor.")
   $(".formation_edit").change((e) -> manage_formation_change e.target)
+  console.log("alive2");
   $(".who_edit").change((e) -> manage_who_change e.target)
+  console.log("alive3");
   $(".move_edit").change((e) -> manage_move_change e.target)
+  console.log("alive4");
   $(".figure_edit").each((i) -> initialize_figure_editor( this, i ))
-  # cool! change() gets called on contailers when children get edited!
+  console.log("alive5");
   $(".figure_edit").change((e) -> sync_figure_editor(e.target))
+  console.log("alive6");
   
 

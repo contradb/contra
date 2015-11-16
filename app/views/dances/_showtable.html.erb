@@ -6,6 +6,8 @@ start_type    = local_assigns.fetch(:start_type,true)
 figures       = local_assigns.fetch(:figures,false) 
 notes         = local_assigns.fetch(:notes,false) 
 
+max_number_of_figures_to_display = 8
+
 dances = showtable
 
 
@@ -24,16 +26,13 @@ dances = showtable
       <% if choreographer then %> <th>Choreographer</th> <% end %>
       <% if user then %>          <th>User</th>          <% end %>
       <% if start_type then %>    <th>Formation</th>    <% end %>
-      <% if figures then %>
-                                  <th>1</th> 
-                                  <th>2</th>
-                                  <th>3</th>
-                                  <th>4</th>
-                                  <th>5</th>
-                                  <th>6</th>
-                                  <th>7</th>
-                                  <th>8</th>
-      <% end %>
+      <% if figures then 
+           (1..max_number_of_figures_to_display).each {|i| %>
+             <th><%= i %></th>
+          <% 
+            }
+          end%>
+      
       <% if notes then %>         <th>Notes</th>         <% end %>
     </tr>
   </thead>
@@ -67,8 +66,9 @@ dances = showtable
           <td><%= link_to dance.user.name, dance.user %></td>         <% end %>
         <% if start_type then %>    <td><%= dance.start_type %></td>         <% end %>
         <% if figures then
-           (1..8).each do |i| %>       
-           <td><%= render partial: "dances/figure", object: dance["figure"+i.to_s], locals: {terse: true} %></td>
+           fs = dance.figures
+           fs.first(max_number_of_figures_to_display).each do |f| %>       
+           <td><%= render partial: "dances/figure", object: f, locals: {terse: true} %></td>
         <%   end
            end %>                              
         <% if notes then %>           <td><%= dance.notes %></td>            <% end %>

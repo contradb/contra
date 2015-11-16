@@ -1,3 +1,5 @@
+<% require 'json' %>
+
 <p>
   <span>User:</span>
   <%= link_to @dance.user.name, @dance.user %>
@@ -27,10 +29,17 @@
   <%= @dance.start_type %>
 </p>
 
-<% (1..8).each do |i| %>
-  <p><strong><%= i %></strong>:<%= render partial: "figure", object: @dance["figure"+i.to_s] %></p>
-<% end %>
-
+<table class="table table-bordered table-condensed contra-table-nonfluid">
+<% begin
+     beats_acc = 0
+     @dance.figures.each do |figure| %>
+  <tr class="<%= if (beats_acc % 32) < 16 then 'a1b1' else 'a2b2' end %>">
+      <td><%= {0=>'A1', 16=>'A2', 32=>'B1', 48=>'B2' }[beats_acc] %></td>
+      <td><%= beats_acc += figure["beats"]||0
+         render partial: "figure", object: figure %></td></tr>
+<%   end
+   end    %>
+</table>
 
 <% if @dance.notes.strip.length > 0 %>
 <p>
