@@ -3,10 +3,10 @@
   of space, then labels take the left column. If space is tight, they
   take the two leftmost columns.  %>
 
-  <% debug_figure_json = true %>
+  <% debug_figure_json = false %>
 
 
-<div class="container contra-dance-edit">
+  <div class="container contra-dance-edit"  ng-app="contra">
 <%= form_for(@dance) do |f| %>
   <% if @dance.errors.any? %>
     <div id="error_explanation">
@@ -31,123 +31,187 @@
 
   <% if copy_dance then %>
   <div class="row">
-    <div class="col-md-1 col-xs-2"></div>
-    <div class="col-md-11 col-xs-10">Composing a variation of <strong><%= copy_dance.title %></strong></div>
+    <div class="col-lg-1 col-md-2 col-xs-3"></div>
+    <div class="col-lg-11 col-md-10 col-xs-9">Composing a variation of <strong><%= copy_dance.title %></strong></div>
   </div>
   <% end %>
 
 
   <div class="row field">
-    <div class="contra-label col-md-1 col-xs-2">Title</div>
+    <div class="contra-label col-lg-1 col-md-2 col-xs-3">Title</div>
     <%= if copy_dance 
-        then f.text_field :title, {class: "dance-title-edit col-md-11 col-xs-10", value: copy_dance.title + ' variation'}
-        else f.text_field :title, {class: "dance-title-edit col-md-11 col-xs-10"}
+        then f.text_field :title, {class: "dance-title-edit col-lg-11 col-md-10 col-xs-9", value: copy_dance.title + ' variation'}
+        else f.text_field :title, {class: "dance-title-edit col-lg-11 col-md-10 col-xs-9"}
         end %>
   </div>
   <div class="row field">
-    <%= f.label "by", class: "col-md-1 col-xs-2" %>
+    <%= f.label "by", class: "col-lg-1 col-md-2 col-xs-3" %>
     <%= begin
           options_sans_params = Choreographer.all.map {|c| [c.name,c.id]}
           param_default       = params[:choreographer_id] || (copy_dance && copy_dance.choreographer_id)
           options_with_params = options_for_select(options_sans_params, param_default)
           options = param_default ? options_with_params : options_sans_params
-          f.select :choreographer_id, options,  {}, {class: "col-md-11 col-xs-10"}
+          f.select :choreographer_id, options,  {}, {class: "col-lg-11 col-md-10 col-xs-9"}
         end %>
   </div>
   <div class="row field">
-    <%= f.label :formation, class: "col-md-1 col-xs-2" %>
-    <%= f.text_field :start_type, {class: "col-md-11 col-xs-10"}.merge(copy_dance ? {value: copy_dance.start_type} : {}) %>
+    <%= f.label :formation, class: "col-lg-1 col-md-2 col-xs-3" %>
+    <%= f.text_field :start_type, {class: "col-lg-11 col-md-10 col-xs-9"}.merge(copy_dance ? {value: copy_dance.start_type} : {}) %>
   </div>
 
 
-  <%# Here we got "off grid" and switch to a table of the same total width. The grid was just
-      being too damn wonky.  %>
-
-  <div class="row">
-  <table class="figure_edits col-md-12 col-xs-12">
-    <thead>
-      <tr>                                       <!-- 12 twelfths -->
-        <th style="width:  8.33333%">#</th>       <!-- 1 -->
-        <th style="width:  8.33333%">beats</th>   <!-- 1 -->
-        <th style="width: 16.66667%">formation</th><!-- 2 -->
-        <th style="width: 16.66667%">who</th>     <!-- 2. -->
-        <th style="width:  2.77778%">B+</th>      <!-- 0.333 -->
-        <th style="width: 13.33333%">move</th>    <!-- 1.667 -->
-        <th style="width: 16.66667%">turn</th>    <!-- 2 -->
-        <th style="width: 16.66667%">notes</th>    <!-- 2 -->
-      </tr>
-    </thead>
-
-    <tbody>
+<%# ============================ new figure editors ==================== %>
 
 
 
-        <% for figure_idx in (1..8) do %>
-           <tr class="figure_edit" id=figure_edit_<%= figure_idx %> >
-             <td style="text-align: center"><%= figure_idx %> </td>
-             <td><%= tag( :input, {value: 8, min: 0, max: 16, class: "beat_edit", type: "number"} ) %></td>
-             <td><select class="formation_edit">
-                 <option value="unspecified" selected="selected"></option>
-                 <option value="square">square</option>
-                 <option value="short_lines">short lines</option>
-                 <option value="short_wavy_lines">short wavy lines</option>
-                 <option value="long_wavy_lines">long wavy lines</option>
-                 <option value="long_wavy_line">long wavy line</option>
-                 <option value="custom">custom</option>
-                 </select></td>
-             <td><%= selects = []
-                 for who in DancesHelper::WHO
-                   selects.push content_tag( :option, who, 
-                                             who===DancesHelper::WHO[0] ? {value: who, selected: "selected"} : {value: who})
-                 end
-                 content_tag( :select, selects.join( " " ).html_safe, {class: "who_edit"} ) 
-              %></td>
-             <td><%= tag( :input, {type: "checkbox", class: "balance_edit"}) %></td>
-             <td><%= content_tag( :select, "", {class: "move_edit"} ) %></td>
-             <td><%= content_tag( :select, 
-                              options_html(DancesHelper::RotationMenuLabels.map {|x| 
-                                [x,rotation_to_degrees(x)]}
-                            ).html_safe, class: "rotations_edit") %>
-             <%= content_tag( :select, options_html((1..8).to_a.map{|x|["#{pluralize(x,'place')}",x*90]}).html_safe, class: "places_edit") %></td>
+<%# ======================================================================== %>
 
-             <td><%= tag( :input, {value: "", class: "notes_edit", type: "text", maxlength: 100} ) %></td>
-           </tr>
+  <div ng-controller="FiguresController as figures">
+    <div class="row">
+      <table class="figure_edits col-lg-12 col-xs-12">
+        <thead ng-init="figures.arr=<%= 
+                        if copy_dance 
+                        then copy_dance.figures_json 
+                        else @dance.figures_json 
+                        end %>">
+          <tr>                                       <!-- 12 twelfths -->
+            <th style="width:  8.33333%"></th>       <!-- 1 -->
+            <th style="width: 16.66667%">formation</th><!-- 2 -->
+            <th style="width: 16.66667%">who</th>     <!-- 2. -->
+            <th style="width:  2.77778%">B+</th>      <!-- 0.333 -->
+            <th style="width: 13.33333%">move</th>    <!-- 1.667 -->
+            <th style="width:  8.33333%">beats</th>   <!-- 1 -->
+            <th style="width: 16.66667%">turn</th>    <!-- 2 -->
+            <th style="width: 16.66667%">notes</th>    <!-- 2 -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="figure in figures.arr"
+              class="figure_edit"
+              ng-class="styleForBeats(sumBeats(figures.arr,$index))">
+            <td style="text-align: center">{{labelForBeats(sumBeats(figures.arr,$index))}}</td>
+            <td><select class="formation_edit" ng-model="figure.formation">
+                <option value="">...</option>
+                <option value="square">square</option>
+                <option value="short_lines">short lines</option>
+                <option value="short_wavy_lines">short wavy lines</option>
+                <option value="long_wavy_lines">long wavy lines</option>
+                <option value="long_wavy_line">long wavy line</option>
+                <option value="custom">custom</option>
+              </select>
+            </td>
 
+            <td><select class="who_edit" ng-model="figure.who">
+                <option value="everybody">everybody</option>
+                <option value="partner">partner</option>
+                <option value="neighbor">neighbor</option>
+                <option value="ladles">ladles</option>
+                <option value="gentlespoons">gentlespoons</option>
+                <option value="ones">ones</option>
+                <option value="twos">twos</option>
+                <option value="centers">centers</option>
+                <option value="custom">custom</option>
+              </select>
+            </td>
+            <td><input type="checkbox" class="balance_edit" ng-disabled="!moveCaresAboutBalance(figure.move)" ng-model="figure.balance"/></td>
+            <td><select class="move_edit" ng-model="figure.move"
+                        ng-options="m for m in moveMenuOptions(figure.formation, figure.who)"
+                        ng-change="figure.balance = figure.balance && moveCaresAboutBalance(figure.move)">
+              </select>
+            </td>
+            <td><select class="beat_edit" ng-model="figure.beats" ng-options="b for b in [8,16,2,4,6,8,10,12,14,16]">
+              </select>
+            </td>
 
+            <td><select class="turns_edit" ng-model="figure.degrees"
+                        ng-show="moveCaresAboutRotations(figure.move)||moveCaresAboutPlaces(figure.move)"
+                        ng-options="degreesToHumanUnits(a,figure.move) for a in anglesForMove(figure.move)"
+                        >
+                
+              </select>
+            </td>
+            <td><input class="notes_edit" type="text" ng-model="figure.notes"/></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th ng-class="64==sumBeats(figures.arr)?'happy_beats':'grumpy_beats'">
+              {{sumBeats(figures.arr)}}</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </tfoot>
+   
+      </table>
+    </div>
 
-        <% end %> 
-    </tbody>
-  </table>
-  </div>
+    <!-- Add/delete figure buttons -->
+    <div class="row actions">
+      <div class="col-lg-1 col-md-2 col-xs-3">
+      </div>
+      <div class="col-lg-11 col-md-10 col-xs-9">
+        <div class="btn-group btn-group-justified btn-group-lg" role="group">
+          <div class="btn-group">
+            <button name="button" type="button" ng-click='addFigure()' class="btn btn-default">Add Figure</button>
+          </div>
+          <div class="btn-group">
+            <button name="button" type="button" ng-click='deleteFigure()' ng-show="figures.arr.length > 0" class="btn btn-default">Remove Figure</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
 
+  <!-- debugger -->
   <% if debug_figure_json then  %>
   <div class="row">
-    <div class="col-md-1 col-xs-2" style="text-align: center">#</div>
-    <div class="col-md-11 col-xs-10"><strong style="color: red">debug_figure_json = true </strong></div>
+    <div class="col-lg-1 col-md-2 col-xs-3" style="text-align: center">#</div>
+    <div class="col-lg-11 col-md-10 col-xs-9"><strong style="color: red">debug_figure_json = true </strong></div>
+  </div>
+  <div class="row" ng-repeat="figure in figures.arr">
+    <div class="col-lg-1 col-md-2 col-xs-3" style="text-align: center">{{$index}}</div>
+    <div class="col-lg-11 col-md-10 col-xs-9">{{figure}}</div>
   </div>
   <% end %> 
 
-  <div class="row">
-  <% for i in (1..8) do %>
-    <% if debug_figure_json then  %>
-      <div class="col-md-1 col-xs-2" style="text-align: center"><%= i %></div>
-    <% end %> 
-    <div class="field" 
-         <%= debug_figure_json ?  '' : 'hidden="hidden"' %> >
-      <%= begin
-            figureN = ("figure"+i.to_s).intern()
-            h = {class: "figure_hidden_#{i} col-md-11 col-xs-10"}.merge(copy_dance ? {value: copy_dance[figureN]} : {})
-            f.text_field figureN, h
-          end %>
-    </div>
-  <% end %>
+
+
+  <!-- hidden IO field for communicating with Rails -->
+  <div class="row field" <%= debug_figure_json ?  '' : 'hidden="hidden"' %> >
+    <%= f.label :figures_json, class: "col-lg-1 col-md-2 col-xs-3"%>
+  <%= begin
+      h0 = {class: "figures_json col-lg-11 col-md-10 col-xs-9", 
+            value: "{{toJson(figures.arr)}}" ,
+            readonly: "readonly"}
+      f.text_area "figures_json", h0
+      end %>
   </div>
+  </div> <!-- figures controller -->
+
+
+
+
+
+
+
+
+<%# ============================ end new figure editors ================ %>
+
+
+
+
+
 
   <div class="row field">
-    <%= f.label :notes, class: "col-md-1 col-xs-2"%>
+    <%= f.label :notes, class: "col-lg-1 col-md-2 col-xs-3"%>
 
     <%= begin
-          h = {class: 'per_dance_notes_edit col-md-11 col-xs-10'};
+          h = {class: 'per_dance_notes_edit col-lg-11 col-md-10 col-xs-9'};
           if copy_dance then
             h[:value] = copy_dance.notes
           end
@@ -157,8 +221,11 @@
   <br>
 
   <div class="row actions">
-    <div class="col-md-1 col-xs-2"></div>
-    <%= f.submit class: "update_dance", class: "col-md-3 col-xs-10 btn btn-md btn-success" %>
+    <div class="col-lg-1 col-md-2 col-xs-3"></div>
+    <%= f.submit 'Save Dance', class: "update_dance", class: "col-lg-3 col-xs-9 btn btn-lg btn-success" %>
   </div>
 <% end %>
+
+
+
 </div>

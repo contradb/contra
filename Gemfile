@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'angularjs-rails', '~> 1.4', '>= 1.4.7'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.3'
@@ -16,10 +17,11 @@ gem 'coffee-rails', '~> 4.1.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
-# try to fix turbolinks(?) bug
-gem 'jquery-turbolinks'
+# Turbolinks is more hassle than it's worth right now
+# gem 'turbolinks'
+# this fixed some turbolinks bugs, but didn't play with angular
+# gem 'jquery-turbolinks'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.

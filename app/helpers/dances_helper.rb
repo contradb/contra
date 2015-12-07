@@ -44,20 +44,17 @@ module DancesHelper
     d/90
   end
 
-  # you! manually sync changes to dances.coffee!
+  # you! manually sync changes to dances.js!
   def move_cares_about_rotations(s)
     [:do_si_do, :see_saw, :allemande_right, :allemande_left, :gypsy_right_shoulder, :gypsy_left_shoulder].include?(s.intern)
   end
 
-  # you! manually sync changes to dances.coffee!
+  # you! manually sync changes to dances.js!
   def move_cares_about_places(s)
     [:circle_left, :circle_right, :star_left, :star_right].include?(s.intern)
   end
 
 
-  # IMPORTANT: this constant is manually synced to the equivalent server-side constant
-  # in dances.coffee!
-  WHO = [:'', :everybody, :partner, :neighbor, :ladles, :gentlespoons, :ones, :twos, :centers].freeze;
 
 
 
@@ -92,15 +89,13 @@ end
     return "nil" unless o
     formation = if ['','square','unspecified', 'custom'].include? ( o['formation'] || '' ) then '' else 'in '+o['formation']+' ' end
     move    = if o['move'] and (o['move'] != 'custom') then o['move'] else '' end
-    who     = if "everybody" === o['who'] 
+    who     = if "everybody" == o['who'] || "custom" == o['who'] 
                 then '' 
-                elsif terse
-                then (o['who'] == 'ones') ? 
-                     '1s' : 
-                     ((o['who'] == 'twos') ? 
-                        '2s' : 
-                        o['who'][0] + ". ")
-                else o['who'] 
+              elsif terse
+              then (o['who'] == 'ones') ? 
+                   '1s' : 
+                   ((o['who'] == 'twos') ? '2s' : o['who'][0] + ". ")
+              else o['who'] 
               end
     beats   = o['beats']   || nil
     notes   = !o['notes'] ? '' :
@@ -125,9 +120,11 @@ end
               else 'balance + '
               end
     beat_str = ((beats == 8) || terse) ? "" : "for #{beats}"
-    if beats > 0
-      then "#{formation}#{who} #{balance}#{move} #{deg_txt} #{beat_str} #{notes}"
-      else terse ? "" : "~".html_safe
+    if beats <= 0
+      then terse ? "" : "~".html_safe
+    elsif o['move'] == 'custom' || o['who'] == 'custom'
+      then "#{formation}#{who} #{balance}#{move} #{notes} #{deg_txt} #{beat_str}"
+      else "#{formation}#{who} #{balance}#{move} #{deg_txt} #{beat_str} #{notes}"
     end
   end
 

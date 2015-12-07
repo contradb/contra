@@ -7,12 +7,12 @@ class Dance < ActiveRecord::Base
     JSON.parse self.figures_json
   end
   # now inefficient legacy functions - should not be called anymore:
-  # def figure1 () JSON.generate (figures[0]||{}); end
-  # def figure2 () JSON.generate (figures[1]||{}); end
-  # def figure3 () JSON.generate (figures[2]||{}); end
-  # def figure4 () JSON.generate (figures[3]||{}); end
-  # def figure5 () JSON.generate (figures[4]||{}); end
-  # def figure6 () JSON.generate (figures[5]||{}); end
-  # def figure7 () JSON.generate (figures[6]||{}); end
-  # def figure8 () JSON.generate (figures[7]||{}); end
+  def figure1 () JSON.generate (figures[0]||{}); end
+  def figure2 () JSON.generate (figures[1]||{}); end
+  def figure3 () JSON.generate (figures[2]||{}); end
+  def figure4 () JSON.generate (figures[3]||{}); end
+  def figure5 () JSON.generate (figures[4]||{}); end
+  def figure6 () JSON.generate (figures[5]||{}); end
+  def figure7 () JSON.generate (figures[6]||{}); end
+  def figure8 () JSON.generate (figures[7]||{}); end
 end

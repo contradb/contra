@@ -8,10 +8,14 @@
 .balance_edit      {}
 .who_edit       {width:90%;}
 .move_edit      {width:90%;}
-.rotations_edit {width:90%;}
-.places_edit    {width:90%;}
+.turns_edit     {width:90%;}
 .formation_edit {width:90%;}
 .notes_edit     {width:100%;}
+
+
+.happy_beats {border-top: solid black}
+.grumpy_beats {@extend .happy_beats; color:red;}
+
 
 .figure_edits {margin-bottom: 2em;}
 
@@ -21,5 +25,5 @@
 .dance-title-edit { font-size: 225%; font-weight: bold;}
 .contra-dance-edit .row { margin-bottom: 10px; }
 
-tr.a1b1 { background-color: #F3F3F3 }
-tr.a2b2 {  }
+.a1b1 { background-color: #F3F3F3 }
+.a2b2 {  }
