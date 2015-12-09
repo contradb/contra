@@ -1,11 +1,17 @@
 source 'https://rubygems.org'
 
-gem 'angularjs-rails', '~> 1.4', '>= 1.4.7'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.3'
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+
+
+group :test,:development do
+  gem 'sqlite3'
+end
+group :production do
+  gem 'pg'
+end
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -31,7 +37,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Unicorn as the app server
-# gem 'unicorn'
+group :production do
+  gem 'unicorn'
+end
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
