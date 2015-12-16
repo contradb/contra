@@ -1,6 +1,8 @@
 class Choreographer < ActiveRecord::Base
   has_many :dances
 
+  validates :name, length: { in: 4..100 }
+
   before_destroy :reattribute_dances_to_unknown
 
   protected

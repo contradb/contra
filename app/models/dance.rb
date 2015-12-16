@@ -3,10 +3,11 @@ require 'json'
 class Dance < ActiveRecord::Base
   belongs_to :user
   belongs_to :choreographer
+  validates :title, length: { in: 4..100 }
   def figures
     JSON.parse self.figures_json
   end
-  # now inefficient legacy functions - should not be called anymore:
+  # legacy functions - should not be called anymore:
   def figure1 () JSON.generate (figures[0]||{}); end
   def figure2 () JSON.generate (figures[1]||{}); end
   def figure3 () JSON.generate (figures[2]||{}); end
