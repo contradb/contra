@@ -22,6 +22,8 @@ describe 'Creating user from welcome page' do
     fill_in "user_password",              with: "testing password 1234"
     fill_in "user_password_confirmation", with: "testing password 1234"
     click_button "Sign Up"
+    expect(page).to have_content("Welcome! You have signed up successfully")
+    expect(page).to have_content("Find and Share Contra Dances") # is the splash page
   end
 
 
