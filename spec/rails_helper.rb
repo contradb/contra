@@ -49,4 +49,8 @@ RSpec.configure do |config|
   # The different available types are documented in the features, such as in
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
+
+  # include devise helpers as per 
+  # http://stackoverflow.com/questions/4308094/all-ruby-tests-raising-undefined-method-authenticate-for-nilnilclass
+  config.include Devise::TestHelpers, type: :controller
 end
