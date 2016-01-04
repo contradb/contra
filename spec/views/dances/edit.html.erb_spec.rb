@@ -3,17 +3,10 @@ require 'rails_helper'
 RSpec.describe "dances/edit", type: :view do
   before(:each) do
     @dance = assign(:dance, Dance.create!(
-      :title => "MyString",
-      :start_type => "MyString",
-      :figure1 => "MyString",
-      :figure2 => "MyString",
-      :figure3 => "MyString",
-      :figure4 => "MyString",
-      :figure5 => "MyString",
-      :figure6 => "MyString",
-      :figure7 => "MyString",
-      :figure8 => "MyString",
-      :notes => "MyText"
+      :title => "Box the Gnat Contra",
+      :start_type => "improper",
+      :figures_json => "[{\"who\":\"neighbor\",\"move\":\"box_the_gnat\",\"beats\":8,\"balance\":true}, {\"who\":\"partner\",\"move\":\"swat_the_flea\",\"beats\":8,\"balance\":true}, {\"who\":\"neighbor\",\"move\":\"swing\",\"beats\":16,\"balance\":true}, {\"who\":\"ladles\",\"move\":\"allemande_right\",\"beats\":8,\"degrees\":540}, {\"who\":\"partner\",\"move\":\"swing\",\"beats\":8}, {\"who\":\"everybody\",\"move\":\"right_left_through\",\"beats\":8}, {\"who\":\"ladles\",\"move\":\"chain\",\"beats\":8,\"notes\":\"look for new\"}]",
+      :notes => "Swat the Flea variation"
     ))
   end
 
@@ -26,23 +19,9 @@ RSpec.describe "dances/edit", type: :view do
 
       assert_select "input#dance_start_type[name=?]", "dance[start_type]"
 
-      assert_select "input#dance_figure1[name=?]", "dance[figure1]"
-
-      assert_select "input#dance_figure2[name=?]", "dance[figure2]"
-
-      assert_select "input#dance_figure3[name=?]", "dance[figure3]"
-
-      assert_select "input#dance_figure4[name=?]", "dance[figure4]"
-
-      assert_select "input#dance_figure5[name=?]", "dance[figure5]"
-
-      assert_select "input#dance_figure6[name=?]", "dance[figure6]"
-
-      assert_select "input#dance_figure7[name=?]", "dance[figure7]"
-
-      assert_select "input#dance_figure8[name=?]", "dance[figure8]"
-
       assert_select "textarea#dance_notes[name=?]", "dance[notes]"
     end
   end
+
+  pending "shows the figures of an existing dance"
 end

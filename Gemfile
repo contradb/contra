@@ -66,3 +66,4 @@ gem 'sprockets-rails', '~> 2.3.2'
 
 gem 'devise'
 
+gem 'factory_girl_rails'

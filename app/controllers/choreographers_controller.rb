@@ -1,5 +1,9 @@
 class ChoreographersController < ApplicationController
+
+  #Amar advises dispensing with this bit, and I agree. Just fold the
+  #assignment into the individual methods.
   before_action :set_choreographer, only: [:show, :edit, :update, :destroy]
+
   before_action :authenticate_user!, only: [:new, :edit, :update, :destroy]
   before_action :authenticate_administrator!, only: [:edit, :update, :destroy]
 

@@ -52,5 +52,10 @@ RSpec.configure do |config|
 
   # include devise helpers as per 
   # http://stackoverflow.com/questions/4308094/all-ruby-tests-raising-undefined-method-authenticate-for-nilnilclass
-  config.include Devise::TestHelpers, type: :controller
+  config.include Devise::TestHelpers , type: :controller
+  # and also as per http://stackoverflow.com/questions/13005444/testing-views-that-use-devise-with-rspec
+  config.include Devise::TestHelpers , type: :view
+
+
+  config.include FactoryGirl::Syntax::Methods
 end
