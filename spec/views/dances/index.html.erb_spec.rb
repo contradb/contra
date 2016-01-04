@@ -2,48 +2,19 @@ require 'rails_helper'
 
 RSpec.describe "dances/index", type: :view do
   before(:each) do
-    assign(:dances, [
-      Dance.create!(
-        :title => "Title",
-        :start_type => "Start Type",
-        :figure1 => "Figure1",
-        :figure2 => "Figure2",
-        :figure3 => "Figure3",
-        :figure4 => "Figure4",
-        :figure5 => "Figure5",
-        :figure6 => "Figure6",
-        :figure7 => "Figure7",
-        :figure8 => "Figure8",
-        :notes => "MyText"
-      ),
-      Dance.create!(
-        :title => "Title",
-        :start_type => "Start Type",
-        :figure1 => "Figure1",
-        :figure2 => "Figure2",
-        :figure3 => "Figure3",
-        :figure4 => "Figure4",
-        :figure5 => "Figure5",
-        :figure6 => "Figure6",
-        :figure7 => "Figure7",
-        :figure8 => "Figure8",
-        :notes => "MyText"
-      )
-    ])
+    @dances =
+      [build_stubbed(:dance, title: "Simplicity Swing1", start_type: "Whatever Crazy Formation"),
+       build_stubbed(:dance, title: "Simplicity Swing2"),
+       build_stubbed(:dance, title: "Simplicity Swing3")]
+    @inviso_dance = build_stubbed(:dance, title: "not in the database")
   end
 
   it "renders a list of dances" do
     render
-    assert_select "tr>td", :text => "Title".to_s, :count => 2
-    assert_select "tr>td", :text => "Start Type".to_s, :count => 2
-    assert_select "tr>td", :text => "Figure1".to_s, :count => 2
-    assert_select "tr>td", :text => "Figure2".to_s, :count => 2
-    assert_select "tr>td", :text => "Figure3".to_s, :count => 2
-    assert_select "tr>td", :text => "Figure4".to_s, :count => 2
-    assert_select "tr>td", :text => "Figure5".to_s, :count => 2
-    assert_select "tr>td", :text => "Figure6".to_s, :count => 2
-    assert_select "tr>td", :text => "Figure7".to_s, :count => 2
-    assert_select "tr>td", :text => "Figure8".to_s, :count => 2
-    assert_select "tr>td", :text => "MyText".to_s, :count => 2
+    expect(rendered).to match(/Simplicity Swing1/)
+    expect(rendered).to match(/Simplicity Swing2/)
+    expect(rendered).to match(/Simplicity Swing3/)
+    expect(rendered).to match(/Whatever Crazy Formation/)
+    expect(rendered).to_not match(/not in the database/)
   end
 end

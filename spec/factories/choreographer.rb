@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :choreographer do
-    name      'Cary Ravitz'
+    name      'Dan Pearl'
   end
 end
 

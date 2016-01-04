@@ -2,46 +2,21 @@ require 'rails_helper'
 
 RSpec.describe "dances/new", type: :view do
   before(:each) do
-    assign(:dance, Dance.new(
-      :title => "MyString",
-      :start_type => "MyString",
-      :figure1 => "MyString",
-      :figure2 => "MyString",
-      :figure3 => "MyString",
-      :figure4 => "MyString",
-      :figure5 => "MyString",
-      :figure6 => "MyString",
-      :figure7 => "MyString",
-      :figure8 => "MyString",
-      :notes => "MyText"
-    ))
+    @choreographer = FactoryGirl.create(:choreographer)
+    @dance = build_stubbed(:dance, choreographer: @choreographer, title: '', start_type: '', notes: '')
   end
+
 
   it "renders new dance form" do
     render
 
-    assert_select "form[action=?][method=?]", dances_path, "post" do
-
+    expect(rendered).to match(Regexp.new Regexp.escape @dance.title)
+    expect(rendered).to match(Regexp.new Regexp.escape @dance.choreographer.name)
+    assert_select "form[method=?]", "post" do
       assert_select "input#dance_title[name=?]", "dance[title]"
-
+      # don't test choreographer because it's a select box
       assert_select "input#dance_start_type[name=?]", "dance[start_type]"
-
-      assert_select "input#dance_figure1[name=?]", "dance[figure1]"
-
-      assert_select "input#dance_figure2[name=?]", "dance[figure2]"
-
-      assert_select "input#dance_figure3[name=?]", "dance[figure3]"
-
-      assert_select "input#dance_figure4[name=?]", "dance[figure4]"
-
-      assert_select "input#dance_figure5[name=?]", "dance[figure5]"
-
-      assert_select "input#dance_figure6[name=?]", "dance[figure6]"
-
-      assert_select "input#dance_figure7[name=?]", "dance[figure7]"
-
-      assert_select "input#dance_figure8[name=?]", "dance[figure8]"
-
+      # don't test figures because it's javascript-generated. 
       assert_select "textarea#dance_notes[name=?]", "dance[notes]"
     end
   end
