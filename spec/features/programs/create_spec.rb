@@ -6,28 +6,26 @@ require 'support/scrutinize_layout'
 include Warden::Test::Helpers
 Warden.test_mode!
 
-describe 'Creating choreographer from index page' do
+describe 'Creating program from index page' do
 
   it "with logged in user, goes to the New Choreographer page" do
     user = FactoryGirl.create(:user)
     login_as(user, :scope => :user)
 
-    visit '/choreographers'
-    click_link "New Choreographer"
+    visit '/programs'
+    click_link "New Program"
 
-    expect(page).to have_content("New Choreographer")
+    expect(page).to have_content("New Program")
     scrutinize_layout page
   end
 
   it "sans logged in user, refuses to go the New Choreographer page" do
 
-    visit '/choreographers'
-    click_link "New Choreographer"
+    visit '/programs'
+    click_link "New Program"
 
     expect(page).to have_content("You need to sign in or sign up before continuing")
     expect(page).to have_content("Login")
     scrutinize_layout page
   end
-
-
 end

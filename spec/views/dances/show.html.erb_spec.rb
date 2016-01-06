@@ -43,4 +43,5 @@ RSpec.describe "dances/show", type: :view do
     # notes
     expect(rendered).to match(/My Note Text/)
   end
+
 end

@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   has_many :dances, dependent: :destroy
+  has_many :programs, dependent: :destroy
 
   validates :name, length: { in: 4..100 }  
 end

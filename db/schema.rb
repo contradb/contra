@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151206031845) do
+ActiveRecord::Schema.define(version: 20160106031939) do
 
   create_table "choreographers", force: :cascade do |t|
     t.string   "name"
@@ -31,6 +31,15 @@ ActiveRecord::Schema.define(version: 20151206031845) do
     t.datetime "updated_at",                      null: false
     t.text     "figures_json",     default: "[]", null: false
   end
+
+  create_table "programs", force: :cascade do |t|
+    t.string   "title",      limit: 100, null: false
+    t.integer  "user_id",                null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "programs", ["user_id"], name: "index_programs_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                              default: "", null: false
