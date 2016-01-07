@@ -1,7 +1,7 @@
 class DancesController < ApplicationController
   before_action :set_dance, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :edit, :update, :destroy]
-  before_action :authenticate_ownership!, only: [:edit, :update, :destroy]
+  before_action :authenticate_dance_ownership!, only: [:edit, :update, :destroy]
 
   # GET /dances
   # GET /dances.json
@@ -58,9 +58,12 @@ class DancesController < ApplicationController
   # DELETE /dances/1
   # DELETE /dances/1.json
   def destroy
+    user = @dance.user
     @dance.destroy
     respond_to do |format|
-      format.html { redirect_to dances_url, notice: 'Dance was successfully destroyed.' }
+      coming_from_dance_view = /.*\/dances\/.+/ =~ request.referrer
+      url = coming_from_dance_view ? user : request.referrer
+      format.html {redirect_to url, notice: 'Dance was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -69,6 +72,10 @@ class DancesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_dance
       @dance = Dance.find(params[:id])
+    end
+    
+    def authenticate_dance_ownership!
+      authenticate_ownership! @dance.user_id
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

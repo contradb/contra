@@ -43,14 +43,33 @@ module GloboHelper
             new_dance_path(copy_dance_id: dance), 
             BUTTON_HTML_ATTR)
   end
+
   def new_choreographer_button_html(label: "New Choreographer")
     link_to(content_tag(:span, new_icon_html() + ' ' + label),
             new_choreographer_path, 
             BUTTON_HTML_ATTR)
   end
+
   def new_program_button_html(label: "New Program")
     link_to(content_tag(:span, new_icon_html() + ' ' + label),
             new_program_path, 
             BUTTON_HTML_ATTR)
   end
+  def edit_program_button_html(program, label: "Edit Program")
+    link_to(content_tag( :span, edit_icon_html() + ' ' + label ),
+            edit_program_path(program),
+            BUTTON_HTML_ATTR)
+  end
+  def delete_program_button_html(program, label: "Delete Program")
+    link_to(content_tag( :span, delete_icon_html() + ' ' + label ),
+            program, 
+            BUTTON_HTML_ATTR.merge({method: :delete, data: { confirm: "Delete '#{program.title}?'" }}))
+  end
+  def copy_program_button_html(program, label: "Copy Program")
+    link_to(content_tag( :span, copy_icon_html() + ' ' + label ),
+            new_program_path(copy_program_id: program), 
+            BUTTON_HTML_ATTR)
+  end
+
+
 end

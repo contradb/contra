@@ -7,8 +7,8 @@ class ApplicationController < ActionController::Base
 
 
 
-  def authenticate_ownership!
-    if signed_in? && (current_user.id == @dance.user_id)
+  def authenticate_ownership! (user_id)
+    if signed_in? && (current_user.id == user_id)
       # continue to current_user url
     else
         flash[:error] = "Please access one of your own pages"

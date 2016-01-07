@@ -1,0 +1,51 @@
+<% 
+title         = local_assigns.fetch(:title,true) 
+user          = local_assigns.fetch(:user,true) 
+notes         = local_assigns.fetch(:notes,false) 
+
+programs = showtable
+
+
+%>
+
+
+
+<% if programs.length < 1 then %>
+<p>zero programs</p>
+<% else %>
+<table class="table table-striped table-bordered table-hover table-condensed contra-table-nonfluid">
+  <thead>
+    <tr>
+      <th colspan="3">Actions</th>
+      <% if title then %>         <th>Title</th>         <% end %>
+      <% if user then %>          <th>User</th>          <% end %>
+      <% if notes then %>         <th>Notes</th>         <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% programs.each do |program| %>
+      <tr>
+
+        <td><%= link_to copy_icon_html, new_program_path({copy_program_id: program.id}) %></td>               
+        <td><%= if (signed_in? && (current_user.id == program.user_id))
+                then link_to(edit_icon_html, edit_program_path(program))
+                else "" 
+                end
+                %></td>               
+        <td><%= if (signed_in? && (current_user.id == program.user_id))
+                then link_to(delete_icon_html, program, method: :delete, data: { confirm: "Delete '#{program.title}?'" })
+                else ""
+                end %></td>
+
+
+        <% if title then %>         
+          <td><strong><%= link_to program.title, program %></td></strong><% end %>
+        <% if user then %>
+          <td><%= link_to program.user.name, program.user %></td>         <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% end %>

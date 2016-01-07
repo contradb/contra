@@ -4,6 +4,7 @@ class Dance < ActiveRecord::Base
   belongs_to :user
   belongs_to :choreographer
   validates :title, length: { in: 4..100 }
+  validates :start_type, length: { in: 1..100 }
   def figures
     JSON.parse self.figures_json
   end

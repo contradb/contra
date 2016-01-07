@@ -15,9 +15,9 @@ class ProgramsController 1,0
   def figure_txt(87,2339
 
 /home/dm/ruby/contra/app/helpers/globo_helper.rb,112
-  def new_dance_button_html(26,949
-  def edit_dance_button_html(30,1172
-  def copy_dance_button_html(38,1597
+  def new_dance_button_html(26,956
+  def edit_dance_button_html(31,1193
+  def copy_dance_button_html(41,1645
 
 /home/dm/ruby/contra/app/helpers/welcome_helper.rb,57
   WELCOME_BTN_ATTR 2,21

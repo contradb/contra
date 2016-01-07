@@ -11,22 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160106031939) do
+ActiveRecord::Schema.define(version: 20160107213330) do
 
   create_table "choreographers", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",       default: "", null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   add_index "choreographers", ["name"], name: "index_choreographers_on_name", unique: true
 
   create_table "dances", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "title"
+    t.string   "title",            default: "",   null: false
     t.integer  "choreographer_id"
-    t.string   "start_type"
-    t.text     "notes"
+    t.string   "start_type",       default: "",   null: false
+    t.text     "notes",            default: "",   null: false
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.text     "figures_json",     default: "[]", null: false

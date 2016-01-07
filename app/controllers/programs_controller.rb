@@ -2,7 +2,7 @@ class ProgramsController < ApplicationController
   before_action :set_program, only: [:show, :edit, :update, :destroy]
 
   before_action :authenticate_user!, only: [:new, :edit, :update, :destroy]
-  before_action :authenticate_ownership!, only: [:edit, :update, :destroy]
+  before_action :authenticate_program_ownership!, only: [:edit, :update, :destroy]
 
   # GET /programs
   # GET /programs.json
@@ -69,6 +69,10 @@ class ProgramsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_program
       @program = Program.find(params[:id])
+    end
+
+    def authenticate_program_ownership!
+      authenticate_ownership! @program.user_id
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
