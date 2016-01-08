@@ -4,16 +4,16 @@ module GloboHelper
   end
 
   def view_icon_html()
-    '<span class="glyphicon glyphicon-list" aria-label="view" data-toggle="tooltip" data-placement="left" title="view">'.html_safe
+    '<span class="glyphicon glyphicon-list" aria-label="view" data-toggle="tooltip" data-placement="left" title="view"></span>'.html_safe
   end
   def edit_icon_html()
-    '<span class="glyphicon glyphicon-edit" aria-label="edit" data-toggle="tooltip" data-placement="left" title="edit">'.html_safe
+    '<span class="glyphicon glyphicon-edit" aria-label="edit" data-toggle="tooltip" data-placement="left" title="edit"></span>'.html_safe
   end
   def copy_icon_html()
-    '<span class="glyphicon glyphicon-duplicate" aria-label="copy" data-toggle="tooltip" data-placement="left" title="copy">'.html_safe
+    '<span class="glyphicon glyphicon-duplicate" aria-label="copy" data-toggle="tooltip" data-placement="left" title="copy"></span>'.html_safe
   end
   def delete_icon_html()
-    '<span class="glyphicon glyphicon-trash" aria-label="delete" data-toggle="tooltip" data-placement="left" title="delete">'.html_safe
+    '<span class="glyphicon glyphicon-trash" aria-label="delete" data-toggle="tooltip" data-placement="left" title="delete"></span>'.html_safe
   end
   def new_icon_html()
     "<span class='glyphicon glyphicon-plus' aria-hidden='true'></span>".html_safe
@@ -70,6 +70,4 @@ module GloboHelper
             new_program_path(copy_program_id: program), 
             BUTTON_HTML_ATTR)
   end
-
-
 end

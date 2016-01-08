@@ -58,4 +58,14 @@ RSpec.configure do |config|
 
 
   config.include FactoryGirl::Syntax::Methods
+
+  # I was not getting logged out between feature tests. 
+  # Reading this:
+  # https://github.com/plataformatec/devise/wiki/How-To:-Test-with-Capybara
+  # suggested this change. 
+  # There seems to be negligable performance difference to do it on every test. 
+  config.after :each do
+    Warden.test_reset!
+  end
+
 end

@@ -1,14 +1,22 @@
-<p id="notice"><%= notice %></p>
+<p><span>User:</span> <%= link_to @program.user.name, @program.user %></p>
 
-<p>
-  <strong>Title:</strong>
-  <%= @program.title %>
-</p>
+<h1><%= @program.title %></h1>
 
-<p>
-  <strong>User:</strong>
-  <%= link_to @program.user.name, @program.user %>
-</p>
+<div class="btn-group">
+<%= copy_program_button_html(@program, label: "Copy") %>
+<%= if (signed_in? && (current_user.id == @program.user_id)) then
+    edit_program_button_html(@program, label: "Edit") +
+    delete_program_button_html(@program, label: "Delete")
+    end %>
+</div>
 
-<%= link_to 'Edit', edit_program_path(@program) %> |
-<%= link_to 'Back', programs_path %>
+<ol>
+  <li>Box the Gnat Contra</li>
+  <li>Hey in the Barn</li>
+  <li>Allison Wonderland</li>
+  <li>~waltz~</li>
+  <li>~break~</li>
+  <li>Call Me</li>
+  <li>Martha's Breakup Breakdown</li>
+  <li>~waltz~</li>
+</ol>

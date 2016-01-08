@@ -58,9 +58,12 @@ class ProgramsController < ApplicationController
   # DELETE /programs/1
   # DELETE /programs/1.json
   def destroy
+    user = @program.user
     @program.destroy
     respond_to do |format|
-      format.html { redirect_to programs_url, notice: 'Program was successfully destroyed.' }
+      coming_from_program_view = /.*\/programs\/.+/ =~ request.referrer
+      url = coming_from_program_view ? user : request.referrer
+      format.html {redirect_to url, notice: 'Program was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -77,6 +80,6 @@ class ProgramsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def program_params
-      params.require(:program).permit(:title)
+      params.require(:program).permit(:title, :copy_program_id)
     end
 end

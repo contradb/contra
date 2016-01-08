@@ -15,7 +15,7 @@ describe 'Creating program from index page' do
     visit '/programs'
     click_link "New Program"
 
-    expect(page).to have_content("New Program")
+    expect(page).to have_selector("input[value='New Program']")
     scrutinize_layout page
   end
 

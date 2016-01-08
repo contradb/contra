@@ -11,10 +11,14 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :title %><br>
-    <%= f.text_field :title %>
-  </div>
+<% copy_program = 
+     params[:copy_program_id] ? Program.find(params[:copy_program_id]) : nil %>
+
+
+  <h1 class="field">
+    <%= f.text_field :title, {value: copy_program ? "#{copy_program.title} copy" : 'New Program'} %>
+
+  </h1>
   <div class="actions">
     <%= f.submit %>
   </div>
