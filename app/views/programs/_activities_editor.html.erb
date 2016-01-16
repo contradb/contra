@@ -1,0 +1,15 @@
+<% require 'json' %>
+
+
+<%# an array* of activities. More or less. (It's probably some active
+    record lazily evaled thing, that ends up acting like an array)  %>
+<% @activities = @activities_editor %>
+
+<div class="container contra-activities-edit" ng-app="activities_editor">
+  <div ng-controller="ActivitiesController as activities">
+    <span ng-init="activities.arr='<%= ActivitiesHelper.activities_to_json_for_editing(@activities) %>'">
+    </span>
+    
+    _{{activities.arr}}_
+  </div> <!-- FiguresController -->
+</div> <!-- activities editor -->
