@@ -10,13 +10,6 @@
     end %>
 </div>
 
-<ol>
-  <li>Box the Gnat Contra</li>
-  <li>Hey in the Barn</li>
-  <li>Allison Wonderland</li>
-  <li>~waltz~</li>
-  <li>~break~</li>
-  <li>Call Me</li>
-  <li>Martha's Breakup Breakdown</li>
-  <li>~waltz~</li>
-</ol>
+<%= render partial: "activities_table", object: @program.activities_sorted %>
+
+

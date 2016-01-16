@@ -54,7 +54,7 @@ dances = showtable
 
 
         <% if title then %>         
-          <td><strong><%= link_to dance.title, dance %></td></strong><% end %>
+          <td><strong><%= link_to dance.title, dance %></strong></td><% end %>
         <% if choreographer then %> 
           <td><%= if dance && dance.choreographer then 
                     link_to dance.choreographer.name, dance.choreographer

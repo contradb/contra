@@ -40,7 +40,7 @@ programs = showtable
 
 
         <% if title then %>         
-          <td><strong><%= link_to program.title, program %></td></strong><% end %>
+          <td><strong><%= link_to program.title, program %></strong></td><% end %>
         <% if user then %>
           <td><%= link_to program.user.name, program.user %></td>         <% end %>
       </tr>

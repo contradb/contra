@@ -14,10 +14,11 @@ class ProgramsController 1,0
   def degrees_to_rotation(39,757
   def figure_txt(87,2339
 
-/home/dm/ruby/contra/app/helpers/globo_helper.rb,112
-  def new_dance_button_html(26,956
-  def edit_dance_button_html(31,1193
-  def copy_dance_button_html(41,1645
+/home/dm/ruby/contra/app/helpers/globo_helper.rb,152
+  def new_dance_button_html(26,984
+  def edit_dance_button_html(31,1221
+  def copy_dance_button_html(41,1673
+  def copy_program_button_html(68,2739
 
 /home/dm/ruby/contra/app/helpers/welcome_helper.rb,57
   WELCOME_BTN_ATTR 2,21
@@ -34,6 +35,8 @@ class Program 1,0
 
 /home/dm/ruby/contra/app/models/user.rb,16
 class User 1,0
+
+/home/dm/ruby/contra/app/models/activity.rb,0
 
 /home/dm/ruby/contra/app/helpers/users_helper.rb,0
 

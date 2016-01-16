@@ -1,5 +1,5 @@
 require 'rails_helper'
 
 RSpec.describe Dance, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  pending "make sure it complains about bad JSON...or something"
 end

@@ -16,9 +16,27 @@
 
 
   <h1 class="field">
-    <%= f.text_field :title, {value: copy_program ? "#{copy_program.title} copy" : 'New Program'} %>
+    <%= f.text_field(
+          :title, 
+          {value: if copy_program
+                    then "#{copy_program.title} copy"
+                  elsif @program.title && !@program.title.empty?
+                    then @program.title 
+                    else 'New Program'
+                  end
+          }) %>
 
   </h1>
+
+  <div class="container contra-activities-edit" ng-app="activities_editor">
+    <div ng-controller="ActivitiesController as activities">
+      <span ng-init="activities.arr='<%= ActivitiesHelper.activities_to_json_for_editing(@program.activities_sorted) %>'">
+      </span>
+
+      _{{activities.arr}}_
+    </div> <!-- FiguresController -->
+  </div> <!-- activities editor -->
+
   <div class="actions">
     <%= f.submit %>
   </div>

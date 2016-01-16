@@ -65,7 +65,7 @@ RSpec.configure do |config|
   # suggested this change. 
   # There seems to be negligable performance difference to do it on every test. 
   config.after :each do
-    Warden.test_reset!
+    Warden.test_reset! if defined? Warden.test_reset! # guard for during model tests, huh.
   end
 
 end
