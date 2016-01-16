@@ -6,7 +6,11 @@
 (function () {
     var app = angular.module('activities_editor', []);
     var scopeInit = function ($scope) {
-        console.log("hello scopeInit")
+        var activities_ctrl = this;
+        $scope.addActivity = function() {activities_ctrl.arr.push({});};
+        $scope.deleteActivity = function() {
+            (activities_ctrl.arr.length>0) && activities_ctrl.arr.pop({});
+        };
     }
     console.log("hello");
     app.controller('ActivitiesController', ['$scope',scopeInit])

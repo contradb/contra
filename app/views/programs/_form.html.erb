@@ -30,8 +30,19 @@
 
   <div class="container contra-activities-edit" ng-app="activities_editor">
     <div ng-controller="ActivitiesController as activities">
-      <span ng-init="activities.arr='<%= ActivitiesHelper.activities_to_json_for_editing(@program.activities_sorted) %>'">
+      <span ng-init="activities.arr=<%= ActivitiesHelper.activities_to_json_for_editing(@program.activities_sorted) %>">
       </span>
+
+
+      <div class="btn-group btn-group-lg" role="group">
+        <div class="btn-group">
+          <button name="button" type="button" ng-click='addActivity()' class="btn btn-default">Add Activity</button>
+        </div>
+        <div class="btn-group">
+          <button name="button" type="button" ng-click='deleteActivity()' ng-show="activities.arr.length > 0" class="btn btn-default">Remove Activity</button>
+        </div>
+      </div>
+
 
       _{{activities.arr}}_
     </div> <!-- FiguresController -->
