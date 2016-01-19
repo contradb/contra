@@ -48,16 +48,24 @@
         {class: "col-lg-11 col-md-10 col-xs-9", id: "choreographer-autocomplete"} %>
     <script>
       $( "#choreographer-autocomplete" ).autocomplete({
-      source: <%= a_to_safe_str(Choreographer.all.map &:name) %>,
-      autoFocus: true,
-      minLength: 0
+        source: <%= a_to_safe_str(Choreographer.all.map &:name) %>,
+        autoFocus: true,
+        minLength: 0
       });
     </script>
   </div>
   <div class="row field">
     <%= f.label :formation, class: "col-lg-1 col-md-2 col-xs-3" %>
-    <%= f.text_field :start_type, {class: "col-lg-11 col-md-10 col-xs-9"}.merge(copy_dance ? {value: copy_dance.start_type} : {}) %>
+    <%= f.text_field :start_type, {class: "col-lg-11 col-md-10 col-xs-9", id: "start-type-autocomplete"}.merge(copy_dance ? {value: copy_dance.start_type} : {}) %>
+    <script>
+      $( "#start-type-autocomplete" ).autocomplete({
+        source: ["improper","Becket","four face four","square dance","indecent"],
+        autoFocus: true,
+        minLength: 0
+      });
+    </script>
   </div>
+
 
 
 <%# ============================ new figure editors ==================== %>
