@@ -59,6 +59,8 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'poltergeist'
+  gem 'phantomjs', require: 'phantomjs/poltergeist'
 end
 
 
