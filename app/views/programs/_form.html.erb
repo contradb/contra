@@ -32,7 +32,10 @@
     <div ng-controller="ActivitiesController as activities">
       <span ng-init="activities.arr=<%= ActivitiesHelper.activities_to_json_for_editing(@program.activities_sorted) %>">
       </span>
+      <span ng-init="activities.dances=<%= ActivitiesHelper.dances_to_json_for_selecting() %>">
+      </span>
 
+      <div ng-repeat="act in activities.arr">I'm an activity!</div>
 
       <div class="btn-group btn-group-lg" role="group">
         <div class="btn-group">
@@ -44,7 +47,8 @@
       </div>
 
 
-      _{{activities.arr}}_
+      <p> {{activities.arr}} </p>
+      <p> {{activities.dances}} </p>
     </div> <!-- FiguresController -->
   </div> <!-- activities editor -->
 

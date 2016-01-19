@@ -5,9 +5,12 @@ class Dance < ActiveRecord::Base
   belongs_to :choreographer
   validates :title, length: { in: 4..100 }
   validates :start_type, length: { in: 1..100 }
+  accepts_nested_attributes_for :choreographer
   def figures
     JSON.parse self.figures_json
   end
+  # eases form defaulting:
+  def choreographer_name () choreographer ? choreographer.name : "" end
   # legacy functions - should not be called anymore:
   def figure1 () JSON.generate (figures[0]||{}); end
   def figure2 () JSON.generate (figures[1]||{}); end

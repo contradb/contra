@@ -27,6 +27,15 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+
+// these three should be auto-included by jquery-ui/autocomplete ... but they're not. Not sure why. Need 'em
+@import "jquery-ui/core";
+@import "jquery-ui/menu";
+@import "jquery-ui/theme";
+
+@import "jquery-ui/autocomplete";
+
+
 // make dance table not expand-to-fit ala
 // http://stackoverflow.com/questions/10687306/why-do-twitter-bootstrap-tables-always-have-100-width
 .contra-table-nonfluid {width: auto !important;}

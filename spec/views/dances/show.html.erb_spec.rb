@@ -7,7 +7,7 @@ require 'rails_helper'
 
 RSpec.describe "dances/show", type: :view do
   before(:each) do
-    @dance = assign(:dance, Dance.create!(
+    @dance = assign(:dance, FactoryGirl.build_stubbed(:dance,
       :title => "Clever Pun",
       :start_type => "Complicated Formation",
       :choreographer => FactoryGirl.build_stubbed(:choreographer, name: "Becky Hill"),

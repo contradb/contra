@@ -12,4 +12,11 @@ module ActivitiesHelper
       end
     )
   end
+  def self.dances_to_json_for_selecting ()
+    JSON.generate(
+      Dance.all.map do |d|
+        {"label" => d.title, "value" => d.id}
+      end
+    )
+  end
 end

@@ -17,19 +17,19 @@ class DancesController < ApplicationController
   # GET /dances/new
   def new
     @dance = Dance.new
-    @dance.title ||= "New Dance"
+    @dance.title ||= "New Dance" 
   end
 
   # GET /dances/1/edit
   def edit
   end
 
+
   # POST /dances
   # POST /dances.json
   def create
-    @dance = Dance.new(dance_params)
+    @dance = Dance.new(dance_params_with_real_choreographer intern_choreographer)
     @dance.user_id = current_user.id
-
     respond_to do |format|
       if @dance.save
         format.html { redirect_to @dance, notice: 'Dance was successfully created.' }
@@ -45,7 +45,7 @@ class DancesController < ApplicationController
   # PATCH/PUT /dances/1.json
   def update
     respond_to do |format|
-      if @dance.update(dance_params)
+      if @dance.update(dance_params_with_real_choreographer intern_choreographer)
         format.html { redirect_to @dance, notice: 'Dance was successfully updated.' }
         format.json { render :show, status: :ok, location: @dance }
       else
@@ -80,6 +80,14 @@ class DancesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def dance_params
-      params.require(:dance).permit(:title, :choreographer_id, :start_type, :figures_json, :notes, :copy_dance_id)
+      params.require(:dance).permit(:title, :choreographer, :choreographer_name, :start_type, :figures_json, :notes, :copy_dance_id)
+    end
+
+    def dance_params_with_real_choreographer(c)
+      dance_params.except("choreographer_name").merge("choreographer" => c)
+    end
+
+    def intern_choreographer
+      Choreographer.find_or_create_by( name: dance_params["choreographer_name"] )
     end
 end

@@ -1,4 +1,4 @@
-# encoding: UTF-8
+# encoding: utf-8
 
 module DancesHelper
 
@@ -78,7 +78,6 @@ module DancesHelper
        end
      }).join(" ");
   end
-end
 
 
 
@@ -128,3 +127,22 @@ end
     end
   end
 
+  # input: an array of possibly non-html-safe strings
+  # output: a string representation of the array with brackets and
+  #         quotes and properly html-safe internal strings.
+  def a_to_safe_str(a)
+    s = '['.html_safe
+    first_time = true
+    a.each do |e|
+      s << ','.html_safe unless first_time
+      s << '"'.html_safe
+      s << e
+      s << '"'.html_safe
+      first_time = false;
+    end
+    s << ']'.html_safe
+    s
+  end
+
+
+end

@@ -12,6 +12,5 @@
             (activities_ctrl.arr.length>0) && activities_ctrl.arr.pop({});
         };
     }
-    console.log("hello");
     app.controller('ActivitiesController', ['$scope',scopeInit])
 })()

@@ -24,6 +24,8 @@ gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
+
 # Turbolinks is more hassle than it's worth right now
 # gem 'turbolinks'
 # this fixed some turbolinks bugs, but didn't play with angular
