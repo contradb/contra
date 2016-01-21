@@ -18,6 +18,7 @@ class ProgramsController < ApplicationController
   # GET /programs/new
   def new
     @program = Program.new
+    3.times {|i| @program.activities.build(index: i)}
   end
 
   # GET /programs/1/edit
@@ -29,7 +30,7 @@ class ProgramsController < ApplicationController
   def create
     @program = Program.new(program_params)
     @program.user_id = current_user.id
-
+    @program.activities.each_with_index {|a,i| a.index = i}
     respond_to do |format|
       if @program.save
         format.html { redirect_to @program, notice: 'Program was successfully created.' }
@@ -80,6 +81,6 @@ class ProgramsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def program_params
-      params.require(:program).permit(:title, :copy_program_id)
+      params.require(:program).permit(:title, :copy_program_id, activities_attributes: [:text])
     end
 end

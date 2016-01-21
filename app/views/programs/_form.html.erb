@@ -28,6 +28,7 @@
 
   </h1>
 
+
   <div class="container contra-activities-edit" ng-app="activities_editor">
     <div ng-controller="ActivitiesController as activitiesCtrl" id="activities-div">
       <span ng-init="activitiesCtrl.activities=<%= ActivitiesHelper.activities_to_json_for_editing(@program.activities_sorted) %>">
@@ -51,7 +52,7 @@
              minlength="1"
              input-class="form-control form-control-small"
              match-class="autocomplete-match-text"></div>
-        <input type="text" value="" name="activivty-{{$index}}-text"     id="activivty-{{$index}}-text"/>
+        <input type="text" value="" name="program[activities_attributes][{{$index}}][text]"     id="activivty-{{$index}}-text"/>
       </div>
 
       <div class="btn-group btn-group-lg" role="group">

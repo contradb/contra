@@ -6,6 +6,7 @@ class Program < ActiveRecord::Base
   validates :title, length: { in: 4..100 }  
   has_many :activities, dependent: :destroy
   has_many :dances, through: :activities
+  accepts_nested_attributes_for :activities
 
   def activities_sorted
     self.activities.sort_by &:index
