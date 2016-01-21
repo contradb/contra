@@ -1,57 +1,62 @@
 
-/home/dm/ruby/contra/app/controllers/choreographers_controller.rb,36
+/home/dm/contra/app/controllers/choreographers_controller.rb,36
 class ChoreographersController 1,0
 
-/home/dm/ruby/contra/app/controllers/dances_controller.rb,28
+/home/dm/contra/app/controllers/dances_controller.rb,28
 class DancesController 1,0
 
-/home/dm/ruby/contra/app/controllers/programs_controller.rb,30
+/home/dm/contra/app/controllers/programs_controller.rb,30
 class ProgramsController 1,0
 
-/home/dm/ruby/contra/app/helpers/dances_helper.rb,122
+/home/dm/contra/app/helpers/activities_helper.rb,98
+  def self.activities_to_json_for_editing activities_to_json_for_editing4,40
+        h[h9,248
+
+/home/dm/contra/app/helpers/dances_helper.rb,122
   RotationMenuLabels 6,107
   def rotation_to_degrees(21,435
   def degrees_to_rotation(39,757
-  def figure_txt(87,2339
+  def figure_txt(86,2335
 
-/home/dm/ruby/contra/app/helpers/globo_helper.rb,152
+/home/dm/contra/app/helpers/welcome_helper.rb,57
+  WELCOME_BTN_ATTR 2,21
+  def sign_up_button_html(3,99
+
+/home/dm/contra/app/helpers/globo_helper.rb,152
   def new_dance_button_html(26,984
   def edit_dance_button_html(31,1221
   def copy_dance_button_html(41,1673
   def copy_program_button_html(68,2739
 
-/home/dm/ruby/contra/app/helpers/welcome_helper.rb,57
-  WELCOME_BTN_ATTR 2,21
-  def sign_up_button_html(3,99
+/home/dm/contra/app/models/program.rb,90
+class Program 4,94
+  module Private                # really not sure about this,43,1165
 
-/home/dm/ruby/contra/app/models/choreographer.rb,25
-class Choreographer 1,0
-
-/home/dm/ruby/contra/app/models/dance.rb,18
+/home/dm/contra/app/models/dance.rb,18
 class Dance 3,16
 
-/home/dm/ruby/contra/app/models/program.rb,19
-class Program 1,0
+/home/dm/contra/app/models/choreographer.rb,25
+class Choreographer 1,0
 
-/home/dm/ruby/contra/app/models/user.rb,16
+/home/dm/contra/app/models/user.rb,16
 class User 1,0
 
-/home/dm/ruby/contra/app/models/activity.rb,0
+/home/dm/contra/app/models/activity.rb,0
 
-/home/dm/ruby/contra/app/helpers/users_helper.rb,0
+/home/dm/contra/app/helpers/about_helper.rb,0
 
-/home/dm/ruby/contra/app/helpers/programs_helper.rb,0
+/home/dm/contra/app/helpers/programs_helper.rb,0
 
-/home/dm/ruby/contra/app/helpers/application_helper.rb,0
+/home/dm/contra/app/helpers/application_helper.rb,0
 
-/home/dm/ruby/contra/app/helpers/choreographers_helper.rb,0
+/home/dm/contra/app/helpers/choreographers_helper.rb,0
 
-/home/dm/ruby/contra/app/helpers/about_helper.rb,0
+/home/dm/contra/app/helpers/users_helper.rb,0
 
-/home/dm/ruby/contra/app/controllers/about_controller.rb,0
+/home/dm/contra/app/controllers/welcome_controller.rb,0
 
-/home/dm/ruby/contra/app/controllers/users_controller.rb,0
+/home/dm/contra/app/controllers/application_controller.rb,0
 
-/home/dm/ruby/contra/app/controllers/welcome_controller.rb,0
+/home/dm/contra/app/controllers/about_controller.rb,0
 
-/home/dm/ruby/contra/app/controllers/application_controller.rb,0
+/home/dm/contra/app/controllers/users_controller.rb,0

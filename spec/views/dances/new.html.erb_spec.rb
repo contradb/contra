@@ -15,7 +15,7 @@ RSpec.describe "dances/new", type: :view do
     assert_select "form[method=?]", "post" do
       assert_select "input#dance_title[name=?]", "dance[title]"
       # don't test choreographer because it's a select box
-      assert_select "input#dance_start_type[name=?]", "dance[start_type]"
+      # don't test start_type because it's slightly autocomplete-hairy.
       # don't test figures because it's javascript-generated. 
       assert_select "textarea#dance_notes[name=?]", "dance[notes]"
     end

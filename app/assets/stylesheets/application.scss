@@ -36,6 +36,9 @@
 @import "jquery-ui/autocomplete";
 
 
+@import "angucomplete-alt";
+
+
 // make dance table not expand-to-fit ala
 // http://stackoverflow.com/questions/10687306/why-do-twitter-bootstrap-tables-always-have-100-width
 .contra-table-nonfluid {width: auto !important;}
@@ -44,6 +47,8 @@
 
 // debugging aid
 .yellow {background-color: #FF3}
+
+.autocomplete-match-text { color: red; font-weight: bold; }
 
 .contra-label { font-weight: bold; }
 

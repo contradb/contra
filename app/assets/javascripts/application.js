@@ -17,3 +17,4 @@
 //= require_tree .
 
 //= require jquery-ui/autocomplete
+//= require angucomplete-alt
