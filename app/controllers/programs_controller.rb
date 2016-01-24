@@ -46,7 +46,21 @@ class ProgramsController < ApplicationController
   # PATCH/PUT /programs/1.json
   def update
     respond_to do |format|
-      if @program.update(program_params)
+
+      # wipe out all associated activities and start fresh
+      @program.activities.destroy(@program.activities)
+
+      # install 'index' attribute into hash
+      pp = program_params.deep_dup
+      ppaa = pp["activities_attributes"]
+      i = 0
+      while ppaa[i.to_s] do
+        ppaa[i.to_s]["index"] = i
+        i += 1
+      end
+
+      # do the usual stuff
+      if @program.update(pp)
         format.html { redirect_to @program, notice: 'Program was successfully updated.' }
         format.json { render :show, status: :ok, location: @program }
       else
@@ -83,4 +97,16 @@ class ProgramsController < ApplicationController
     def program_params
       params.require(:program).permit(:title, :copy_program_id, activities_attributes: [:text])
     end
+
+    # helper function that generates all the natural numbers. 
+    def naturals
+      Enumerator.new do |yielder|
+        i = 0
+        loop do
+          yielder.yield i
+          i += 1
+        end
+      end
+    end
 end
+
