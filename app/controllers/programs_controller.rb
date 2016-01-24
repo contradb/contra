@@ -50,7 +50,7 @@ class ProgramsController < ApplicationController
       # wipe out all associated activities and start fresh
       @program.activities.destroy(@program.activities)
 
-      # install 'index' attribute into hash
+      # install 'index' attribute into pp hash
       pp = program_params.deep_dup
       ppaa = pp["activities_attributes"]
       i = 0
@@ -59,7 +59,7 @@ class ProgramsController < ApplicationController
         i += 1
       end
 
-      # do the usual stuff
+      # pp hash is deltas to @program, try to save it...
       if @program.update(pp)
         format.html { redirect_to @program, notice: 'Program was successfully updated.' }
         format.json { render :show, status: :ok, location: @program }
