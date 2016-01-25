@@ -12,4 +12,18 @@
 
 <%= render partial: "activities_table", object: @program.activities_sorted %>
 
+<% @program.activities_sorted.each do |activity| %>
+  <h2>
+    <%= if activity.dance 
+        then activity.dance.title
+        elsif !activity.text.empty?
+        then activity.text
+        else "<span class='empaty-activity'>empty activity</span>".html_safe
+        end %>
+  </h2>
+  <%= if activity.dance && !activity.text.empty?
+      then content_tag(:p, activity.text, class: "activity-text-overshadowed-by-dance")
+      end %>
+  <p>Regular text</p>
+<% end %>
 
