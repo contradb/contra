@@ -1,21 +1,5 @@
 <% require 'json' %>
 
-<p>
-  <span>user</span>
-  <%= link_to @dance.user.name, @dance.user %>
-</p>
-
-<p>
-  <h1>
-  <%= @dance.title %></h1>
-</p>
-
-<p>
-  by <strong> <%= link_to @dance.choreographer.name, @dance.choreographer %></strong>
-</p>
-
-
-
 <div class="btn-group">
 <%= copy_dance_button_html(@dance, label: "Copy") %>
 <%= if (signed_in? && (current_user.id == @dance.user_id)) then
@@ -24,10 +8,12 @@
     end %>
 </div>
 
-<p>
-  <span>Formation:</span>
-  <%= @dance.start_type %>
-</p>
+
+
+<h1><%= @dance.title %></h1>
+
+<p>by: <strong><%= link_to @dance.choreographer.name, @dance.choreographer %></strong></p>
+<p>formation: <%= @dance.start_type %> </p>
 
 <table class="table table-bordered table-condensed contra-table-nonfluid">
 <% begin
@@ -42,10 +28,9 @@
 </table>
 
 <% if @dance.notes.strip.length > 0 %>
-<p>
-  <span>Notes:</span>
-  <%= @dance.notes %>
-</p>
+<p><%= @dance.notes %></p>
 <% end %>
+
+<p>user: <%= link_to @dance.user.name, @dance.user %> </p>
 
 

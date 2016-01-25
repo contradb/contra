@@ -1,6 +1,4 @@
-<p><span>User:</span> <%= link_to @program.user.name, @program.user %></p>
 
-<h1><%= @program.title %></h1>
 
 <div class="btn-group">
 <%= copy_program_button_html(@program, label: "Copy") %>
@@ -9,6 +7,10 @@
     delete_program_button_html(@program, label: "Delete")
     end %>
 </div>
+
+<h1><%= @program.title %></h1>
+<p>user: <strong><%= link_to @program.user.name, @program.user %></strong></p>
+
 
 <%= render partial: "activities_table", object: @program.activities_sorted %>
 
@@ -26,4 +28,5 @@
       end %>
   <p>Regular text</p>
 <% end %>
+
 
