@@ -95,7 +95,7 @@ class ProgramsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def program_params
-      params.require(:program).permit(:title, :copy_program_id, activities_attributes: [:text])
+      params.require(:program).permit(:title, :copy_program_id, activities_attributes: [:text, :dance_id])
     end
 
     # helper function that generates all the natural numbers. 

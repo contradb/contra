@@ -33,26 +33,29 @@
     <div ng-controller="ActivitiesController as activitiesCtrl" id="activities-div">
       <span ng-init="activitiesCtrl.activities=<%= ActivitiesHelper.activities_to_json_for_editing(@program.activities_sorted) %>">
       </span>
-      <span ng-init="activitiesCtrl.dances=<%= ActivitiesHelper.dances_to_json_for_selecting() %>">
+      <span ng-init="activitiesCtrl.dances=<%= JSON.generate(Dance.all.map &:hash_for_autocompleting) %>">
       </span>
 
       <div ng-repeat="act in activitiesCtrl.activities">
         <input type="checkbox"      name="activivty-{{$index}}-selected" id="activivty-{{$index}}-selected" value="selected">
         {{$index+1}}.
+        <input type="text" ng-model="act.text" name="program[activities_attributes][{{$index}}][text]"     id="activivty-{{$index}}-text"/>
+        <input type="text" ng-model="act.selected.originalObject.id" name="program[activities_attributes][{{$index}}][dance_id]"     id="activivty-{{$index}}-dance_id"/>
         <div angucomplete-alt 
              name="activivty-{{$index}}-dance"
              id="activivty-{{$index}}-dance"
              placeholder="Choose dance"
              maxlength="100"
              pause="100"
-             selected-object="act['selected']"
+             selected-object="act.selected"
              local-data="activitiesCtrl.dances"
-             search-fields="title"
-             title-field="title"
+             search-fields="title,choreographer"
+             title-field="title,choreographer"
              minlength="1"
              input-class="form-control form-control-small"
-             match-class="autocomplete-match-text"></div>
-        <input type="text" value="" name="program[activities_attributes][{{$index}}][text]"     id="activivty-{{$index}}-text"/>
+             match-class="autocomplete-match-text"
+             initial-value="findDanceHashById(act.dance_id,activitiesCtrl.dances)"
+             ></div>
       </div>
 
       <div class="btn-group btn-group-lg" role="group">

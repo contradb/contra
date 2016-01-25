@@ -20,4 +20,9 @@ class Dance < ActiveRecord::Base
   def figure6 () JSON.generate (figures[5]||{}); end
   def figure7 () JSON.generate (figures[6]||{}); end
   def figure8 () JSON.generate (figures[7]||{}); end
+
+  # IO properties for autocompletion
+  def hash_for_autocompleting
+    {"title" => title, "choreographer" => choreographer.name, "id" => id}
+  end
 end
