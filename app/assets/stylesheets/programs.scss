@@ -2,12 +2,32 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.activity-text-overshadowed-by-dance {
+.activity-toc-dance-title {
+    font-weight: bold;
+    font-style: italic;
+}
+
+.activity-breakdown {
+    border-top-style: solid;
+}
+.activity-breakdown h2 {
+    margin-top: 10px;
+    margin-bottomm: 10px;
+}
+
+p.activity-breakdown-text {
     font-size: larger;
     font-weight: bold;
 }
+h2.activity-breakdown-text {
+}
 
-.empty-activity {
+h2.activity-breakdown-dance-title {
+}
+
+h2.activity-breakdown-empty-activity {
     color: #888;
     font-style: italic;
+    font-size: smaller;
 }
+

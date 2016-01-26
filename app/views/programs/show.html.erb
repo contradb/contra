@@ -12,21 +12,32 @@
 <p>user: <strong><%= link_to @program.user.name, @program.user %></strong></p>
 
 
-<%= render partial: "activities_table", object: @program.activities_sorted %>
+<h2>Table of Contents</h2>
+<ol>
+  <% @program.activities_sorted.each_with_index do |activity,index| %>
+  <li><a href=<%= "\"\##{activity_anchor_id(index)}\"".html_safe %>><%= activity.dance ? (content_tag(:span,activity.dance.title,class: "activity-toc-dance-title") + " by " + activity.dance.choreographer.name) : (activity.text.empty? ? "~~~" : activity.text) %></a></li>
+  <% end %>
+</ol>
 
-<% @program.activities_sorted.each do |activity| %>
-  <h2>
+<% @program.activities_sorted.each_with_index do |activity,index| %>
+  <%= "<div class='activity-breakdown' id='#{activity_anchor_id(index)}'>".html_safe %>
     <%= if activity.dance 
-        then activity.dance.title
+        then content_tag(:h2, (link_to activity.dance.title, activity.dance), class: "activity-breakdown-dance-title")
         elsif !activity.text.empty?
-        then activity.text
-        else "<span class='empaty-activity'>empty activity</span>".html_safe
+        then content_tag(:h2, activity.text, class: "activity-breakdown-text")
+        else content_tag(:h2, "~ ~ ~", class: "activity-breakdown-empty-activity")
         end %>
-  </h2>
-  <%= if activity.dance && !activity.text.empty?
-      then content_tag(:p, activity.text, class: "activity-text-overshadowed-by-dance")
-      end %>
-  <p>Regular text</p>
+    <%= if activity.dance
+        then 
+          authorspan = content_tag(:b, (link_to activity.dance.choreographer.name, activity.dance.choreographer))
+          content_tag(:p, "by: ".html_safe + authorspan)
+        end %>
+
+    <%= if activity.dance && !activity.text.empty?
+        then content_tag(:p, activity.text, class: "activity-breakdown-text")
+        end %>
+    <%= render partial: 'dances/bodyshow', locals: {dance: activity.dance} if activity.dance %>
+  <%= '</div>'.html_safe %>
 <% end %>
 
 

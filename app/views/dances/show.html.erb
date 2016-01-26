@@ -13,24 +13,6 @@
 <h1><%= @dance.title %></h1>
 
 <p>by: <strong><%= link_to @dance.choreographer.name, @dance.choreographer %></strong></p>
-<p>formation: <%= @dance.start_type %> </p>
-
-<table class="table table-bordered table-condensed contra-table-nonfluid">
-<% begin
-     beats_acc = 0
-     @dance.figures.each do |figure| %>
-  <tr class="<%= if (beats_acc % 32) < 16 then 'a1b1' else 'a2b2' end %>">
-      <td><%= {0=>'A1', 16=>'A2', 32=>'B1', 48=>'B2' }[beats_acc] %></td>
-      <td><%= beats_acc += figure["beats"]||0
-         render partial: "figure", object: figure %></td></tr>
-<%   end
-   end    %>
-</table>
-
-<% if @dance.notes.strip.length > 0 %>
-<p><%= @dance.notes %></p>
-<% end %>
+<%= render partial: 'bodyshow', locals: {dance: @dance} %>
 
 <p>user: <%= link_to @dance.user.name, @dance.user %> </p>
-
-
