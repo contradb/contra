@@ -1,4 +1,4 @@
-
+<%= moves_already_introduced = {} %>
 
 <div class="btn-group">
 <%= copy_program_button_html(@program, label: "Copy") %>
@@ -36,6 +36,21 @@
     <%= if activity.dance && !activity.text.empty?
         then content_tag(:p, activity.text, class: "activity-breakdown-text")
         end %>
+
+    <%= if activity.dance then
+          introduce_moves = []
+          activity.dance.figures.each do |figure|
+            move = figure["move"]
+            unless moves_already_introduced[move]
+              moves_already_introduced[move] = true
+              introduce_moves.push move
+            end
+          end
+          unless introduce_moves.empty? 
+            content_tag(:p, "introduces moves: " + introduce_moves.join(', '))
+          end
+        end %>
+
     <%= render partial: 'dances/bodyshow', locals: {dance: activity.dance} if activity.dance %>
   <%= '</div>'.html_safe %>
 <% end %>
