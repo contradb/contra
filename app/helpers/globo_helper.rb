@@ -22,7 +22,9 @@ module GloboHelper
   def x_icon_html()
     "<span class='glyphicon glyphicon-remove' aria-hidden='true'></span>".html_safe
   end
-
+  def save_icon_html()
+    "<span class='glyphicon glyphicon-check' aria-hidden='true'></span>".html_safe
+  end
 
 
   BUTTON_HTML_ATTR = {class: "btn btn-default btn-md contra-btn-midpage", type: "button"}.freeze
@@ -47,7 +49,6 @@ module GloboHelper
             new_dance_path(copy_dance_id: dance), 
             BUTTON_HTML_ATTR)
   end
-
   def new_choreographer_button_html(label: "New Choreographer")
     link_to(content_tag(:span, new_icon_html() + ' ' + label),
             new_choreographer_path, 
@@ -73,5 +74,13 @@ module GloboHelper
     link_to(content_tag( :span, copy_icon_html() + ' ' + label ),
             new_program_path(copy_program_id: program), 
             BUTTON_HTML_ATTR)
+  end
+
+  # e.g. save_submit_button_html "Save Choreographer", {class: "blahclasses"}
+  def save_submit_button_html(label = "Save", opts={})
+    opts = opts.clone
+    opts[:class] = (opts[:class] || "") + " btn btn-lg btn-success"
+    span = content_tag(:span, save_icon_html() + ' ' + label)
+    button_tag span, opts
   end
 end
