@@ -3,7 +3,7 @@
   of space, then labels take the left column. If space is tight, they
   take the two leftmost columns.  %>
 
-  <% debug_figure_json = true %>
+  <% debug_figure_json = false %>
 
 
   <div class="container contra-dance-edit"  ng-app="contra">
@@ -75,13 +75,29 @@
 <%# ======================================================================== %>
 
   <div ng-controller="FiguresController as figures">
+    <!-- Add/delete figure buttons -->
+    <div class="row actions">
+      <%= f.label :figures, class: "col-lg-1 col-md-2 col-xs-3" %>
+      <div class="col-lg-11 col-md-10 col-xs-9">
+        <div class="btn-group btn-group-justified btn-group-lg" role="group">
+          <div class="btn-group">
+            <button name="button" type="button" ng-click='addFigure()' class="btn btn-default"><%= plus_icon_html() %> Add Figure</button>
+          </div>
+          <div class="btn-group">
+            <button name="button" type="button" ng-click='deleteFigure()' ng-show="figures.arr.length > 0" class="btn btn-default"><%= x_icon_html() %> Remove Figure</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
     <div class="row">
       <table class="figure_edits col-lg-12 col-xs-12">
-        <thead ng-init="figures.arr=<%= 
+        <thead ng-init="figures.arr=defaultFigures(<%= 
                         if copy_dance 
                         then copy_dance.figures_json 
                         else @dance.figures_json 
-                        end %>">
+                        end %>)">
           <tr>                                       <!-- 12 twelfths -->
             <th style="width:  8.33333%"></th>       <!-- 1 -->
             <th style="width: 16.66667%">formation</th><!-- 2 -->
@@ -158,21 +174,6 @@
       </table>
     </div>
 
-    <!-- Add/delete figure buttons -->
-    <div class="row actions">
-      <div class="col-lg-1 col-md-2 col-xs-3">
-      </div>
-      <div class="col-lg-11 col-md-10 col-xs-9">
-        <div class="btn-group btn-group-justified btn-group-lg" role="group">
-          <div class="btn-group">
-            <button name="button" type="button" ng-click='addFigure()' class="btn btn-default">Add Figure</button>
-          </div>
-          <div class="btn-group">
-            <button name="button" type="button" ng-click='deleteFigure()' ng-show="figures.arr.length > 0" class="btn btn-default">Remove Figure</button>
-          </div>
-        </div>
-      </div>
-    </div>
     
 
   <!-- debugger -->

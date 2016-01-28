@@ -185,6 +185,18 @@ function moveMenuOptions (formation,who) {
     return r;
 }
 
+// always freshly allocated
+function newFigure () {
+    return {formation:"square", who:"everybody",beats:8}
+}
+
+function defaultFigures (figures) {
+    if (figures.length == 0)
+        return [newFigure(), newFigure(), newFigure(), newFigure(),
+                newFigure(), newFigure(), newFigure(), newFigure()]
+    else return figures;
+}
+
 (function () {
     var app = angular.module('contra', []);
     var scopeInit = function ($scope) {
@@ -199,8 +211,10 @@ function moveMenuOptions (formation,who) {
         $scope.styleForBeats = styleForBeats;
         $scope.moveMenuOptions = moveMenuOptions;
         $scope.toJson = angular.toJson;
-        $scope.addFigure = function() {fctrl42.arr.push({formation:"square", who:"everybody",beats:8});};
+        $scope.newFigure = newFigure;
+        $scope.addFigure = function() {fctrl42.arr.push(newFigure());};
         $scope.deleteFigure = function() {(fctrl42.arr.length>0) && fctrl42.arr.pop()};
+        $scope.defaultFigures = defaultFigures;
     }
     app.controller('FiguresController', ['$scope',scopeInit])
 })()

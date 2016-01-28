@@ -18,6 +18,10 @@ module GloboHelper
   def new_icon_html()
     "<span class='glyphicon glyphicon-plus' aria-hidden='true'></span>".html_safe
   end
+  def plus_icon_html() new_icon_html end
+  def x_icon_html()
+    "<span class='glyphicon glyphicon-remove' aria-hidden='true'></span>".html_safe
+  end
 
 
 
