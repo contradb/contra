@@ -46,6 +46,10 @@
               introduce_moves.push move
             end
           end
+          # every custom move is different, so print 'custom' in every 
+          # dance it's present in, by forgetting we've seen 'custom':
+          moves_already_introduced.delete 'custom'
+          # print new moves
           unless introduce_moves.empty? 
             content_tag(:p, "introduces moves: " + introduce_moves.join(', '))
           end
