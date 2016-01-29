@@ -1,4 +1,5 @@
-<%= form_for(@program) do |f| %>
+<% debug_js = true %>
+<%= form_for(@program, html: {class: "form-inline"}) do |f| %>
   <% if @program.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@program.errors.count, "error") %> prohibited this program from being saved:</h2>
@@ -14,66 +15,85 @@
 <% copy_program = 
      params[:copy_program_id] ? Program.find(params[:copy_program_id]) : nil %>
 
+  <div class="container">
+    <h1 class="field row">
+      <%= f.text_field(
+            :title, 
+            {value: if copy_program
+                      then "#{copy_program.title} copy"
+                    elsif @program.title && !@program.title.empty?
+                      then @program.title 
+                      else ''
+                    end,
+             placeholder: "Program Title",
+             class: "col-xs-12"
+            }) %>
 
-  <h1 class="field">
-    <%= f.text_field(
-          :title, 
-          {value: if copy_program
-                    then "#{copy_program.title} copy"
-                  elsif @program.title && !@program.title.empty?
-                    then @program.title 
-                    else 'New Program'
-                  end
-          }) %>
-
-  </h1>
+    </h1>
 
 
-  <div class="container contra-activities-edit" ng-app="activities_editor">
-    <div ng-controller="ActivitiesController as activitiesCtrl" id="activities-div">
-      <span ng-init="activitiesCtrl.activities=<%= ActivitiesHelper.activities_to_json_for_editing(@program.activities_sorted) %>">
-      </span>
-      <span ng-init="activitiesCtrl.dances=<%= JSON.generate(Dance.all.map &:hash_for_autocompleting) %>">
-      </span>
+    <div class="contra-activities-edit" ng-app="activities_editor">
+      <div ng-controller="ActivitiesController as activitiesCtrl" id="activities-div">
+        <span ng-init="activitiesCtrl.activities=<%= ActivitiesHelper.activities_to_json_for_editing(@program.activities_sorted) %>">
+        </span>
+        <span ng-init="activitiesCtrl.dances=<%= JSON.generate(Dance.all.map &:hash_for_autocompleting) %>">
+        </span>
 
-      <div ng-repeat="act in activitiesCtrl.activities">
-        <input type="checkbox"      name="activivty-{{$index}}-selected" id="activivty-{{$index}}-selected" value="selected">
-        {{$index+1}}.
-        <input type="text" ng-model="act.text" name="program[activities_attributes][{{$index}}][text]"     id="activivty-{{$index}}-text"/>
-        <input type="text" ng-model="act.selected.originalObject.id" name="program[activities_attributes][{{$index}}][dance_id]"     id="activivty-{{$index}}-dance_id"/>
-        <div angucomplete-alt 
-             name="activivty-{{$index}}-dance"
-             id="activivty-{{$index}}-dance"
-             placeholder="Choose dance"
-             maxlength="100"
-             pause="100"
-             selected-object="act.selected"
-             local-data="activitiesCtrl.dances"
-             search-fields="title,choreographer"
-             title-field="title,choreographer"
-             minlength="1"
-             input-class="form-control form-control-small"
-             match-class="autocomplete-match-text"
-             initial-value="findDanceHashById(act.dance_id,activitiesCtrl.dances)"
-             ></div>
-      </div>
-
-      <div class="btn-group btn-group-lg" role="group">
-        <div class="btn-group">
-          <button name="button" type="button" ng-click='addActivity()' class="btn btn-default">Add Activity</button>
+        <div class="btn-group btn-group-lg" role="group">
+          <div class="btn-group">
+            <button name="button" type="button" ng-click='addActivity(activitiesCtrl.activities)' class="btn btn-default">Add</button>
+          </div>
+          <div class="btn-group">
+            <button name="button" type="button" ng-click='deleteSelectetdActivities(activitiesCtrl.activities)' ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)" class="btn btn-default">Delete</button>
+          </div>
         </div>
-        <div class="btn-group">
-          <button name="button" type="button" ng-click='deleteActivity()' ng-show="activitiesCtrl.activities.length > 0" class="btn btn-default">Remove Activity</button>
+
+        <div class="container">
+          <div ng-repeat="act in activitiesCtrl.activities"
+               class="row" id="activity-row-{{$index}}"
+               draggable="true" ondragstart="drag(event)"
+               ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div class="col-xs-2">
+              <input type="checkbox" name="activivty-{{$index}}-selected" id="activivty-{{$index}}-selected" ng-model="act.checked">
+              {{$index+1}}.
+            </div>
+            <div angucomplete-alt 
+                 name="activivty-{{$index}}-dance"
+                 id="activivty-{{$index}}-dance"
+                 placeholder="Dance"
+                 maxlength="100"
+                 pause="100"
+                 selected-object="act.dance"
+                 local-data="activitiesCtrl.dances"
+                 search-fields="title,choreographer"
+                 title-field="title,choreographer"
+                 minlength="1"
+                 input-class="activity-dance col-xs-6"
+                 match-class="autocomplete-match-text"
+                 initial-value="findDanceHashById(act.dance_id,activitiesCtrl.dances)"
+                 ></div>
+            <input type="text" ng-model="act.text" name="program[activities_attributes][{{$index}}][text]" id="activivty-{{$index}}-text" class="col-xs-4" placeholder="Note"/>
+            <input type="hidden" ng-value="act.dance.originalObject.id" name="program[activities_attributes][{{$index}}][dance_id]" id="activivty-{{$index}}-dance_id"/>
+          </div>
         </div>
+
+
+
+        <% if debug_js then %>
+          <p>activitiesCtrl.dances = {{activitiesCtrl.dances}} </p>
+          <p>activitiesCtrl.activities = {{activitiesCtrl.activities}} </p>
+        <% end %>
+
+        <p>If you give both a <em>dance</em> and a <em>note</em>, both will be displayed.
+          Alternativevly, use the <em>note</em> for activities that don't
+          link to dances in the db, e.g. "Break" and "Waltz". </p>
+
       </div>
+      
+    </div> <!-- activities editor -->
 
-
-      <p> activitiesCtrl.dances = {{activitiesCtrl.dances}} </p>
-      <p> activitiesCtrl.activities = {{activitiesCtrl.activities}} </p>
-    </div> <!-- FiguresController -->
-  </div> <!-- activities editor -->
-
-  <div class="actions">
-    <%= save_submit_button_html "Save Program" %>
+    <div class="actions row">
+      <%= save_submit_button_html "Save Program", class: "col-xs-12" %>
+    </div>
   </div>
 <% end %>
