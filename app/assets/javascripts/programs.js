@@ -61,35 +61,76 @@ function dragExitLeave(ev) {
 }
 
 
-// browser independent way to get the dataTransfer property - some use one, some use the other
-function getDataTransfer(ev) {
-    if (ev.dataTransfer) 
+// browser independent ways to get to the dataTransfer property - I
+// think some use one, some use the other.
+// Then there's the issue that Set/Get data transfer only suppor text on MS browsers
+// which means that to DnD at all we have to accept text, which I don't wanna do. 
+// and this fails with some random error. Ugh. 
+function eventSetDataTransfer (ev, value) {
+    dataTransfer = eventDataTransferProperty(ev);
+    try { dataTransfer.setData("contradbActivity", value); }
+    catch (e) {
+        console.log("warning: drag and drop setData failed.\n\""+
+                    e + "\"\nSmells like a Microsoft Browser.\n"+
+                    "Retrying with riskier parameters...");
+        dataTransfer.setData("text", value);
+    }
+    return;
+}
+function eventGetDataTransfer (ev) {
+    dataTransfer = eventDataTransferProperty(ev);
+    try { 
+        var txt = dataTransfer.getData("contradbActivity");
+        if (txt && (txt.length>0)) return txt;
+        else throw new Error("Got null or nullstring Data, trying another approach...");
+    }
+    catch (e) {
+        console.log("warning: drag and drop getData failed.\n\""+
+                    e + "\"\nSmells like a Microsoft Browser.\n"+
+                    "Retrying with riskier parameters...");
+        var txt = dataTransfer.getData("text");
+        if (txt && (txt.length>0)) return txt;
+        else throw new Error("Also can't get meaningful text. I give up! See above warning");
+    }
+}
+function eventDataTransferProperty(ev) {
+    if (ev.dataTransfer && 
+        ev.dataTransfer.setData) 
         return ev.dataTransfer
-    else if (ev.originalEvent && ev.originalEvent.dataTransfer)
-        return ev.originalEvent.dataTransfer
+    else if (ev.originalEvent && 
+             ev.originalEvent.dataTransfer && 
+             ev.originalEvent.dataTransfer.setData)
+        return logThis(ev.originalEvent.dataTransfer, "original dataTransfer");
     else throw new Error( "Can't find dataTransfer property in event");
 }
+
+
 
 function dragStart(ev) {
     // logThis(ev.target.id, "dragStart");
     dragInitiator = ev.target;                            // assign global variable
-    getDataTransfer(ev).effectAllowed = "move";
+    eventDataTransferProperty(ev).effectAllowed = "move";
     // sadly, "contradbActivity" dies in MS Edge with "Element not found". 
     // "text/plain" works. 
     // Don't support until they fix. -dm 02-06-2016
-    getDataTransfer(ev).setData("contradbActivity", ev.target.id); 
-    $(ev.target).addClass("contra-drag-origin");
+    if (ev && ev.target && ev.target.id && (ev.target.id.length > 0))
+    {
+        eventSetDataTransfer(ev, ev.target.id); 
+        $(ev.target).addClass("contra-drag-origin");
+    }
+    else throw new Error("Event target has an invalid id.");
 }
 
 function drop(ev) {
-    // console.log("drop begin");
+    console.log("drop begin");
     ev.preventDefault();
     ev.stopPropagation();
-    var data = getDataTransfer(ev).getData("contradbActivity");
-    // console.log("drop: "+data+" on "+ev.currentTarget.id);
+    var data = eventGetDataTransfer(ev);
+    console.log("drop: "+whatsThis(data)+" on "+whatsThis(ev.currentTarget.id));
     var from = activityRowIndex(data) // index
+    console.log("drop Still alive");
     var to   = activityRowIndex(ev.currentTarget.id) // index
-    // console.log("drop from "+ from + " to "+ to)
+    console.log("drop from "+ from + " to "+ to)
     var scope = angular.element($('#activities-div')).scope()
     var activities = scope.getActivities()
     var transplant = activities[from];
@@ -98,7 +139,7 @@ function drop(ev) {
     scope.$apply();
     // clean up, especially on this element, but everywhere as a happy side-effect:
     $(".activity-row").removeClass("contra-drop-enthusiastic").removeClass("contra-drag-origin");
-    // console.log("drop end");
+    console.log("drop end");
     return;
 }
 
@@ -122,7 +163,7 @@ function activityRowIndex(id) {
     prefix = "activity-row-";
     if (id.slice(0,prefix.length) == prefix)
         return parseInt(id.slice(prefix.length))
-    else throw new Error( "called activityRowIndex on something that's not an activity-row id string: "+id)
+    else throw new Error( "called activityRowIndex on something that's not an activity-row id string. It looks like this: "+whatsThis(id));
 }
 
 function attachDragAndDropEventHandlers($element) {
