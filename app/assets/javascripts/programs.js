@@ -41,26 +41,23 @@ function checkedActivityCount(activities) {
     return acc;
 }
 
-
-function preventDefault(ev) {
-    ev.preventDefault();
-}
-
-
 var dragInitiator = null;       // global variable
-function dragEnter(ev) {
+
+function dragEnterOver(ev) {
     ev.preventDefault();
     ev.stopPropagation();
     var tt = ev.currentTarget
     // highlight new
     if (!tt.isEqualNode(dragInitiator)) // global variable
-        $(tt).addClass("yellow");
+        $(tt).addClass("contra-drop-enthusiastic");
 }
 function dragExitLeave(ev) {
+    ev.preventDefault();
+    ev.stopPropagation();
     var tt = ev.currentTarget;
     var $tt = $(tt)
     if ((!ev.relatedTarget) || !tt.contains(ev.relatedTarget))
-        $(tt).removeClass("yellow")
+        $(tt).removeClass("contra-drop-enthusiastic")
 }
 
 
@@ -73,34 +70,35 @@ function getDataTransfer(ev) {
     else throw new Error( "Can't find dataTransfer property in event");
 }
 
-function drag(ev) {
-    console.log("drag "+whatsThis(ev.target.id));
+function dragStart(ev) {
+    // logThis(ev.target.id, "dragStart");
     dragInitiator = ev.target;                            // assign global variable
     getDataTransfer(ev).effectAllowed = "move";
     // sadly, "contradbActivity" dies in MS Edge with "Element not found". 
     // "text/plain" works. 
     // Don't support until they fix. -dm 02-06-2016
     getDataTransfer(ev).setData("contradbActivity", ev.target.id); 
+    $(ev.target).addClass("contra-drag-origin");
 }
 
 function drop(ev) {
-    console.log("drop begin");
+    // console.log("drop begin");
     ev.preventDefault();
     ev.stopPropagation();
     var data = getDataTransfer(ev).getData("contradbActivity");
-    console.log("drop: "+data+" on "+ev.currentTarget.id +(" "+ (ev.offsetY<(ev.currentTarget.offsetHeight/2)?"above":"below")));
-    var from = activityRowIndex(data)
-    var to   = activityRowIndex(ev.currentTarget.id)
-    console.log("drop from "+ from + " to "+ to)
+    // console.log("drop: "+data+" on "+ev.currentTarget.id);
+    var from = activityRowIndex(data) // index
+    var to   = activityRowIndex(ev.currentTarget.id) // index
+    // console.log("drop from "+ from + " to "+ to)
     var scope = angular.element($('#activities-div')).scope()
     var activities = scope.getActivities()
-    console.log("arr="+activities);
-    console.log("old length = "+activities.length);
     var transplant = activities[from];
     activities.splice(from, 1);           // destructive modify in-place!
     activities.splice(to, 0, transplant); // destructive modify in-place!
-    console.log("new length = "+activities.length);
     scope.$apply();
+    // clean up, especially on this element, but everywhere as a happy side-effect:
+    $(".activity-row").removeClass("contra-drop-enthusiastic").removeClass("contra-drag-origin");
+    // console.log("drop end");
     return;
 }
 
@@ -121,7 +119,6 @@ function logThis (x, optionalLabel) {
 }
 
 function activityRowIndex(id) {
-    console.log ("activityRowIndex "+ whatsThis(id));
     prefix = "activity-row-";
     if (id.slice(0,prefix.length) == prefix)
         return parseInt(id.slice(prefix.length))
@@ -129,8 +126,7 @@ function activityRowIndex(id) {
 }
 
 function attachDragAndDropEventHandlers($element) {
-    console.log("attach handlers!")
-    $element.on("dragstart", drag).on("drop", drop).on("dragenter", dragEnter).on("dragleave", dragExitLeave).on("dragexit", dragExitLeave).on("dragover", preventDefault).prop("draggable","true");
+    $element.on("dragstart", dragStart).on("drop", drop).on("dragenter", dragEnterOver).on("dragleave", dragExitLeave).on("dragexit", dragExitLeave).on("dragover", dragEnterOver).prop("draggable","true");
 }
 
 // Angular init
@@ -144,14 +140,6 @@ function attachDragAndDropEventHandlers($element) {
         $scope.checkedActivityCount = checkedActivityCount;
         $scope.attachDragAndDropEventHandlers = attachDragAndDropEventHandlers
         $scope.getActivities = function () {return activities_ctrl.activities;}
-        $scope.setActivities = function (x) {activities_ctrl.activities = x;}
-        $scope.printActivities = function (x) {
-            var a = activities_ctrl.activities;
-            var s = ""
-            for (var i=0; i<a.length; i++)
-                s += a[i].text + "\n";
-            return s;
-        }
     }
     app.controller('ActivitiesController', ['$scope',scopeInit]);
     app.directive('contraDragAndDropActivities', function($compile) {

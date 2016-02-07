@@ -1,4 +1,4 @@
-<% debug_js = true %>
+<% debug_js = false %>
 <%= form_for(@program, html: {class: "form-inline"}) do |f| %>
   <% if @program.errors.any? %>
     <div id="error_explanation">
@@ -50,7 +50,7 @@
 
         <div class="container">
           <div ng-repeat="act in activitiesCtrl.activities"
-               class="row activity-row"
+               class="row activity-row contra-drop-conceivable"
                id="activity-row-{{$index}}"
                contra-drag-and-drop-activities="true">
             <div class="col-xs-2">
@@ -81,13 +81,13 @@
 
         <% if debug_js then %>
           <p>activitiesCtrl.dances = {{activitiesCtrl.dances}} </p>
-          <p>getActivities = {{printActivities()}} </p>
+          <p>getActivities = {{activitiesCtrl.activities}} </p>
         <% end %>
 
-        <p>If you give both a <em>dance</em> and a <em>note</em>, both will be displayed.
+        <p>On some devices you can drag and drop rows to reorder them. </p>
+        <p>If you supply both a <em>dance</em> and a <em>note</em>, both will be displayed.
           Alternativevly, use the <em>note</em> for activities that don't
           link to dances in the db, e.g. "Break" and "Waltz". </p>
-
       </div>
       
     </div> <!-- activities editor -->
