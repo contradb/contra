@@ -15,10 +15,6 @@
 <% copy_program = 
      params[:copy_program_id] ? Program.find(params[:copy_program_id]) : nil %>
 
-<p class="yellow davedebug">
-  debugging &lt;p&gt;
-</p>
-
   <div class="container">
     <h1 class="field row">
       <%= f.text_field(
@@ -56,13 +52,7 @@
           <div ng-repeat="act in activitiesCtrl.activities"
                class="row activity-row"
                id="activity-row-{{$index}}"
-               draggable="true" 
-               <%#
-                 ondragstart="drag(event)"
-                 ondrop="drop(event)" ondragover="allowDrop(event)"
-                 ondragenter="dragEnter(event)"
-               %>
-               >
+               contra-drag-and-drop-activities="true">
             <div class="col-xs-2">
               <input type="checkbox" name="activivty-{{$index}}-selected" id="activivty-{{$index}}-selected" ng-model="act.checked">
               {{$index+1}}.
