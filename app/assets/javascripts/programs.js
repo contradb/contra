@@ -42,39 +42,58 @@ function checkedActivityCount(activities) {
 }
 
 
-function allowDrop(ev) {
+function preventDefault(ev) {
     ev.preventDefault();
 }
 
 
-var $lastEntered = null;
-var dragInitiator = null;
+var dragInitiator = null;       // global variable
 function dragEnter(ev) {
-    console.log('dragEnter');
-    // erase old
-    if ($lastEntered) $lastEntered.removeClass("yellow");
-
-    // store
-    $lastEntered = $(ev.currentTarget);
-    
+    ev.preventDefault();
+    ev.stopPropagation();
+    var tt = ev.currentTarget
     // highlight new
-    if (!ev.currentTarget.isEqualNode(dragInitiator))
-        $lastEntered.addClass("yellow");
+    if (!tt.isEqualNode(dragInitiator)) // global variable
+        $(tt).addClass("yellow");
 }
+function dragExitLeave(ev) {
+    var tt = ev.currentTarget;
+    var $tt = $(tt)
+    if (!tt.contains(ev.relatedTarget))
+        $(tt).removeClass("yellow")
+}
+
 
 function drag(ev) {
     console.log("drag");
-    dragInitiator = ev.target;
-    ev.dataTransfer.setData("contradbActivity", ev.target.id);
+    dragInitiator = ev.target;                            // assign global variable
+    var evprime = ev.dataTransfer ? ev : ev.originalEvent // browser compatibility shenanigan
+    evprime.dataTransfer.effectAllowed = "move";
+    // sadly, "contradbActivity" dies in MS Edge with "Element not found". 
+    // "text/plain" works. 
+    // Don't support until they fix. -dm 02-06-2016
+    evprime.dataTransfer.setData("contradbActivity", ev.target.id); 
 }
 
 function drop(ev) {
+    console.log("drop begin");
     ev.preventDefault();
-    var data = ev.dataTransfer.getData("contradbActivity");
+    ev.stopPropagation();
+    var data = ev.originalEvent.dataTransfer.getData("contradbActivity");
     console.log("drop: "+data+" on "+ev.currentTarget.id +(" "+ (ev.offsetY<(ev.currentTarget.offsetHeight/2)?"above":"below")));
-    console.log("drop from "+ activityRowIndex(data) + " to "+ activityRowIndex(ev.currentTarget.id) + "arr = " + $('#activities-div').scope().getActivities())
-    
-
+    var from = activityRowIndex(data)
+    var to   = activityRowIndex(ev.currentTarget.id)
+    console.log("drop from "+ from + " to "+ to)
+    var scope = angular.element($('#activities-div')).scope()
+    var activities = scope.getActivities()
+    console.log("arr="+activities);
+    console.log("old length = "+activities.length);
+    var transplant = activities[from];
+    activities.splice(from, 1);           // destructive modify in-place!
+    activities.splice(to, 0, transplant); // destructive modify in-place!
+    console.log("new length = "+activities.length);
+    scope.$apply();
+    return;
 }
 
 function activityRowIndex(id) {
@@ -93,12 +112,23 @@ function activityRowIndex(id) {
         $scope.addActivity = addActivity;
         $scope.deleteSelectetdActivities = deleteSelectetdActivities;
         $scope.checkedActivityCount = checkedActivityCount;
-        $scope.getActivities = function () {return $scope.activities;}
-        $scope.setActivities = function (x) {$scope.activities = x;}
+        $scope.getActivities = function () {return activities_ctrl.activities;}
+        $scope.setActivities = function (x) {activities_ctrl.activities = x;}
+        $scope.printActivities = function (x) {
+            var a = activities_ctrl.activities;
+            var s = ""
+            for (var i=0; i<a.length; i++)
+                s += a[i].text + "\n";
+            return s;
+        }
     }
     app.controller('ActivitiesController', ['$scope',scopeInit]);
-    console.log("got here");
-    $('.davedebug').html("foo");
-    $('.davedebug').html('html set successful, thanks jQuery');
-    console.log("still alive");
 })()
+
+
+$(document).ready(function(){
+    console.log("jQuery init begin");
+    $('.davedebug').html('html set successful, thanks jQuery!');
+    $(".activity-row").on("dragstart", drag).on("drop", drop).on("dragenter", dragEnter).on("dragleave", dragExitLeave).on("dragexit", dragExitLeave).on("dragover", preventDefault)
+    console.log("jQuery init end");
+})

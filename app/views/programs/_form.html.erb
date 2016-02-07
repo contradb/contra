@@ -56,9 +56,12 @@
           <div ng-repeat="act in activitiesCtrl.activities"
                class="row activity-row"
                id="activity-row-{{$index}}"
-               draggable="true" ondragstart="drag(event)"
-               ondrop="drop(event)" ondragover="allowDrop(event)"
-               ondragenter="dragEnter(event)"
+               draggable="true" 
+               <%#
+                 ondragstart="drag(event)"
+                 ondrop="drop(event)" ondragover="allowDrop(event)"
+                 ondragenter="dragEnter(event)"
+               %>
                >
             <div class="col-xs-2">
               <input type="checkbox" name="activivty-{{$index}}-selected" id="activivty-{{$index}}-selected" ng-model="act.checked">
@@ -88,7 +91,7 @@
 
         <% if debug_js then %>
           <p>activitiesCtrl.dances = {{activitiesCtrl.dances}} </p>
-          <p>activitiesCtrl.activities = {{activitiesCtrl.activities}} </p>
+          <p>getActivities = {{printActivities()}} </p>
         <% end %>
 
         <p>If you give both a <em>dance</em> and a <em>note</em>, both will be displayed.
