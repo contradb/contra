@@ -44,8 +44,9 @@
   </div>
   <div class="row field">
     <%= f.label "by", class: "col-lg-1 col-md-2 col-xs-3" %>
-    <%= f.text_field :choreographer_name,
-        {class: "col-lg-11 col-md-10 col-xs-9", id: "choreographer-autocomplete"} %>
+    <%= props = {class: "col-lg-11 col-md-10 col-xs-9", id: "choreographer-autocomplete"}
+        props[:value] = copy_dance.choreographer.name if copy_dance
+        f.text_field :choreographer_name, props %>
     <script>
       $( "#choreographer-autocomplete" ).autocomplete({
         source: <%= a_to_safe_str(Choreographer.all.map &:name) %>,
