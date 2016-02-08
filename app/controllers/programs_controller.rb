@@ -18,7 +18,12 @@ class ProgramsController < ApplicationController
   # GET /programs/new
   def new
     @program = Program.new
-    3.times {|i| @program.activities.build(index: i)}
+    if params[:copy_program_id]
+      then (Program.find params[:copy_program_id]).activities_sorted.each_with_index do |a,i|
+      @program.activities.build(index: i, text: a.text, dance_id: a.dance_id)
+      end
+      else 3.times {|i| @program.activities.build(index: i)}
+    end
   end
 
   # GET /programs/1/edit
@@ -98,15 +103,5 @@ class ProgramsController < ApplicationController
       params.require(:program).permit(:title, :copy_program_id, activities_attributes: [:text, :dance_id])
     end
 
-    # helper function that generates all the natural numbers. 
-    def naturals
-      Enumerator.new do |yielder|
-        i = 0
-        loop do
-          yielder.yield i
-          i += 1
-        end
-      end
-    end
 end
 
