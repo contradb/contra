@@ -251,7 +251,14 @@ function activityRowIndex(id) {
 }
 
 function attachDragAndDropEventHandlers($element) {
-    $element.on("dragstart", dragStart).on("drop", drop).on("dragenter", dragEnterOver).on("dragleave", dragExitLeave).on("dragexit", dragExitLeave).on("dragover", dragEnterOver).prop("draggable","true");
+    return $element
+        .on("dragstart", dragStart)
+        .on("drop", drop)
+        .on("dragenter", dragEnterOver)
+        .on("dragleave", dragExitLeave)
+        .on("dragexit", dragExitLeave)
+        .on("dragover", dragEnterOver)
+        .prop("draggable","true");
 }
 
 // Angular init

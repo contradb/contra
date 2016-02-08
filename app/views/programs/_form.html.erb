@@ -50,8 +50,16 @@
           </div>
 
           <div class="btn-group-vertical" role="group">
-            <button name="button" type="button" ng-click="moveSelectedActivitiesUpNIndicies(activitiesCtrl.activities, 1.5)" ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)" class="btn btn-default" aria-label="up" title="move up"><span class='glyphicon glyphicon-triangle-top aria-hidden='true'></span></button>
-            <button name="button" type="button" ng-click="moveSelectedActivitiesDownNIndicies(activitiesCtrl.activities, 1.5)" ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)" class="btn btn-default" aria-label="down" title="move down"><span class='glyphicon glyphicon-triangle-bottom' aria-hidden='true'></span></button>
+            <button name="button" type="button" 
+                    ng-click="moveSelectedActivitiesUpNIndicies(activitiesCtrl.activities, 1.5)"
+                    ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)"
+                    class="btn btn-default" aria-label="up" title="move up">
+              <span class='glyphicon glyphicon-triangle-top' aria-hidden='true'></span></button>
+            <button name="button" type="button"
+                    ng-click="moveSelectedActivitiesDownNIndicies(activitiesCtrl.activities, 1.5)"
+                    ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)"
+                    class="btn btn-default" aria-label="down" title="move down">
+              <span class='glyphicon glyphicon-triangle-bottom' aria-hidden='true'></span></button>
           </div>
           <div class="btn-group-vertical" role="group">
             <button name="button" type="button" ng-click="moveSelectedActivitiesToTop(activitiesCtrl.activities)" ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)" class="btn btn-default" aria-label="top" title="move to top"><span class='glyphicon glyphicon-fast-backward contra-rotate-90' aria-hidden='true'></span></button>
