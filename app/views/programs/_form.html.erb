@@ -1,4 +1,4 @@
-<% debug_js = true %>
+<% debug_js = false %>
 <%= form_for(@program, html: {class: "form-inline"}) do |f| %>
   <% if @program.errors.any? %>
     <div id="error_explanation">
@@ -39,31 +39,61 @@
         <span ng-init="activitiesCtrl.dances=<%= JSON.generate(Dance.all.map &:hash_for_autocompleting) %>">
         </span>
 
-        <div class="btn-toolbar btn-group-lg" role="toolbar">
-          <div class="btn-group-vertical" role="group">
-            <button name="button" type="button" ng-click='addActivity(activitiesCtrl.activities)' class="btn btn-default"><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button>
-            <button name="button" type="button" ng-click='deleteSelectetdActivitiesUI(activitiesCtrl.activities)' ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)" class="btn btn-default"><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button>
-          </div>
-          <div class="btn-group-vertical" role="group">
-            <button name="button" type="button" ng-click="selectAllActivities(activitiesCtrl.activities)" class="btn btn-default" aria-label="select all" title="select all"><span class='glyphicon glyphicon-check' aria-hidden='true'></span></button>
-            <button name="button" type="button" ng-click="deselectAllActivities(activitiesCtrl.activities)" class="btn btn-default" aria-label="select none" title="select none"><span class='glyphicon glyphicon-unchecked' aria-hidden='true'></span></button>
-          </div>
-
-          <div class="btn-group-vertical" role="group">
-            <button name="button" type="button" 
-                    ng-click="moveSelectedActivitiesUpNIndicies(activitiesCtrl.activities, 1.5)"
-                    ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)"
-                    class="btn btn-default" aria-label="up" title="move up">
-              <span class='glyphicon glyphicon-triangle-top' aria-hidden='true'></span></button>
-            <button name="button" type="button"
-                    ng-click="moveSelectedActivitiesDownNIndicies(activitiesCtrl.activities, 1.5)"
-                    ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)"
-                    class="btn btn-default" aria-label="down" title="move down">
-              <span class='glyphicon glyphicon-triangle-bottom' aria-hidden='true'></span></button>
-          </div>
-          <div class="btn-group-vertical" role="group">
-            <button name="button" type="button" ng-click="moveSelectedActivitiesToTop(activitiesCtrl.activities)" ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)" class="btn btn-default" aria-label="top" title="move to top"><span class='glyphicon glyphicon-fast-backward contra-rotate-90' aria-hidden='true'></span></button>
-            <button name="button" type="button" ng-click="moveSelectedActivitiesToBottom(activitiesCtrl.activities)" ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)" class="btn btn-default" aria-label="bottom" title="move to bottom"><span class='glyphicon glyphicon-fast-forward contra-rotate-90' aria-hidden='true'></span></button>
+        <div class="container"> <%# This container contains just one thing - an evil table! Muah ha ha! %>
+          <div class="row">
+            <table class="activity-editor-table col-xs-12">
+              <tr>
+                <td>
+                  <div class="btn-group-vertical activity-editor-button-single-stack" role="group">
+                    <button name="button" type="button"
+                            ng-click='addActivity(activitiesCtrl.activities)'
+                            class="btn btn-default activity-editor-button">
+                      <span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button>
+                  </div>
+                </td>
+                <td>
+                  <div class="btn-group-vertical activity-editor-button-single-stack" role="group">
+                    <button name="button" type="button" ng-click="selectAllActivities(activitiesCtrl.activities)" class="btn btn-default" aria-label="select all" title="select all"><span class='glyphicon glyphicon-check' aria-hidden='true'></span></button>
+                  </div>
+                </td>
+                <td rowspan="2">
+                  <div class="btn-group-vertical activity-editor-button-double-stack" role="group">
+                    <button name="button" type="button" 
+                            ng-click="moveSelectedActivitiesUpNIndicies(activitiesCtrl.activities, 1.5)"
+                            ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)"
+                            class="btn btn-default" aria-label="up" title="move up">
+                      <span class='glyphicon glyphicon-triangle-top' aria-hidden='true'></span></button>
+                    <button name="button" type="button"
+                            ng-click="moveSelectedActivitiesDownNIndicies(activitiesCtrl.activities, 1.5)"
+                            ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)"
+                            class="btn btn-default" aria-label="down" title="move down">
+                      <span class='glyphicon glyphicon-triangle-bottom' aria-hidden='true'></span></button>
+                  </div>
+                </td>
+                <td rowspan="2">
+                  <div class="btn-group-vertical activity-editor-button-double-stack" role="group">
+                    <button name="button" type="button" ng-click="moveSelectedActivitiesToTop(activitiesCtrl.activities)" ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)" class="btn btn-default" aria-label="top" title="move to top"><span class='glyphicon glyphicon-fast-backward contra-rotate-90' aria-hidden='true'></span></button>
+                    <button name="button" type="button" ng-click="moveSelectedActivitiesToBottom(activitiesCtrl.activities)" ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)" class="btn btn-default" aria-label="bottom" title="move to bottom"><span class='glyphicon glyphicon-fast-forward contra-rotate-90' aria-hidden='true'></span></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="btn-group-vertical activity-editor-button-single-stack" role="group">
+                    <button name="button" type="button" 
+                            ng-click='deleteSelectetdActivitiesUI(activitiesCtrl.activities)'
+                            ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)"
+                            class="btn btn-default">
+                      <span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button>
+                  </div>
+                </td>
+                <td>
+                  <div class="btn-group-vertical activity-editor-button-single-stack" role="group">
+                    <button name="button" type="button" ng-click="deselectAllActivities(activitiesCtrl.activities)" class="btn btn-default" aria-label="select none" title="select none"><span class='glyphicon glyphicon-unchecked' aria-hidden='true'></span></button>
+                  </div>
+                </td>
+              </tr>
+            </table>
           </div>
         </div>
 
@@ -73,7 +103,7 @@
                ng-class="{'activity-checked': act.checked}"
                id="activity-row-{{$index}}"
                contra-drag-and-drop-activities="true">
-            <div class="col-xs-2">
+            <div class="col-xs-3">
               <input type="checkbox" name="activivty-{{$index}}-selected"
                      id="activivty-{{$index}}-selected" ng-model="act.checked"
                      value="true">
@@ -94,7 +124,7 @@
                  match-class="autocomplete-match-text"
                  initial-value="findDanceHashById(act.dance_id,activitiesCtrl.dances)"
                  ></div>
-            <input type="text" ng-model="act.text" name="program[activities_attributes][{{$index}}][text]" id="activivty-{{$index}}-text" class="col-xs-4" placeholder="Note"/>
+            <input type="text" ng-model="act.text" name="program[activities_attributes][{{$index}}][text]" id="activivty-{{$index}}-text" class="col-xs-3" placeholder="Note"/>
             <input type="hidden" ng-value="act.dance.originalObject.id" name="program[activities_attributes][{{$index}}][dance_id]" id="activivty-{{$index}}-dance_id"/>
           </div>
         </div>
@@ -106,15 +136,6 @@
           <p>getActivities = {{activitiesCtrl.activities}} </p>
         <% end %>
 
-        <p>Create an ordered list of dances called a <em>program</em>.
-          Also, you can intersperse your dances with note-only rows,
-          which will display things that aren't in the database, such
-          as "Waltz" and "Break". Or, if you give both a Note and a
-          Dance, the dance becomes the headline and the note will be
-          the byline.
-        </p>
-
-        <p>On some devices you can drag and drop rows to reorder them. </p>
       </div>
       
     </div> <!-- activities editor -->
@@ -122,5 +143,23 @@
     <div class="actions row">
       <%= save_submit_button_html "Save Program", class: "col-xs-12" %>
     </div>
+
+    <div class="actions row"> <h2  class="col-xs-12">Create a <em>program</em> of dances</div>
+    <div class="actions row">
+      <p class="col-xs-6">
+        You may intersperse your dances with note-only rows,
+        which will display things that aren't in the database, such
+        as "Waltz" and "Break". Or, if you give both a note and a
+        dance, the dance becomes the headline and the note will be
+        the byline.
+      </p>
+
+      <div class="col-xs-6">
+        <p>You can manipulate rows with checkboxes and the buttons at the top. </p>
+        <p>On some devices you can drag and drop rows to reorder
+        them. </p>
+      </div>
+    </div>
+
   </div>
 <% end %>
