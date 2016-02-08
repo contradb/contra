@@ -12,6 +12,12 @@ function findDanceHashById (dance_id,dances) {
     return null;
 }
 
+function deleteSelectetdActivitiesUI(a) {
+    var n = checkedActivityCount(a);
+    if (confirm("Delete "+n+((n==1)?" row?":" rows?"))) 
+        deleteSelectetdActivities(a);
+}
+
 function deleteSelectetdActivities(activities) {
     i = 0;
     while (i<activities.length)
@@ -32,6 +38,68 @@ function deselectAllActivities(activities) {
         activities[i].checked = false;
     return;
 }
+
+// paste an array onto one end of another array
+function pasteArray(modified,src) {for (var i = 0; i<src.length; i++) modified.push(src[i]);}
+
+function moveSelectedActivitiesToTop(activities) {
+    var tops = [];
+    var bottoms = [];
+    for (var i = 0; i<activities.length; i++)
+        activities[i].checked ? tops.push(activities[i]) : bottoms.push(activities[i]);
+    activities.length = 0;      // clear activities destructively!
+    pasteArray(activities,tops);
+    pasteArray(activities,bottoms);
+    return;
+}
+function moveSelectedActivitiesToBottom(activities) {
+    var tops = [];
+    var bottoms = [];
+    for (var i = 0; i<activities.length; i++)
+        activities[i].checked ? bottoms.push(activities[i]) : tops.push(activities[i]);
+    activities.length = 0;      // clear activities destructively!
+    pasteArray(activities,tops);
+    pasteArray(activities,bottoms);
+    return;
+}
+
+// if you move by integral N, then you get crazy ties, so you can
+// specify fractional positive N (typically 1.5) to get better
+// behavior.
+// These functions aren't the prettiest, feel free to improve them. 
+function moveSelectedActivitiesUpNIndicies(activities, n) {
+    if (n<0) throw new Error("Argument out of bounds");
+    var tmp = [];
+    var j = 0;
+    for (var i = 0; i < activities.length; ) {
+        var checked = activities[i].checked;
+        tmp.push([   checked ? (j-n) : i,     activities[i]   ]);
+        i++;
+        if (!checked) j = i;
+    }
+    tmp.sort(function(a, b) {return a[0] - b[0];})
+    activities.length = 0; // clear activities destructively!
+    for (var i = 0 ; i < tmp.length; i++) 
+        activities.push(tmp[i][1]);
+    return;
+}
+function moveSelectedActivitiesDownNIndicies(activities, n) {
+    if (n<0) throw new Error("Argument out of bounds");
+    var tmp = [];
+    var i, j;
+    for (j = i = activities.length-1; i >= 0; ) {
+        var checked = activities[i].checked;
+        tmp.push([   checked ? (j+n) : i,     activities[i]   ]);
+        i--;
+        if (!checked) j = i;
+    }
+    tmp.sort(function(a, b) {return a[0] - b[0];})
+    activities.length = 0; // clear activities destructively!
+    for (var i = 0 ; i < tmp.length; i++) 
+        activities.push(tmp[i][1]);
+    return;
+}
+
 
 function addActivity(activities) {
     o = {};
@@ -112,7 +180,7 @@ function eventDataTransferProperty(ev) {
     else if (ev.originalEvent && 
              ev.originalEvent.dataTransfer && 
              ev.originalEvent.dataTransfer.setData)
-        return logThis(ev.originalEvent.dataTransfer, "original dataTransfer");
+        return ev.originalEvent.dataTransfer;
     else throw new Error( "Can't find dataTransfer property in event");
 }
 
@@ -134,15 +202,15 @@ function dragStart(ev) {
 }
 
 function drop(ev) {
-    console.log("drop begin");
+    //console.log("drop begin");
     ev.preventDefault();
     ev.stopPropagation();
     var data = eventGetDataTransfer(ev);
-    console.log("drop: "+whatsThis(data)+" on "+whatsThis(ev.currentTarget.id));
+    //console.log("drop: "+whatsThis(data)+" on "+whatsThis(ev.currentTarget.id));
     var from = activityRowIndex(data) // index
-    console.log("drop Still alive");
+    //console.log("drop Still alive");
     var to   = activityRowIndex(ev.currentTarget.id) // index
-    console.log("drop from "+ from + " to "+ to)
+    //console.log("drop from "+ from + " to "+ to)
     var scope = angular.element($('#activities-div')).scope()
     var activities = scope.getActivities()
     var transplant = activities[from];
@@ -151,11 +219,12 @@ function drop(ev) {
     scope.$apply();
     // clean up, especially on this element, but everywhere as a happy side-effect:
     $(".activity-row").removeClass("contra-drop-enthusiastic").removeClass("contra-drag-origin");
-    console.log("drop end");
+    //console.log("drop end");
     return;
 }
 
 
+/* Debugging fn
 function whatsThis(x) {
     if (typeof x == "undefined")   return "undefined"
     else if (null == x)            return "null";
@@ -164,12 +233,15 @@ function whatsThis(x) {
     else if (typeof x == "object") return JSON.stringify(x);
     else                           return "thingy "+x;
 }
+*/
 
+/* Debugging fn
 function logThis (x, optionalLabel) {
     optionalLabel = optionalLabel || "logThis";
     console.log(""+optionalLabel+": "+whatsThis(x));
     return x;
 }
+*/
 
 function activityRowIndex(id) {
     prefix = "activity-row-";
@@ -188,10 +260,14 @@ function attachDragAndDropEventHandlers($element) {
     var scopeInit = function ($scope) {
         var activities_ctrl = this;
         $scope.findDanceHashById = findDanceHashById;
-        $scope.addActivity               = addActivity;
-        $scope.deleteSelectetdActivities = deleteSelectetdActivities;
-        $scope.selectAllActivities       = selectAllActivities;
-        $scope.deselectAllActivities     = deselectAllActivities;
+        $scope.deleteSelectetdActivitiesUI         = deleteSelectetdActivitiesUI
+        $scope.addActivity                         = addActivity;
+        $scope.selectAllActivities                 = selectAllActivities;
+        $scope.deselectAllActivities               = deselectAllActivities;
+        $scope.moveSelectedActivitiesUpNIndicies   = moveSelectedActivitiesUpNIndicies
+        $scope.moveSelectedActivitiesDownNIndicies = moveSelectedActivitiesDownNIndicies
+        $scope.moveSelectedActivitiesToTop         = moveSelectedActivitiesToTop;
+        $scope.moveSelectedActivitiesToBottom      = moveSelectedActivitiesToBottom;
         $scope.checkedActivityCount = checkedActivityCount;
         $scope.attachDragAndDropEventHandlers = attachDragAndDropEventHandlers
         $scope.getActivities = function () {return activities_ctrl.activities;}
