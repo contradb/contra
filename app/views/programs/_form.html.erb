@@ -39,22 +39,36 @@
         <span ng-init="activitiesCtrl.dances=<%= JSON.generate(Dance.all.map &:hash_for_autocompleting) %>">
         </span>
 
-        <div class="btn-group btn-group-lg" role="group">
-          <div class="btn-group">
-            <button name="button" type="button" ng-click='addActivity(activitiesCtrl.activities)' class="btn btn-default">Add</button>
+        <div class="btn-toolbar btn-group-lg" role="toolbar">
+          <div class="btn-group-vertical" role="group">
+            <button name="button" type="button" ng-click='addActivity(activitiesCtrl.activities)' class="btn btn-default"><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button>
+            <button name="button" type="button" ng-click='deleteSelectetdActivities(activitiesCtrl.activities)' ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)" class="btn btn-default"><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button>
           </div>
-          <div class="btn-group">
-            <button name="button" type="button" ng-click='deleteSelectetdActivities(activitiesCtrl.activities)' ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)" class="btn btn-default">Delete</button>
+          <div class="btn-group-vertical" role="group">
+            <button name="button" type="button" ng-click="selectAllActivities(activitiesCtrl.activities)" class="btn btn-default" aria-label="select all" title="select all"><span class='glyphicon glyphicon-check' aria-hidden='true'></span></button>
+            <button name="button" type="button" ng-click="deselectAllActivities(activitiesCtrl.activities)" class="btn btn-default" aria-label="select none" title="select none"><span class='glyphicon glyphicon-unchecked' aria-hidden='true'></span></button>
+          </div>
+
+          <div class="btn-group-vertical" role="group">
+            <button name="button" type="button" class="btn btn-default" aria-label="up" title="move up"><span class='glyphicon glyphicon-triangle-top aria-hidden='true'></span></button>
+            <button name="button" type="button" class="btn btn-default" aria-label="down" title="move down"><span class='glyphicon glyphicon-triangle-bottom' aria-hidden='true'></span></button>
+          </div>
+          <div class="btn-group-vertical" role="group">
+            <button name="button" type="button" class="btn btn-default" aria-label="top" title="move to top"><span class='glyphicon glyphicon-fast-backward contra-rotate-90' aria-hidden='true'></span></button>
+            <button name="button" type="button" class="btn btn-default" aria-label="bottom" title="move to bottom"><span class='glyphicon glyphicon-fast-forward contra-rotate-90' aria-hidden='true'></span></button>
           </div>
         </div>
 
         <div class="container">
           <div ng-repeat="act in activitiesCtrl.activities"
                class="row activity-row contra-drop-conceivable"
+               ng-class="{'activity-checked': act.checked}"
                id="activity-row-{{$index}}"
                contra-drag-and-drop-activities="true">
             <div class="col-xs-2">
-              <input type="checkbox" name="activivty-{{$index}}-selected" id="activivty-{{$index}}-selected" ng-model="act.checked">
+              <input type="checkbox" name="activivty-{{$index}}-selected"
+                     id="activivty-{{$index}}-selected" ng-model="act.checked"
+                     value="true">
               {{$index+1}}.
             </div>
             <div angucomplete-alt 

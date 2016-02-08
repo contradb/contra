@@ -21,6 +21,18 @@ function deleteSelectetdActivities(activities) {
     return;
 }
 
+function selectAllActivities(activities) {
+    for (var i = 0; i<activities.length; i++)
+        activities[i].checked = true;
+    return;
+}
+
+function deselectAllActivities(activities) {
+    for (var i = 0; i<activities.length; i++)
+        activities[i].checked = false;
+    return;
+}
+
 function addActivity(activities) {
     o = {};
     activities.push(o);
@@ -175,9 +187,11 @@ function attachDragAndDropEventHandlers($element) {
     var app = angular.module('activities_editor', ['angucomplete-alt']);
     var scopeInit = function ($scope) {
         var activities_ctrl = this;
-        $scope.findDanceHashById = findDanceHashById
-        $scope.addActivity = addActivity;
+        $scope.findDanceHashById = findDanceHashById;
+        $scope.addActivity               = addActivity;
         $scope.deleteSelectetdActivities = deleteSelectetdActivities;
+        $scope.selectAllActivities       = selectAllActivities;
+        $scope.deselectAllActivities     = deselectAllActivities;
         $scope.checkedActivityCount = checkedActivityCount;
         $scope.attachDragAndDropEventHandlers = attachDragAndDropEventHandlers
         $scope.getActivities = function () {return activities_ctrl.activities;}
