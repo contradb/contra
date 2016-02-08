@@ -104,10 +104,12 @@
                id="activity-row-{{$index}}"
                contra-drag-and-drop-activities="true">
             <div class="col-xs-3">
+              <label>
               <input type="checkbox" name="activivty-{{$index}}-selected"
                      id="activivty-{{$index}}-selected" ng-model="act.checked"
                      value="true">
               {{$index+1}}.
+              </label>
             </div>
             <div angucomplete-alt 
                  name="activivty-{{$index}}-dance"
