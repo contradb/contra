@@ -144,5 +144,11 @@ module DancesHelper
     s
   end
 
-
+  def dance_autocomplete_hash_json
+    JSON.generate(Dance.all.map do |dance|
+                    {"title" => dance.title,
+                     "choreographer" => dance.choreographer.name,
+                     "id" => dance.id}
+                  end)
+  end
 end

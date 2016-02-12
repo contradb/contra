@@ -40,7 +40,7 @@
       <div ng-controller="ActivitiesController as activitiesCtrl" id="activities-div">
         <span ng-init="activitiesCtrl.activities=<%= ActivitiesHelper.activities_to_json_for_editing(@program.activities_sorted) %>">
         </span>
-        <span ng-init="activitiesCtrl.dances=<%= JSON.generate(Dance.all.map &:hash_for_autocompleting) %>">
+        <span ng-init="activitiesCtrl.dances=<%= dance_autocomplete_hash_json %>">
         </span>
 
         <div class="btn-group btn-group-lg" role="group">

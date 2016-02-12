@@ -22,15 +22,16 @@ class ProgramsController 1,0
   WELCOME_BTN_ATTR 2,21
   def sign_up_button_html(3,99
 
-/home/dm/contra/app/helpers/globo_helper.rb,152
-  def new_dance_button_html(26,984
-  def edit_dance_button_html(31,1221
-  def copy_dance_button_html(41,1673
-  def copy_program_button_html(68,2739
+/home/dm/contra/app/helpers/globo_helper.rb,171
+  def new_dance_button_html(32,1246
+  def edit_dance_button_html(37,1483
+  def copy_dance_button_html(47,1935
+  def copy_program_button_html(73,3000
+    opts 81,3356
 
 /home/dm/contra/app/models/program.rb,90
 class Program 4,94
-  module Private                # really not sure about this,43,1165
+  module Private                # really not sure about this,44,1209
 
 /home/dm/contra/app/models/dance.rb,18
 class Dance 3,16
