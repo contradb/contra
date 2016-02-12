@@ -34,3 +34,43 @@ h2.activity-breakdown-empty-activity {
 .activity-dance {
     display: inline;
 }
+
+.activity-checked {
+    background-color: #EEE;
+}
+
+.activity-editor-table {
+    width: 100%;
+}
+
+
+.activity-editor-table .btn-group-vertical {
+    width: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.activity-editor-table .activity-editor-button-double-stack {
+}
+.activity-editor-table .activity-editor-button-single-stack {
+}
+
+
+.activity-editor-table td {
+}
+
+.activity-editor-table tr {
+}
+.activity-editor-table button {
+    width: 100%;
+}
+
+.activity-editor-table .activity-editor-button-double-stack button {
+    height: 45.5px;
+
+}
+.activity-editor-table .activity-editor-button-single-stack button {
+    height: 40px;
+}

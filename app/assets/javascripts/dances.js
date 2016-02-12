@@ -2,6 +2,8 @@
 // All this logic will automatically be available in application.js.
 
 
+
+
 var moveCaresAboutBalancesArr = ["petronella", "swing", "pull_by_right", "pull_by_left", "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl", "slide_right_rory_o_moore", "slide_left_rory_o_moore", "custom"];
 function moveCaresAboutBalance (move) {
     return 0 <= moveCaresAboutBalancesArr.indexOf(move)
@@ -52,9 +54,16 @@ function anglesForMove (move) {
     return anglesForMoveArr
 }
 
+// Patch to support current IE, source http://stackoverflow.com/questions/31720269/internet-explorer-11-object-doesnt-support-property-or-method-isinteger
+isInteger = Number.isInteger || function(value) {
+    return typeof value === "number" && 
+           isFinite(value) && 
+           Math.floor(value) === value;
+};
+
 function sumBeats(objs,optional_limit) {
     var acc = 0;
-    var n = Number.isInteger(optional_limit) ? optional_limit : objs.length;
+    var n = isInteger(optional_limit) ? optional_limit : objs.length;
     for (var i = 0; i < n; i++)
         acc += objs[i].beats;
     return acc;
