@@ -11,26 +11,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151206031845) do
+ActiveRecord::Schema.define(version: 20160108213353) do
 
-  create_table "choreographers", force: :cascade do |t|
-    t.string   "name"
+  create_table "activities", force: :cascade do |t|
+    t.integer  "index",      null: false
+    t.integer  "program_id", null: false
+    t.integer  "dance_id"
+    t.text     "text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  add_index "activities", ["dance_id"], name: "index_activities_on_dance_id"
+  add_index "activities", ["program_id"], name: "index_activities_on_program_id"
+
+  create_table "choreographers", force: :cascade do |t|
+    t.string   "name",       default: "", null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   add_index "choreographers", ["name"], name: "index_choreographers_on_name", unique: true
 
   create_table "dances", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "title"
+    t.string   "title",            default: "",   null: false
     t.integer  "choreographer_id"
-    t.string   "start_type"
-    t.text     "notes"
+    t.string   "start_type",       default: "",   null: false
+    t.text     "notes",            default: "",   null: false
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.text     "figures_json",     default: "[]", null: false
   end
+
+  create_table "programs", force: :cascade do |t|
+    t.string   "title",      limit: 100, null: false
+    t.integer  "user_id",                null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "programs", ["user_id"], name: "index_programs_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                              default: "", null: false

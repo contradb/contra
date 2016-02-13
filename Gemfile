@@ -1,4 +1,7 @@
 source 'https://rubygems.org'
+source 'https://rails-assets.org' do
+  gem 'rails-assets-angucomplete-alt'
+end
 
 gem 'angularjs-rails', '~> 1.4', '>= 1.4.7'
 
@@ -20,10 +23,12 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
+gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
+
 # Turbolinks is more hassle than it's worth right now
 # gem 'turbolinks'
 # this fixed some turbolinks bugs, but didn't play with angular
@@ -57,6 +62,8 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'poltergeist'
+  gem 'phantomjs', require: 'phantomjs/poltergeist'
 end
 
 
@@ -67,3 +74,4 @@ gem 'sprockets-rails', '~> 2.3.2'
 gem 'devise'
 
 gem 'factory_girl_rails'
+

@@ -15,3 +15,6 @@
 //= require bootstrap-sprockets
 //= require jquery_ujs
 //= require_tree .
+
+//= require jquery-ui/autocomplete
+//= require angucomplete-alt

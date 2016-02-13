@@ -5,7 +5,8 @@
   <thead>
     <tr>
       <th>Email</th>
-      <th>Dance Count</th>
+      <th>Dances</th>
+      <th>Programs</th>
     </tr>
   </thead>
 
@@ -14,6 +15,7 @@
       <tr>
         <td><%= link_to user.name, user %></td>
         <td class="text-right"><%= user.dances.length %></td>
+        <td class="text-right"><%= user.programs.length %></td>
       </tr>
     <% end %>
   </tbody>

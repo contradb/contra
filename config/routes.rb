@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :programs
   get 'about/index'
 
   resources :dances

@@ -1,5 +1,4 @@
 <div class="container">
-<div class="row"><div class="col-sm-2"></div><h2 class="col-sm-10">Sign Up</h2></div>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
@@ -32,7 +31,7 @@
 
   <p class="row actions">
     <p class="col-sm-2"></p>
-    <%= f.submit "Sign Up", class: "col-sm-2 btn btn-success btn-med" %>
+    <%= save_submit_button_html "Sign Up", {class: "col-sm-2"} %>
   </p>
 <% end %>
 

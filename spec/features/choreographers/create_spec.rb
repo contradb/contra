@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'spec_helper'
+require 'support/scrutinize_layout'
 
 # from https://github.com/plataformatec/devise/wiki/How-To:-Test-with-Capybara :
 include Warden::Test::Helpers
@@ -13,17 +14,18 @@ describe 'Creating choreographer from index page' do
 
     visit '/choreographers'
     click_link "New Choreographer"
-    # assumes logged in, but I don't know how to do that yet -dm 12-16-2015
+
     expect(page).to have_content("New Choreographer")
+    scrutinize_layout page
   end
 
   it "sans logged in user, refuses to go the New Choreographer page" do
 
     visit '/choreographers'
     click_link "New Choreographer"
-    # assumes logged in, but I don't know how to do that yet -dm 12-16-2015
+
     expect(page).to have_content("You need to sign in or sign up before continuing")
-    expect(page).to have_content("Login")
+    scrutinize_layout page
   end
 
 

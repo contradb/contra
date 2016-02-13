@@ -25,8 +25,6 @@
    else
      copy_dance = nil
    end 
-
-
 %>
 
   <% if copy_dance then %>
@@ -38,7 +36,7 @@
 
 
   <div class="row field">
-    <div class="contra-label col-lg-1 col-md-2 col-xs-3">Title</div>
+    <%= f.label "Title", class: "contra-label col-lg-1 col-md-2 col-xs-3" %>
     <%= if copy_dance 
         then f.text_field :title, {class: "dance-title-edit col-lg-11 col-md-10 col-xs-9", value: copy_dance.title + ' variation'}
         else f.text_field :title, {class: "dance-title-edit col-lg-11 col-md-10 col-xs-9"}
@@ -46,18 +44,29 @@
   </div>
   <div class="row field">
     <%= f.label "by", class: "col-lg-1 col-md-2 col-xs-3" %>
-    <%= begin
-          options_sans_params = Choreographer.all.map {|c| [c.name,c.id]}
-          param_default       = params[:choreographer_id] || (copy_dance && copy_dance.choreographer_id)
-          options_with_params = options_for_select(options_sans_params, param_default)
-          options = param_default ? options_with_params : options_sans_params
-          f.select :choreographer_id, options,  {}, {class: "col-lg-11 col-md-10 col-xs-9"}
-        end %>
+    <%= props = {class: "col-lg-11 col-md-10 col-xs-9", id: "choreographer-autocomplete"}
+        props[:value] = copy_dance.choreographer.name if copy_dance
+        f.text_field :choreographer_name, props %>
+    <script>
+      $( "#choreographer-autocomplete" ).autocomplete({
+        source: <%= a_to_safe_str(Choreographer.all.map &:name) %>,
+        autoFocus: true,
+        minLength: 0
+      });
+    </script>
   </div>
   <div class="row field">
     <%= f.label :formation, class: "col-lg-1 col-md-2 col-xs-3" %>
-    <%= f.text_field :start_type, {class: "col-lg-11 col-md-10 col-xs-9"}.merge(copy_dance ? {value: copy_dance.start_type} : {}) %>
+    <%= f.text_field :start_type, {class: "col-lg-11 col-md-10 col-xs-9", id: "start-type-autocomplete"}.merge(copy_dance ? {value: copy_dance.start_type} : {}) %>
+    <script>
+      $( "#start-type-autocomplete" ).autocomplete({
+        source: ["improper","Becket","four face four","square dance","indecent"],
+        autoFocus: true,
+        minLength: 0
+      });
+    </script>
   </div>
+
 
 
 <%# ============================ new figure editors ==================== %>
@@ -67,13 +76,29 @@
 <%# ======================================================================== %>
 
   <div ng-controller="FiguresController as figures">
+    <!-- Add/delete figure buttons -->
+    <div class="row actions">
+      <%= f.label :figures, class: "col-lg-1 col-md-2 col-xs-3" %>
+      <div class="col-lg-11 col-md-10 col-xs-9">
+        <div class="btn-group btn-group-justified btn-group-lg" role="group">
+          <div class="btn-group">
+            <button name="button" type="button" ng-click='addFigure()' class="btn btn-default"><%= plus_icon_html() %> Add Figure</button>
+          </div>
+          <div class="btn-group">
+            <button name="button" type="button" ng-click='deleteFigure()' ng-show="figures.arr.length > 0" class="btn btn-default"><%= x_icon_html() %> Remove Figure</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
     <div class="row">
       <table class="figure_edits col-lg-12 col-xs-12">
-        <thead ng-init="figures.arr=<%= 
+        <thead ng-init="figures.arr=defaultFigures(<%= 
                         if copy_dance 
                         then copy_dance.figures_json 
                         else @dance.figures_json 
-                        end %>">
+                        end %>)">
           <tr>                                       <!-- 12 twelfths -->
             <th style="width:  8.33333%"></th>       <!-- 1 -->
             <th style="width: 16.66667%">formation</th><!-- 2 -->
@@ -119,7 +144,7 @@
                         ng-change="figure.balance = figure.balance && moveCaresAboutBalance(figure.move)">
               </select>
             </td>
-            <td><select class="beat_edit" ng-model="figure.beats" ng-options="b for b in [8,16,2,4,6,8,10,12,14,16]">
+            <td><select class="beat_edit" ng-model="figure.beats" ng-options="b for b in [8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]">
               </select>
             </td>
 
@@ -150,21 +175,6 @@
       </table>
     </div>
 
-    <!-- Add/delete figure buttons -->
-    <div class="row actions">
-      <div class="col-lg-1 col-md-2 col-xs-3">
-      </div>
-      <div class="col-lg-11 col-md-10 col-xs-9">
-        <div class="btn-group btn-group-justified btn-group-lg" role="group">
-          <div class="btn-group">
-            <button name="button" type="button" ng-click='addFigure()' class="btn btn-default">Add Figure</button>
-          </div>
-          <div class="btn-group">
-            <button name="button" type="button" ng-click='deleteFigure()' ng-show="figures.arr.length > 0" class="btn btn-default">Remove Figure</button>
-          </div>
-        </div>
-      </div>
-    </div>
     
 
   <!-- debugger -->
@@ -222,7 +232,7 @@
 
   <div class="row actions">
     <div class="col-lg-1 col-md-2 col-xs-3"></div>
-    <%= f.submit 'Save Dance', class: "update_dance col-lg-3 col-xs-9 btn btn-lg btn-success" %>
+    <%= save_submit_button_html "Save Dance", {class: "update_dance col-lg-3 col-xs-9"} %>
   </div>
 <% end %>
 

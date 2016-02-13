@@ -17,8 +17,6 @@ RSpec.describe "dances/edit", type: :view do
 
       assert_select "input#dance_title[name=?]", "dance[title]"
 
-      assert_select "input#dance_start_type[name=?]", "dance[start_type]"
-
       assert_select "textarea#dance_notes[name=?]", "dance[notes]"
     end
   end

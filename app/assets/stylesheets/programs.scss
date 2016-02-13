@@ -1,0 +1,76 @@
+// Place all the styles related to the Programs controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.activity-toc-dance-title {
+    font-weight: bold;
+    font-style: italic;
+}
+
+.activity-breakdown {
+    border-top-style: solid;
+}
+.activity-breakdown h2 {
+    margin-top: 10px;
+    margin-bottomm: 10px;
+}
+
+p.activity-breakdown-text {
+    font-size: larger;
+    font-weight: bold;
+}
+h2.activity-breakdown-text {
+}
+
+h2.activity-breakdown-dance-title {
+}
+
+h2.activity-breakdown-empty-activity {
+    color: #888;
+    font-style: italic;
+    font-size: smaller;
+}
+
+.activity-dance {
+    display: inline;
+}
+
+.activity-checked {
+    background-color: #EEE;
+}
+
+.activity-editor-table {
+    width: 100%;
+}
+
+
+.activity-editor-table .btn-group-vertical {
+    width: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.activity-editor-table .activity-editor-button-double-stack {
+}
+.activity-editor-table .activity-editor-button-single-stack {
+}
+
+
+.activity-editor-table td {
+}
+
+.activity-editor-table tr {
+}
+.activity-editor-table button {
+    width: 100%;
+}
+
+.activity-editor-table .activity-editor-button-double-stack button {
+    height: 45.5px;
+
+}
+.activity-editor-table .activity-editor-button-single-stack button {
+    height: 40px;
+}
