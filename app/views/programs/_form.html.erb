@@ -26,6 +26,8 @@
                       else ''
                     end,
              placeholder: "Program Title",
+             title: "Program Title",
+             "aria label": "Program Title",
              class: "col-xs-12"
             }) %>
 
@@ -47,13 +49,20 @@
                   <div class="btn-group-vertical activity-editor-button-single-stack" role="group">
                     <button name="button" type="button"
                             ng-click='addActivity(activitiesCtrl.activities)'
-                            class="btn btn-default activity-editor-button">
-                      <span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button>
+                            class="btn btn-default activity-editor-button"
+                            aria-label="add row" title="add row">
+                      <span class='glyphicon glyphicon-plus' aria-hidden='true'></span>
+                    </button>
                   </div>
                 </td>
                 <td>
                   <div class="btn-group-vertical activity-editor-button-single-stack" role="group">
-                    <button name="button" type="button" ng-click="selectAllActivities(activitiesCtrl.activities)" class="btn btn-default" aria-label="select all" title="select all"><span class='glyphicon glyphicon-check' aria-hidden='true'></span></button>
+                    <button name="button" type="button" 
+                            ng-click="selectAllActivities(activitiesCtrl.activities)"
+                            class="btn btn-default" aria-label="select all"
+                            title="select all">
+                      <span class='glyphicon glyphicon-check' aria-hidden='true'></span>
+                    </button>
                   </div>
                 </td>
                 <td rowspan="2">
@@ -61,19 +70,31 @@
                     <button name="button" type="button" 
                             ng-click="moveSelectedActivitiesUpNIndicies(activitiesCtrl.activities, 1.5)"
                             ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)"
-                            class="btn btn-default" aria-label="up" title="move up">
-                      <span class='glyphicon glyphicon-triangle-top' aria-hidden='true'></span></button>
+                            class="btn btn-default" aria-label="move up" title="move up">
+                      <span class='glyphicon glyphicon-triangle-top' aria-hidden='true'></span>
+                    </button>
                     <button name="button" type="button"
                             ng-click="moveSelectedActivitiesDownNIndicies(activitiesCtrl.activities, 1.5)"
                             ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)"
-                            class="btn btn-default" aria-label="down" title="move down">
-                      <span class='glyphicon glyphicon-triangle-bottom' aria-hidden='true'></span></button>
+                            class="btn btn-default" aria-label="move down" title="move down">
+                      <span class='glyphicon glyphicon-triangle-bottom' aria-hidden='true'></span>
+                    </button>
                   </div>
                 </td>
                 <td rowspan="2">
                   <div class="btn-group-vertical activity-editor-button-double-stack" role="group">
-                    <button name="button" type="button" ng-click="moveSelectedActivitiesToTop(activitiesCtrl.activities)" ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)" class="btn btn-default" aria-label="top" title="move to top"><span class='glyphicon glyphicon-fast-backward contra-rotate-90' aria-hidden='true'></span></button>
-                    <button name="button" type="button" ng-click="moveSelectedActivitiesToBottom(activitiesCtrl.activities)" ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)" class="btn btn-default" aria-label="bottom" title="move to bottom"><span class='glyphicon glyphicon-fast-forward contra-rotate-90' aria-hidden='true'></span></button>
+                    <button name="button" type="button" 
+                            ng-click="moveSelectedActivitiesToTop(activitiesCtrl.activities)" 
+                            ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)"
+                            class="btn btn-default" aria-label="move to top" title="move to top">
+                      <span class='glyphicon glyphicon-fast-backward contra-rotate-90' aria-hidden='true'></span>
+                      </button>
+                    <button name="button" type="button" 
+                            ng-click="moveSelectedActivitiesToBottom(activitiesCtrl.activities)"
+                            ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)" 
+                            class="btn btn-default" aria-label="move to bottom" title="move to bottom">
+                      <span class='glyphicon glyphicon-fast-forward contra-rotate-90' aria-hidden='true'></span>
+                      </button>
                   </div>
                 </td>
               </tr>
@@ -83,13 +104,18 @@
                     <button name="button" type="button" 
                             ng-click='deleteSelectetdActivitiesUI(activitiesCtrl.activities)'
                             ng-disabled="0 == checkedActivityCount(activitiesCtrl.activities)"
-                            class="btn btn-default">
-                      <span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button>
+                            class="btn btn-default" aria-label="delete selected" title="delete selected">
+                      <span class='glyphicon glyphicon-remove' aria-hidden='true'></span>
+                      </button>
                   </div>
                 </td>
                 <td>
                   <div class="btn-group-vertical activity-editor-button-single-stack" role="group">
-                    <button name="button" type="button" ng-click="deselectAllActivities(activitiesCtrl.activities)" class="btn btn-default" aria-label="select none" title="select none"><span class='glyphicon glyphicon-unchecked' aria-hidden='true'></span></button>
+                    <button name="button" type="button"
+                            ng-click="deselectAllActivities(activitiesCtrl.activities)"
+                            class="btn btn-default" aria-label="select none" title="select none">
+                      <span class='glyphicon glyphicon-unchecked' aria-hidden='true'></span>
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -107,7 +133,7 @@
               <label>
               <input type="checkbox" name="activivty-{{$index}}-selected"
                      id="activivty-{{$index}}-selected" ng-model="act.checked"
-                     value="true">
+                     value="true" aria-label="select" title="select">
               &nbsp;{{$index+1}}.
               </label>
             </div>
@@ -119,9 +145,9 @@
                  pause="100"
                  selected-object="act.dance"
                  local-data="activitiesCtrl.dances"
-                 search-fields="title,choreographer"
+                 search-fields="displayText"
                  title-field="displayText"
-                 minlength="1"
+                 minlength="2"
                  input-class="activity-dance col-xs-6" 
                  <%# Note N: if this element's column changes, 
                  we also have to adjust where
@@ -129,9 +155,14 @@
                  .angucomplete-dropdown in application.scss %>
                  match-class="autocomplete-match-text"
                  initial-value="findDanceHashById(act.dance_id,activitiesCtrl.dances)"
+                 aria-label="dance" title="dance"
                  ></div>
-            <input type="text" ng-model="act.text" name="program[activities_attributes][{{$index}}][text]" id="activivty-{{$index}}-text" class="col-xs-3" placeholder="Note"/>
-            <input type="hidden" ng-value="act.dance.originalObject.id" name="program[activities_attributes][{{$index}}][dance_id]" id="activivty-{{$index}}-dance_id"/>
+            <input type="text" ng-model="act.text" name="program[activities_attributes][{{$index}}][text]"
+                   id="activivty-{{$index}}-text" class="col-xs-3" placeholder="Note"
+                   aria-label="additional text" title="additional text"/>
+            <input type="hidden" ng-value="act.dance.originalObject.id"
+                   name="program[activities_attributes][{{$index}}][dance_id]" 
+                   id="activivty-{{$index}}-dance_id"/>
           </div>
         </div>
 

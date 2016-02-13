@@ -16,8 +16,28 @@ describe 'Creating program from index page' do
     click_link "New Program"
 
     expect(page).to have_selector("input[placeholder='Program Title']")
+    expect(page).to have_selector("input[title='Program Title']")
+    expect(page).to have_selector("button[title='add row']")
+    expect(page).to have_selector("button[title='delete selected']")
+    expect(page).to have_selector("button[title='select all']")
+    expect(page).to have_selector("button[title='select none']")
+    expect(page).to have_selector("button[title='move up']")
+    expect(page).to have_selector("button[title='move down']")
+    expect(page).to have_selector("button[title='move to top']")
+    expect(page).to have_selector("button[title='move to bottom']")
+
+    # this is comment 'bingo', see below...
+    # expect(page).to have_selector("input[title='select']")
+    # expect(page).to have_selector("input[title='dance']")
+    # expect(page).to have_selector("input[title='additional text']")
+
+
+    expect(page).to have_selector("button[type='submit']")
     scrutinize_layout page
   end
+
+  pending "should test that javascript populates the new program with a few fields"
+  # to implement, see the comment labeled 'bingo' above
 
   it "sans logged in user, refuses to go the New Program page" do
 
