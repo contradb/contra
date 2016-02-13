@@ -85,3 +85,8 @@
 .contra-rotate-90 { 
   transform: rotate(90deg);
 }
+
+.angucomplete-dropdown { 
+  top: 32px;
+  left: 25%; /* 25% at time of writing this is because we're in the 3rd column of 12 */
+}
