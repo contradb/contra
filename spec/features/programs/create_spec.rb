@@ -8,7 +8,7 @@ Warden.test_mode!
 
 describe 'Creating program from index page' do
 
-  it "with logged in user, goes to the New Choreographer page" do
+  it "with logged in user, goes to the New Program page" do
     user = FactoryGirl.create(:user)
     login_as(user, :scope => :user)
 
@@ -19,13 +19,12 @@ describe 'Creating program from index page' do
     scrutinize_layout page
   end
 
-  it "sans logged in user, refuses to go the New Choreographer page" do
+  it "sans logged in user, refuses to go the New Program page" do
 
     visit '/programs'
     click_link "New Program"
 
     expect(page).to have_content("You need to sign in or sign up before continuing")
-    expect(page).to have_content("Login")
     scrutinize_layout page
   end
 end
