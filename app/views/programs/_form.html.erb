@@ -36,7 +36,7 @@
       <div ng-controller="ActivitiesController as activitiesCtrl" id="activities-div">
         <span ng-init="activitiesCtrl.activities=<%= ActivitiesHelper.activities_to_json_for_editing(@program.activities_sorted) %>">
         </span>
-        <span ng-init="activitiesCtrl.dances=<%= dance_autocomplete_hash_json %>">
+        <span ng-init="activitiesCtrl.dances=massageDanceAutocompleteHashes(<%= dance_autocomplete_hash_json %>)">
         </span>
 
         <div class="container"> <%# This container contains just one thing - an evil table! Muah ha ha! %>
@@ -120,7 +120,7 @@
                  selected-object="act.dance"
                  local-data="activitiesCtrl.dances"
                  search-fields="title,choreographer"
-                 title-field="title,choreographer"
+                 title-field="displayText"
                  minlength="1"
                  input-class="activity-dance col-xs-6"
                  match-class="autocomplete-match-text"

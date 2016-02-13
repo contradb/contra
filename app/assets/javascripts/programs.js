@@ -261,6 +261,24 @@ function attachDragAndDropEventHandlers($element) {
         .prop("draggable","true");
 }
 
+function massageDanceAutocompleteHashes(array_of_hashes) {
+    var a = array_of_hashes;
+    // create synthesized string
+    for (var i=0; i<a.length; i++) {
+        var h = a[i];
+        h.displayText = "" + h.title + " by " + h.choreographer;
+    }
+    // disambiguate straight copiess
+    var seen_display_texts = {}
+    for (var i=0; i<a.length; i++)
+    {
+        while (seen_display_texts[a[i].displayText])
+            a[i].displayText += " (#" + a[i].id + ")"
+        seen_display_texts[a[i].displayText] = true;
+    }
+    return a;
+}
+
 // Angular init
 (function () {
     var app = angular.module('activities_editor', ['angucomplete-alt']);
@@ -275,8 +293,9 @@ function attachDragAndDropEventHandlers($element) {
         $scope.moveSelectedActivitiesDownNIndicies = moveSelectedActivitiesDownNIndicies
         $scope.moveSelectedActivitiesToTop         = moveSelectedActivitiesToTop;
         $scope.moveSelectedActivitiesToBottom      = moveSelectedActivitiesToBottom;
-        $scope.checkedActivityCount = checkedActivityCount;
-        $scope.attachDragAndDropEventHandlers = attachDragAndDropEventHandlers
+        $scope.checkedActivityCount                = checkedActivityCount;
+        $scope.attachDragAndDropEventHandlers      = attachDragAndDropEventHandlers
+        $scope.massageDanceAutocompleteHashes      = massageDanceAutocompleteHashes
         $scope.getActivities = function () {return activities_ctrl.activities;}
     }
     app.controller('ActivitiesController', ['$scope',scopeInit]);
