@@ -12,17 +12,18 @@
 }
 
 .contra_splash_jumbotron {
-    background-image: asset-data-url("fleur3.jpg");
+    background-image: asset-data-url("fleur4.jpg");
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
     background-color: #BBB;
-    padding-left: 22% !important;
+    padding-left: 13% !important;
     text-shadow: #222 0.3em 0.3em 0.3em;
 }
 
 .contra_splash_jumbotron h1 {
     color: white !important;
+    font-weight: bold;
 }
 
 .contra_splash_jumbotron p {
