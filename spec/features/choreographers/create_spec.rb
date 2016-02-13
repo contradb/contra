@@ -25,7 +25,6 @@ describe 'Creating choreographer from index page' do
     click_link "New Choreographer"
 
     expect(page).to have_content("You need to sign in or sign up before continuing")
-    expect(page).to have_content("Login")
     scrutinize_layout page
   end
 
