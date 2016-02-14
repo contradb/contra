@@ -46,7 +46,7 @@ module DancesHelper
 
   # you! manually sync changes to dances.js!
   def move_cares_about_rotations(s)
-    [:do_si_do, :see_saw, :allemande_right, :allemande_left, :gypsy_right_shoulder, :gypsy_left_shoulder].include?(s.intern)
+    [:do_si_do, :see_saw, :allemande_right, :allemande_left, :gyre_right_shoulder, :gyre_left_shoulder].include?(s.intern)
   end
 
   # you! manually sync changes to dances.js!

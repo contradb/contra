@@ -13,7 +13,7 @@ function moveCaresAboutBalance (move) {
 // NOTE: this constant is duplicated rubyside in dances_helper.rb. Sync them.
 var moveCaresAboutRotationsArr = 
     ["do_si_do", "see_saw", "allemande_right", "allemande_left", 
-     "gypsy_right_shoulder", "gypsy_left_shoulder"];
+     "gyre_right_shoulder", "gyre_left_shoulder"];
 function moveCaresAboutRotations (move) {
     return 0 <= moveCaresAboutRotationsArr.indexOf(move)
 }
@@ -107,7 +107,7 @@ function moveMenuOptions (formation,who) {
         case "twos":
             r = [ "swing",
                   "do_si_do", "see_saw", "allemande_right", "allemande_left",
-                  "gypsy_right_shoulder", "gypsy_left_shoulder",
+                  "gyre_right_shoulder", "gyre_left_shoulder",
                   "pull_by_right", "pull_by_left", 
                   "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl"];
             break;
@@ -126,7 +126,7 @@ function moveMenuOptions (formation,who) {
         case  "neighbor":
             r = [ "swing",
                   "allemande_right", "allemande_left","do_si_do", "see_saw",
-                  "gypsy_right_shoulder", "gypsy_left_shoulder",
+                  "gyre_right_shoulder", "gyre_left_shoulder",
                   "pull_by_right", "pull_by_left", 
                   "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl"];
             break;
@@ -140,7 +140,7 @@ function moveMenuOptions (formation,who) {
             r = [ "balance","swing",
                   "slide_right_rory_o_moore", "slide_left_rory_o_moore",
                   "allemande_right", "allemande_left","do_si_do", "see_saw",
-                  "gypsy_right_shoulder", "gypsy_left_shoulder",
+                  "gyre_right_shoulder", "gyre_left_shoulder",
                   "pull_by_right", "pull_by_left", 
                   "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl",
                 ];
@@ -164,7 +164,7 @@ function moveMenuOptions (formation,who) {
         case "neighbor": 
             r = [ "swing",
                   "do_si_do", "see_saw", "allemande_right", "allemande_left",
-                  "gypsy_right_shoulder", "gypsy_left_shoulder",
+                  "gyre_right_shoulder", "gyre_left_shoulder",
                   "pull_by_right", "pull_by_left", 
                   "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl",
                   "promenade_across",
@@ -174,7 +174,7 @@ function moveMenuOptions (formation,who) {
         case "gentlespoons": 
             r = [ "chain",
                   "do_si_do", "see_saw", "allemande_right", "allemande_left",
-                  "gypsy_right_shoulder", "gypsy_left_shoulder",
+                  "gyre_right_shoulder", "gyre_left_shoulder",
                   "chain", "pull_by_right", "pull_by_left",
                   // thought about these two, but...it takes too many parameters
                   // better to leave it as "custom": 
