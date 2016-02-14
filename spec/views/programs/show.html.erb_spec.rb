@@ -57,7 +57,7 @@ https://www.youtube.com/watch?v=jbeDG5jmKvE
                                        start_type: "improper",
                                        figures_json: '[{"who":"neighbor","beats":8,"move":"custom","notes":"rang_tang left"},{"who":"neighbor","beats":8,"move":"mad_robin"}]',
                                        notes: 'yet more dance notes')
-    @program.append_new_activity(dance: custodance, text: "featuring 2 new moves")
+    @program.append_new_activity(dance: custodance, text: "featuring **2 new moves**!")
   end
 
 
@@ -96,7 +96,13 @@ https://www.youtube.com/watch?v=jbeDG5jmKvE
     expect(rendered).to match(/introduces moves: custom, mad_robin/)
   end
 
+  it "has markdown support" do
+    setup_custodance
 
+    render
+
+    expect(rendered).to match("featuring <strong>2 new moves</strong>!")
+  end
 end
 
 

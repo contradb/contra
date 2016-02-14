@@ -12,15 +12,12 @@ class ProgramsController 1,0
   def self.activities_to_json_for_editing activities_to_json_for_editing4,40
         h[h9,248
 
-/home/dm/contra/app/helpers/dances_helper.rb,122
+/home/dm/contra/app/helpers/dances_helper.rb,144
   RotationMenuLabels 6,107
   def rotation_to_degrees(21,435
   def degrees_to_rotation(39,757
   def figure_txt(86,2335
-
-/home/dm/contra/app/helpers/welcome_helper.rb,57
-  WELCOME_BTN_ATTR 2,21
-  def sign_up_button_html(3,99
+    degrees 105,3207
 
 /home/dm/contra/app/helpers/globo_helper.rb,171
   def new_dance_button_html(32,1246
@@ -29,35 +26,42 @@ class ProgramsController 1,0
   def copy_program_button_html(73,3000
     opts 81,3356
 
-/home/dm/contra/app/models/program.rb,90
-class Program 4,94
-  module Private                # really not sure about this,44,1209
+/home/dm/contra/app/helpers/application_helper.rb,72
+  MARKDOWN_OPTS 3,26
+  RENDER_OPTS 4,104
+  @@markdown@@markdow5,176
+
+/home/dm/contra/app/helpers/welcome_helper.rb,57
+  WELCOME_BTN_ATTR 2,21
+  def sign_up_button_html(3,99
+
+/home/dm/contra/app/models/choreographer.rb,25
+class Choreographer 1,0
 
 /home/dm/contra/app/models/dance.rb,18
 class Dance 3,16
 
-/home/dm/contra/app/models/choreographer.rb,25
-class Choreographer 1,0
+/home/dm/contra/app/models/program.rb,90
+class Program 4,94
+  module Private                # really not sure about this,44,1209
 
 /home/dm/contra/app/models/user.rb,16
 class User 1,0
 
 /home/dm/contra/app/models/activity.rb,0
 
-/home/dm/contra/app/helpers/about_helper.rb,0
+/home/dm/contra/app/helpers/users_helper.rb,0
 
 /home/dm/contra/app/helpers/programs_helper.rb,0
 
-/home/dm/contra/app/helpers/application_helper.rb,0
-
 /home/dm/contra/app/helpers/choreographers_helper.rb,0
 
-/home/dm/contra/app/helpers/users_helper.rb,0
-
-/home/dm/contra/app/controllers/welcome_controller.rb,0
-
-/home/dm/contra/app/controllers/application_controller.rb,0
+/home/dm/contra/app/helpers/about_helper.rb,0
 
 /home/dm/contra/app/controllers/about_controller.rb,0
 
 /home/dm/contra/app/controllers/users_controller.rb,0
+
+/home/dm/contra/app/controllers/welcome_controller.rb,0
+
+/home/dm/contra/app/controllers/application_controller.rb,0

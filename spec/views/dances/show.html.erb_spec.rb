@@ -17,9 +17,9 @@ RSpec.describe "dances/show", type: :view do
                          {"who":"neighbor","move":"swing","beats":16,"balance":true}, 
                          {"who":"ladles","move":"allemande_right","beats":8,"degrees":540}, 
                          {"who":"partner","move":"swing","beats":8}, 
-                         {"who":"everybody","move":"right_left_through","beats":8}, 
+                         {"who":"everybody","move":"right_left_through","beats":8, "notes":"**markdown** by https://github.com/vmg/redcarpet"}, 
                          {"who":"ladles","move":"chain","beats":8,"notes":"look for new"}]',
-      :notes => "My Note Text"
+      :notes => "My Note Text www.yahoo.com blah blah **bold** blah"
     ))
   end
 
@@ -43,6 +43,18 @@ RSpec.describe "dances/show", type: :view do
     expect(rendered).to match(regexpify 'look for new')
     # notes
     expect(rendered).to match(/My Note Text/)
+  end
+
+  it "supports Markdown dance notes" do
+    render
+    expect(rendered).to have_link('www.yahoo.com')
+    expect(rendered).to match('<strong>bold</strong>')
+  end
+
+  it "supports Markdown figure notes" do
+    render
+    expect(rendered).to have_link('https://github.com/vmg/redcarpet')
+    expect(rendered).to match('<strong>markdown</strong>')
   end
 
 end
