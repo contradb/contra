@@ -12,14 +12,26 @@ function moveCaresAboutBalance (move) {
 
 // NOTE: this constant is duplicated rubyside in dances_helper.rb. Sync them.
 var moveCaresAboutRotationsArr = 
-    ["do_si_do", "see_saw", "allemande_right", "allemande_left", 
-     "gyre_right_shoulder", "gyre_left_shoulder"];
+    ["do_si_do"               , "see_saw"
+    ,"allemande_right"        , "allemande_left"
+    ,"gyre_right_shoulder"    , "gyre_left_shoulder"
+    ,"star_promenade"
+    ,"butterfly_whirl"
+    ,"mad_robin"
+    ];
 function moveCaresAboutRotations (move) {
     return 0 <= moveCaresAboutRotationsArr.indexOf(move)
 }
 
 // NOTE: this constant is duplicated rubyside in dances_helper.rb. Sync them.
-var moveCaresAboutPlacesArr = ["circle_left", "circle_right", "star_left", "star_right"]
+var moveCaresAboutPlacesArr = 
+    ["circle_left"            , "circle_right"
+    , "star_left"             , "star_right"
+    , "gyre_star_clockwise_ladles_backing"
+    , "gyre_star_ccw_ladles_backing"
+    , "gyre_star_clockwise_gentlespoons_backing"
+    , "gyre_star_ccw_gentlespoons_backing"
+    ]
 function moveCaresAboutPlaces (move) {
     return 0 <= moveCaresAboutPlacesArr.indexOf(move)
 }
@@ -89,14 +101,15 @@ function moveMenuOptions (formation,who) {
     if (who == "") { return []; } 
     else switch(formation) {
     case "short_lines":
-        r = (who == "everybody") ? ["down_the_hall","up_the_hall"] : []
+        r = (who == "everybody") ? ["down_the_hall","up_the_hall","dixie_twirl"] : []
         break;
 
     case "short_wavy_lines":
         switch (who) {
         case "everybody":
-            r = ["slide_right_rory_o_moore", "slide_left_rory_o_moore",
-                 "allemande_and_orbit","hey", "half_a_hey"];
+            r = ["allemande_and_orbit", 
+                 "slide_right_rory_o_moore", "slide_left_rory_o_moore",
+                 "half_a_hey", "hey"];
             break;
         case "ladles":
         case "gentlespoons":
@@ -105,30 +118,46 @@ function moveMenuOptions (formation,who) {
         case "centers":
         case "ones":
         case "twos":
-            r = [ "swing",
-                  "do_si_do", "see_saw", "allemande_right", "allemande_left",
-                  "gyre_right_shoulder", "gyre_left_shoulder",
-                  "pull_by_right", "pull_by_left", 
-                  "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl"];
+            r = ["allemande_left", "allemande_right", 
+                 "arizona_twirl",
+                 "box_the_gnat",
+                 "california_twirl",
+                 "do_si_do",
+                 "gyre_left_shoulder", "gyre_right_shoulder",
+                 "pull_by_left", "pull_by_right",
+                 "roll_away_half_sashay", 
+                 "see_saw", 
+                 "swat_the_flea", 
+                 "swing"];
             break;
         default: r = []; break;
         }
         break;
-    case "long_wavy_lines":
+    case "long_wavy_lines":     // two paralell lines, that happen to be wavy
         
         switch (who) {
         case "everybody": 
             r = ["box_circulate",
-                 "slide_right_rory_o_moore", "slide_left_rory_o_moore",
-                 "hey", "half_a_hey"];
+                 "hey", "half_a_hey",
+                 "slide_right_rory_o_moore", "slide_left_rory_o_moore"];
             break;
         case  "partner":
         case  "neighbor":
-            r = [ "swing",
-                  "allemande_right", "allemande_left","do_si_do", "see_saw",
-                  "gyre_right_shoulder", "gyre_left_shoulder",
-                  "pull_by_right", "pull_by_left", 
-                  "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl"];
+            r = ["allemande_left", "allemande_right", 
+                 "arizona_twirl", 
+                 "box_the_gnat", 
+                 "california_twirl",
+                 "do_si_do", 
+                 "gyre_left_shoulder", "gyre_right_shoulder", 
+                 "pull_by_left",
+                 "pull_by_right",
+                 "see_saw", 
+                 "swat_the_flea",
+                 "swing"] ;
+            break;
+        case  "ladles":
+        case  "gentlespoons":
+            r = ["roll_away_half_sashay"];
             break;
         default: r = []; break;
         }
@@ -137,13 +166,19 @@ function moveMenuOptions (formation,who) {
         switch (who) {
         case  "ladles":
         case "gentlespoons":
-            r = [ "balance","swing",
-                  "slide_right_rory_o_moore", "slide_left_rory_o_moore",
-                  "allemande_right", "allemande_left","do_si_do", "see_saw",
-                  "gyre_right_shoulder", "gyre_left_shoulder",
-                  "pull_by_right", "pull_by_left", 
-                  "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl",
-                ];
+            r = ["allemande_left", "allemande_right", 
+                 "arizona_twirl", 
+                 "balance", 
+                 "box_the_gnat",
+                 "california_twirl", 
+                 "do_si_do", 
+                 "gyre_left_shoulder", 
+                 "gyre_right_shoulder", 
+                 "pull_by_left", "pull_by_right", 
+                 "see_saw",
+                 "slide_left_rory_o_moore", "slide_right_rory_o_moore", 
+                 "swat_the_flea",
+                 "swing"];
             break;
         default: r = []; break;
         }
@@ -155,36 +190,54 @@ function moveMenuOptions (formation,who) {
     case undefined:
         switch (who) {
         case "everybody":
-            r = ["circle_left", "circle_right", "star_left", "star_right", "long_lines", 
-                 "petronella", "balance_the_ring", "to_ocean_wave", 
-                 "slide_right_rory_o_moore", "slide_left_rory_o_moore", // as in Rory'o'Moore
-                 "right_left_through"];
+            r = ["balance_the_ring",
+                 "circle_left", 
+                 "circle_right", 
+                 "cross_trails",
+                 "gyre_star_ccw_gentlespoons_backing", 
+                 "gyre_star_ccw_ladles_backing", 
+                 "gyre_star_clockwise_gentlespoons_backing", 
+                 "gyre_star_clockwise_ladles_backing", 
+                 "long_lines", 
+                 "petronella", 
+                 "right_left_through", 
+                 "slide_left_rory_o_moore", "slide_right_rory_o_moore", 
+                 "star_left", "star_right", 
+                 "to_ocean_wave"];
             break;
         case "partner":
         case "neighbor": 
-            r = [ "swing",
-                  "do_si_do", "see_saw", "allemande_right", "allemande_left",
-                  "gyre_right_shoulder", "gyre_left_shoulder",
-                  "pull_by_right", "pull_by_left", 
-                  "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl",
-                  "promenade_across",
-                  "balance"];
+            r = ["allemande_left", "allemande_right",
+                 "arizona_twirl", 
+                 "balance", 
+                 "box_the_gnat", 
+                 "butterfly_whirl", 
+                 "california_twirl", 
+                 "do_si_do",
+                 "gyre_left_shoulder", "gyre_right_shoulder", 
+                 "promenade_across", 
+                 "pull_by_left", "pull_by_right", 
+                 "see_saw", 
+                 "swat_the_flea", 
+                 "swing"];
             break;
         case "ladles":
         case "gentlespoons": 
-            r = [ "chain",
-                  "do_si_do", "see_saw", "allemande_right", "allemande_left",
-                  "gyre_right_shoulder", "gyre_left_shoulder",
-                  "chain", "pull_by_right", "pull_by_left",
-                  // thought about these two, but...it takes too many parameters
-                  // better to leave it as "custom": 
-                  // "allemande_left_with_orbit", "allemande_right_with_orbit",
-                  "mad_robin", "hey", "half_a_hey",
-                  "balance"];
+            r = ["allemande_left", "allemande_right", // alphabetic ordering
+                 "balance", "chain", 
+                 "do_si_do", 
+                 "gyre_left_shoulder", "gyre_right_shoulder", 
+                 "half_a_hey", "hey", 
+                 "mad_robin", 
+                 "pull_by_left", "pull_by_right", 
+                 "roll_away", "roll_away_half_sashay", 
+                 "see_saw", 
+                 "star_promenade",
+                 "to_long_wavy_line"];
             break;
         case "ones":
         case "twos":
-            r = ["swing","figure_8"];
+            r = ["contra_corners","figure_8","swing"];
             break;
         default: r = []; break; 
         }
