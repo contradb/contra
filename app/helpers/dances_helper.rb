@@ -124,7 +124,7 @@ module DancesHelper
       then terse ? "" : "~".html_safe
     elsif o['move'] == 'custom' || o['who'] == 'custom'
       then ''.html_safe + "#{formation}#{who} #{balance}#{move} " + notes_html + "#{deg_txt} #{beat_str}"
-      else ''.html_safe + "#{formation}#{who} #{balance}#{move} #{deg_txt} #{beat_str}" + notes_html
+      else ''.html_safe + "#{formation}#{who} #{balance}#{move} #{deg_txt} #{beat_str} " + notes_html
     end
   end
 
