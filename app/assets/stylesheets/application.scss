@@ -90,3 +90,12 @@
   top: 32px;
   left: 25%; /* 25% at time of writing this is because we're in the 3rd column of 12 */
 }
+
+.contra-markdown-inline p {
+  display: inline;
+}
+.contra-markdown-inline div {
+  display: inline;
+}
+.contra-markdown-block {
+}

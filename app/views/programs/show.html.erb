@@ -15,7 +15,7 @@
 <h2>Table of Contents</h2>
 <ol>
   <% @program.activities_sorted.each_with_index do |activity,index| %>
-  <li><a href=<%= "\"\##{activity_anchor_id(index)}\"".html_safe %>><%= activity.dance ? (content_tag(:span,activity.dance.title,class: "activity-toc-dance-title") + " by " + activity.dance.choreographer.name) : (activity.text.empty? ? "~~~" : activity.text) %></a></li>
+  <li><a href=<%= "\"\##{activity_anchor_id(index)}\"".html_safe %>><%= activity.dance ? (content_tag(:span,activity.dance.title,class: "activity-toc-dance-title") + " by " + activity.dance.choreographer.name) : (activity.text.empty? ? "~~~" : ApplicationHelper::renderMarkdownInlineNoLinks(activity.text)) %></a></li>
   <% end %>
 </ol>
 
@@ -24,7 +24,7 @@
     <%= if activity.dance 
         then content_tag(:h2, (link_to activity.dance.title, activity.dance), class: "activity-breakdown-dance-title")
         elsif !activity.text.empty?
-        then content_tag(:h2, activity.text, class: "activity-breakdown-text")
+        then content_tag(:h2, ApplicationHelper::renderMarkdown(activity.text), class: "activity-breakdown-text")
         else content_tag(:h2, "~ ~ ~", class: "activity-breakdown-empty-activity")
         end %>
     <%= if activity.dance
@@ -34,7 +34,7 @@
         end %>
 
     <%= if activity.dance && !activity.text.empty?
-        then content_tag(:p, activity.text, class: "activity-breakdown-text")
+        then content_tag(:p, ApplicationHelper::renderMarkdown(activity.text), class: "activity-breakdown-text")
         end %>
 
     <%= if activity.dance then

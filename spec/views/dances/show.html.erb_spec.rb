@@ -39,7 +39,8 @@ RSpec.describe "dances/show", type: :view do
     expect(rendered).to match(regexpify 'ladles allemande_right 1½')
     expect(rendered).to match(regexpify 'partner swing')
     expect(rendered).to match(regexpify 'right_left_through')
-    expect(rendered).to match(regexpify 'ladles chain look for new')
+    expect(rendered).to match(regexpify 'ladles chain')
+    expect(rendered).to match(regexpify 'look for new')
     # notes
     expect(rendered).to match(/My Note Text/)
   end

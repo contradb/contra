@@ -12,8 +12,6 @@
    end    %>
 </table>
 
-<% if dance.notes.strip.length > 0 %>
-<p><%= dance.notes %></p>
-<% end %>
+<%= ApplicationHelper::renderMarkdown(dance.notes) %>
 
 

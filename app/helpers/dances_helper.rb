@@ -83,10 +83,13 @@ module DancesHelper
 
 
 
-  def figure_txt(figure, terse: false) # takes a string, returns a string
+  def figure_txt(figure, terse: false) # takes a hash, returns a string
     o = figure
     return "nil" unless o
-    formation = if ['','square','unspecified', 'custom'].include? ( o['formation'] || '' ) then '' else 'in '+o['formation']+' ' end
+    formation = if ['','square','unspecified', 'custom'].include? ( o['formation'] || '' ) 
+                then ''
+                else 'in '+o['formation']+' '
+                end
     move    = if o['move'] and (o['move'] != 'custom') then o['move'] else '' end
     who     = if "everybody" == o['who'] || "custom" == o['who'] 
                 then '' 
@@ -97,10 +100,8 @@ module DancesHelper
               else o['who'] 
               end
     beats   = o['beats']   || nil
-    notes   = !o['notes'] ? '' :
-              ((terse && (o['notes'].length >=13)) ?
-                o['notes'][0..10] + "..." :
-                o['notes'])
+    notes   = !o['notes'] ? '' : ((terse && (o['notes'].length >=13)) ? "..." : o['notes'])
+    notes_html = ApplicationHelper::renderMarkdownInline(notes);
     degrees = o['degrees']
     deg_txt = if !degrees
               then ""
@@ -122,8 +123,8 @@ module DancesHelper
     if beats <= 0
       then terse ? "" : "~".html_safe
     elsif o['move'] == 'custom' || o['who'] == 'custom'
-      then "#{formation}#{who} #{balance}#{move} #{notes} #{deg_txt} #{beat_str}"
-      else "#{formation}#{who} #{balance}#{move} #{deg_txt} #{beat_str} #{notes}"
+      then ''.html_safe + "#{formation}#{who} #{balance}#{move} " + notes_html + "#{deg_txt} #{beat_str}"
+      else ''.html_safe + "#{formation}#{who} #{balance}#{move} #{deg_txt} #{beat_str}" + notes_html
     end
   end
 

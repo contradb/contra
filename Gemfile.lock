@@ -129,9 +129,9 @@ GEM
       bundler (>= 1.3.0, < 2.0)
       railties (= 4.2.3)
       sprockets-rails
-    rails-assets-angucomplete-alt (2.1.0)
+    rails-assets-angucomplete-alt (2.2.0)
       rails-assets-angular (>= 1.4.0)
-    rails-assets-angular (1.4.8)
+    rails-assets-angular (1.5.0)
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
     rails-dom-testing (1.0.7)
@@ -148,6 +148,7 @@ GEM
     rake (10.5.0)
     rdoc (4.2.1)
       json (~> 1.4)
+    redcarpet (3.3.4)
     ref (2.0.0)
     responders (2.1.1)
       railties (>= 4.2.0, < 5.1)
@@ -230,6 +231,7 @@ DEPENDENCIES
   poltergeist
   rails (= 4.2.3)
   rails-assets-angucomplete-alt!
+  redcarpet
   rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)

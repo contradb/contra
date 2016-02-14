@@ -75,3 +75,4 @@ gem 'devise'
 
 gem 'factory_girl_rails'
 
+gem 'redcarpet'
