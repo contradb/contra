@@ -12,12 +12,14 @@
 <p>user: <strong><%= link_to @program.user.name, @program.user %></strong></p>
 
 
-<h2>Table of Contents</h2>
-<ol>
-  <% @program.activities_sorted.each_with_index do |activity,index| %>
-  <li><a href=<%= "\"\##{activity_anchor_id(index)}\"".html_safe %>><%= activity.dance ? (content_tag(:span,activity.dance.title,class: "activity-toc-dance-title") + " by " + activity.dance.choreographer.name) : (activity.text.empty? ? "~~~" : ApplicationHelper::renderMarkdownInlineNoLinks(activity.text)) %></a></li>
-  <% end %>
-</ol>
+<div class="activity-toc">
+  <h2>Table of Contents</h2>
+  <ol>
+    <% @program.activities_sorted.each_with_index do |activity,index| %>
+    <li><a href=<%= "\"\##{activity_anchor_id(index)}\"".html_safe %>><%= activity.dance ? (content_tag(:span,activity.dance.title,class: "activity-toc-dance-title") + " by " + activity.dance.choreographer.name) : (activity.text.empty? ? "~~~" : ApplicationHelper::renderMarkdownInlineNoLinks(activity.text)) %></a></li>
+    <% end %>
+  </ol>
+</div>
 
 <% @program.activities_sorted.each_with_index do |activity,index| %>
   <%= "<div class='activity-breakdown' id='#{activity_anchor_id(index)}'>".html_safe %>

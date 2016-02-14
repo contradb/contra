@@ -7,8 +7,16 @@
     font-style: italic;
 }
 
+.activity-toc {
+    border-left-style: solid;
+    border-color: #337ab7;
+    padding-left: 2em;
+}
+
 .activity-breakdown {
-    border-top-style: solid;
+    border-left-style: solid;
+    border-color: #888;
+    padding-left: 2em;
 }
 .activity-breakdown h2 {
     margin-top: 10px;
