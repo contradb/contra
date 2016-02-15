@@ -138,9 +138,9 @@
                 <option value="custom">custom</option>
               </select>
             </td>
-            <td><input type="checkbox" class="balance_edit" ng-disabled="!moveCaresAboutBalance(figure.move)" ng-model="figure.balance"/></td>
+            <td><input type="checkbox" class="balance_edit" ng-model="figure.balance"/></td>
             <td><select class="move_edit" ng-model="figure.move"
-                        ng-options="m for m in moveMenuOptions(figure.formation, figure.who)"
+                        ng-options="m for m in moveMenuOptions(figure.formation, figure.who, figure.balance)"
                         ng-change="figure.balance = figure.balance && moveCaresAboutBalance(figure.move)">
               </select>
             </td>

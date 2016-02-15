@@ -96,7 +96,12 @@ function styleForBeats(beats) {
     return beats%32 < 16 ? 'a1b1' : 'a2b2' 
 }
 
-function moveMenuOptions (formation,who) {
+function moveMenuOptions(formation, who, balance) {
+    var r= moveMenuOptionsIgnoringBalance(formation, who)
+    return balance ? r.filter(moveCaresAboutBalance) : r
+}
+
+function moveMenuOptionsIgnoringBalance (formation,who) {
     var r = []; // the return value
     if (who == "") { return []; } 
     else switch(formation) {
