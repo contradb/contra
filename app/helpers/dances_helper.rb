@@ -123,7 +123,7 @@ module DancesHelper
               then "#{degrees_to_places(degrees)} places"
               elsif move_cares_about_rotations(move)
               then "#{degrees_to_rotation(degrees)}"
-              else "#{degrees} degrees"
+              else ''
               end
     balance = if !o['balance'] 
               then '' 
