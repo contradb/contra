@@ -22,6 +22,9 @@ module GloboHelper
   def x_icon_html()
     "<span class='glyphicon glyphicon-remove' aria-hidden='true'></span>".html_safe
   end
+  def rotate_icon_html()
+    "<span class='glyphicon glyphicon-retweet' aria-hidden='true'></span>".html_safe
+  end
   def save_icon_html()
     "<span class='glyphicon glyphicon-check' aria-hidden='true'></span>".html_safe
   end

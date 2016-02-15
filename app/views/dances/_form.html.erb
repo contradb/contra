@@ -76,16 +76,30 @@
 <%# ======================================================================== %>
 
   <div ng-controller="FiguresController as figures">
-    <!-- Add/delete figure buttons -->
+    <!-- Add/delete/rotate figure buttons -->
     <div class="row actions">
       <%= f.label :figures, class: "col-lg-1 col-md-2 col-xs-3" %>
       <div class="col-lg-11 col-md-10 col-xs-9">
         <div class="btn-group btn-group-justified btn-group-lg" role="group">
           <div class="btn-group">
-            <button name="button" type="button" ng-click='addFigure()' class="btn btn-default"><%= plus_icon_html() %> Add Figure</button>
+            <button name="button" type="button" ng-click='addFigure()' class="btn btn-default"
+                    title="add a new figure at the end of the list" 
+                    aria-label="add a new figure at the end of the list">
+              <%= plus_icon_html() %> Add Figure</button>
           </div>
           <div class="btn-group">
-            <button name="button" type="button" ng-click='deleteFigure()' ng-show="figures.arr.length > 0" class="btn btn-default"><%= x_icon_html() %> Remove Figure</button>
+            <button name="button" type="button" ng-click='deleteFigure()' 
+                    ng-show="figures.arr.length > 0" class="btn btn-default"
+                    title="delete the last figure" 
+                    aria-label="delete the last figure">
+              <%= x_icon_html() %> Remove Figure</button>
+          </div>
+          <div class="btn-group">
+            <button name="button" type="button" ng-click='rotateFigures()' 
+                    ng-show="figures.arr.length >= 2" class="btn btn-default"
+                    title="rotate figures, putting the last one first and bumping the rest down" 
+                    aria-label="rotate figures, putting the last one first and bumping the rest down">
+              <%= rotate_icon_html() %> Rotate Figures</button>
           </div>
         </div>
       </div>

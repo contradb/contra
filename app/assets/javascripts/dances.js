@@ -301,6 +301,10 @@ function defaultFigures (figures) {
         $scope.newFigure = newFigure;
         $scope.addFigure = function() {fctrl42.arr.push(newFigure());};
         $scope.deleteFigure = function() {(fctrl42.arr.length>0) && fctrl42.arr.pop()};
+        $scope.rotateFigures = function() {
+            (fctrl42.arr.length>0) && 
+                fctrl42.arr.unshift(fctrl42.arr.pop())
+        };
         $scope.defaultFigures = defaultFigures;
     }
     app.controller('FiguresController', ['$scope',scopeInit])
