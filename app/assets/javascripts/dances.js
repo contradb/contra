@@ -18,6 +18,8 @@ var moveCaresAboutRotationsArr =
     ,"star_promenade"
     ,"butterfly_whirl"
     ,"mad_robin"
+    , "roll_away_half_sashay_neighbor", "roll_away_half_sashay_partner",
+    , "roll_away_neighbor",             "roll_away_partner",
     ];
 function moveCaresAboutRotations (move) {
     return 0 <= moveCaresAboutRotationsArr.indexOf(move)
@@ -118,11 +120,9 @@ function moveMenuOptionsIgnoringBalance (formation,who) {
             break;
         case "ladles":
         case "gentlespoons":
-        case "partner":
-        case "neighbor":
-        case "centers":
         case "ones":
         case "twos":
+        case "centers":
             r = ["allemande_left", "allemande_right", 
                  "arizona_twirl",
                  "box_the_gnat",
@@ -130,7 +130,21 @@ function moveMenuOptionsIgnoringBalance (formation,who) {
                  "do_si_do",
                  "gyre_left_shoulder", "gyre_right_shoulder",
                  "pull_by_left", "pull_by_right",
-                 "roll_away_half_sashay", 
+                 "roll_away_half_sashay_neighbor", 
+                 "roll_away_half_sashay_partner", 
+                 "see_saw", 
+                 "swat_the_flea", 
+                 "swing"];
+            break;
+        case "partner":
+        case "neighbor":
+            r = ["allemande_left", "allemande_right", 
+                 "arizona_twirl",
+                 "box_the_gnat",
+                 "california_twirl",
+                 "do_si_do",
+                 "gyre_left_shoulder", "gyre_right_shoulder",
+                 "pull_by_left", "pull_by_right",
                  "see_saw", 
                  "swat_the_flea", 
                  "swing"];
@@ -162,7 +176,7 @@ function moveMenuOptionsIgnoringBalance (formation,who) {
             break;
         case  "ladles":
         case  "gentlespoons":
-            r = ["roll_away_half_sashay"];
+            r = ["roll_away_half_sashay_neighbor", "roll_away_half_sashay_partner"];
             break;
         default: r = []; break;
         }
@@ -228,16 +242,18 @@ function moveMenuOptionsIgnoringBalance (formation,who) {
             break;
         case "ladles":
         case "gentlespoons": 
-            r = ["allemande_left", "allemande_right", // alphabetic ordering
+            r = ["allemande_left", "allemande_right",
                  "balance", "chain", 
                  "do_si_do", 
                  "gyre_left_shoulder", "gyre_right_shoulder", 
                  "half_a_hey", "hey", 
                  "mad_robin", 
                  "pull_by_left", "pull_by_right", 
-                 "roll_away", "roll_away_half_sashay", 
+                 "roll_away_neighbor", "roll_away_partner",
+                 "roll_away_half_sashay_neighbor", "roll_away_half_sashay_partner", 
                  "see_saw", 
                  "star_promenade",
+                 "swing",
                  "to_long_wavy_line"];
             break;
         case "ones":
