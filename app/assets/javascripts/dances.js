@@ -4,7 +4,13 @@
 
 
 
-var moveCaresAboutBalancesArr = ["petronella", "swing", "pull_by_right", "pull_by_left", "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl", "slide_right_rory_o_moore", "slide_left_rory_o_moore", "custom"];
+var moveCaresAboutBalancesArr = [
+  "petronella", "swing", "pull_by_right", "pull_by_left",
+    "box_the_gnat", "swat_the_flea", "california_twirl", "arizona_twirl",
+    "slide_right_rory_o_moore", "slide_left_rory_o_moore", 
+    "roll_away_half_sashay_neighbor", "roll_away_half_sashay_partner",
+    "roll_away_neighbor",             "roll_away_partner",
+    "custom"];
 function moveCaresAboutBalance (move) {
     return 0 <= moveCaresAboutBalancesArr.indexOf(move)
 }
@@ -18,8 +24,6 @@ var moveCaresAboutRotationsArr =
     ,"star_promenade"
     ,"butterfly_whirl"
     ,"mad_robin"
-    , "roll_away_half_sashay_neighbor", "roll_away_half_sashay_partner",
-    , "roll_away_neighbor",             "roll_away_partner",
     ];
 function moveCaresAboutRotations (move) {
     return 0 <= moveCaresAboutRotationsArr.indexOf(move)
