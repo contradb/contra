@@ -103,7 +103,7 @@
             <th style="width:  8.33333%"></th>       <!-- 1 -->
             <th style="width: 16.66667%">formation</th><!-- 2 -->
             <th style="width: 16.66667%">who</th>     <!-- 2. -->
-            <th style="width:  2.77778%">B+</th>      <!-- 0.333 -->
+            <th style="width:  2.77778%" class="balance">bal</th>      <!-- 0.333 -->
             <th style="width: 13.33333%">move</th>    <!-- 1.667 -->
             <th style="width:  8.33333%">beats</th>   <!-- 1 -->
             <th style="width: 16.66667%">turn</th>    <!-- 2 -->
@@ -236,8 +236,44 @@
   </div>
 
   <div class="row actions">
-    <div class="col-lg-1 col-md-2 col-xs-3"></div>
-    <p class="col-lg-3 col-md-10 col-xs-9">You may use <a href="https://daringfireball.net/projects/markdown/basics">Markdown</a> in your notes. </p>
+    <div class="col-lg-1 col-md-2 col-xs-3" style="font-weight: bold">Instructions</div>
+    <div class="col-lg-11 col-md-10 col-xs-9">
+      <p>There's a lot of ink spilled over "gentlemen" versus "men"
+      versus "leads". The ContraDB approach is to annoy everyone by
+      using "gentlespoons", as in "ladles and gentlespoons". Then in a
+      future software update we will let users specify their own
+      alternatives, so you can just see everyone's dances written with
+      "men" or whatever your preference is. </p>
+      <p>For the present, we recommend future-proofing your notes by
+      always using these terms: "ladles", "gentlespoons", and the
+      "gyre_*" moves. It's also safe simply not to refer to them in
+      notes. </p>
+      <hr />
+      <p>Example: creating "partner balance and swing for 16",
+      select <b>who</b>=<i>partner</i>, <b>move</b>=<i>swing</i>,
+      check the tiny bal<span style="text-size: smaller">ance</span>
+      checkbox, and select 16 beats.</p>
+      <p>If you select <b>who</b>=<i>everybody</i>, you'll
+      notice <b>move</b>=<i>swing</i> is not in the menu. More
+      generally, moves are only available if the <b>formation</b> and <b>who</b>
+      think they should be allowed. Sometimes this gets a
+      bit pedantic, like: <b>who</b>=<i>everybody</i>, <b>move</b>=<i>hey</i>
+      is not there, because who leads the hey? If you dig around, you
+      can select it
+      through <b>who</b>=<i>ladles</i>, <b>move</b>=<i>hey</i>. The
+      take aways here are:</p>
+      <ol>
+        <li>play around with the <b>formation</b> and <b>who</b> menus to find the
+        <b>move</b>s you seek.</li>
+        <li>If you don't find it, you can always select <b>move</b>=<i>custom</i>.</li>
+        <li>If ContraDB is being silly, please report it so we can
+        make it better.</li>
+      </ol>
+      <hr />
+      <p>You may
+      use <a href="https://daringfireball.net/projects/markdown/basics">Markdown</a>
+      in your notes to hyperlink to sources and create <i>*formatting*</i>.</p> 
+    </div>
   </div>
 
 <% end %>

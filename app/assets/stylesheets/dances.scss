@@ -2,6 +2,10 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.figure_edits .balance  { 
+  font-size: smaller;
+  transform: rotate(-90deg);  // if it doesn't work, it's not that bad. 
+}
 .figure_edits th { text-align: center }
 .figure_edits td {  }
 .beat_edit      {width:90%;}
