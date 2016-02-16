@@ -3,37 +3,49 @@
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
 
-  <p class="row field">
-    <P class="col-sm-2 contra-label">Email:</p> 
+  <div class="row field">
+    <div class="col-sm-2 contra-label">Email:</div> 
     <%= f.email_field :email, autofocus: true, class: "col-sm-6" %>
-    <p class="col-sm-4 understated">e.g. 'jane@gmail.com'</p>
-  </p>
+    <div class="col-sm-4 understated">e.g. 'jane@gmail.com'</div>
+  </div>
 
-  <p class="row field">
-    <P class="col-sm-2 contra-label">Name:</p> 
+  <div class="row field">
+    <div class="col-sm-2 contra-label">Name:</div> 
     <%= f.text_field :name, class: "col-sm-6" %>
-    <p class="col-sm-4 understated">e.g. 'Cary Ravitz'</p>
-  </p>
+    <div class="col-sm-4 understated">e.g. 'Cary Ravitz'</div>
+  </div>
 
-  <p class="row field">
-    <P class="col-sm-2 contra-label">Password:</p> 
+  <div class="row field">
+    <div class="col-sm-2 contra-label">Password:</div> 
     <%= f.password_field :password, autocomplete: "off", class: "col-sm-6" %>
     <% if @minimum_password_length %>
-    <p class="col-sm-4 understated"><%= @minimum_password_length %> characters minimum</p>
+    <div class="col-sm-4 understated"><%= @minimum_password_length %> characters minimum</div>
     <% end %>
-  </p>
+  </div>
 
-  <p class="row field">
-    <p class="col-sm-2 contra-label">Again:</p> 
+  <div class="row field">
+    <div class="col-sm-2 contra-label">Again:</div> 
     <%= f.password_field :password_confirmation, autocomplete: "off", class: "col-sm-6" %>
-    <p class="col-sm-4 understated">always two, there are</p>
-  </p>
+    <div class="col-sm-4 understated">always two, there are</div>
+  </div>
 
-  <p class="row actions">
-    <p class="col-sm-2"></p>
-    <%= save_submit_button_html "Sign Up", {class: "col-sm-2"} %>
-  </p>
+  <div class="row actions">
+    <div class="col-sm-2"></div>
+    <%= save_submit_button_html "Sign Up", {class: "col-sm-6"} %>
+  </div>
 <% end %>
 
+  <div class="row" style="margin-top: 2em">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-6">
+      <p>User Agreement: By creating an account on
+        this site, you agree to have your personal data arcived by
+        distracted, hyperactive monkeys. By pressing 'Sign Up' you signify
+        you accept the risk to your data. </p>
+      <p>On the plus side, we're not gonna spam you with that email
+      address. Heck, at this point, we don't even send password
+      reminders. </p>
+    </div>
+  </div>
 
 </div>
