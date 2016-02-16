@@ -6,15 +6,32 @@
       <div>
         <h1>ContraDB</h1>
         <p>Find and Share Contra Dances</p>
+
+
         <div class="btn-toolbar">
-          
-          <% if !signed_in? then %>
           <div class="btn-group" role="group">
-            <%= sign_up_button_html() + login_button_html() %>
+            <% if signed_in? then %>
+            <%= link_to 'Profile', current_user, GloboHelper::BUTTON_HTML_ATTR %>
+            <% else %>
+            <%= link_to 'Sign Up', new_user_registration_path, GloboHelper::BUTTON_HTML_ATTR %>
+            <%= link_to 'Login', new_user_session_path, GloboHelper::BUTTON_HTML_ATTR %>
+            <% end %>
           </div>
-          <% end %>
-          <%= about_button_html() %>
+          <div class="btn-group" role="group">
+            <%= link_to 'About', about_path, GloboHelper::BUTTON_HTML_ATTR %>
+          </div>
         </div>
+
+
+        <div class="btn-toolbar">
+          <div class="btn-group" role="group">
+            <%= link_to 'Dances', dances_path, GloboHelper::BUTTON_HTML_ATTR %>
+            <%= link_to 'Programs', programs_path, GloboHelper::BUTTON_HTML_ATTR %>
+            <%= link_to 'Choreographers', choreographers_path, GloboHelper::BUTTON_HTML_ATTR %>
+            <%= link_to 'Users', users_path, GloboHelper::BUTTON_HTML_ATTR %>
+          </div>
+        </div>
+
       </div>
     </div>
     <div class="col-sm-2"></div>
