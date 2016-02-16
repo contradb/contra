@@ -1,0 +1,57 @@
+add: degrees (which include direction of rotation)
+think about paralell_move which includes 0+ different moves, and a common number of beats.
+think about serial_move which includess 0+ diffeerent moves, and beats are the sum of it's beats. 
+
+allemande_and_orbit 2+2 (first is in center, 2nd is orbit) center degrees(540?) AND orbit degrees(-180?)
+allemande 2+2/2 left/right degrees(360)
+arizona_twirl 2+2/2 alias for california-twirl
+balance_line E/2 right/left/right_then_left/left_then_right
+balance2 2+2/2
+balance_the_ring E
+balance_and_petronella E decomposes to balance_the_ring and petronella
+box_circulate E degrees(360) or more properly: places
+box_the_gnat 2+2/2 RIGHT/left
+butterfly_whirl 2+2/2 CCW/clockwise degrees(180)
+california_twirl 2+2/2 LADIES_UNDER/gents_under
+chain to 2+2, decomposes to chain_discourteouss and courtesy_turn
+chain_discourteous LADIES/gents RIGHT_HAND/left_hand
+courtesy_turn 2+2 degrees(-180)
+circle E degrees(+270)
+contra_corners E+! RIGHT/left decomposes to tl;dr
+cross_trails E neighbors/partners right/left, then the opposite
+dixie_twirl E RIGHT/left
+do_si_do 2+2/2 degrees(360)
+figure_8 2 LADY1/gent1/lady2/gent2 through first
+gyre 2/2+2 degrees(360)
+gyre_breakdown 2/2+2 decomposes to gyre(360) and swing
+gyre_star E degrees(360?) GENTS/ladies backing
+half_a_hey E LADIES_LEAD/gents_lead
+hey E LADIES_lead/gents_lead
+long_lines E forward(4beats)/forward_and_back(8beats)
+mad_robin E gents_in/ladies_in
+petronella E RIGHT/left (balance sold seperately) (additional twirl for progression?)
+promenade_across 2+2 LEFT_SHOULDER/right_shoulder
+pull_by 2/2+2 RIGHT/left
+right_left_through E RIGHT_SHOULDER/left_shoulder decomposes to pull_by and courtesy_turn
+roll_away_half_sashay 2 AND 2+2 decomposes to roll_away and gents slide left?
+roll_away 2 AND 2+2
+see_saw alias for do_si_do left_shoulder
+rory_o_moore 2+2* right/left
+star E left/right wrist_grip/hands_across/both
+star_promenade LEFT_HAND/right_hand
+star_promenade_with_butterfly_whirl LEFT_HAND/right_hand decomposes in the obvious way
+swat_the_flea alias for box_the_gnat left
+swing
+(pass_through) to_ocean_wave
+(walk) down_the_hall/up_the_hall [line_of_four]
+(walk) to_long_wavy_line LADIES/gents
+
+
+Words for selecting subsets of people
+0 people: nobody
+1 person: gent1 lady1 gent2 lady2
+n2 people: gents, ladies, ones, twos, 1st corners (gent1 lady2), 2nd corners (gent 2,lady1)
+3 people: not gent1, not gent2, not lady1, not lady2
+4 people: everyone
+2+2: partners, neighbors, ?same-roles?
+2+2*: as 2+2, but also future_neighbors, past_neighbors, others?
