@@ -52,8 +52,6 @@ module DancesHelper
      :star_promenade,
      :butterfly_whirl,
      :mad_robin,
-     :roll_away_half_sashay_neighbor, :roll_away_half_sashay_partner,
-     :roll_away_neighbor,             :roll_away_partner,
     ].include?(s.intern)
   end
 
