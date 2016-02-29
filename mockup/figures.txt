@@ -1,3 +1,18 @@
+Top 9 move families:
+
+1 Swing: swing8, balance&swing 16, swing16, gyre-swing-16
+2 Circle/Star/box-circulate: Circle-left-4, circle-left-3, circle-right-4, circle-right-3, lstar,rstar, box-circulate-cw, hands-free-circle,__
+3 Chain-ish: _ladies_chain_courtesy_turn_, right-left-through_courtesy_turn, gents_chain_...
+4 Allemande/Gyre/DoSiDo: 
+5 Twirl-to-Swap: california-twirl, arizona-twirl, balance_and_box_the_gnat, box_the_gnat, balance_and_swat_the_flea, swat_the_flea
+6 Petronella/Rory'o'Moore
+7 Keyboard...
+8 Hey: gents half hey, ladies half hey, gents full hey, ladies full hey, ricochet-hey
+9 Long Lines
+
+Couples Turns: Butterfly Whirl, courtesy turn, 
+
+
 add: degrees (which include direction of rotation)
 think about paralell_move which includes 0+ different moves, and a common number of beats.
 think about serial_move which includess 0+ diffeerent moves, and beats are the sum of it's beats. 
