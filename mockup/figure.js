@@ -3,18 +3,28 @@ function throw_up(str) {
     throw new Error(str)
 }
 
-var defined_figures = {}
+var defined_events = {}
 
-function defineFigure (name, parameters, renderer_or_null) {
-    defined_figures[name] = {name: name, parameters: parameters, renderer: renderer_or_null||null}
-    // console.log("defineFigure "+ name+"="+JSON.stringify(defined_figures[name]))
+function defineEvent (name, type, parameters, renderer_or_null) {
+    defined_events[name] = {name: name, parameters: parameters, 
+                            renderer: renderer_or_null||null, type: type}
 }
+function defineFigure (name, parameters, renderer_or_null) {
+    defineEvent(name,"figure",parameters,renderer_or_null)
+}
+function defineTransition (name, parameters, renderer_or_null) {
+    defineEvent(name,"transition",parameters,renderer_or_null)
+}
+function defineProgression (name, parameters, renderer_or_null) {
+    defineEvent(name,"progression",parameters,renderer_or_null)
+}
+
 function defineFigureAlias (newName, targetName, parameter_defaults) {
     "string" == typeof newName || throw_up("first argument isn't a string")
     "string" == typeof targetName || throw_up("second argument isn't a string")
     Array.isArray(parameter_defaults) || throw_up("third argument isn't an array aliasing "+newName)
-    // console.log("defineFigureAlias "+newName+" to "+targetName+": "+defined_figures[targetName])
-    var target = defined_figures[targetName] || 
+    // console.log("defineFigureAlias "+newName+" to "+targetName+": "+defined_events[targetName])
+    var target = defined_events[targetName] || 
         throw_up("undefined figure alias '"+newName +"' to '"+targetName+"'")
     (target.parameters.length >= parameter_defaults.length) ||
         throw_up("oversupply of parameters to "+newName)
@@ -28,10 +38,11 @@ function defineFigureAlias (newName, targetName, parameter_defaults) {
         for (var a in params[i])
             params[i][a] = params[i][a] || target.parameters[i][a]; // default to alias if unspecified
     }
-    defined_figures[newName] =
+    defined_events[newName] =
         {name: targetName,
          parameters: params,
-         renderer: target.renderer}
+         renderer: target.renderer,
+         type: "figure alias"}
 }
 
 
@@ -47,12 +58,16 @@ var chooser_dancers = "chooser_dancers"  // some collection of dancers
 var chooser_pairz = "chooser_pairz"      // 1-2 pairs of dancers
 var chooser_dancer = "chooser_dancer"    // one dancer, e.g. ladle 1
 var chooser_role = "chooser_role"        // ladles or gentlespoons
+var chooser_hetero = "chooser_hetero"    // partners or neighbors
 
 
 param_balance_true = {name: "balance", value: true, ui: chooser_boolean}
 param_balance_false = {name: "balance", value: false, ui: chooser_boolean}
 
+param_beats_0 = {name: "beats", value: 0, ui: chooser_beats}
+param_beats_2 = {name: "beats", value: 2, ui: chooser_beats}
 param_beats_4 = {name: "beats", value: 4, ui: chooser_beats}
+param_beats_6 = {name: "beats", value: 6, ui: chooser_beats}
 param_beats_8 = {name: "beats", value: 8, ui: chooser_beats}
 param_beats_12 = {name: "beats", value: 12, ui: chooser_beats}
 param_beats_16 = {name: "beats", value: 16, ui: chooser_beats}
@@ -82,6 +97,11 @@ param_subject_pairz   = {name: "who",                    ui: chooser_pairz}
 param_subject_dancer  = {name: "who",                    ui: chooser_dancer}
 param_subject_role_ladles       = {name: "who", value: "ladies",       ui: chooser_role}
 param_subject_role_gentlespoons = {name: "who", value: "gentlespoons", ui: chooser_role}
+param_subject_hetero_partners = {name: "who", value: "partners", ui: chooser_hetero}
+param_subject_hetero_neighbors = {name: "who", value: "neighbors", ui: chooser_hetero}
+
+param_pass_on_left = {name: "pass", value: false, ui: chooser_right_left_shoulder}
+param_pass_on_right = {name: "pass", value: true, ui: chooser_right_left_shoulder}
 
 defineFigure( "swing",                           [param_balance_false, param_beats_8])
 defineFigureAlias( "long swing",        "swing", [param_balance_false, param_beats_16])
@@ -107,5 +127,10 @@ defineFigure( "hey",                      [param_subject_role_ladles, param_beat
 defineFigure( "half hey",              [param_subject_role_ladles, param_beats_8])
 defineFigureAlias( "hey halfway", "half hey", [])
 
-// console.log("defined_figures:")
-// console.log(JSON.stringify(defined_figures))
+defineFigure( "allemande orbit", [param_subject_role_ladles, param_left_hand_spin, param_once_and_a_half, param_half_around, param_beats_8])
+defineFigure( "promenade across", [param_by_left, param_beats_8])
+
+defineTransition( "end in promenade along set")
+
+// console.log("defined_events:")
+// console.log(JSON.stringify(defined_events))
