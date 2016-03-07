@@ -5,18 +5,11 @@ function throw_up(str) {
 
 var defined_events = {}
 
-function defineEvent (name, type, parameters, renderer_or_null) {
-    defined_events[name] = {name: name, parameters: parameters, 
-                            renderer: renderer_or_null||null, type: type}
+function defineEvent (name, parameters, props) {
+    defined_events[name] = {name: name, parameters: parameters, props: props||{}}
 }
-function defineFigure (name, parameters, renderer_or_null) {
-    defineEvent(name,"figure",parameters,renderer_or_null)
-}
-function defineTransition (name, parameters, renderer_or_null) {
-    defineEvent(name,"transition",parameters,renderer_or_null)
-}
-function defineProgression (name, parameters, renderer_or_null) {
-    defineEvent(name,"progression",parameters,renderer_or_null)
+function defineFigure (name, parameters, props) {
+    defineEvent(name,parameters,props)
 }
 
 function defineFigureAlias (newName, targetName, parameter_defaults) {
@@ -41,8 +34,7 @@ function defineFigureAlias (newName, targetName, parameter_defaults) {
     defined_events[newName] =
         {name: targetName,
          parameters: params,
-         renderer: target.renderer,
-         type: "figure alias"}
+         props: target.renderer}
 }
 
 
@@ -130,7 +122,7 @@ defineFigureAlias( "hey halfway", "half hey", [])
 defineFigure( "allemande orbit", [param_subject_role_ladles, param_left_hand_spin, param_once_and_a_half, param_half_around, param_beats_8])
 defineFigure( "promenade across", [param_by_left, param_beats_8])
 
-defineTransition( "end in promenade along set")
+
 
 // console.log("defined_events:")
 // console.log(JSON.stringify(defined_events))

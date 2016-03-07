@@ -105,89 +105,26 @@
       </div>
     </div>
 
-
-    <div class="row">
-      <table class="figure_edits col-lg-12 col-xs-12">
-        <thead ng-init="figures.arr=defaultFigures(<%= 
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <div class="row" ng-init="figures.arr=defaultFigures(<%= 
                         if copy_dance 
                         then copy_dance.figures_json 
                         else @dance.figures_json 
                         end %>)">
-          <tr>                                       <!-- 12 twelfths -->
-            <th style="width:  8.33333%"></th>       <!-- 1 -->
-            <th style="width: 16.66667%">formation</th><!-- 2 -->
-            <th style="width: 16.66667%">who</th>     <!-- 2. -->
-            <th style="width:  2.77778%" class="balance">bal</th>      <!-- 0.333 -->
-            <th style="width: 13.33333%">move</th>    <!-- 1.667 -->
-            <th style="width:  8.33333%">beats</th>   <!-- 1 -->
-            <th style="width: 16.66667%">turn</th>    <!-- 2 -->
-            <th style="width: 16.66667%">notes</th>    <!-- 2 -->
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="figure in figures.arr"
-              class="figure_edit"
-              ng-class="styleForBeats(sumBeats(figures.arr,$index))">
-            <td style="text-align: center">{{labelForBeats(sumBeats(figures.arr,$index))}}</td>
-            <td><select class="formation_edit" ng-model="figure.formation">
-                <option value="">...</option>
-                <option value="square">square</option>
-                <option value="short_lines">short lines</option>
-                <option value="short_wavy_lines">short wavy lines</option>
-                <option value="long_wavy_lines">long wavy lines</option>
-                <option value="long_wavy_line">long wavy line</option>
-                <option value="custom">custom</option>
-              </select>
-            </td>
-
-            <td><select class="who_edit" ng-model="figure.who">
-                <option value="everybody">everybody</option>
-                <option value="partner">partner</option>
-                <option value="neighbor">neighbor</option>
-                <option value="ladles">ladles</option>
-                <option value="gentlespoons">gentlespoons</option>
-                <option value="ones">ones</option>
-                <option value="twos">twos</option>
-                <option value="centers">centers</option>
-                <option value="custom">custom</option>
-              </select>
-            </td>
-            <td><input type="checkbox" class="balance_edit" ng-model="figure.balance"/></td>
-            <td><select class="move_edit" ng-model="figure.move"
-                        ng-options="m for m in moveMenuOptions(figure.formation, figure.who, figure.balance)"
-                        ng-change="figure.balance = figure.balance && moveCaresAboutBalance(figure.move)">
-              </select>
-            </td>
-            <td><select class="beat_edit" ng-model="figure.beats" ng-options="b for b in [8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]">
-              </select>
-            </td>
-
-            <td><select class="turns_edit" ng-model="figure.degrees"
-                        ng-show="moveCaresAboutRotations(figure.move)||moveCaresAboutPlaces(figure.move)"
-                        ng-options="degreesToHumanUnits(a,figure.move) for a in anglesForMove(figure.move)"
-                        >
-                
-              </select>
-            </td>
-            <td><input class="notes_edit" type="text" ng-model="figure.notes"/></td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th ng-class="64==sumBeats(figures.arr)?'happy_beats':'grumpy_beats'">
-              {{sumBeats(figures.arr)}}</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </tfoot>
-   
-      </table>
+      <div ng-repeat="figure in figures.arr"
+           ng-class="styleForBeats(sumBeats(figures.arr,$index))">
+        <span>{{index+1}}</span>
+        <select class="move_edit" ng-model="figure.move"
+                ng-options="m for m in moves()">
+        </select>
+        (<span ng-repeat="p in parameters(figure.move)">
+          {{p.value || "_"}}
+          <span ng-bind-html="<em>wat</em>"></span>
+        </span>)
+      </div>
     </div>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
 
     
 
