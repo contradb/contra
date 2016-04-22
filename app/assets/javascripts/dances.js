@@ -65,6 +65,12 @@ function degreesToHumanUnits (degrees,optional_move) {
         return degrees2places[degrees];
     return degrees.toString();
 }
+function degreesToRotations(degrees) {
+    return degrees2rotations[degrees] || (degrees.toString() + " degrees");
+}
+function degreesToPlaces(degrees) {
+    return degrees2places[degrees] || (degrees.toString() + " degrees");
+}
 
 var anglesForMoveArr = [90,180,270,360,450,540,630,720];
 function anglesForMove (move) {
@@ -356,8 +362,8 @@ var chooser_role = "chooser_role"        // ladles or gentlespoons
 var chooser_hetero = "chooser_hetero"    // partners or neighbors
 
 
-param_balance_true = {name: "balance", value: true, ui: chooser_boolean}
-param_balance_false = {name: "balance", value: false, ui: chooser_boolean}
+param_balance_true = {name: "bal", value: true, ui: chooser_boolean}
+param_balance_false = {name: "bal", value: false, ui: chooser_boolean}
 
 param_beats_0 = {name: "beats", value: 0, ui: chooser_beats}
 param_beats_2 = {name: "beats", value: 2, ui: chooser_beats}
@@ -443,7 +449,7 @@ defineFigure( "promenade across", [param_by_left, param_beats_8])
 
 
 (function () {
-    var app = angular.module('contra', ['ngSanitize']);
+    var app = angular.module('contra', []);
     var scopeInit = function ($scope) {
         var fctrl42 = this;
         $scope.moveCaresAboutBalance = moveCaresAboutBalance;
@@ -455,9 +461,12 @@ defineFigure( "promenade across", [param_by_left, param_beats_8])
         $scope.labelForBeats = labelForBeats;
         $scope.styleForBeats = styleForBeats;
         $scope.moveMenuOptions = moveMenuOptions;
+
         $scope.moves = moves;
         $scope.parameters = parameters;
-        $scope.myHTML = 'I am an <code>HTML</code>string with <a href="#">links!</a> and other <em>stuff</em>';
+        $scope.degreesToRotations = degreesToRotations;
+        $scope.degreesToPlaces = degreesToPlaces;
+
         $scope.toJson = angular.toJson;
         $scope.newFigure = newFigure;
         $scope.addFigure = function() {fctrl42.arr.push(newFigure());};
