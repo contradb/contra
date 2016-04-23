@@ -377,7 +377,6 @@ defineChooser("chooser_dancer")   // one dancer, e.g. ladle 1
 defineChooser("chooser_role")     // ladles or gentlespoons
 defineChooser("chooser_hetero")   // partners or neighbors
 
-
 param_balance_true = {name: "bal", value: true, ui: chooser_boolean}
 param_balance_false = {name: "bal", value: false, ui: chooser_boolean}
 

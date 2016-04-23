@@ -131,6 +131,11 @@
             <label>clockwise <input type="radio" ng-model="figure.spin" ng-value="true" /></label> /
             <label>ccw <input type="radio" ng-model="figure.spin" ng-value="false"/></label>
           </span>
+          <span ng-if="p.ui == chooser_left_right_spin">
+            <label>left  <input type="radio" ng-model="figure.spin" ng-value="true"/></label> /
+            <label>right <input type="radio" ng-model="figure.spin" ng-value="false" /></label>
+            <label>hand</label>
+          </span>
           <span ng-if="p.ui == chooser_right_left_hand">
             <label>left  <input type="radio" ng-model="figure.spin" ng-value="false"/></label> /
             <label>right <input type="radio" ng-model="figure.spin" ng-value="true" /></label>
@@ -142,7 +147,11 @@
             <label>shoulder</label>
           </span>
 
-          <%# chooser_side %>
+          <span ng-if="p.ui == chooser_side">
+            <label>left  <input type="radio" ng-model="figure.side" ng-value="true"/></label> /
+            <label>right <input type="radio" ng-model="figure.side" ng-value="false" /></label>
+            <label>side</label>
+          </span>
           
           <span ng-if="p.ui == chooser_revolutions">
             <label>revolutions
