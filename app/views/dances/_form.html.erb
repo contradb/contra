@@ -118,6 +118,7 @@
                 ng-options="m for m in moves()">
         </select>
         <span ng-repeat="p in parameters(figure.move)">
+          [
           <span ng-if="p.ui == 'chooser_boolean'">
             <label>{{p.name}}<input type="checkbox" class="balance_edit" ng-model="figure.balance"/></label>
           </span>
@@ -125,15 +126,22 @@
             <label>{{p.name}}<select class="beat_edit" ng-model="figure.beats" ng-options="b for b in [8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]">
               </select></label>
           </span>
+          <span ng-if="p.ui == 'chooser_revolutions'">
+            <label>Revolutions
+              <select class="turns_edit" ng-model="figure.degrees"
+                      ng-options="degreesToRotations(a,figure.move) for a in anglesForMove(figure.move)">
+              </select></label>
+          </span>
           <span ng-if="p.ui == 'chooser_places'">
-            <label>{{p.name}}
+            <label>Places
               <select class="turns_edit" ng-model="figure.degrees"
                       ng-options="degreesToPlaces(a,figure.move) for a in anglesForMove(figure.move)">
               </select></label>
           </span>
 
 
-          <span ng-if="(p.ui != 'chooser_boolean') && (p.ui != 'chooser_beats')">{{p.name}}</span>
+          <span style="font-size: 0.4em; color: #777">{{p.ui}}</span>
+          ]
         </span>
       </div>
     </div>
