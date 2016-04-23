@@ -346,6 +346,7 @@ function parameters(fig_str){
     }
 }
 
+
 var chooser_boolean = "chooser_boolean"
 var chooser_beats = "chooser_beats"
 var chooser_spin = "chooser_spin"
@@ -386,7 +387,7 @@ param_xshoulder_spin         = {name: "spin",               ui: chooser_right_le
 param_right_shoulder_spin    = {name: "spin", value: true,  ui: chooser_right_left_shoulder}
 param_left_shoulder_spin     = {name: "spin", value: false, ui: chooser_right_left_shoulder}
 
-param_by_side  = {name: "side",               ui: chooser_side}
+param_by_side  = {name: "side",               ui: chooser_side} // promenades only, everything else uses a shoulder. Deprecate?
 param_by_left  = {name: "side", value: true,  ui: chooser_side}
 param_by_right = {name: "side", value: false, ui: chooser_side}
 

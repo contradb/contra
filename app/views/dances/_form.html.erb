@@ -126,6 +126,24 @@
             <label>{{p.name}}<select class="beat_edit" ng-model="figure.beats" ng-options="b for b in [8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]">
               </select></label>
           </span>
+
+          <span ng-if="p.ui == 'chooser_spin'">
+            <label>clockwise <input type="radio" ng-model="figure.spin" ng-value="true" /></label> /
+            <label>ccw <input type="radio" ng-model="figure.spin" ng-value="false"/></label>
+          </span>
+          <span ng-if="p.ui == 'chooser_right_left_hand'">
+            <label>left  <input type="radio" ng-model="figure.spin" ng-value="false"/></label> /
+            <label>right <input type="radio" ng-model="figure.spin" ng-value="true" /></label>
+            <label>hand</label>
+          </span>
+          <span ng-if="p.ui == 'chooser_right_left_shoulder'">
+            <label>left  <input type="radio" ng-model="figure.spin" ng-value="false"/></label> /
+            <label>right <input type="radio" ng-model="figure.spin" ng-value="true" /></label>
+            <label>shoulder</label>
+          </span>
+
+          <%# chooser_side %>
+          
           <span ng-if="p.ui == 'chooser_revolutions'">
             <label>Revolutions
               <select class="turns_edit" ng-model="figure.degrees"
@@ -139,6 +157,11 @@
               </select></label>
           </span>
 
+          <%# chooser_dancers %>
+          <%# chooser_pairz   %>
+          <%# chooser_dancer  %>
+          <%# chooser_role    %>
+          <%# chooser_hetero  %>
 
           <span style="font-size: 0.4em; color: #777">{{p.ui}}</span>
           ]
