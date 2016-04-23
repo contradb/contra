@@ -336,31 +336,46 @@ function moves(){
     $.each(defined_events,function(k,v){a.push(k)})
     return a.sort();
 }
+var issued_parameter_warning = false
 function parameters(fig_str){
     var fig = defined_events[fig_str];
     if (fig)
         return fig.parameters
-    else {
-        console.log("Warning: could not find a figure definition for '"+fig_str+"'");
-        return [];
+    if (!issued_parameter_warning)
+    {
+        issued_parameter_warning = true
+        console.log("Warning: could not find a figure definition for '"+fig_str+"', suppressing future warnings of this type");
     }
+    return [];
 }
 
+var defined_choosers = {}
 
-var chooser_boolean = "chooser_boolean"
-var chooser_beats = "chooser_beats"
-var chooser_spin = "chooser_spin"
-var chooser_left_right_spin = "chooser_left_right_spin"
-var chooser_right_left_hand = "chooser_right_left_hand"
-var chooser_right_left_shoulder = "chooser_right_left_shoulder"
-var chooser_side = "chooser_side"
-var chooser_revolutions = "chooser_revolutions"
-var chooser_places = "chooser_places"
-var chooser_dancers = "chooser_dancers"  // some collection of dancers
-var chooser_pairz = "chooser_pairz"      // 1-2 pairs of dancers
-var chooser_dancer = "chooser_dancer"    // one dancer, e.g. ladle 1
-var chooser_role = "chooser_role"        // ladles or gentlespoons
-var chooser_hetero = "chooser_hetero"    // partners or neighbors
+// choosers can be compared with == in this file and in angular controller scopey thing. 
+function defineChooser(name){
+    "string" == typeof name || throw_up("first argument isn't a string")
+    "chooser_" == name.slice(0,8) || throw_up("first argument doesn't begin with 'chooser_'")
+    defined_choosers[name] = defined_choosers[name] || name
+    eval(name+"='"+name+"'")
+}
+function setChoosers(hash){
+    $.each(defined_choosers,function(k,v){hash[k]=v})
+}
+
+defineChooser("chooser_boolean")
+defineChooser("chooser_beats")
+defineChooser("chooser_spin")
+defineChooser("chooser_left_right_spin")
+defineChooser("chooser_right_left_hand")
+defineChooser("chooser_right_left_shoulder")
+defineChooser("chooser_side")
+defineChooser("chooser_revolutions")
+defineChooser("chooser_places")
+defineChooser("chooser_dancers")  // some collection of dancers
+defineChooser("chooser_pairz")    // 1-2 pairs of dancers
+defineChooser("chooser_dancer")   // one dancer, e.g. ladle 1
+defineChooser("chooser_role")     // ladles or gentlespoons
+defineChooser("chooser_hetero")   // partners or neighbors
 
 
 param_balance_true = {name: "bal", value: true, ui: chooser_boolean}
@@ -467,6 +482,7 @@ defineFigure( "promenade across", [param_by_left, param_beats_8])
         $scope.parameters = parameters;
         $scope.degreesToRotations = degreesToRotations;
         $scope.degreesToPlaces = degreesToPlaces;
+        setChoosers($scope);
 
         $scope.toJson = angular.toJson;
         $scope.newFigure = newFigure;

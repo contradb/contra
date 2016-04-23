@@ -119,24 +119,24 @@
         </select>
         <span ng-repeat="p in parameters(figure.move)">
           [
-          <span ng-if="p.ui == 'chooser_boolean'">
+          <span ng-if="p.ui == chooser_boolean">
             <label>{{p.name}}<input type="checkbox" class="balance_edit" ng-model="figure.balance"/></label>
           </span>
-          <span ng-if="p.ui == 'chooser_beats'">
+          <span ng-if="p.ui == chooser_beats">
             <label>{{p.name}}<select class="beat_edit" ng-model="figure.beats" ng-options="b for b in [8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]">
               </select></label>
           </span>
 
-          <span ng-if="p.ui == 'chooser_spin'">
+          <span ng-if="p.ui == chooser_spin">
             <label>clockwise <input type="radio" ng-model="figure.spin" ng-value="true" /></label> /
             <label>ccw <input type="radio" ng-model="figure.spin" ng-value="false"/></label>
           </span>
-          <span ng-if="p.ui == 'chooser_right_left_hand'">
+          <span ng-if="p.ui == chooser_right_left_hand">
             <label>left  <input type="radio" ng-model="figure.spin" ng-value="false"/></label> /
             <label>right <input type="radio" ng-model="figure.spin" ng-value="true" /></label>
             <label>hand</label>
           </span>
-          <span ng-if="p.ui == 'chooser_right_left_shoulder'">
+          <span ng-if="p.ui == chooser_right_left_shoulder">
             <label>left  <input type="radio" ng-model="figure.spin" ng-value="false"/></label> /
             <label>right <input type="radio" ng-model="figure.spin" ng-value="true" /></label>
             <label>shoulder</label>
@@ -144,13 +144,13 @@
 
           <%# chooser_side %>
           
-          <span ng-if="p.ui == 'chooser_revolutions'">
-            <label>Revolutions
+          <span ng-if="p.ui == chooser_revolutions">
+            <label>revolutions
               <select class="turns_edit" ng-model="figure.degrees"
                       ng-options="degreesToRotations(a,figure.move) for a in anglesForMove(figure.move)">
               </select></label>
           </span>
-          <span ng-if="p.ui == 'chooser_places'">
+          <span ng-if="p.ui == chooser_places">
             <label>Places
               <select class="turns_edit" ng-model="figure.degrees"
                       ng-options="degreesToPlaces(a,figure.move) for a in anglesForMove(figure.move)">
