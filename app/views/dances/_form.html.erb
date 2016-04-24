@@ -156,21 +156,78 @@
           <span ng-if="p.ui == chooser_revolutions">
             <label>revolutions
               <select class="turns_edit" ng-model="figure.degrees"
-                      ng-options="degreesToRotations(a,figure.move) for a in anglesForMove(figure.move)">
+                      ng-options="degreesToRotations(a) for a in anglesForMove(figure.move)">
               </select></label>
           </span>
           <span ng-if="p.ui == chooser_places">
             <label>Places
               <select class="turns_edit" ng-model="figure.degrees"
-                      ng-options="degreesToPlaces(a,figure.move) for a in anglesForMove(figure.move)">
+                      ng-options="degreesToPlaces(a) for a in anglesForMove(figure.move)">
               </select></label>
           </span>
 
-          <%# chooser_dancers %>
-          <%# chooser_pairz   %>
-          <%# chooser_dancer  %>
-          <%# chooser_role    %>
-          <%# chooser_hetero  %>
+          <span ng-if="p.ui == chooser_dancers">
+            <select class="turns_edit" ng-model="figure.who">
+              <option value="everybody">everybody</option>
+              <option value="gentlespoons">gentlespoons</option>
+              <option value="ladles">ladles</option>
+              <option value="partners">partners</option>
+              <option value="neighbors">neighbors</option>
+              <option value="shadows">shadows</option>
+              <option value="ones">ones</option>
+              <option value="twos">twos</option>
+              <option value="same_roles">same roles</option>
+              <option value="first_corners">first corners</option>
+              <option value="second_corners">second corners</option>
+              <option value="G1">gentlespoon 1</option>
+              <option value="L1">ladle 1</option>
+              <option value="G2">gentlespoon 2</option>
+              <option value="L2">ladle 2</option>
+            </select>
+          </span>
+          <span ng-if="p.ui == chooser_pairz">
+            <select class="turns_edit" ng-model="figure.who">
+              <option value="gentlespoons">gentlespoons</option>
+              <option value="ladles">ladles</option>
+              <option value="partners">partners</option>
+              <option value="neighbors">neighbors</option>
+              <option value="shadows">shadows</option>
+              <option value="ones">ones</option>
+              <option value="twos">twos</option>
+              <option value="same_roles">same roles</option>
+              <option value="first_corners">first corners</option>
+              <option value="second_corners">second corners</option>
+            </select>
+          </span>
+          <span ng-if="p.ui == chooser_pairs">
+            <select class="turns_edit" ng-model="figure.who">
+              <option value="partners">partners</option>
+              <option value="neighbors">neighbors</option>
+              <option value="shadows">shadows</option>
+              <option value="same_roles">same roles</option>
+            </select>
+          </span>
+          <span ng-if="p.ui == chooser_dancer">
+            <select class="turns_edit" ng-model="figure.who">
+              <option value="G1">gentlespoon 1</option>
+              <option value="L1">ladle 1</option>
+              <option value="G2">gentlespoon 2</option>
+              <option value="L2">ladle 2</option>
+            </select>
+          </span>
+          <span ng-if="p.ui == chooser_role">
+            <select class="turns_edit" ng-model="figure.who">
+              <option value="gentlespoons">gentlespoons</option>
+              <option value="ladles">ladles</option>
+            </select>
+          </span>
+          <span ng-if="p.ui == chooser_hetero">
+            <select class="turns_edit" ng-model="figure.who">
+              <option value="partners">partners</option>
+              <option value="neighbors">neighbors</option>
+              <option value="shadows">shadows</option>
+            </select>
+          </span>
 
           <span style="font-size: 0.4em; color: #777">{{p.ui}}</span>
           ]

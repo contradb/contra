@@ -373,9 +373,10 @@ defineChooser("chooser_revolutions")
 defineChooser("chooser_places")
 defineChooser("chooser_dancers")  // some collection of dancers
 defineChooser("chooser_pairz")    // 1-2 pairs of dancers
+defineChooser("chooser_pairs")    // 2 pairs of dancers
 defineChooser("chooser_dancer")   // one dancer, e.g. ladle 1
 defineChooser("chooser_role")     // ladles or gentlespoons
-defineChooser("chooser_hetero")   // partners or neighbors
+defineChooser("chooser_hetero")   // partners or neighbors or shadows
 
 param_balance_true = {name: "bal", value: true, ui: chooser_boolean}
 param_balance_false = {name: "bal", value: false, ui: chooser_boolean}
@@ -413,12 +414,18 @@ param_three_places    = {name: "degrees", value: 270, ui: chooser_places}
 param_four_places     = {name: "degrees", value: 360, ui: chooser_places}
 
 param_subject         = {name: "who", value: "everyone", ui: chooser_dancers}
-param_subject_pairz   = {name: "who",                    ui: chooser_pairz}
+param_subject_pairz   = {name: "who",                    ui: chooser_pairz} // 1-2 pairs of dancers
+param_subject_pairs   = {name: "who",                    ui: chooser_pairs} // 2 pairs of dancers
 param_subject_dancer  = {name: "who",                    ui: chooser_dancer}
 param_subject_role_ladles       = {name: "who", value: "ladies",       ui: chooser_role}
 param_subject_role_gentlespoons = {name: "who", value: "gentlespoons", ui: chooser_role}
-param_subject_hetero_partners = {name: "who", value: "partners", ui: chooser_hetero}
+param_subject_hetero           = {name: "who",                     ui: chooser_hetero}
+param_subject_hetero_partners  = {name: "who", value: "partners",  ui: chooser_hetero}
 param_subject_hetero_neighbors = {name: "who", value: "neighbors", ui: chooser_hetero}
+param_subject_hetero_shadows   = {name: "who", value: "shadows",   ui: chooser_hetero}
+param_subject_partners         = {name: "who", value: "partners",  ui: chooser_pairs} // allows more options if they
+param_subject_neighbors        = {name: "who", value: "neighbors", ui: chooser_pairs} // don't go with default
+param_subject_shadows          = {name: "who", value: "shadows",   ui: chooser_pairs} // than param_subject_hetero_*
 
 param_pass_on_left = {name: "pass", value: false, ui: chooser_right_left_shoulder}
 param_pass_on_right = {name: "pass", value: true, ui: chooser_right_left_shoulder}
@@ -449,7 +456,6 @@ defineFigureAlias( "hey halfway", "half hey", [])
 
 defineFigure( "allemande orbit", [param_subject_role_ladles, param_left_hand_spin, param_once_and_a_half, param_half_around, param_beats_8])
 defineFigure( "promenade across", [param_by_left, param_beats_8])
-
 
 ;
 
