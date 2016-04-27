@@ -132,9 +132,9 @@
             <label>ccw <input type="radio" ng-model="figure.spin" ng-value="false"/></label>
           </span>
           <span ng-if="p.ui == chooser_left_right_spin">
+            <label>to the</label>
             <label>left  <input type="radio" ng-model="figure.spin" ng-value="true"/></label> /
             <label>right <input type="radio" ng-model="figure.spin" ng-value="false" /></label>
-            <label>hand</label>
           </span>
           <span ng-if="p.ui == chooser_right_left_hand">
             <label>left  <input type="radio" ng-model="figure.spin" ng-value="false"/></label> /
@@ -228,8 +228,11 @@
               <option value="shadows">shadows</option>
             </select>
           </span>
+          <span ng-if="p.ui == chooser_text">
+            <input type="text" ng-model="figure.notes" />
+          </span>
 
-          <span style="font-size: 0.4em; color: #777">{{p.ui}}</span>
+          <%# <span style="font-size: 0.4em; color: #777">{{p.ui}}</span> %>
           ]
         </span>
       </div>

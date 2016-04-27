@@ -317,14 +317,8 @@ function defineFigureAlias (newName, targetName, parameter_defaults) {
         throw_up("oversupply of parameters to "+newName)
     // defensively copy parameter_defaults[...]{...} into params
     var params = new Array(target.parameters.length)
-    for (var i=0; i<target.parameters.length; i++) {
-        params[i] = Object.create(parameter_defaults[i]||{});
-        target.parameters[i].name == params[i].name ||
-            null == params[i].name ||
-            throw_up(""+newName+": parameter name/order mismatch on param #"+i+" (zero indexed)")
-        for (var a in params[i])
-            params[i][a] = params[i][a] || target.parameters[i][a]; // default to alias if unspecified
-    }
+    for (var i=0; i<target.parameters.length; i++)
+        params[i] = parameter_defaults[i] || target.parameters[i]
     defined_events[newName] =
         {name: targetName,
          parameters: params,
@@ -351,7 +345,12 @@ function parameters(fig_str){
 
 var defined_choosers = {}
 
-// choosers can be compared with == in this file and in angular controller scopey thing. 
+// Choosers are UI elements without semantic preconceptions, that work on dance elements.
+// So a figure could have two chooser_booleans (obvious)
+// or two chooser_dancers (e.g. GENTS roll away the NEIGHBORS)
+// Choosers are referenced by global variables, e.g. chooser_boolean evaluates to a chooser object. 
+// Choosers can be compared with == in this file and in angular controller scopey thing.
+// They are basically a big enum with no functionality other than '==' at this time. 
 function defineChooser(name){
     "string" == typeof name || throw_up("first argument isn't a string")
     "chooser_" == name.slice(0,8) || throw_up("first argument doesn't begin with 'chooser_'")
@@ -377,6 +376,12 @@ defineChooser("chooser_pairs")    // 2 pairs of dancers
 defineChooser("chooser_dancer")   // one dancer, e.g. ladle 1
 defineChooser("chooser_role")     // ladles or gentlespoons
 defineChooser("chooser_hetero")   // partners or neighbors or shadows
+defineChooser("chooser_text")
+
+// Params have semantic value specific to each figure.
+// Though some patterns have emerged. Patterns like:
+// figures have a subject telling who's acted on by the figure. 
+// 
 
 param_balance_true = {name: "bal", value: true, ui: chooser_boolean}
 param_balance_false = {name: "bal", value: false, ui: chooser_boolean}
@@ -426,17 +431,20 @@ param_subject_hetero_shadows   = {name: "who", value: "shadows",   ui: chooser_h
 param_subject_partners         = {name: "who", value: "partners",  ui: chooser_pairs} // allows more options if they
 param_subject_neighbors        = {name: "who", value: "neighbors", ui: chooser_pairs} // don't go with default
 param_subject_shadows          = {name: "who", value: "shadows",   ui: chooser_pairs} // than param_subject_hetero_*
+// param_object_hetero           = {name: "whom", value: "partners",  ui: chooser_hetero} // not used yet
 
 param_pass_on_left = {name: "pass", value: false, ui: chooser_right_left_shoulder}
 param_pass_on_right = {name: "pass", value: true, ui: chooser_right_left_shoulder}
 
-defineFigure( "swing",                           [param_balance_false, param_beats_8])
-defineFigureAlias( "long swing",        "swing", [param_balance_false, param_beats_16])
-defineFigureAlias( "balance and swing", "swing", [param_balance_true,  param_beats_16])
+param_custom_figure = {name: "custom", value: "", ui: chooser_text}
+
+defineFigure( "swing",                           [param_subject_pairz, param_balance_false, param_beats_8])
+defineFigureAlias( "long swing",        "swing", [               null, param_balance_false, param_beats_16])
+defineFigureAlias( "balance and swing", "swing", [               null, param_balance_true,  param_beats_16])
 
 defineFigure( "allemande", [param_subject_pairz, param_xhand_spin, param_once_around, param_beats_8])
-defineFigure( "allemande left", "allemande" [null, param_left_hand_spin])
-defineFigure( "allemande right", "allemande" [null, param_right_hand_spin])
+defineFigureAlias( "allemande left", "allemande", [null, param_left_hand_spin])
+defineFigureAlias( "allemande right", "allemande", [null, param_right_hand_spin])
 
 defineFigure( "do si do", [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8])
 defineFigureAlias( "see saw", "do si do", [null, param_left_shoulder_spin])
@@ -456,6 +464,8 @@ defineFigureAlias( "hey halfway", "half hey", [])
 
 defineFigure( "allemande orbit", [param_subject_role_ladles, param_left_hand_spin, param_once_and_a_half, param_half_around, param_beats_8])
 defineFigure( "promenade across", [param_by_left, param_beats_8])
+
+defineFigure( "custom", [param_custom_figure, param_beats_8])
 
 ;
 
