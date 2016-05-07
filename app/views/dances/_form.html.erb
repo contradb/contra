@@ -120,54 +120,54 @@
         <span ng-repeat="p in parameters(figure.move)">
           [
           <span ng-if="p.ui == chooser_boolean">
-            <label>{{p.name}}<input type="checkbox" class="balance_edit" ng-model="figure.balance"/></label>
+            <label>{{p.name}}<input type="checkbox" class="balance_edit" ng-model="figure.parameter_values[$index]"/></label>
           </span>
           <span ng-if="p.ui == chooser_beats">
-            <label>{{p.name}}<select class="beat_edit" ng-model="figure.beats" ng-options="b for b in [8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]">
+            <label>{{p.name}}<select class="beat_edit" ng-model="figure.parameter_values[$index]" ng-options="b for b in [8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]">
               </select></label>
           </span>
 
           <span ng-if="p.ui == chooser_spin">
-            <label>clockwise <input type="radio" ng-model="figure.spin" ng-value="true" /></label> /
-            <label>ccw <input type="radio" ng-model="figure.spin" ng-value="false"/></label>
+            <label>clockwise <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" /></label> /
+            <label>ccw <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false"/></label>
           </span>
           <span ng-if="p.ui == chooser_left_right_spin">
             <label>to the</label>
-            <label>left  <input type="radio" ng-model="figure.spin" ng-value="true"/></label> /
-            <label>right <input type="radio" ng-model="figure.spin" ng-value="false" /></label>
+            <label>left  <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true"/></label> /
+            <label>right <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" /></label>
           </span>
           <span ng-if="p.ui == chooser_right_left_hand">
-            <label>left  <input type="radio" ng-model="figure.spin" ng-value="false"/></label> /
-            <label>right <input type="radio" ng-model="figure.spin" ng-value="true" /></label>
+            <label>left  <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false"/></label> /
+            <label>right <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" /></label>
             <label>hand</label>
           </span>
           <span ng-if="p.ui == chooser_right_left_shoulder">
-            <label>left  <input type="radio" ng-model="figure.spin" ng-value="false"/></label> /
-            <label>right <input type="radio" ng-model="figure.spin" ng-value="true" /></label>
+            <label>left  <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false"/></label> /
+            <label>right <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" /></label>
             <label>shoulder</label>
           </span>
 
           <span ng-if="p.ui == chooser_side">
-            <label>left  <input type="radio" ng-model="figure.side" ng-value="true"/></label> /
-            <label>right <input type="radio" ng-model="figure.side" ng-value="false" /></label>
+            <label>left  <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true"/></label> /
+            <label>right <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" /></label>
             <label>side</label>
           </span>
           
           <span ng-if="p.ui == chooser_revolutions">
             <label>revolutions
-              <select class="turns_edit" ng-model="figure.degrees"
+              <select class="turns_edit" ng-model="figure.parameter_values[$index]"
                       ng-options="degreesToRotations(a) for a in anglesForMove(figure.move)">
               </select></label>
           </span>
           <span ng-if="p.ui == chooser_places">
             <label>Places
-              <select class="turns_edit" ng-model="figure.degrees"
+              <select class="turns_edit" ng-model="figure.parameter_values[$index]"
                       ng-options="degreesToPlaces(a) for a in anglesForMove(figure.move)">
               </select></label>
           </span>
 
           <span ng-if="p.ui == chooser_dancers">
-            <select class="turns_edit" ng-model="figure.who">
+            <select class="turns_edit" ng-model="figure.parameter_values[$index]">
               <option value="everybody">everybody</option>
               <option value="gentlespoons">gentlespoons</option>
               <option value="ladles">ladles</option>
@@ -186,7 +186,7 @@
             </select>
           </span>
           <span ng-if="p.ui == chooser_pairz">
-            <select class="turns_edit" ng-model="figure.who">
+            <select class="turns_edit" ng-model="figure.parameter_values[$index]">
               <option value="gentlespoons">gentlespoons</option>
               <option value="ladles">ladles</option>
               <option value="partners">partners</option>
@@ -200,7 +200,7 @@
             </select>
           </span>
           <span ng-if="p.ui == chooser_pairs">
-            <select class="turns_edit" ng-model="figure.who">
+            <select class="turns_edit" ng-model="figure.parameter_values[$index]">
               <option value="partners">partners</option>
               <option value="neighbors">neighbors</option>
               <option value="shadows">shadows</option>
@@ -208,7 +208,7 @@
             </select>
           </span>
           <span ng-if="p.ui == chooser_dancer">
-            <select class="turns_edit" ng-model="figure.who">
+            <select class="turns_edit" ng-model="figure.parameter_values[$index]">
               <option value="G1">gentlespoon 1</option>
               <option value="L1">ladle 1</option>
               <option value="G2">gentlespoon 2</option>
@@ -216,20 +216,20 @@
             </select>
           </span>
           <span ng-if="p.ui == chooser_role">
-            <select class="turns_edit" ng-model="figure.who">
+            <select class="turns_edit" ng-model="figure.parameter_values[$index]">
               <option value="gentlespoons">gentlespoons</option>
               <option value="ladles">ladles</option>
             </select>
           </span>
           <span ng-if="p.ui == chooser_hetero">
-            <select class="turns_edit" ng-model="figure.who">
+            <select class="turns_edit" ng-model="figure.parameter_values[$index]">
               <option value="partners">partners</option>
               <option value="neighbors">neighbors</option>
               <option value="shadows">shadows</option>
             </select>
           </span>
           <span ng-if="p.ui == chooser_text">
-            <input type="text" ng-model="figure.notes" />
+            <input type="text" ng-model="figure.parameter_values[$index]" />
           </span>
 
           <%# <span style="font-size: 0.4em; color: #777">{{p.ui}}</span> %>

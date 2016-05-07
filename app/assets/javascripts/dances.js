@@ -343,6 +343,13 @@ function parameters(fig_str){
     return [];
 }
 
+function parameter_values_to_s(fig_str,pvs){
+    var fig = defined_events[fig_str];
+    if (!fig) return "'"+fig_str+"':not a figure"
+    ...
+    
+}
+
 var defined_choosers = {}
 
 // Choosers are UI elements without semantic preconceptions, that work on dance elements.
