@@ -295,21 +295,20 @@ function defaultFigures (figures) {
 // =====================================================================================
 
 function figure_html_readonly(f) {
-    console.log ("here goes!")
-    var fn =  (defined_events[f.move] && defined_events[f.move].props.view) ||
-        figure_html_readonly_default;
-    console.log ("wheel!")
-    return fn(f)
+    var fig_def = defined_events[f.move];
+    if (fig_def) {
+        var func = fig_def.props.view || figure_html_readonly_default;
+        return func(f.move, f.parameter_values)
+    }
+    else return "warning "+f.move;
 }
 
-function figure_html_readonly_default(f) {
-    console.log ("made it!")
-    var ps = parameters(f.move);
-    var pvs = f.parameter_values;
-    var acc = f.move;
-    ps.length == pvs.length || throw_up("parameter type mismatch");
-    for (var i=0; i < pvs.length; i++)
-        acc += " " + String(pvs[i]);
+function figure_html_readonly_default(move, parameter_values) {
+    var ps = parameters(move);
+    var acc = move;
+    ps.length == parameter_values.length || throw_up("parameter type mismatch");
+    for (var i=0; i < parameter_values.length; i++)
+        acc += " " + String(parameter_values[i]);
     return acc;
 }
 
@@ -472,7 +471,7 @@ defineFigureAlias( "see saw", "do si do", [null, param_left_shoulder_spin])
 
 defineFigure( "gyre", [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8])
 
-defineFigure( "circle",                   [param_spin_left,  param_four_places, param_beats_8])
+defineFigure( "circle",                   [param_spin_left,  param_four_places, param_beats_8], {view: function(move,pvs) {return "circle "+pvs[0]+" "+pvs[1]+" for "+pvs[2]}})
 defineFigureAlias( "circle three places", "circle", [param_spin_left,  param_three_places, param_beats_8])
 defineFigureAlias( "circle right",        "circle", [param_spin_right, param_four_places, param_beats_8])
 
