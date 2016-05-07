@@ -293,6 +293,26 @@ function defaultFigures (figures) {
 
 // =====================================================================================
 // =====================================================================================
+
+function figure_html_readonly(f) {
+    console.log ("here goes!")
+    var fn =  (defined_events[f.move] && defined_events[f.move].props.view) ||
+        figure_html_readonly_default;
+    console.log ("wheel!")
+    return fn(f)
+}
+
+function figure_html_readonly_default(f) {
+    console.log ("made it!")
+    var ps = parameters(f.move);
+    var pvs = f.parameter_values;
+    var acc = f.move;
+    ps.length == pvs.length || throw_up("parameter type mismatch");
+    for (var i=0; i < pvs.length; i++)
+        acc += " " + String(pvs[i]);
+    return acc;
+}
+
 // =====================================================================================
 
 // throw is a keyword and can't be in expressions, but function calls can be, so wrap throw.
@@ -303,7 +323,7 @@ function throw_up(str) {
 var defined_events = {}
 
 function defineFigure (name, parameters, props) {
-    defined_events[name] = {name: name, parameters: parameters, props: props || {}}
+    defined_events[name] = {name: name, parameters: parameters, props: (props || {})}
 }
 
 function defineFigureAlias (newName, targetName, parameter_defaults) {
@@ -473,9 +493,6 @@ defineFigure( "custom", [param_custom_figure, param_beats_8])
 
 // =====================================================================================
 
-function figure_html_readonly(f) {
-    return f.move;
-}
 
 // =====================================================================================
 // =====================================================================================
