@@ -10,7 +10,7 @@ class ChoreographersController < ApplicationController
   # GET /choreographers
   # GET /choreographers.json
   def index
-    @choreographers = Choreographer.all
+    @choreographers = Choreographer.all.order "LOWER(name)"
   end
 
   # GET /choreographers/1

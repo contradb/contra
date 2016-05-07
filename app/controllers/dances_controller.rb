@@ -6,7 +6,7 @@ class DancesController < ApplicationController
   # GET /dances
   # GET /dances.json
   def index
-    @dances = Dance.all
+    @dances = Dance.all.order "LOWER(title)"
   end
 
   # GET /dances/1
