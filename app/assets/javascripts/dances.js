@@ -472,6 +472,11 @@ defineFigure( "custom", [param_custom_figure, param_beats_8])
 
 
 // =====================================================================================
+
+function figure_html_readonly(f) {
+    return f.move;
+}
+
 // =====================================================================================
 // =====================================================================================
 
@@ -499,6 +504,7 @@ defineFigure( "custom", [param_custom_figure, param_beats_8])
         $scope.degreesToRotations = degreesToRotations;
         $scope.degreesToPlaces = degreesToPlaces;
         setChoosers($scope);
+        $scope.figure_html_readonly = figure_html_readonly
 
         $scope.toJson = angular.toJson;
         $scope.newFigure = newFigure;
