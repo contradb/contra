@@ -280,7 +280,7 @@ function moveMenuOptionsIgnoringBalance (formation,who) {
 
 // always freshly allocated
 function newFigure () {
-    return {formation:"square", who:"everybody",beats:8}
+    return { parameter_values: [] }
 }
 
 function defaultFigures (figures) {
@@ -343,12 +343,6 @@ function parameters(fig_str){
     return [];
 }
 
-function parameter_values_to_s(fig_str,pvs){
-    var fig = defined_events[fig_str];
-    if (!fig) return "'"+fig_str+"':not a figure"
-    ...
-    
-}
 
 var defined_choosers = {}
 
