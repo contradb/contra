@@ -44,27 +44,6 @@ module DancesHelper
     d/90
   end
 
-  # you! manually sync changes to dances.js!
-  def move_cares_about_rotations(s)
-    [:do_si_do,                       :see_saw,
-     :allemande_right,                :allemande_left,
-     :gyre_right_shoulder,            :gyre_left_shoulder,
-     :star_promenade,
-     :butterfly_whirl,
-     :mad_robin,
-    ].include?(s.intern)
-  end
-
-  # you! manually sync changes to dances.js!
-  def move_cares_about_places(s)
-    [:circle_left,          :circle_right,
-     :star_left,            :star_right,
-     :gyre_star_clockwise_ladles_backing,
-     :gyre_star_ccw_ladles_backing,
-     :gyre_star_clockwise_gentlespoons_backing,
-     :gyre_star_ccw_gentlespoons_backing,
-    ].include?(s.intern)
-  end
 
 
 
@@ -96,48 +75,7 @@ module DancesHelper
 
 
   def figure_txt(figure, terse: false) # takes a hash, returns a string
-    o = figure
-    return "nil" unless o
-    formation = if ['','square','unspecified', 'custom'].include? ( o['formation'] || '' ) 
-                then ''
-                else 'in '+o['formation']+' '
-                end
-    move    = if o['move'] and (o['move'] != 'custom') then o['move'] else '' end
-    who     = if "everybody" == o['who'] || "custom" == o['who'] 
-                then '' 
-              elsif terse
-              then (o['who'] == 'ones') ? 
-                   '1s' : 
-                   ((o['who'] == 'twos') ? '2s' : o['who'][0] + ". ")
-              else o['who'] 
-              end
-    beats   = o['beats']   || nil
-    notes   = !o['notes'] ? '' : ((terse && (o['notes'].length >=13)) ? "..." : o['notes'])
-    notes_html = ApplicationHelper::renderMarkdownInline(notes);
-    degrees = o['degrees']
-    deg_txt = if !degrees
-              then ""
-              elsif terse
-              then ""
-              elsif move_cares_about_places(move)
-              then "#{degrees_to_places(degrees)} places"
-              elsif move_cares_about_rotations(move)
-              then "#{degrees_to_rotation(degrees)}"
-              else ''
-              end
-    balance = if !o['balance'] 
-              then '' 
-              elsif terse 
-              then "b+" 
-              else 'balance + '
-              end
-    beat_str = ((beats == 8) || terse) ? "" : "for #{beats}"
-    if beats <= 0
-      then terse ? "" : "~".html_safe
-    elsif o['move'] == 'custom' || o['who'] == 'custom'
-      then ''.html_safe + "#{formation}#{who} #{balance}#{move} " + notes_html + "#{deg_txt} #{beat_str}"
-      else ''.html_safe + "#{formation}#{who} #{balance}#{move} #{deg_txt} #{beat_str} " + notes_html
-    end
+    "can't find figure_txt anymore in Ruby! :o"
   end
 
   # input: an array of possibly non-html-safe strings
