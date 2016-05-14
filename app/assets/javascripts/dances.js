@@ -293,7 +293,7 @@ defineFigureAlias( "see saw", "do si do", [null, param_left_shoulder_spin])
 
 defineFigure( "gyre", [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8])
 
-defineFigure( "circle",                   [param_spin_left,  param_four_places, param_beats_8], {view: function(move,pvs) {return words("circle ",pvs[0]?"right":"left",degreesToWords(pvs[1],"circle"),"for",pvs[2])}})
+defineFigure( "circle",                   [param_spin_left,  param_four_places, param_beats_8], {view: function(move,pvs) {return words("circle",pvs[0]?"left":"right",degreesToWords(pvs[1],"circle"),"for",pvs[2])}})
 defineFigureAlias( "circle three places", "circle", [param_spin_left,  param_three_places, param_beats_8])
 defineFigureAlias( "circle right",        "circle", [param_spin_right, param_four_places, param_beats_8])
 
