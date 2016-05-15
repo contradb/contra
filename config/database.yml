@@ -2,27 +2,29 @@ default: &default
 
 development:
   <<: *default
-  adapter: sqlite3
+  adapter: postgresql
+  encoding: unicode
   pool: 5
-  timeout: 5000
-  database: db/development.sqlite3
+  host: ""
+  database: "contradev"
+  password: "balance+swing"
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  adapter: sqlite3
+  adapter: postgresql
+  encoding: unicode
   pool: 5
-  timeout: 5000
-  database: db/test.sqlite3
+  host: ""
+  database: "contratest"
+  password: "balance+swing"
 
 production:
   <<: *default
   adapter: postgresql
   encoding: unicode
-  # For details on connection pooling, see rails configuration guide
-  # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
   # host was set to "localhost" (no quotes), but rails console production
   # needed it to be empty string, as per 
@@ -30,27 +32,4 @@ production:
   host: ""
   username: rails
   password: <%= ENV['APP_DATABASE_PASSWORD'] %>
-  adapter: postgresql
-  encoding: unicode
-  # For details on connection pooling, see rails configuration guide
-  # http://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: 5
-  # host was set to "localhost" (no quotes), but rails console production
-  # needed it to be empty string, as per 
-  # http://stackoverflow.com/questions/32186349/rails-console-no-password-supply-error
-  host: ""
-  username: rails
-  password: <%= ENV['APP_DATABASE_PASSWORD'] %>
-  adapter: postgresql
-  encoding: unicode
-  # For details on connection pooling, see rails configuration guide
-  # http://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: 5
-  # host was set to "localhost" (no quotes), but rails console production
-  # needed it to be empty string, as per 
-  # http://stackoverflow.com/questions/32186349/rails-console-no-password-supply-error
-  host: ""
   database: app_production
-  username: rails
-  password: <%= ENV['APP_DATABASE_PASSWORD'] %>
-
