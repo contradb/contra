@@ -72,4 +72,15 @@ RSpec.configure do |config|
     Warden.test_reset! if defined? Warden.test_reset! # guard for during model tests, huh.
   end
 
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
+  end
 end

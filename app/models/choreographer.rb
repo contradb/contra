@@ -1,5 +1,5 @@
 class Choreographer < ActiveRecord::Base
-  has_many :dances
+  has_many :dances, -> { order "LOWER(title)" }
 
   validates :name, length: { in: 4..100 }
 

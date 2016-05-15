@@ -7,7 +7,7 @@ class ProgramsController < ApplicationController
   # GET /programs
   # GET /programs.json
   def index
-    @programs = Program.all
+    @programs = Program.all.order "LOWER(title)"
   end
 
   # GET /programs/1

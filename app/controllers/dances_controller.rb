@@ -6,7 +6,7 @@ class DancesController < ApplicationController
   # GET /dances
   # GET /dances.json
   def index
-    @dances = Dance.all
+    @dances = Dance.all.order "LOWER(title)"
   end
 
   # GET /dances/1
@@ -61,10 +61,12 @@ class DancesController < ApplicationController
     user = @dance.user
     @dance.destroy
     respond_to do |format|
-      coming_from_dance_view = /.*\/dances\/.+/ =~ request.referrer
-      url = coming_from_dance_view ? user : request.referrer
-      format.html {redirect_to url, notice: 'Dance was successfully destroyed.' }
       format.json { head :no_content }
+      format.html do
+        coming_from_dance_view = /.*\/dances\/.+/ =~ request.referrer
+        url = coming_from_dance_view ? user : request.referrer
+        redirect_to url, notice: 'Dance was successfully destroyed.'
+      end
     end
   end
 
