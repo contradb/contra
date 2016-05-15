@@ -9,12 +9,8 @@ gem 'angularjs-rails', '~> 1.4', '>= 1.4.7'
 gem 'rails', '4.2.3'
 
 
-group :test,:development do
-  gem 'sqlite3'
-end
-group :production do
-  gem 'pg'
-end
+gem 'pg'
+
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
