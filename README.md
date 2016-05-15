@@ -22,9 +22,9 @@ migrations. Creating a Postgres user is [handled in the wiki](https://github.com
 After the database is created and migrated, there are two manual
 things (which really should be in a script, even before tests, but I don't know how to do that):
 
-1) The first user you create through the website has super special
+1. The first user you create through the website has super special
 powers, so go ahead and create her. I like the username 'admonsterator'. 
-2) You need to create a choreographer "unknown" first
+2. You need to create a choreographer "unknown" first
 thing. This is the choreographer that other dances get attributed to
 when the system can't figure out a better choreographer to attribute
 it to. Unknown can't easily be deleted, so get the spelling right.
