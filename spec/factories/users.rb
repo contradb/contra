@@ -1,3 +1,4 @@
+require 'spec_helper.rb'
 
 FactoryGirl.define do
   factory :user do

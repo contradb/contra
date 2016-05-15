@@ -61,6 +61,8 @@ group :test do
   gem 'poltergeist'
   gem 'phantomjs', require: 'phantomjs/poltergeist'
   gem 'database_cleaner'
+  gem 'factory_girl_rails'
+
 end
 
 
@@ -69,7 +71,5 @@ gem 'bootstrap-sass', '~> 3.3.5'
 gem 'sprockets-rails', '~> 2.3.2'
 
 gem 'devise'
-
-gem 'factory_girl_rails'
 
 gem 'redcarpet'
