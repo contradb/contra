@@ -136,7 +136,8 @@
                   ng-options="m for m in moves()">
           </select>
           <span ng-repeat="p in parameters(figure.move)">
-            <span ng-init="figure.parameter_values[$index]=figure.parameter_values[$index]||p.value">
+            <span ng-init="set_if_unset(figure.parameter_values, $index, p.value)">
+              <!-- ng-init="$index in figure.parameter_values || p.value" -->
               [
               <span ng-if="p.ui == chooser_boolean">
                 <label>{{p.name}}<input type="checkbox" class="balance_edit" ng-model="figure.parameter_values[$index]"/></label>
@@ -152,7 +153,7 @@
               </span>
               <span ng-if="p.ui == chooser_left_right_spin"> 
                 <label>to the</label>
-                <label>left  <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" <%# ng-change goes here to check for name change, eg circle <=> circle-right %> /></label> /
+                <label>left  <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" <%# todo: ng-change goes here to check for name change, eg circle <=> circle-right %> /></label> /
                 <label>right <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" <%# ng-change also goes here %> /></label>
               </span>
               <span ng-if="p.ui == chooser_right_left_hand">

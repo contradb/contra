@@ -2,6 +2,13 @@
 // All this logic will automatically be available in application.js.
 
 
+function set_if_unset (dict, key, value) {
+    console.log("set_if_unset ("+ JSON.stringify(dict)+", "+JSON.stringify(key)+", "+JSON.stringify(value)+")");
+    if (!(key in dict))
+        dict[key] = value;
+    console.log(JSON.stringify(dict));
+}
+
 // take words, put them in strings, return a big, space separated string of them all. 
 function words() {
     if (arguments.length <= 0) return "";
@@ -348,7 +355,8 @@ defineFigure( "custom", [param_custom_figure, param_beats_8])
         $scope.degreesToRotations = degreesToRotations;
         $scope.degreesToPlaces = degreesToPlaces;
         setChoosers($scope);
-        $scope.figure_html_readonly = figure_html_readonly
+        $scope.figure_html_readonly = figure_html_readonly;
+        $scope.set_if_unset = set_if_unset;
 
         $scope.toJson = angular.toJson;
         $scope.newFigure = newFigure;
