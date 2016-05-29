@@ -75,7 +75,7 @@
 
 <%# ======================================================================== %>
 
-  <div ng-controller="FiguresController as figures" class="row">
+  <div ng-controller="FiguresController as figures" class="row" id="figures">
     <div class="display:none"
          ng-init="figures.arr=defaultFigures(<%= 
                   if copy_dance 
@@ -124,6 +124,10 @@
       </div>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <%# drill in to debug with
+          angular.element(document.getElementById('figures')).scope().figures.arr
+          or
+          angular.element(document.getElementById('figures')).scope().figures.arr[4].parameter_values %>
       <div class="row">
         <div ng-repeat="figure in figures.arr"
              ng-class="styleForBeats(sumBeats(figures.arr,$index))">
