@@ -322,9 +322,17 @@ defineFigure( "custom", [param_custom_figure, param_beats_8])
 
 
 
-
 (function () {
     var app = angular.module('contra', []);
+    // adding 'changed' attribute to thing triggers 'hi' alert box
+    // also see ngChange directive, which looks pretty good / better. 
+    // app.directive('changed',function(){
+    //     return function(scope,elem,att){
+    //         elem.bind('change',function(){
+    //             alert('hi');
+    //         })
+    //     }
+    // });
     var scopeInit = function ($scope) {
         var fctrl42 = this;
         $scope.moveCaresAboutRotations = moveCaresAboutRotations;
