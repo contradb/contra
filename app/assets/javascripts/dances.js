@@ -3,10 +3,8 @@
 
 
 function set_if_unset (dict, key, value) {
-    console.log("set_if_unset ("+ JSON.stringify(dict)+", "+JSON.stringify(key)+", "+JSON.stringify(value)+")");
     if (!(key in dict))
         dict[key] = value;
-    console.log(JSON.stringify(dict));
 }
 
 // take words, put them in strings, return a big, space separated string of them all. 
