@@ -126,6 +126,7 @@ function figure_html_readonly(f) {
     else return "warning "+f.move;
 }
 
+// Called if they don't specify a view function in the figure definition:
 function figure_html_readonly_default(move, parameter_values) {
     var ps = parameters(move);
     var acc = move;
@@ -134,6 +135,13 @@ function figure_html_readonly_default(move, parameter_values) {
         acc += " " + String(parameter_values[i]);
     return acc;
 }
+
+function user_changed_parameter (figure, index) {
+    var fig_def = defined_events[figure.move];
+    if (fig_def && fig_def.props.change)
+        fig_def.props.change(figure, index)
+}
+
 
 // =====================================================================================
 
@@ -298,7 +306,21 @@ defineFigureAlias( "see saw", "do si do", [null, param_left_shoulder_spin])
 
 defineFigure( "gyre", [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8])
 
-defineFigure( "circle",                   [param_spin_left,  param_four_places, param_beats_8], {view: function(move,pvs) {return words("circle",pvs[0]?"left":"right",pvs[1]?degreesToWords(pvs[1],"circle"):"???","for",pvs[2]||"???")}})
+function circle_rename(figure,index) {
+    var pvs = figure.parameter_values
+    figure.move = pvs[0] ? "circle" : "circle right"
+    if (pvs[0] && (pvs[1] == 270))
+        figure.move = "circle three places"
+    console.log("circle_rename()")
+}
+
+function circle_view(move,pvs) {
+    return words("circle", pvs[0]?"left":"right",
+                 pvs[1]?degreesToWords(pvs[1],"circle"):"???",
+                 "for",pvs[2]||"???")
+}
+
+defineFigure( "circle",                   [param_spin_left,  param_four_places, param_beats_8], {view: circle_view, change: circle_rename})
 defineFigureAlias( "circle three places", "circle", [param_spin_left,  param_three_places, param_beats_8])
 defineFigureAlias( "circle right",        "circle", [param_spin_right, param_four_places, param_beats_8])
 
@@ -329,15 +351,6 @@ defineFigure( "custom", [param_custom_figure, param_beats_8])
 
 (function () {
     var app = angular.module('contra', []);
-    // adding 'changed' attribute to thing triggers 'hi' alert box
-    // also see ngChange directive, which looks pretty good / better. 
-    // app.directive('changed',function(){
-    //     return function(scope,elem,att){
-    //         elem.bind('change',function(){
-    //             alert('hi');
-    //         })
-    //     }
-    // });
     var scopeInit = function ($scope) {
         var fctrl42 = this;
         $scope.moveCaresAboutRotations = moveCaresAboutRotations;
@@ -355,6 +368,7 @@ defineFigure( "custom", [param_custom_figure, param_beats_8])
         setChoosers($scope);
         $scope.figure_html_readonly = figure_html_readonly;
         $scope.set_if_unset = set_if_unset;
+        $scope.user_changed_parameter = user_changed_parameter
 
         $scope.toJson = angular.toJson;
         $scope.newFigure = newFigure;
