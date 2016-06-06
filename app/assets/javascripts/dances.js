@@ -143,12 +143,35 @@ function figure_html_readonly(f) {
 
 // Called if they don't specify a view function in the figure definition:
 function figure_html_readonly_default(move, parameter_values) {
+    // todo: clean this up so it's not so obnoxiously ugly
     var ps = parameters(move);
-    var acc = move;
+    var acc = ""
+    var subject_index = find_parameter_names_index("who", ps)
+    var balance_index = find_parameter_names_index("bal", ps)
+    console.log("move = "+move + " subject_index "+subject_index)
+    if (subject_index >= 0) {
+        console.log("here")
+        stringer = ps[subject_index].string || String
+        acc += stringer(parameter_values[subject_index]) + " ";
+        console.log("here")
+    }
+    if (balance_index >= 0) {
+        stringer = ps[balance_index].string || String
+        acc += stringer(parameter_values[balance_index]) + " ";
+    }
+    acc += move
     ps.length == parameter_values.length || throw_up("parameter type mismatch. "+ps.length+" formals and "+parameter_values.length+" values");
-    for (var i=0; i < parameter_values.length; i++)
-        acc += " " + String(parameter_values[i]);
+    for (var i=0; i < parameter_values.length; i++) {
+        if ((i != subject_index) && i != balance_index) {
+            stringer = ps[i].string || String
+            acc += " " + stringer(parameter_values[i]);
+        }
+    }
     return acc;
+}
+
+function find_parameter_names_index(name, parameters) {
+    return parameters.findIndex(function(p) {return p.name == name}, parameters)
 }
 
 function user_changed_parameter (figure, index) {
@@ -265,8 +288,11 @@ defineChooser("chooser_text")
 // figures have a subject telling who's acted on by the figure. 
 // 
 
-param_balance_true = {name: "bal", value: true, ui: chooser_boolean}
-param_balance_false = {name: "bal", value: false, ui: chooser_boolean}
+function stringParamBalance (value) {
+    return value ? "balance & " : ""
+}
+param_balance_true = {name: "bal", value: true, ui: chooser_boolean, string: stringParamBalance}
+param_balance_false = {name: "bal", value: false, ui: chooser_boolean, string: stringParamBalance}
 
 param_beats_0 = {name: "beats", value: 0, ui: chooser_beats}
 param_beats_2 = {name: "beats", value: 2, ui: chooser_beats}
