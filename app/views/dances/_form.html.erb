@@ -133,17 +133,25 @@
              ng-class="styleForBeats(sumBeats(figures.arr,$index))">
           <span>{{$index+1}}</span>
           <select class="move_edit" ng-model="figure.move"
-                  ng-options="m for m in moves()">
+                  ng-options="m for m in moves()"
+                  ng-change="user_changed_move(figure)">
           </select>
           <span ng-repeat="p in parameters(figure.move)">
             <span ng-init="set_if_unset(figure.parameter_values, $index, p.value)">
               <!-- ng-init="$index in figure.parameter_values || p.value" -->
-              [
+              {{parameter_glue(figure.move, $index)}}
               <span ng-if="p.ui == chooser_boolean">
-                <label>{{p.name}}<input type="checkbox" class="balance_edit" ng-model="figure.parameter_values[$index]"/></label>
+                <label>{{p.name}}
+                  <input type="checkbox" class="balance_edit" 
+                         ng-model="figure.parameter_values[$index]"
+                         ng-change="user_changed_parameter(figure,$index)"/></label>
               </span>
               <span ng-if="p.ui == chooser_beats">
-                <label>{{p.name}}<select class="beat_edit" ng-model="figure.parameter_values[$index]" ng-options="b for b in [8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]">
+                <label>{{p.name}}
+                  <select
+                     class="beat_edit" ng-model="figure.parameter_values[$index]" 
+                     ng-options="b for b in [8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]"
+                     ng-change="user_changed_parameter(figure,$index)">
                   </select></label>
               </span>
 
@@ -174,17 +182,15 @@
               </span>
 
               <span ng-if="p.ui == chooser_revolutions">
-                <label>revolutions
-                  <select class="turns_edit" ng-model="figure.parameter_values[$index]"
-                          ng-options="degreesToRotations(a) for a in anglesForMove(figure.move)" ng-change="user_changed_parameter(figure,$index)">
-                  </select></label>
+                <select class="turns_edit" ng-model="figure.parameter_values[$index]"
+                        ng-options="degreesToRotations(a) for a in anglesForMove(figure.move)" ng-change="user_changed_parameter(figure,$index)">
+                </select>
               </span>
               <span ng-if="p.ui == chooser_places">
-                <label>Places
-                  <select class="turns_edit" ng-model="figure.parameter_values[$index]"
-                          ng-options="degreesToPlaces(a) for a in anglesForMove(figure.move)"
-                          ng-change="user_changed_parameter(figure,$index)">
-                  </select></label>
+                <select class="turns_edit" ng-model="figure.parameter_values[$index]"
+                        ng-options="degreesToPlaces(a) for a in anglesForMove(figure.move)"
+                        ng-change="user_changed_parameter(figure,$index)">
+                </select>
               </span>
 
               <span ng-if="p.ui == chooser_dancers">
@@ -261,7 +267,6 @@
               </span>
 
               <%# <span style="font-size: 0.4em; color: #777">{{p.ui}}</span> %>
-              ]
             </span>
           </span>
         </div>

@@ -130,7 +130,7 @@ function figure_html_readonly(f) {
 function figure_html_readonly_default(move, parameter_values) {
     var ps = parameters(move);
     var acc = move;
-    ps.length == parameter_values.length || throw_up("parameter type mismatch");
+    ps.length == parameter_values.length || throw_up("parameter type mismatch. "+ps.length+" formals and "+parameter_values.length+" values");
     for (var i=0; i < parameter_values.length; i++)
         acc += " " + String(parameter_values[i]);
     return acc;
@@ -142,6 +142,17 @@ function user_changed_parameter (figure, index) {
         fig_def.props.change(figure, index)
 }
 
+function user_changed_move (figure) {
+    var params = parameters(figure.move);
+    figure.parameter_values = [];
+    for (var i=0; i<params.length; i++)
+        figure.parameter_values[i] = params[i].value
+}
+
+function parameter_glue (movestring, index) {
+    var fig_def = defined_events[movestring];
+    return (fig_def && fig_def.props && fig_def.props.glue && fig_def.props.glue[index]) || ""
+}
 
 // =====================================================================================
 
@@ -320,7 +331,7 @@ function circle_view(move,pvs) {
                  "for",pvs[2]||"???")
 }
 
-defineFigure( "circle",                   [param_spin_left,  param_four_places, param_beats_8], {view: circle_view, change: circle_rename})
+defineFigure( "circle", [param_spin_left,  param_four_places, param_beats_8], {view: circle_view, change: circle_rename})
 defineFigureAlias( "circle three places", "circle", [param_spin_left,  param_three_places, param_beats_8])
 defineFigureAlias( "circle right",        "circle", [param_spin_right, param_four_places, param_beats_8])
 
@@ -331,7 +342,15 @@ defineFigure( "hey",                      [param_subject_role_ladles, param_beat
 defineFigure( "half hey",              [param_subject_role_ladles, param_beats_8])
 defineFigureAlias( "hey halfway", "half hey", [])
 
-defineFigure( "allemande orbit", [param_subject_role_ladles, param_left_hand_spin, param_once_and_a_half, param_half_around, param_beats_8])
+function allemande_orbit_view(move,pvs) {
+    return words(move, pvs[0], "left? "+  pvs[1],
+                 pvs[2]?degreesToWords(pvs[2],move):"???",
+                 pvs[3]?degreesToWords(pvs[3],move):"???",
+                 "for",pvs[4]||"???")
+}
+
+defineFigure( "allemande orbit", [param_subject_role_ladles, param_left_hand_spin, param_once_and_a_half, param_half_around, param_beats_8], {view: allemande_orbit_view, glue: ["","allemande","","while the rest orbit", "outside"]})
+
 defineFigure( "promenade across", [param_by_left, param_beats_8])
 
 defineFigure( "custom", [param_custom_figure, param_beats_8])
@@ -369,6 +388,8 @@ defineFigure( "custom", [param_custom_figure, param_beats_8])
         $scope.figure_html_readonly = figure_html_readonly;
         $scope.set_if_unset = set_if_unset;
         $scope.user_changed_parameter = user_changed_parameter
+        $scope.user_changed_move = user_changed_move
+        $scope.parameter_glue = parameter_glue
 
         $scope.toJson = angular.toJson;
         $scope.newFigure = newFigure;
