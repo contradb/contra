@@ -19,11 +19,26 @@ function words() {
     }
 }
 
+var dancersComplementHash =
+    {"ladles": "gentlespoons"
+    ,"gentlespoons": "ladles"
+    ,"ones": "twos"
+    ,"twos": "ones"
+    ,"first corners": "second corners"
+    ,"second corners": "first corners"
+    };
+// If this names 2 dancers, this returns the names for the other 2 dancers
+// it's sketchy, because it assumes 4 dancers, so only use it in contra moves
+function dancersComplement(whostr) {
+    return dancersComplementHash[whostr] ||
+        throw_up("bogus parameter to dancersComplementHash: "+ whostr)
+}
 
 var moveCaresAboutRotationsHash =
     {"do si do":  true
     ,"allemande": true
     ,"gyre":      true
+    ,"allemande orbit": true
     };
 function moveCaresAboutRotations (move) {
     return moveCaresAboutRotationsHash[deAliasName(move)];
@@ -37,11 +52,11 @@ function moveCaresAboutPlaces (move) {
 var degrees2rotations = { 90: "¼", 
                          180: "½", 
                          270: "¾",
-                         360: "once around",
+                         360: "once",
                          450: "1¼",
                          540: "1½",
                          630: "1¾",
-                         720: "twice around"}
+                         720: "twice"}
 var degrees2places = { 90: "1 place", 
                       180: "2 places", 
                       270: "3 places",
@@ -237,6 +252,7 @@ defineChooser("chooser_side")
 defineChooser("chooser_revolutions")
 defineChooser("chooser_places")
 defineChooser("chooser_dancers")  // some collection of dancers
+defineChooser("chooser_pair")     // 1 pair of dancers
 defineChooser("chooser_pairz")    // 1-2 pairs of dancers
 defineChooser("chooser_pairs")    // 2 pairs of dancers
 defineChooser("chooser_dancer")   // one dancer, e.g. ladle 1
@@ -285,10 +301,11 @@ param_three_places    = {name: "degrees", value: 270, ui: chooser_places}
 param_four_places     = {name: "degrees", value: 360, ui: chooser_places}
 
 param_subject         = {name: "who", value: "everyone", ui: chooser_dancers}
+param_subject_pair    = {name: "who",                    ui: chooser_pair}  // 1 pair of dancers
 param_subject_pairz   = {name: "who",                    ui: chooser_pairz} // 1-2 pairs of dancers
 param_subject_pairs   = {name: "who",                    ui: chooser_pairs} // 2 pairs of dancers
 param_subject_dancer  = {name: "who",                    ui: chooser_dancer}
-param_subject_role_ladles       = {name: "who", value: "ladies",       ui: chooser_role}
+param_subject_role_ladles       = {name: "who", value: "ladles",       ui: chooser_role}
 param_subject_role_gentlespoons = {name: "who", value: "gentlespoons", ui: chooser_role}
 param_subject_hetero           = {name: "who",                     ui: chooser_hetero}
 param_subject_hetero_partners  = {name: "who", value: "partners",  ui: chooser_hetero}
@@ -343,13 +360,15 @@ defineFigure( "half hey",              [param_subject_role_ladles, param_beats_8
 defineFigureAlias( "hey halfway", "half hey", [])
 
 function allemande_orbit_view(move,pvs) {
-    return words(move, pvs[0], "left? "+  pvs[1],
-                 pvs[2]?degreesToWords(pvs[2],move):"???",
-                 pvs[3]?degreesToWords(pvs[3],move):"???",
-                 "for",pvs[4]||"???")
+    return words(pvs[0], "allemande", pvs[1] ? "by the right" : "by the left",
+                 degreesToWords(pvs[2],move), "around",
+                 "while the", dancersComplement(pvs[0]), "orbit",
+                 !pvs[1] ? "clockwise" : "counter clockwise",
+                 degreesToWords(pvs[3],move), "around",
+                 "for",pvs[4])
 }
 
-defineFigure( "allemande orbit", [param_subject_role_ladles, param_left_hand_spin, param_once_and_a_half, param_half_around, param_beats_8], {view: allemande_orbit_view, glue: ["","allemande","","while the rest orbit", "outside"]})
+defineFigure( "allemande orbit", [param_subject_pair, param_left_hand_spin, param_once_and_a_half, param_half_around, param_beats_8], {view: allemande_orbit_view, glue: ["","allemande","","while the rest orbit", "outside for"]})
 
 defineFigure( "promenade across", [param_by_left, param_beats_8])
 

@@ -182,19 +182,19 @@
               </span>
 
               <span ng-if="p.ui == chooser_revolutions">
-                <select class="turns_edit" ng-model="figure.parameter_values[$index]"
+                <select ng-model="figure.parameter_values[$index]"
                         ng-options="degreesToRotations(a) for a in anglesForMove(figure.move)" ng-change="user_changed_parameter(figure,$index)">
                 </select>
               </span>
               <span ng-if="p.ui == chooser_places">
-                <select class="turns_edit" ng-model="figure.parameter_values[$index]"
+                <select ng-model="figure.parameter_values[$index]"
                         ng-options="degreesToPlaces(a) for a in anglesForMove(figure.move)"
                         ng-change="user_changed_parameter(figure,$index)">
                 </select>
               </span>
 
               <span ng-if="p.ui == chooser_dancers">
-                <select class="turns_edit" ng-model="figure.parameter_values[$index]"
+                <select ng-model="figure.parameter_values[$index]"
                         ng-change="user_changed_parameter(figure,$index)">
                   <option value="everybody">everybody</option>
                   <option value="gentlespoons">gentlespoons</option>
@@ -213,8 +213,19 @@
                   <option value="L2">ladle 2</option>
                 </select>
               </span>
+              <span ng-if="p.ui == chooser_pair">
+                <select ng-model="figure.parameter_values[$index]"
+                        ng-change="user_changed_parameter(figure,$index)">
+                  <option value="gentlespoons">gentlespoons</option>
+                  <option value="ladles">ladles</option>
+                  <option value="ones">ones</option>
+                  <option value="twos">twos</option>
+                  <option value="first_corners">first corners</option>
+                  <option value="second_corners">second corners</option>
+                </select>
+              </span>
               <span ng-if="p.ui == chooser_pairz">
-                <select class="turns_edit" ng-model="figure.parameter_values[$index]"
+                <select ng-model="figure.parameter_values[$index]"
                         ng-change="user_changed_parameter(figure,$index)">
                   <option value="gentlespoons">gentlespoons</option>
                   <option value="ladles">ladles</option>
@@ -229,7 +240,7 @@
                 </select>
               </span>
               <span ng-if="p.ui == chooser_pairs">
-                <select class="turns_edit" ng-model="figure.parameter_values[$index]"
+                <select ng-model="figure.parameter_values[$index]"
                         ng-change="user_changed_parameter(figure,$index)">
                   <option value="partners">partners</option>
                   <option value="neighbors">neighbors</option>
@@ -238,7 +249,7 @@
                 </select>
               </span>
               <span ng-if="p.ui == chooser_dancer">
-                <select class="turns_edit" ng-model="figure.parameter_values[$index]"
+                <select ng-model="figure.parameter_values[$index]"
                         ng-change="user_changed_parameter(figure,$index)">
                   <option value="G1">gentlespoon 1</option>
                   <option value="L1">ladle 1</option>
@@ -247,14 +258,14 @@
                 </select>
               </span>
               <span ng-if="p.ui == chooser_role">
-                <select class="turns_edit" ng-model="figure.parameter_values[$index]"
+                <select ng-model="figure.parameter_values[$index]"
                         ng-change="user_changed_parameter(figure,$index)">
                   <option value="gentlespoons">gentlespoons</option>
                   <option value="ladles">ladles</option>
                 </select>
               </span>
               <span ng-if="p.ui == chooser_hetero">
-                <select class="turns_edit" ng-model="figure.parameter_values[$index]"
+                <select ng-model="figure.parameter_values[$index]"
                         ng-change="user_changed_parameter(figure,$index)">
                   <option value="partners">partners</option>
                   <option value="neighbors">neighbors</option>
