@@ -148,12 +148,9 @@ function figure_html_readonly_default(move, parameter_values) {
     var acc = ""
     var subject_index = find_parameter_names_index("who", ps)
     var balance_index = find_parameter_names_index("bal", ps)
-    console.log("move = "+move + " subject_index "+subject_index)
     if (subject_index >= 0) {
-        console.log("here")
         stringer = ps[subject_index].string || String
         acc += stringer(parameter_values[subject_index]) + " ";
-        console.log("here")
     }
     if (balance_index >= 0) {
         stringer = ps[balance_index].string || String
@@ -365,7 +362,6 @@ function circle_rename(figure,index) {
     figure.move = pvs[0] ? "circle" : "circle right"
     if (pvs[0] && (pvs[1] == 270))
         figure.move = "circle three places"
-    console.log("circle_rename()")
 }
 
 function circle_view(move,pvs) {
