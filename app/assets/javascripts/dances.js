@@ -431,6 +431,7 @@ defineFigure( "custom", [param_custom_figure, param_beats_8])
         $scope.user_changed_parameter = user_changed_parameter
         $scope.user_changed_move = user_changed_move
         $scope.parameter_glue = parameter_glue
+        $scope.edit_index_box = [null]
 
         $scope.toJson = angular.toJson;
         $scope.newFigure = newFigure;

@@ -29,11 +29,9 @@
 
   <% if copy_dance then %>
   <div class="row">
-    <div class="col-lg-1 col-md-2 col-xs-3"></div>
-    <div class="col-lg-11 col-md-10 col-xs-9">Composing a variation of <strong><%= copy_dance.title %></strong></div>
+    <div class="col-xs-12">Composing a variation of <strong><%= copy_dance.title %></strong></div>
   </div>
   <% end %>
-
 
   <div class="row field">
     <%= f.text_field :title, {class: "dance-title-edit col-xs-12", value: copy_dance ? "#{copy_dance.title} variation" : "Untitled"} %>
@@ -59,13 +57,7 @@
     </script>
   </div>
 
-
-
 <%# ============================ new figure editors ==================== %>
-
-
-
-<%# ======================================================================== %>
 
   <div ng-controller="FiguresController as figures" class="row" id="figures">
     <div class="display:none"
@@ -76,9 +68,14 @@
                   end %>)"></div>
     <div class="col-xs-12 col-md-6"> <%# list figures %>
       <h2>figures list</h2>
+
+      <!-- <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" /> -->
+
       <div ng-repeat="figure in figures.arr"
            ng-class="styleForBeats(sumBeats(figures.arr,$index))">
-        figure {{$index + 1}}: {{figure_html_readonly(figures.arr[$index])}}
+        {{$index + 1}}
+        <input type="radio" ng-model="edit_index_box[0]" name="edit_index" ng-value="$index" />: 
+        {{figure_html_readonly(figures.arr[$index])}}
       </div>
     </div><%# list figures %>
     <div class="col-xs-12 col-md-6"> <%# edit figure %>
@@ -282,10 +279,8 @@
 
   <!-- debugger -->
   <% if debug_figure_json then  %>
-  <div class="row">
-    <div class="col-lg-1 col-md-2 col-xs-3" style="text-align: center">#</div>
-    <div class="col-lg-11 col-md-10 col-xs-9"><strong style="color: red">debug_figure_json = true </strong></div>
-  </div>
+  <div><strong style="color: red">debug_figure_json = true </strong></div>
+  <div>edit_index_box == {{edit_index_box}}</div>
   <div class="row" ng-repeat="figure in figures.arr">
     <div class="col-lg-1 col-md-2 col-xs-3" style="text-align: center">{{$index}}</div>
     <div class="col-lg-11 col-md-10 col-xs-9">{{figure}}</div>
