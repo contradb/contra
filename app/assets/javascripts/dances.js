@@ -149,19 +149,19 @@ function figure_html_readonly_default(move, parameter_values) {
     var subject_index = find_parameter_names_index("who", ps)
     var balance_index = find_parameter_names_index("bal", ps)
     if (subject_index >= 0) {
-        stringer = ps[subject_index].string || String
-        acc += stringer(parameter_values[subject_index]) + " ";
+        string_fn = ps[subject_index].string || String
+        acc += string_fn(parameter_values[subject_index]) + " ";
     }
     if (balance_index >= 0) {
-        stringer = ps[balance_index].string || String
-        acc += stringer(parameter_values[balance_index]) + " ";
+        string_fn = ps[balance_index].string || String
+        acc += string_fn(parameter_values[balance_index]) + " ";
     }
     acc += move
     ps.length == parameter_values.length || throw_up("parameter type mismatch. "+ps.length+" formals and "+parameter_values.length+" values");
     for (var i=0; i < parameter_values.length; i++) {
         if ((i != subject_index) && i != balance_index) {
-            stringer = ps[i].string || String
-            acc += " " + stringer(parameter_values[i]);
+            string_fn = ps[i].string || String
+            acc += " " + string_fn(parameter_values[i]);
         }
     }
     return acc;
@@ -291,13 +291,16 @@ function stringParamBalance (value) {
 param_balance_true = {name: "bal", value: true, ui: chooser_boolean, string: stringParamBalance}
 param_balance_false = {name: "bal", value: false, ui: chooser_boolean, string: stringParamBalance}
 
-param_beats_0 = {name: "beats", value: 0, ui: chooser_beats}
-param_beats_2 = {name: "beats", value: 2, ui: chooser_beats}
-param_beats_4 = {name: "beats", value: 4, ui: chooser_beats}
-param_beats_6 = {name: "beats", value: 6, ui: chooser_beats}
-param_beats_8 = {name: "beats", value: 8, ui: chooser_beats}
-param_beats_12 = {name: "beats", value: 12, ui: chooser_beats}
-param_beats_16 = {name: "beats", value: 16, ui: chooser_beats}
+function stringParamBeats (value) {
+    return value && (value != 8) ? "for "+value : ""
+}
+param_beats_0 = {name: "beats", value: 0, ui: chooser_beats, string: stringParamBeats}
+param_beats_2 = {name: "beats", value: 2, ui: chooser_beats, string: stringParamBeats}
+param_beats_4 = {name: "beats", value: 4, ui: chooser_beats, string: stringParamBeats}
+param_beats_6 = {name: "beats", value: 6, ui: chooser_beats, string: stringParamBeats}
+param_beats_8 = {name: "beats", value: 8, ui: chooser_beats, string: stringParamBeats}
+param_beats_12 = {name: "beats", value: 12, ui: chooser_beats, string: stringParamBeats}
+param_beats_16 = {name: "beats", value: 16, ui: chooser_beats, string: stringParamBeats}
 
 // spin = clockwise | ccw | undefined
 param_spin                   = {name: "spin",               ui: chooser_spin}
