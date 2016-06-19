@@ -380,8 +380,23 @@ defineFigureAlias( "circle right",        "circle", [param_spin_right, param_fou
 defineFigure( "long lines",               [param_beats_8])
 defineFigure( "long lines forward only",  [param_beats_4])
 
-defineFigure( "hey",                      [param_subject_role_ladles, param_beats_16])
-defineFigure( "half hey",              [param_subject_role_ladles, param_beats_8])
+function hey_view_maker(default_beats) {
+    return function (move,pvs) {
+        var beats = pvs[1] || "???"
+        if (beats == default_beats)
+            return  words(move+",", pvs[0], "lead")
+        else return words(move+",", pvs[0], "lead,", "for", pvs[1]||"???", "beats")
+    }
+}
+function hey_rename(figure,index) {
+    var pvs = figure.parameter_values
+    var beats = pvs[1]
+    if      (beats ==  8) figure.move = "half hey"
+    else if (beats == 16) figure.move = "hey"
+}
+
+defineFigure( "hey",      [param_subject_role_ladles, param_beats_16], {view: hey_view_maker(16), change: hey_rename})
+defineFigure( "half hey", [param_subject_role_ladles, param_beats_8],  {view: hey_view_maker(8), change: hey_rename})
 defineFigureAlias( "hey halfway", "half hey", [])
 
 function allemande_orbit_view(move,pvs) {
