@@ -390,14 +390,12 @@ function swing_change(figure,index) {
         figure.move = "long swing"
 }
 function swing_view(move,pvs) {
-    var who     = pvs[0]
-    var balance = pvs[1]
     var beats   = pvs[2]
+    var swho = parameter_strings(move,pvs)[0]
     var standard_beats = ((beats == 16) && (move != "swing")) ||
                          ((beats == 8) && (move == "swing"))
-    if (standard_beats)
-        return words(who, move)
-    else return words(who, move, "for", beats)
+    if (standard_beats) return words(swho, move)
+    else return words(swho, move, "for", beats) // not 'sbeats', because 'for 8' needs to be said explicitly sometimes
 }
 
 defineFigure( "swing", [param_subject_pairz_partners, param_balance_false, param_beats_8],
@@ -432,6 +430,7 @@ defineFigure( "long lines forward only",  [param_beats_4])
 function hey_view_maker(default_beats) {
     return function (move,pvs) {
         var beats = pvs[1] || "???"
+        var sparams = parameter_strings(move,pvs)
         if (beats == default_beats)
             return  words(move+",", pvs[0], "lead")
         else return words(move+",", pvs[0], "lead,", "for", pvs[1]||"???", "beats")
