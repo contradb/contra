@@ -18,7 +18,7 @@ think about paralell_move which includes 0+ different moves, and a common number
 think about serial_move which includess 0+ diffeerent moves, and beats are the sum of it's beats. 
 
  x allemande_and_orbit 2+2 (first is in center, 2nd is orbit) center degrees(540?) AND orbit degrees(-180?)
- . allemande 2+2/2 left/right degrees(360)
+ x allemande 2+2/2 left/right degrees(360)
    arizona_twirl 2+2/2 alias for california-twirl
    balance_line E/2 right/left/right_then_left/left_then_right
    balance2 2+2/2

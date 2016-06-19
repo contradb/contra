@@ -146,26 +146,33 @@ function figure_html_readonly(f) {
 function figure_html_readonly_default(move, parameter_values) {
     // todo: clean this up so it's not so obnoxiously ugly
     var ps = parameters(move);
+    var pstrings = parameter_strings(move, parameter_values)
     var acc = ""
     var subject_index = find_parameter_names_index("who", ps)
     var balance_index = find_parameter_names_index("bal", ps)
-    if (subject_index >= 0) 
-        acc += string_for_parameter(subject_index, move, parameter_values) + ' ';
-    if (balance_index >= 0) 
-        acc += string_for_parameter(balance_index, move, parameter_values) + ' ';
+    if (subject_index >= 0) acc += pstrings[subject_index] + ' ';
+    if (balance_index >= 0) acc += pstrings[balance_index] + ' ';
     acc += move
     ps.length == parameter_values.length || throw_up("parameter type mismatch. "+ps.length+" formals and "+parameter_values.length+" values");
     for (var i=0; i < parameter_values.length; i++) {
         if ((i != subject_index) && (i != balance_index)) 
-            acc += ' ' + string_for_parameter(i, move, parameter_values) 
+            acc += ' ' + pstrings[i];
     }
     return acc;
 }
 
-function string_for_parameter(index, move, parameter_values) {
+function parameter_string_helper (x,y) {
+    return String(x)
+}
+
+function parameter_strings(move, parameter_values) {
     var formal_parameters = parameters(move)
-    var string_fn = formal_parameters[index].string || String
-    return string_fn(parameter_values[index]);
+    var acc = []
+    for (var i=0; i<parameter_values.length; i++) {
+        var string_fn = formal_parameters[i].string || parameter_string_helper
+        acc.push(string_fn(parameter_values[i],move));
+    }
+    return acc
 }
 
 function find_parameter_names_index(name, parameters) {
@@ -252,7 +259,7 @@ var defined_choosers = {}
 // or two chooser_dancers (e.g. GENTS roll away the NEIGHBORS)
 // Choosers are referenced by global variables, e.g. chooser_boolean evaluates to a chooser object. 
 // Choosers can be compared with == in this file and in angular controller scopey thing.
-// They are basically a big enum with no functionality other than '==' at this time. 
+// They are basically a big enum with all the functionality in a giant case statement in dances/_form.erb
 function defineChooser(name){
     "string" == typeof name || throw_up("first argument isn't a string")
     "chooser_" == name.slice(0,8) || throw_up("first argument doesn't begin with 'chooser_'")
@@ -289,7 +296,7 @@ defineChooser("chooser_text")
 function stringParamBalance (value) {
     return value ? "balance & " : ""
 }
-param_balance_true = {name: "bal", value: true, ui: chooser_boolean, string: stringParamBalance}
+param_balance_true  = {name: "bal", value: true,  ui: chooser_boolean, string: stringParamBalance}
 param_balance_false = {name: "bal", value: false, ui: chooser_boolean, string: stringParamBalance}
 
 function stringParamBeats (value) {
@@ -303,18 +310,23 @@ param_beats_8 = {name: "beats", value: 8, ui: chooser_beats, string: stringParam
 param_beats_12 = {name: "beats", value: 12, ui: chooser_beats, string: stringParamBeats}
 param_beats_16 = {name: "beats", value: 16, ui: chooser_beats, string: stringParamBeats}
 
+function stringParamClock     (value) {return value ? "clockwise" : "counter-clockwise"} // untested
+function stringParamLeftRight (value) {return value ? "to the left" : "to the right"}
+function stringParamHand      (value) {return value ? "by the right" : "by the left"}
+function stringParamShoulder  (value) {return value ? "by the right shoulder" : "by the left shoulder"} // untested
+
 // spin = clockwise | ccw | undefined
-param_spin                   = {name: "spin",               ui: chooser_spin}
-param_spin_clockwise         = {name: "spin", value: true,  ui: chooser_spin}
-param_spin_ccw               = {name: "spin", value: false, ui: chooser_spin} 
-param_spin_left              = {name: "spin", value: true,  ui: chooser_left_right_spin}
-param_spin_right             = {name: "spin", value: false, ui: chooser_left_right_spin} 
-param_xhand_spin             = {name: "spin",               ui: chooser_right_left_hand}
-param_right_hand_spin        = {name: "spin", value: true,  ui: chooser_right_left_hand}
-param_left_hand_spin         = {name: "spin", value: false, ui: chooser_right_left_hand}
-param_xshoulder_spin         = {name: "spin",               ui: chooser_right_left_shoulder}
-param_right_shoulder_spin    = {name: "spin", value: true,  ui: chooser_right_left_shoulder}
-param_left_shoulder_spin     = {name: "spin", value: false, ui: chooser_right_left_shoulder}
+param_spin                   = {name: "spin",               ui: chooser_spin, string: stringParamClock}
+param_spin_clockwise         = {name: "spin", value: true,  ui: chooser_spin, string: stringParamClock}
+param_spin_ccw               = {name: "spin", value: false, ui: chooser_spin, string: stringParamClock} 
+param_spin_left              = {name: "spin", value: true,  ui: chooser_left_right_spin, string: stringParamLeftRight}
+param_spin_right             = {name: "spin", value: false, ui: chooser_left_right_spin, string: stringParamLeftRight} 
+param_xhand_spin             = {name: "spin",               ui: chooser_right_left_hand, string: stringParamHand}
+param_right_hand_spin        = {name: "spin", value: true,  ui: chooser_right_left_hand, string: stringParamHand}
+param_left_hand_spin         = {name: "spin", value: false, ui: chooser_right_left_hand, string: stringParamHand}
+param_xshoulder_spin         = {name: "spin",               ui: chooser_right_left_shoulder, string: stringParamShoulder}
+param_right_shoulder_spin    = {name: "spin", value: true,  ui: chooser_right_left_shoulder, string: stringParamShoulder}
+param_left_shoulder_spin     = {name: "spin", value: false, ui: chooser_right_left_shoulder, string: stringParamShoulder}
 
 
 function stringParamSide (value) {
@@ -326,12 +338,22 @@ param_by_side  = {name: "side",               ui: chooser_side, string: stringPa
 param_by_left  = {name: "side", value: true,  ui: chooser_side, string: stringParamSide}
 param_by_right = {name: "side", value: false, ui: chooser_side, string: stringParamSide}
 
-param_revolutions     = {name: "degrees",             ui: chooser_revolutions}
-param_half_around     = {name: "degrees", value: 180, ui: chooser_revolutions}
-param_once_around     = {name: "degrees", value: 360, ui: chooser_revolutions}
-param_once_and_a_half = {name: "degrees", value: 540, ui: chooser_revolutions}
-param_three_places    = {name: "degrees", value: 270, ui: chooser_places}
-param_four_places     = {name: "degrees", value: 360, ui: chooser_places}
+function stringParamDegrees (value,move) {
+    if (moveCaresAboutRotations(move))
+    return degreesToRotations(value)
+    else if (moveCaresAboutPlaces(move))
+    return degreesToPlaces(value)
+    else {
+        console.log("Warning: '"+move+"' doesn't care about either rotations or places");
+        return degreesToRotations(value)
+    }
+}
+param_revolutions     = {name: "degrees",             ui: chooser_revolutions, string: stringParamDegrees}
+param_half_around     = {name: "degrees", value: 180, ui: chooser_revolutions, string: stringParamDegrees}
+param_once_around     = {name: "degrees", value: 360, ui: chooser_revolutions, string: stringParamDegrees}
+param_once_and_a_half = {name: "degrees", value: 540, ui: chooser_revolutions, string: stringParamDegrees}
+param_three_places    = {name: "degrees", value: 270, ui: chooser_places,      string: stringParamDegrees}
+param_four_places     = {name: "degrees", value: 360, ui: chooser_places,      string: stringParamDegrees}
 
 param_subject         = {name: "who", value: "everyone", ui: chooser_dancers}
 param_subject_pair    = {name: "who",                    ui: chooser_pair}  // 1 pair of dancers
@@ -384,8 +406,9 @@ defineFigureAlias( "long swing", "swing", [null, param_balance_false, param_beat
 defineFigureAlias( "balance and swing", "swing", [null, param_balance_true,  param_beats_16] )
 
 defineFigure( "allemande", [param_subject_pairz, param_xhand_spin, param_once_around, param_beats_8])
-defineFigureAlias( "allemande left", "allemande", [null, param_left_hand_spin])
-defineFigureAlias( "allemande right", "allemande", [null, param_right_hand_spin])
+// unsupport because I don't want to make the string viewers not have the word 'left' twice:
+// defineFigureAlias( "allemande left", "allemande", [null, param_left_hand_spin])
+// defineFigureAlias( "allemande right", "allemande", [null, param_right_hand_spin])
 
 defineFigure( "do si do", [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8])
 defineFigureAlias( "see saw", "do si do", [null, param_left_shoulder_spin])
@@ -399,13 +422,7 @@ function circle_rename(figure,index) {
         figure.move = "circle three places"
 }
 
-function circle_view(move,pvs) {
-    return words("circle", pvs[0]?"left":"right",
-                 pvs[1]?degreesToWords(pvs[1],"circle"):"???",
-                 "for",pvs[2]||"???")
-}
-
-defineFigure( "circle", [param_spin_left,  param_four_places, param_beats_8], {view: circle_view, change: circle_rename})
+defineFigure( "circle", [param_spin_left,  param_four_places, param_beats_8], {change: circle_rename})
 defineFigureAlias( "circle three places", "circle", [param_spin_left,  param_three_places, param_beats_8])
 defineFigureAlias( "circle right",        "circle", [param_spin_right, param_four_places, param_beats_8])
 
