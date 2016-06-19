@@ -429,11 +429,11 @@ defineFigure( "long lines forward only",  [param_beats_4])
 
 function hey_view_maker(default_beats) {
     return function (move,pvs) {
-        var beats = pvs[1] || "???"
-        var sparams = parameter_strings(move,pvs)
+        var beats = pvs[1]
+        var [leader, sbeats] = parameter_strings(move,pvs)
         if (beats == default_beats)
-            return  words(move+",", pvs[0], "lead")
-        else return words(move+",", pvs[0], "lead,", "for", pvs[1]||"???", "beats")
+            return  words(move+",", leader, "lead")
+        else return words(move+",", leader, "lead,", sbeats)
     }
 }
 function hey_rename(figure,index) {
@@ -448,12 +448,13 @@ defineFigure( "half hey", [param_subject_role_ladles, param_beats_8],  {view: he
 defineFigureAlias( "hey halfway", "half hey", [])
 
 function allemande_orbit_view(move,pvs) {
-    return words(pvs[0], "allemande", pvs[1] ? "by the right" : "by the left",
-                 degreesToWords(pvs[2],move), "around",
-                 "while the", dancersComplement(pvs[0]), "orbit",
-                 !pvs[1] ? "clockwise" : "counter clockwise",
-                 degreesToWords(pvs[3],move), "around",
-                 "for",pvs[4])
+    var [ who, dir, inner_angle, outer_angle, beats] = pvs
+    var [swho,sdir,sinner_angle,souter_angle,sbeats] = parameter_strings(move, pvs)
+    return words(swho, "allemande", sdir,
+                 sinner_angle, "around",
+                 "while the", dancersComplement(who), "orbit",
+                 dir ? "clockwise" : "counter clockwise",
+                 souter_angle, "around", sbeats)
 }
 
 defineFigure( "allemande orbit", [param_subject_pair, param_left_hand_spin, param_once_and_a_half, param_half_around, param_beats_8], {view: allemande_orbit_view, glue: ["","allemande","","while the rest orbit", "outside for"]})
@@ -461,11 +462,11 @@ defineFigure( "allemande orbit", [param_subject_pair, param_left_hand_spin, para
 defineFigure( "promenade across", [param_subject_pairs_partners, param_by_left, param_beats_8])
 
 function custom_view(move,pvs) {
-    var custom = pvs[0]
-    var beats = pvs[1]
-    if (8==beats) return custom
-    else return words(custom,"for",beats)
-        
+    // this is a lot like the default, except without the word "custom" at the front.
+    var [custom,beats] = pvs
+    var [scustom,sbeats] = parameter_strings(move, pvs)
+    if (8==beats) return scustom
+    else return words(scustom,sbeats)
 }
 
 defineFigure( "custom", [param_custom_figure, param_beats_8], {view: custom_view})
