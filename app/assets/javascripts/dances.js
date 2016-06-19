@@ -378,6 +378,119 @@ param_pass_on_right = {name: "pass", value: true, ui: chooser_right_left_shoulde
 
 param_custom_figure = {name: "custom", value: "", ui: chooser_text}
 
+
+//       _____ ___ ____ _   _ ____  _____ ____  
+//      |  ___|_ _/ ___| | | |  _ \| ____/ ___| 
+//      | |_   | | |  _| | | | |_) |  _| \___ \ 
+//      |  _|  | | |_| | |_| |  _ <| |___ ___) |
+//      |_|   |___\____|\___/|_| \_\_____|____/ 
+//
+//      (sorted alphabetically - keep it sorted)
+
+////////////////////////////////////////////////
+// ALLEMANDE ORBIT                            //
+////////////////////////////////////////////////
+
+function allemande_orbit_view(move,pvs) {
+    var [ who, dir, inner_angle, outer_angle, beats] = pvs
+    var [swho,sdir,sinner_angle,souter_angle,sbeats] = parameter_strings(move, pvs)
+    return words(swho, "allemande", sdir,
+                 sinner_angle, "around",
+                 "while the", dancersComplement(who), "orbit",
+                 dir ? "clockwise" : "counter clockwise",
+                 souter_angle, "around", sbeats)
+}
+
+defineFigure( "allemande orbit", [param_subject_pair, param_left_hand_spin, param_once_and_a_half, param_half_around, param_beats_8], {view: allemande_orbit_view, glue: ["","allemande","","while the rest orbit", "outside for"]})
+
+////////////////////////////////////////////////
+// ALLEMANDE                                  //
+////////////////////////////////////////////////
+
+defineFigure( "allemande", [param_subject_pairz, param_xhand_spin, param_once_around, param_beats_8])
+// unsupport because I don't want to make the string viewers not have the word 'left' twice:
+// defineFigureAlias( "allemande left", "allemande", [null, param_left_hand_spin])
+// defineFigureAlias( "allemande right", "allemande", [null, param_right_hand_spin])
+
+////////////////////////////////////////////////
+// CIRCLE                                     //
+////////////////////////////////////////////////
+
+function circle_rename(figure,index) {
+    var pvs = figure.parameter_values
+    figure.move = pvs[0] ? "circle" : "circle right"
+    if (pvs[0] && (pvs[1] == 270))
+        figure.move = "circle three places"
+}
+
+defineFigure( "circle", [param_spin_left,  param_four_places, param_beats_8], {change: circle_rename})
+defineFigureAlias( "circle three places", "circle", [param_spin_left,  param_three_places, param_beats_8])
+defineFigureAlias( "circle right",        "circle", [param_spin_right, param_four_places, param_beats_8])
+
+function custom_view(move,pvs) {
+    // this is a lot like the default, except without the word "custom" at the front.
+    var [custom,beats] = pvs
+    var [scustom,sbeats] = parameter_strings(move, pvs)
+    if (8==beats) return scustom
+    else return words(scustom,sbeats)
+}
+
+defineFigure( "custom", [param_custom_figure, param_beats_8], {view: custom_view})
+
+////////////////////////////////////////////////
+// DO SI DO (and see saw)                     //
+////////////////////////////////////////////////
+
+defineFigure( "do si do", [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8])
+defineFigureAlias( "see saw", "do si do", [null, param_left_shoulder_spin])
+
+////////////////////////////////////////////////
+// GYRE (aka circle by the eyes)              //
+////////////////////////////////////////////////
+
+defineFigure( "gyre", [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8])
+
+////////////////////////////////////////////////
+// HEY                                        //
+////////////////////////////////////////////////
+
+function hey_view_maker(default_beats) {
+    return function (move,pvs) {
+        var beats = pvs[1]
+        var [leader, sbeats] = parameter_strings(move,pvs)
+        if (beats == default_beats)
+            return  words(move+",", leader, "lead")
+        else return words(move+",", leader, "lead,", sbeats)
+    }
+}
+function hey_rename(figure,index) {
+    var pvs = figure.parameter_values
+    var beats = pvs[1]
+    if      (beats ==  8) figure.move = "half hey"
+    else if (beats == 16) figure.move = "hey"
+}
+
+defineFigure( "hey",      [param_subject_role_ladles, param_beats_16], {view: hey_view_maker(16), change: hey_rename})
+defineFigure( "half hey", [param_subject_role_ladles, param_beats_8],  {view: hey_view_maker(8), change: hey_rename})
+defineFigureAlias( "hey halfway", "half hey", [])
+
+////////////////////////////////////////////////
+// LONG LINES forward and back                //
+////////////////////////////////////////////////
+
+defineFigure( "long lines",               [param_beats_8])
+defineFigure( "long lines forward only",  [param_beats_4])
+
+////////////////////////////////////////////////
+// PROMENADE                                  //
+////////////////////////////////////////////////
+
+defineFigure( "promenade across", [param_subject_pairs_partners, param_by_left, param_beats_8])
+
+////////////////////////////////////////////////
+// SWING (the fun part)                       //
+////////////////////////////////////////////////
+
 function swing_change(figure,index) {
     var pvs = figure.parameter_values
     var balance = pvs[1]
@@ -403,73 +516,12 @@ defineFigure( "swing", [param_subject_pairz_partners, param_balance_false, param
 defineFigureAlias( "long swing", "swing", [null, param_balance_false, param_beats_16])
 defineFigureAlias( "balance and swing", "swing", [null, param_balance_true,  param_beats_16] )
 
-defineFigure( "allemande", [param_subject_pairz, param_xhand_spin, param_once_around, param_beats_8])
-// unsupport because I don't want to make the string viewers not have the word 'left' twice:
-// defineFigureAlias( "allemande left", "allemande", [null, param_left_hand_spin])
-// defineFigureAlias( "allemande right", "allemande", [null, param_right_hand_spin])
 
-defineFigure( "do si do", [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8])
-defineFigureAlias( "see saw", "do si do", [null, param_left_shoulder_spin])
 
-defineFigure( "gyre", [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8])
+////////////////////////////////////////////////
+// FIGURES END HERE                           //
+////////////////////////////////////////////////
 
-function circle_rename(figure,index) {
-    var pvs = figure.parameter_values
-    figure.move = pvs[0] ? "circle" : "circle right"
-    if (pvs[0] && (pvs[1] == 270))
-        figure.move = "circle three places"
-}
-
-defineFigure( "circle", [param_spin_left,  param_four_places, param_beats_8], {change: circle_rename})
-defineFigureAlias( "circle three places", "circle", [param_spin_left,  param_three_places, param_beats_8])
-defineFigureAlias( "circle right",        "circle", [param_spin_right, param_four_places, param_beats_8])
-
-defineFigure( "long lines",               [param_beats_8])
-defineFigure( "long lines forward only",  [param_beats_4])
-
-function hey_view_maker(default_beats) {
-    return function (move,pvs) {
-        var beats = pvs[1]
-        var [leader, sbeats] = parameter_strings(move,pvs)
-        if (beats == default_beats)
-            return  words(move+",", leader, "lead")
-        else return words(move+",", leader, "lead,", sbeats)
-    }
-}
-function hey_rename(figure,index) {
-    var pvs = figure.parameter_values
-    var beats = pvs[1]
-    if      (beats ==  8) figure.move = "half hey"
-    else if (beats == 16) figure.move = "hey"
-}
-
-defineFigure( "hey",      [param_subject_role_ladles, param_beats_16], {view: hey_view_maker(16), change: hey_rename})
-defineFigure( "half hey", [param_subject_role_ladles, param_beats_8],  {view: hey_view_maker(8), change: hey_rename})
-defineFigureAlias( "hey halfway", "half hey", [])
-
-function allemande_orbit_view(move,pvs) {
-    var [ who, dir, inner_angle, outer_angle, beats] = pvs
-    var [swho,sdir,sinner_angle,souter_angle,sbeats] = parameter_strings(move, pvs)
-    return words(swho, "allemande", sdir,
-                 sinner_angle, "around",
-                 "while the", dancersComplement(who), "orbit",
-                 dir ? "clockwise" : "counter clockwise",
-                 souter_angle, "around", sbeats)
-}
-
-defineFigure( "allemande orbit", [param_subject_pair, param_left_hand_spin, param_once_and_a_half, param_half_around, param_beats_8], {view: allemande_orbit_view, glue: ["","allemande","","while the rest orbit", "outside for"]})
-
-defineFigure( "promenade across", [param_subject_pairs_partners, param_by_left, param_beats_8])
-
-function custom_view(move,pvs) {
-    // this is a lot like the default, except without the word "custom" at the front.
-    var [custom,beats] = pvs
-    var [scustom,sbeats] = parameter_strings(move, pvs)
-    if (8==beats) return scustom
-    else return words(scustom,sbeats)
-}
-
-defineFigure( "custom", [param_custom_figure, param_beats_8], {view: custom_view})
 
 ;
 

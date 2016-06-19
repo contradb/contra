@@ -35,7 +35,7 @@ think about serial_move which includess 0+ diffeerent moves, and beats are the s
    contra_corners E+! RIGHT/left decomposes to tl;dr
    cross_trails E neighbors/partners right/left, then the opposite
    dixie_twirl E RIGHT/left
-   do_si_do 2+2/2 degrees(360)
+ . do_si_do 2+2/2 degrees(360)
    figure_8 2 LADY1/gent1/lady2/gent2 through first
    gyre 2/2+2 degrees(360)
    gyre_breakdown 2/2+2 decomposes to gyre(360) and swing
@@ -50,7 +50,7 @@ think about serial_move which includess 0+ diffeerent moves, and beats are the s
    right_left_through E RIGHT_SHOULDER/left_shoulder decomposes to pull_by and courtesy_turn
    roll_away_half_sashay 2 AND 2+2 decomposes to roll_away and gents slide left?
    roll_away 2 AND 2+2
-   see_saw alias for do_si_do left_shoulder
+ . see_saw alias for do_si_do left_shoulder
    rory_o_moore 2+2* right/left
    star E left/right wrist_grip/hands_across/both
    star_promenade LEFT_HAND/right_hand
