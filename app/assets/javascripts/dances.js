@@ -315,9 +315,15 @@ param_xshoulder_spin         = {name: "spin",               ui: chooser_right_le
 param_right_shoulder_spin    = {name: "spin", value: true,  ui: chooser_right_left_shoulder}
 param_left_shoulder_spin     = {name: "spin", value: false, ui: chooser_right_left_shoulder}
 
-param_by_side  = {name: "side",               ui: chooser_side} // promenades only, everything else uses a shoulder. Deprecate?
-param_by_left  = {name: "side", value: true,  ui: chooser_side}
-param_by_right = {name: "side", value: false, ui: chooser_side}
+
+function stringParamSide (value) {
+    return value ? "passing left sides" : "passing right sides"
+}
+
+// promenades only, everything else uses a shoulder. Deprecate?
+param_by_side  = {name: "side",               ui: chooser_side, string: stringParamSide} 
+param_by_left  = {name: "side", value: true,  ui: chooser_side, string: stringParamSide}
+param_by_right = {name: "side", value: false, ui: chooser_side, string: stringParamSide}
 
 param_revolutions     = {name: "degrees",             ui: chooser_revolutions}
 param_half_around     = {name: "degrees", value: 180, ui: chooser_revolutions}
@@ -330,6 +336,7 @@ param_subject         = {name: "who", value: "everyone", ui: chooser_dancers}
 param_subject_pair    = {name: "who",                    ui: chooser_pair}  // 1 pair of dancers
 param_subject_pairz   = {name: "who",                    ui: chooser_pairz} // 1-2 pairs of dancers
 param_subject_pairs   = {name: "who",                    ui: chooser_pairs} // 2 pairs of dancers
+param_subject_pairs_partners = {name: "who", value: "partners", ui: chooser_pairs} // 2 pairs of dancers
 param_subject_dancer  = {name: "who",                    ui: chooser_dancer}
 param_subject_role_ladles       = {name: "who", value: "ladles",       ui: chooser_role}
 param_subject_role_gentlespoons = {name: "who", value: "gentlespoons", ui: chooser_role}
@@ -410,7 +417,7 @@ function allemande_orbit_view(move,pvs) {
 
 defineFigure( "allemande orbit", [param_subject_pair, param_left_hand_spin, param_once_and_a_half, param_half_around, param_beats_8], {view: allemande_orbit_view, glue: ["","allemande","","while the rest orbit", "outside for"]})
 
-defineFigure( "promenade across", [param_by_left, param_beats_8])
+defineFigure( "promenade across", [param_subject_pairs_partners, param_by_left, param_beats_8])
 
 defineFigure( "custom", [param_custom_figure, param_beats_8])
 
