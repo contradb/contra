@@ -335,8 +335,9 @@ param_four_places     = {name: "degrees", value: 360, ui: chooser_places}
 param_subject         = {name: "who", value: "everyone", ui: chooser_dancers}
 param_subject_pair    = {name: "who",                    ui: chooser_pair}  // 1 pair of dancers
 param_subject_pairz   = {name: "who",                    ui: chooser_pairz} // 1-2 pairs of dancers
+param_subject_pairz_partners = {name: "who", value: "partners", ui: chooser_pairz}
 param_subject_pairs   = {name: "who",                    ui: chooser_pairs} // 2 pairs of dancers
-param_subject_pairs_partners = {name: "who", value: "partners", ui: chooser_pairs} // 2 pairs of dancers
+param_subject_pairs_partners = {name: "who", value: "partners", ui: chooser_pairs}
 param_subject_dancer  = {name: "who",                    ui: chooser_dancer}
 param_subject_role_ladles       = {name: "who", value: "ladles",       ui: chooser_role}
 param_subject_role_gentlespoons = {name: "who", value: "gentlespoons", ui: chooser_role}
@@ -354,9 +355,32 @@ param_pass_on_right = {name: "pass", value: true, ui: chooser_right_left_shoulde
 
 param_custom_figure = {name: "custom", value: "", ui: chooser_text}
 
-defineFigure( "swing",                           [param_subject_pairz, param_balance_false, param_beats_8])
-defineFigureAlias( "long swing",        "swing", [               null, param_balance_false, param_beats_16])
-defineFigureAlias( "balance and swing", "swing", [               null, param_balance_true,  param_beats_16])
+function swing_change(figure,index) {
+    var pvs = figure.parameter_values
+    var balance = pvs[1]
+    var beats = pvs[2]
+    if (balance)
+        figure.move = "balance and swing"
+    else if (beats < 12) 
+        figure.move = "swing"
+    else
+        figure.move = "long swing"
+}
+function swing_view(move,pvs) {
+    var who     = pvs[0]
+    var balance = pvs[1]
+    var beats   = pvs[2]
+    var standard_beats = ((beats == 16) && (move != "swing")) ||
+                         ((beats == 8) && (move == "swing"))
+    if (standard_beats)
+        return words(who, move)
+    else return words(who, move, "for", beats)
+}
+
+defineFigure( "swing", [param_subject_pairz_partners, param_balance_false, param_beats_8],
+            {change: swing_change, view: swing_view})
+defineFigureAlias( "long swing", "swing", [null, param_balance_false, param_beats_16])
+defineFigureAlias( "balance and swing", "swing", [null, param_balance_true,  param_beats_16] )
 
 defineFigure( "allemande", [param_subject_pairz, param_xhand_spin, param_once_around, param_beats_8])
 defineFigureAlias( "allemande left", "allemande", [null, param_left_hand_spin])
