@@ -419,7 +419,15 @@ defineFigure( "allemande orbit", [param_subject_pair, param_left_hand_spin, para
 
 defineFigure( "promenade across", [param_subject_pairs_partners, param_by_left, param_beats_8])
 
-defineFigure( "custom", [param_custom_figure, param_beats_8])
+function custom_view(move,pvs) {
+    var custom = pvs[0]
+    var beats = pvs[1]
+    if (8==beats) return custom
+    else return words(custom,"for",beats)
+        
+}
+
+defineFigure( "custom", [param_custom_figure, param_beats_8], {view: custom_view})
 
 ;
 
