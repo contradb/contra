@@ -141,6 +141,7 @@ function figure_html_readonly(f) {
     else return "warning "+f.move;
 }
 
+
 // Called if they don't specify a view function in the figure definition:
 function figure_html_readonly_default(move, parameter_values) {
     // todo: clean this up so it's not so obnoxiously ugly
@@ -148,23 +149,23 @@ function figure_html_readonly_default(move, parameter_values) {
     var acc = ""
     var subject_index = find_parameter_names_index("who", ps)
     var balance_index = find_parameter_names_index("bal", ps)
-    if (subject_index >= 0) {
-        string_fn = ps[subject_index].string || String
-        acc += string_fn(parameter_values[subject_index]) + " ";
-    }
-    if (balance_index >= 0) {
-        string_fn = ps[balance_index].string || String
-        acc += string_fn(parameter_values[balance_index]) + " ";
-    }
+    if (subject_index >= 0) 
+        acc += string_for_parameter(subject_index, move, parameter_values) + ' ';
+    if (balance_index >= 0) 
+        acc += string_for_parameter(balance_index, move, parameter_values) + ' ';
     acc += move
     ps.length == parameter_values.length || throw_up("parameter type mismatch. "+ps.length+" formals and "+parameter_values.length+" values");
     for (var i=0; i < parameter_values.length; i++) {
-        if ((i != subject_index) && i != balance_index) {
-            string_fn = ps[i].string || String
-            acc += " " + string_fn(parameter_values[i]);
-        }
+        if ((i != subject_index) && (i != balance_index)) 
+            acc += ' ' + string_for_parameter(i, move, parameter_values) 
     }
     return acc;
+}
+
+function string_for_parameter(index, move, parameter_values) {
+    var formal_parameters = parameters(move)
+    var string_fn = formal_parameters[index].string || String
+    return string_fn(parameter_values[index]);
 }
 
 function find_parameter_names_index(name, parameters) {
@@ -378,7 +379,7 @@ function swing_view(move,pvs) {
 }
 
 defineFigure( "swing", [param_subject_pairz_partners, param_balance_false, param_beats_8],
-            {change: swing_change, view: swing_view})
+              {change: swing_change, view: swing_view})
 defineFigureAlias( "long swing", "swing", [null, param_balance_false, param_beats_16])
 defineFigureAlias( "balance and swing", "swing", [null, param_balance_true,  param_beats_16] )
 
