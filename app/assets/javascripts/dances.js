@@ -441,8 +441,15 @@ defineFigure( "custom", [param_custom_figure, param_beats_8], {view: custom_view
 // DO SI DO (and see saw)                     //
 ////////////////////////////////////////////////
 
-defineFigure( "do si do", [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8])
-defineFigureAlias( "see saw", "do si do", [null, param_left_shoulder_spin])
+function do_si_do_change(figure,index) {
+    var pvs = figure.parameter_values
+    var shoulder = pvs[1]
+    figure.move = shoulder ? "do si do" : "see saw"
+}
+
+
+defineFigure( "do si do", [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8], {change: do_si_do_change})
+defineFigureAlias( "see saw", "do si do", [null, param_left_shoulder_spin], {change: do_si_do_change})
 
 ////////////////////////////////////////////////
 // GYRE (aka circle by the eyes)              //
