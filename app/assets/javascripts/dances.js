@@ -413,6 +413,25 @@ defineFigure( "allemande", [param_subject_pairz, param_xhand_spin, param_once_ar
 // defineFigureAlias( "allemande right", "allemande", [null, param_right_hand_spin])
 
 ////////////////////////////////////////////////
+// BALANCE                                    //
+////////////////////////////////////////////////
+
+function balance_view(move,pvs) {
+    var [who,beats] = pvs
+    var [swho,sbeats] = parameter_strings(move, pvs)
+    if (4==beats) return words(swho,move)
+    else return words(swho,move,sbeats)
+}
+
+defineFigure( "balance", [param_subject_pairz, param_beats_4], {view: balance_view})
+
+////////////////////////////////////////////////
+// BALANCE THE RING (see also: petronella)    //
+////////////////////////////////////////////////
+
+defineFigure( "balance the ring", [param_beats_4])
+
+////////////////////////////////////////////////
 // CIRCLE                                     //
 ////////////////////////////////////////////////
 
@@ -487,6 +506,14 @@ defineFigureAlias( "hey halfway", "half hey", [])
 
 defineFigure( "long lines",               [param_beats_8])
 defineFigure( "long lines forward only",  [param_beats_4])
+
+////////////////////////////////////////////////
+// PETRONELLA                                 //
+////////////////////////////////////////////////
+
+defineFigure( "petronella", [param_balance_true, param_beats_8])
+// supported on request: turning to the left, turning more than one
+// place, double, triple, etc. Maybe call that move 'petrozilla'?
 
 ////////////////////////////////////////////////
 // PROMENADE                                  //
