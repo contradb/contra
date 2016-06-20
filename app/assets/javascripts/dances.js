@@ -251,15 +251,24 @@ function parameters(fig_str){
     return [];
 }
 
-
-var defined_choosers = {}
-
-// Choosers are UI elements without semantic preconceptions, that work on dance elements.
-// So a figure could have two chooser_booleans (obvious)
+//        ____ _   _  ___   ___  ____  _____ ____  
+//       / ___| | | |/ _ \ / _ \/ ___|| ____|  _ \ 
+//      | |   | |_| | | | | | | \___ \|  _| | |_) |
+//      | |___|  _  | |_| | |_| |___) | |___|  _ < 
+//       \____|_| |_|\___/ \___/|____/|_____|_| \_\
+//
+//
+// Choosers are UI elements without semantic ties to other choosers,
+// who are given semantic ties by figures.
+// So a figure could have two chooser_booleans 
 // or two chooser_dancers (e.g. GENTS roll away the NEIGHBORS)
 // Choosers are referenced by global variables, e.g. chooser_boolean evaluates to a chooser object. 
 // Choosers can be compared with == in this file and in angular controller scopey thing.
 // They are basically a big enum with all the functionality in a giant case statement in dances/_form.erb
+
+var defined_choosers = {}
+
+
 function defineChooser(name){
     "string" == typeof name || throw_up("first argument isn't a string")
     "chooser_" == name.slice(0,8) || throw_up("first argument doesn't begin with 'chooser_'")
@@ -287,7 +296,14 @@ defineChooser("chooser_dancer")   // one dancer, e.g. ladle 1
 defineChooser("chooser_role")     // ladles or gentlespoons
 defineChooser("chooser_hetero")   // partners or neighbors or shadows
 defineChooser("chooser_text")
+defineChooser("chooser_star_grip")
 
+//     ____   _    ____      _    __  __ 
+//    |  _ \ / \  |  _ \    / \  |  \/  |
+//    | |_) / _ \ | |_) |  / _ \ | |\/| |
+//    |  __/ ___ \|  _ <  / ___ \| |  | |
+//    |_| /_/   \_\_| \_\/_/   \_\_|  |_|
+//
 // Params have semantic value specific to each figure.
 // Though some patterns have emerged. Patterns like:
 // figures have a subject telling who's acted on by the figure. 
@@ -377,6 +393,13 @@ param_pass_on_left = {name: "pass", value: false, ui: chooser_right_left_shoulde
 param_pass_on_right = {name: "pass", value: true, ui: chooser_right_left_shoulder}
 
 param_custom_figure = {name: "custom", value: "", ui: chooser_text}
+
+function stringParamWristGrip (value,move) {
+    // wrist grip is so defaulty that it's not even worth saying words. 
+    return value ? "" : "(hands across)"
+}
+
+param_star_grip = {name: "star grip", value: "wrist grip", ui: chooser_star_grip, string: stringParamWristGrip}
 
 
 //       _____ ___ ____ _   _ ____  _____ ____  
@@ -520,6 +543,23 @@ defineFigure( "petronella", [param_balance_true, param_beats_8])
 ////////////////////////////////////////////////
 
 defineFigure( "promenade across", [param_subject_pairs_partners, param_by_left, param_beats_8])
+
+////////////////////////////////////////////////
+// STAR                                       //
+////////////////////////////////////////////////
+
+// function star_view(move,pvs) {
+//     var [ right_hand,  wrist_grip,  places,  beats] = pvs
+//     var [sright_hand, swrist_grip, splaces, sbeats] = parameter_strings(move, pvs)
+//     return words(swho, "allemande", sdir,
+//                  sinner_angle, "around",
+//                  "while the", dancersComplement(who), "orbit",
+//                  dir ? "clockwise" : "counter clockwise",
+//                  souter_angle, "around", sbeats)
+// }
+
+
+defineFigure( "star", [param_xhand_spin, param_star_grip, param_four_places, param_beats_8])
 
 ////////////////////////////////////////////////
 // SWING (the fun part)                       //

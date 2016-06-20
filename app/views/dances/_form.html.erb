@@ -3,8 +3,7 @@
   of space, then labels take the left column. If space is tight, they
   take the two leftmost columns.  %>
 
-  <% debug_figure_json = true %>
-
+  <% debug_figure_json = false %>
 
   <div class="container"  ng-app="contra">
     <%= form_for(@dance) do |f| %>
@@ -81,11 +80,13 @@
     <div class="col-xs-12 col-md-6"> <%# edit figure %>
       <div ng-repeat="figure in editable_figures(figures)">
         <span>{{$index+1}}</span>
+        <br />
         <select class="move_edit" ng-model="figure.move"
                 ng-options="m for m in moves()"
                 ng-change="user_changed_move(figure)">
         </select>
         <span ng-repeat="p in parameters(figure.move)">
+          <br />
           <span ng-init="set_if_unset(figure.parameter_values, $index, p.value)">
             <!-- ng-init="$index in figure.parameter_values || p.value" -->
             {{parameter_glue(figure.move, $index)}}
@@ -96,12 +97,14 @@
                        ng-change="user_changed_parameter(figure,$index)"/></label>
             </span>
             <span ng-if="p.ui == chooser_beats">
-              <label>{{p.name}}
+              <label>
                 <select
                    class="beat_edit" ng-model="figure.parameter_values[$index]" 
                    ng-options="b for b in [8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]"
                    ng-change="user_changed_parameter(figure,$index)">
-              </select></label>
+                </select>
+                {{p.name}}
+              </label>
             </span>
 
             <span ng-if="p.ui == chooser_spin">
@@ -225,8 +228,11 @@
               <input type="text" ng-model="figure.parameter_values[$index]"
                      ng-change="user_changed_parameter(figure,$index)"/>
             </span>
+            <span ng-if="p.ui == chooser_star_grip">
+              <label>wrist grip <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)"/></label> /
+              <label>hands across <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)" /></label>
+            </span>
 
-            <%# <span style="font-size: 0.4em; color: #777">{{p.ui}}</span> %>
           </span>
         </span>
       </div>
