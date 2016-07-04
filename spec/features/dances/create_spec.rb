@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'spec_helper'
 require 'login_helper'
 require 'support/scrutinize_layout'
 
