@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'v8'
+# require 'v8'
 
 module DancesHelper
 
@@ -76,7 +76,7 @@ module DancesHelper
 
   def jsctx                     # javascript context
     return @context if @context
-    @context = V8::Context.new
+    @context = MiniRacer::Context.new
     %w(util chooser param figure dance).each do |file|
       @context.load(Rails.root.join('app','assets','javascripts','libfigure',"#{file}.js"))
     end
