@@ -10,11 +10,18 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require angular
+//  LIBRARIES
 //= require jquery
-//= require bootstrap-sprockets
 //= require jquery_ujs
-//= require_tree .
-
 //= require jquery-ui/autocomplete
+//= require bootstrap-sprockets
+//= require angular
 //= require angucomplete-alt
+//  LOCAL FILES
+//= require libfigure/util
+//= require libfigure/chooser
+//= require libfigure/param
+//= require libfigure/figure
+//= require libfigure/dance
+//= require dances
+//= require_tree .

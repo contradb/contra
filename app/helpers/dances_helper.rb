@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require 'v8'
+
 module DancesHelper
 
   # stuck here because I need a UTF-8 file to stick it in. Sorry. 
@@ -72,10 +74,18 @@ module DancesHelper
 
 
 
+  def jsctx                     # javascript context
+    return @context if @context
+    @context = V8::Context.new
+    %w(util chooser param figure dance).each do |file|
+      @context.load(Rails.root.join('app','assets','javascripts','libfigure',"#{file}.js"))
+    end
+    @context
+  end
 
 
   def figure_txt(figure, terse: false) # takes a hash, returns a string
-    "can't find figure_txt anymore in Ruby! :o"
+    "figure = #{figure.to_s}, words() = " + jsctx.eval('words("one","two")').to_s
   end
 
   # input: an array of possibly non-html-safe strings
