@@ -12,6 +12,9 @@ RSpec.describe "dances/show", type: :view do
       :start_type => "Complicated Formation",
       :choreographer => FactoryGirl.build_stubbed(:choreographer, name: "Becky Hill"),
       :user => FactoryGirl.build_stubbed(:user),
+      :figures_json => '[{"parameter_values":["partners",true,16],"move":"balance and swing"}]',
+
+=begin old figures encoding
       :figures_json => '[{"who":"neighbor","move":"box_the_gnat","beats":8,"balance":true}, 
                          {"who":"partner","move":"swat_the_flea","beats":8,"balance":true}, 
                          {"who":"neighbor","move":"swing","beats":16,"balance":true}, 
@@ -19,6 +22,7 @@ RSpec.describe "dances/show", type: :view do
                          {"who":"partner","move":"swing","beats":8}, 
                          {"who":"everybody","move":"right_left_through","beats":8, "notes":"**markdown** by https://github.com/vmg/redcarpet"}, 
                          {"who":"ladles","move":"chain","beats":8,"notes":"look for new"}]',
+=end
       :notes => "My Note Text www.yahoo.com blah blah **bold** blah"
     ))
   end
@@ -27,7 +31,7 @@ RSpec.describe "dances/show", type: :view do
   # content but html renders any number of spaces as one space.
   def regexpify(s) Regexp.new Regexp.escape(s).gsub(/ +/,' +') end
 
-  it "renders attributes" do
+  xit "renders attributes (old figures encoding)" do
     render
     expect(rendered).to match(/Clever Pun/)
     expect(rendered).to match(/Complicated Formation/)
@@ -41,6 +45,17 @@ RSpec.describe "dances/show", type: :view do
     expect(rendered).to match(regexpify 'right_left_through')
     expect(rendered).to match(regexpify 'ladles chain')
     expect(rendered).to match(regexpify 'look for new')
+    # notes
+    expect(rendered).to match(/My Note Text/)
+  end
+
+  it "renders attributes" do
+    render
+    expect(rendered).to match(/Clever Pun/)
+    expect(rendered).to match(/Complicated Formation/)
+    expect(rendered).to match(/Becky Hill/)
+    # figures
+    expect(rendered).to match(regexpify 'partners balance and swing')
     # notes
     expect(rendered).to match(/My Note Text/)
   end

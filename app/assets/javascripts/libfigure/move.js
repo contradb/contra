@@ -1,5 +1,12 @@
-
-
+//       __  __  _____     _______ 
+//      |  \/  |/ _ \ \   / / ____|
+//      | |\/| | | | \ \ / /|  _|  
+//      | |  | | |_| |\ V / | |___ 
+//      |_|  |_|\___/  \_/  |_____|
+//                                 
+//
+// Properties of moves (strings).
+// Few dependencies to the rest of the system.
 
 var moveCaresAboutRotationsHash =
     {"do si do":  true

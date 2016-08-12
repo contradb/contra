@@ -19,6 +19,7 @@
 //= require angucomplete-alt
 //  LOCAL FILES
 //= require libfigure/util
+//= require libfigure/move
 //= require libfigure/chooser
 //= require libfigure/param
 //= require libfigure/figure

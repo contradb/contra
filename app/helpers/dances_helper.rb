@@ -77,7 +77,7 @@ module DancesHelper
   def jsctx                     # javascript context
     return @context if @context
     @context = MiniRacer::Context.new
-    %w(util chooser param figure dance).each do |file|
+    %w(util move chooser param figure dance).each do |file|
       @context.load(Rails.root.join('app','assets','javascripts','libfigure',"#{file}.js"))
     end
     @context
@@ -85,7 +85,7 @@ module DancesHelper
 
 
   def figure_txt(figure, terse: false) # takes a hash, returns a string
-    "figure = #{figure.to_s}, words() = " + jsctx.eval('words("one","two")').to_s
+    jsctx.eval("figure_html_readonly(#{figure.to_json})")
   end
 
   # input: an array of possibly non-html-safe strings

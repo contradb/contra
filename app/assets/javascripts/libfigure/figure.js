@@ -3,9 +3,9 @@ function figure_html_readonly(f) {
     var fig_def = defined_events[f.move];
     if (fig_def) {
         var func = fig_def.props.view || figure_html_readonly_default;
-        return func(f.move, f.parameter_values)
+        return func(f.move, f.parameter_values);
     }
-    else return "warning "+f.move;
+    else return "warning "+ (f.move || f);
 }
 
 

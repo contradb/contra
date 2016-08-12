@@ -11,5 +11,9 @@ require 'rails_helper'
 #   end
 # end
 RSpec.describe DancesHelper, type: :helper do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it '#figure_txt works' do
+    ruby_figure_hash = {'move' => 'balance and swing', 
+                        'parameter_values' => ['partners',true,16]}
+    expect(figure_txt(ruby_figure_hash)).to eq('partners balance and swing')
+  end
 end
