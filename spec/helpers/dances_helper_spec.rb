@@ -16,4 +16,21 @@ RSpec.describe DancesHelper, type: :helper do
                         'parameter_values' => ['partners',true,16]}
     expect(figure_txt(ruby_figure_hash)).to eq('partners balance and swing')
   end
+  context 'star' do
+    it 'renders' do
+      expect(figure_txt_for('star', false, true, 360, 8)).to match(whitespice 'star by the left 4 places')
+    end
+    it 'hands across renders' do
+      expect(figure_txt_for('star', false, false, 360, 8)).to match(whitespice 'star by the left hands across 4 places')
+    end
+  end
+end
+
+def figure_txt_for(move, *parameter_values)
+  figure_txt({'move' => move, 'parameter_values' => parameter_values})
+end
+
+# replace every space with one or more whitespace characters
+def whitespice(string)
+  /#{string.gsub(' ','\s+')}/
 end

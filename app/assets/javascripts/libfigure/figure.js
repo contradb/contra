@@ -256,7 +256,6 @@ function star_view(move,pvs) {
     return words("star", sright_hand, swrist_grip, splaces, sbeats)
 }
 
-
 defineFigure( "star", [param_xhand_spin, param_star_grip, param_four_places, param_beats_8], {view: star_view})
 
 ////////////////////////////////////////////////
