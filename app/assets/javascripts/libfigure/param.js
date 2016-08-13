@@ -96,7 +96,7 @@ param_custom_figure = {name: "custom", value: "", ui: chooser_text}
 
 function stringParamWristGrip (value,move) {
     // wrist grip is so defaulty that it's not even worth saying words. 
-    return value ? "" : "(hands across)"
+    return value ? "" : "hands across"
 }
 
 param_star_grip = {name: "star grip", value: "wrist grip", ui: chooser_star_grip, string: stringParamWristGrip}

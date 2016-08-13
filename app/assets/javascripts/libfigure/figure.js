@@ -250,18 +250,14 @@ defineFigure( "promenade across", [param_subject_pairs_partners, param_by_left, 
 // STAR                                       //
 ////////////////////////////////////////////////
 
-// function star_view(move,pvs) {
-//     var [ right_hand,  wrist_grip,  places,  beats] = pvs
-//     var [sright_hand, swrist_grip, splaces, sbeats] = parameter_strings(move, pvs)
-//     return words(swho, "allemande", sdir,
-//                  sinner_angle, "around",
-//                  "while the", dancersComplement(who), "orbit",
-//                  dir ? "clockwise" : "counter clockwise",
-//                  souter_angle, "around", sbeats)
-// }
+function star_view(move,pvs) {
+    var [ right_hand,  wrist_grip,  places,  beats] = pvs
+    var [sright_hand, swrist_grip, splaces, sbeats] = parameter_strings(move, pvs)
+    return words("star", sright_hand, swrist_grip, splaces, sbeats)
+}
 
 
-defineFigure( "star", [param_xhand_spin, param_star_grip, param_four_places, param_beats_8])
+defineFigure( "star", [param_xhand_spin, param_star_grip, param_four_places, param_beats_8], {view: star_view})
 
 ////////////////////////////////////////////////
 // SWING (the fun part)                       //
