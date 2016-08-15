@@ -157,6 +157,34 @@ defineFigure( "balance", [param_subject_pairz, param_beats_4], {view: balance_vi
 defineFigure( "balance the ring", [param_beats_4])
 
 ////////////////////////////////////////////////
+// BOX THE GNAT                               //
+////////////////////////////////////////////////
+
+
+function box_the_gnat_change(figure,index) {
+    var pvs = figure.parameter_values
+    var balance = pvs[1]
+    var beats = pvs[2]
+    // this is a little janky because you can't select balance&box for 4, or box for 8. So be it. 
+    if (balance && beats == 4)
+        pvs[2] = 8
+    else if (!balance || beats == 8)
+        pvs[2] = 4
+}
+
+function box_the_gnat_view(move,pvs) {
+    var [who,balance,beats] = pvs
+    var [swho,sbalance,sbeats] = parameter_strings(move, pvs)
+    var standard_beats = ((beats == 8) && balance) || ((beats == 4) && !balance);
+    if (standard_beats)
+        return words(swho, sbalance, move)
+    else 
+        return words(swho, sbalance, move, 'for', beats)
+}
+
+defineFigure( "box the gnat", [param_subject_pairz, param_balance_false, param_beats_4], {change: box_the_gnat_change})
+
+////////////////////////////////////////////////
 // CHAIN                                      //
 ////////////////////////////////////////////////
 
@@ -251,6 +279,12 @@ defineFigure( "petronella", [param_balance_true, param_beats_8])
 ////////////////////////////////////////////////
 
 defineFigure( "promenade across", [param_subject_pairs_partners, param_by_left, param_beats_8])
+
+////////////////////////////////////////////////
+// RIGHT LEFT THROUGH                         //
+////////////////////////////////////////////////
+
+defineFigure( "right left through", [param_beats_8])
 
 ////////////////////////////////////////////////
 // STAR                                       //

@@ -11,22 +11,20 @@ require 'rails_helper'
 #   end
 # end
 RSpec.describe DancesHelper, type: :helper do
-  it '#figure_txt works' do
-    ruby_figure_hash = {'move' => 'balance and swing', 
-                        'parameter_values' => ['partners',true,16]}
-    expect(figure_txt(ruby_figure_hash)).to eq('partners balance and swing')
-  end
-  context 'star' do
-    it 'renders' do
-      expect(figure_txt_for('star', false, true, 360, 8)).to match(whitespice 'star by the left 4 places')
+  it 'figures render' do
+    [['partners balance and swing','balance and swing','partners',true,16],
+     ['star by the left hands across 4 places','star', false, false, 360, 8],
+     ['star by the left 4 places',             'star', false, true, 360, 8],
+     ['ladles chain', 'chain', 'ladles', 8],
+     ['right left through', 'right left through', 8],
+     ['partners balance & box the gnat', 'box the gnat', 'partners', true, 8],
+     ['neighbors box the gnat', 'box the gnat', 'neighbors', false, 4]
+    ].each do |arr|
+      render, move, *pvalues = arr
+      expect(figure_txt_for(move,*pvalues)).to match(whitespice render)
     end
-    it 'hands across renders' do
-      expect(figure_txt_for('star', false, false, 360, 8)).to match(whitespice 'star by the left hands across 4 places')
-    end
   end
-  it 'ladies chain renders' do
-    expect(figure_txt_for('chain', 'ladles', 8)).to match(whitespice 'ladles chain')
-  end
+
 end
 
 def figure_txt_for(move, *parameter_values)

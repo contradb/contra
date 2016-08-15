@@ -46,7 +46,7 @@ think about serial_move which includess 0+ diffeerent moves, and beats are the s
  x petronella E RIGHT/left (balance sold seperately) (additional twirl for progression?)
  x promenade_across 2+2 LEFT_SHOULDER/right_shoulder
  e pull_by 2/2+2 RIGHT/left
- e right_left_through E RIGHT_SHOULDER/left_shoulder decomposes to pull_by and courtesy_turn
+ x right_left_through E RIGHT_SHOULDER/left_shoulder decomposes to pull_by and courtesy_turn
  e roll_away_half_sashay 2 AND 2+2 decomposes to roll_away and gents slide left?
  e roll_away 2 AND 2+2
  x see_saw alias for do_si_do left_shoulder
