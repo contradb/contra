@@ -27,7 +27,7 @@ think about serial_move which includess 0+ diffeerent moves, and beats are the s
  x box_the_gnat 2+2/2 RIGHT/left
    butterfly_whirl 2+2/2 CCW/clockwise degrees(180)
  e california_twirl 2+2/2 LADIES_UNDER/gents_under
- E chain to 2+2, decomposes to chain_discourteouss and courtesy_turn
+ x chain to 2+2, decomposes to chain_discourteouss and courtesy_turn
  e chain_discourteous LADIES/gents RIGHT_HAND/left_hand
  e courtesy_turn 2+2 degrees(-180)
  x circle E degrees(+270)
@@ -51,7 +51,7 @@ think about serial_move which includess 0+ diffeerent moves, and beats are the s
  e roll_away 2 AND 2+2
  x see_saw alias for do_si_do left_shoulder
  e rory_o_moore 2+2*/E right/left
->> star E left/right wrist_grip/hands_across/both
+ x star E left/right wrist_grip/hands_across/both
  e star_promenade LEFT_HAND/right_hand
  e star_promenade_with_butterfly_whirl LEFT_HAND/right_hand decomposes in the obvious way
  e swat_the_flea alias for box_the_gnat left

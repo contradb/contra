@@ -157,6 +157,12 @@ defineFigure( "balance", [param_subject_pairz, param_beats_4], {view: balance_vi
 defineFigure( "balance the ring", [param_beats_4])
 
 ////////////////////////////////////////////////
+// CHAIN                                      //
+////////////////////////////////////////////////
+
+defineFigure( "chain", [param_subject_role_ladles, param_beats_8])
+
+////////////////////////////////////////////////
 // CIRCLE                                     //
 ////////////////////////////////////////////////
 

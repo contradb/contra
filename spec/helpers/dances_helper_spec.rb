@@ -24,6 +24,9 @@ RSpec.describe DancesHelper, type: :helper do
       expect(figure_txt_for('star', false, false, 360, 8)).to match(whitespice 'star by the left hands across 4 places')
     end
   end
+  it 'ladies chain renders' do
+    expect(figure_txt_for('chain', 'ladles', 8)).to match(whitespice 'ladles chain')
+  end
 end
 
 def figure_txt_for(move, *parameter_values)
