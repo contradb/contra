@@ -163,18 +163,18 @@ defineFigure( "balance the ring", [param_beats_4])
 
 function box_the_gnat_change(figure,index) {
     var pvs = figure.parameter_values
-    var balance = pvs[1]
-    var beats = pvs[2]
-    // this is a little janky because you can't select balance&box for 4, or box for 8. So be it. 
+    var [who, balance, right_hand, beats] = pvs
+    figure.move = right_hand ? 'box the gnat' : 'swat the flea'
+    // jankily modify beats to match whether balance checkbox is checked
     if (balance && beats == 4)
-        pvs[2] = 8
+        pvs[3] = 8
     else if (!balance || beats == 8)
-        pvs[2] = 4
+        pvs[3] = 4
 }
 
 function box_the_gnat_view(move,pvs) {
-    var [who,balance,beats] = pvs
-    var [swho,sbalance,sbeats] = parameter_strings(move, pvs)
+    var [who,balance,hand,beats] = pvs
+    var [swho,sbalance,shand,sbeats] = parameter_strings(move, pvs)
     var standard_beats = ((beats == 8) && balance) || ((beats == 4) && !balance);
     if (standard_beats)
         return words(swho, sbalance, move)
@@ -182,8 +182,8 @@ function box_the_gnat_view(move,pvs) {
         return words(swho, sbalance, move, 'for', beats)
 }
 
-defineFigure( "box the gnat", [param_subject_pairz, param_balance_false, param_beats_4], {change: box_the_gnat_change})
-
+defineFigure( "box the gnat", [param_subject_pairz, param_balance_false, param_right_hand_spin, param_beats_4], {change: box_the_gnat_change, view: box_the_gnat_view})
+defineFigureAlias( "swat the flea", "box the gnat", [null, null, param_left_hand_spin, null], {change: box_the_gnat_change, view: box_the_gnat_view})
 ////////////////////////////////////////////////
 // CHAIN                                      //
 ////////////////////////////////////////////////

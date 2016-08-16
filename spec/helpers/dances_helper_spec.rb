@@ -1,15 +1,5 @@
 require 'rails_helper'
 
-# Specs in this file have access to a helper object that includes
-# the DancesHelper. For example:
-#
-# describe DancesHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       expect(helper.concat_strings("this","that")).to eq("this that")
-#     end
-#   end
-# end
 RSpec.describe DancesHelper, type: :helper do
   it 'figures render' do
     [['partners balance and swing','balance and swing','partners',true,16],
@@ -17,14 +7,14 @@ RSpec.describe DancesHelper, type: :helper do
      ['star by the left 4 places',             'star', false, true, 360, 8],
      ['ladles chain', 'chain', 'ladles', 8],
      ['right left through', 'right left through', 8],
-     ['partners balance & box the gnat', 'box the gnat', 'partners', true, 8],
-     ['neighbors box the gnat', 'box the gnat', 'neighbors', false, 4]
+     ['partners balance & box the gnat',  'box the gnat',  'partners',  true,  true,  8],
+     ['neighbors box the gnat',           'box the gnat',  'neighbors', false, true,  4],
+     ['partners balance & swat the flea', 'swat the flea', 'partners',  true,  false, 8]
     ].each do |arr|
       render, move, *pvalues = arr
       expect(figure_txt_for(move,*pvalues)).to match(whitespice render)
     end
   end
-
 end
 
 def figure_txt_for(move, *parameter_values)
