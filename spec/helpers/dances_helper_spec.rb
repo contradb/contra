@@ -7,6 +7,7 @@ RSpec.describe DancesHelper, type: :helper do
      ['star by the left 4 places',             'star', false, true, 360, 8],
      ['ladles chain', 'chain', 'ladles', 8],
      ['right left through', 'right left through', 8],
+     ['circle to the left 3 places', 'circle three places', true, 270, 8],
      ['partners balance & box the gnat',  'box the gnat',  'partners',  true,  true,  8],
      ['neighbors box the gnat',           'box the gnat',  'neighbors', false, true,  4],
      ['partners balance & swat the flea', 'swat the flea', 'partners',  true,  false, 8]
