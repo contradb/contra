@@ -245,9 +245,14 @@ function do_si_do_change(figure,index) {
     figure.move = shoulder ? "do si do" : "see saw"
 }
 
+function do_si_do_view(move, pvs) {
+  var [who,   shoulder,  rots,  beats] = pvs
+  var [swho, sshoulder, srots, sbeats] = parameter_strings(move, pvs)
+  return words(swho, move, srots)
+}
 
-defineFigure( "do si do", [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8], {change: do_si_do_change})
-defineFigureAlias( "see saw", "do si do", [null, param_left_shoulder_spin], {change: do_si_do_change})
+defineFigure( "do si do", [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8], {change: do_si_do_change, view: do_si_do_view})
+defineFigureAlias( "see saw", "do si do", [null, param_left_shoulder_spin])
 
 ////////////////////////////////////////////////
 // GYRE (aka circle by the eyes)              //
@@ -342,7 +347,7 @@ function star_view(move,pvs) {
 defineFigure( "star", [param_xhand_spin, param_star_grip, param_four_places, param_beats_8], {view: star_view})
 
 ////////////////////////////////////////////////
-// SWING (the fun part)                       //
+// SWING                                      //
 ////////////////////////////////////////////////
 
 function swing_change(figure,index) {
@@ -357,12 +362,12 @@ function swing_change(figure,index) {
         figure.move = "long swing"
 }
 function swing_view(move,pvs) {
-    var beats   = pvs[2]
-    var swho = parameter_strings(move,pvs)[0]
-    var standard_beats = ((beats == 16) && (move != "swing")) ||
-                         ((beats == 8) && (move == "swing"))
-    if (standard_beats) return words(swho, move)
-    else return words(swho, move, "for", beats) // not 'sbeats', because 'for 8' needs to be said explicitly sometimes
+  var [who,balance,beats] = pvs
+  var [swho,sbalance,sbeats] = parameter_strings(move, pvs)
+  var standard_beats = (balance || move != 'swing') ? (beats == 16) : (beats == 8)
+  var move2 = move == 'long swing' ? move : 'swing'
+  if (standard_beats) return words(swho, sbalance, move2)
+  else return words(swho, sbalance, move2, 'for', beats) // not 'sbeats', because 'for 8' needs to be said explicitly sometimes
 }
 
 defineFigure( "swing", [param_subject_pairz_partners, param_balance_false, param_beats_8],
