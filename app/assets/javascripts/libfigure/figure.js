@@ -201,9 +201,17 @@ function circle_rename(figure,index) {
         figure.move = "circle three places"
 }
 
-defineFigure( "circle", [param_spin_left,  param_four_places, param_beats_8], {change: circle_rename})
+function circle_view(move, pvs) {
+  return figure_html_readonly_default(move=="circle three places" ? "circle" : move, pvs);
+}
+
+defineFigure( "circle", [param_spin_left,  param_four_places, param_beats_8], {change: circle_rename, view: circle_view})
 defineFigureAlias( "circle three places", "circle", [param_spin_left,  param_three_places, param_beats_8])
 defineFigureAlias( "circle right",        "circle", [param_spin_right, param_four_places, param_beats_8])
+
+////////////////////////////////////////////////
+// CUSTOM                                     //
+////////////////////////////////////////////////
 
 function custom_view(move,pvs) {
     // this is a lot like the default, except without the word "custom" at the front.
@@ -267,6 +275,12 @@ defineFigure( "long lines",               [param_beats_8])
 defineFigure( "long lines forward only",  [param_beats_4])
 
 ////////////////////////////////////////////////
+// PASS THROUGH -- progression                //
+////////////////////////////////////////////////
+
+defineFigure( "pass through", [param_beats_2], {progression: true})
+
+////////////////////////////////////////////////
 // PETRONELLA                                 //
 ////////////////////////////////////////////////
 
@@ -281,10 +295,27 @@ defineFigure( "petronella", [param_balance_true, param_beats_8])
 defineFigure( "promenade across", [param_subject_pairs_partners, param_by_left, param_beats_8])
 
 ////////////////////////////////////////////////
+// PROGRESS -- progression                    //
+////////////////////////////////////////////////
+
+defineFigure( "progress", [param_beats_0], {progression: true})
+
+////////////////////////////////////////////////
 // RIGHT LEFT THROUGH                         //
 ////////////////////////////////////////////////
 
 defineFigure( "right left through", [param_beats_8])
+
+////////////////////////////////////////////////
+// SLIDE -- progression                       //
+////////////////////////////////////////////////
+
+function slide_view(move, pvs) {
+  var [direction,  beats] = pvs
+  return words(move, direction ? "left" : "right") + ((beats == 2) ? "" : ("for "+beats));
+}
+
+defineFigure( "slide", [param_spin_left, param_beats_2], {progression: true, view: slide_view})
 
 ////////////////////////////////////////////////
 // STAR                                       //

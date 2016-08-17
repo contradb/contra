@@ -43,12 +43,15 @@ think about serial_move which includess 0+ diffeerent moves, and beats are the s
  x hey E LADIES_lead/gents_lead
  x long_lines E forward(4beats)/forward_and_back(8beats)
  e mad_robin E gents_in/ladies_in
+ x pass through
  x petronella E RIGHT/left (balance sold seperately) (additional twirl for progression?)
+ x progress
  x promenade_across 2+2 LEFT_SHOULDER/right_shoulder
  e pull_by 2/2+2 RIGHT/left
  x right_left_through E RIGHT_SHOULDER/left_shoulder decomposes to pull_by and courtesy_turn
  e roll_away_half_sashay 2 AND 2+2 decomposes to roll_away and gents slide left?
  e roll_away 2 AND 2+2
+ x slide
  x see_saw alias for do_si_do left_shoulder
  e rory_o_moore 2+2*/E right/left
  x star E left/right wrist_grip/hands_across/both
