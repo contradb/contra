@@ -252,13 +252,20 @@ function do_si_do_view(move, pvs) {
 }
 
 defineFigure( "do si do", [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8], {change: do_si_do_change, view: do_si_do_view})
+
 defineFigureAlias( "see saw", "do si do", [null, param_left_shoulder_spin])
 
 ////////////////////////////////////////////////
 // GYRE (aka circle by the eyes)              //
 ////////////////////////////////////////////////
 
-defineFigure( "gyre", [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8])
+function gyre_view(move, pvs) {
+  var [who,   shoulder,  rots,  beats] = pvs
+  var [swho, sshoulder, srots, sbeats] = parameter_strings(move, pvs)
+  return words(swho, move, shoulder ? '' : sshoulder, srots, sbeats)
+}
+
+defineFigure( "gyre", [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8], {view: gyre_view})
 
 ////////////////////////////////////////////////
 // HEY                                        //

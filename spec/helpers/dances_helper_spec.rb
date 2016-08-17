@@ -43,13 +43,13 @@ RSpec.describe DancesHelper, type: :helper do
    ['pass through to new neighbors', 'pass through', 2],
    ['pass through to new neighbors for 8', 'pass through', 8],
    ['long lines forward only', 'long lines forward only', 4],
-   ['shadows gyre 1½', 'gyre', 'shadows', true, 540, 8],
    ['balance the ring', 'balance the ring', 4],
    ['balance the ring for 8', 'balance the ring', 8], # debatable
    ['ladles chain', 'chain', 'ladles', 8],
    ['right left through', 'right left through', 8],
    ['partners balance & box the gnat',  'box the gnat',  'partners',  true,  true,  8],
    ['ladles do si do once', 'do si do', 'ladles', true, 360, 8],
+   ['shadows gyre 1½', 'gyre', 'shadows', true, 540, 8],
    ['neighbors box the gnat',           'box the gnat',  'neighbors', false, true,  4]
   ].each do |arr|
     render, move, *pvalues = arr
