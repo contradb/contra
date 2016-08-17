@@ -17,20 +17,26 @@ function figure_html_readonly_default(move, parameter_values) {
     var acc = ""
     var subject_index = find_parameter_names_index("who", ps)
     var balance_index = find_parameter_names_index("bal", ps)
+    var beats_index = parameter_values.length - 1;
     if (subject_index >= 0) acc += pstrings[subject_index] + ' ';
     if (balance_index >= 0) acc += pstrings[balance_index] + ' ';
     acc += move
     ps.length == parameter_values.length || throw_up("parameter type mismatch. "+ps.length+" formals and "+parameter_values.length+" values");
     for (var i=0; i < parameter_values.length; i++) {
-        if ((i != subject_index) && (i != balance_index)) 
+        if ((i != subject_index) && (i != balance_index) && (i != beats_index)) 
             acc += ' ' + pstrings[i];
     }
+    if (is_progression(move)) acc += ' ' + progressionString;
+    if ((beats_index >= 0) && (parameter_values[beats_index].value != ps[beats_index].value))
+        acc +=  ' ' + pstrings[beats_index];
     return acc;
 }
 
 function find_parameter_names_index(name, parameters) {
     return parameters.findIndex(function(p) {return p.name == name}, parameters)
 }
+
+progressionString = "to new neighbors"
 
 // ================
 
@@ -92,17 +98,23 @@ function moves() {
     return a.sort();
 }
 var issued_parameter_warning = false
-function parameters(fig_str){ // move string -> formal parameters array
-    var fig = defined_events[fig_str];
+function parameters(move){
+    var fig = defined_events[move];
     if (fig)
         return fig.parameters
     if (!issued_parameter_warning)
     {
         issued_parameter_warning = true
-        console.log("Warning: could not find a figure definition for '"+fig_str+"', suppressing future warnings of this type");
+        console.log("Warning: could not find a figure definition for '"+move+"', suppressing future warnings of this type");
     }
     return [];
 }
+
+function is_progression(move) {
+  var fig_def = defined_events[move];
+  return fig_def && fig_def.props && fig_def.props.progression || false;
+}
+
 //       _____ ___ ____ _   _ ____  _____ ____  
 //      |  ___|_ _/ ___| | | |  _ \| ____/ ___| 
 //      | |_   | | |  _| | | | |_) |  _| \___ \ 
@@ -312,7 +324,7 @@ defineFigure( "right left through", [param_beats_8])
 
 function slide_view(move, pvs) {
   var [direction,  beats] = pvs
-  return words(move, direction ? "left" : "right") + ((beats == 2) ? "" : ("for "+beats));
+  return words(move, direction ? "left" : "right", progressionString) + ((beats == 2) ? "" : (" for "+beats));
 }
 
 defineFigure( "slide", [param_spin_left, param_beats_2], {progression: true, view: slide_view})
