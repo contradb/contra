@@ -50,7 +50,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['partners balance & box the gnat',  'box the gnat',  'partners',  true,  true,  8],
    ['ladles do si do once', 'do si do', 'ladles', true, 360, 8],
    ['shadows gyre 1½', 'gyre', 'shadows', true, 540, 8],
-   ['neighbors box the gnat',           'box the gnat',  'neighbors', false, true,  4]
+   ['ones gyre by the left shoulder 1½', 'gyre', 'ones', false, 540, 8],
+   ['neighbors box the gnat', 'box the gnat',  'neighbors', false, true,  4]
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}'" do

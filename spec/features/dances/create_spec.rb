@@ -4,7 +4,7 @@ require 'support/scrutinize_layout'
 
 
 describe 'Creating dances', js: true do
-  xit 'creates a new dance with non-javascript data' do
+  it 'creates a new dance with non-javascript data' do
     with_login do
       visit '/dances/new'
       expect(page.text).to include 'There\'s a lot of ink spilled over "gentlemen" versus "men" versus "leads".'
@@ -19,7 +19,7 @@ describe 'Creating dances', js: true do
     end
   end
 
-  xit 'has some working javascript' do
+  it 'has some working javascript' do
     with_login do
       visit '/dances/new'
       expect(page.text).to include 'There\'s a lot of ink spilled over "gentlemen" versus "men" versus "leads".'
