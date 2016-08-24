@@ -3,7 +3,7 @@
   of space, then labels take the left column. If space is tight, they
   take the two leftmost columns.  %>
 
-  <% debug_figure_json = true %>
+  <% debug_figure_json = false %>
 
   <div class="container"  ng-app="contra">
     <%= form_for(@dance) do |f| %>
@@ -43,16 +43,7 @@
         {class: "col-xs-12 col-sm-6", id: "start-type-autocomplete", placeholder: "Formation"}
         .merge(copy_dance ? {value: copy_dance.start_type} : {}) %>
     <script>
-      $( "#choreographer-autocomplete" ).autocomplete({
-        source: <%= a_to_safe_str(Choreographer.all.map &:name) %>,
-        autoFocus: true,
-        minLength: 0
-      });
-      $( "#start-type-autocomplete" ).autocomplete({
-        source: ["improper","Becket","Becket ccw","four face four","square dance","indecent"],
-        autoFocus: true,
-        minLength: 0
-      });
+      var __choreographers__secret = <%= a_to_safe_str(Choreographer.all.map &:name) %>
     </script>
   </div>
 
@@ -88,7 +79,6 @@
         <span ng-repeat="p in parameters(figure.move)">
           <br />
           <span ng-init="set_if_unset(figure.parameter_values, $index, p.value)">
-            <!-- ng-init="$index in figure.parameter_values || p.value" -->
             {{parameter_glue(figure.move, $index)}}
             <span ng-if="p.ui == chooser_boolean">
               <label>{{p.name}}
@@ -237,7 +227,7 @@
         </span>
       </div>
     </div>
-    <div class="col-xs-12"> <%# dummy col to make row legal again  %>
+    <div class="col-xs-12">
       <hr />
       <%# Add/delete/rotate figure buttons %>
       <div class="row actions">
@@ -273,13 +263,7 @@
           angular.element(document.getElementById('figures')).scope().figures.arr
           or
           angular.element(document.getElementById('figures')).scope().figures.arr[4].parameter_values %>
-      <div class="row">
-        
-      </div>
-    </div> <%# dummy col to make row legal again  %>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-
     
 
   <!-- debugger -->
@@ -293,7 +277,7 @@
   <% end %> 
 
 
-
+ 
   <!-- hidden IO field for communicating with Rails -->
   <div class="row field" <%= debug_figure_json ?  '' : 'hidden="hidden"' %> >
     <%= f.label :figures_json, class: "col-lg-1 col-md-2 col-xs-3"%>
@@ -304,6 +288,7 @@
       f.text_area "figures_json", h0
       end %>
   </div>
+
   </div> <!-- figures controller -->
 
 

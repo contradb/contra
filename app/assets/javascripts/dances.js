@@ -1,3 +1,15 @@
+$(function () {
+  $( "#choreographer-autocomplete" ).autocomplete({
+    source: __choreographers__secret,
+    autoFocus: true,
+    minLength: 0
+  });
+  $( "#start-type-autocomplete" ).autocomplete({
+    source: ["improper","Becket","Becket ccw","four face four","square dance","indecent"],
+    autoFocus: true,
+    minLength: 0
+  });
+});
 
 function styleForBeats(beats) {
     return beats%32 < 16 ? 'a1b1' : 'a2b2' 
