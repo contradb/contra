@@ -3,7 +3,7 @@
   of space, then labels take the left column. If space is tight, they
   take the two leftmost columns.  %>
 
-  <% debug_figure_json = false %>
+  <% debug_figure_json = true %>
 
   <div class="container"  ng-app="contra">
     <%= form_for(@dance) do |f| %>
@@ -279,14 +279,11 @@
 
  
   <!-- hidden IO field for communicating with Rails -->
-  <div class="row field" <%= debug_figure_json ?  '' : 'hidden="hidden"' %> >
+
+  <div class="row field" <%= debug_figure_json ?  '' : 'hidden=hidden' %> >
     <%= f.label :figures_json, class: "col-lg-1 col-md-2 col-xs-3"%>
-  <%= begin
-      h0 = {class: "figures_json col-lg-11 col-md-10 col-xs-9", 
-            value: "{{toJson(figures.arr)}}" ,
-            readonly: "readonly"}
-      f.text_area "figures_json", h0
-      end %>
+    <textarea class="figures_json col-lg-11 col-md-10 col-xs-9" readonly="readonly" name="dance[figures_json]" id="dance_figures_json">
+{{2+2}}</textarea>
   </div>
 
   </div> <!-- figures controller -->
