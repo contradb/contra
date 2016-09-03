@@ -51,11 +51,8 @@
 
   <div ng-controller="FiguresController as figures" class="row" id="figures">
     <div class="display:none"
-         ng-init="figures.arr=defaultFigures(<%= 
-                  if copy_dance 
-                  then copy_dance.figures_json 
-                  else @dance.figures_json 
-                  end %>)"></div>
+         ng-init="figures.arr=defaultFigures(<%= copy_dance ? copy_dance.figures_json : @dance.figures_json %>)">
+    </div>
     <div class="col-xs-12 col-md-6"> <%# list figures %>
 
       <!-- <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" /> -->
@@ -282,9 +279,9 @@
 
   <div class="row field" <%= debug_figure_json ?  '' : 'hidden=hidden' %> >
     <%= f.label :figures_json, class: "col-lg-1 col-md-2 col-xs-3"%>
-    <textarea class="figures_json col-lg-11 col-md-10 col-xs-9" readonly="readonly" name="dance[figures_json]" id="dance_figures_json">
-{{2+2}}</textarea>
+    <div class="col-lg-11 col-md-10 col-xs-9">{{toJson(figures.arr)}}</div>
   </div>
+  <%= f.text_field :figures_json, name: "dance[figures_json]", id: "dance-figures-json", hidden: true %>
 
   </div> <!-- figures controller -->
 
@@ -317,7 +314,7 @@
 
   <div class="row actions">
     <div class="col-lg-1 col-md-2 col-xs-3"></div>
-    <%= save_submit_button_html "Save Dance", {class: "update_dance col-lg-3 col-md-10 col-xs-9"} %>
+    <%= save_submit_button_html "Save Dance", {class: "update-dance col-lg-3 col-md-10 col-xs-9"} %>
   </div>
 
   <div class="row actions">

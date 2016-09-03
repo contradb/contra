@@ -63,6 +63,7 @@ function parameter_glue (movestring, index) {
 // =====================================================================================
 
 
+
 // =====================================================================================
 // =====================================================================================
 
@@ -109,6 +110,9 @@ function parameter_glue (movestring, index) {
                 fctrl42.arr.unshift(fctrl42.arr.pop())
         };
         $scope.defaultFigures = defaultFigures;
+
+        // so not angular, but I'm trying anything at this point. 
+        $('.update-dance').on('click', function() {$('#dance-figures-json').val(toJson(figures.arr))})
     }
     app.controller('FiguresController', ['$scope',scopeInit])
 })()
