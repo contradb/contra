@@ -22,6 +22,7 @@
 //= require libfigure/move
 //= require libfigure/chooser
 //= require libfigure/param
+// libfigure/figure is breaking testing:
 //= require libfigure/figure
 //= require libfigure/dance
 //= require dances

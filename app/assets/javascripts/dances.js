@@ -1,3 +1,4 @@
+
 $(function () {
   $( "#choreographer-autocomplete" ).autocomplete({
     source: __choreographers__secret,
@@ -112,7 +113,9 @@ function parameter_glue (movestring, index) {
         $scope.defaultFigures = defaultFigures;
 
         // so not angular, but I'm trying anything at this point. 
-        $('.update-dance').on('click', function() {$('#dance-figures-json').val(JSON.stringify($scope.figures.arr));})
+        $('.update-dance').on('click', function(e) {
+          $('#dance-figures-json').val(JSON.stringify($scope.figures.arr));
+        })
     }
     app.controller('FiguresController', ['$scope',scopeInit])
 })()
