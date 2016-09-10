@@ -28,7 +28,7 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 
 # Turbolinks is more hassle than it's worth right now
-# gem 'turbolinks'
+# gem 'turbolinks' '~> 5.x'
 # this fixed some turbolinks bugs, but didn't play with angular
 # gem 'jquery-turbolinks'
 
@@ -65,9 +65,13 @@ group :test do
 end
 
 
+# Babel JS cross-compiler http://nandovieira.com/using-es2015-with-asset-pipeline-on-ruby-on-rails
+gem 'sprockets', '~> 4.x'
+gem 'babel-schmooze-sprockets'
+
 # Helpers for Twitter Bootstrap
 gem 'bootstrap-sass', '~> 3.3.5'
-gem 'sprockets-rails', '~> 2.3.2'
+gem 'sprockets-rails' # , '~> 2.3.2'
 
 gem 'devise'
 
