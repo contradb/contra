@@ -32,6 +32,7 @@ describe 'Creating dances', js: true do
       click_button 'Save Dance'
 
       expect(page).to have_css('h1', text: 'Call Me')
+      binding.pry
       expect(page).to have_content('A1')
       expect(page).to_not have_content('A2')
       expect(page).to_not have_content('B1')
