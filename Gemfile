@@ -66,8 +66,12 @@ end
 
 
 # Babel JS cross-compiler http://nandovieira.com/using-es2015-with-asset-pipeline-on-ruby-on-rails
-gem 'sprockets', '~> 4.x'
-gem 'babel-schmooze-sprockets'
+# gem 'sprockets', '~> 4.x'
+# gem 'sprockets-es6'
+# gem 'babel-schmooze-sprockets'
+gem 'sprockets'
+gem 'sprockets-es6'
+
 
 # Helpers for Twitter Bootstrap
 gem 'bootstrap-sass', '~> 3.3.5'

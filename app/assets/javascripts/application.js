@@ -11,7 +11,6 @@
 // about supported directives.
 //
 //  LIBRARIES
-//= require babel
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui/autocomplete
@@ -28,4 +27,3 @@
 //= require libfigure/dance
 //= require dances
 //= require_tree .
-//= require_self

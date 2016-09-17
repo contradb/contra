@@ -24,3 +24,8 @@ module Contra
     config.active_record.raise_in_transactional_callbacks = true
   end
 end
+
+
+require "action_view/railtie"
+require "sprockets/railtie"
+require 'sprockets/es6'
