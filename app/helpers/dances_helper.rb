@@ -77,8 +77,8 @@ module DancesHelper
   def jsctx                     # javascript context
     return @context if @context
     @context = MiniRacer::Context.new
-    %w(util move chooser param figure dance).each do |file|
-      @context.load(Rails.root.join('app','assets','javascripts','libfigure',"#{file}.js"))
+    %w(util.js move.js chooser.js param.js figure.es6 dance.js).each do |file|
+      @context.load(Rails.root.join('app','assets','javascripts','libfigure',file))
     end
     @context
   end
