@@ -19,7 +19,7 @@ describe 'Creating dances', js: true do
     end
   end
 
-  it 'has some working javascript' do
+  it 'has working A1/B2 labels' do
     with_login do
       visit '/dances/new'
       expect(page.text).to include 'There\'s a lot of ink spilled over "gentlemen" versus "men" versus "leads".'

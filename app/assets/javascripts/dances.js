@@ -16,11 +16,7 @@ function styleForBeats(beats) {
     return beats%32 < 16 ? 'a1b1' : 'a2b2' 
 }
 
-
-// always freshly allocated
-function newFigure () {
-    return { parameter_values: [] }
-}
+// =====================================================================================
 
 function defaultFigures (figures) {
     if (figures.length == 0)
@@ -29,12 +25,7 @@ function defaultFigures (figures) {
     else return figures;
 }
 
-
 // =====================================================================================
-// =====================================================================================
-
-
-
 
 function user_changed_parameter (figure, index) {
     var fig_def = defined_events[figure.move];

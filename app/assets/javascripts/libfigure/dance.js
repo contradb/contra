@@ -14,14 +14,6 @@ function dancersComplement(whostr) {
         throw_up("bogus parameter to dancersComplementHash: "+ whostr)
 }
 
-function sumBeats(figures,optional_limit) {
-    var acc = 0;
-    var n = isInteger(optional_limit) ? optional_limit : figures.length;
-    for (var i = 0; i < n; i++)
-        acc += figures[i].beats;
-    return acc;
-}
-
 function labelForBeats(beats) {
     if ((beats%16) == 0)
         switch (beats/16) {
@@ -36,3 +28,4 @@ function labelForBeats(beats) {
     }
     return "";
 }
+

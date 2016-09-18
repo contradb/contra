@@ -1,20 +1,11 @@
 # encoding: utf-8
+require 'jslibfigure'
 
 
 module DancesHelper
 
-  def jsctx                     # javascript context
-    return @context if @context
-    @context = MiniRacer::Context.new
-    %w(util.js move.js chooser.js param.js figure.es6 dance.js).each do |file|
-      @context.load(Rails.root.join('app','assets','javascripts','libfigure',file))
-    end
-    @context
-  end
-
-
   def figure_txt(figure) # takes a hash, returns a string
-    jsctx.eval("figure_html_readonly(#{figure.to_json})")
+    JSLibFigure.eval("figure_html_readonly(#{figure.to_json})")
   end
 
   # input: an array of possibly non-html-safe strings

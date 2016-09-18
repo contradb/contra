@@ -1,11 +1,39 @@
 
+
+// always freshly allocated
+function newFigure () {
+    return { parameter_values: [] }
+}
+
+
+function figureBeats (f) {
+  var defaultBeats = 8;
+  if (! f.move) return defaultBeats;
+  idx = find_parameter_index_by_name("beats", parameters(f.move))
+  if (idx<0)
+    return defaultBeats;
+  else
+    return f.parameter_values[idx]
+}
+
+function sumBeats(figures,optional_limit) {
+    var acc = 0;
+    var n = isInteger(optional_limit) ? optional_limit : figures.length;
+    for (var i = 0; i < n; i++)
+        acc += figureBeats(figures[i]);
+    return acc;
+}
+
 function figure_html_readonly(f) {
     var fig_def = defined_events[f.move];
     if (fig_def) {
         var func = fig_def.props.view || figure_html_readonly_default;
         return func(f.move, f.parameter_values);
     }
-    else return "warning "+ (f.move || f);
+    else if (f.move)
+      return "rouge figure "+f.move+"?!";
+    else
+      return "empty figure";
 }
 
 
@@ -15,9 +43,9 @@ function figure_html_readonly_default(move, parameter_values) {
     var ps = parameters(move);
     var pstrings = parameter_strings(move, parameter_values)
     var acc = ""
-    var subject_index = find_parameter_names_index("who", ps)
-    var balance_index = find_parameter_names_index("bal", ps)
-    var beats_index = parameter_values.length - 1;
+    var subject_index = find_parameter_index_by_name("who", ps);
+    var balance_index = find_parameter_index_by_name("bal", ps);
+    var beats_index   = find_parameter_index_by_name("beats",ps);
     if (subject_index >= 0) acc += pstrings[subject_index] + ' ';
     if (balance_index >= 0) acc += pstrings[balance_index] + ' ';
     acc += move
@@ -32,7 +60,7 @@ function figure_html_readonly_default(move, parameter_values) {
     return acc;
 }
 
-function find_parameter_names_index(name, parameters) {
+function find_parameter_index_by_name(name, parameters) {
     return parameters.findIndex(function(p) {return p.name == name}, parameters)
 }
 
