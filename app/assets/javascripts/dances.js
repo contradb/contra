@@ -1,7 +1,7 @@
 
 $(function () {
   $( "#choreographer-autocomplete" ).autocomplete({
-    source: __choreographers__secret,
+    source: (typeof __choreographers__secret !== 'undefined') && __choreographers__secret,
     autoFocus: true,
     minLength: 0
   });
@@ -97,7 +97,7 @@ function parameter_glue (movestring, index) {
         $scope.edit_index_box = [null]
         $scope.editable_figures = function(figures) {
             idx = $scope.edit_index_box[0]
-            return Number.isInteger(idx) && $scope.figures.arr[idx] ?
+            return (null != idx) && $scope.figures.arr[idx] ?
                 [$scope.figures.arr[idx]] :
                 [];
         }

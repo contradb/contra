@@ -36,7 +36,7 @@ function find_parameter_names_index(name, parameters) {
     return parameters.findIndex(function(p) {return p.name == name}, parameters)
 }
 
-progressionString = "to new neighbors"
+var progressionString = "to new neighbors"
 
 // ================
 
