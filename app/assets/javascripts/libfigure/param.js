@@ -15,16 +15,18 @@ function stringParamBalance (value) {
 param_balance_true  = {name: "bal", value: true,  ui: chooser_boolean, string: stringParamBalance}
 param_balance_false = {name: "bal", value: false, ui: chooser_boolean, string: stringParamBalance}
 
-function stringParamBeats (value) {
-    return value && (value != 8) ? "for "+value : ""
+function stringParamBeatsNotN (n) {
+  return function (value) {
+    return value && (value != n) ? "for "+value : ""
+  }
 }
-param_beats_0 = {name: "beats", value: 0, ui: chooser_beats, string: stringParamBeats}
-param_beats_2 = {name: "beats", value: 2, ui: chooser_beats, string: stringParamBeats}
-param_beats_4 = {name: "beats", value: 4, ui: chooser_beats, string: stringParamBeats}
-param_beats_6 = {name: "beats", value: 6, ui: chooser_beats, string: stringParamBeats}
-param_beats_8 = {name: "beats", value: 8, ui: chooser_beats, string: stringParamBeats}
-param_beats_12 = {name: "beats", value: 12, ui: chooser_beats, string: stringParamBeats}
-param_beats_16 = {name: "beats", value: 16, ui: chooser_beats, string: stringParamBeats}
+param_beats_0 = {name: "beats", value: 0, ui: chooser_beats, string: stringParamBeatsNotN(0)}
+param_beats_2 = {name: "beats", value: 2, ui: chooser_beats, string: stringParamBeatsNotN(2)}
+param_beats_4 = {name: "beats", value: 4, ui: chooser_beats, string: stringParamBeatsNotN(4)}
+param_beats_6 = {name: "beats", value: 6, ui: chooser_beats, string: stringParamBeatsNotN(6)}
+param_beats_8 = {name: "beats", value: 8, ui: chooser_beats, string: stringParamBeatsNotN(8)}
+param_beats_12 = {name: "beats", value: 12, ui: chooser_beats, string: stringParamBeatsNotN(12)}
+param_beats_16 = {name: "beats", value: 16, ui: chooser_beats, string: stringParamBeatsNotN(16)}
 
 function stringParamClock     (value) {return value ? "clockwise" : "counter-clockwise"} // untested
 function stringParamLeftRight (value) {return value ? "to the left" : "to the right"}
