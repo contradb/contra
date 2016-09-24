@@ -354,9 +354,16 @@ defineFigure( "pass through", [param_beats_2], {progression: true})
 // PETRONELLA                                 //
 ////////////////////////////////////////////////
 
-defineFigure( "petronella", [param_balance_true, param_beats_8])
-// supported on request: turning to the left, turning more than one
-// place, double, triple, etc. Maybe call that move 'petrozilla'?
+function petronella_view(move,pvs) {
+  var [balance, beats] = pvs;
+  var [sbalance, sbeats] = parameter_strings(move, pvs);
+  var balance_beats = 4 * !!balance;
+  if (balance_beats + 4 == beats) return words(sbalance,move);
+  else return words(sbalance,move,sbeats);
+}
+
+defineFigure( "petronella", [param_balance_true, param_beats_8], {view: petronella_view})
+// supported on request: turning to the left
 
 ////////////////////////////////////////////////
 // PROMENADE                                  //

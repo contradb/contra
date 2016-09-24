@@ -68,7 +68,7 @@ end
 def whitespice(x)
   case x
   when Regexp; x
-  when String; /\A#{x.gsub(' ','\s+')}\s*\z/
+  when String; /\A\s*#{x.gsub(' ','\s+')}\s*\z/
   else raise 'unexpected type in whitespice'
   end
 end
