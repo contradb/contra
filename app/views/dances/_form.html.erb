@@ -33,7 +33,7 @@
   <% end %>
 
   <div class="row field">
-    <%= f.text_field :title, {class: "dance-title-edit col-xs-12", value: copy_dance ? "#{copy_dance.title} variation" : "Untitled"} %>
+    <%= f.text_field :title, {class: "dance-title-edit col-xs-12", value: copy_dance ? "#{copy_dance.title} variation" : (@dance.title.blank? ? "Untitled" : @dance.title)} %>
   </div>
   <div class="row field">
     <%= f.text_field :choreographer_name,
