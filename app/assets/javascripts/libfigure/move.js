@@ -15,12 +15,12 @@ var moveCaresAboutRotationsHash =
     ,"allemande orbit": true
     };
 function moveCaresAboutRotations (move) {
-    return moveCaresAboutRotationsHash[deAliasName(move)];
+    return moveCaresAboutRotationsHash[deAliasMove(move)];
 }
 
 var moveCaresAboutPlacesHash = {circle: true, star: true};
 function moveCaresAboutPlaces (move) {
-    return moveCaresAboutPlacesHash[deAliasName(move)];
+    return moveCaresAboutPlacesHash[deAliasMove(move)];
 }
 
 var degrees2rotations = { 90: "¼", 

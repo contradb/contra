@@ -116,7 +116,7 @@ function defineFigureAlias (newName, targetName, parameter_defaults) {
          props: target.props}
 }
 
-function deAliasName(move) {
+function deAliasMove(move) {
     return defined_events[move].name;
 }
 

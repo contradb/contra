@@ -11,7 +11,11 @@ module JSLibFigure
   end
 
   def self.new
-    JSLibFigure.eval('newFigure()')
+    self.eval('newFigure()')
+  end
+
+  def self.de_alias_move(move_string)
+    self.eval("deAliasMove(#{move_string.inspect})")
   end
 
   private
