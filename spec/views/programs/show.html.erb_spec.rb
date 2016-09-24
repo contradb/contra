@@ -55,7 +55,7 @@ https://www.youtube.com/watch?v=jbeDG5jmKvE
                                        user: user,
                                        choreographer: choreographer,
                                        start_type: "improper",
-                                       figures_json: '[{"who":"neighbor","beats":8,"move":"custom","notes":"rang_tang left"},{"who":"neighbor","beats":8,"move":"mad_robin"}]',
+                                       figures_json: '[{"parameter_values":["neighbor rang tang right",6],"move":"custom"},{"parameter_values":["gentlespoons",true,360,8],"move":"do si do"}]',
                                        notes: 'yet more dance notes')
     @program.append_new_activity(dance: custodance, text: "featuring **2 new moves**!")
     custodance
@@ -90,11 +90,7 @@ https://www.youtube.com/watch?v=jbeDG5jmKvE
 
     render
 
-    # If you're reading this it's because this has broken, and that's
-    # because I wrote it brittle as heck. Sorry.
-    # I want to check that new moves of the second occurrence of rang tang contra
-    # have only one 'new move', that is "custom"
-    expect(rendered).to match(/introduces moves: custom, mad_robin/)
+    expect(rendered).to match(/introduces moves: custom, do si do/)
   end
 
   it "has markdown support" do
