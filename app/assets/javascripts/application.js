@@ -18,6 +18,7 @@
 //= require angular
 //= require angucomplete-alt
 //  LOCAL FILES
+//= require libfigure/polyfill
 //= require libfigure/util
 //= require libfigure/move
 //= require libfigure/chooser

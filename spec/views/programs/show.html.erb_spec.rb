@@ -37,12 +37,7 @@ https://www.youtube.com/watch?v=jbeDG5jmKvE
   def setup_box_the_gnat ()
     dance_owner   = FactoryGirl.create(:user, name: "Kevin Gargledancer")
     choreographer = FactoryGirl.create(:choreographer, name: "Becky Hill")
-    box_the_gnat  = FactoryGirl.create(:dance,
-                                       title: "Box the Gnat Contra",
-                                       user: dance_owner,
-                                       choreographer: choreographer,
-                                       start_type: "improper",
-                                       figures_json: '[{"parameter_values":["neighbors",true,true,8],"move":"box the gnat"},{"parameter_values":["partners",true,false,8],"move":"swat the flea"},{"parameter_values":["partners",true,16],"move":"balance and swing"},{"parameter_values":["ladles",true,540,8],"move":"allemande"},{"parameter_values":["partners",false,8],"move":"swing"},{"parameter_values":[8],"move":"right left through"},{"parameter_values":["ladles",8],"move":"chain"}]')
+    box_the_gnat  = FactoryGirl.create(:box_the_gnat_contra, user: dance_owner, choreographer: choreographer)
     @program.append_new_activity(dance: box_the_gnat, text: "Dave's go-to stompy dance")
     box_the_gnat
   end

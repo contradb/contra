@@ -39,7 +39,7 @@ module JSLibFigure
 
   def self.new_context
     context = MiniRacer::Context.new
-    %w(util.js move.js chooser.js param.js figure.es6 dance.js).each do |file|
+    %w(polyfill.js util.js move.js chooser.js param.js figure.es6 dance.js).each do |file|
       context.load(Rails.root.join('app','assets','javascripts','libfigure',file))
     end
     context

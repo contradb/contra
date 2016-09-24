@@ -21,24 +21,6 @@ RSpec.describe "dances/show", type: :view do
   # content but html renders any number of spaces as one space.
   def regexpify(s) Regexp.new Regexp.escape(s).gsub(/ +/,' +') end
 
-  xit "renders attributes (old figures encoding)" do
-    render
-    expect(rendered).to match(/Clever Pun/)
-    expect(rendered).to match(/Complicated Formation/)
-    expect(rendered).to match(/Becky Hill/)
-    # figures
-    expect(rendered).to match(regexpify 'neighbor balance + box_the_gnat')
-    expect(rendered).to match(regexpify 'partner balance + swat_the_flea')
-    expect(rendered).to match(regexpify 'neighbor balance + swing for 16')
-    expect(rendered).to match(regexpify 'ladles allemande_right 1½')
-    expect(rendered).to match(regexpify 'partner swing')
-    expect(rendered).to match(regexpify 'right_left_through')
-    expect(rendered).to match(regexpify 'ladles chain')
-    expect(rendered).to match(regexpify 'look for new')
-    # notes
-    expect(rendered).to match(/My Note Text/)
-  end
-
   it "renders attributes" do
     render
     expect(rendered).to match(/Clever Pun/)

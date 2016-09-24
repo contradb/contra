@@ -2,6 +2,18 @@
 require 'rails_helper'
 
 RSpec.describe DancesHelper, type: :helper do
+
+  figure_txt_for = -> move, *parameter_values {
+    JSLibFigure.html({'move' => move, 'parameter_values' => parameter_values})
+  }
+
+  whitespice = -> x {
+    case x
+    when Regexp; x
+    when String; /\A\s*#{x.gsub(' ','\s+')}\s*\z/
+    else raise 'unexpected type in whitespice'
+    end
+  }
   [['partners balance & swing', 'balance and swing', 'partners',true, 16],
    ['partners balance & swing','balance and swing','partners',true,16],
    ['neighbors balance & swing', 'swing', 'neighbors', true, 16],
@@ -56,20 +68,8 @@ RSpec.describe DancesHelper, type: :helper do
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}'" do
-      expect(figure_txt_for(move,*pvalues)).to match(whitespice render)
+      expect(figure_txt_for.call(move,*pvalues)).to have_text(render)
     end
   end
 end
 
-def figure_txt_for(move, *parameter_values)
-  JSLibFigure.html({'move' => move, 'parameter_values' => parameter_values})
-end
-
-# replace every space with one or more whitespace characters
-def whitespice(x)
-  case x
-  when Regexp; x
-  when String; /\A\s*#{x.gsub(' ','\s+')}\s*\z/
-  else raise 'unexpected type in whitespice'
-  end
-end

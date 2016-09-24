@@ -10,5 +10,5 @@ def with_login (&block)
     fill_in 'user_password_confirmation', with: 'aaaaaaaa'
     #click_on ' Sign Up':
     find('button[type="submit"]').click
-    block.call
+    block.call User.last
 end
