@@ -42,7 +42,7 @@
     <%= if activity.dance then
           introduce_moves = []
           activity.dance.figures.each do |figure|
-            move = figure["move"]
+            move = JSLibFigure.teaching_name figure
             unless moves_already_introduced[move]
               moves_already_introduced[move] = true
               introduce_moves.push move

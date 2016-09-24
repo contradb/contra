@@ -83,6 +83,19 @@ function parameter_strings(move, parameter_values) {
 }
 
 
+// === Teaching Names =============
+
+function teachingName(move) {
+  return teachingNames[move] || deAliasMove(move)
+}
+
+// teach this figure under its own name, not the name of it's root figure
+function defineTeachingName(alias_move) {
+  teachingNames[alias_move] = alias_move;
+}
+
+var teachingNames = {};
+
 //      _       __ _            _____ _                      
 //   __| | ___ / _(_)_ __   ___|  ___(_) __ _ _   _ _ __ ___ 
 //  / _` |/ _ \ |_| | '_ \ / _ \ |_  | |/ _` | | | | '__/ _ \
@@ -224,6 +237,8 @@ function box_the_gnat_view(move,pvs) {
 
 defineFigure( "box the gnat", [param_subject_pairz, param_balance_false, param_right_hand_spin, param_beats_4], {change: box_the_gnat_change, view: box_the_gnat_view})
 defineFigureAlias( "swat the flea", "box the gnat", [null, null, param_left_hand_spin, null], {change: box_the_gnat_change, view: box_the_gnat_view})
+defineTeachingName("swat the flea")
+
 ////////////////////////////////////////////////
 // CHAIN                                      //
 ////////////////////////////////////////////////
@@ -282,6 +297,9 @@ function do_si_do_view(move, pvs) {
 defineFigure( "do si do", [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8], {change: do_si_do_change, view: do_si_do_view})
 
 defineFigureAlias( "see saw", "do si do", [null, param_left_shoulder_spin])
+
+defineTeachingName("see saw")
+
 
 ////////////////////////////////////////////////
 // GYRE (aka circle by the eyes)              //

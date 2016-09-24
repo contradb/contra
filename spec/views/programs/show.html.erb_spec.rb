@@ -80,7 +80,7 @@ https://www.youtube.com/watch?v=jbeDG5jmKvE
 
     render
 
-    expect(rendered).to match("introduces moves: box_the_gnat, swat_the_flea, allemande_right, right_left_through")
+    expect(rendered).to match("introduces moves: box the gnat, swat the flea, allemande, right left through")
   end
 
   it "never remembers custom moves have been previously introduced" do
