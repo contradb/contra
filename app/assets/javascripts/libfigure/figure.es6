@@ -348,7 +348,16 @@ defineFigure( "long lines forward only",  [param_beats_4])
 // PASS THROUGH -- progression                //
 ////////////////////////////////////////////////
 
-defineFigure( "pass through", [param_beats_2], {progression: true})
+
+var pass_through_string = "pass through to new neighbors"
+function pass_through_view(move,pvs) {
+  var [beats] = pvs;
+  var [sbeats] = parameter_strings(move, pvs);
+  if (2 == beats) return pass_through_string;
+  else return words(pass_through_string,sbeats);
+}
+
+defineFigure( "pass through", [param_beats_2], {progression: true, view: pass_through_view})
 
 ////////////////////////////////////////////////
 // PETRONELLA                                 //
