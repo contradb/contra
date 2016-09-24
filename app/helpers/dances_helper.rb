@@ -3,11 +3,6 @@ require 'jslibfigure'
 
 
 module DancesHelper
-
-  def figure_txt(figure) # takes a hash, returns a string
-    JSLibFigure.eval("figure_html_readonly(#{figure.to_json})")
-  end
-
   # input: an array of possibly non-html-safe strings
   # output: a string representation of the array with brackets and
   #         quotes and properly html-safe internal strings.

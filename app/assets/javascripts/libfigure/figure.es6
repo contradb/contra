@@ -161,7 +161,7 @@ function allemande_orbit_view(move,pvs) {
     var [swho,sdir,sinner_angle,souter_angle,sbeats] = parameter_strings(move, pvs)
     return words(swho, "allemande", sdir,
                  sinner_angle, "around",
-                 "while the", dancersComplement(who), "orbit",
+                 "while the", who ? dancersComplement(who) : "others", "orbit",
                  dir ? "clockwise" : "counter clockwise",
                  souter_angle, "around", sbeats)
 }

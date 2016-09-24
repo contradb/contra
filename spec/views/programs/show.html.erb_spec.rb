@@ -17,13 +17,13 @@ RSpec.describe "programs/show", type: :view do
 
   def setup_rang_tang ()
     activity_text = "some activity text"
-    rang_tang = FactoryGirl.build_stubbed(
+    rang_tang = FactoryGirl.create(
       :dance,
       title: "Rang Tang Contra",
       start_type: "improper",
-      user: FactoryGirl.build_stubbed(:user, name: "Bob Danceownerson"),
-      choreographer: FactoryGirl.build_stubbed(:choreographer, name: "Susan MacChoreographer"),
-      figures_json: '[{"formation":"square","who":"neighbor","beats":6,"move":"custom","notes":"rang_tang left"},{"formation":"square","who":"partner","beats":6,"move":"custom","notes":"rang_tang right"},{"formation":"square","who":"neighbor","beats":6,"notes":"rang_tang left","move":"custom"},{"formation":"square","who":"partner","beats":6,"notes":"rang_tang right","move":"custom"},{"formation":"square","who":"neighbor","beats":8,"move":"swing"},{"formation":"square","who":"everybody","beats":8,"move":"circle_left","degrees":270},{"formation":"square","who":"partner","beats":8,"move":"swing"},{"formation":"square","who":"ladles","beats":8,"move":"chain"},{"formation":"square","who":"everybody","beats":8,"move":"star_left","degrees":360,"notes":"to new neighbor"}]',
+      user: FactoryGirl.create(:user, name: "Bob Danceownerson"),
+      choreographer: FactoryGirl.create(:choreographer, name: "Susan MacChoreographer"),
+      figures_json: '[{"parameter_values":["neighbor rang tang right",6],"move":"custom"},{"parameter_values":["partner rang tang left",6],"move":"custom"},{"parameter_values":["neighbor rang tang right",6],"move":"custom"},{"parameter_values":["partner rang tang left",6],"move":"custom"},{"parameter_values":["neighbors",false,8],"move":"swing"},{"parameter_values":[true,270,8],"move":"circle three places"},{"parameter_values":["partners",false,8],"move":"swing"},{"parameter_values":["ladles",8],"move":"chain"},{"parameter_values":[false,true,360,8],"move":"star"}]',
       notes: 'What are rang tangs? Rang_tang left = allemande left once along sets, gents cross over. Rang_tang right = allemande right once along sets, gents cross over. 
 
 Truly, this dance is "by unknown", according to C. A. Gray. This particular variation is called by Diane Silver
@@ -35,22 +35,22 @@ https://www.youtube.com/watch?v=jbeDG5jmKvE
   end
 
   def setup_box_the_gnat ()
-    dance_owner   = FactoryGirl.build_stubbed(:user, name: "Kevin Gargledancer")
-    choreographer = FactoryGirl.build_stubbed(:choreographer, name: "Becky Hill")
-    box_the_gnat  = FactoryGirl.build_stubbed(:dance,
+    dance_owner   = FactoryGirl.create(:user, name: "Kevin Gargledancer")
+    choreographer = FactoryGirl.create(:choreographer, name: "Becky Hill")
+    box_the_gnat  = FactoryGirl.create(:dance,
                                        title: "Box the Gnat Contra",
                                        user: dance_owner,
                                        choreographer: choreographer,
                                        start_type: "improper",
-                                       figures_json: '[{"formation":"square","who":"neighbor","beats":8,"move":"box_the_gnat","balance":true},{"formation":"square","who":"partner","beats":8,"move":"swat_the_flea","balance":true},{"formation":"square","who":"neighbor","beats":16,"move":"swing","balance":true},{"formation":"square","who":"ladles","beats":8,"move":"allemande_right","degrees":540},{"formation":"square","who":"partner","beats":8,"move":"swing"},{"formation":"square","who":"everybody","beats":8,"move":"right_left_through"},{"formation":"square","who":"ladles","beats":8,"move":"chain","notes":"to new neighbor"}]')
+                                       figures_json: '[{"parameter_values":["neighbors",true,true,8],"move":"box the gnat"},{"parameter_values":["partners",true,false,8],"move":"swat the flea"},{"parameter_values":["partners",true,16],"move":"balance and swing"},{"parameter_values":["ladles",true,540,8],"move":"allemande"},{"parameter_values":["partners",false,8],"move":"swing"},{"parameter_values":[8],"move":"right left through"},{"parameter_values":["ladles",8],"move":"chain"}]')
     @program.append_new_activity(dance: box_the_gnat, text: "Dave's go-to stompy dance")
     box_the_gnat
   end
 
   def setup_custodance ()
-    user = FactoryGirl.build_stubbed(:user, name: "Yet Another User")
-    choreographer = FactoryGirl.build_stubbed(:choreographer, name: "Yet Another Choreographer")
-    custodance =    FactoryGirl.build_stubbed(:dance,
+    user = FactoryGirl.create(:user, name: "Yet Another User")
+    choreographer = FactoryGirl.create(:choreographer, name: "Yet Another Choreographer")
+    custodance =    FactoryGirl.create(:dance,
                                        title: "Custodance",
                                        user: user,
                                        choreographer: choreographer,

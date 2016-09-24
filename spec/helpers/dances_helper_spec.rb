@@ -61,7 +61,7 @@ RSpec.describe DancesHelper, type: :helper do
 end
 
 def figure_txt_for(move, *parameter_values)
-  figure_txt({'move' => move, 'parameter_values' => parameter_values})
+  JSLibFigure.html({'move' => move, 'parameter_values' => parameter_values})
 end
 
 # replace every space with one or more whitespace characters
