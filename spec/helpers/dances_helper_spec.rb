@@ -13,6 +13,7 @@ RSpec.describe DancesHelper, type: :helper do
    ['ladles allemande by the left 1½ around while the gentlespoons orbit counter clockwise ½ around',
     'allemande orbit','ladles',false,540,180,8],
    ['ones balance', 'balance', 'ones', 4],
+   ['ones balance for 8', 'balance', 'ones', 8],
    ['balance the ring for 6', 'balance the ring', 6],
    ['ladies chain', 'chain', 'ladies', 8],
    ['circle to the left 4 places','circle',true,360,8],

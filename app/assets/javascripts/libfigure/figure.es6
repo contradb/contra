@@ -194,14 +194,7 @@ defineFigure( "allemande", [param_subject_pairz, param_xhand_spin, param_once_ar
 // BALANCE                                    //
 ////////////////////////////////////////////////
 
-function balance_view(move,pvs) {
-    var [who,beats] = pvs
-    var [swho,sbeats] = parameter_strings(move, pvs)
-    if (4==beats) return words(swho,move)
-    else return words(swho,move,sbeats)
-}
-
-defineFigure( "balance", [param_subject_pairz, param_beats_4], {view: balance_view})
+defineFigure( "balance", [param_subject_pairz, param_beats_4])
 
 ////////////////////////////////////////////////
 // BALANCE THE RING (see also: petronella)    //
@@ -353,8 +346,7 @@ var pass_through_string = "pass through to new neighbors"
 function pass_through_view(move,pvs) {
   var [beats] = pvs;
   var [sbeats] = parameter_strings(move, pvs);
-  if (2 == beats) return pass_through_string;
-  else return words(pass_through_string,sbeats);
+  return words(pass_through_string,sbeats); 
 }
 
 defineFigure( "pass through", [param_beats_2], {progression: true, view: pass_through_view})
@@ -368,7 +360,7 @@ function petronella_view(move,pvs) {
   var [sbalance, sbeats] = parameter_strings(move, pvs);
   var balance_beats = 4 * !!balance;
   if (balance_beats + 4 == beats) return words(sbalance,move);
-  else return words(sbalance,move,sbeats);
+  else return words(sbalance,move,"for "+beats);
 }
 
 defineFigure( "petronella", [param_balance_true, param_beats_8], {view: petronella_view})
