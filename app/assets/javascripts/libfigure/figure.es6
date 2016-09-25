@@ -143,7 +143,7 @@ function parameters(move){
     var fig = defined_events[move];
     if (fig)
         return fig.parameters
-    if (!issued_parameter_warning)
+    if (move && !issued_parameter_warning)
     {
         issued_parameter_warning = true
         console.log("Warning: could not find a figure definition for '"+move+"', suppressing future warnings of this type");
