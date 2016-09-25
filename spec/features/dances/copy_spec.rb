@@ -2,12 +2,12 @@
 require 'rails_helper'
 require 'login_helper'
 
-describe 'Editing dances', js: true do
+describe 'Copying dances', js: true do
   it 'displays attributes of an existing dance' do
     with_login do |user|
       dance = FactoryGirl.create(:box_the_gnat_contra, user: user)
-      visit edit_dance_path dance.id
-      expect(page.body).to include "Box the Gnat Contra" # dance.title
+      visit new_dance_path copy_dance_id: dance.id
+      expect(page.body).to include "Box the Gnat Contra variation" # dance.title
       expect(page.body).to include "Becky Hill" # dance.choreographer.name
       expect(page.body).to include "improper" # dance.start_type
       expect(page.body).to_not match /Becket/i
@@ -20,15 +20,16 @@ describe 'Editing dances', js: true do
   it 'editing a dance passes it\'s information through unchanged' do
     with_login do |user|
       dance1 = FactoryGirl.create(:box_the_gnat_contra, user: user)
-      visit edit_dance_path dance1.id
+      visit new_dance_path copy_dance_id: dance1.id
       click_button 'Save Dance'
-      dance2 = FactoryGirl.build_stubbed(:box_the_gnat_contra, user: user)
-      dance1.reload
-      expect(current_path).to eq dance_path dance1.id
-      %w[title start_type figures_json notes].each do |message|
-        expect(dance1.send message).to eql dance2.send message
+
+      dance2 = Dance.last
+      expect(current_path).to eq dance_path dance2.id
+      %w[start_type figures_json notes].each do |message|
+        expect(dance2.send message).to eql dance1.send message
       end
-      expect(dance1.choreographer.name).to eql dance2.choreographer.name
+      expect(dance2.title).to eql "#{dance1.title} variation"
+      expect(dance2.choreographer.name).to eql dance1.choreographer.name
     end
   end
 end
