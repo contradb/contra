@@ -67,7 +67,8 @@ describe 'Creating dances', js: true do
       check('bal')
       # 'right' hand is default
       #  8 beats is default
-      expect(page).to have_content('partners balance & box the gnat')
+      fill_in('notes', with: 'hastily')
+      expect(page).to have_content('partners balance & box the gnat hastily')
       click_on 'Save Dance'
 
       dance = Dance.last
@@ -75,7 +76,7 @@ describe 'Creating dances', js: true do
       expect(dance.title).to eql('Rover McGrover')
       expect(current_path).to eq dance_path(dance.id)
       expect(page).to have_content('Dance was successfully created')
-      expect(page).to have_content('partners balance & box the gnat')
+      expect(page).to have_content('partners balance & box the gnat hastily')
     end
   end
 end

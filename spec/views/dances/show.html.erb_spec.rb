@@ -12,7 +12,7 @@ RSpec.describe "dances/show", type: :view do
       :start_type => "Complicated Formation",
       :choreographer => FactoryGirl.build_stubbed(:choreographer, name: "Becky Hill"),
       :user => FactoryGirl.build_stubbed(:user),
-      :figures_json => '[{"parameter_values":["partners",true,16],"move":"balance and swing"}]',
+      :figures_json => '[{"parameter_values":["partners",true,16],"move":"balance and swing", "note":"https://github.com/vmg/redcarpet **markdown**"}]',
       :notes => "My Note Text www.yahoo.com blah blah **bold** blah"
     ))
   end
@@ -38,8 +38,7 @@ RSpec.describe "dances/show", type: :view do
     expect(rendered).to match('<strong>bold</strong>')
   end
 
-  xit "supports Markdown figure notes" do
-    # legit bug - we don't support figure notes right now.
+  it "supports Markdown figure notes" do
     render
     expect(rendered).to have_link('https://github.com/vmg/redcarpet')
     expect(rendered).to match('<strong>markdown</strong>')
