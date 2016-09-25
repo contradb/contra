@@ -52,4 +52,30 @@ describe 'Creating dances', js: true do
 
   pending 'tests choreographer auto-complete'
 
+  it 'records figures' do
+    with_login do
+      visit '/dances/new'
+      fill_in 'dance_title', with: 'Rover McGrover'
+      fill_in 'dance[choreographer_name]', with: 'Cary Ravitz'
+      fill_in 'dance[start_type]', with: 'improper'
+
+      7.times { click_button 'Remove Figure' }
+
+      choose('empty figure')
+      select('box the gnat')
+      select('partners')
+      check('bal')
+      # 'right' hand is default
+      #  8 beats is default
+      expect(page).to have_content('partners balance & box the gnat')
+      click_on 'Save Dance'
+
+      dance = Dance.last
+
+      expect(dance.title).to eql('Rover McGrover')
+      expect(current_path).to eq dance_path(dance.id)
+      expect(page).to have_content('Dance was successfully created')
+      expect(page).to have_content('partners balance & box the gnat')
+    end
+  end
 end
