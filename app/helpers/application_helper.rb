@@ -8,15 +8,15 @@ module ApplicationHelper
     Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(MARKDOWN_OPTS.merge no_links: true), RENDER_OPTS)
 
 
-  def ApplicationHelper::renderMarkdown (txt)
+  def self.renderMarkdown (txt)
     ("<div class='contra-markdown-block'>"+@@markdown.render(txt)+"</div>").html_safe
   end
 
-  def ApplicationHelper::renderMarkdownInline (txt)
+  def self.renderMarkdownInline (txt)
     ("<span class='contra-markdown-inline'>"+@@markdown.render(txt)+"</span>").html_safe
   end
 
-  def ApplicationHelper::renderMarkdownInlineNoLinks (txt)
+  def self.renderMarkdownInlineNoLinks (txt)
     ("<span class='contra-markdown-inline'>"+@@markdown_no_links.render(txt)+"</span>").html_safe
   end
 

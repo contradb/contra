@@ -41,6 +41,8 @@ module JSLibFigure
           f2['parameter_values'] = ensure_array_of_terminal(pvs) if pvs
           move = figure['move']
           f2['move'] = ensure_string(move) if move
+          note = figure['note']
+          f2['note'] = ensure_string(note) if note
           f2
         end)
     else

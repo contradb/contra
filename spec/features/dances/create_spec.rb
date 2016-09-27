@@ -67,7 +67,7 @@ describe 'Creating dances', js: true do
       check('bal')
       # 'right' hand is default
       #  8 beats is default
-      fill_in('notes', with: 'hastily')
+      fill_in('note', with: 'hastily')
       expect(page).to have_content('partners balance & box the gnat hastily')
       click_on 'Save Dance'
 

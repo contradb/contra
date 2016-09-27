@@ -67,8 +67,6 @@
     </div><%# list figures %>
     <div class="col-xs-12 col-md-6"> <%# edit figure %>
       <div ng-repeat="figure in editable_figures(figures)">
-        <span>{{$index+1}}</span>
-        <br />
         <select class="move_edit" ng-model="figure.move"
                 ng-options="m for m in moves()"
                 ng-change="user_changed_move(figure)">
@@ -222,6 +220,9 @@
 
           </span>
         </span>
+        <div>
+          <label>note <input type='string' ng-model='figure.note'/></label>
+        </div>
       </div>
     </div>
     <div class="col-xs-12">

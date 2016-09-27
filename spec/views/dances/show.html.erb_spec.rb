@@ -12,7 +12,7 @@ RSpec.describe "dances/show", type: :view do
       :start_type => "Complicated Formation",
       :choreographer => FactoryGirl.build_stubbed(:choreographer, name: "Becky Hill"),
       :user => FactoryGirl.build_stubbed(:user),
-      :figures_json => '[{"parameter_values":["partners",true,16],"move":"balance and swing", "note":"https://github.com/vmg/redcarpet **markdown**"}]',
+      :figures_json => '[{"parameter_values":["partners",true,16],"move":"balance and swing", "note":"the quick brown fox <script>alert(\'no dialog pops up\');</script>"}]',
       :notes => "My Note Text www.yahoo.com blah blah **bold** blah"
     ))
   end
@@ -38,10 +38,14 @@ RSpec.describe "dances/show", type: :view do
     expect(rendered).to match('<strong>bold</strong>')
   end
 
-  it "supports Markdown figure notes" do
+  it "supports plain text figure notes" do
     render
-    expect(rendered).to have_link('https://github.com/vmg/redcarpet')
-    expect(rendered).to match('<strong>markdown</strong>')
+    expect(rendered).to have_content('the quick brown fox')
+  end
+
+  it 'figure notes do not pass js injection attacks' do
+    render
+    expect(rendered).to have_content("<script>alert('no dialog pops up');</script>")
   end
 
 end

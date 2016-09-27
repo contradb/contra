@@ -25,15 +25,17 @@ function sumBeats(figures,optional_limit) {
 }
 
 function figure_html_readonly(f) {
-    var fig_def = defined_events[f.move];
-    if (fig_def) {
-        var func = fig_def.props.view || figure_html_readonly_default;
-        return func(f.move, f.parameter_values);
-    }
-    else if (f.move)
-      return "rouge figure "+f.move+"?!";
-    else
-      return "empty figure";
+  var fig_def = defined_events[f.move];
+  if (fig_def) {
+    var func = fig_def.props.view || figure_html_readonly_default;
+    var main = func(f.move, f.parameter_values);
+    var note = f.note
+    return note ? words(main,note) : main
+  }
+  else if (f.move)
+    return "rouge figure "+f.move+"?!";
+  else
+    return "empty figure";
 }
 
 
