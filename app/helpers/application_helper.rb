@@ -20,4 +20,19 @@ module ApplicationHelper
     ("<span class='contra-markdown-inline'>"+@@markdown_no_links.render(txt)+"</span>").html_safe
   end
 
+
+  def guess_title_text(controller_name)
+    looking_at_name = ActiveSupport::Inflector.singularize controller_name
+    if looking_at_name
+      looking_at = eval("@#{looking_at_name}")
+      if looking_at.respond_to? :name
+        "#{looking_at.name} | #{looking_at_name.capitalize} | Contra"
+      elsif looking_at.respond_to? :title
+        "#{looking_at.title} | #{looking_at_name.capitalize} | Contra"
+      else
+        nil
+      end
+    end ||
+      "#{controller_name.capitalize} | Contra"
+  end
 end
