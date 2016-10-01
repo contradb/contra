@@ -2,6 +2,14 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+
+.figure-view {
+  font-family: 'Satisfy', cursive;
+}
+
+// below here predates new figure editor-dm 10-01-2016
+
+
 .figure_edits .balance  { 
   font-size: smaller;
   transform: rotate(-90deg);  // if it doesn't work, it's not that bad. 

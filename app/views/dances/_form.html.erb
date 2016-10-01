@@ -60,7 +60,7 @@
       <div ng-repeat="figure in figures.arr">
         <div ng-class="styleForBeats(sumBeats(figures.arr,$index))">
           <a ng-click="(edit_index_box[0] == $index) ? edit_index_box.length = 0 : edit_index_box[0] = $index"
-             href="#">
+             href="#" class="figure-view">
             {{figure_html_readonly(figures.arr[$index])}}
           </a>
         </div>
