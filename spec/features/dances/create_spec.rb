@@ -61,7 +61,7 @@ describe 'Creating dances', js: true do
 
       7.times { click_button 'Remove Figure' }
 
-      choose('empty figure')
+      click_on('empty figure')
       select('box the gnat')
       select('partners')
       check('bal')

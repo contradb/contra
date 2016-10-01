@@ -9,7 +9,7 @@ function newFigure () {
 function figureBeats (f) {
   var defaultBeats = 8;
   if (! f.move) return defaultBeats;
-  idx = find_parameter_index_by_name("beats", parameters(f.move))
+  var idx = find_parameter_index_by_name("beats", parameters(f.move))
   if (idx<0)
     return defaultBeats;
   else
