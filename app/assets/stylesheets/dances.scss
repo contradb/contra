@@ -5,6 +5,14 @@
 
 .figure-view {
   font-family: 'Satisfy', cursive;
+  font-size: 1.3em;
+  text-decoration: none;
+  padding-left: 1em;
+  color: black;
+  &:hover, &:focus {
+    text-decoration: none;
+    color: #007;
+  }
 }
 
 // below here predates new figure editor-dm 10-01-2016
