@@ -49,27 +49,33 @@
       <div class="col-xs-12 col-md-6"> <%# list figures %>
         <div ng-repeat="figure in figures.arr">
           <div ng-class="styleForBeats(sumBeats(figures.arr,$index))">
-            <a ng-click="(edit_index_box[0] == $index) ? edit_index_box.length = 0 : edit_index_box[0] = $index"
-               href="#" class="figure-view">
+            <a ng-click="(edit_index_box[0] == $index) ? edit_index_box.length = 0 : edit_index_box[0] = $index; "
+               href="" class="figure-view">
               {{figure_html_readonly(figures.arr[$index])}}
             </a>
           </div>
           <div ng-if="edit_index_box.indexOf($index) >= 0"> <%# edit figure %>
             <label><span class="figure-edit-label">move</span>
-              <select ng-model="figure.move"
-                      ng-options="m for m in moves()"
-                      ng-change="user_changed_move(figure)"
-                      class='figure-edit-value'>
-              </select>
+              <div class='figure-value-setter-div'>
+                <select ng-model="figure.move"
+                        ng-options="m for m in moves()"
+                        ng-change="user_changed_move(figure)">
+                </select>
+              </div>
             </label>
             <div ng-repeat="p in parameters(figure.move)">
               <label ng-init="set_if_unset(figure.parameter_values, $index, p.value)">
                 <span class="figure-edit-label">{{parameter_label(figure.move, $index)}}</span>
-                <span class='figure-edit-value'><%= render 'chooser' %></span>
+                <div class='figure-value-setter-div'>
+                  <%= render 'chooser' %>
+                </div>
               </label>
             </div>
             <div>
-              <label><span class='figure-edit-label'>note</span><input type='string' ng-model='figure.note' class='figure-edit-value'/></label>
+              <label><span class='figure-edit-label'>note</span>
+                <div class='figure-value-setter-div'>
+                  <input type='text' ng-model='figure.note'/>
+              </div></label>
             </div>
           </div>
         </div>

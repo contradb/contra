@@ -22,12 +22,16 @@
   display: inline-block;
   vertical-align: top;
 }
-.figure-edit-value {
-}
-.chooser-div {
+.figure-value-setter-div {
   display: inline-block;
   .radio-tweaks {
     margin-right: 1em;
+  }
+  select {
+    min-width: 13em;
+  }
+  input[type=text] {
+    width: 13em;
   }
 }
 
