@@ -55,21 +55,21 @@
             </a>
           </div>
           <div ng-if="edit_index_box.indexOf($index) >= 0"> <%# edit figure %>
-            <label class="col"><span class="row-xs-1">move</span>
-              <select class="move_edit row-xs-8" ng-model="figure.move"
+            <label><span class="figure-edit-label">move</span>
+              <select ng-model="figure.move"
                       ng-options="m for m in moves()"
-                      ng-change="user_changed_move(figure)">
+                      ng-change="user_changed_move(figure)"
+                      class='figure-edit-value'>
               </select>
             </label>
-            <span ng-repeat="p in parameters(figure.move)">
-              <br />
+            <div ng-repeat="p in parameters(figure.move)">
               <label ng-init="set_if_unset(figure.parameter_values, $index, p.value)">
-                {{parameter_label(figure.move, $index)}}
-                <%= render 'chooser' %>
+                <span class="figure-edit-label">{{parameter_label(figure.move, $index)}}</span>
+                <span class='figure-edit-value'><%= render 'chooser' %></span>
               </label>
-            </span>
+            </div>
             <div>
-              <label>note <input type='string' ng-model='figure.note'/></label>
+              <label><span class='figure-edit-label'>note</span><input type='string' ng-model='figure.note' class='figure-edit-value'/></label>
             </div>
           </div>
         </div>

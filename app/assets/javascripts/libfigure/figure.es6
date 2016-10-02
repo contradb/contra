@@ -439,4 +439,15 @@ defineFigureAlias( "long swing", "swing", [null, param_balance_false, param_beat
 defineFigureAlias( "balance and swing", "swing", [null, param_balance_true,  param_beats_16] )
 
 
-
+////////////////////////////////////////////////
+// EVERYTHING BAGEL                           //
+////////////////////////////////////////////////
+defineFigure( "everything bagel", [param_balance_true,
+                                   param_left_hand_spin,
+                                   param_by_right,
+                                   param_half_around,
+                                   param_subject_pairz,
+                                   param_pass_on_right,
+                                   param_star_grip,
+                                   param_custom_figure,
+                                   param_beats_8])

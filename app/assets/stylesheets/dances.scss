@@ -7,39 +7,39 @@
   font-family: 'Satisfy', cursive;
   font-size: 1.3em;
   text-decoration: none;
-  padding-left: 1em;
+  padding-left: 0.4em;
   color: black;
   &:hover, &:focus {
     text-decoration: none;
-    color: #007;
+    color: #007; /* dark blue */
+  }
+}
+
+.figure-edit-label {
+  text-align: right;
+  width: 4em;
+  margin-right: 0.5em;
+  display: inline-block;
+  vertical-align: top;
+}
+.figure-edit-value {
+}
+.chooser-div {
+  display: inline-block;
+  .radio-tweaks {
+    margin-right: 1em;
   }
 }
 
 // below here predates new figure editor-dm 10-01-2016
 
 
-.figure_edits .balance  { 
-  font-size: smaller;
-  transform: rotate(-90deg);  // if it doesn't work, it's not that bad. 
-}
-.figure_edits th { text-align: center }
-.beat_edit      {}
-.balance_edit   {}
-.who_edit       {}
-.move_edit      {}
-.turns_edit     {}
-.formation_edit {}
-.notes_edit     {}
 
 
 .happy_beats {border-top: solid black}
 .grumpy_beats {@extend .happy_beats; color:red;}
 
-
-.figure_edits {margin-bottom: 2em;}
-
 .per_dance_notes_edit {height: 8em;}
-
 
 .dance-title-edit { font-size: 225%; font-weight: bold;}
 

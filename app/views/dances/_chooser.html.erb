@@ -1,51 +1,51 @@
-                <span ng-if="p.ui == chooser_boolean">
+                <div class='chooser-div' ng-if="p.ui == chooser_boolean">
                   <input type="checkbox" class="balance_edit" 
                          ng-model="figure.parameter_values[$index]"
                          ng-change="user_changed_parameter(figure,$index)"/>
-                </span>
-                <span ng-if="p.ui == chooser_beats">
+                </div>
+                <div class='chooser-div' ng-if="p.ui == chooser_beats">
                   <select
-                     class="beat_edit" ng-model="figure.parameter_values[$index]" 
+                     ng-model="figure.parameter_values[$index]" 
                      ng-options="b for b in [8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]"
                      ng-change="user_changed_parameter(figure,$index)">
                   </select>
-                </span>
-                <span ng-if="p.ui == chooser_spin">
-                  <label>clockwise <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" /></label>
-                  <label>ccw <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)"/></label>
-                </span>
-                <span ng-if="p.ui == chooser_left_right_spin"> 
-                  <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" />left</label>
-                  <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)" />right</label>
-                </span>
-                <span ng-if="p.ui == chooser_right_left_hand">
-                  <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)"/>left</label> /
-                  <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" />right</label>
-                </span>
-                <span ng-if="p.ui == chooser_right_left_shoulder">
-                  <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)"/>left</label>
-                  <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" />right</label>
-                </span>
+                </div>
+                <div class='chooser-div' ng-if="p.ui == chooser_spin">
+                  <label class='radio-tweaks'>clockwise <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" /></label>
+                  <label class='radio-tweaks'>ccw <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)"/></label>
+                </div>
+                <div class='chooser-div' ng-if="p.ui == chooser_left_right_spin"> 
+                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" />left</label>
+                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)" />right</label>
+                </div>
+                <div class='chooser-div' ng-if="p.ui == chooser_right_left_hand">
+                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)"/>left</label>
+                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" />right</label>
+                </div>
+                <div class='chooser-div' ng-if="p.ui == chooser_right_left_shoulder">
+                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)"/>left</label>
+                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" />right</label>
+                </div>
 
-                <span ng-if="p.ui == chooser_side">
-                  <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)"/>left</label> /
-                  <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)" />right</label>
-                </span>
+                <div class='chooser-div' ng-if="p.ui == chooser_side">
+                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)"/>left</label>
+                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)" />right</label>
+                </div>
 
-                <span ng-if="p.ui == chooser_revolutions">
+                <div class='chooser-div' ng-if="p.ui == chooser_revolutions">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-options="degreesToRotations(a) for a in anglesForMove(figure.move)"
                           ng-change="user_changed_parameter(figure,$index)">
                   </select>
-                </span>
-                <span ng-if="p.ui == chooser_places">
+                </div>
+                <div class='chooser-div' ng-if="p.ui == chooser_places">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-options="degreesToPlaces(a) for a in anglesForMove(figure.move)"
                           ng-change="user_changed_parameter(figure,$index)">
                   </select>
-                </span>
+                </div>
 
-                <span ng-if="p.ui == chooser_dancers">
+                <div class='chooser-div' ng-if="p.ui == chooser_dancers">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="user_changed_parameter(figure,$index)">
                     <option value="everybody">everybody</option>
@@ -64,8 +64,8 @@
                     <option value="G2">gentlespoon 2</option>
                     <option value="L2">ladle 2</option>
                   </select>
-                </span>
-                <span ng-if="p.ui == chooser_pair">
+                </div>
+                <div class='chooser-div' ng-if="p.ui == chooser_pair">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="user_changed_parameter(figure,$index)">
                     <option value="gentlespoons">gentlespoons</option>
@@ -75,8 +75,8 @@
                     <option value="first_corners">first corners</option>
                     <option value="second_corners">second corners</option>
                   </select>
-                </span>
-                <span ng-if="p.ui == chooser_pairz">
+                </div>
+                <div class='chooser-div' ng-if="p.ui == chooser_pairz">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="user_changed_parameter(figure,$index)">
                     <option value="gentlespoons">gentlespoons</option>
@@ -90,8 +90,8 @@
                     <option value="first_corners">first corners</option>
                     <option value="second_corners">second corners</option>
                   </select>
-                </span>
-                <span ng-if="p.ui == chooser_pairs">
+                </div>
+                <div class='chooser-div' ng-if="p.ui == chooser_pairs">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="user_changed_parameter(figure,$index)">
                     <option value="partners">partners</option>
@@ -99,8 +99,8 @@
                     <option value="shadows">shadows</option>
                     <option value="same_roles">same roles</option>
                   </select>
-                </span>
-                <span ng-if="p.ui == chooser_dancer">
+                </div>
+                <div class='chooser-div' ng-if="p.ui == chooser_dancer">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="user_changed_parameter(figure,$index)">
                     <option value="G1">gentlespoon 1</option>
@@ -108,27 +108,28 @@
                     <option value="G2">gentlespoon 2</option>
                     <option value="L2">ladle 2</option>
                   </select>
-                </span>
-                <span ng-if="p.ui == chooser_role">
+                </div>
+                <div class='chooser-div' ng-if="p.ui == chooser_role">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="user_changed_parameter(figure,$index)">
                     <option value="gentlespoons">gentlespoons</option>
                     <option value="ladles">ladles</option>
                   </select>
-                </span>
-                <span ng-if="p.ui == chooser_hetero">
+                </div>
+                <div class='chooser-div' ng-if="p.ui == chooser_hetero">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="user_changed_parameter(figure,$index)">
                     <option value="partners">partners</option>
                     <option value="neighbors">neighbors</option>
                     <option value="shadows">shadows</option>
                   </select>
-                </span>
-                <span ng-if="p.ui == chooser_text">
+                </div>
+                <div class='chooser-div' ng-if="p.ui == chooser_text">
                   <input type="text" ng-model="figure.parameter_values[$index]"
                          ng-change="user_changed_parameter(figure,$index)"/>
-                </span>
-                <span ng-if="p.ui == chooser_star_grip">
-                  <label>wrist grip <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)"/></label> /
-                  <label>hands across <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)" /></label>
-                </span>
+                </div>
+                <div class='chooser-div' ng-if="p.ui == chooser_star_grip">
+                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)"/> wrist grip</label>
+                  <br class='visible-xs'/>
+                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)" /> hands across</label>
+                </div>
