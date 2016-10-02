@@ -3,7 +3,7 @@
   of space, then labels take the left column. If space is tight, they
   take the two leftmost columns.  %>
 
-  <% debug_figure_json = false %>
+  <% debug_figure_json = true %>
 
   <div class="container"  ng-app="contra">
     <%= form_for(@dance) do |f| %>
@@ -19,12 +19,11 @@
       </div>
     <% end %>
 
-<% if params[:copy_dance_id] then
-     copy_dance = Dance.find(params[:copy_dance_id])
-   else
-     copy_dance = nil
-   end 
-%>
+    <% if params[:copy_dance_id] then
+         copy_dance = Dance.find(params[:copy_dance_id])
+       else
+         copy_dance = nil
+       end %>
 
   <% if copy_dance then %>
   <div class="row">
@@ -66,60 +65,55 @@
         </div>
         <!-- paste here -->
         <div ng-if="edit_index_box.indexOf($index) >= 0"> <%# edit figure %>
-          <select class="move_edit" ng-model="figure.move"
-                  ng-options="m for m in moves()"
-                  ng-change="user_changed_move(figure)">
-          </select>
+          <label class="col"><span class="row-xs-1">move</span>
+            <select class="move_edit row-xs-8" ng-model="figure.move"
+                    ng-options="m for m in moves()"
+                    ng-change="user_changed_move(figure)">
+            </select>
+          </label>
           <span ng-repeat="p in parameters(figure.move)">
             <br />
-            <span ng-init="set_if_unset(figure.parameter_values, $index, p.value)">
-              {{parameter_glue(figure.move, $index)}}
+            <label ng-init="set_if_unset(figure.parameter_values, $index, p.value)">
+              {{parameter_label(figure.move, $index)}}
               <span ng-if="p.ui == chooser_boolean">
-                <label>{{p.name}}
-                  <input type="checkbox" class="balance_edit" 
-                         ng-model="figure.parameter_values[$index]"
-                         ng-change="user_changed_parameter(figure,$index)"/></label>
+                <input type="checkbox" class="balance_edit" 
+                       ng-model="figure.parameter_values[$index]"
+                       ng-change="user_changed_parameter(figure,$index)"/>
               </span>
               <span ng-if="p.ui == chooser_beats">
-                <label>
-                  <select
-                     class="beat_edit" ng-model="figure.parameter_values[$index]" 
-                     ng-options="b for b in [8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]"
-                     ng-change="user_changed_parameter(figure,$index)">
-                  </select>
-                  {{p.name}}
-                </label>
+                <select
+                   class="beat_edit" ng-model="figure.parameter_values[$index]" 
+                   ng-options="b for b in [8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]"
+                   ng-change="user_changed_parameter(figure,$index)">
+                </select>
               </span>
 
               <span ng-if="p.ui == chooser_spin">
-                <label>clockwise <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" /></label> /
+                <label>clockwise <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" /></label>
                 <label>ccw <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)"/></label>
               </span>
               <span ng-if="p.ui == chooser_left_right_spin"> 
-                <label>to the</label>
-                <label>left  <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" /></label> /
-                <label>right <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)" /></label>
+                <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" />left</label>
+                <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)" />right</label>
               </span>
               <span ng-if="p.ui == chooser_right_left_hand">
-                <label>left  <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)"/></label> /
-                <label>right <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" /></label>
-                <label>hand</label>
+                <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)"/>left</label> /
+                <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" />right</label>
               </span>
               <span ng-if="p.ui == chooser_right_left_shoulder">
-                <label>left  <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)"/></label> /
-                <label>right <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" /></label>
-                <label>shoulder</label>
+                <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)"/>left</label>
+                <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" />right</label>
               </span>
 
               <span ng-if="p.ui == chooser_side">
-                <label>left  <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)"/></label> /
-                <label>right <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)" /></label>
-                <label>side</label>
+                <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)"/>left</label> /
+                <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)" />right</label>
               </span>
 
               <span ng-if="p.ui == chooser_revolutions">
                 <select ng-model="figure.parameter_values[$index]"
-                        ng-options="degreesToRotations(a) for a in anglesForMove(figure.move)" ng-change="user_changed_parameter(figure,$index)">
+                        ng-options="degreesToRotations(a) for a in anglesForMove(figure.move)"
+                        ng-change="user_changed_parameter(figure,$index)">
                 </select>
               </span>
               <span ng-if="p.ui == chooser_places">
@@ -148,7 +142,7 @@
                   <option value="G2">gentlespoon 2</option>
                   <option value="L2">ladle 2</option>
                 </select>
-              </span>
+            </label>
               <span ng-if="p.ui == chooser_pair">
                 <select ng-model="figure.parameter_values[$index]"
                         ng-change="user_changed_parameter(figure,$index)">

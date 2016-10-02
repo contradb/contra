@@ -40,9 +40,11 @@ function user_changed_move (figure) {
         figure.parameter_values[i] = params[i].value
 }
 
-function parameter_glue (movestring, index) {
-    var fig_def = defined_events[movestring];
-    return (fig_def && fig_def.props && fig_def.props.glue && fig_def.props.glue[index]) || ""
+function parameter_label (movestring, index) {
+  var fig_def = defined_events[movestring];
+  var ps = parameters(movestring);
+  return (fig_def && fig_def.props && fig_def.props.labels && fig_def.props.labels[index]) ||
+    (ps[index] && ps[index].name)
 }
 
 // =====================================================================================
@@ -84,7 +86,7 @@ function parameter_glue (movestring, index) {
         $scope.set_if_unset = set_if_unset;
         $scope.user_changed_parameter = user_changed_parameter
         $scope.user_changed_move = user_changed_move
-        $scope.parameter_glue = parameter_glue
+        $scope.parameter_label = parameter_label
         $scope.edit_index_box = [null]
         $scope.editable_figures = function(figures) {
             idx = $scope.edit_index_box[0]

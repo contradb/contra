@@ -34,17 +34,17 @@ function stringParamHand      (value) {return value ? "by the right" : "by the l
 function stringParamShoulder  (value) {return value ? "by the right shoulder" : "by the left shoulder"} // untested
 
 // spin = clockwise | ccw | undefined
-param_spin                   = {name: "spin",               ui: chooser_spin, string: stringParamClock}
-param_spin_clockwise         = {name: "spin", value: true,  ui: chooser_spin, string: stringParamClock}
-param_spin_ccw               = {name: "spin", value: false, ui: chooser_spin, string: stringParamClock} 
-param_spin_left              = {name: "spin", value: true,  ui: chooser_left_right_spin, string: stringParamLeftRight}
-param_spin_right             = {name: "spin", value: false, ui: chooser_left_right_spin, string: stringParamLeftRight} 
-param_xhand_spin             = {name: "spin",               ui: chooser_right_left_hand, string: stringParamHand}
-param_right_hand_spin        = {name: "spin", value: true,  ui: chooser_right_left_hand, string: stringParamHand}
-param_left_hand_spin         = {name: "spin", value: false, ui: chooser_right_left_hand, string: stringParamHand}
-param_xshoulder_spin         = {name: "spin",               ui: chooser_right_left_shoulder, string: stringParamShoulder}
-param_right_shoulder_spin    = {name: "spin", value: true,  ui: chooser_right_left_shoulder, string: stringParamShoulder}
-param_left_shoulder_spin     = {name: "spin", value: false, ui: chooser_right_left_shoulder, string: stringParamShoulder}
+param_spin                   = {name: "turn",               ui: chooser_spin, string: stringParamClock}
+param_spin_clockwise         = {name: "turn", value: true,  ui: chooser_spin, string: stringParamClock}
+param_spin_ccw               = {name: "turn", value: false, ui: chooser_spin, string: stringParamClock} 
+param_spin_left              = {name: "turn", value: true,  ui: chooser_left_right_spin, string: stringParamLeftRight}
+param_spin_right             = {name: "turn", value: false, ui: chooser_left_right_spin, string: stringParamLeftRight} 
+param_xhand_spin             = {name: "hand",               ui: chooser_right_left_hand, string: stringParamHand}
+param_right_hand_spin        = {name: "hand", value: true,  ui: chooser_right_left_hand, string: stringParamHand}
+param_left_hand_spin         = {name: "hand", value: false, ui: chooser_right_left_hand, string: stringParamHand}
+param_xshoulder_spin         = {name: "shoulder",               ui: chooser_right_left_shoulder, string: stringParamShoulder}
+param_right_shoulder_spin    = {name: "shoulder", value: true,  ui: chooser_right_left_shoulder, string: stringParamShoulder}
+param_left_shoulder_spin     = {name: "shoulder", value: false, ui: chooser_right_left_shoulder, string: stringParamShoulder}
 
 
 function stringParamSide (value) {
@@ -66,12 +66,12 @@ function stringParamDegrees (value,move) {
         return degreesToRotations(value)
     }
 }
-param_revolutions     = {name: "degrees",             ui: chooser_revolutions, string: stringParamDegrees}
-param_half_around     = {name: "degrees", value: 180, ui: chooser_revolutions, string: stringParamDegrees}
-param_once_around     = {name: "degrees", value: 360, ui: chooser_revolutions, string: stringParamDegrees}
-param_once_and_a_half = {name: "degrees", value: 540, ui: chooser_revolutions, string: stringParamDegrees}
-param_three_places    = {name: "degrees", value: 270, ui: chooser_places,      string: stringParamDegrees}
-param_four_places     = {name: "degrees", value: 360, ui: chooser_places,      string: stringParamDegrees}
+param_revolutions     = {name: "circling",             ui: chooser_revolutions, string: stringParamDegrees}
+param_half_around     = {name: "circling", value: 180, ui: chooser_revolutions, string: stringParamDegrees}
+param_once_around     = {name: "circling", value: 360, ui: chooser_revolutions, string: stringParamDegrees}
+param_once_and_a_half = {name: "cirlcing", value: 540, ui: chooser_revolutions, string: stringParamDegrees}
+param_three_places    = {name: "places", value: 270, ui: chooser_places,      string: stringParamDegrees}
+param_four_places     = {name: "places", value: 360, ui: chooser_places,      string: stringParamDegrees}
 
 param_subject         = {name: "who", value: "everyone", ui: chooser_dancers}
 param_subject_pair    = {name: "who",                    ui: chooser_pair}  // 1 pair of dancers
@@ -101,5 +101,5 @@ function stringParamWristGrip (value,move) {
     return value ? "" : "hands across"
 }
 
-param_star_grip = {name: "star grip", value: "wrist grip", ui: chooser_star_grip, string: stringParamWristGrip}
+param_star_grip = {name: "grip", value: "wrist grip", ui: chooser_star_grip, string: stringParamWristGrip}
 
