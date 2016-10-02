@@ -25,11 +25,11 @@
          copy_dance = nil
        end %>
 
-  <% if copy_dance then %>
-  <div class="row">
-    <div class="col-xs-12">Composing a variation of <strong><%= copy_dance.title %></strong></div>
-  </div>
-  <% end %>
+    <% if copy_dance then %>
+      <div class="row">
+        <div class="col-xs-12">Composing a variation of <strong><%= copy_dance.title %></strong></div>
+      </div>
+    <% end %>
 
   <div class="row field">
     <%= f.text_field :title, {class: "dance-title-edit col-xs-12", value: copy_dance ? "#{copy_dance.title} variation" : (@dance.title.blank? ? "Untitled" : @dance.title)} %>
