@@ -1,363 +1,187 @@
 
-  <%# Layout the editor in a twelve-column grid. If we've got plenty
-  of space, then labels take the left column. If space is tight, they
-  take the two leftmost columns.  %>
 
-  <% debug_figure_json = true %>
+<% debug_figure_json = true %>
 
-  <div class="container"  ng-app="contra">
-    <%= form_for(@dance) do |f| %>
-      <% if @dance.errors.any? %>
+<div class="container"  ng-app="contra">
+  <%= form_for(@dance) do |f| %>
+    <% if @dance.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(@dance.errors.count, "error") %> prohibited this dance from being saved:</h2>
-      
         <ul>
           <% @dance.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+            <li><%= message %></li>
           <% end %>
         </ul>
       </div>
     <% end %>
 
-    <% if params[:copy_dance_id] then
-         copy_dance = Dance.find(params[:copy_dance_id])
-       else
-         copy_dance = nil
-       end %>
+    <% copy_dance = params[:copy_dance_id] && Dance.find(params[:copy_dance_id]) %>
 
-    <% if copy_dance then %>
+    <% if copy_dance %>
       <div class="row">
         <div class="col-xs-12">Composing a variation of <strong><%= copy_dance.title %></strong></div>
       </div>
     <% end %>
 
-  <div class="row field">
-    <%= f.text_field :title, {class: "dance-title-edit col-xs-12", value: copy_dance ? "#{copy_dance.title} variation" : (@dance.title.blank? ? "Untitled" : @dance.title)} %>
-  </div>
-  <div class="row field">
-    <%= f.text_field :choreographer_name,
-        {class: "col-xs-12 col-sm-6", id: "choreographer-autocomplete", placeholder: "Choreographer"}.
-        merge(copy_dance ? {value: copy_dance.choreographer.name} : {}) %>
-    <%= f.text_field :start_type,
-        {class: "col-xs-12 col-sm-6", id: "start-type-autocomplete", placeholder: "Formation"}
-        .merge(copy_dance ? {value: copy_dance.start_type} : {}) %>
-    <script>
-      var __choreographers__secret = <%= a_to_safe_str(Choreographer.all.map &:name) %>
-    </script>
-  </div>
-
-<%# ============================ new figure editors ==================== %>
-
-  <div ng-controller="FiguresController as figures" class="row" id="figures">
-    <div class="display:none"
-         ng-init="figures.arr=defaultFigures(<%= copy_dance ? copy_dance.figures_json : @dance.figures_json %>)">
+    <div class="row field">
+      <%= f.text_field :title, {class: "dance-title-edit col-xs-12",
+          value: (copy_dance ? "#{copy_dance.title} variation" : 
+                  (@dance.title.blank? ? "Untitled" : @dance.title))} %>
     </div>
-    <div class="col-xs-12 col-md-6"> <%# list figures %>
+    <div class="row field">
+      <%= f.text_field :choreographer_name,
+          {class: "col-xs-12 col-sm-6", id: "choreographer-autocomplete", placeholder: "Choreographer"}.
+          merge(copy_dance ? {value: copy_dance.choreographer.name} : {}) %>
+      <%= f.text_field :start_type,
+          {class: "col-xs-12 col-sm-6", id: "start-type-autocomplete", placeholder: "Formation"}
+          .merge(copy_dance ? {value: copy_dance.start_type} : {}) %>
+      <script>
+        var __choreographers__secret = <%= a_to_safe_str(Choreographer.all.map &:name) %>
+      </script>
+    </div>
 
-      <!-- <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" /> -->
+    <%# ============================ figure editors ==================== %>
 
-      <div ng-repeat="figure in figures.arr">
-        <div ng-class="styleForBeats(sumBeats(figures.arr,$index))">
-          <a ng-click="(edit_index_box[0] == $index) ? edit_index_box.length = 0 : edit_index_box[0] = $index"
-             href="#" class="figure-view">
-            {{figure_html_readonly(figures.arr[$index])}}
-          </a>
-        </div>
-        <!-- paste here -->
-        <div ng-if="edit_index_box.indexOf($index) >= 0"> <%# edit figure %>
-          <label class="col"><span class="row-xs-1">move</span>
-            <select class="move_edit row-xs-8" ng-model="figure.move"
-                    ng-options="m for m in moves()"
-                    ng-change="user_changed_move(figure)">
-            </select>
-          </label>
-          <span ng-repeat="p in parameters(figure.move)">
-            <br />
-            <label ng-init="set_if_unset(figure.parameter_values, $index, p.value)">
-              {{parameter_label(figure.move, $index)}}
-              <span ng-if="p.ui == chooser_boolean">
-                <input type="checkbox" class="balance_edit" 
-                       ng-model="figure.parameter_values[$index]"
-                       ng-change="user_changed_parameter(figure,$index)"/>
-              </span>
-              <span ng-if="p.ui == chooser_beats">
-                <select
-                   class="beat_edit" ng-model="figure.parameter_values[$index]" 
-                   ng-options="b for b in [8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]"
-                   ng-change="user_changed_parameter(figure,$index)">
-                </select>
-              </span>
-
-              <span ng-if="p.ui == chooser_spin">
-                <label>clockwise <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" /></label>
-                <label>ccw <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)"/></label>
-              </span>
-              <span ng-if="p.ui == chooser_left_right_spin"> 
-                <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" />left</label>
-                <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)" />right</label>
-              </span>
-              <span ng-if="p.ui == chooser_right_left_hand">
-                <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)"/>left</label> /
-                <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" />right</label>
-              </span>
-              <span ng-if="p.ui == chooser_right_left_shoulder">
-                <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)"/>left</label>
-                <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)" />right</label>
-              </span>
-
-              <span ng-if="p.ui == chooser_side">
-                <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)"/>left</label> /
-                <label><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)" />right</label>
-              </span>
-
-              <span ng-if="p.ui == chooser_revolutions">
-                <select ng-model="figure.parameter_values[$index]"
-                        ng-options="degreesToRotations(a) for a in anglesForMove(figure.move)"
-                        ng-change="user_changed_parameter(figure,$index)">
-                </select>
-              </span>
-              <span ng-if="p.ui == chooser_places">
-                <select ng-model="figure.parameter_values[$index]"
-                        ng-options="degreesToPlaces(a) for a in anglesForMove(figure.move)"
-                        ng-change="user_changed_parameter(figure,$index)">
-                </select>
-              </span>
-
-              <span ng-if="p.ui == chooser_dancers">
-                <select ng-model="figure.parameter_values[$index]"
-                        ng-change="user_changed_parameter(figure,$index)">
-                  <option value="everybody">everybody</option>
-                  <option value="gentlespoons">gentlespoons</option>
-                  <option value="ladles">ladles</option>
-                  <option value="partners">partners</option>
-                  <option value="neighbors">neighbors</option>
-                  <option value="shadows">shadows</option>
-                  <option value="ones">ones</option>
-                  <option value="twos">twos</option>
-                  <option value="same_roles">same roles</option>
-                  <option value="first_corners">first corners</option>
-                  <option value="second_corners">second corners</option>
-                  <option value="G1">gentlespoon 1</option>
-                  <option value="L1">ladle 1</option>
-                  <option value="G2">gentlespoon 2</option>
-                  <option value="L2">ladle 2</option>
-                </select>
+    <div ng-controller="FiguresController as figures" class="row" id="figures">
+      <div class="display:none"
+           ng-init="figures.arr=defaultFigures(<%= copy_dance ? copy_dance.figures_json : @dance.figures_json %>)">
+      </div>
+      <div class="col-xs-12 col-md-6"> <%# list figures %>
+        <div ng-repeat="figure in figures.arr">
+          <div ng-class="styleForBeats(sumBeats(figures.arr,$index))">
+            <a ng-click="(edit_index_box[0] == $index) ? edit_index_box.length = 0 : edit_index_box[0] = $index"
+               href="#" class="figure-view">
+              {{figure_html_readonly(figures.arr[$index])}}
+            </a>
+          </div>
+          <div ng-if="edit_index_box.indexOf($index) >= 0"> <%# edit figure %>
+            <label class="col"><span class="row-xs-1">move</span>
+              <select class="move_edit row-xs-8" ng-model="figure.move"
+                      ng-options="m for m in moves()"
+                      ng-change="user_changed_move(figure)">
+              </select>
             </label>
-              <span ng-if="p.ui == chooser_pair">
-                <select ng-model="figure.parameter_values[$index]"
-                        ng-change="user_changed_parameter(figure,$index)">
-                  <option value="gentlespoons">gentlespoons</option>
-                  <option value="ladles">ladles</option>
-                  <option value="ones">ones</option>
-                  <option value="twos">twos</option>
-                  <option value="first_corners">first corners</option>
-                  <option value="second_corners">second corners</option>
-                </select>
-              </span>
-              <span ng-if="p.ui == chooser_pairz">
-                <select ng-model="figure.parameter_values[$index]"
-                        ng-change="user_changed_parameter(figure,$index)">
-                  <option value="gentlespoons">gentlespoons</option>
-                  <option value="ladles">ladles</option>
-                  <option value="partners">partners</option>
-                  <option value="neighbors">neighbors</option>
-                  <option value="shadows">shadows</option>
-                  <option value="ones">ones</option>
-                  <option value="twos">twos</option>
-                  <option value="same_roles">same roles</option>
-                  <option value="first_corners">first corners</option>
-                  <option value="second_corners">second corners</option>
-                </select>
-              </span>
-              <span ng-if="p.ui == chooser_pairs">
-                <select ng-model="figure.parameter_values[$index]"
-                        ng-change="user_changed_parameter(figure,$index)">
-                  <option value="partners">partners</option>
-                  <option value="neighbors">neighbors</option>
-                  <option value="shadows">shadows</option>
-                  <option value="same_roles">same roles</option>
-                </select>
-              </span>
-              <span ng-if="p.ui == chooser_dancer">
-                <select ng-model="figure.parameter_values[$index]"
-                        ng-change="user_changed_parameter(figure,$index)">
-                  <option value="G1">gentlespoon 1</option>
-                  <option value="L1">ladle 1</option>
-                  <option value="G2">gentlespoon 2</option>
-                  <option value="L2">ladle 2</option>
-                </select>
-              </span>
-              <span ng-if="p.ui == chooser_role">
-                <select ng-model="figure.parameter_values[$index]"
-                        ng-change="user_changed_parameter(figure,$index)">
-                  <option value="gentlespoons">gentlespoons</option>
-                  <option value="ladles">ladles</option>
-                </select>
-              </span>
-              <span ng-if="p.ui == chooser_hetero">
-                <select ng-model="figure.parameter_values[$index]"
-                        ng-change="user_changed_parameter(figure,$index)">
-                  <option value="partners">partners</option>
-                  <option value="neighbors">neighbors</option>
-                  <option value="shadows">shadows</option>
-                </select>
-              </span>
-              <span ng-if="p.ui == chooser_text">
-                <input type="text" ng-model="figure.parameter_values[$index]"
-                       ng-change="user_changed_parameter(figure,$index)"/>
-              </span>
-              <span ng-if="p.ui == chooser_star_grip">
-                <label>wrist grip <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)"/></label> /
-                <label>hands across <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)" /></label>
-              </span>
-
+            <span ng-repeat="p in parameters(figure.move)">
+              <br />
+              <label ng-init="set_if_unset(figure.parameter_values, $index, p.value)">
+                {{parameter_label(figure.move, $index)}}
+                <%= render 'chooser' %>
+              </label>
             </span>
-          </span>
-          <div>
-            <label>note <input type='string' ng-model='figure.note'/></label>
-          </div>
-      </div>
-        <!-- paste here -->
-      </div>
-    </div><%# list figures %>
-    <!-- cut here -->
-    <!-- cut here -->
-    <div class="col-xs-12">
-      <hr />
-      <%# Add/delete/rotate figure buttons %>
-      <div class="row actions">
-        <%= f.label :figures, class: "col-lg-1 col-md-2 col-xs-3" %>
-        <div class="col-lg-11 col-md-10 col-xs-9">
-          <div class="btn-group btn-group-justified btn-group-lg" role="group">
-            <div class="btn-group">
-              <button name="button" type="button" ng-click='addFigure()' class="btn btn-default"
-                      title="add a new figure at the end of the list" 
-                      aria-label="add a new figure at the end of the list">
-                <%= plus_icon_html() %> Add Figure</button>
-            </div>
-            <div class="btn-group">
-              <button name="button" type="button" ng-click='deleteFigure()' 
-                      ng-show="figures.arr.length > 0" class="btn btn-default"
-                      title="delete the last figure" 
-                      aria-label="delete the last figure">
-                <%= x_icon_html() %> Remove Figure</button>
-            </div>
-            <div class="btn-group">
-              <button name="button" type="button" ng-click='rotateFigures()' 
-                      ng-show="figures.arr.length >= 2" class="btn btn-default"
-                      title="rotate figures, putting the last one first and bumping the rest down" 
-                      aria-label="rotate figures, putting the last one first and bumping the rest down">
-                <%= rotate_icon_html() %> Rotate Figures</button>
+            <div>
+              <label>note <input type='string' ng-model='figure.note'/></label>
             </div>
           </div>
         </div>
-      </div>
+      </div><%# list figures %>
+      <div class="col-xs-12">
+        <hr />
+        <%# Add/delete/rotate figure buttons %>
+        <div class="row actions">
+          <%= f.label :figures, class: "col-lg-1 col-md-2 col-xs-3" %>
+          <div class="col-lg-11 col-md-10 col-xs-9">
+            <div class="btn-group btn-group-justified btn-group-lg" role="group">
+              <div class="btn-group">
+                <button name="button" type="button" ng-click='addFigure()' class="btn btn-default"
+                        title="add a new figure at the end of the list" 
+                        aria-label="add a new figure at the end of the list">
+                  <%= plus_icon_html() %> Add Figure</button>
+              </div>
+              <div class="btn-group">
+                <button name="button" type="button" ng-click='deleteFigure()' 
+                        ng-show="figures.arr.length > 0" class="btn btn-default"
+                        title="delete the last figure" 
+                        aria-label="delete the last figure">
+                  <%= x_icon_html() %> Remove Figure</button>
+              </div>
+              <div class="btn-group">
+                <button name="button" type="button" ng-click='rotateFigures()' 
+                        ng-show="figures.arr.length >= 2" class="btn btn-default"
+                        title="rotate figures, putting the last one first and bumping the rest down" 
+                        aria-label="rotate figures, putting the last one first and bumping the rest down">
+                  <%= rotate_icon_html() %> Rotate Figures</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <%# drill in to debug with
-          angular.element(document.getElementById('figures')).scope().figures.arr
-          or
-          angular.element(document.getElementById('figures')).scope().figures.arr[4].parameter_values %>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <%# drill in to debug with
+            angular.element(document.getElementById('figures')).scope().figures.arr
+            or
+            angular.element(document.getElementById('figures')).scope().figures.arr[4].parameter_values %>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     
 
-  <!-- debugger -->
-  <% if debug_figure_json then  %>
-  <div><strong style="color: red">debug_figure_json = true </strong></div>
-  <div>edit_index_box == {{edit_index_box}}</div>
-  <div class="row" ng-repeat="figure in figures.arr">
-    <div class="col-lg-1 col-md-2 col-xs-3" style="text-align: center">{{$index}}</div>
-    <div class="col-lg-11 col-md-10 col-xs-9">{{figure}}</div>
-  </div>
-  <% end %> 
+        <!-- debugger -->
+        <% if debug_figure_json then  %>
+          <div><strong style="color: red">debug_figure_json = true </strong></div>
+          <div>edit_index_box == {{edit_index_box}}</div>
+          <div class="row" ng-repeat="figure in figures.arr">
+            <div class="col-lg-1 col-md-2 col-xs-3" style="text-align: center">{{$index}}</div>
+            <div class="col-lg-11 col-md-10 col-xs-9">{{figure}}</div>
+          </div>
+        <% end %> 
 
 
  
-  <!-- hidden IO field for communicating with Rails -->
+        <!-- hidden IO field for communicating with Rails -->
 
-  <div class="row field" <%= debug_figure_json ?  '' : 'hidden=hidden' %> >
-    <%= f.label :figures_json, class: "col-lg-1 col-md-2 col-xs-3"%>
-    <div class="col-lg-11 col-md-10 col-xs-9">{{toJson(figures.arr)}}</div>
-  </div>
-  <%= f.text_field :figures_json, name: "dance[figures_json]", id: "dance-figures-json", hidden: true %>
+        <div class="row field" <%= debug_figure_json ?  '' : 'hidden=hidden' %> >
+          <%= f.label :figures_json, class: "col-lg-1 col-md-2 col-xs-3"%>
+          <div class="col-lg-11 col-md-10 col-xs-9">{{toJson(figures.arr)}}</div>
+        </div>
+        <%= f.text_field :figures_json, name: "dance[figures_json]", id: "dance-figures-json", hidden: true %>
 
-  </div> <!-- figures controller -->
-
-
-
-
-
-
-
-
-<%# ============================ end new figure editors ================ %>
+      </div> <!-- figures controller -->
+    </div>
 
 
 
 
 
 
-  <div class="row field">
-    <%= f.label :notes, class: "col-lg-1 col-md-2 col-xs-3"%>
 
-    <%= begin
+    <%# ============================ end figure editors ================ %>
+
+
+
+
+
+
+    <div class="row field">
+      <%= f.label :notes, class: "col-lg-1 col-md-2 col-xs-3"%>
+
+      <%= begin
           h = {class: 'per_dance_notes_edit col-lg-11 col-md-10 col-xs-9'};
           if copy_dance then
-            h[:value] = copy_dance.notes
+          h[:value] = copy_dance.notes
           end
           f.text_area :notes, h
-        end  %>
-  </div>
-  <br>
-
-  <div class="row actions">
-    <div class="col-lg-1 col-md-2 col-xs-3"></div>
-    <%= save_submit_button_html "Save Dance", {class: "update-dance col-lg-3 col-md-10 col-xs-9"} %>
-  </div>
-
-  <div class="row actions">
-    <div class="col-lg-1 col-md-2 col-xs-3" style="font-weight: bold">Instructions</div>
-    <div class="col-lg-11 col-md-10 col-xs-9">
-      <p>There's a lot of ink spilled over "gentlemen" versus "men"
-      versus "leads". The ContraDB approach is to annoy everyone by
-      using "gentlespoons", as in "ladles and gentlespoons". Then in a
-      future software update we will let users specify their own
-      alternatives, so you can just see everyone's dances written with
-      "men" or whatever your preference is. </p>
-      <p>For the present, we recommend future-proofing your notes by
-      always using these terms: "ladles", "gentlespoons", and the
-      "gyre_*" moves. It's also safe simply not to refer to them in
-      notes. </p>
-      <hr />
-      <p>Example: creating "partner balance and swing for 16",
-      select <b>who</b>=<i>partner</i>, <b>move</b>=<i>swing</i>,
-      check the tiny bal<span style="text-size: smaller">ance</span>
-      checkbox, and select 16 beats.</p>
-      <p>If you select <b>who</b>=<i>everybody</i>, you'll
-      notice <b>move</b>=<i>swing</i> is not in the menu. More
-      generally, moves are only available if the <b>formation</b> and <b>who</b>
-      think they should be allowed. Sometimes this gets a
-      bit pedantic, like: <b>who</b>=<i>everybody</i>, <b>move</b>=<i>hey</i>
-      is not there, because who leads the hey? If you dig around, you
-      can select it
-      through <b>who</b>=<i>ladles</i>, <b>move</b>=<i>hey</i>. The
-      take aways here are:</p>
-      <ol>
-        <li>play around with the <b>formation</b> and <b>who</b> menus to find the
-        <b>move</b>s you seek.</li>
-        <li>If you don't find it, you can always select <b>move</b>=<i>custom</i>.</li>
-        <li>If ContraDB is being silly, please report it so we can
-        make it better.</li>
-      </ol>
-      <hr />
-      <p>You may
-      use <a href="https://guides.github.com/features/mastering-markdown/">Markdown</a>
-      in your notes to hyperlink to sources and create <i>*formatting*</i>.</p> 
+          end  %>
     </div>
-  </div>
+    <br>
 
-<% end %>
+    <div class="row actions">
+      <div class="col-lg-1 col-md-2 col-xs-3"></div>
+      <%= save_submit_button_html "Save Dance", {class: "update-dance col-lg-3 col-md-10 col-xs-9"} %>
+    </div>
 
-
-
+    <div class="row actions">
+      <div class="col-lg-1 col-md-2 col-xs-3" style="font-weight: bold">Instructions</div>
+      <div class="col-lg-11 col-md-10 col-xs-9">
+        <p>There's a lot of ink spilled over "gentlemen" versus "men"
+          versus "leads". The ContraDB approach is to annoy everyone by
+          using "gentlespoons", as in "ladles and gentlespoons". Then in a
+          future software update we will let users specify their own
+          alternatives, so you can just see everyone's dances written with
+          "men" or whatever your preference is.
+        </p>
+        <p>You may
+          use <a href="https://guides.github.com/features/mastering-markdown/">Markdown</a>
+          in your notes to hyperlink to sources and create <i>*formatting*</i>.
+        </p> 
+      </div>
+    </div>
+  <% end %>
 </div>
