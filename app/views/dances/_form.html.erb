@@ -59,7 +59,8 @@
               <div class='figure-value-setter-div'>
                 <select ng-model="figure.move"
                         ng-options="m for m in moves()"
-                        ng-change="user_changed_move(figure)">
+                        ng-change="user_changed_move(figure)"
+                        class='form-control'>
                 </select>
               </div>
             </label>
@@ -74,7 +75,7 @@
             <div>
               <label><span class='figure-edit-label'>note</span>
                 <div class='figure-value-setter-div'>
-                  <input type='text' ng-model='figure.note'/>
+                  <input type='text' ng-model='figure.note' class='form-control'/>
               </div></label>
             </div>
           </div>
@@ -156,7 +157,7 @@
 
 
     <div class="row field">
-      <%= f.label :notes, class: "col-lg-1 col-md-2 col-xs-3"%>
+      <%= f.label :notes, class: "col-lg-1 col-md-2 col-xs-3 form-control"%>
 
       <%= begin
           h = {class: 'per_dance_notes_edit col-lg-11 col-md-10 col-xs-9'};

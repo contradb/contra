@@ -19,11 +19,14 @@
   text-align: right;
   width: 4em;
   margin-right: 0.5em;
+  margin-top: 9px;              /* align with select box baseline */
   display: inline-block;
   vertical-align: top;
 }
 .figure-value-setter-div {
   display: inline-block;
+  font-weight: normal;
+
   .radio-tweaks {
     margin-right: 1em;
   }
@@ -32,6 +35,9 @@
   }
   input[type=text] {
     width: 13em;
+  }
+  label {
+    font-weight: normal;
   }
 }
 
