@@ -1,6 +1,6 @@
 
 
-<% debug_figure_json = true %>
+<% debug_figure_json = false %>
 
 <div class="container"  ng-app="contra">
   <%= form_for(@dance) do |f| %>
@@ -23,22 +23,25 @@
       </div>
     <% end %>
 
-    <div class="row field">
-      <%= f.text_field :title, {class: "dance-title-edit col-xs-12",
-          value: (copy_dance ? "#{copy_dance.title} variation" : 
-                  (@dance.title.blank? ? "Untitled" : @dance.title))} %>
+    <div class="dance-header-editors">
+      <div class="row field">
+        <%= f.text_field :title, {class: "dance-title-edit col-xs-12",
+            value: (copy_dance ? "#{copy_dance.title} variation" : 
+                    (@dance.title.blank? ? "Untitled" : @dance.title))} %>
+      </div>
+      <div class="row field">
+        <%= f.text_field :choreographer_name,
+            {class: "col-xs-12 col-sm-6", id: "choreographer-autocomplete", placeholder: "Choreographer"}.
+            merge(copy_dance ? {value: copy_dance.choreographer.name} : {}) %>
+        <%= f.text_field :start_type,
+            {class: "col-xs-12 col-sm-6", id: "start-type-autocomplete", placeholder: "Formation"}
+            .merge(copy_dance ? {value: copy_dance.start_type} : {}) %>
+        <script>
+          var __choreographers__secret = <%= a_to_safe_str(Choreographer.all.map &:name) %>
+        </script>
+      </div>
     </div>
-    <div class="row field">
-      <%= f.text_field :choreographer_name,
-          {class: "col-xs-12 col-sm-6", id: "choreographer-autocomplete", placeholder: "Choreographer"}.
-          merge(copy_dance ? {value: copy_dance.choreographer.name} : {}) %>
-      <%= f.text_field :start_type,
-          {class: "col-xs-12 col-sm-6", id: "start-type-autocomplete", placeholder: "Formation"}
-          .merge(copy_dance ? {value: copy_dance.start_type} : {}) %>
-      <script>
-        var __choreographers__secret = <%= a_to_safe_str(Choreographer.all.map &:name) %>
-      </script>
-    </div>
+
 
     <%# ============================ figure editors ==================== %>
 
@@ -155,12 +158,12 @@
 
 
 
-
+    <br />
     <div class="row field">
-      <%= f.label :notes, class: "col-lg-1 col-md-2 col-xs-3 form-control"%>
+      <%= f.label :notes, class: "col-lg-1 col-md-2 col-xs-3"%>
 
       <%= begin
-          h = {class: 'per_dance_notes_edit col-lg-11 col-md-10 col-xs-9'};
+          h = {class: 'per_dance_notes_edit col-lg-11 col-md-10 col-xs-9 form-control'};
           if copy_dance then
           h[:value] = copy_dance.notes
           end
