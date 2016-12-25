@@ -41,6 +41,14 @@
 // $font-label : 'PT Sans', sans-serif;
 // $font-user : 'Satisfy', cursive;
 
+body {
+  font-family: 'PT Sans', sans-serif;
+}
+
+label {
+  font-weight: bold;
+}
+
 // make dance table not expand-to-fit ala
 // http://stackoverflow.com/questions/10687306/why-do-twitter-bootstrap-tables-always-have-100-width
 .contra-table-nonfluid {width: auto !important;}
