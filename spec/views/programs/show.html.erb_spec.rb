@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "programs/show", type: :view do
   before(:each) do
-    @program = assign(:program, FactoryGirl.build_stubbed(:program, title: "New Years Eve 2015"))
+    @program = assign(:program, FactoryGirl.create(:program, title: "New Years Eve 2015"))
     @program.append_new_activity(text: "Dosido Agogo")
     @program.append_new_activity(text: "Bubble and Squeak")
   end
