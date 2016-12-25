@@ -55,7 +55,7 @@
             </a>
           </div>
           <div ng-if="edit_index_box.indexOf($index) >= 0"> <%# edit figure %>
-            <label><span class="figure-edit-label">move</span>
+            <label class="figure-edit-label"><span class="figure-edit-label-text">move</span>
               <div class='figure-value-setter-div'>
                 <select ng-model="figure.move"
                         ng-options="m for m in moves()"
@@ -65,15 +65,15 @@
               </div>
             </label>
             <div ng-repeat="p in parameters(figure.move)">
-              <label ng-init="set_if_unset(figure.parameter_values, $index, p.value)">
-                <span class="figure-edit-label">{{parameter_label(figure.move, $index)}}</span>
+              <label class="figure-edit-label" ng-init="set_if_unset(figure.parameter_values, $index, p.value)">
+                <span class="figure-edit-label-text">{{parameter_label(figure.move, $index)}}</span>
                 <div class='figure-value-setter-div'>
                   <%= render 'chooser' %>
                 </div>
               </label>
             </div>
             <div>
-              <label><span class='figure-edit-label'>note</span>
+              <label class="figure-edit-label"><span class='figure-edit-label-text'>note</span>
                 <div class='figure-value-setter-div'>
                   <input type='text' ng-model='figure.note' class='form-control'/>
               </div></label>

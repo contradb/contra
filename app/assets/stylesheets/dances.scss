@@ -16,12 +16,14 @@
 }
 
 .figure-edit-label {
-  text-align: right;
-  width: 4em;
-  margin-right: 0.5em;
-  margin-top: 9px;              /* align with select box baseline */
-  display: inline-block;
-  vertical-align: top;
+  height: 34px;                 /* manually sync to equal .form-control :( */
+  line-height: 34px; 
+  .figure-edit-label-text {
+    text-align: right;
+    display: inline-block;
+    min-width: 4em;
+    margin-right: 0.5em;
+  }
 }
 .figure-value-setter-div {
   display: inline-block;
