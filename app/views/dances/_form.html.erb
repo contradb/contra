@@ -2,7 +2,7 @@
 
 <% debug_figure_json = false %>
 
-<div class="container"  ng-app="contra">
+<div class="container" ng-app="contra">
   <%= form_for(@dance) do |f| %>
     <% if @dance.errors.any? %>
       <div id="error_explanation">
@@ -18,23 +18,23 @@
     <% copy_dance = params[:copy_dance_id] && Dance.find(params[:copy_dance_id]) %>
 
     <% if copy_dance %>
-      <div class="row">
-        <div class="col-xs-12">Composing a variation of <strong><%= copy_dance.title %></strong></div>
+      <div>
+        <div>Composing a variation of <strong><%= copy_dance.title %></strong></div>
       </div>
     <% end %>
 
     <div class="dance-header-editors">
-      <div class="row field">
-        <%= f.text_field :title, {class: "dance-title-edit col-xs-12",
+      <div>
+        <%= f.text_field :title, {class: "dance-title-edit",
             value: (copy_dance ? "#{copy_dance.title} variation" : 
                     (@dance.title.blank? ? "Untitled" : @dance.title))} %>
       </div>
-      <div class="row field">
+      <div>
         <%= f.text_field :choreographer_name,
-            {class: "col-xs-12 col-sm-6", id: "choreographer-autocomplete", placeholder: "Choreographer"}.
+            {id: "choreographer-autocomplete", placeholder: "Choreographer"}.
             merge(copy_dance ? {value: copy_dance.choreographer.name} : {}) %>
         <%= f.text_field :start_type,
-            {class: "col-xs-12 col-sm-6", id: "start-type-autocomplete", placeholder: "Formation"}
+            {id: "start-type-autocomplete", placeholder: "Formation"}
             .merge(copy_dance ? {value: copy_dance.start_type} : {}) %>
         <script>
           var __choreographers__secret = <%= a_to_safe_str(Choreographer.all.map &:name) %>
@@ -45,19 +45,27 @@
 
     <%# ============================ figure editors ==================== %>
 
-    <div ng-controller="FiguresController as figures" class="row" id="figures">
+    <div ng-controller="FiguresController as figures" id="figures">
       <div class="display:none"
            ng-init="figures.arr=defaultFigures(<%= copy_dance ? copy_dance.figures_json : @dance.figures_json %>)">
       </div>
-      <div class="col-xs-12 col-md-6"> <%# list figures %>
+      <div> <%# list figures %>
         <div ng-repeat="figure in figures.arr">
-          <div ng-class="styleForBeats(sumBeats(figures.arr,$index))">
-            <a ng-click="(edit_index_box[0] == $index) ? edit_index_box.length = 0 : edit_index_box[0] = $index; "
-               href="" class="figure-view">
-              {{figure_html_readonly(figures.arr[$index])}}
-            </a>
+          <div>
+            <span ng-class="styleForBeats(sumBeats(figures.arr,$index))" class="label-for-beats">
+              {{labelForBeats(sumBeats(figures.arr,$index))}}&nbsp;
+            </span>
+            <span>
+              <a ng-click="(edit_index_box[0] == $index) ? edit_index_box.length = 0 : edit_index_box[0] = $index; "
+                 href="" class="figure-view">
+                {{figure_html_readonly(figures.arr[$index])}}
+              </a>
+            </span>
           </div>
-          <div ng-if="edit_index_box.indexOf($index) >= 0"> <%# edit figure %>
+          <div ng-if="edit_index_box.indexOf($index) >= 0" ng-init='beatsIndex = $index'> <%# edit figure %>
+            <span ng-class="styleForBeats(sumBeats(figures.arr,beatsIndex))" class="label-for-beats">
+              &nbsp;
+            </span>
             <label class="figure-edit-label"><span class="figure-edit-label-text">move</span>
               <div class='figure-value-setter-div'>
                 <select ng-model="figure.move"
@@ -68,6 +76,7 @@
               </div>
             </label>
             <div ng-repeat="p in parameters(figure.move)">
+              <span ng-class="styleForBeats(sumBeats(figures.arr,beatsIndex))" class="label-for-beats">&nbsp;</span>
               <label class="figure-edit-label" ng-init="set_if_unset(figure.parameter_values, $index, p.value)">
                 <span class="figure-edit-label-text">{{parameter_label(figure.move, $index)}}</span>
                 <div class='figure-value-setter-div'>
@@ -76,6 +85,7 @@
               </label>
             </div>
             <div>
+              <span ng-class="styleForBeats(sumBeats(figures.arr,beatsIndex))" class="label-for-beats"> &nbsp; </span>
               <label class="figure-edit-label"><span class='figure-edit-label-text'>note</span>
                 <div class='figure-value-setter-div'>
                   <input type='text' ng-model='figure.note' class='form-control'/>
@@ -84,12 +94,12 @@
           </div>
         </div>
       </div><%# list figures %>
-      <div class="col-xs-12">
+      <div>
         <hr />
         <%# Add/delete/rotate figure buttons %>
-        <div class="row actions">
-          <%= f.label :figures, class: "col-lg-1 col-md-2 col-xs-3" %>
-          <div class="col-lg-11 col-md-10 col-xs-9">
+        <div class="actions">
+          <%= f.label :figures%>
+          <div>
             <div class="btn-group btn-group-justified btn-group-lg" role="group">
               <div class="btn-group">
                 <button name="button" type="button" ng-click='addFigure()' class="btn btn-default"
@@ -127,9 +137,9 @@
         <% if debug_figure_json then  %>
           <div><strong style="color: red">debug_figure_json = true </strong></div>
           <div>edit_index_box == {{edit_index_box}}</div>
-          <div class="row" ng-repeat="figure in figures.arr">
-            <div class="col-lg-1 col-md-2 col-xs-3" style="text-align: center">{{$index}}</div>
-            <div class="col-lg-11 col-md-10 col-xs-9">{{figure}}</div>
+          <div ng-repeat="figure in figures.arr">
+            <div style="text-align: center">{{$index}}</div>
+            <div>{{figure}}</div>
           </div>
         <% end %> 
 
@@ -137,9 +147,9 @@
  
         <!-- hidden IO field for communicating with Rails -->
 
-        <div class="row field" <%= debug_figure_json ?  '' : 'hidden=hidden' %> >
-          <%= f.label :figures_json, class: "col-lg-1 col-md-2 col-xs-3"%>
-          <div class="col-lg-11 col-md-10 col-xs-9">{{toJson(figures.arr)}}</div>
+        <div class="field" <%= debug_figure_json ?  '' : 'hidden=hidden' %> >
+          <%= f.label :figures_json %>
+          <div>{{toJson(figures.arr)}}</div>
         </div>
         <%= f.text_field :figures_json, name: "dance[figures_json]", id: "dance-figures-json", hidden: true %>
 
@@ -159,11 +169,11 @@
 
 
     <br />
-    <div class="row field">
-      <%= f.label :notes, class: "col-lg-1 col-md-2 col-xs-3"%>
+    <div class="field">
+      <%= f.label :notes %>
 
       <%= begin
-          h = {class: 'per_dance_notes_edit col-lg-11 col-md-10 col-xs-9 form-control'};
+          h = {class: 'per_dance_notes_edit form-control'};
           if copy_dance then
           h[:value] = copy_dance.notes
           end
@@ -172,14 +182,14 @@
     </div>
     <br>
 
-    <div class="row actions">
-      <div class="col-lg-1 col-md-2 col-xs-3"></div>
-      <%= save_submit_button_html "Save Dance", {class: "update-dance col-lg-3 col-md-10 col-xs-9"} %>
+    <div class="actions">
+      <div></div>
+      <%= save_submit_button_html "Save Dance" %>
     </div>
 
-    <div class="row actions">
-      <div class="col-lg-1 col-md-2 col-xs-3" style="font-weight: bold">Instructions</div>
-      <div class="col-lg-11 col-md-10 col-xs-9">
+    <div class="actions">
+      <div style="font-weight: bold">Instructions</div>
+      <div>
         <p>There's a lot of ink spilled over "gentlemen" versus "men"
           versus "leads". The ContraDB approach is to annoy everyone by
           using "gentlespoons", as in "ladles and gentlespoons". Then in a

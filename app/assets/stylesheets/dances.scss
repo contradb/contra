@@ -6,7 +6,6 @@
   font-family: 'Satisfy', cursive;
   font-size: 1.3em;
   text-decoration: none;
-  padding-left: 0.4em;
   color: black;
   &:hover, &:focus {
     text-decoration: none;
@@ -40,6 +39,11 @@
   label {
     font-weight: normal;
   }
+}
+
+.label-for-beats {
+  display: inline-block;
+  min-width: 1.3em;
 }
 
 // below here predates new figure editor-dm 10-01-2016

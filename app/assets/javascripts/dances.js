@@ -13,7 +13,7 @@ $(function () {
 });
 
 function styleForBeats(beats) {
-    return beats%32 < 16 ? 'a1b1' : 'a2b2' 
+  return beats%32 < 16 ? 'a1b1' : 'a2b2';
 }
 
 // =====================================================================================
