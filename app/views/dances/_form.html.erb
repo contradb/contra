@@ -138,8 +138,7 @@
           <div><strong style="color: red">debug_figure_json = true </strong></div>
           <div>edit_index_box == {{edit_index_box}}</div>
           <div ng-repeat="figure in figures.arr">
-            <div style="text-align: center">{{$index}}</div>
-            <div>{{figure}}</div>
+            <div>{{$index}}: {{figure}}</div>
           </div>
         <% end %> 
 
@@ -184,7 +183,7 @@
 
     <div class="actions">
       <div></div>
-      <%= save_submit_button_html "Save Dance" %>
+      <%= save_submit_button_html "Save Dance", {class: "update-dance"} %>
     </div>
 
     <div class="actions">
