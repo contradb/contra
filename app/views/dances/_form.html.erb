@@ -51,44 +51,48 @@
       </div>
       <table>
         <tr ng-repeat-start="figure in figures.arr" ng-init='beatsIndex = $index'>
-          <td ng-class="styleForBeats(sumBeats(figures.arr,beatsIndex))"> <!-- td -->
+          <td ng-class="styleForBeats(sumBeats(figures.arr,beatsIndex))">
             {{labelForBeats(sumBeats(figures.arr,beatsIndex))}}&nbsp;
           </td>
-          <td> <!-- td -->
+          <td>
             <a ng-click="(edit_index_box[0] == beatsIndex) ? edit_index_box.length = 0 : edit_index_box[0] = beatsIndex; "
                href="" class="figure-view">
               {{figure_html_readonly(figures.arr[beatsIndex])}}
             </a>
           </td>
         </tr>
-        <tr ng-if="edit_index_box.indexOf(beatsIndex) >= 0">
+        <tr ng-repeat-end ng-if="edit_index_box.indexOf(beatsIndex) >= 0">
           <td ng-class="styleForBeats(sumBeats(figures.arr,beatsIndex))">
             &nbsp;
           </td>
-          <td>move</td>
-          <td class='figure-value-setter-td'>
-            <select ng-model="figure.move"
-                    ng-options="m for m in moves()"
-                    ng-change="user_changed_move(figure)"
-                    class='form-control'>
-            </select>
+          <td>
+
+            <label class="figure-edit-label"><span class="figure-edit-label-text">move</span>
+              <div class='figure-value-setter-div'>
+                <select ng-model="figure.move"
+                        ng-options="m for m in moves()"
+                        ng-change="user_changed_move(figure)"
+                        class='form-control'>
+                </select>
+              </div>
+            </label>
+            <div ng-repeat="p in parameters(figure.move)">
+              <label class="figure-edit-label" ng-init="set_if_unset(figure.parameter_values, $index, p.value)">
+                <span class="figure-edit-label-text">{{parameter_label(figure.move, $index)}}</span>
+                <div class='figure-value-setter-div'>
+                  <%= render 'chooser' %>
+                </div>
+              </label>
+            </div>
+            <div>
+              <label class="figure-edit-label"><span class='figure-edit-label-text'>note</span>
+                <div class='figure-value-setter-div'>
+                  <input type='text' ng-model='figure.note' class='form-control'/>
+                </div>
+              </label>
+            </div>
+
           </td>
-        </tr>
-        <tr ng-if="edit_index_box.indexOf(beatsIndex) >= 0" ng-repeat="p in parameters(figure.move)">
-          <td ng-class="styleForBeats(sumBeats(figures.arr,beatsIndex))" class="label-for-beats">&nbsp;</td>
-          <td ng-init="set_if_unset(figure.parameter_values, $index, p.value)">
-            {{parameter_label(figure.move, $index)}}
-          </td>
-          <td class='figure-value-setter-td'>
-            <%= render 'chooser' %>
-          </td>
-        </tr>
-        <tr ng-repeat-end ng-if="edit_index_box.indexOf(beatsIndex) >= 0">
-          <td ng-class="styleForBeats(sumBeats(figures.arr,beatsIndex))" class="label-for-beats"> &nbsp; </td>
-            <td>note</td>
-            <td class='figure-value-setter-tr>
-              <input type='text' ng-model='figure.note' class='form-control'/>
-            </td>
         </tr>
       </table>
       <div>
