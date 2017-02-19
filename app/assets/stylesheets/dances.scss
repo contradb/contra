@@ -13,18 +13,7 @@
   }
 }
 
-.figure-edit-label {
-  height: 34px;                 /* manually sync to equal .form-control :( */
-  line-height: 34px; 
-  .figure-edit-label-text {
-    text-align: right;
-    display: inline-block;
-    min-width: 4em;
-    margin-right: 0.5em;
-  }
-}
-.figure-value-setter-div {
-  display: inline-block;
+.figure-value-setter-td {
   font-weight: normal;
 
   .radio-tweaks {
@@ -39,11 +28,6 @@
   label {
     font-weight: normal;
   }
-}
-
-.label-for-beats {
-  display: inline-block;
-  min-width: 1.3em;
 }
 
 // below here predates new figure editor-dm 10-01-2016
