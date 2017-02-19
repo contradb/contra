@@ -74,7 +74,7 @@
             </select>
           </td>
         </tr>
-        <tr ng-repeat-end ng-if="edit_index_box.indexOf(beatsIndex) >= 0" ng-repeat="p in parameters(figure.move)">
+        <tr ng-if="edit_index_box.indexOf(beatsIndex) >= 0" ng-repeat="p in parameters(figure.move)">
           <td ng-class="styleForBeats(sumBeats(figures.arr,beatsIndex))" class="label-for-beats">&nbsp;</td>
           <td ng-init="set_if_unset(figure.parameter_values, $index, p.value)">
             {{parameter_label(figure.move, $index)}}
@@ -83,7 +83,7 @@
             <%= render 'chooser' %>
           </td>
         </tr>
-        <tr>
+        <tr ng-repeat-end ng-if="edit_index_box.indexOf(beatsIndex) >= 0">
           <td ng-class="styleForBeats(sumBeats(figures.arr,beatsIndex))" class="label-for-beats"> &nbsp; </td>
             <td>note</td>
             <td class='figure-value-setter-tr>
