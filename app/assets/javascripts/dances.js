@@ -99,6 +99,7 @@ function parameter_label (movestring, index) {
         $scope.newFigure = newFigure;
         $scope.addFigure = function() {fctrl42.arr.push(newFigure());};
         $scope.deleteFigure = function() {(fctrl42.arr.length>0) && fctrl42.arr.pop()};
+        $scope.deleteFigureIdx = function(idx) {console.log("arr.length beg "+fctrl42.arr.length);(idx >= 0) && (fctrl42.arr.length > idx) && fctrl42.arr.splice(idx,1); console.log("arr.length end "+fctrl42.arr)};
         $scope.rotateFigures = function() {
             (fctrl42.arr.length>0) && 
                 fctrl42.arr.unshift(fctrl42.arr.pop())

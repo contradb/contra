@@ -1,6 +1,6 @@
 
 
-<% debug_figure_json = false %>
+<% debug_figure_json = true %>
 
 <div class="container" ng-app="contra">
   <%= form_for(@dance) do |f| %>
@@ -59,6 +59,21 @@
                href="" class="figure-view">
               {{figure_html_readonly(figures.arr[beatsIndex])}}
             </a>
+            <span class="dropdown" style="float: right"  ng-if="edit_index_box.indexOf(beatsIndex) >= 0" aria-label="menu">
+              <a href="#" role="button" class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="glyphicon glyphicon-option-vertical"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                <li><a href="#">Duplicate</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Move to</li>
+                <li><a href="#">Top</a></li>
+                <li ng-repeat="figmenu in figures.arr"><a href="#">{{figure_html_readonly(figures.arr[$index])}}</a></li>
+                <li><a href="#">Bottom</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#" ng-click="deleteFigureIdx(beatsIndex)">Delete</a></li>
+              </ul>
+            </span>
           </td>
         </tr>
         <tr ng-repeat-end ng-if="edit_index_box.indexOf(beatsIndex) >= 0">

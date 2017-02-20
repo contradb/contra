@@ -7,9 +7,13 @@
   font-size: 1.3em;
   text-decoration: none;
   color: black;
-  &:hover, &:focus {
+  &:hover {
     text-decoration: none;
-    color: #007; /* dark blue */
+    color: #009; /* dark blue */
+  }
+  &:focus {
+    text-decoration: underline;
+    color: black;
   }
 }
 
