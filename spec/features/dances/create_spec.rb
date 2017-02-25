@@ -79,4 +79,34 @@ describe 'Creating dances', js: true do
       expect(page).to have_content('partners balance & box the gnat hastily')
     end
   end
+
+  context 'figure menu' do
+    before(:each) do
+    end
+    it 'delete' do
+      with_login do
+        visit '/dances/new'
+        make_eight_circle_figures
+        find('#figure-menu-4').click # 'circle to the left 5 places'
+        click_on 'Delete'
+        expect(page).to have_text "circle to the left 1 place"
+        expect(page).to have_text "circle to the left 2  places"
+        expect(page).to have_text "circle to the left 3 places"
+        expect(page).to have_text "circle to the left 4 places"
+        expect(page).to_not have_text "circle to the left 5 places"
+        expect(page).to have_text "circle to the left 6 places"
+        expect(page).to have_text "circle to the left 7 places"
+        expect(page).to have_text "circle to the left 8 places"
+      end
+    end
+
+    def make_eight_circle_figures
+      8.times do |index|
+        find("#figure-#{index}").click
+        find("#move-#{index}").select 'circle'
+        places = 'place'.pluralize(index+1)
+        select "#{index+1} #{places}"
+      end
+    end
+  end
 end

@@ -56,14 +56,14 @@
           </td>
           <td>
             <a ng-click="(edit_index_box[0] == $index) ? edit_index_box.length = 0 : edit_index_box[0] = $index; "
-               href="" class="figure-view">
+               href="" class="figure-view" ng-attr-id="{{'figure-'+$index}}">
               {{figure_html_readonly(figures.arr[$index])}}
             </a>
-            <span class="dropdown" style="float: right"  ng-if="edit_index_box.indexOf($index) >= 0" aria-label="menu">
-              <a href="#" role="button" class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <span class="dropdown" style="float: right" aria-label="menu">
+              <a href="#" role="button" class="dropdown-toggle" ng-attr-id="{{'figure-menu-'+$index}}"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <span class="glyphicon glyphicon-option-vertical"></span>
               </a>
-              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+              <ul class="dropdown-menu dropdown-menu-right" ng-attr-aria-labelledby="{{'figure-menu-'+$index}}">
                 <li><a href="#" ng-click="duplicateIdx($index)">Duplicate</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Move to</li>
@@ -87,6 +87,7 @@
                 <select ng-model="figure.move"
                         ng-options="m for m in moves()"
                         ng-change="user_changed_move(figure)"
+                        ng-attr-id="{{'move-'+$index}}"
                         class='form-control'>
                 </select>
               </div>
