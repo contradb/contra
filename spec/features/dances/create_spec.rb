@@ -81,8 +81,19 @@ describe 'Creating dances', js: true do
   end
 
   context 'figure menu' do
-    before(:each) do
+    it 'duplicate' do
+      with_login do
+        visit '/dances/new'
+        find("#figure-3").click
+        find("#move-3").select 'circle'
+        select "5 places"
+        find('#figure-menu-3').click
+        click_on 'Duplicate'
+        expect(page).to have_css('#figure-3', text: 'circle to the left 5 places')
+        expect(page).to have_css('#figure-4', text: 'circle to the left 5 places')
+      end
     end
+
     it 'delete' do
       with_login do
         visit '/dances/new'
@@ -90,7 +101,7 @@ describe 'Creating dances', js: true do
         find('#figure-menu-4').click # 'circle to the left 5 places'
         click_on 'Delete'
         expect(page).to have_text "circle to the left 1 place"
-        expect(page).to have_text "circle to the left 2  places"
+        expect(page).to have_text "circle to the left 2 places"
         expect(page).to have_text "circle to the left 3 places"
         expect(page).to have_text "circle to the left 4 places"
         expect(page).to_not have_text "circle to the left 5 places"
