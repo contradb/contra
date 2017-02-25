@@ -51,10 +51,6 @@ function parameter_label (movestring, index) {
 
 
 
-function duplicateIdx(index) {
-  
-}
-
 
 // =====================================================================================
 
@@ -102,7 +98,9 @@ function duplicateIdx(index) {
         $scope.addFigure = function() {fctrl42.arr.push(newFigure());};
         $scope.deleteFigure = function() {(fctrl42.arr.length>0) && fctrl42.arr.pop()};
         $scope.deleteFigureIdx = function(idx) {(idx >= 0) && (fctrl42.arr.length > idx) && fctrl42.arr.splice(idx,1);};
-        $scope.duplicateIdx = duplicateIdx;
+        $scope.duplicateIdx = function(idx) {
+            (0 <= idx) && (idx < fctrl42.arr.length) && fctrl42.arr.splice(idx,0,angular.copy(fctrl42.arr[idx]))
+        }
         $scope.rotateFigures = function() {
             (fctrl42.arr.length>0) && 
                 fctrl42.arr.unshift(fctrl42.arr.pop())

@@ -50,34 +50,34 @@
            ng-init="figures.arr=defaultFigures(<%= copy_dance ? copy_dance.figures_json : @dance.figures_json %>)">
       </div>
       <table>
-        <tr ng-repeat-start="figure in figures.arr">
-          <td ng-class="styleForBeats(sumBeats(figures.arr,$index))">
-            {{labelForBeats(sumBeats(figures.arr,$index))}}&nbsp;
+        <tr ng-repeat-start="(figureIdx, figure) in figures.arr">
+          <td ng-class="styleForBeats(sumBeats(figures.arr,figureIdx))">
+            {{labelForBeats(sumBeats(figures.arr,figureIdx))}}&nbsp;
           </td>
           <td>
-            <a ng-click="(edit_index_box[0] == $index) ? edit_index_box.length = 0 : edit_index_box[0] = $index; "
-               href="" class="figure-view" ng-attr-id="{{'figure-'+$index}}">
-              {{figure_html_readonly(figures.arr[$index])}}
+            <a ng-click="(edit_index_box[0] == figureIdx) ? edit_index_box.length = 0 : edit_index_box[0] = figureIdx; "
+               href="" class="figure-view" ng-attr-id="{{'figure-'+figureIdx}}">
+              {{figure_html_readonly(figures.arr[figureIdx])}}
             </a>
             <span class="dropdown" style="float: right" aria-label="menu">
-              <a href="#" role="button" class="dropdown-toggle" ng-attr-id="{{'figure-menu-'+$index}}"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              <a href="#" role="button" class="dropdown-toggle" ng-attr-id="{{'figure-menu-'+figureIdx}}"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <span class="glyphicon glyphicon-option-vertical"></span>
               </a>
-              <ul class="dropdown-menu dropdown-menu-right" ng-attr-aria-labelledby="{{'figure-menu-'+$index}}">
-                <li><a href="#" ng-click="duplicateIdx($index)">Duplicate</a></li>
+              <ul class="dropdown-menu dropdown-menu-right" ng-attr-aria-labelledby="{{'figure-menu-'+figureIdx}}">
+                <li><a href="#" ng-click="duplicateIdx(figureIdx)">Duplicate</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Move to</li>
                 <li><a href="#">Top</a></li>
                 <li ng-repeat="figmenu in figures.arr"><a href="#">{{figure_html_readonly(figures.arr[$index])}}</a></li>
                 <li><a href="#">Bottom</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a href="#" ng-click="deleteFigureIdx($index)">Delete</a></li>
+                <li><a href="#" ng-click="deleteFigureIdx(figureIdx)">Delete</a></li>
               </ul>
             </span>
           </td>
         </tr>
-        <tr ng-repeat-end ng-if="edit_index_box.indexOf($index) >= 0">
-          <td ng-class="styleForBeats(sumBeats(figures.arr,$index))">
+        <tr ng-repeat-end ng-if="edit_index_box.indexOf(figureIdx) >= 0">
+          <td ng-class="styleForBeats(sumBeats(figures.arr,figureIdx))">
             &nbsp;
           </td>
           <td>
@@ -87,7 +87,7 @@
                 <select ng-model="figure.move"
                         ng-options="m for m in moves()"
                         ng-change="user_changed_move(figure)"
-                        ng-attr-id="{{'move-'+$index}}"
+                        ng-attr-id="{{'move-'+figureIdx}}"
                         class='form-control'>
                 </select>
               </div>
