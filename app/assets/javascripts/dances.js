@@ -54,7 +54,7 @@ function parameter_label (movestring, index) {
 
 // =====================================================================================
 
-function moveMenuLabel(to,from) {
+function menuMoveLabel(from,to) {
   if (to==from) { return '~'; }
   else if (to < from) { return 'Up '+ (from - to) }
   else { return 'Down '+ (to - from) }
@@ -105,7 +105,8 @@ function moveMenuLabel(to,from) {
         $scope.duplicateIdx = function(idx) {
             (0 <= idx) && (idx < fctrl42.arr.length) && fctrl42.arr.splice(idx,0,angular.copy(fctrl42.arr[idx]))
         }
-        $scope.moveMenuLabel = moveMenuLabel
+        $scope.menuMoveLabel = menuMoveLabel
+        $scope.menuMove = function(from, to) {fctrl42.arr.splice(to, 0, fctrl42.arr.splice(from, 1)[0]);}
         $scope.rotateFigures = function() {
             (fctrl42.arr.length>0) && 
                 fctrl42.arr.unshift(fctrl42.arr.pop())

@@ -66,7 +66,7 @@
               <ul class="dropdown-menu dropdown-menu-right" ng-attr-aria-labelledby="{{'figure-menu-'+figureIdx}}">
                 <li><a href="#" ng-click="duplicateIdx(figureIdx)">Duplicate</a></li>
                 <li role="separator" class="divider"></li>
-                <li ng-repeat="figmenu in figures.arr" ng-if="$index !== figureIdx"><a href="#">{{moveMenuLabel($index, figureIdx)}}</a></li>
+                <li ng-repeat="figmenu in figures.arr" ng-click="menuMove(figureIdx, $index)" ng-if="$index !== figureIdx"><a href="#">{{menuMoveLabel(figureIdx, $index)}}</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="#" ng-click="deleteFigureIdx(figureIdx)">Delete</a></li>
               </ul>
