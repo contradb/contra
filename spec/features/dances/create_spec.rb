@@ -111,6 +111,28 @@ describe 'Creating dances', js: true do
       end
     end
 
+    it 'up' do
+      with_login do
+        visit '/dances/new'
+        make_eight_circle_figures
+        find('#figure-menu-4').click # 'circle to the left 5 places'
+        click_on 'Up 2'
+        expect(page).to have_text ['A1',
+                                   'circle to the left 1 place',
+                                   'circle to the left 2 places',
+                                   'A2',
+                                   'circle to the left 5 places',
+                                   'circle to the left 3 places',
+                                   'B1',
+                                   'circle to the left 4 places',
+                                   'circle to the left 6 places',
+                                   'B2',
+                                   'circle to the left 7 places',
+                                   'circle to the left 8 places'].join(' ')
+      end
+    end
+
+
     def make_eight_circle_figures
       8.times do |index|
         find("#figure-#{index}").click
