@@ -89,7 +89,7 @@ function menuMoveLabel(from,to) {
         $scope.user_changed_parameter = user_changed_parameter
         $scope.user_changed_move = user_changed_move
         $scope.parameter_label = parameter_label
-        $scope.edit_index_box = [null]
+        $scope.edit_index_box = []
         $scope.editable_figures = function(figures) {
             idx = $scope.edit_index_box[0]
             return (null != idx) && $scope.figures.arr[idx] ?
@@ -100,16 +100,17 @@ function menuMoveLabel(from,to) {
         $scope.toJson = angular.toJson;
         $scope.newFigure = newFigure;
         $scope.addFigure = function() {fctrl42.arr.push(newFigure());};
-        $scope.deleteFigure = function() {(fctrl42.arr.length>0) && fctrl42.arr.pop()};
-        $scope.deleteFigureIdx = function(idx) {(idx >= 0) && (fctrl42.arr.length > idx) && fctrl42.arr.splice(idx,1);};
+        $scope.deleteFigure = function() {(fctrl42.arr.length>0) && fctrl42.arr.pop(); $scope.edit_index_box.length=0;};
+        $scope.deleteFigureIdx = function(idx) {(idx >= 0) && (fctrl42.arr.length > idx) && fctrl42.arr.splice(idx,1); $scope.edit_index_box.length=0;};
         $scope.duplicateIdx = function(idx) {
-            (0 <= idx) && (idx < fctrl42.arr.length) && fctrl42.arr.splice(idx,0,angular.copy(fctrl42.arr[idx]))
+            (0 <= idx) && (idx < fctrl42.arr.length) && fctrl42.arr.splice(idx,0,angular.copy(fctrl42.arr[idx]));
+            $scope.edit_index_box.length=0;
         }
         $scope.menuMoveLabel = menuMoveLabel
-        $scope.menuMove = function(from, to) {fctrl42.arr.splice(to, 0, fctrl42.arr.splice(from, 1)[0]);}
+        $scope.menuMove = function(from, to) {fctrl42.arr.splice(to, 0, fctrl42.arr.splice(from, 1)[0]); $scope.edit_index_box.length=0;}
         $scope.rotateFigures = function() {
-            (fctrl42.arr.length>0) && 
-                fctrl42.arr.unshift(fctrl42.arr.pop())
+          (fctrl42.arr.length>0) && fctrl42.arr.unshift(fctrl42.arr.pop());
+          $scope.edit_index_box.length=0;
         };
         $scope.defaultFigures = defaultFigures;
 
