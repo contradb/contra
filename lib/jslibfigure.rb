@@ -50,6 +50,24 @@ module JSLibFigure
     end
   end
 
+  # [{"formation"=>"square", "who"=>"neighbor", "beats"=>8, "balance"=>true, "move"=>"box_the_gnat"}, {"formation"=>"square", "who"=>"partner", "beats"=>8, "balance"=>true, "move"=>"swat_the_flea"}, {"formation"=>"square", "who"=>"neighbor", "beats"=>16, "balance"=>true, "move"=>"swing"}, {"formation"=>"square", "who"=>"ladles", "beats"=>8, "move"=>"allemande_right", "degrees"=>540}, {"formation"=>"square", "who"=>"partner", "beats"=>8, "move"=>"swing"}, {"formation"=>"square", "who"=>"everybody", "beats"=>8, "move"=>"right_left_through"}, {"formation"=>"square", "who"=>"ladles", "beats"=>8, "move"=>"chain", "notes"=>"look for new"}]
+  # =>
+  # [{"parameter_values"=>["neighbors", true, true, 8], "move"=>"box the gnat"}, {"parameter_values"=>["partners", true, false, 8], "move"=>"swat the flea"}, {"parameter_values"=>["neighbors", true, 16], "move"=>"balance and swing"}, {"parameter_values"=>["ladles", true, 540, 8], "move"=>"allemande"}, {"parameter_values"=>["partners", false, 8], "move"=>"swing"}, {"parameter_values"=>[8], "move"=>"right left through"}, {"parameter_values"=>["ladles", 8], "move"=>"chain"}, {"parameter_values"=>[0], "move"=>"progress"}]
+
+  # [{"formation"=>"square", "who"=>"neighbor", "beats"=>8, "balance"=>true, "move"=>"box_the_gnat"}] =>
+  # [{"parameter_values"=>["neighbors", true, true, 8], "move"=>"box the gnat"}]
+
+  # require 'jslibfigure'
+  # JSLibFigure.originalToJSLibFigure Dance.find(64).figures_json
+  def self.originalToJSLibFigure(figures_json)
+    unless @migration_context   # hotwire to 'false' for constant reloading
+      puts "initializing context"
+      @migration_context = self.new_context
+      @migration_context.load(Rails.root.join('lib','assets','javascripts','libfigure-migration.js'))
+    end
+    @migration_context.eval("originalToJSLibFigure(#{figures_json})")
+  end
+
   private
   def self.eval(string_of_javascript)
     context.eval(string_of_javascript)

@@ -140,7 +140,9 @@ function moves() {
     $.each(defined_events,function(k,v){a.push(k)})
     return a.sort();
 }
-var issued_parameter_warning = false
+
+var issued_parameter_warning = false;
+
 function parameters(move){
     var fig = defined_events[move];
     if (fig)
