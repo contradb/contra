@@ -266,7 +266,7 @@ defineFigureAlias( "circle right",        "circle", [param_spin_right, param_fou
 ////////////////////////////////////////////////
 
 function custom_view(move,pvs) {
-    // this is a lot like the default, except without the word "custom" at the front.
+    // this is a lot like the default view, except without the word "custom" cluttering up the front of the string.
     var [custom,beats] = pvs
     var [scustom,sbeats] = parameter_strings(move, pvs)
     if (8==beats) return scustom
