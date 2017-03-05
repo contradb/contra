@@ -71,13 +71,20 @@ module JSLibFigure
 
   # require 'jslibfigure'
   # JSLibFigure.testConverters Dance.find(64).figures_json
-  # JSLibFigure.testConverters(Dance.find(64).figures_json).each {|x| puts "#{x[0]} => #{x[1]}"}
+  # JSLibFigure.testConverters(Dance.find(64).figures_json).each {|x| puts "#{x[0]==x[1] ? 'XD' : ':('}  #{x[0]} => #{x[1]}"}
+  # JSLibFigure.testConverters(Dance.find(75).figures_json).each {|x| puts "#{x[0]==x[1] ? 'XD' : ':('}  #{x[0]} => #{x[1]}"}
 
   def self.testConverters(figures_json)
     puts "initializing context"
     @migration_context = self.new_context
     @migration_context.load(Rails.root.join('lib','assets','javascripts','libfigure-migration.js'))
     @migration_context.eval("testConverters(#{figures_json})")
+  end
+
+  def self.brokenFigures
+    Dance.all.map {|dance|
+      JSLibFigure.testConverters(dance.figures_json).select {|x| x[0]==x[1]}.count
+    }
   end
 
   # note: migration_context corrupts the main context, rather htan
