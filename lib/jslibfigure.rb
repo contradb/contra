@@ -60,11 +60,7 @@ module JSLibFigure
   # require 'jslibfigure'
   # JSLibFigure.originalToJSLibFigure Dance.find(64).figures_json
   def self.originalToJSLibFigure(figures_json)
-    unless @migration_context   # hotwire to 'false' for constant reloading
-      puts "initializing context"
-      @migration_context = self.new_context
-      @migration_context.load(Rails.root.join('lib','assets','javascripts','libfigure-migration.js'))
-    end
+    reloadSomeJS unless @migration_context
     @migration_context.eval("originalToJSLibFigure(#{figures_json})")
     # @migration_context.eval("testConverters(#{figures_json})")
   end
@@ -74,12 +70,13 @@ module JSLibFigure
   # JSLibFigure.testConverters(Dance.find(64).figures_json).each {|x| puts "#{x[0]==x[1] ? 'XD' : ':('}  #{x[0]} => #{x[1]}"} 
   # JSLibFigure.testConverters(Dance.find(75).figures_json).each {|x| puts "#{x[0]==x[1] ? 'XD' : ':('}  #{x[0]} => #{x[1]}"}
 
+  def self.reloadSomeJS
+    @migration_context = self.new_context
+    @migration_context.load(Rails.root.join('lib','assets','javascripts','libfigure-migration.js'))
+  end
+
   def self.testConverters(figures_json)
-    unless @migration_context
-      puts "initializing context"
-      @migration_context = self.new_context
-      @migration_context.load(Rails.root.join('lib','assets','javascripts','libfigure-migration.js'))
-    end
+    reloadSomeJS unless @migration_context
     @migration_context.eval("testConverters(#{figures_json})")
   end
 
