@@ -383,6 +383,12 @@ defineFigure( "promenade across", [param_subject_pairs_partners, param_by_left, 
 defineFigure( "progress", [param_beats_0], {progression: true})
 
 ////////////////////////////////////////////////
+// PULL BY                                    //
+////////////////////////////////////////////////
+
+defineFigure( "pull by", [param_subject_pairz, param_right_hand_spin, param_beats_2])
+
+////////////////////////////////////////////////
 // RIGHT LEFT THROUGH                         //
 ////////////////////////////////////////////////
 
@@ -406,7 +412,7 @@ defineFigure( "slide", [param_spin_left, param_beats_2], {progression: true, vie
 function star_view(move,pvs) {
     var [ right_hand,  wrist_grip,  places,  beats] = pvs
     var [sright_hand, swrist_grip, splaces, sbeats] = parameter_strings(move, pvs)
-    return words("star", sright_hand, swrist_grip, splaces, sbeats)
+    return words(swrist_grip, "star", sright_hand, splaces, sbeats)
 }
 
 defineFigure( "star", [param_xhand_spin, param_star_grip, param_four_places, param_beats_8], {view: star_view})

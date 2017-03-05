@@ -12,7 +12,7 @@ describe 'Editing dances', js: true do
       expect(page.body).to include "improper" # dance.start_type
       expect(page.body).to_not match /Becket/i
       expect(page).to have_text ('neighbors balance & swing')
-      expect(page).to have_text ('ladles allemande by the right 1½')
+      expect(page).to have_text ('ladles allemande right 1½')
       expect(page.body).to include dance.notes
       expect(page).to have_text 'There\'s a lot of ink spilled over "gentlemen" versus "men" versus "leads".'
     end
