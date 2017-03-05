@@ -71,20 +71,34 @@ module JSLibFigure
 
   # require 'jslibfigure'
   # JSLibFigure.testConverters Dance.find(64).figures_json
-  # JSLibFigure.testConverters(Dance.find(64).figures_json).each {|x| puts "#{x[0]==x[1] ? 'XD' : ':('}  #{x[0]} => #{x[1]}"}
+  # JSLibFigure.testConverters(Dance.find(64).figures_json).each {|x| puts "#{x[0]==x[1] ? 'XD' : ':('}  #{x[0]} => #{x[1]}"} 
   # JSLibFigure.testConverters(Dance.find(75).figures_json).each {|x| puts "#{x[0]==x[1] ? 'XD' : ':('}  #{x[0]} => #{x[1]}"}
 
   def self.testConverters(figures_json)
-    puts "initializing context"
-    @migration_context = self.new_context
-    @migration_context.load(Rails.root.join('lib','assets','javascripts','libfigure-migration.js'))
+    unless @migration_context
+      puts "initializing context"
+      @migration_context = self.new_context
+      @migration_context.load(Rails.root.join('lib','assets','javascripts','libfigure-migration.js'))
+    end
     @migration_context.eval("testConverters(#{figures_json})")
   end
 
-  def self.brokenFigures
-    Dance.all.map {|dance|
-      JSLibFigure.testConverters(dance.figures_json).select {|x| x[0]==x[1]}.count
-    }
+  def self.migrationDashboard(verbose: false)
+    Dance.all.each do |dance|
+      begin
+        if JSLibFigure.testConverters(dance.figures_json).all? {|x| x[0]==x[1]}
+          print ":) "
+          puts "\t#{dance.id}" if verbose
+        else
+          print ":'( "
+          puts "\t#{dance.id}" if verbose
+        end
+      rescue MiniRacer::RuntimeError => e
+        print ":O "
+        puts "\t#{dance.id}\t#{e}" if verbose
+      end
+    end
+    puts
   end
 
   # note: migration_context corrupts the main context, rather htan
