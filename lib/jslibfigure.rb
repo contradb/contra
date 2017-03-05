@@ -66,7 +66,23 @@ module JSLibFigure
       @migration_context.load(Rails.root.join('lib','assets','javascripts','libfigure-migration.js'))
     end
     @migration_context.eval("originalToJSLibFigure(#{figures_json})")
+    # @migration_context.eval("testConverters(#{figures_json})")
   end
+
+  # require 'jslibfigure'
+  # JSLibFigure.testConverters Dance.find(64).figures_json
+  # JSLibFigure.testConverters(Dance.find(64).figures_json).each {|x| puts "#{x[0]} => #{x[1]}"}
+
+  def self.testConverters(figures_json)
+    puts "initializing context"
+    @migration_context = self.new_context
+    @migration_context.load(Rails.root.join('lib','assets','javascripts','libfigure-migration.js'))
+    @migration_context.eval("testConverters(#{figures_json})")
+  end
+
+  # note: migration_context corrupts the main context, rather htan
+  # copying a new one. It needs to be destroyed after the migration
+  # does its thing.
 
   private
   def self.eval(string_of_javascript)
