@@ -65,10 +65,19 @@ module JSLibFigure
     # @migration_context.eval("testConverters(#{figures_json})")
   end
 
+  # JSLibFigure.jsLibFigureToOriginal([{"parameter_values"=>[true, 270, 8], "move"=>"circle"}].to_json).each {|x| puts x}
+  # {"who"=>"everybody", "move"=>"circle_left", "beats"=>8, "formation"=>"square"}
+  # => [{"who"=>"everybody", "move"=>"circle_left", "beats"=>8, "formation"=>"square"}]
+  def self.jsLibFigureToOriginal(figures_json)
+    reloadSomeJS unless @migration_context
+    @migration_context.eval("jsLibFigureToOriginal(#{figures_json})")
+  end
+
   # require 'jslibfigure'
   # JSLibFigure.testConverters Dance.find(64).figures_json
   # JSLibFigure.testConverters(Dance.find(64).figures_json).each {|x| puts "#{x[0]==x[1] ? 'XD' : ':('}  #{x[0]} => #{x[1]}"} 
   # JSLibFigure.testConverters(Dance.find(75).figures_json).each {|x| puts "#{x[0]==x[1] ? 'XD' : ':('}  #{x[0]} => #{x[1]}"}
+  # JSLibFigure.testConverters([{"formation"=>"square", "who"=>"everybody", "beats"=>8, "move"=>"circle_left", "degrees"=>270}].to_json).each {|x| puts "#{x[0]==x[1] ? 'XD' : ':('}  #{x[0]} => #{x[1]}"}
 
   def self.reloadSomeJS
     @migration_context = self.new_context

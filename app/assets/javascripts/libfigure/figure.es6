@@ -63,7 +63,8 @@ function figure_html_readonly_default(move, parameter_values) {
 }
 
 function find_parameter_index_by_name(name, parameters) {
-  return parameters.findIndex(function(p) {return p.name == name}, parameters)
+  var match_name_fn = function(p) {return p.name === name;};
+  return parameters.findIndex(match_name_fn, parameters);
 }
 
 var progressionString = "to new neighbors"
