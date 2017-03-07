@@ -421,7 +421,7 @@ defineFigure( "star", [param_xhand_spin, param_star_grip, param_four_places, par
 // STAR PROMENADE                             //
 ////////////////////////////////////////////////
 
-defineFigure( "star promenade", [param_subject_role_gentlespoons, param_xhand_spin, param_half_around, param_beats_4]);
+defineFigure( "star promenade", [param_xhand_spin, param_half_around, param_beats_4]);
 
 ////////////////////////////////////////////////
 // SWING                                      //
