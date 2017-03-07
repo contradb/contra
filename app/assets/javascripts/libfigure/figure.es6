@@ -33,7 +33,7 @@ function figure_html_readonly(f) {
     return note ? words(main,note) : main
   }
   else if (f.move)
-    return "rouge figure "+f.move+"?!";
+    return "rogue figure '"+f.move+"'!";
   else
     return "empty figure";
 }
@@ -235,6 +235,12 @@ function box_the_gnat_view(move,pvs) {
 defineFigure( "box the gnat", [param_subject_pairz, param_balance_false, param_right_hand_spin, param_beats_4], {change: box_the_gnat_change, view: box_the_gnat_view})
 defineFigureAlias( "swat the flea", "box the gnat", [null, null, param_left_hand_spin, null], {change: box_the_gnat_change, view: box_the_gnat_view})
 defineTeachingName("swat the flea")
+
+////////////////////////////////////////////////
+// BUTTERFLY WHIRL                            //
+////////////////////////////////////////////////
+
+defineFigure( "butterfly whirl", [param_beats_4])
 
 ////////////////////////////////////////////////
 // CHAIN                                      //

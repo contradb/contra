@@ -49,6 +49,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['right left through', 'right left through', 8],
    ['slide left to new neighbors', 'slide', true, 2],
    ['star promenade left ½', 'star promenade', false, 180, 4], # prefer: "scoop up partner for star promenade"
+   ['butterfly whirl', 'butterfly whirl', 4],
+   ['butterfly whirl for 8', 'butterfly whirl', 8],
    ['hands across star left 4 places','star', false, false, 360, 8],
    ['star left 4 places',             'star', false, true, 360, 8],
    ['partners balance & swat the flea', 'swat the flea', 'partners',  true,  false, 8],
