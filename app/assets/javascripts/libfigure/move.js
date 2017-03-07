@@ -13,6 +13,7 @@ var moveCaresAboutRotationsHash =
     ,"allemande": true
     ,"gyre":      true
     ,"allemande orbit": true
+    ,"star promenade": true
     };
 function moveCaresAboutRotations (move) {
     return moveCaresAboutRotationsHash[deAliasMove(move)];

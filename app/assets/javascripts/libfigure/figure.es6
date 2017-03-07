@@ -415,7 +415,13 @@ function star_view(move,pvs) {
     return words(swrist_grip, "star", sright_hand, splaces, sbeats)
 }
 
-defineFigure( "star", [param_xhand_spin, param_star_grip, param_four_places, param_beats_8], {view: star_view})
+defineFigure( "star", [param_xhand_spin, param_star_grip, param_four_places, param_beats_8], {view: star_view});
+
+////////////////////////////////////////////////
+// STAR PROMENADE                             //
+////////////////////////////////////////////////
+
+defineFigure( "star promenade", [param_subject_role_gentlespoons, param_xhand_spin, param_half_around, param_beats_4]);
 
 ////////////////////////////////////////////////
 // SWING                                      //
@@ -447,15 +453,15 @@ defineFigureAlias( "long swing", "swing", [null, param_balance_false, param_beat
 defineFigureAlias( "balance and swing", "swing", [null, param_balance_true,  param_beats_16] )
 
 
-////////////////////////////////////////////////
-// EVERYTHING BAGEL                           //
-////////////////////////////////////////////////
-defineFigure( "everything bagel", [param_balance_true,
-                                   param_left_hand_spin,
-                                   param_by_right,
-                                   param_half_around,
-                                   param_subject_pairz,
-                                   param_pass_on_right,
-                                   param_star_grip,
-                                   param_custom_figure,
-                                   param_beats_8])
+// ////////////////////////////////////////////////
+// // EVERYTHING BAGEL                           //
+// ////////////////////////////////////////////////
+// defineFigure( "everything bagel", [param_balance_true,
+//                                    param_left_hand_spin,
+//                                    param_by_right,
+//                                    param_half_around,
+//                                    param_subject_pairz,
+//                                    param_pass_on_right,
+//                                    param_star_grip,
+//                                    param_custom_figure,
+//                                    param_beats_8])
