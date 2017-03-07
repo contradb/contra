@@ -83,7 +83,7 @@ module JSLibFigure
   def self.migrationDashboard(verbose: false)
     Dance.all.each do |dance|
       begin
-        if JSLibFigure.testConverters(dance.figures_json).all? {|x| x[0]==x[1]}
+        if JSLibFigure.testConverters(dance.figures_json).all? {|a| figureEqual a}
           print ":) "
           puts "\t#{dance.id}" if verbose
         else
@@ -96,6 +96,14 @@ module JSLibFigure
       end
     end
     puts
+  end
+
+  def self.figureEqual(a)
+    x0, x1 = a
+    return true if x0 == x1
+    return true if x0['formation'] == nil && x0.merge('formation' => 'square') == x1
+    return true if x1['formation'] == nil && x1.merge('formation' => 'square') == x0
+    false
   end
 
   # note: migration_context corrupts the main context, rather htan
