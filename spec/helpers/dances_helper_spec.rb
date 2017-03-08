@@ -7,13 +7,14 @@ RSpec.describe DancesHelper, type: :helper do
     JSLibFigure.html({'move' => move, 'parameter_values' => parameter_values})
   }
 
-  whitespice = -> x {
+  def whitespice(x) 
     case x
     when Regexp; x
     when String; /\A\s*#{x.gsub(' ','\s+')}\s*\z/
     else raise 'unexpected type in whitespice'
     end
-  }
+  end
+
   [['partners balance & swing', 'balance and swing', 'partners',true, 16],
    ['partners balance & swing','balance and swing','partners',true,16],
    ['neighbors balance & swing', 'swing', 'neighbors', true, 16],
@@ -43,7 +44,7 @@ RSpec.describe DancesHelper, type: :helper do
    # ['petronella', 'petronella', false, 8], ambiguous
    ['balance & petronella', 'petronella', true, 8],
    ['progress to new neighbors', 'progress', 0],
-   ['pull by right', 'pull by', 'neighbors', true, 2],
+   ['neighbors pull by right', 'pull by', 'neighbors', true, 2],
    ['neighbors promenade across passing left sides', 'promenade across', 'neighbors', true, 8],
    ['neighbors promenade across passing right sides', 'promenade across', 'neighbors', false, 8],
    ['right left through', 'right left through', 8],
@@ -51,6 +52,10 @@ RSpec.describe DancesHelper, type: :helper do
    ['star promenade left ½', 'star promenade', false, 180, 4], # prefer: "scoop up partner for star promenade"
    ['butterfly whirl', 'butterfly whirl', 4],
    ['butterfly whirl for 8', 'butterfly whirl', 8],
+   ['down the hall', 'down the hall', 'forward', 8],
+   ['down the hall backward', 'down the hall', 'backward', 8],
+   ['up the hall', 'up the hall', 'forward', 8],
+   ['up the hall forward and backward', 'up the hall', 'forward and backward', 8],
    ['hands across star left 4 places','star', false, false, 360, 8],
    ['star left 4 places',             'star', false, true, 360, 8],
    ['partners balance & swat the flea', 'swat the flea', 'partners',  true,  false, 8],
@@ -72,7 +77,7 @@ RSpec.describe DancesHelper, type: :helper do
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}'" do
-      expect(figure_txt_for.call(move,*pvalues)).to have_text(render)
+      expect(figure_txt_for.call(move,*pvalues)).to match(whitespice(render))
     end
   end
 end

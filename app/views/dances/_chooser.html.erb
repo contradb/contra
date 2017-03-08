@@ -145,3 +145,10 @@
                   <br class='visible-xs'/>
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)" /> hands across</label>
                 </div>
+                <div ng-if="p.ui == chooser_facing">
+                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'forward'" ng-change="user_changed_parameter(figure,$index)"/> forward</label>
+                  <br />
+                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'forward then backward'" ng-change="user_changed_parameter(figure,$index)"/> forward then backward</label>
+                  <br />
+                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'backward'" ng-change="user_changed_parameter(figure,$index)"/> backward</label>
+                </div>

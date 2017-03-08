@@ -304,6 +304,18 @@ defineFigureAlias( "see saw", "do si do", [null, param_left_shoulder_spin])
 
 defineTeachingName("see saw")
 
+////////////////////////////////////////////////
+// DOWN THE HALL  &  UP THE HALL              //
+////////////////////////////////////////////////
+
+function up_or_down_the_hall_view(move, pvs) {
+  var [ facing,  beats] = pvs
+  var [sfacing, sbeats] = parameter_strings(move, pvs)
+  return words(move, sfacing, sbeats);
+}
+
+defineFigure( "down the hall", [param_facing_forward, param_beats_8], {view: up_or_down_the_hall_view})
+defineFigure( "up the hall",   [param_facing_forward, param_beats_8], {view: up_or_down_the_hall_view})
 
 ////////////////////////////////////////////////
 // GYRE (aka circle by the eyes)              //
