@@ -90,21 +90,26 @@ module JSLibFigure
   end
 
   def self.migrationDashboard(verbose: false)
+    happy = sad = dead = 0;
     Dance.all.each do |dance|
       begin
         if JSLibFigure.testConverters(dance.figures_json).all? {|a| figureEqual a}
           print ":) "
+          happy += 1
           puts "\t#{dance.id}" if verbose
         else
           print ":'( "
+          sad += 1
           puts "\t#{dance.id}" if verbose
         end
       rescue MiniRacer::RuntimeError => e
         print ":O "
+        dead +=1
         puts "\t#{dance.id}\t#{e}" if verbose
       end
     end
     puts
+    puts ":) #{happy}   :'( #{sad}   :O #{dead}"
   end
 
   def self.figureEqual(a)
