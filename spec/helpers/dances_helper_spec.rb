@@ -56,6 +56,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['down the hall backward', 'down the hall', 'backward', 8],
    ['up the hall', 'up the hall', 'forward', 8],
    ['up the hall forward and backward', 'up the hall', 'forward and backward', 8],
+   ['mad robin gentlespoons step forward', 'mad robin', 'gentlespoons', 360, 8],
+   ['mad robin twice around ladles step forward', 'mad robin', 'ladles', 720, 8],
    ['hands across star left 4 places','star', false, false, 360, 8],
    ['star left 4 places',             'star', false, true, 360, 8],
    ['partners balance & swat the flea', 'swat the flea', 'partners',  true,  false, 8],

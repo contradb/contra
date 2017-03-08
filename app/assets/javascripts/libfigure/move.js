@@ -14,12 +14,15 @@ var moveCaresAboutRotationsHash =
     ,"gyre":      true
     ,"allemande orbit": true
     ,"star promenade": true
+    ,"mad robin": true
     };
+// it now seems to me that this should be defined by defineFigure -dm 03-07-2017
 function moveCaresAboutRotations (move) {
     return moveCaresAboutRotationsHash[deAliasMove(move)];
 }
 
 var moveCaresAboutPlacesHash = {circle: true, star: true};
+// it now seems to me that this should be defined by defineFigure -dm 03-07-2017
 function moveCaresAboutPlaces (move) {
     return moveCaresAboutPlacesHash[deAliasMove(move)];
 }
