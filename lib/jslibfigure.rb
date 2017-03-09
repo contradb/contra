@@ -93,7 +93,7 @@ module JSLibFigure
     happy = sad = dead = 0;
     Dance.all.each do |dance|
       begin
-        if JSLibFigure.testConverters(dance.figures_json).all? {|a| figureEqual a}
+        if JSLibFigure.testConverters(dance.figures_json).all? {|a| figureEqual(a)}
           print ":) "
           happy += 1
           puts "\t#{dance.id}" if verbose
@@ -117,11 +117,18 @@ module JSLibFigure
   end
 
   def self.figureEqual(a)
-    x0, x1 = a
-    return true if x0 == x1
-    return true if x0['formation'] == nil && x0.merge('formation' => 'square') == x1
-    return true if x1['formation'] == nil && x1.merge('formation' => 'square') == x0
-    false
+    x0, x1 = a.map {|x|         # strip nil balances
+      if x.key?('balance') && !x['balance'] then hash_remove_key(x, 'balance') else x end
+    }.map {|x|                  # strip empty notes
+      if x['notes'] == '' then hash_remove_key(x, 'notes') else x end
+    }.map {|x|                  # default formation
+      if x['formation'].present? then x else x.merge({'formation' => 'square'}) end
+    }.map {|x|
+      if x['move'] == 'star_promenade' && x['who'] == 'gentlespoons' then x.merge('who' => 'everybody') else x end
+    }.map {|x|
+      if x['move'] == 'butterfly_whirl' then hash_remove_key(hash_remove_key(x, 'degrees'), 'who') else x end
+    }
+    return x0 == x1
   end
 
   # note: migration_context corrupts the main context, rather htan
@@ -185,5 +192,9 @@ module JSLibFigure
       x2, y2 = hashdiff [xx,yy]
       return [x2.merge(key => x1_value), y.key?(key) ? y2.merge(key => y1_value) : y2]
     end
+  end
+
+  def self.hash_remove_key(hash, key)
+    hash.clone.tap {|h| h.delete(key)}
   end
 end

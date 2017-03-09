@@ -54,5 +54,21 @@ RSpec.describe JSLibFigure do
     end
   end
 
+  describe 'hash_remove_key' do
+    it 'does nothing on key miss' do
+      expect(JSLibFigure.hash_remove_key({}, :a)).to eql({})
+    end
+
+    it 'removes the key' do
+      expect(JSLibFigure.hash_remove_key({a: 5}, :a)).to eql({})
+    end
+
+    it 'does nothing to the original hash' do
+      h = {a: 5}
+      JSLibFigure.hash_remove_key({a: 5}, :a)
+      expect(h).to eql({a: 5})
+    end
+  end
+
   pending 'test the whole libfigure library, ha ha'
 end
