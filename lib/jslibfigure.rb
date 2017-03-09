@@ -100,7 +100,11 @@ module JSLibFigure
         else
           print ":'( "
           sad += 1
-          puts "\t#{dance.id}" if verbose
+          if verbose
+            first_fail = JSLibFigure.testConverters(dance.figures_json).find {|a| ! figureEqual a}
+            a,b = hashdiff first_fail
+            puts "\t#{dance.id}\t#{first_fail.dig(0,'move')} #{a} /= #{b}"
+          end
         end
       rescue MiniRacer::RuntimeError => e
         print ":O "
@@ -148,15 +152,38 @@ module JSLibFigure
     else raise 'client submitted json was unexpectedly not an array'
     end
   end
+
   def self.ensure_terminal(x)
     [FalseClass, TrueClass, Fixnum, Integer, String].each do |cls|
       return x if x.instance_of? cls
     end
     raise "expecting Bool, Int, or String, but got #{x.class.name}"
   end
+
   def self.ensure_string(s)
     if s.instance_of?(String) then s
     else raise 'client submitted json was unexpectedly not string'
+    end
+  end
+
+  # recursively step through two hashes and find which elements are different
+  # input: array of two hashes
+  # output: array of two hashes where values for each key are unique
+  def self.hashdiff(a)
+    x,y = a
+    return a if x.empty?
+    key, x1_value = x.first
+    same = y.key?(key) &&  x1_value == y[key]
+    xx = x.clone
+    yy = y.clone
+    xx.delete key
+    yy.delete key
+    if same
+      return hashdiff [xx,yy]
+    else
+      y1_value = y[key]
+      x2, y2 = hashdiff [xx,yy]
+      return [x2.merge(key => x1_value), y.key?(key) ? y2.merge(key => y1_value) : y2]
     end
   end
 end

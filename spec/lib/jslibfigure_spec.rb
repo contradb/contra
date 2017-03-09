@@ -27,5 +27,32 @@ RSpec.describe JSLibFigure do
       expect(JSLibFigure.teaching_name({'move' => 'swat the flea'})).to eql('swat the flea')
     end
   end
+
+  describe 'hashdiff' do
+    it '[{},{}] => [{},{}]' do
+      expect(JSLibFigure.hashdiff [{},{}]).to eql([{},{}])
+    end
+
+    it '[{a: 5},{}] => [{a: 5},{}]' do
+      expect(JSLibFigure.hashdiff [{a: 5},{}]).to eql([{a: 5},{}])
+    end
+
+    it '[{},{a: 7}] => [{},{a: 7}]' do
+      expect(JSLibFigure.hashdiff [{},{a: 7}]).to eql([{},{a: 7}])
+    end
+
+    it '[{a: 5},{b: 7}] => [{a: 5},{b: 7}]' do
+      expect(JSLibFigure.hashdiff [{a: 5},{b: 7}]).to eql([{a: 5},{b: 7}])
+    end
+
+    it '[{a: 5},{a: 7}] => [{a: 5},{a: 7}]' do
+      expect(JSLibFigure.hashdiff [{a: 5},{a: 7}]).to eql([{a: 5},{a: 7}])
+    end
+
+    it '[{a: 5},{a: 5}] => [{},{}]' do
+      expect(JSLibFigure.hashdiff [{a: 5},{a: 5}]).to eql([{},{}])
+    end
+  end
+
   pending 'test the whole libfigure library, ha ha'
 end

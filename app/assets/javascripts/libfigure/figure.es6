@@ -105,7 +105,7 @@ var teachingNames = {};
 // | (_| |  __/  _| | | | |  __/  _| | | (_| | |_| | | |  __/
 //  \__,_|\___|_| |_|_| |_|\___|_|   |_|\__, |\__,_|_|  \___|
 //                                      |___/                
-// language construct for defining custom moves
+// language construct for defining dance moves
 
 var defined_events = {}
 
@@ -273,14 +273,25 @@ defineFigureAlias( "circle right",        "circle", [param_spin_right, param_fou
 ////////////////////////////////////////////////
 
 function custom_view(move,pvs) {
-    // this is a lot like the default view, except without the word "custom" cluttering up the front of the string.
-    var [custom,beats] = pvs
-    var [scustom,sbeats] = parameter_strings(move, pvs)
-    if (8==beats) return scustom
-    else return words(scustom,sbeats)
+  // this is a lot like the default view, except without the word "custom" cluttering up the front of the string.
+  // var [custom,beats] = pvs
+  var [scustom,sbeats] = parameter_strings(move, pvs);
+  return words(scustom,sbeats);
 }
 
 defineFigure( "custom", [param_custom_figure, param_beats_8], {view: custom_view})
+
+////////////////////////////////////////////////
+// CUSTOM YUCKY                               //
+////////////////////////////////////////////////
+
+function custom_yucky_view(move,pvs) {
+  var [ who,  bal,  custom, beats] = pvs
+  var [swho, sbal, scustom,sbeats] = parameter_strings(move, pvs)
+  return words(swho, sbal, scustom, sbeats);
+}
+
+defineFigure( "custom yucky", [param_subject, param_balance_false, param_custom_figure, param_beats_8], {view: custom_yucky_view} )
 
 ////////////////////////////////////////////////
 // DO SI DO (and see saw)                     //
