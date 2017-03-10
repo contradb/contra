@@ -217,10 +217,10 @@ function box_the_gnat_change(figure,index) {
     var [who, balance, right_hand, beats] = pvs
     figure.move = right_hand ? 'box the gnat' : 'swat the flea'
     // jankily modify beats to match whether balance checkbox is checked
-    if (balance && beats == 4)
-        pvs[3] = 8
-    else if (!balance || beats == 8)
-        pvs[3] = 4
+    if (balance && beats === 4 && index !== 3)
+        pvs[3] = 8;
+    else if (!balance && beats == 8 && index !== 3)
+        pvs[3] = 4;
 }
 
 function box_the_gnat_view(move,pvs) {
