@@ -389,6 +389,12 @@ function mad_robin_view(move,pvs) {
 defineFigure( "mad robin",  [param_subject_role, param_once_around, param_beats_8], {view: mad_robin_view})
 
 ////////////////////////////////////////////////
+// OCEAN WAVE                                 //
+////////////////////////////////////////////////
+
+defineFigure( "ocean wave",  [param_beats_4])
+
+////////////////////////////////////////////////
 // PASS THROUGH -- progression                //
 ////////////////////////////////////////////////
 
