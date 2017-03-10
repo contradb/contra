@@ -63,6 +63,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['star left 4 places',             'star', false, true, 360, 8],
    ['partners balance & swat the flea', 'swat the flea', 'partners',  true,  false, 8],
    ['ocean wave', 'ocean wave', 4],
+   ['gentlespoons roll away neighbor with a half sashay', 'roll away', 'gentlespoons', 'neighbor', true, 4],
+   ['ladles roll away partner for 2', 'roll away', 'ladles', 'partner', false, 2],
    # below here has issues requiring implementation changes, I think -dm 08-16-2016
    ['gentlespoons see saw once', 'see saw', 'gentlespoons', false, 360, 8],
    ['petronella', 'petronella', false, 4],

@@ -15,6 +15,12 @@ function stringParamBalance (value) {
 param_balance_true  = {name: "bal", value: true,  ui: chooser_boolean, string: stringParamBalance}
 param_balance_false = {name: "bal", value: false, ui: chooser_boolean, string: stringParamBalance}
 
+function stringParamHalfSashay (value) {
+    return value ? "with a half sashay" : ""
+}
+// param_half_sashay_true  = {name: "½sash", value: true,  ui: chooser_boolean, string: stringParamHalfSashay} not used
+param_half_sashay_false = {name: "½sash", value: false, ui: chooser_boolean, string: stringParamHalfSashay}
+
 function stringParamBeatsNotN (n) {
   return function (value) {
     return value && (value != n) ? "for "+value : ""
@@ -90,7 +96,9 @@ param_subject_hetero_shadows   = {name: "who", value: "shadows",   ui: chooser_h
 param_subject_partners         = {name: "who", value: "partners",  ui: chooser_pairs} // allows more options if they
 param_subject_neighbors        = {name: "who", value: "neighbors", ui: chooser_pairs} // don't go with default
 param_subject_shadows          = {name: "who", value: "shadows",   ui: chooser_pairs} // than param_subject_hetero_*
-// param_object_hetero           = {name: "whom", value: "partners",  ui: chooser_hetero} // not used yet
+// param_object_hetero           = {name: "whom",                     ui: chooser_hetero} not used
+param_object_hetero_partners     = {name: "whom", value: "partners",  ui: chooser_hetero}
+// param_object_hetero_neighbors = {name: "whom", value: "neighbors", ui: chooser_hetero} not used
 
 param_pass_on_left = {name: "pass", value: false, ui: chooser_right_left_shoulder}
 param_pass_on_right = {name: "pass", value: true, ui: chooser_right_left_shoulder}

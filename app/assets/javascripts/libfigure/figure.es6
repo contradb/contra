@@ -448,6 +448,12 @@ defineFigure( "pull by", [param_subject_pairz, param_right_hand_spin, param_beat
 defineFigure( "right left through", [param_beats_8])
 
 ////////////////////////////////////////////////
+// ROLL AWAY                                  //
+////////////////////////////////////////////////
+
+defineFigure( "roll away", [param_subject_role_gentlespoons, param_object_hetero_partners, param_half_sashay_false, param_beats_4]);
+
+////////////////////////////////////////////////
 // SLIDE -- progression                       //
 ////////////////////////////////////////////////
 
