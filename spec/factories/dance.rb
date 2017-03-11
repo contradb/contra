@@ -4,7 +4,7 @@ FactoryGirl.define do
     user { FactoryGirl.create(:user) }
     choreographer { FactoryGirl.create(:choreographer) }
     start_type 'improper'
-    figures_json '[{"parameter_values":["neighbors",true,16],"move":"balance and swing"},{"parameter_values":[8],"move":"long lines"},{"parameter_values":["ladles",true,540,8],"move":"do si do"},{"parameter_values":["partners",true,16],"move":"balance and swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":[true,2],"move":"slide"},{"parameter_values":[true,270,6],"move":"circle three places"}]'
+    figures_json '[{"parameter_values":["neighbors",true,16],"move":"balance and swing"},{"parameter_values":[8],"move":"long lines"},{"parameter_values":["ladles",true,540,8],"move":"do si do"},{"parameter_values":["partners",true,16],"move":"balance and swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":[true,2],"move":"slide along set"},{"parameter_values":[true,270,6],"move":"circle three places"}]'
   end
 
   factory :old_figure_format_dance, class: Dance do

@@ -477,11 +477,16 @@ function rory_o_moore_view(move,pvs) {
 defineFigure( "Rory O'Moore", [param_slide_right, param_balance_true, param_beats_8], {view: rory_o_moore_view});
 
 ////////////////////////////////////////////////
-// SLIDE -- progression, couples              //
+// SLIDE ALONG SET -- progression, couples    //
 ////////////////////////////////////////////////
 
-// this is couples slide which is easily confused with rory'o'mooore slides
-defineFigure( "slide", [param_slide_left, param_beats_2], {progression: true})
+function slide_along_set_view(move,pvs) {
+  var [ dir,  beats] = pvs
+  var [sdir, sbeats] = parameter_strings(move, pvs)
+  return words('slide', sdir, 'along set', sbeats, 'to new neighbors');
+}
+
+defineFigure( "slide along set", [param_slide_left, param_beats_2], {progression: true, view: slide_along_set_view})
 
 ////////////////////////////////////////////////
 // STAR                                       //

@@ -49,7 +49,7 @@ RSpec.describe DancesHelper, type: :helper do
    ['neighbors promenade across passing left sides', 'promenade across', 'neighbors', true, 8],
    ['neighbors promenade across passing right sides', 'promenade across', 'neighbors', false, 8],
    ['right left through', 'right left through', 8],
-   ['slide left to new neighbors', 'slide', true, 2],
+   ['slide left along set to new neighbors', 'slide along set', true, 2],
    ['star promenade left ½', 'star promenade', false, 180, 4], # prefer: "scoop up partner for star promenade"
    ['butterfly whirl', 'butterfly whirl', 4],
    ['butterfly whirl for 8', 'butterfly whirl', 8],
