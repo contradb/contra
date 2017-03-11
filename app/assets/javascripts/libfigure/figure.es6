@@ -433,7 +433,13 @@ defineFigure( "petronella", [param_balance_true, param_beats_8], {view: petronel
 // PROMENADE                                  //
 ////////////////////////////////////////////////
 
-defineFigure( "promenade across", [param_subject_pairs_partners, param_by_left, param_beats_8])
+function promenade_view(move,pvs) {
+  var [ subject,  spin,  beats] = pvs;
+  var [ssubject, sspin, sbeats] = parameter_strings(move, pvs);
+  return words(ssubject, move, spin ? 'passing on the left' : '', sbeats);
+}
+
+defineFigure( "promenade across", [param_subject_pairs_partners, param_spin_right, param_beats_8], {view: promenade_view})
 
 ////////////////////////////////////////////////
 // PROGRESS -- progression                    //

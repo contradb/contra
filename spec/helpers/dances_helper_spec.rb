@@ -46,8 +46,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['balance & petronella', 'petronella', true, 8],
    ['progress to new neighbors', 'progress', 0],
    ['neighbors pull by right', 'pull by', 'neighbors', true, 2],
-   ['neighbors promenade across passing left sides', 'promenade across', 'neighbors', true, 8],
-   ['neighbors promenade across passing right sides', 'promenade across', 'neighbors', false, 8],
+   ['neighbors promenade across passing on the left', 'promenade across', 'neighbors', true, 8],
+   ['neighbors promenade across', 'promenade across', 'neighbors', false, 8],
    ['right left through', 'right left through', 8],
    ['slide left along set to new neighbors', 'slide along set', true, 2],
    ['star promenade left ½', 'star promenade', false, 180, 4], # prefer: "scoop up partner for star promenade"

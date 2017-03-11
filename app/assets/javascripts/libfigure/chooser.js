@@ -32,7 +32,6 @@ defineChooser("chooser_spin")
 defineChooser("chooser_left_right_spin")
 defineChooser("chooser_right_left_hand")
 defineChooser("chooser_right_left_shoulder")
-defineChooser("chooser_side")
 defineChooser("chooser_revolutions")
 defineChooser("chooser_places")
 defineChooser("chooser_dancers")  // some collection of dancers

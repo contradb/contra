@@ -57,11 +57,6 @@ function stringParamSide (value) {
     return value ? "passing left sides" : "passing right sides"
 }
 
-// promenades only, everything else uses a shoulder. Deprecate?
-param_by_side  = {name: "side",               ui: chooser_side, string: stringParamSide} 
-param_by_left  = {name: "side", value: true,  ui: chooser_side, string: stringParamSide}
-param_by_right = {name: "side", value: false, ui: chooser_side, string: stringParamSide}
-
 function stringParamDegrees (value,move) {
     if (moveCaresAboutRotations(move))
     return degreesToRotations(value)
