@@ -100,8 +100,9 @@ param_subject_shadows          = {name: "who", value: "shadows",   ui: chooser_p
 param_object_hetero_partners     = {name: "whom", value: "partners",  ui: chooser_hetero}
 // param_object_hetero_neighbors = {name: "whom", value: "neighbors", ui: chooser_hetero} not used
 
-param_pass_on_left = {name: "pass", value: false, ui: chooser_right_left_shoulder}
-param_pass_on_right = {name: "pass", value: true, ui: chooser_right_left_shoulder}
+// not used anymore
+// param_pass_on_left = {name: "pass", value: false, ui: chooser_right_left_shoulder}
+// param_pass_on_right = {name: "pass", value: true, ui: chooser_right_left_shoulder}
 
 param_custom_figure = {name: "custom", value: "", ui: chooser_text}
 
@@ -116,6 +117,13 @@ function stringParamFacing (value) {
   return (value === 'forward') ? '' : value;
 }
 
-
 param_facing         = {name: "facing", ui: chooser_facing}
 param_facing_forward = {name: "facing", ui: chooser_facing, value: "forward", string: stringParamFacing}
+
+function stringParamSlide (value) {
+  return value ? 'left' : 'right';
+}
+
+param_slide       = {name: "slide",              ui: chooser_slide, string: stringParamSlide};
+param_slide_left  = {name: "slide", value: true, ui: chooser_slide, string: stringParamSlide};
+param_slide_right = {name: "slide", value: false, ui: chooser_slide, string: stringParamSlide};

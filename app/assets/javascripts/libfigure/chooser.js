@@ -45,3 +45,4 @@ defineChooser("chooser_hetero")   // partners or neighbors or shadows
 defineChooser("chooser_text")
 defineChooser("chooser_star_grip")
 defineChooser("chooser_facing")
+defineChooser("chooser_slide")

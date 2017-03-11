@@ -398,7 +398,6 @@ defineFigure( "ocean wave",  [param_beats_4])
 // PASS THROUGH -- progression                //
 ////////////////////////////////////////////////
 
-
 var pass_through_string = "pass through to new neighbors"
 function pass_through_view(move,pvs) {
   var [beats] = pvs;
@@ -454,15 +453,28 @@ defineFigure( "right left through", [param_beats_8])
 defineFigure( "roll away", [param_subject_role_gentlespoons, param_object_hetero_partners, param_half_sashay_false, param_beats_4]);
 
 ////////////////////////////////////////////////
-// SLIDE -- progression                       //
+// RORY O'MOORE                               //
 ////////////////////////////////////////////////
 
-function slide_view(move, pvs) {
-  var [direction,  beats] = pvs
-  return words(move, direction ? "left" : "right", progressionString) + ((beats == 2) ? "" : (" for "+beats));
+function rory_o_moore_view(move,pvs) {
+  var [ dir,  balance,  beats] = pvs
+  var [sdir, sbalance, sbeats] = parameter_strings(move, pvs)
+  var standard_beats = ((beats == 8) && balance) || ((beats == 4) && !balance);
+  if (standard_beats) {
+    return words(sbalance, move, sdir);
+  } else {
+    return words(sbalance, move, sdir, 'for', beats);
+  }
 }
 
-defineFigure( "slide", [param_spin_left, param_beats_2], {progression: true, view: slide_view})
+defineFigure( "rory o'moore", [param_slide_right, param_balance_true, param_beats_8], {view: rory_o_moore_view});
+
+////////////////////////////////////////////////
+// SLIDE -- progression, couples              //
+////////////////////////////////////////////////
+
+// this is couples slide which is easily confused with rory'o'mooore slides
+defineFigure( "slide", [param_slide_left, param_beats_2], {progression: true})
 
 ////////////////////////////////////////////////
 // STAR                                       //
@@ -520,7 +532,6 @@ defineFigureAlias( "balance and swing", "swing", [null, param_balance_true,  par
 //                                    param_by_right,
 //                                    param_half_around,
 //                                    param_subject_pairz,
-//                                    param_pass_on_right,
 //                                    param_star_grip,
 //                                    param_custom_figure,
 //                                    param_beats_8])
