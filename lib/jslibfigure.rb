@@ -50,91 +50,6 @@ module JSLibFigure
     end
   end
 
-  # [{"formation"=>"square", "who"=>"neighbor", "beats"=>8, "balance"=>true, "move"=>"box_the_gnat"}, {"formation"=>"square", "who"=>"partner", "beats"=>8, "balance"=>true, "move"=>"swat_the_flea"}, {"formation"=>"square", "who"=>"neighbor", "beats"=>16, "balance"=>true, "move"=>"swing"}, {"formation"=>"square", "who"=>"ladles", "beats"=>8, "move"=>"allemande_right", "degrees"=>540}, {"formation"=>"square", "who"=>"partner", "beats"=>8, "move"=>"swing"}, {"formation"=>"square", "who"=>"everybody", "beats"=>8, "move"=>"right_left_through"}, {"formation"=>"square", "who"=>"ladles", "beats"=>8, "move"=>"chain", "notes"=>"look for new"}]
-  # =>
-  # [{"parameter_values"=>["neighbors", true, true, 8], "move"=>"box the gnat"}, {"parameter_values"=>["partners", true, false, 8], "move"=>"swat the flea"}, {"parameter_values"=>["neighbors", true, 16], "move"=>"balance and swing"}, {"parameter_values"=>["ladles", true, 540, 8], "move"=>"allemande"}, {"parameter_values"=>["partners", false, 8], "move"=>"swing"}, {"parameter_values"=>[8], "move"=>"right left through"}, {"parameter_values"=>["ladles", 8], "move"=>"chain"}, {"parameter_values"=>[0], "move"=>"progress"}]
-
-  # [{"formation"=>"square", "who"=>"neighbor", "beats"=>8, "balance"=>true, "move"=>"box_the_gnat"}] =>
-  # [{"parameter_values"=>["neighbors", true, true, 8], "move"=>"box the gnat"}]
-
-  # require 'jslibfigure'
-  # JSLibFigure.originalToJSLibFigure Dance.find(64).figures_json
-  def self.originalToJSLibFigure(figures_json)
-    reloadSomeJS unless @migration_context
-    @migration_context.eval("originalToJSLibFigure(#{figures_json})")
-    # @migration_context.eval("testConverters(#{figures_json})")
-  end
-
-  # JSLibFigure.jsLibFigureToOriginal([{"parameter_values"=>[true, 270, 8], "move"=>"circle"}].to_json).each {|x| puts x}
-  # {"who"=>"everybody", "move"=>"circle_left", "beats"=>8, "formation"=>"square"}
-  # => [{"who"=>"everybody", "move"=>"circle_left", "beats"=>8, "formation"=>"square"}]
-  def self.jsLibFigureToOriginal(figures_json)
-    reloadSomeJS unless @migration_context
-    @migration_context.eval("jsLibFigureToOriginal(#{figures_json})")
-  end
-
-  # require 'jslibfigure'
-  # JSLibFigure.testConverters Dance.find(64).figures_json
-  # JSLibFigure.testConverters(Dance.find(64).figures_json).each {|x| puts "#{x[0]==x[1] ? 'XD' : ':('}  #{x[0]} => #{x[1]}"} 
-  # JSLibFigure.testConverters(Dance.find(75).figures_json).each {|x| puts "#{x[0]==x[1] ? 'XD' : ':('}  #{x[0]} => #{x[1]}"}
-  # JSLibFigure.testConverters([{"formation"=>"square", "who"=>"everybody", "beats"=>8, "move"=>"circle_left", "degrees"=>270}].to_json).each {|x| puts "#{x[0]==x[1] ? 'XD' : ':('}  #{x[0]} => #{x[1]}"}
-
-  def self.reloadSomeJS
-    @migration_context = self.new_context
-    @migration_context.load(Rails.root.join('lib','assets','javascripts','libfigure-migration.js'))
-  end
-
-  def self.testConverters(figures_json)
-    reloadSomeJS unless @migration_context
-    @migration_context.eval("testConverters(#{figures_json})")
-  end
-
-  def self.migrationDashboard(verbose: false)
-    happy = sad = dead = 0;
-    Dance.all.each do |dance|
-      begin
-        if JSLibFigure.testConverters(dance.figures_json).all? {|a| figureEqual(a)}
-          print ":) "
-          happy += 1
-          puts "\t#{dance.id}" if verbose
-        else
-          print ":'( "
-          sad += 1
-          if verbose
-            first_fail = JSLibFigure.testConverters(dance.figures_json).find {|a| ! figureEqual a}
-            a,b = hashdiff first_fail
-            puts "\t#{dance.id}\t#{first_fail.dig(0,'move')} #{a} /= #{b}"
-          end
-        end
-      rescue MiniRacer::RuntimeError => e
-        print ":O "
-        dead +=1
-        puts "\t#{dance.id}\t#{e}" if verbose
-      end
-    end
-    puts
-    puts ":) #{happy}   :'( #{sad}   :O #{dead}"
-  end
-
-  def self.figureEqual(a)
-    x0, x1 = a.map {|x|         # strip nil balances
-      if x.key?('balance') && !x['balance'] then hash_remove_key(x, 'balance') else x end
-    }.map {|x|                  # strip empty notes
-      if x['notes'] == '' then hash_remove_key(x, 'notes') else x end
-    }.map {|x|                  # default formation
-      if x['formation'].present? then x else x.merge({'formation' => 'square'}) end
-    }.map {|x|
-      if x['move'] == 'star_promenade' && x['who'] == 'gentlespoons' then x.merge('who' => 'everybody') else x end
-    }.map {|x|
-      if x['move'] == 'butterfly_whirl' then hash_remove_key(hash_remove_key(x, 'degrees'), 'who') else x end
-    }
-    return x0 == x1
-  end
-
-  # note: migration_context corrupts the main context, rather htan
-  # copying a new one. It needs to be destroyed after the migration
-  # does its thing.
-
   private
   def self.eval(string_of_javascript)
     context.eval(string_of_javascript)
@@ -171,30 +86,5 @@ module JSLibFigure
     if s.instance_of?(String) then s
     else raise 'client submitted json was unexpectedly not string'
     end
-  end
-
-  # recursively step through two hashes and find which elements are different
-  # input: array of two hashes
-  # output: array of two hashes where values for each key are unique
-  def self.hashdiff(a)
-    x,y = a
-    return a if x.empty?
-    key, x1_value = x.first
-    same = y.key?(key) &&  x1_value == y[key]
-    xx = x.clone
-    yy = y.clone
-    xx.delete key
-    yy.delete key
-    if same
-      return hashdiff [xx,yy]
-    else
-      y1_value = y[key]
-      x2, y2 = hashdiff [xx,yy]
-      return [x2.merge(key => x1_value), y.key?(key) ? y2.merge(key => y1_value) : y2]
-    end
-  end
-
-  def self.hash_remove_key(hash, key)
-    hash.clone.tap {|h| h.delete(key)}
   end
 end
