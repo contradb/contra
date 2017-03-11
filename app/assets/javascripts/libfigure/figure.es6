@@ -151,7 +151,8 @@ function parameters(move){
     if (move && !issued_parameter_warning)
     {
         issued_parameter_warning = true
-        console.log("Warning: could not find a figure definition for '"+move+"', suppressing future warnings of this type");
+        throw_up("could not find a figure definition for '"+move+"'. ");
+        // console.log("Warning: could not find a figure definition for '"+move+"', suppressing future warnings of this type");
     }
     return [];
 }
