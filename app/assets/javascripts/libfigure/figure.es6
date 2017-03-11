@@ -137,9 +137,15 @@ function deAliasMove(move) {
 }
 
 function moves() {
-    var a = [];
-    $.each(defined_events,function(k,v){a.push(k)})
-    return a.sort();
+  var a = [];
+  $.each(defined_events,function(k,v){a.push(k)});
+  return a.sort(function(a,b) {
+    var aa = a.toLowerCase();
+    var bb = b.toLowerCase();
+    if (aa < bb) { return -1 ;}
+    else if (aa > bb) { return 1; }
+    else { return 0; }
+  });
 }
 
 var issued_parameter_warning = false;
@@ -468,7 +474,7 @@ function rory_o_moore_view(move,pvs) {
   }
 }
 
-defineFigure( "rory o'moore", [param_slide_right, param_balance_true, param_beats_8], {view: rory_o_moore_view});
+defineFigure( "Rory O'Moore", [param_slide_right, param_balance_true, param_beats_8], {view: rory_o_moore_view});
 
 ////////////////////////////////////////////////
 // SLIDE -- progression, couples              //
