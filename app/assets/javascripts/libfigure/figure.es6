@@ -197,9 +197,6 @@ defineFigure( "allemande orbit", [param_subject_pair, param_left_hand_spin, para
 ////////////////////////////////////////////////
 
 defineFigure( "allemande", [param_subject_pairz, param_xhand_spin, param_once_around, param_beats_8])
-// unsupport because I don't want to make the string viewers not have the word 'left' twice:
-// defineFigureAlias( "allemande left", "allemande", [null, param_left_hand_spin])
-// defineFigureAlias( "allemande right", "allemande", [null, param_right_hand_spin])
 
 ////////////////////////////////////////////////
 // BALANCE                                    //
@@ -259,20 +256,7 @@ defineFigure( "chain", [param_subject_role_ladles, param_beats_8])
 // CIRCLE                                     //
 ////////////////////////////////////////////////
 
-function circle_rename(figure,index) {
-    var pvs = figure.parameter_values
-    figure.move = pvs[0] ? "circle" : "circle right"
-    if (pvs[0] && (pvs[1] == 270))
-        figure.move = "circle three places"
-}
-
-function circle_view(move, pvs) {
-  return figure_html_readonly_default(move=="circle three places" ? "circle" : move, pvs);
-}
-
-defineFigure( "circle", [param_spin_left,  param_four_places, param_beats_8], {change: circle_rename, view: circle_view})
-defineFigureAlias( "circle three places", "circle", [param_spin_left,  param_three_places, param_beats_8])
-defineFigureAlias( "circle right",        "circle", [param_spin_right, param_four_places, param_beats_8])
+defineFigure( "circle", [param_spin_left,  param_four_places, param_beats_8])
 
 ////////////////////////////////////////////////
 // CUSTOM                                     //

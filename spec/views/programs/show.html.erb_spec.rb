@@ -23,7 +23,7 @@ RSpec.describe "programs/show", type: :view do
       start_type: "improper",
       user: FactoryGirl.create(:user, name: "Bob Danceownerson"),
       choreographer: FactoryGirl.create(:choreographer, name: "Susan MacChoreographer"),
-      figures_json: '[{"parameter_values":["neighbor rang tang right",6],"move":"custom"},{"parameter_values":["partner rang tang left",6],"move":"custom"},{"parameter_values":["neighbor rang tang right",6],"move":"custom"},{"parameter_values":["partner rang tang left",6],"move":"custom"},{"parameter_values":["neighbors",false,8],"move":"swing"},{"parameter_values":[true,270,8],"move":"circle three places"},{"parameter_values":["partners",false,8],"move":"swing"},{"parameter_values":["ladles",8],"move":"chain"},{"parameter_values":[false,true,360,8],"move":"star"}]',
+      figures_json: '[{"parameter_values":["neighbor rang tang right",6],"move":"custom"},{"parameter_values":["partner rang tang left",6],"move":"custom"},{"parameter_values":["neighbor rang tang right",6],"move":"custom"},{"parameter_values":["partner rang tang left",6],"move":"custom"},{"parameter_values":["neighbors",false,8],"move":"swing"},{"parameter_values":[true,270,8],"move":"circle"},{"parameter_values":["partners",false,8],"move":"swing"},{"parameter_values":["ladles",8],"move":"chain"},{"parameter_values":[false,true,360,8],"move":"star"}]',
       notes: 'What are rang tangs? Rang_tang left = allemande left once along sets, gents cross over. Rang_tang right = allemande right once along sets, gents cross over. 
 
 Truly, this dance is "by unknown", according to C. A. Gray. This particular variation is called by Diane Silver

@@ -28,7 +28,8 @@ RSpec.describe JSLibFigure do
     end
   end
 
-  describe 'hashdiff' do
+  # calling code moved to a migration, delete this someday
+  xit 'hashdiff' do
     it '[{},{}] => [{},{}]' do
       expect(JSLibFigure.hashdiff [{},{}]).to eql([{},{}])
     end
@@ -54,7 +55,8 @@ RSpec.describe JSLibFigure do
     end
   end
 
-  describe 'hash_remove_key' do
+  # calling code moved to a migration, delete this someday
+  xit 'hash_remove_key' do
     it 'does nothing on key miss' do
       expect(JSLibFigure.hash_remove_key({}, :a)).to eql({})
     end

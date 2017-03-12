@@ -34,10 +34,10 @@ param_beats_8 = {name: "beats", value: 8, ui: chooser_beats, string: stringParam
 param_beats_12 = {name: "beats", value: 12, ui: chooser_beats, string: stringParamBeatsNotN(12)}
 param_beats_16 = {name: "beats", value: 16, ui: chooser_beats, string: stringParamBeatsNotN(16)}
 
-function stringParamClock     (value) {return value ? "clockwise" : "counter-clockwise"} // untested
-function stringParamLeftRight (value) {return value ? "to the left" : "to the right"}
+function stringParamClock     (value) {return value ? "clockwise" : "counter-clockwise"}
+function stringParamLeftRight (value) {return value ? "left" : "right"}
 function stringParamHand      (value) {return value ? "right" : "left"}
-function stringParamShoulder  (value) {return value ? "by the right shoulder" : "by the left shoulder"} // untested
+function stringParamShoulder  (value) {return value ? "right shoulder" : "left shoulder"}
 
 // spin = clockwise | ccw | undefined
 param_spin                   = {name: "turn",               ui: chooser_spin, string: stringParamClock}

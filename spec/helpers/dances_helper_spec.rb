@@ -29,9 +29,9 @@ RSpec.describe DancesHelper, type: :helper do
    ['ones balance for 8', 'balance', 'ones', 8],
    ['balance the ring for 6', 'balance the ring', 6],
    ['ladies chain', 'chain', 'ladies', 8],
-   ['circle to the left 4 places','circle',true,360,8],
-   ['circle to the right 4 places','circle',false,360,8],
-   ['circle to the left 3 places', 'circle three places', true, 270, 8],
+   ['circle left 4 places','circle',true,360,8],
+   ['circle right 4 places','circle',false,360,8],
+   ['circle left 3 places', 'circle', true, 270, 8],
    ['put your right hand in', 'custom', 'put your right hand in', 8],
    ['put your right hand in for 16', 'custom', 'put your right hand in', 16],
    ['gentlespoons balance & twerk', 'custom yucky', 'gentlespoons', true, 'twerk', 8],
@@ -79,7 +79,7 @@ RSpec.describe DancesHelper, type: :helper do
    ['partners balance & box the gnat',  'box the gnat',  'partners',  true,  true,  8],
    ['ladles do si do once', 'do si do', 'ladles', true, 360, 8],
    ['shadows gyre 1½', 'gyre', 'shadows', true, 540, 8],
-   ['ones gyre by the left shoulder 1½', 'gyre', 'ones', false, 540, 8],
+   ['ones gyre left shoulder 1½', 'gyre', 'ones', false, 540, 8],
    ['neighbors box the gnat', 'box the gnat',  'neighbors', false, true,  4]
   ].each do |arr|
     render, move, *pvalues = arr

@@ -89,8 +89,8 @@ describe 'Creating dances', js: true do
         select "5 places"
         find('#figure-menu-3').click
         click_on 'Duplicate'
-        expect(page).to have_css('#figure-3', text: 'circle to the left 5 places')
-        expect(page).to have_css('#figure-4', text: 'circle to the left 5 places')
+        expect(page).to have_css('#figure-3', text: 'circle left 5 places')
+        expect(page).to have_css('#figure-4', text: 'circle left 5 places')
       end
     end
 
@@ -100,14 +100,14 @@ describe 'Creating dances', js: true do
         make_eight_circle_figures
         find('#figure-menu-4').click # 'circle to the left 5 places'
         click_on 'Delete'
-        expect(page).to have_text "circle to the left 1 place"
-        expect(page).to have_text "circle to the left 2 places"
-        expect(page).to have_text "circle to the left 3 places"
-        expect(page).to have_text "circle to the left 4 places"
-        expect(page).to_not have_text "circle to the left 5 places"
-        expect(page).to have_text "circle to the left 6 places"
-        expect(page).to have_text "circle to the left 7 places"
-        expect(page).to have_text "circle to the left 8 places"
+        expect(page).to have_text "circle left 1 place"
+        expect(page).to have_text "circle left 2 places"
+        expect(page).to have_text "circle left 3 places"
+        expect(page).to have_text "circle left 4 places"
+        expect(page).to_not have_text "circle left 5 places"
+        expect(page).to have_text "circle left 6 places"
+        expect(page).to have_text "circle left 7 places"
+        expect(page).to have_text "circle left 8 places"
       end
     end
 
@@ -118,17 +118,17 @@ describe 'Creating dances', js: true do
         find('#figure-menu-4').click # 'circle to the left 5 places'
         click_on 'Up 2'
         expect(page).to have_text ['A1',
-                                   'circle to the left 1 place',
-                                   'circle to the left 2 places',
+                                   'circle left 1 place',
+                                   'circle left 2 places',
                                    'A2',
-                                   'circle to the left 5 places',
-                                   'circle to the left 3 places',
+                                   'circle left 5 places',
+                                   'circle left 3 places',
                                    'B1',
-                                   'circle to the left 4 places',
-                                   'circle to the left 6 places',
+                                   'circle left 4 places',
+                                   'circle left 6 places',
                                    'B2',
-                                   'circle to the left 7 places',
-                                   'circle to the left 8 places'].join(' ')
+                                   'circle left 7 places',
+                                   'circle left 8 places'].join(' ')
       end
     end
 
