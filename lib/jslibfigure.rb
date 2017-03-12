@@ -76,10 +76,10 @@ module JSLibFigure
   end
 
   def self.ensure_terminal(x)
-    [FalseClass, TrueClass, Fixnum, Integer, String].each do |cls|
+    [FalseClass, TrueClass, NilClass, Fixnum, Integer, String].each do |cls|
       return x if x.instance_of? cls
     end
-    raise "expecting Bool, Int, or String, but got #{x.class.name}"
+    raise "expecting Bool, Int, Nil, or String, but got #{x.class.name}"
   end
 
   def self.ensure_string(s)

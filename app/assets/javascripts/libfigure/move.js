@@ -51,10 +51,18 @@ function degreesToWords (degrees,optional_move) {
     return degrees.toString();
 }
 function degreesToRotations(degrees) {
+  if (degrees) {
     return degrees2rotations[degrees] || (degrees.toString() + " degrees");
+  } else {
+    return "?";
+  }
 }
 function degreesToPlaces(degrees) {
+  if (degrees) {
     return degrees2places[degrees] || (degrees.toString() + " degrees");
+  } else {
+    return "? places";
+  }
 }
 
 var anglesForMoveArr = [90,180,270,360,450,540,630,720];

@@ -109,7 +109,11 @@ function stringParamWristGrip (value,move) {
 param_star_grip = {name: "grip", value: "wrist grip", ui: chooser_star_grip, string: stringParamWristGrip}
 
 function stringParamFacing (value) {
-  return (value === 'forward') ? '' : value;
+  if (value) {
+    return (value === 'forward') ? '' : value;
+  } else {
+    return "facing ?";
+  }
 }
 
 param_facing         = {name: "facing", ui: chooser_facing}
