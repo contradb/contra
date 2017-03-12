@@ -181,17 +181,16 @@ function is_progression(move) {
 ////////////////////////////////////////////////
 
 function allemande_orbit_view(move,pvs) {
-    var who = pvs[0]
     var [ who, dir, inner_angle, outer_angle, beats] = pvs
     var [swho,sdir,sinner_angle,souter_angle,sbeats] = parameter_strings(move, pvs)
     return words(swho, "allemande", sdir,
                  sinner_angle, "around",
                  "while the", who ? dancersComplement(who) : "others", "orbit",
-                 dir ? "clockwise" : "counter clockwise",
+                 dir ? "counter clockwise" : "clockwise",
                  souter_angle, "around", sbeats)
 }
 
-defineFigure( "allemande orbit", [param_subject_pair, param_left_hand_spin, param_once_and_a_half, param_half_around, param_beats_8], {view: allemande_orbit_view, labels: ["","allemande","","while the rest orbit", "outside for"]})
+defineFigure( "allemande orbit", [param_subject_pair, param_left_hand_spin, param_once_and_a_half, param_half_around, param_beats_8], {view: allemande_orbit_view, labels: ["","allemande","inner","outer", "for"]})
 
 ////////////////////////////////////////////////
 // ALLEMANDE                                  //
