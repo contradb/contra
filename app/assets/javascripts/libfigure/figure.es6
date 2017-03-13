@@ -299,8 +299,8 @@ function do_si_do_change(figure,index) {
 }
 
 function do_si_do_view(move, pvs) {
-  var [who,   shoulder,  rots,  beats] = pvs
-  var [swho, sshoulder, srots, sbeats] = parameter_strings(move, pvs)
+  var [who,   _shoulder,  rots,  beats] = pvs
+  var [swho, _sshoulder, srots, sbeats] = parameter_strings(move, pvs)
   return words(swho, move, srots)
 }
 
@@ -340,24 +340,24 @@ defineFigure( "gyre", [param_subject_pairz, param_right_shoulder_spin, param_onc
 ////////////////////////////////////////////////
 
 function hey_view_maker(default_beats) {
-    return function (move,pvs) {
-        var beats = pvs[1]
-        var [leader, sbeats] = parameter_strings(move,pvs)
-        if (beats == default_beats)
-            return  words(move+",", leader, "lead")
-        else return words(move+",", leader, "lead,", sbeats)
-    }
-}
-function hey_rename(figure,index) {
-    var pvs = figure.parameter_values
+  return function (move,pvs) {
     var beats = pvs[1]
-    if      (beats ==  8) figure.move = "half hey"
-    else if (beats == 16) figure.move = "hey"
+    var [leader, sbeats] = parameter_strings(move,pvs)
+    if (beats == default_beats)
+      return  words(move+",", leader, "lead")
+    else return words(move+",", leader, "lead,", sbeats)
+  }
+}
+
+function hey_rename(figure,index) {
+  var pvs = figure.parameter_values
+  var beats = pvs[1]
+  if      (beats ==  8) figure.move = "half hey"
+  else if (beats == 16) figure.move = "hey"
 }
 
 defineFigure( "hey",      [param_subject_role_ladles, param_beats_16], {view: hey_view_maker(16), change: hey_rename})
 defineFigure( "half hey", [param_subject_role_ladles, param_beats_8],  {view: hey_view_maker(8), change: hey_rename})
-defineFigureAlias( "hey halfway", "half hey", [])
 
 ////////////////////////////////////////////////
 // LONG LINES forward and back                //
@@ -373,7 +373,7 @@ defineFigure( "long lines forward only",  [param_beats_4])
 function mad_robin_view(move,pvs) {
   var [ role,  angle,  beats] = pvs;
   var [srole, sangle, sbeats] = parameter_strings(move, pvs);
-  return words(move, angle!==360 ? sangle + ' around' : '', srole, "step forward", sbeats); 
+  return words(move, angle!==360 ? sangle + ' around' : '', '-', srole, "forward", sbeats); 
 }
 
 defineFigure( "mad robin",  [param_subject_role, param_once_around, param_beats_8], {view: mad_robin_view})
