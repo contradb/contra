@@ -74,9 +74,7 @@ param_once_and_a_half = {name: "cirlcing", value: 540, ui: chooser_revolutions, 
 param_three_places    = {name: "places", value: 270, ui: chooser_places,      string: stringParamDegrees}
 param_four_places     = {name: "places", value: 360, ui: chooser_places,      string: stringParamDegrees}
 
-// we use 'everyone' here but 'everybody' in the menu.
-// an something in the old figures
-// Figure out what is going ON! :(
+// always 'everyone' and never 'everybody'!
 param_subject                    = {name: "who", value: "everyone",     ui: chooser_dancers};
 param_subject_pair               = {name: "who",                        ui: chooser_pair};  // 1 pair of dancers
 param_subject_pairz              = {name: "who",                        ui: chooser_pairz} // 1-2 pairs of dancers

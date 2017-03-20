@@ -431,22 +431,40 @@ defineFigure( "promenade across", [param_subject_pairs_partners, param_spin_righ
 defineFigure( "progress", [param_beats_0], {progression: true})
 
 ////////////////////////////////////////////////
-// PULL BY                                    //
+// PULL BY FOR 4                              //
 ////////////////////////////////////////////////
 
-function pull_by_view(move,pvs) {
+function pull_by_for_4_view(move,pvs) {
   var [ bal,  dir,  spin,  beats] = pvs;
   var [sbal, sdir, sspin, sbeats] = parameter_strings(move, pvs);
   var left_hand = spin ? '' : 'left';
   var standard_beats = ((beats == 8) && bal) || ((beats == 2) && !bal);
   if (standard_beats) {
-    return words(sbal, move, left_hand, sdir);
+    return words(sbal, 'pull by', left_hand, sdir);
   } else {
-    return words(sbal, move, left_hand, sdir, 'for', beats);
+    return words(sbal, 'pull by', left_hand, sdir, 'for', beats);
   }
 }
 
-defineFigure( "pull by", [param_balance_false, param_set_direction_along, param_right_hand_spin, param_beats_2], {view: pull_by_view})
+defineFigure( "pull by for 4", [param_balance_false, param_set_direction_along, param_right_hand_spin, param_beats_2], {view: pull_by_for_4_view})
+
+////////////////////////////////////////////////
+// PULL BY FOR 2                              //
+////////////////////////////////////////////////
+
+function pull_by_for_2_view(move,pvs) {
+  var [ who,  bal,  spin,  beats] = pvs;
+  var [swho, sbal, sspin, sbeats] = parameter_strings(move, pvs);
+  var left_hand = spin ? '' : 'left';
+  var standard_beats = ((beats == 8) && bal) || ((beats == 2) && !bal);
+  if (standard_beats) {
+    return words(swho, sbal, 'pull by', left_hand);
+  } else {
+    return words(swho, sbal, 'pull by', left_hand, 'for', beats);
+  }
+}
+
+defineFigure( "pull by for 2", [param_subject_pair, param_balance_false, param_right_hand_spin, param_beats_2], {view: pull_by_for_2_view})
 
 ////////////////////////////////////////////////
 // RIGHT LEFT THROUGH                         //
