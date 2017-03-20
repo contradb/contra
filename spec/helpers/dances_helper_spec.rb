@@ -10,7 +10,9 @@ RSpec.describe DancesHelper, type: :helper do
   def whitespice(x) 
     case x
     when Regexp; x
-    when String; /\A\s*#{x.gsub(' ','\s+')}\s*\z/
+    when String;
+      quote = Regexp.escape(x).to_s
+      /\A\s*#{quote.gsub('\ ','\s+')}\s*\z/
     else raise 'unexpected type in whitespice'
     end
   end
@@ -23,8 +25,7 @@ RSpec.describe DancesHelper, type: :helper do
    ['partners swing for 16','swing', 'partners', false, 16],
    ['gentlespoons allemande right 1½', 'allemande', 'gentlespoons', true, 540, 8],
    ['gentlespoons allemande right twice for 10', 'allemande', 'gentlespoons', true, 720, 10],
-   ['ladles allemande left 1½ around while the gentlespoons orbit clockwise ½ around',
-    'allemande orbit','ladles',false,540,180,8],
+   ['ladles allemande left 1½ around while the gentlespoons orbit clockwise ½ around', 'allemande orbit','ladles',false,540,180,8],
    ['ones balance', 'balance', 'ones', 4],
    ['ones balance for 8', 'balance', 'ones', 8],
    ['balance the ring for 6', 'balance the ring', 6],
@@ -39,12 +40,18 @@ RSpec.describe DancesHelper, type: :helper do
    ['hey, gentlespoons lead', 'hey', 'gentlespoons', 16],
    ['long lines', 'long lines', 8],
    ['long lines forward only for 3', 'long lines forward only', 3],
-   ['pass through to new neighbors for 4', 'pass through', 4],
    ['balance & petronella', 'petronella', true, 8],
    # ['petronella', 'petronella', false, 8], ambiguous
    ['balance & petronella', 'petronella', true, 8],
    ['progress to new neighbors', 'progress', 0],
-   ['neighbors pull by right', 'pull by', 'neighbors', true, 2],
+   ['pull by up & down the set', 'pull by', false, 'along', true, 2],
+   ['pull by left up & down the set', 'pull by', false, 'along', false, 2],
+   ['pull by across the set', 'pull by', false, 'across', true, 2],
+   ['pull by left across the set', 'pull by', false, 'across', false, 2],
+   ['balance & pull by up & down the set', 'pull by', true, 'along', true, 8],
+   ['balance & pull by left up & down the set for 6', 'pull by', true, 'along', false, 6],
+   ['balance & pull by across the set', 'pull by', true, 'across', true, 8],
+   ['balance & pull by left across the set for 6', 'pull by', true, 'across', false, 6],
    ['neighbors promenade across passing on the left', 'promenade across', 'neighbors', true, 8],
    ['neighbors promenade across', 'promenade across', 'neighbors', false, 8],
    ['right left through', 'right left through', 8],
@@ -65,11 +72,12 @@ RSpec.describe DancesHelper, type: :helper do
    ['gentlespoons roll away neighbor with a half sashay', 'roll away', 'gentlespoons', 'neighbor', true, 4],
    ['ladles roll away partner for 2', 'roll away', 'ladles', 'partner', false, 2],
    ["balance & Rory O'Moore right", "Rory O'Moore", false, true, 8],
+   ['pass through up & down the set for 4', 'pass through', 'along', true, 4],
+   ['pass through up & down the set', 'pass through', 'along', true, 2],
+   ['pass through left shoulder across the set', 'pass through', 'across', false, 2],
    # below here has issues requiring implementation changes, I think -dm 08-16-2016
    ['gentlespoons see saw once', 'see saw', 'gentlespoons', false, 360, 8],
    ['petronella', 'petronella', false, 4],
-   ['pass through to new neighbors', 'pass through', 2],
-   ['pass through to new neighbors for 8', 'pass through', 8],
    ['long lines forward only', 'long lines forward only', 4],
    ['balance the ring', 'balance the ring', 4],
    ['balance the ring for 8', 'balance the ring', 8], # debatable

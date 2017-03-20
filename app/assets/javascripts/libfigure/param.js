@@ -74,26 +74,29 @@ param_once_and_a_half = {name: "cirlcing", value: 540, ui: chooser_revolutions, 
 param_three_places    = {name: "places", value: 270, ui: chooser_places,      string: stringParamDegrees}
 param_four_places     = {name: "places", value: 360, ui: chooser_places,      string: stringParamDegrees}
 
-param_subject         = {name: "who", value: "everyone", ui: chooser_dancers}
-param_subject_pair    = {name: "who",                    ui: chooser_pair}  // 1 pair of dancers
-param_subject_pairz   = {name: "who",                    ui: chooser_pairz} // 1-2 pairs of dancers
-param_subject_pairz_partners = {name: "who", value: "partners", ui: chooser_pairz}
-param_subject_pairs   = {name: "who",                    ui: chooser_pairs} // 2 pairs of dancers
-param_subject_pairs_partners = {name: "who", value: "partners", ui: chooser_pairs}
-param_subject_dancer  = {name: "who",                    ui: chooser_dancer}
-param_subject_role              = {name: "who",                        ui: chooser_role}
-param_subject_role_ladles       = {name: "who", value: "ladles",       ui: chooser_role}
-param_subject_role_gentlespoons = {name: "who", value: "gentlespoons", ui: chooser_role}
-param_subject_hetero           = {name: "who",                     ui: chooser_hetero}
-param_subject_hetero_partners  = {name: "who", value: "partners",  ui: chooser_hetero}
-param_subject_hetero_neighbors = {name: "who", value: "neighbors", ui: chooser_hetero}
-param_subject_hetero_shadows   = {name: "who", value: "shadows",   ui: chooser_hetero}
-param_subject_partners         = {name: "who", value: "partners",  ui: chooser_pairs} // allows more options if they
-param_subject_neighbors        = {name: "who", value: "neighbors", ui: chooser_pairs} // don't go with default
-param_subject_shadows          = {name: "who", value: "shadows",   ui: chooser_pairs} // than param_subject_hetero_*
-// param_object_hetero           = {name: "whom",                     ui: chooser_hetero} not used
-param_object_hetero_partners     = {name: "whom", value: "partners",  ui: chooser_hetero}
-// param_object_hetero_neighbors = {name: "whom", value: "neighbors", ui: chooser_hetero} not used
+// we use 'everyone' here but 'everybody' in the menu.
+// an something in the old figures
+// Figure out what is going ON! :(
+param_subject                    = {name: "who", value: "everyone",     ui: chooser_dancers};
+param_subject_pair               = {name: "who",                        ui: chooser_pair};  // 1 pair of dancers
+param_subject_pairz              = {name: "who",                        ui: chooser_pairz} // 1-2 pairs of dancers
+param_subject_pairz_partners     = {name: "who", value: "partners",     ui: chooser_pairz}
+param_subject_pairs              = {name: "who",                        ui: chooser_pairs} // 2 pairs of dancers
+param_subject_pairs_partners     = {name: "who", value: "partners",     ui: chooser_pairs}
+param_subject_dancer             = {name: "who",                        ui: chooser_dancer}
+param_subject_role               = {name: "who",                        ui: chooser_role}
+param_subject_role_ladles        = {name: "who", value: "ladles",       ui: chooser_role}
+param_subject_role_gentlespoons  = {name: "who", value: "gentlespoons", ui: chooser_role}
+param_subject_hetero             = {name: "who",                        ui: chooser_hetero}
+param_subject_hetero_partners    = {name: "who", value: "partners",     ui: chooser_hetero}
+param_subject_hetero_neighbors   = {name: "who", value: "neighbors",    ui: chooser_hetero}
+param_subject_hetero_shadows     = {name: "who", value: "shadows",      ui: chooser_hetero}
+param_subject_partners           = {name: "who", value: "partners",     ui: chooser_pairs} // allows more options if they
+param_subject_neighbors          = {name: "who", value: "neighbors",    ui: chooser_pairs} // don't go with default
+param_subject_shadows            = {name: "who", value: "shadows",      ui: chooser_pairs} // than param_subject_hetero_*
+// param_object_hetero           = {name: "whom",                       ui: chooser_hetero} not used
+param_object_hetero_partners     = {name: "whom", value: "partners",    ui: chooser_hetero}
+// param_object_hetero_neighbors = {name: "whom", value: "neighbors",   ui: chooser_hetero} not used
 
 // not used anymore
 // param_pass_on_left = {name: "pass", value: false, ui: chooser_right_left_shoulder}
@@ -126,3 +129,19 @@ function stringParamSlide (value) {
 param_slide       = {name: "slide",              ui: chooser_slide, string: stringParamSlide};
 param_slide_left  = {name: "slide", value: true, ui: chooser_slide, string: stringParamSlide};
 param_slide_right = {name: "slide", value: false, ui: chooser_slide, string: stringParamSlide};
+
+
+function stringParamSetDirection(value) {
+  if (value === 'across') {
+    return 'across the set';
+  }
+  else if (value === 'along') {
+    return 'up & down the set';
+  }
+  else {
+    throw_up('unexpected set direction value: '+ value);
+  }
+}
+param_set_direction        = {name: "dir", ui: chooser_set_direction,                  string: stringParamSetDirection};
+param_set_direction_along  = {name: "dir", ui: chooser_set_direction, value: "along",  string: stringParamSetDirection};
+param_set_direction_across = {name: "dir", ui: chooser_set_direction, value: "across", string: stringParamSetDirection};

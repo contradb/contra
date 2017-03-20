@@ -151,3 +151,11 @@
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)"/>left</label>
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)" />right</label>
                 </div>
+                <div ng-if="p.ui == chooser_set_direction">
+                  <select ng-model="figure.parameter_values[$index]"
+                          ng-change="user_changed_parameter(figure,$index)"
+                          class='form-control'>
+                    <option value="along">up & down the set</option>
+                    <option value="across">across the set</option>
+                  </select>
+                </div>

@@ -388,14 +388,14 @@ defineFigure( "ocean wave",  [param_beats_4])
 // PASS THROUGH -- progression                //
 ////////////////////////////////////////////////
 
-var pass_through_string = "pass through to new neighbors"
 function pass_through_view(move,pvs) {
-  var [beats] = pvs;
-  var [sbeats] = parameter_strings(move, pvs);
-  return words(pass_through_string,sbeats); 
+  var [ dir,  spin,  beats] = pvs;
+  var [sdir, sspin, sbeats] = parameter_strings(move, pvs);
+  var left_shoulder_maybe = spin ? '' : sspin;
+  return words(move, left_shoulder_maybe, sdir, sbeats);
 }
 
-defineFigure( "pass through", [param_beats_2], {progression: true, view: pass_through_view})
+defineFigure( "pass through", [param_set_direction_along, param_right_shoulder_spin, param_beats_2], {view: pass_through_view})
 
 ////////////////////////////////////////////////
 // PETRONELLA                                 //
@@ -434,7 +434,19 @@ defineFigure( "progress", [param_beats_0], {progression: true})
 // PULL BY                                    //
 ////////////////////////////////////////////////
 
-defineFigure( "pull by", [param_subject_pairz, param_right_hand_spin, param_beats_2])
+function pull_by_view(move,pvs) {
+  var [ bal,  dir,  spin,  beats] = pvs;
+  var [sbal, sdir, sspin, sbeats] = parameter_strings(move, pvs);
+  var left_hand = spin ? '' : 'left';
+  var standard_beats = ((beats == 8) && bal) || ((beats == 2) && !bal);
+  if (standard_beats) {
+    return words(sbal, move, left_hand, sdir);
+  } else {
+    return words(sbal, move, left_hand, sdir, 'for', beats);
+  }
+}
+
+defineFigure( "pull by", [param_balance_false, param_set_direction_along, param_right_hand_spin, param_beats_2], {view: pull_by_view})
 
 ////////////////////////////////////////////////
 // RIGHT LEFT THROUGH                         //
