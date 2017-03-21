@@ -143,3 +143,5 @@ function stringParamSetDirection(value) {
 param_set_direction        = {name: "dir", ui: chooser_set_direction,                  string: stringParamSetDirection};
 param_set_direction_along  = {name: "dir", ui: chooser_set_direction, value: "along",  string: stringParamSetDirection};
 param_set_direction_across = {name: "dir", ui: chooser_set_direction, value: "across", string: stringParamSetDirection};
+
+param_diagonal = {name: "diag", ui: chooser_diagonal, value: ''} // other values: 'left diagonal' and 'right diagonal'

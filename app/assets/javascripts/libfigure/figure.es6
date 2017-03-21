@@ -470,7 +470,13 @@ defineFigure( "pull by for 2", [param_subject_pair, param_balance_false, param_r
 // RIGHT LEFT THROUGH                         //
 ////////////////////////////////////////////////
 
-defineFigure( "right left through", [param_beats_8])
+function right_left_through_view(move,pvs) {
+  var [ diag,  beats] = pvs;
+  var [sdiag, sbeats] = parameter_strings(move, pvs);
+  return words(sdiag, move, sbeats);
+}
+
+defineFigure( "right left through", [param_diagonal, param_beats_8], {view: right_left_through_view})
 
 ////////////////////////////////////////////////
 // ROLL AWAY                                  //

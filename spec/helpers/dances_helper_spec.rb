@@ -57,7 +57,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['ones balance & pull by left for 6', 'pull by for 2', 'ones', true, false, 6],
    ['neighbors promenade across passing on the left', 'promenade across', 'neighbors', true, 8],
    ['neighbors promenade across', 'promenade across', 'neighbors', false, 8],
-   ['right left through', 'right left through', 8],
+   ['right left through', 'right left through', '', 8],
+   ['left diagonal right left through', 'right left through', 'left diagonal', 8],
    ['slide left along set to new neighbors', 'slide along set', true, 2],
    ['star promenade left ½', 'star promenade', false, 180, 4], # prefer: "scoop up partner for star promenade"
    ['butterfly whirl', 'butterfly whirl', 4],
@@ -85,7 +86,6 @@ RSpec.describe DancesHelper, type: :helper do
    ['balance the ring', 'balance the ring', 4],
    ['balance the ring for 8', 'balance the ring', 8], # debatable
    ['ladles chain', 'chain', 'ladles', 8],
-   ['right left through', 'right left through', 8],
    ['partners balance & box the gnat',  'box the gnat',  'partners',  true,  true,  8],
    ['ladles do si do once', 'do si do', 'ladles', true, 360, 8],
    ['shadows gyre 1½', 'gyre', 'shadows', true, 540, 8],
