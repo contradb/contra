@@ -250,7 +250,14 @@ defineFigure( "butterfly whirl", [param_beats_4])
 // CHAIN                                      //
 ////////////////////////////////////////////////
 
-defineFigure( "chain", [param_subject_role_ladles, param_beats_8])
+function chain_view(move,pvs) {
+  var [ who,  diag,  beats] = pvs;
+  var [swho, sdiag, sbeats] = parameter_strings(move, pvs);
+  return words(sdiag, swho, move, sbeats);
+}
+
+
+defineFigure( "chain", [param_subject_role_ladles, param_diagonal, param_beats_8], {view: chain_view})
 
 ////////////////////////////////////////////////
 // CIRCLE                                     //

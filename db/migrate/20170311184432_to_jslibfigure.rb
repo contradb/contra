@@ -62,6 +62,16 @@ module JSLibFigure
       if x['move'] == 'star_promenade' && x['who'] == 'gentlespoons' then x.merge('who' => 'everybody') else x end
     }.map {|x|
       if x['move'] == 'butterfly_whirl' then hash_remove_key(hash_remove_key(x, 'degrees'), 'who') else x end
+    }.map {|x|
+      if x['notes'] =~ /^(along )?left diag[oa]n[ao]l$/i then x.merge({'notes' => 'left diagonal'}) else x end
+    }.map {|x|
+      if x['notes'] =~ /^(along )?right diag[oa]n[ao]l$/i then x.merge({'notes' => 'right diagonal'}) else x end
+    }.map {|x|
+      if x['move'].in? %w[mad_robin gyre_right_shoulder gyre_left_shoulder do_si_do see_saw star_left star_right] 
+      # circle_left and circle_right aren't listed because I think they may default to 270 degrees, and they don't occur in practice
+      then {'degrees' => 360}.merge(x)
+      else x
+      end
     }
     return x0 == x1
   end

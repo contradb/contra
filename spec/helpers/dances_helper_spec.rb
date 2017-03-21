@@ -29,7 +29,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['ones balance', 'balance', 'ones', 4],
    ['ones balance for 8', 'balance', 'ones', 8],
    ['balance the ring for 6', 'balance the ring', 6],
-   ['ladies chain', 'chain', 'ladies', 8],
+   ['ladies chain', 'chain', 'ladies', '', 8],
+   ['left diagonal gentlespoons chain', 'chain', 'gentlespoons', 'left diagonal', 8],
    ['circle left 4 places','circle',true,360,8],
    ['circle right 4 places','circle',false,360,8],
    ['circle left 3 places', 'circle', true, 270, 8],
@@ -85,7 +86,6 @@ RSpec.describe DancesHelper, type: :helper do
    ['long lines forward only', 'long lines forward only', 4],
    ['balance the ring', 'balance the ring', 4],
    ['balance the ring for 8', 'balance the ring', 8], # debatable
-   ['ladles chain', 'chain', 'ladles', 8],
    ['partners balance & box the gnat',  'box the gnat',  'partners',  true,  true,  8],
    ['ladles do si do once', 'do si do', 'ladles', true, 360, 8],
    ['shadows gyre 1½', 'gyre', 'shadows', true, 540, 8],
