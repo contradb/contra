@@ -438,24 +438,6 @@ defineFigure( "promenade across", [param_subject_pairs_partners, param_spin_righ
 defineFigure( "progress", [param_beats_0], {progression: true})
 
 ////////////////////////////////////////////////
-// PULL BY FOR 4                              //
-////////////////////////////////////////////////
-
-function pull_by_for_4_view(move,pvs) {
-  var [ bal,  dir,  spin,  beats] = pvs;
-  var [sbal, sdir, sspin, sbeats] = parameter_strings(move, pvs);
-  var left_hand = spin ? '' : 'left';
-  var standard_beats = ((beats == 8) && bal) || ((beats == 2) && !bal);
-  if (standard_beats) {
-    return words(sbal, 'pull by', left_hand, sdir);
-  } else {
-    return words(sbal, 'pull by', left_hand, sdir, 'for', beats);
-  }
-}
-
-defineFigure( "pull by for 4", [param_balance_false, param_set_direction_along, param_right_hand_spin, param_beats_2], {view: pull_by_for_4_view})
-
-////////////////////////////////////////////////
 // PULL BY FOR 2                              //
 ////////////////////////////////////////////////
 
@@ -472,6 +454,24 @@ function pull_by_for_2_view(move,pvs) {
 }
 
 defineFigure( "pull by for 2", [param_subject_pair, param_balance_false, param_right_hand_spin, param_beats_2], {view: pull_by_for_2_view})
+
+////////////////////////////////////////////////
+// PULL BY FOR 4                              //
+////////////////////////////////////////////////
+
+function pull_by_for_4_view(move,pvs) {
+  var [ bal,  dir,  spin,  beats] = pvs;
+  var [sbal, sdir, sspin, sbeats] = parameter_strings(move, pvs);
+  var left_hand = spin ? '' : 'left';
+  var standard_beats = ((beats == 8) && bal) || ((beats == 2) && !bal);
+  if (standard_beats) {
+    return words(sbal, 'pull by', left_hand, sdir);
+  } else {
+    return words(sbal, 'pull by', left_hand, sdir, 'for', beats);
+  }
+}
+
+defineFigure( "pull by for 4", [param_balance_false, param_set_direction_along, param_right_hand_spin, param_beats_2], {view: pull_by_for_4_view})
 
 ////////////////////////////////////////////////
 // RIGHT LEFT THROUGH                         //
@@ -525,12 +525,12 @@ defineFigure( "slide along set", [param_slide_left, param_beats_2], {progression
 ////////////////////////////////////////////////
 
 function star_view(move,pvs) {
-    var [ right_hand,  wrist_grip,  places,  beats] = pvs
-    var [sright_hand, swrist_grip, splaces, sbeats] = parameter_strings(move, pvs)
-    return words(swrist_grip, "star", sright_hand, splaces, sbeats)
+    var [ wrist_grip,  right_hand,  places,  beats] = pvs
+    var [swrist_grip, sright_hand, splaces, sbeats] = parameter_strings(move, pvs)
+    return words(wrist_grip, "star", sright_hand, splaces, sbeats)
 }
 
-defineFigure( "star", [param_xhand_spin, param_star_grip, param_four_places, param_beats_8], {view: star_view});
+defineFigure( "star", [param_star_grip, param_xhand_spin, param_four_places, param_beats_8], {view: star_view});
 
 ////////////////////////////////////////////////
 // STAR PROMENADE                             //

@@ -102,12 +102,9 @@ param_object_hetero_partners     = {name: "whom", value: "partners",    ui: choo
 
 param_custom_figure = {name: "custom", value: "", ui: chooser_text}
 
-function stringParamWristGrip (value,move) {
-    // wrist grip is so defaulty that it's not even worth saying words. 
-    return value ? "" : "hands across"
-}
+var wristGrips = ['', 'wrist grip', 'hands across']
 
-param_star_grip = {name: "grip", value: "wrist grip", ui: chooser_star_grip, string: stringParamWristGrip}
+param_star_grip = {name: "grip", value: wristGrips[0], ui: chooser_star_grip}
 
 function stringParamFacing (value) {
   if (value) {

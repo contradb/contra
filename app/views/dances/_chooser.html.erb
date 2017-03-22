@@ -136,9 +136,11 @@
                          class='form-control'/>
                 </div>
                 <div ng-if="p.ui == chooser_star_grip">
-                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)"/> wrist grip</label>
-                  <br class='visible-xs'/>
-                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)" /> hands across</label>
+                  <select ng-model="figure.parameter_values[$index]"
+                          ng-change="user_changed_parameter(figure,$index)"
+                          class='form-control'>
+                    <option ng-repeat="grip in wristGrips" ng-value='grip'>{{grip}}</option>
+                  </select>
                 </div>
                 <div ng-if="p.ui == chooser_facing">
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'forward'" ng-change="user_changed_parameter(figure,$index)"/> forward</label>

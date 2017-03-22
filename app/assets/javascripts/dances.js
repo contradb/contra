@@ -84,6 +84,7 @@ function menuMoveLabel(from,to) {
         $scope.degreesToRotations = degreesToRotations;
         $scope.degreesToPlaces = degreesToPlaces;
         setChoosers($scope);
+        $scope.wristGrips = wristGrips;
         $scope.figure_html_readonly = figure_html_readonly;
         $scope.set_if_unset = set_if_unset;
         $scope.user_changed_parameter = user_changed_parameter
