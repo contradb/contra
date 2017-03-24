@@ -102,7 +102,7 @@ param_object_hetero_partners     = {name: "whom", value: "partners",    ui: choo
 
 param_custom_figure = {name: "custom", value: "", ui: chooser_text}
 
-var wristGrips = ['', 'wrist grip', 'hands across']
+var wristGrips = ['wrist grip', 'hands across', '']
 
 param_star_grip = {name: "grip", value: wristGrips[0], ui: chooser_star_grip}
 
