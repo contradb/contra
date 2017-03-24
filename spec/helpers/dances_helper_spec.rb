@@ -17,12 +17,13 @@ RSpec.describe DancesHelper, type: :helper do
     end
   end
 
-  [['partners balance & swing', 'balance and swing', 'partners',true, 16],
-   ['partners balance & swing','balance and swing','partners',true,16],
+  [['partners balance & swing', 'swing', 'partners',true, 16],
    ['neighbors balance & swing', 'swing', 'neighbors', true, 16],
    ['neighbors swing', 'swing', 'neighbors', false, 8],
-   ['partners long swing','long swing', 'partners', false, 16],
-   ['partners swing for 16','swing', 'partners', false, 16],
+   ['neighbors balance & swing for 8', 'swing', 'neighbors', true, 8],
+   ['partners long swing','swing', 'partners', false, 16],
+   ['partners swing for 20','swing', 'partners', false, 20],
+   ['partners balance & swing for 20','swing', 'partners', true, 20],
    ['gentlespoons allemande right 1½', 'allemande', 'gentlespoons', true, 540, 8],
    ['gentlespoons allemande right twice for 10', 'allemande', 'gentlespoons', true, 720, 10],
    ['ladles allemande left 1½ around while the gentlespoons orbit clockwise ½ around', 'allemande orbit','ladles',false,540,180,8],

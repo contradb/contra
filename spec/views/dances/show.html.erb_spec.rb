@@ -12,7 +12,7 @@ RSpec.describe "dances/show", type: :view do
       :start_type => "Complicated Formation",
       :choreographer => FactoryGirl.build_stubbed(:choreographer, name: "Becky Hill"),
       :user => FactoryGirl.build_stubbed(:user),
-      :figures_json => '[{"parameter_values":["partners",true,16],"move":"balance and swing", "note":"the quick brown fox <script>alert(\'no dialog pops up\');</script>"}]',
+      :figures_json => '[{"parameter_values":["partners",true,16],"move":"swing", "note":"the quick brown fox <script>alert(\'no dialog pops up\');</script>"}]',
       :notes => "My Note Text www.yahoo.com blah blah **bold** blah"
     ))
   end

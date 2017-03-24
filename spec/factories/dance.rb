@@ -4,7 +4,7 @@ FactoryGirl.define do
     user { FactoryGirl.create(:user) }
     choreographer { FactoryGirl.create(:choreographer) }
     start_type 'improper'
-    figures_json '[{"parameter_values":["neighbors",true,16],"move":"balance and swing"},{"parameter_values":[8],"move":"long lines"},{"parameter_values":["ladles",true,540,8],"move":"do si do"},{"parameter_values":["partners",true,16],"move":"balance and swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":[true,2],"move":"slide along set"},{"parameter_values":[true,270,6],"move":"circle"}]'
+    figures_json '[{"parameter_values":["neighbors",true,16],"move":"swing"},{"parameter_values":[8],"move":"long lines"},{"parameter_values":["ladles",true,540,8],"move":"do si do"},{"parameter_values":["partners",true,16],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":[true,2],"move":"slide along set"},{"parameter_values":[true,270,6],"move":"circle"}]'
   end
 
   factory :old_figure_format_dance, class: Dance do
@@ -21,7 +21,7 @@ FactoryGirl.define do
     choreographer { Choreographer.find_by(name: "Becky Hill") ||
                     FactoryGirl.create(:choreographer, name: "Becky Hill") }
     start_type 'improper'
-    figures_json '[{"parameter_values":["neighbors",true,true,8],"move":"box the gnat"},{"parameter_values":["partners",true,false,8],"move":"swat the flea"},{"parameter_values":["neighbors",true,16],"move":"balance and swing"},{"parameter_values":["ladles",true,540,8],"move":"allemande"},{"parameter_values":["partners",false,8],"move":"swing"},{"parameter_values":[8],"move":"right left through"},{"parameter_values":["ladles",8],"move":"chain"}]'
+    figures_json '[{"parameter_values":["neighbors",true,true,8],"move":"box the gnat"},{"parameter_values":["partners",true,false,8],"move":"swat the flea"},{"parameter_values":["neighbors",true,16],"move":"swing"},{"parameter_values":["ladles",true,540,8],"move":"allemande"},{"parameter_values":["partners",false,8],"move":"swing"},{"parameter_values":["",8],"move":"right left through"},{"parameter_values":["ladles","",8],"move":"chain"}]'
     notes 'swat the flea variation'
   end
 end

@@ -256,7 +256,6 @@ function chain_view(move,pvs) {
   return words(sdiag, swho, move, sbeats);
 }
 
-
 defineFigure( "chain", [param_subject_role_ladles, param_diagonal, param_beats_8], {view: chain_view})
 
 ////////////////////////////////////////////////
@@ -543,39 +542,23 @@ defineFigure( "star promenade", [param_xhand_spin, param_half_around, param_beat
 ////////////////////////////////////////////////
 
 function swing_change(figure,index) {
-    var pvs = figure.parameter_values
-    var balance = pvs[1]
-    var beats = pvs[2]
-    if (balance)
-        figure.move = "balance and swing"
-    else if (beats < 12) 
-        figure.move = "swing"
-    else
-        figure.move = "long swing"
+  var pvs = figure.parameter_values;
+  var [who,balance,beats] = pvs;
+  if (balance && index === 1 && beats <= 8) {
+    beats = figure.parameter_values[2] = 16;
+  }
 }
+
 function swing_view(move,pvs) {
-  var [who,balance,beats] = pvs
-  var [swho,sbalance,sbeats] = parameter_strings(move, pvs)
-  var standard_beats = (balance || move != 'swing') ? (beats == 16) : (beats == 8)
-  var move2 = move == 'long swing' ? move : 'swing'
-  if (standard_beats) return words(swho, sbalance, move2)
-  else return words(swho, sbalance, move2, 'for', beats) // not 'sbeats', because 'for 8' needs to be said explicitly sometimes
+  var [who,balance,beats] = pvs;
+  var [swho,sbalance,sbeats] = parameter_strings(move, pvs);
+  var standard_beats = beats === 16 || (beats === 8 && !balance);
+  var slong = ((beats === 16) && !balance) ? 'long' : '';
+  if (standard_beats) {
+    return words(swho, sbalance, slong, move);
+  } else {
+    return words(swho, sbalance, slong, move, 'for', beats);
+  }
 }
 
-defineFigure( "swing", [param_subject_pairz_partners, param_balance_false, param_beats_8],
-              {change: swing_change, view: swing_view})
-defineFigureAlias( "long swing", "swing", [null, param_balance_false, param_beats_16])
-defineFigureAlias( "balance and swing", "swing", [null, param_balance_true,  param_beats_16] )
-
-
-// ////////////////////////////////////////////////
-// // EVERYTHING BAGEL                           //
-// ////////////////////////////////////////////////
-// defineFigure( "everything bagel", [param_balance_true,
-//                                    param_left_hand_spin,
-//                                    param_by_right,
-//                                    param_half_around,
-//                                    param_subject_pairz,
-//                                    param_star_grip,
-//                                    param_custom_figure,
-//                                    param_beats_8])
+defineFigure( "swing", [param_subject_pairz_partners, param_balance_false, param_beats_8], {change: swing_change, view: swing_view})

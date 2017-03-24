@@ -6,8 +6,8 @@ RSpec.describe JSLibFigure do
     expect(JSLibFigure.beats(JSLibFigure.new)).to eql(8)
   end
   describe 'de_aliased_move' do
-    it 'balance and swing => swing' do
-      expect(JSLibFigure.de_aliased_move({'move' => 'balance and swing'})).to eql('swing')
+    it 'see saw => do si do' do
+      expect(JSLibFigure.de_aliased_move({'move' => 'see saw'})).to eql('do si do')
     end
     it 'allemande => allemande' do
       expect(JSLibFigure.de_aliased_move({'move' => 'allemande'})).to eql('allemande')
@@ -17,8 +17,8 @@ RSpec.describe JSLibFigure do
     end
   end
   describe 'teaching_name' do
-    it 'balance and swing => swing' do
-      expect(JSLibFigure.teaching_name({'move' => 'balance and swing'})).to eql('swing')
+    it 'swing => swing' do
+      expect(JSLibFigure.teaching_name({'move' => 'swing'})).to eql('swing')
     end
     it 'allemande => allemande' do
       expect(JSLibFigure.teaching_name({'move' => 'allemande'})).to eql('allemande')
