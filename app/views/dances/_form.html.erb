@@ -1,8 +1,8 @@
 
 
-<% debug_figure_json = true %>
+<% debug_figure_json = false %>
 
-<div class="container" ng-app="contra">
+<div class="dance-editor" ng-app="contra">
   <%= form_for(@dance) do |f| %>
     <% if @dance.errors.any? %>
       <div id="error_explanation">
@@ -42,6 +42,8 @@
       </div>
     </div>
 
+    <div class="dance-edit-header-end"></div>
+
 
     <%# ============================ figure editors ==================== %>
 
@@ -49,7 +51,39 @@
       <div class="display:none"
            ng-init="figures.arr=defaultFigures(<%= copy_dance ? copy_dance.figures_json : @dance.figures_json %>)">
       </div>
-      <table>
+      <%# Add/delete/rotate figure buttons %>
+      <div class="actions figure-editor-actions">
+        <table>
+          <tr>
+            <td>
+              <button name="button" type="button" ng-click='addFigure()'
+                      class="add-figure-button figure-button btn btn-default btn-block"
+                      title="add a new figure at the end of the list" 
+                      aria-label="add a new figure at the end of the list">
+                <%= plus_icon_html %> Add<span class="long-figure-button-title"> Figure</span></button>
+            </td>
+            <td>
+              <button name="button" type="button" ng-click='deleteFigure()' 
+                      class="delete-figure-button figure-button btn btn-default btn-block"
+                      ng-show="figures.arr.length > 0"
+                      title="delete the last figure" 
+                      aria-label="delete the last figure">
+                <%= x_icon_html %> Remove<span class="long-figure-button-title"> Figure</span></button>
+            </td>
+            <td>
+              <button name="button" type="button" ng-click='rotateFigures()' 
+                      class="rotate-figure-button figure-button btn btn-default btn-block"
+                      ng-show="figures.arr.length >= 2"
+                      title="rotate figures, putting the last one first and bumping the rest down" 
+                      aria-label="rotate figures, putting the last one first and bumping the rest down">
+                <%= rotate_icon_html %> Rotate<span class="long-figure-button-title"> Figures</span></button>
+            </td>
+          </tr>
+          </table>
+      </div>
+
+
+      <table class="figures-edit">
         <tr ng-repeat-start="(figureIdx, figure) in figures.arr">
           <td ng-class="styleForBeats(sumBeats(figures.arr,figureIdx))">
             {{labelForBeats(sumBeats(figures.arr,figureIdx))}}&nbsp;
@@ -109,36 +143,6 @@
         </tr>
       </table>
       <div>
-        <hr />
-        <%# Add/delete/rotate figure buttons %>
-        <div class="actions">
-          <%= f.label :figures%>
-          <div>
-            <div class="btn-group btn-group-justified btn-group-lg" role="group">
-              <div class="btn-group">
-                <button name="button" type="button" ng-click='addFigure()' class="btn btn-default"
-                        title="add a new figure at the end of the list" 
-                        aria-label="add a new figure at the end of the list">
-                  <%= plus_icon_html() %> Add Figure</button>
-              </div>
-              <div class="btn-group">
-                <button name="button" type="button" ng-click='deleteFigure()' 
-                        ng-show="figures.arr.length > 0" class="btn btn-default"
-                        title="delete the last figure" 
-                        aria-label="delete the last figure">
-                  <%= x_icon_html() %> Remove Figure</button>
-              </div>
-              <div class="btn-group">
-                <button name="button" type="button" ng-click='rotateFigures()' 
-                        ng-show="figures.arr.length >= 2" class="btn btn-default"
-                        title="rotate figures, putting the last one first and bumping the rest down" 
-                        aria-label="rotate figures, putting the last one first and bumping the rest down">
-                  <%= rotate_icon_html() %> Rotate Figures</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <%# drill in to debug with
             angular.element(document.getElementById('figures')).scope().figures.arr
