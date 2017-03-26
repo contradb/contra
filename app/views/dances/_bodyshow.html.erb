@@ -1,4 +1,4 @@
-<p>formation: <%= dance.start_type %> </p>
+<p class="dance-show-formation">formation: <%= dance.start_type %> </p>
 
 <table class="table table-bordered table-condensed contra-table-nonfluid">
   <% begin
@@ -13,6 +13,6 @@
      end %>
 </table>
 
-<%= ApplicationHelper::renderMarkdown(dance.notes) %>
+<div class="dance-show-notes"><%= ApplicationHelper::renderMarkdown(dance.notes) %></div>
 
 
