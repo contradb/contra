@@ -52,6 +52,8 @@
   </nav>
 <p class="notice" id="notice"><%= notice %></p>
 <p class="alert" id="alert"><%= alert %></p>
-<%= yield %>
+<%= content_tag :div, class: "#{controller_name}-#{action_name}-content" do %>
+  <%= yield %>
+<% end %>
 </body>
 </html>
