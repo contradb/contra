@@ -3,21 +3,33 @@
   .dance-editor .figures-edit, 
   .dance-title-edit,
   #choreographer-autocomplete,
-  #start-type-autocomplete, {
+  #start-type-autocomplete, 
+  #dance-notes {
     width: 100%;
   }
-  .long-figure-button-title {
+  .hide-at-low-res {
     display: none;
   }
+
+
 }
 
-@media only screen and (min-width : 320px) {
+.dance-title-edit {
+  font-size: 175%;
+  font-weight: bold;
 }
 
 @media only screen and (min-width : 480px) {
+
+  .dance-editor {
+    margin-left: auto;
+    margin-right: auto;
+    width: 480px;
+  }
   .dance-editor .figures-edit,
   .dance-title-edit,
-  .figure-editor-actions {
+  .figure-editor-actions,
+  #dance-notes {
     width: 480px;
     box-sizing: border-box;
   }
@@ -35,32 +47,22 @@
     /* immediately after the floats above */
     clear: left;
   }
-  .long-figure-button-title {
+  .hide-at-low-res {
     display: inline;
+  }
+
+  .dance-title-edit {
+    font-size: 200%;
   }
 }
 
-@media only screen and (min-width : 768px) {
+.figure-editor-actions {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  table {
+    width: 100%;
+  }
 }
-
-@media only screen and (min-width : 992px) {
-
-}
-
-@media only screen and (min-width : 1200px) {
-
-}
-
-.dance-edit-header-end {
-  margin-bottom: 10px;
-}
-
-
-.figure-editor-actions table {
-  width: 100%;
-}
-
-
 
 .dance-header-editors input {
   margin-bottom: 6px;
@@ -121,7 +123,14 @@
 
 .per_dance_notes_edit {height: 8em;}
 
-.dance-title-edit { font-size: 225%; font-weight: bold;}
+.a1b1 {
+  background-color: #F3F3F3;
+  width: 1.4em;
+}
+.a2b2 {
+  width: 1.4em;
+}
 
-.a1b1 { background-color: #F3F3F3 }
-.a2b2 {  }
+.figure-edit-text-and-menu-dots {
+  padding-left: 0.4em;
+}

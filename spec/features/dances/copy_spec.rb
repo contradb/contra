@@ -14,7 +14,7 @@ describe 'Copying dances', js: true do
       expect(page).to have_text ('neighbors balance & swing')
       expect(page).to have_text ('ladles allemande right 1½')
       expect(page.body).to include dance.notes
-      expect(page).to have_text 'There\'s a lot of ink spilled over "gentlemen" versus "men" versus "leads".'
+      expect(page).to have_current_path(new_dance_path copy_dance_id: dance.id)
     end
   end
   it 'editing a dance passes it\'s information through unchanged' do

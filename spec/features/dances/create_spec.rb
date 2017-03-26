@@ -7,7 +7,7 @@ describe 'Creating dances', js: true do
   it 'creates a new dance with non-javascript data' do
     with_login do
       visit '/dances/new'
-      expect(page.text).to include 'There\'s a lot of ink spilled over "gentlemen" versus "men" versus "leads".'
+      expect(page).to have_current_path(new_dance_path)
       fill_in 'dance_title', with: 'Call Me'
       fill_in 'dance[choreographer_name]', with: 'Cary Ravitz'
       fill_in 'dance[start_type]', with: 'improper'
@@ -22,7 +22,7 @@ describe 'Creating dances', js: true do
   it 'has working A1/B2 labels' do
     with_login do
       visit '/dances/new'
-      expect(page.text).to include 'There\'s a lot of ink spilled over "gentlemen" versus "men" versus "leads".'
+      expect(page).to have_current_path(new_dance_path)
       fill_in 'dance_title', with: 'Call Me'
       fill_in 'dance[choreographer_name]', with: 'Cary Ravitz'
       fill_in 'dance[start_type]', with: 'improper'
