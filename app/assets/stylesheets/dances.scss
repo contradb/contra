@@ -89,6 +89,7 @@
   line-height: 34px; 
   .figure-edit-label-text {
     text-align: right;
+    vertical-align: top;
     display: inline-block;
     min-width: 4em;
     margin-right: 0.5em;
@@ -101,6 +102,10 @@
 
   .radio-tweaks {
     margin-right: 1em;
+  }
+  .figure-multiline-radio {
+    display: block;
+    margin-bottom: 0px;
   }
   select {
     min-width: 14em;

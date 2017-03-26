@@ -1,4 +1,6 @@
-
+//  -*-Javascript-*-
+// In this file we can use some emca6 features such as array variable assignment. 
+// That's the reason for the .es6 suffix.
 
 // always freshly allocated
 function newFigure () {
@@ -524,12 +526,17 @@ defineFigure( "slide along set", [param_slide_left, param_beats_2], {progression
 ////////////////////////////////////////////////
 
 function star_view(move,pvs) {
-    var [ wrist_grip,  right_hand,  places,  beats] = pvs
-    var [swrist_grip, sright_hand, splaces, sbeats] = parameter_strings(move, pvs)
-    return words(wrist_grip, "star", sright_hand, splaces, sbeats)
+  var [ right_hand,  places,  wrist_grip,  beats] = pvs
+  var [sright_hand, splaces, swrist_grip, sbeats] = parameter_strings(move, pvs)
+  if ('' === wrist_grip) {
+    return words("star", sright_hand, splaces, sbeats);
+  } else {
+    var comma = ',';
+    return words("star", sright_hand, splaces+comma, swrist_grip + (beats===8 ? '' : comma), sbeats);
+  }
 }
 
-defineFigure( "star", [param_star_grip, param_xhand_spin, param_four_places, param_beats_8], {view: star_view});
+defineFigure( "star", [param_xhand_spin, param_four_places, param_star_grip, param_beats_8], {view: star_view});
 
 ////////////////////////////////////////////////
 // STAR PROMENADE                             //
