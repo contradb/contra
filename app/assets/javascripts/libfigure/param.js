@@ -133,6 +133,9 @@ function stringParamSetDirection(value) {
   else if (value === 'along') {
     return 'up & down the set';
   }
+  else if (value === 'right diagonal' || 'left diagonal') {
+    return value;
+  }
   else {
     throw_up('unexpected set direction value: '+ value);
   }
@@ -140,5 +143,10 @@ function stringParamSetDirection(value) {
 param_set_direction        = {name: "dir", ui: chooser_set_direction,                  string: stringParamSetDirection};
 param_set_direction_along  = {name: "dir", ui: chooser_set_direction, value: "along",  string: stringParamSetDirection};
 param_set_direction_across = {name: "dir", ui: chooser_set_direction, value: "across", string: stringParamSetDirection};
-
+// There is some overlap among 'set_direction' and 'diagonal'. Why is that?
+// Originally set_direction was only along set grid lines (up&down or across).
+// Originally param_diagonal was only across or right diagonal or left diagonal.
+// Then came XYZ by Bob Green, which had a bunch of pull by for 4s with diagonals.
+// It seemed most natural to add them to set direction.
+// At this point, param_diagonal should go away, and everybody should use set_direction.
 param_diagonal = {name: "diag", ui: chooser_diagonal, value: ''} // other values: 'left diagonal' and 'right diagonal'
