@@ -84,7 +84,7 @@
             {{labelForBeats(sumBeats(figures.arr,figureIdx))}}&nbsp;
           </td>
           <td class="figure-edit-text-and-menu-dots">
-            <a ng-click="(edit_index_box[0] == figureIdx) ? edit_index_box.length = 0 : edit_index_box[0] = figureIdx; "
+            <a ng-click="clickFigure(figureIdx);"
                href="" class="figure-view" ng-attr-id="{{'figure-'+figureIdx}}">
               {{figure_html_readonly(figures.arr[figureIdx])}}
             </a>

@@ -258,7 +258,7 @@ function chain_view(move,pvs) {
   return words(sdiag, swho, move, sbeats);
 }
 
-defineFigure( "chain", [param_subject_role_ladles, param_diagonal, param_beats_8], {view: chain_view})
+defineFigure( "chain", [param_subject_role_ladles, param_set_direction_across, param_beats_8], {view: chain_view})
 
 ////////////////////////////////////////////////
 // CIRCLE                                     //
@@ -463,13 +463,18 @@ defineFigure( "pull by for 2", [param_subject_pair, param_balance_false, param_r
 function pull_by_for_4_view(move,pvs) {
   var [ bal,  dir,  spin,  beats] = pvs;
   var [sbal, sdir, sspin, sbeats] = parameter_strings(move, pvs);
+  var is_diagonal = dir === 'left diagonal' || dir === 'right diagonal';
   var left_hand = spin ? '' : 'left';
-  var standard_beats = ((beats == 8) && bal) || ((beats == 2) && !bal);
-  if (standard_beats) {
-    return words(sbal, 'pull by', left_hand, sdir);
+  var w;
+  if (!is_diagonal) {
+    w = words(sbal, 'pull by', left_hand, sdir);
+  } else if (('right diagonal' === dir) === spin) {
+    w = words(sbal, 'pull by', sdir); // "pull by left diagonal" left hand is implicit - this makes XYZ a non-mouthful
   } else {
-    return words(sbal, 'pull by', left_hand, sdir, 'for', beats);
+    w = words(sbal, 'pull by', sspin, 'hand', dir); // "pull by left hand right diagonal" - this deserves to be a mouthful
   }
+  var standard_beats = ((beats == 8) && bal) || ((beats == 2) && !bal);
+  return standard_beats ? w : words(w, 'for', beats);
 }
 
 defineFigure( "pull by for 4", [param_balance_false, param_set_direction_along, param_right_hand_spin, param_beats_2], {view: pull_by_for_4_view})
@@ -484,7 +489,7 @@ function right_left_through_view(move,pvs) {
   return words(sdiag, move, sbeats);
 }
 
-defineFigure( "right left through", [param_diagonal, param_beats_8], {view: right_left_through_view})
+defineFigure( "right left through", [param_set_direction_across, param_beats_8], {view: right_left_through_view})
 
 ////////////////////////////////////////////////
 // ROLL AWAY                                  //

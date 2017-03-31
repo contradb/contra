@@ -69,7 +69,7 @@ function menuMoveLabel(from,to) {
 
 (function () {
     var app = angular.module('contra', []);
-    var scopeInit = function ($scope) {
+    var scopeInit = function ($scope,$timeout) {
         var fctrl42 = this;
         $scope.moveCaresAboutRotations = moveCaresAboutRotations;
         $scope.moveCaresAboutPlaces = moveCaresAboutPlaces;
@@ -91,6 +91,18 @@ function menuMoveLabel(from,to) {
         $scope.user_changed_move = user_changed_move
         $scope.parameter_label = parameter_label
         $scope.edit_index_box = []
+        $scope.clickFigure = function(figureIdx) {
+          if ($scope.edit_index_box[0] === figureIdx) {
+            $scope.edit_index_box.length = 0;
+          } else {
+            $scope.edit_index_box[0] = figureIdx;
+            var is_empty_figure = !$scope.figures.arr[figureIdx].move
+            if (is_empty_figure) {
+              // focus the move select box:
+              $timeout(function() { $('#move-'+figureIdx).focus(); });
+            }
+          }
+        }
         $scope.editable_figures = function(figures) {
             idx = $scope.edit_index_box[0]
             return (null != idx) && $scope.figures.arr[idx] ?
@@ -120,5 +132,5 @@ function menuMoveLabel(from,to) {
           $('#dance-figures-json').val(JSON.stringify($scope.figures.arr));
         })
     }
-    app.controller('FiguresController', ['$scope',scopeInit])
+  app.controller('FiguresController', ['$scope','$timeout',scopeInit])
 })()
