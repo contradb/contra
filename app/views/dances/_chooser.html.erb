@@ -57,8 +57,8 @@
                     <option value="ones">ones</option>
                     <option value="twos">twos</option>
                     <option value="same_roles">same roles</option>
-                    <option value="first_corners">first corners</option>
-                    <option value="second_corners">second corners</option>
+                    <option value="first corners">first corners</option>
+                    <option value="second corners">second corners</option>
                     <option value="G1">gentlespoon 1</option>
                     <option value="L1">ladle 1</option>
                     <option value="G2">gentlespoon 2</option>
@@ -73,8 +73,8 @@
                     <option value="ladles">ladles</option>
                     <option value="ones">ones</option>
                     <option value="twos">twos</option>
-                    <option value="first_corners">first corners</option>
-                    <option value="second_corners">second corners</option>
+                    <option value="first corners">first corners</option>
+                    <option value="second corners">second corners</option>
                   </select>
                 </div>
                 <div ng-if="p.ui == chooser_pairz">
@@ -89,8 +89,8 @@
                     <option value="ones">ones</option>
                     <option value="twos">twos</option>
                     <option value="same_roles">same roles</option>
-                    <option value="first_corners">first corners</option>
-                    <option value="second_corners">second corners</option>
+                    <option value="first corners">first corners</option>
+                    <option value="second corners">second corners</option>
                   </select>
                 </div>
                 <div ng-if="p.ui == chooser_pairs">
@@ -148,8 +148,8 @@
                   <label class='radio-tweaks figure-multiline-radio'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'backward'" ng-change="user_changed_parameter(figure,$index)"/> backward</label>
                 </div>
                 <div ng-if="p.ui == chooser_slide">
-                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)"/>left</label>
-                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)" />right</label>
+                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)"/> left</label>
+                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)"/> right</label>
                 </div>
                 <div ng-if="p.ui == chooser_set_direction">
                   <select ng-model="figure.parameter_values[$index]"
@@ -160,4 +160,17 @@
                     <option value="right diagonal">right diagonal</option>
                     <option value="left diagonal">left diagonal</option>
                   </select>
+                </div>
+                <div ng-if="p.ui == chooser_slice_return">
+                  <select ng-model="figure.parameter_values[$index]"
+                          ng-change="user_changed_parameter(figure,$index)"
+                          class='form-control'>
+                    <option value='straight'>straight back</option>
+                    <option value='diagonal'>diagonal back</option>
+                    <option value='none'>none</option>
+                  </select>
+                </div>
+                <div ng-if="p.ui == chooser_slice_increment">
+                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'couple'" ng-change="user_changed_parameter(figure,$index)"/> couple</label>
+                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'dancer'" ng-change="user_changed_parameter(figure,$index)"/> dancer</label>
                 </div>

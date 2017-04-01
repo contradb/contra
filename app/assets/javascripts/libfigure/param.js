@@ -54,18 +54,20 @@ param_left_shoulder_spin     = {name: "shoulder", value: false, ui: chooser_righ
 
 
 function stringParamSide (value) {
-    return value ? "passing left sides" : "passing right sides"
+  return value ? "passing left sides" : "passing right sides";
 }
 
-function stringParamDegrees (value,move) {
-    if (moveCaresAboutRotations(move))
-    return degreesToRotations(value)
-    else if (moveCaresAboutPlaces(move))
-    return degreesToPlaces(value)
-    else {
-        console.log("Warning: '"+move+"' doesn't care about either rotations or places");
-        return degreesToRotations(value)
-    }
+function stringParamDegrees (value,move) { 
+  // this second parameter should go away, it should be handled in figure.es6,
+  // because that's the file that knows about figures and moves.
+  if (moveCaresAboutRotations(move)) {
+    return degreesToRotations(value);
+  } else if (moveCaresAboutPlaces(move)) {
+    return degreesToPlaces(value);
+  } else {
+    console.log("Warning: '"+move+"' doesn't care about either rotations or places");
+    return degreesToRotations(value);
+  }
 }
 param_revolutions     = {name: "circling",             ui: chooser_revolutions, string: stringParamDegrees}
 param_half_around     = {name: "circling", value: 180, ui: chooser_revolutions, string: stringParamDegrees}
@@ -126,20 +128,38 @@ param_slide_left  = {name: "slide", value: true, ui: chooser_slide, string: stri
 param_slide_right = {name: "slide", value: false, ui: chooser_slide, string: stringParamSlide};
 
 
-function stringParamSetDirection(value) {
-  if (value === 'across') {
-    return 'across the set';
-  }
-  else if (value === 'along') {
-    return 'up & down the set';
-  }
-  else if (value === 'right diagonal' || 'left diagonal') {
-    return value;
-  }
-  else {
-    throw_up('unexpected set direction value: '+ value);
+function stringParamSetDirectionNot(value_default) {
+  return function stringParamSetDirection(value) {
+    if (value === value_default) {
+      return '';
+    } else if (value === 'across') {
+      return 'across the set';
+    } else if (value === 'along') {
+      return 'up & down the set';
+    } else if (value === 'right diagonal' || value === 'left diagonal') {
+      return value;
+    } else {
+      throw_up('unexpected set direction value: '+ value);
+    }
   }
 }
-param_set_direction        = {name: "dir", ui: chooser_set_direction,                  string: stringParamSetDirection};
-param_set_direction_along  = {name: "dir", ui: chooser_set_direction, value: "along",  string: stringParamSetDirection};
-param_set_direction_across = {name: "dir", ui: chooser_set_direction, value: "across", string: stringParamSetDirection};
+param_set_direction        = {name: "dir", ui: chooser_set_direction,                  string: stringParamSetDirectionNot('something impossible')};
+param_set_direction_along  = {name: "dir", ui: chooser_set_direction, value: "along",  string: stringParamSetDirectionNot('along')};
+param_set_direction_across = {name: "dir", ui: chooser_set_direction, value: "across", string: stringParamSetDirectionNot('across')};
+
+function stringParamSliceReturn (value) {
+  if      ('straight' === value) { return 'and straight back'; }
+  else if ('diagonal' === value) { return 'and diagonal back'; }
+  else if ('none'     === value) { return ''; }
+  else { throw_up('bad slice return value: '+value); }
+}
+
+param_slice_return = {name: "slice return", ui: chooser_slice_return, value: 'straight', string: stringParamSliceReturn};
+
+function stringParamSliceIncrement (value) {
+  if      ('couple' === value) { return ''; }
+  else if ('dancer' === value) { return 'one dancer'; }
+  else { throw_up('bad slice increment: '+value); }
+}
+
+param_slice_increment = {name: "slice increment", ui: chooser_slice_increment, value: 'couple', string: stringParamSliceIncrement}

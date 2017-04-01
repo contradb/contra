@@ -78,15 +78,14 @@ function parameter_string_helper (x,y) {
 }
 
 function parameter_strings(move, parameter_values) {
-    var formal_parameters = parameters(move)
-    var acc = []
-    for (var i=0; i<parameter_values.length; i++) {
-        var string_fn = formal_parameters[i].string || parameter_string_helper
-        acc.push(string_fn(parameter_values[i],move));
-    }
-    return acc
+  var formal_parameters = parameters(move);
+  var acc = [];
+  for (var i=0; i<parameter_values.length; i++) {
+    var string_fn = formal_parameters[i].string || parameter_string_helper;
+    acc.push(string_fn(parameter_values[i], move));
+  }
+  return acc;
 }
-
 
 // === Teaching Names =============
 
@@ -513,6 +512,13 @@ function rory_o_moore_view(move,pvs) {
 }
 
 defineFigure( "Rory O'Moore", [param_slide_right, param_balance_true, param_beats_8], {view: rory_o_moore_view});
+
+////////////////////////////////////////////////
+// SLICE                                      //
+////////////////////////////////////////////////
+
+defineFigure( "slice", [param_slide_left, param_slice_increment, param_slice_return, param_beats_8],
+              {labels: ["slice","by","return"]});
 
 ////////////////////////////////////////////////
 // SLIDE ALONG SET -- progression, couples    //
