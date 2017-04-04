@@ -513,17 +513,18 @@ defineFigure( "roll away", [param_subject_role_gentlespoons, param_object_hetero
 ////////////////////////////////////////////////
 
 function rory_o_moore_view(move,pvs) {
-  var [ dir,  balance,  beats] = pvs
-  var [sdir, sbalance, sbeats] = parameter_strings(move, pvs)
+  var [ who,  balance,  dir,  beats] = pvs
+  var [swho, sbalance, sdir, sbeats] = parameter_strings(move, pvs)
   var standard_beats = ((beats == 8) && balance) || ((beats == 4) && !balance);
+  var swho2 = (who === 'everyone') ? '' : swho;
   if (standard_beats) {
-    return words(sbalance, move, sdir);
+    return words(sbalance, swho2, move, sdir);
   } else {
-    return words(sbalance, move, sdir, 'for', beats);
+    return words(sbalance, swho2, move, sdir, 'for', beats);
   }
 }
 
-defineFigure( "Rory O'Moore", [param_slide_right, param_balance_true, param_beats_8], {view: rory_o_moore_view});
+defineFigure( "Rory O'Moore", [param_subject_everyone_or_centers, param_balance_true, param_slide_right, param_beats_8], {view: rory_o_moore_view});
 
 ////////////////////////////////////////////////
 // SLICE                                      //

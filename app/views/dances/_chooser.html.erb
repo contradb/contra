@@ -130,6 +130,14 @@
                     <option value="shadows">shadows</option>
                   </select>
                 </div>
+                <div ng-if="p.ui == chooser_everyone_or_centers">
+                  <select ng-model="figure.parameter_values[$index]"
+                          ng-change="user_changed_parameter(figure,$index)"
+                          class='form-control'>
+                    <option value="everyone">everyone</option>
+                    <option value="centers">centers</option>
+                  </select>
+                </div>
                 <div ng-if="p.ui == chooser_text">
                   <input type="text" ng-model="figure.parameter_values[$index]"
                          ng-change="user_changed_parameter(figure,$index)"

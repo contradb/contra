@@ -95,6 +95,7 @@ param_subject_partners           = {name: "who", value: "partners",     ui: choo
 param_subject_neighbors          = {name: "who", value: "neighbors",    ui: chooser_pairs} // don't go with default
 param_subject_shadows            = {name: "who", value: "shadows",      ui: chooser_pairs} // than param_subject_hetero_*
 // param_object_hetero           = {name: "whom",                       ui: chooser_hetero} not used
+param_subject_everyone_or_centers = {name: "who", value: "everyone",    ui: chooser_everyone_or_centers}
 param_object_hetero_partners     = {name: "whom", value: "partners",    ui: chooser_hetero}
 // param_object_hetero_neighbors = {name: "whom", value: "neighbors",   ui: chooser_hetero} not used
 

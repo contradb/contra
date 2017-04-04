@@ -41,6 +41,7 @@ defineChooser("chooser_pairs")    // 2 pairs of dancers
 defineChooser("chooser_dancer")   // one dancer, e.g. ladle 1
 defineChooser("chooser_role")     // ladles or gentlespoons
 defineChooser("chooser_hetero")   // partners or neighbors or shadows
+defineChooser("chooser_everyone_or_centers")
 defineChooser("chooser_text")
 defineChooser("chooser_star_grip")
 defineChooser("chooser_facing")
