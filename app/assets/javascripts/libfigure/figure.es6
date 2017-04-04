@@ -367,8 +367,8 @@ function hey_rename(figure,index) {
   else if (beats == 16) figure.move = "hey"
 }
 
-defineFigure( "hey",      [param_subject_role_ladles, param_beats_16], {view: hey_view_maker(16), change: hey_rename})
-defineFigure( "half hey", [param_subject_role_ladles, param_beats_8],  {view: hey_view_maker(8), change: hey_rename})
+defineFigure( "hey",      [param_subject_pair_ladles, param_beats_16], {view: hey_view_maker(16), change: hey_rename})
+defineFigure( "half hey", [param_subject_pair_ladles, param_beats_8],  {view: hey_view_maker(8), change: hey_rename})
 
 ////////////////////////////////////////////////
 // LONG LINES forward and back                //
@@ -404,7 +404,7 @@ defineFigure( "mad robin",  [param_subject_role, param_once_around, param_beats_
 defineFigure( "ocean wave",  [param_beats_4])
 
 ////////////////////////////////////////////////
-// PASS THROUGH -- progression                //
+// PASS THROUGH                               //
 ////////////////////////////////////////////////
 
 function pass_through_view(move,pvs) {

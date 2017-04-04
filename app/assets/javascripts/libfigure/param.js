@@ -79,6 +79,8 @@ param_four_places     = {name: "places", value: 360, ui: chooser_places,      st
 // always 'everyone' and never 'everybody'!
 param_subject                    = {name: "who", value: "everyone",     ui: chooser_dancers};
 param_subject_pair               = {name: "who",                        ui: chooser_pair};  // 1 pair of dancers
+param_subject_pair_ladles        = {name: "who", value: "ladles",       ui: chooser_pair};
+param_subject_pair_gentlespoons  = {name: "who", value: "gentlespoons", ui: chooser_pair};
 param_subject_pairz              = {name: "who",                        ui: chooser_pairz} // 1-2 pairs of dancers
 param_subject_pairz_partners     = {name: "who", value: "partners",     ui: chooser_pairz}
 param_subject_pairs              = {name: "who",                        ui: chooser_pairs} // 2 pairs of dancers
