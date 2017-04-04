@@ -389,7 +389,10 @@ defineFigure( "long lines forward only",  [param_beats_4])
 function mad_robin_view(move,pvs) {
   var [ role,  angle,  beats] = pvs;
   var [srole, sangle, sbeats] = parameter_strings(move, pvs);
-  return words(move, angle!==360 ? sangle + ' around' : '', '-', srole, "forward", sbeats); 
+  return words(words(move, angle!==360 ? sangle + ' around' : '').trim()+',',
+               srole,
+               "in front",
+               sbeats); 
 }
 
 defineFigure( "mad robin",  [param_subject_role, param_once_around, param_beats_8], {view: mad_robin_view})
