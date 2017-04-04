@@ -352,11 +352,12 @@ defineFigure( "gyre", [param_subject_pairz, param_right_shoulder_spin, param_onc
 
 function hey_view_maker(default_beats) {
   return function (move,pvs) {
-    var beats = pvs[1]
-    var [leader, sbeats] = parameter_strings(move,pvs)
+    var [  who,  dir,  beats] = pvs;
+    var [leader, sdir, sbeats] = parameter_strings(move, pvs);
+    var sdir2 = dir === 'across' ? '' : sdir;
     if (beats == default_beats)
-      return  words(move+",", leader, "lead")
-    else return words(move+",", leader, "lead,", sbeats)
+      return  words(sdir2, move+",", leader, "lead")
+    else return words(sdir2, move+",", leader, "lead,", sbeats)
   }
 }
 
@@ -367,8 +368,8 @@ function hey_rename(figure,index) {
   else if (beats == 16) figure.move = "hey"
 }
 
-defineFigure( "hey",      [param_subject_pair_ladles, param_beats_16], {view: hey_view_maker(16), change: hey_rename})
-defineFigure( "half hey", [param_subject_pair_ladles, param_beats_8],  {view: hey_view_maker(8), change: hey_rename})
+defineFigure( "hey",      [param_subject_pair_ladles, param_set_direction_across, param_beats_16], {view: hey_view_maker(16), change: hey_rename})
+defineFigure( "half hey", [param_subject_pair_ladles, param_set_direction_across, param_beats_8],  {view: hey_view_maker(8), change: hey_rename})
 
 ////////////////////////////////////////////////
 // LONG LINES forward and back                //
