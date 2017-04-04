@@ -322,13 +322,17 @@ defineTeachingName("see saw")
 ////////////////////////////////////////////////
 
 function up_or_down_the_hall_view(move, pvs) {
-  var [ facing,  beats] = pvs
-  var [sfacing, sbeats] = parameter_strings(move, pvs)
-  return words(move, sfacing, sbeats);
+  var [ facing,  ender, beats] = pvs
+  var [sfacing, sender, sbeats] = parameter_strings(move, pvs)
+  if (ender === '') {
+    return words(move, sfacing, sbeats);
+  } else {
+    return words(move, sfacing, 'and', sender, sbeats);
+  }
 }
 
-defineFigure( "down the hall", [param_facing_forward, param_beats_8], {view: up_or_down_the_hall_view})
-defineFigure( "up the hall",   [param_facing_forward, param_beats_8], {view: up_or_down_the_hall_view})
+defineFigure( "down the hall", [param_facing_forward, param_down_the_hall_ender_turn_couples, param_beats_8], {view: up_or_down_the_hall_view})
+defineFigure( "up the hall",   [param_facing_forward, param_down_the_hall_ender_circle,       param_beats_8], {view: up_or_down_the_hall_view})
 
 ////////////////////////////////////////////////
 // GYRE (aka circle by the eyes)              //
@@ -371,6 +375,11 @@ defineFigure( "half hey", [param_subject_role_ladles, param_beats_8],  {view: he
 ////////////////////////////////////////////////
 
 defineFigure( "long lines",               [param_beats_8])
+
+////////////////////////////////////////////////
+// LONG LINES FORWARD ONLY                    //
+////////////////////////////////////////////////
+
 defineFigure( "long lines forward only",  [param_beats_4])
 
 ////////////////////////////////////////////////

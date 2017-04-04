@@ -163,3 +163,15 @@ function stringParamSliceIncrement (value) {
 }
 
 param_slice_increment = {name: "slice increment", ui: chooser_slice_increment, value: 'couple', string: stringParamSliceIncrement}
+
+function stringParamDownTheHallEnder (value) {
+  if      ('' === value) { return ''; }
+  else if ('turn-couples' === value) { return 'turn as couples'; }
+  else if ('turn-alone' === value) { return 'turn alone'; }
+  else if ('circle' === value) { return 'bend into a ring'; }
+  else { throw_up('bad down the hall ender: '+value); }
+}
+
+param_down_the_hall_ender              = {name: "ender", ui: chooser_down_the_hall_ender, value: '',       string: stringParamDownTheHallEnder}
+param_down_the_hall_ender_circle       = {name: "ender", ui: chooser_down_the_hall_ender, value: 'circle', string: stringParamDownTheHallEnder}
+param_down_the_hall_ender_turn_couples = {name: "ender", ui: chooser_down_the_hall_ender, value: 'turn-couples', string: stringParamDownTheHallEnder}

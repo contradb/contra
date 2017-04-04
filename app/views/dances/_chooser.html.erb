@@ -174,3 +174,13 @@
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'couple'" ng-change="user_changed_parameter(figure,$index)"/> couple</label>
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'dancer'" ng-change="user_changed_parameter(figure,$index)"/> dancer</label>
                 </div>
+                <div ng-if="p.ui == chooser_down_the_hall_ender">
+                  <select ng-model="figure.parameter_values[$index]"
+                          ng-change="user_changed_parameter(figure,$index)"
+                          class='form-control'>
+                    <option value=''></option>
+                    <option value='turn-couples'>turn as couples</option>
+                    <option value='turn-alone'>turn alone</option>
+                    <option value='circle'>bend into a ring</option>
+                  </select>
+                </div>
