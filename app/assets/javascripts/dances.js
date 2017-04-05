@@ -12,6 +12,19 @@ $(function () {
   });
 });
 
+function indexStartsNewA1B2(figures, index) {
+  var beat_start = 0;
+  for (var i=0; i<index; i++) {
+    beat_start += figureBeats(figures[i]);
+  }
+  var beat_start_is_square = (beat_start % 16 === 0)
+  return beat_start_is_square && figureBeats(figures[index]) > 0;
+}
+
+function indexEndsDanceSquarely(figures, index) {
+  return (index === figures.length - 1) && (sumBeats(figures) % 16 === 0);
+}
+
 function styleForBeats(beats) {
   return beats%32 < 16 ? 'a1b1' : 'a2b2';
 }
@@ -77,7 +90,8 @@ function menuMoveLabel(from,to) {
         $scope.anglesForMove = anglesForMove;
         $scope.sumBeats = sumBeats;
         $scope.labelForBeats = labelForBeats;
-        $scope.styleForBeats = styleForBeats;
+        $scope.indexStartsNewA1B2 = indexStartsNewA1B2;
+        $scope.indexEndsDanceSquarely = indexEndsDanceSquarely;
 
         $scope.moves = moves;
         $scope.parameters = parameters;

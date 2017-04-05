@@ -80,7 +80,7 @@
 
       <table class="figures-edit">
         <tr ng-repeat-start="(figureIdx, figure) in figures.arr">
-          <td ng-class="styleForBeats(sumBeats(figures.arr,figureIdx))">
+          <td ng-class="(indexStartsNewA1B2(figures.arr,figureIdx) ? 'new-a1b2': '') + (indexEndsDanceSquarely(figures.arr,figureIdx) && (edit_index_box.indexOf(figureIdx) === -1) ? ' last-a1b2': '') + (edit_index_box.indexOf(figureIdx) >= 0 ? ' selected-figure' : '')" class="a1b2">
             {{labelForBeats(sumBeats(figures.arr,figureIdx))}}&nbsp;
           </td>
           <td class="figure-edit-text-and-menu-dots">
@@ -103,7 +103,7 @@
           </td>
         </tr>
         <tr ng-repeat-end ng-if="edit_index_box.indexOf(figureIdx) >= 0">
-          <td ng-class="styleForBeats(sumBeats(figures.arr,figureIdx))">
+          <td class="a1b2" ng-class="(indexEndsDanceSquarely(figures.arr,figureIdx) && (edit_index_box.indexOf(figureIdx) >= 0) ? 'last-a1b2': '') + (edit_index_box.indexOf(figureIdx) >= 0 ? ' selected-figure' : '')">
             &nbsp;
           </td>
           <td>
