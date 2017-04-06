@@ -12,6 +12,14 @@ $(function () {
   });
 });
 
+function classesForFigureA1B2(figures, index, open_indicies, is_top) {
+  var is_open = open_indicies.indexOf(index) >= 0;
+  var start_classes = is_top && indexStartsNewA1B2(figures,index) ? ['new-a1b2'] : [];
+  var end_classes = indexEndsDanceSquarely(figures, index) && !(is_open && is_top) ? ['last-a1b2'] : [];
+  var selected_classes = is_open ? ['selected-figure'] : []
+  return start_classes.concat(end_classes).concat(selected_classes).join(' ');
+}
+
 function indexStartsNewA1B2(figures, index) {
   var beat_start = 0;
   for (var i=0; i<index; i++) {
@@ -23,10 +31,6 @@ function indexStartsNewA1B2(figures, index) {
 
 function indexEndsDanceSquarely(figures, index) {
   return (index === figures.length - 1) && (sumBeats(figures) % 16 === 0);
-}
-
-function styleForBeats(beats) {
-  return beats%32 < 16 ? 'a1b1' : 'a2b2';
 }
 
 // =====================================================================================
@@ -90,8 +94,7 @@ function menuMoveLabel(from,to) {
         $scope.anglesForMove = anglesForMove;
         $scope.sumBeats = sumBeats;
         $scope.labelForBeats = labelForBeats;
-        $scope.indexStartsNewA1B2 = indexStartsNewA1B2;
-        $scope.indexEndsDanceSquarely = indexEndsDanceSquarely;
+        $scope.classesForFigureA1B2 = classesForFigureA1B2;
 
         $scope.moves = moves;
         $scope.parameters = parameters;
