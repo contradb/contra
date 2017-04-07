@@ -8,16 +8,35 @@ module ApplicationHelper
     Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(MARKDOWN_OPTS.merge no_links: true), RENDER_OPTS)
 
 
-  def ApplicationHelper::renderMarkdown (txt)
+  def self.renderMarkdown (txt)
     ("<div class='contra-markdown-block'>"+@@markdown.render(txt)+"</div>").html_safe
   end
 
-  def ApplicationHelper::renderMarkdownInline (txt)
+  def self.renderMarkdownInline (txt)
     ("<span class='contra-markdown-inline'>"+@@markdown.render(txt)+"</span>").html_safe
   end
 
-  def ApplicationHelper::renderMarkdownInlineNoLinks (txt)
+  def self.renderMarkdownInlineNoLinks (txt)
     ("<span class='contra-markdown-inline'>"+@@markdown_no_links.render(txt)+"</span>").html_safe
   end
 
+
+  def guess_title_text(controller_name)
+    looking_at_name = ActiveSupport::Inflector.singularize controller_name
+    if looking_at_name
+      looking_at = begin
+                     eval("@#{looking_at_name}")
+                   rescue
+                     return "Contra"
+                   end
+      if looking_at.respond_to?(:name) && looking_at.name.present?
+        "#{looking_at.name} | #{looking_at_name.capitalize} | Contra"
+      elsif looking_at.respond_to?(:title) && looking_at.title.present?
+        "#{looking_at.title} | #{looking_at_name.capitalize} | Contra"
+      else
+        "#{looking_at_name.capitalize} | Contra"
+      end
+    end ||
+      "#{controller_name.capitalize} | Contra"
+  end
 end

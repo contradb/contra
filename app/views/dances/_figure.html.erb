@@ -1,21 +1,2 @@
-<% terse = local_assigns.fetch(:terse,false) %>
-
-
-<span class="show_figure" 
-
-
-  <%# If we're in terse mode, then expand the whole figure in a mouseover tooltip %>
-  <% if terse then %>
-    data-toggle="tooltip" data-placement="left" title="<%= figure_txt(figure, terse: false) %>"
-  <% end %>
->
-
-
-<%= 
-
-  figure_txt(figure, terse: terse)
-
-
-%>
-</span>
+<span class="show-figure"><%= JSLibFigure.html(figure) %></span>
 

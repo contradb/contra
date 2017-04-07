@@ -1,33 +1,180 @@
-// Place all the styles related to the dances controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
 
-.figure_edits .balance  { 
-  font-size: smaller;
-  transform: rotate(-90deg);  // if it doesn't work, it's not that bad. 
+@media only screen {
+  .dance-editor .figures-edit, 
+  .dance-title-edit,
+  #choreographer-autocomplete,
+  #start-type-autocomplete, 
+  #dance-notes {
+    width: 100%;
+  }
+  .hide-at-low-res {
+    display: none;
+  }
 }
-.figure_edits th { text-align: center }
-.figure_edits td {  }
-.beat_edit      {width:90%;}
-.balance_edit      {}
-.who_edit       {width:90%;}
-.move_edit      {width:90%;}
-.turns_edit     {width:90%;}
-.formation_edit {width:90%;}
-.notes_edit     {width:100%;}
+
+.dance-title-edit {
+  font-size: 175%;
+  font-weight: bold;
+}
+
+@media only screen and (min-width : 480px) {
+  .dance-editor {
+    margin-left: auto;
+    margin-right: auto;
+    width: 480px;
+  }
+
+  .dance-editor .figures-edit,
+  .dance-title-edit,
+  .figure-editor-actions,
+  #dance-notes {
+    width: 480px;
+    box-sizing: border-box;
+  }
+
+  #choreographer-autocomplete  {
+    width: 240px;
+    float: left;
+    box-sizing: border-box;
+  }
+
+  #start-type-autocomplete {
+    width: 240px;
+    float: left;
+    box-sizing: border-box;
+  }
+
+  .dance-edit-header-end {
+    /* immediately after the floats above */
+    clear: left;
+  }
+
+  .hide-at-low-res {
+    display: inline;
+  }
+
+  .dance-title-edit {
+    font-size: 200%;
+  }
+}
+
+.dance-title-edit,
+#choreographer-autocomplete,
+#start-type-autocomplete {
+  font-family: 'PT Serif', serif;
+}
+
+.figure-editor-actions {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  table {
+    width: 100%;
+  }
+}
+
+.dance-header-editors input {
+  margin-bottom: 6px;
+}
+
+.figure-view {
+  font-family: 'PT Serif', serif;
+  font-size: 1.3em;
+  text-decoration: none;
+  color: black;
+  &:hover {
+    text-decoration: none;
+    color: #00A; /* dark blue */
+  }
+  &:focus {
+    text-decoration: none;
+    color: black;
+  }
+}
+
+ 
+.figure-edit-label {
+  height: 34px;                 /* manually sync to equal .form-control :( */
+  line-height: 34px; 
+  .figure-edit-label-text {
+    text-align: right;
+    vertical-align: top;
+    display: inline-block;
+    min-width: 4em;
+    margin-right: 0.5em;
+  }
+}
+
+.figure-value-setter-div {
+  display: inline-block;
+ font-weight: normal;
+
+  .radio-tweaks {
+    margin-right: 1em;
+  }
+  .figure-multiline-radio {
+    display: block;
+    margin-bottom: 0px;
+  }
+  select {
+    min-width: 14em;
+  }
+  input[type=text] {
+    width: 14em;
+  }
+  label {
+    font-weight: normal;
+  }
+}
+
+// below here predates new figure editor-dm 10-01-2016
+
+
 
 
 .happy_beats {border-top: solid black}
 .grumpy_beats {@extend .happy_beats; color:red;}
 
-
-.figure_edits {margin-bottom: 2em;}
-
 .per_dance_notes_edit {height: 8em;}
 
+.a1b1 {
+  background-color: #F3F3F3;
+  width: 1.4em;
+}
+.a2b2 {
+  width: 1.4em;
+}
+.a1b2 {
+  width: 1.4em;
+  border-left: thin solid #bbb;
+  border-right: thin solid #bbb;
+  &.selected-figure {
+    background-image: linear-gradient(to right, #E0E0FF, #FFFFFF);
+  }
+}
+.new-a1b2 {
+  border-top: thin solid #bbb;
+}
+.last-a1b2 {
+  border-bottom: thin solid #bbb;
+}
 
-.dance-title-edit { font-size: 225%; font-weight: bold;}
-.contra-dance-edit .row { margin-bottom: 10px; }
+.figure-edit-text-and-menu-dots {
+  padding-left: 0.4em;
+}
 
-.a1b1 { background-color: #F3F3F3 }
-.a2b2 {  }
+.dances-index-content,
+.dances-show-content {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.dances-show-content {
+  .dance-show-title,
+  .dance-show-choreographer,
+  .dance-show-formation,
+  .dance-show-notes,
+  .a1b1,
+  .a2b2 {
+    font-family: 'PT Serif', serif;
+  }
+}

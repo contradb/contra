@@ -3,30 +3,22 @@ class DancesController < ApplicationController
   before_action :authenticate_user!, only: [:new, :edit, :update, :destroy]
   before_action :authenticate_dance_ownership!, only: [:edit, :update, :destroy]
 
-  # GET /dances
-  # GET /dances.json
   def index
     @dances = Dance.all.order "LOWER(title)"
   end
 
-  # GET /dances/1
-  # GET /dances/1.json
   def show
   end
 
-  # GET /dances/new
   def new
     @dance = Dance.new
     @dance.title ||= "New Dance" 
   end
 
-  # GET /dances/1/edit
   def edit
   end
 
 
-  # POST /dances
-  # POST /dances.json
   def create
     @dance = Dance.new(dance_params_with_real_choreographer intern_choreographer)
     @dance.user_id = current_user.id
@@ -41,8 +33,6 @@ class DancesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /dances/1
-  # PATCH/PUT /dances/1.json
   def update
     respond_to do |format|
       if @dance.update(dance_params_with_real_choreographer intern_choreographer)
@@ -55,8 +45,6 @@ class DancesController < ApplicationController
     end
   end
 
-  # DELETE /dances/1
-  # DELETE /dances/1.json
   def destroy
     user = @dance.user
     @dance.destroy
@@ -71,7 +59,6 @@ class DancesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_dance
       @dance = Dance.find(params[:id])
     end
@@ -82,7 +69,15 @@ class DancesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def dance_params
-      params.require(:dance).permit(:title, :choreographer, :choreographer_name, :start_type, :figures_json, :notes, :copy_dance_id)
+      dirty_json = params.require(:dance).permit(:title,
+                                                 :choreographer,
+                                                 :choreographer_name,
+                                                 :start_type,
+                                                 :figures_json,
+                                                 :notes,
+                                                 :copy_dance_id)
+      cleaned_json = JSLibFigure.sanitize_json dirty_json[:figures_json]
+      dirty_json.merge(figures_json: cleaned_json)
     end
 
     def dance_params_with_real_choreographer(c)

@@ -3,11 +3,11 @@ require 'json'
 class Dance < ActiveRecord::Base
   belongs_to :user
   belongs_to :choreographer
-  validates :title, length: { in: 4..100 }
+  validates :title, length: { in: 3..100 }
   validates :start_type, length: { in: 1..100 }
   accepts_nested_attributes_for :choreographer
   def figures
-    JSON.parse self.figures_json
+    JSON.parse figures_json
   end
   # eases form defaulting:
   def choreographer_name () choreographer ? choreographer.name : "" end

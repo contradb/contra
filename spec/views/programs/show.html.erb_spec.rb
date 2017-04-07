@@ -2,8 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "programs/show", type: :view do
   before(:each) do
-    @user = FactoryGirl.create(:user, name: "Roland Kevra")
-    @program = FactoryGirl.create(:program, title: "New Years Eve 2015", user: @user)
+    @program = assign(:program, FactoryGirl.create(:program, title: "New Years Eve 2015"))
     @program.append_new_activity(text: "Dosido Agogo")
     @program.append_new_activity(text: "Bubble and Squeak")
   end
@@ -11,40 +10,36 @@ RSpec.describe "programs/show", type: :view do
   it "renders" do
     render
     expect(rendered).to match(/New Years Eve 2015/)
-    expect(rendered).to match(/Roland Kevra/)
+    expect(rendered).to match(@program.user.name)
     expect(rendered).to match("Dosido Agogo")
     expect(rendered).to match("Bubble and Squeak")
   end
 
   def setup_rang_tang ()
-    user = FactoryGirl.create(:user, name: "Bob Danceownerson")
-    choreographer = FactoryGirl.create(:choreographer, name: "Susan MacChoreographer")
     activity_text = "some activity text"
-    rang_tang     = FactoryGirl.create(:dance,
-                                       title: "Rang Tang Contra",
-                                       user: user,
-                                       choreographer: choreographer,
-                                       start_type: "improper",
-                                       figures_json: '[{"formation":"square","who":"neighbor","beats":6,"move":"custom","notes":"rang_tang left"},{"formation":"square","who":"partner","beats":6,"move":"custom","notes":"rang_tang right"},{"formation":"square","who":"neighbor","beats":6,"notes":"rang_tang left","move":"custom"},{"formation":"square","who":"partner","beats":6,"notes":"rang_tang right","move":"custom"},{"formation":"square","who":"neighbor","beats":8,"move":"swing"},{"formation":"square","who":"everybody","beats":8,"move":"circle_left","degrees":270},{"formation":"square","who":"partner","beats":8,"move":"swing"},{"formation":"square","who":"ladles","beats":8,"move":"chain"},{"formation":"square","who":"everybody","beats":8,"move":"star_left","degrees":360,"notes":"to new neighbor"}]',
-                                       notes: 'What are rang tangs? Rang_tang left = allemande left once along sets, gents cross over. Rang_tang right = allemande right once along sets, gents cross over. 
+    rang_tang = FactoryGirl.create(
+      :dance,
+      title: "Rang Tang Contra",
+      start_type: "improper",
+      user: FactoryGirl.create(:user, name: "Bob Danceownerson"),
+      choreographer: FactoryGirl.create(:choreographer, name: "Susan MacChoreographer"),
+      figures_json: '[{"parameter_values":["neighbor rang tang right",6],"move":"custom"},{"parameter_values":["partner rang tang left",6],"move":"custom"},{"parameter_values":["neighbor rang tang right",6],"move":"custom"},{"parameter_values":["partner rang tang left",6],"move":"custom"},{"parameter_values":["neighbors",false,8],"move":"swing"},{"parameter_values":[true,270,8],"move":"circle"},{"parameter_values":["partners",false,8],"move":"swing"},{"parameter_values":["ladles","across",8],"move":"chain"},{"parameter_values":["hands across",false,360,8],"move":"star"}]',
+      notes: 'What are rang tangs? Rang_tang left = allemande left once along sets, gents cross over. Rang_tang right = allemande right once along sets, gents cross over. 
 
 Truly, this dance is "by unknown", according to C. A. Gray. This particular variation is called by Diane Silver
 https://www.youtube.com/watch?v=jbeDG5jmKvE
 
 ')
     @program.append_new_activity(dance: rang_tang, text: activity_text)
+    rang_tang
   end
 
   def setup_box_the_gnat ()
     dance_owner   = FactoryGirl.create(:user, name: "Kevin Gargledancer")
     choreographer = FactoryGirl.create(:choreographer, name: "Becky Hill")
-    box_the_gnat  = FactoryGirl.create(:dance,
-                                       title: "Box the Gnat Contra",
-                                       user: dance_owner,
-                                       choreographer: choreographer,
-                                       start_type: "improper",
-                                       figures_json: '[{"formation":"square","who":"neighbor","beats":8,"move":"box_the_gnat","balance":true},{"formation":"square","who":"partner","beats":8,"move":"swat_the_flea","balance":true},{"formation":"square","who":"neighbor","beats":16,"move":"swing","balance":true},{"formation":"square","who":"ladles","beats":8,"move":"allemande_right","degrees":540},{"formation":"square","who":"partner","beats":8,"move":"swing"},{"formation":"square","who":"everybody","beats":8,"move":"right_left_through"},{"formation":"square","who":"ladles","beats":8,"move":"chain","notes":"to new neighbor"}]')
+    box_the_gnat  = FactoryGirl.create(:box_the_gnat_contra, user: dance_owner, choreographer: choreographer)
     @program.append_new_activity(dance: box_the_gnat, text: "Dave's go-to stompy dance")
+    box_the_gnat
   end
 
   def setup_custodance ()
@@ -55,19 +50,20 @@ https://www.youtube.com/watch?v=jbeDG5jmKvE
                                        user: user,
                                        choreographer: choreographer,
                                        start_type: "improper",
-                                       figures_json: '[{"who":"neighbor","beats":8,"move":"custom","notes":"rang_tang left"},{"who":"neighbor","beats":8,"move":"mad_robin"}]',
+                                       figures_json: '[{"parameter_values":["neighbor rang tang right",6],"move":"custom"},{"parameter_values":["gentlespoons",true,360,8],"move":"do si do"}]',
                                        notes: 'yet more dance notes')
     @program.append_new_activity(dance: custodance, text: "featuring **2 new moves**!")
+    custodance
   end
 
 
   it "renders dance information" do
-    setup_rang_tang
+    dance = setup_rang_tang
 
     render
 
-    expect(rendered).to_not match("Bob Danceownerson")
-    expect(rendered).to match("Susan MacChoreographer")
+    expect(rendered).to_not match(dance.user.name)
+    expect(rendered).to match(dance.choreographer.name)
     expect(rendered).to match("Rang Tang Contra")
     expect(rendered).to match("some activity text")
     expect(rendered).to match("improper")
@@ -79,7 +75,7 @@ https://www.youtube.com/watch?v=jbeDG5jmKvE
 
     render
 
-    expect(rendered).to match("introduces moves: box_the_gnat, swat_the_flea, allemande_right, right_left_through")
+    expect(rendered).to match("introduces moves: box the gnat, swat the flea, allemande, right left through")
   end
 
   it "never remembers custom moves have been previously introduced" do
@@ -89,11 +85,7 @@ https://www.youtube.com/watch?v=jbeDG5jmKvE
 
     render
 
-    # If you're reading this it's because this has broken, and that's
-    # because I wrote it brittle as heck. Sorry.
-    # I want to check that new moves of the second occurrence of rang tang contra
-    # have only one 'new move', that is "custom"
-    expect(rendered).to match(/introduces moves: custom, mad_robin/)
+    expect(rendered).to match(/introduces moves: custom, do si do/)
   end
 
   it "has markdown support" do

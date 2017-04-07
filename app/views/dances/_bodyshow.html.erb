@@ -1,17 +1,18 @@
-<p>formation: <%= dance.start_type %> </p>
+<p class="dance-show-formation">formation: <%= dance.start_type %> </p>
 
 <table class="table table-bordered table-condensed contra-table-nonfluid">
-<% begin
-     beats_acc = 0
-     dance.figures.each do |figure| %>
-  <tr class="<%= if (beats_acc % 32) < 16 then 'a1b1' else 'a2b2' end %>">
-      <td><%= {0=>'A1', 16=>'A2', 32=>'B1', 48=>'B2' }[beats_acc] %></td>
-      <td><%= beats_acc += figure["beats"]||0
-         render partial: "dances/figure", object: figure %></td></tr>
-<%   end
-   end    %>
+  <% begin
+       figures = dance.figures
+       beats_acc = 0
+       figures.each_with_index do |figure,index| %>
+         <tr class="<%= if (beats_acc % 32) < 16 then 'a1b1' else 'a2b2' end %>">
+             <td><%= {0=>'A1', 16=>'A2', 32=>'B1', 48=>'B2' }[beats_acc] %></td>
+             <td><%= beats_acc += JSLibFigure.beats(figure)
+                render partial: "dances/figure", object: figure %></td></tr>
+  <%   end
+     end %>
 </table>
 
-<%= ApplicationHelper::renderMarkdown(dance.notes) %>
+<div class="dance-show-notes"><%= ApplicationHelper::renderMarkdown(dance.notes) %></div>
 
 

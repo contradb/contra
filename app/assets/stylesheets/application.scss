@@ -38,6 +38,20 @@
 
 @import "angucomplete-alt";
 
+// $font-label : 'PT Sans', sans-serif;
+// $font-user : 'Satisfy', cursive;
+
+body {
+  font-family: 'PT Sans', sans-serif;
+}
+
+label {
+  font-weight: bold;
+}
+
+.show-figure {
+  font-family: 'PT Serif', serif;
+}
 
 // make dance table not expand-to-fit ala
 // http://stackoverflow.com/questions/10687306/why-do-twitter-bootstrap-tables-always-have-100-width
@@ -59,7 +73,6 @@
   text-align: center;
 }
 
-
 .alert { 
   font-weight: bold;
   text-align: center;
@@ -67,11 +80,9 @@
   color: #F43;
 }
 
-
 .contra-drop-conceivable {
  padding: 0.2em 0em;
 }
-
 
 .contra-drop-enthusiastic {
   background-color: #CFC;
