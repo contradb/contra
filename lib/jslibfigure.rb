@@ -37,6 +37,7 @@ module JSLibFigure
       JSON.generate(
         parsed.map do |figure|
           f2 = {}
+          raise 'figures_json element is not a hash' unless figure.instance_of? Hash
           pvs = figure['parameter_values']
           f2['parameter_values'] = ensure_array_of_terminal(pvs) if pvs
           move = figure['move']
