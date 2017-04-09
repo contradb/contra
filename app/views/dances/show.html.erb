@@ -13,4 +13,5 @@
 <p class="dance-show-choreographer">by: <strong><%= link_to @dance.choreographer.name, @dance.choreographer %></strong></p>
 <%= render partial: 'bodyshow', locals: {dance: @dance} %>
 
-<p class="dance-show-user">user: <%= link_to @dance.user.name, @dance.user %> </p>
+<p class="dance-show-user">User: <%= link_to @dance.user.name, @dance.user %></p>
+<p class="dance-show-publish"><%= @dance.publish ? 'Published' : 'Private' %></p>

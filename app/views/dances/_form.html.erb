@@ -197,8 +197,18 @@
     </div>
     <br>
 
+    <div>
+      <%= f.label :publish, value: 'true' do %>
+        <%= f.radio_button :publish, 'true' %> 
+        Publish
+      <% end %>
+      <%= f.label :publish, value: 'false' do %>
+        <%= f.radio_button :publish, 'false' %> 
+        Private
+      <% end %>
+    </div>
+
     <div class="actions">
-      <div></div>
       <%= save_submit_button_html "Save Dance", {class: "update-dance"} %>
     </div>
 

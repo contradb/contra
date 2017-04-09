@@ -9,7 +9,8 @@ RSpec.describe DancesController, type: :controller do
     {title: 'Flappy the TestDance',
      choreographer_name: 'Albacore Tuner',
      start_type: 'improper',
-     figures_json: "[]"}
+     figures_json: "[]",
+     publish: true}
   }
 
   let(:invalid_attributes) {
@@ -73,6 +74,16 @@ RSpec.describe DancesController, type: :controller do
         post :create, {:dance => valid_attributes}
         expect(response).to redirect_to(Dance.last)
       end
+
+      it "saves attributes" do
+        post :create, {:dance => valid_attributes}
+        dance = Dance.last
+        expect(dance.title).to eq(valid_attributes[:title])
+        expect(dance.choreographer_name).to eq(valid_attributes[:choreographer_name])
+        expect(dance.start_type).to eq(valid_attributes[:start_type])
+        expect(dance.figures_json).to eq(valid_attributes[:figures_json])
+        expect(dance.publish).to eq(valid_attributes[:publish])
+      end
     end
 
     context "with invalid params" do
@@ -99,7 +110,7 @@ RSpec.describe DancesController, type: :controller do
       let(:new_attributes) { {choreographer_name: 'Abe Baker', start_type: 'four face four'} }
       before(:each) { @request.env['HTTP_REFERER'] = dance_url(dance) }
 
-      it "updates the requested dance" do
+      xit "updates the requested dance" do
         put :update, {:id => dance.to_param, :dance => new_attributes}
         dance.reload
         expect(dance.start_type).to eq('four face four')
@@ -136,7 +147,7 @@ RSpec.describe DancesController, type: :controller do
 
   describe "DELETE #destroy" do
     login_user
-    it "destroys the requested dance" do
+    xit "destroys the requested dance" do
       @request.env['HTTP_REFERER'] = '/dances'
       dance = FactoryGirl.create(:dance)
       expect {delete :destroy, {:id => dance.to_param}}.to change(Dance, :count).by(-1)

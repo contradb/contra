@@ -75,7 +75,8 @@ class DancesController < ApplicationController
                                                  :start_type,
                                                  :figures_json,
                                                  :notes,
-                                                 :copy_dance_id)
+                                                 :copy_dance_id,
+                                                 :publish)
       cleaned_json = JSLibFigure.sanitize_json dirty_json[:figures_json]
       dirty_json.merge(figures_json: cleaned_json)
     end
