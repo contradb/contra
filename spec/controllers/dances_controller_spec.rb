@@ -1,8 +1,4 @@
 require 'rails_helper'
-# random flailing trying to make logins work:
-# require 'fake_user_helper'
-# include Warden::Test::Helpers
-# Warden.test_mode!
 
 RSpec.describe DancesController, type: :controller do
 
@@ -41,10 +37,9 @@ RSpec.describe DancesController, type: :controller do
     end
   end
 
-  include Devise::TestHelpers
-  login_user
 
   describe "GET #new" do
+    login_user
     it "assigns a new dance as @dance" do
       get :new, {}
       expect(assigns(:dance)).to be_a_new(Dance)
@@ -52,6 +47,7 @@ RSpec.describe DancesController, type: :controller do
   end
 
   describe "GET #edit" do
+    login_user
     it "assigns the requested dance as @dance" do
       @request.env['HTTP_REFERER'] = 'http://yahoo.com' # set it to whatever nonsense just to not get an error.
       dance = FactoryGirl.create(:dance)
@@ -61,11 +57,10 @@ RSpec.describe DancesController, type: :controller do
   end
 
   describe "POST #create" do
+    login_user
     context "with valid params" do
       it "creates a new Dance" do
-        expect {
-          post :create, {:dance => valid_attributes}
-        }.to change(Dance, :count).by(1)
+        expect {post :create, {:dance => valid_attributes}}.to change(Dance, :count).by(1)
       end
 
       it "assigns a newly created dance as @dance" do
@@ -90,10 +85,15 @@ RSpec.describe DancesController, type: :controller do
         post :create, {:dance => invalid_attributes}
         expect(response).to render_template("new")
       end
+
+      it "does not save a dance" do
+        expect {post :create, {:dance => invalid_attributes}}.to change(Dance, :count).by(0)
+      end
     end
   end
 
   describe "PUT #update" do
+    login_user
     context "with valid params" do
       let(:dance) { FactoryGirl.create(:dance) }
       let(:new_attributes) { {choreographer_name: 'Abe Baker', start_type: 'four face four'} }
@@ -118,6 +118,7 @@ RSpec.describe DancesController, type: :controller do
     end
 
     context "with invalid params" do
+      login_user
       # I can't mark these pending, because then the test would succeed for the wrong reason.
       # it "assigns the dance as @dance" do
       #   dance = FactoryGirl.create(:dance)
@@ -134,19 +135,14 @@ RSpec.describe DancesController, type: :controller do
   end
 
   describe "DELETE #destroy" do
+    login_user
     it "destroys the requested dance" do
-      pending "can't figure out how to login"
-      # login_as FactoryGirl.create(:user, name: "Jane"), scope: :user
       @request.env['HTTP_REFERER'] = '/dances'
       dance = FactoryGirl.create(:dance)
-      expect {
-        delete :destroy, {:id => dance.to_param}
-      }.to change(Dance, :count).by(-1)
-      logout
+      expect {delete :destroy, {:id => dance.to_param}}.to change(Dance, :count).by(-1)
     end
 
     it "redirects to the dances list" do
-      pending "can't figure out how to login"
       @request.env['HTTP_REFERER'] = '/dances'
       dance = FactoryGirl.create(:dance)
       delete :destroy, {:id => dance.to_param}
