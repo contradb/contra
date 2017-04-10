@@ -15,6 +15,7 @@
       </div>
     <% end %>
 
+    <%# todo: rip this copy dance logic out of the view %>
     <% copy_dance = params[:copy_dance_id] && Dance.find(params[:copy_dance_id]) %>
 
     <% if copy_dance %>

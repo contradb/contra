@@ -4,7 +4,7 @@ class DancesController < ApplicationController
   before_action :authenticate_dance_ownership!, only: [:edit, :update, :destroy]
 
   def index
-    @dances = Dance.all.order "LOWER(title)"
+    @dances = Dance.published_for(current_user).alphabetical
   end
 
   def show

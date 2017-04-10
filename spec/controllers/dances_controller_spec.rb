@@ -23,10 +23,47 @@ RSpec.describe DancesController, type: :controller do
 
 
   describe "GET #index" do
-    it "assigns all dances as @dances" do
-      dance = FactoryGirl.create(:dance)
-      get :index, {}
-      expect(assigns(:dances)).to eq([dance])
+    let! (:admonsterator) { FactoryGirl.create(:user) } # admonsterator is user 1
+    let (:user_a) { FactoryGirl.create(:user) }
+    let (:user_b) { FactoryGirl.create(:user) }
+    let! (:dance_b1) { FactoryGirl.create(:dance, user: user_b, title: "dance b1", publish: false) }
+    let! (:dance_b2) { FactoryGirl.create(:dance, user: user_b, title: "dance b2", publish: true) }
+    let! (:dance_a1) { FactoryGirl.create(:dance, user: user_a, title: "dance a1", publish: false) }
+    let! (:dance_a2) { FactoryGirl.create(:dance, user: user_a, title: "dance a2", publish: true) }
+    context "without login" do
+      it "assigns public dances as alphabeticized @dances" do
+        get :index, {}
+        expect(assigns(:dances)).to eq([dance_a2, dance_b2])
+      end
+    end
+
+    context "with login" do
+      it "assigns public dances as alphabeticized @dances" do
+        # User.any_instance.stub(:is_admin?) { self.id == admonsterator.id }
+        # hacky login
+        @request.env["devise.mapping"] = Devise.mappings[:user]
+        sign_in user_a
+
+        get :index, {}
+        expect(assigns(:dances)).to eq([dance_a1, dance_a2, dance_b2])
+      end
+    end
+
+    context "with admin login" do
+      xit "assigns public dances as alphabeticized @dances" do
+        # can't make rspec any_instnace stubs work, grump
+
+        # hacky login
+        @request.env["devise.mapping"] = Devise.mappings[:user]
+        sign_in admonsterator
+
+        # hacky stub
+        allow(User.any_instance).to receive(:is_admin?).and_return(true)
+
+        get :index, {}
+        expect(admonsterator.is_admin?).to be(true)
+        expect(assigns(:dances).pluck(:title)).to eq([dance_a1, dance_a2, dance_b1, dance_b2].map &:title)
+      end
     end
   end
 
