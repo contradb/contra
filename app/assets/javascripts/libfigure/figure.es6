@@ -335,6 +335,30 @@ defineFigure( "down the hall", [param_facing_forward, param_down_the_hall_ender_
 defineFigure( "up the hall",   [param_facing_forward, param_down_the_hall_ender_circle,       param_beats_8], {view: up_or_down_the_hall_view})
 
 ////////////////////////////////////////////////
+// GIVE AND TAKE                              //
+////////////////////////////////////////////////
+
+function give_and_take_change(figure,index) {
+  var pvs = figure.parameter_values
+  var [who,   whom,  give,  beats] = pvs;
+  if (give && beats === 4 && index !== 3) {
+    pvs[3] = 8;
+  } else if (!give && beats === 8 && index !== 3) {
+    pvs[3] = 4;
+  }
+}
+
+function give_and_take_view(move, pvs) {
+  var [who,   whom,  give,  beats] = pvs;
+  var [swho,  swhom, sgive, sbeats] = parameter_strings(move, pvs);
+  var default_beats = give ? 8 : 4;
+  var final_sbeats = default_beats === beats ? '' : words('for', beats);
+  return words(swho, give ? move : 'take', swhom, final_sbeats);
+}
+
+defineFigure( "give & take", [param_subject_role_gentlespoons, param_object_hetero_partners, param_give, param_beats_8], {view: give_and_take_view, change: give_and_take_change})
+
+////////////////////////////////////////////////
 // GYRE (aka circle by the eyes)              //
 ////////////////////////////////////////////////
 

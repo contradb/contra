@@ -178,3 +178,5 @@ function stringParamDownTheHallEnder (value) {
 param_down_the_hall_ender              = {name: "ender", ui: chooser_down_the_hall_ender, value: '',       string: stringParamDownTheHallEnder}
 param_down_the_hall_ender_circle       = {name: "ender", ui: chooser_down_the_hall_ender, value: 'circle', string: stringParamDownTheHallEnder}
 param_down_the_hall_ender_turn_couples = {name: "ender", ui: chooser_down_the_hall_ender, value: 'turn-couples', string: stringParamDownTheHallEnder}
+
+param_give = {name: "give", ui: chooser_give, value: true}
