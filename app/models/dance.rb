@@ -12,7 +12,7 @@ class Dance < ActiveRecord::Base
     if user.nil?
       where(publish: true)
     elsif user.is_admin?
-      nil
+      all
     else
       where('publish= true OR user_id= ?', user.id)
     end

@@ -8,6 +8,8 @@ class UsersController < ApplicationController
   end
 
   def show
+    @dances = @user.dances.published_for(current_user).alphabetical
+    @programs = @user.programs
   end
 
   private

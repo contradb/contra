@@ -52,6 +52,7 @@ RSpec.describe DancesController, type: :controller do
     context "with admin login" do
       xit "assigns public dances as alphabeticized @dances" do
         # can't make rspec any_instnace stubs work, grump
+        # later: hey: why are we testing unit-tested internals of the scope in our controller tests? Howsabout we just verify we call the scope?
 
         # hacky login
         @request.env["devise.mapping"] = Devise.mappings[:user]
