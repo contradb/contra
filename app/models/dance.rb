@@ -11,7 +11,7 @@ class Dance < ActiveRecord::Base
   scope :published_for, ->(user=nil) {
     if user.nil?
       where(publish: true)
-    elsif user.is_admin?
+    elsif user.is_admin
       all
     else
       where('publish= true OR user_id= ?', user.id)

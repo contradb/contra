@@ -23,7 +23,7 @@ RSpec.describe DancesController, type: :controller do
 
 
   describe "GET #index" do
-    let! (:admonsterator) { FactoryGirl.create(:user) } # admonsterator is user 1
+    let (:admonsterator) { FactoryGirl.create(:user, is_admin: true) }
     let (:user_a) { FactoryGirl.create(:user) }
     let (:user_b) { FactoryGirl.create(:user) }
     let! (:dance_b1) { FactoryGirl.create(:dance, user: user_b, title: "dance b1", publish: false) }
@@ -39,7 +39,7 @@ RSpec.describe DancesController, type: :controller do
 
     context "with login" do
       it "assigns public dances as alphabeticized @dances" do
-        # User.any_instance.stub(:is_admin?) { self.id == admonsterator.id }
+        # User.any_instance.stub(:is_admin) { self.id == admonsterator.id }
         # hacky login
         @request.env["devise.mapping"] = Devise.mappings[:user]
         sign_in user_a
@@ -50,19 +50,17 @@ RSpec.describe DancesController, type: :controller do
     end
 
     context "with admin login" do
-      xit "assigns public dances as alphabeticized @dances" do
+      it "assigns public dances as alphabeticized @dances" do
         # can't make rspec any_instnace stubs work, grump
-        # later: hey: why are we testing unit-tested internals of the scope in our controller tests? Howsabout we just verify we call the scope?
+        # later: hey! why are we testing unit-tested internals of the scope in our controller tests? Howsabout we just verify we call the scope?
+        # later still: because mocking scopes is brittle and hard. Or at any rate hard-er than just calling through. 
 
         # hacky login
         @request.env["devise.mapping"] = Devise.mappings[:user]
         sign_in admonsterator
 
-        # hacky stub
-        allow(User.any_instance).to receive(:is_admin?).and_return(true)
-
         get :index, {}
-        expect(admonsterator.is_admin?).to be(true)
+        expect(admonsterator.is_admin).to be(true)
         expect(assigns(:dances).pluck(:title)).to eq([dance_a1, dance_a2, dance_b1, dance_b2].map &:title)
       end
     end

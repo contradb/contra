@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_administrator!
-    if signed_in? && (current_user.id == 1)
+    if signed_in? && current_user.is_admin
       # continue to current_user url
     else
         flash[:error] = "Only an admin can do this"

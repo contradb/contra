@@ -31,4 +31,24 @@ describe 'Creating user from welcome page' do
     scrutinize_layout page
   end
 
+  it "First user is created as admin, second is not" do
+    visit '/users/sign_up'
+    fill_in "user_email",                 with: "admin@yahoo.com"
+    fill_in "user_name",                  with: "admin"
+    fill_in "user_password",              with: "testing password 1234"
+    fill_in "user_password_confirmation", with: "testing password 1234"
+    click_button "Sign Up"
+
+    click_link 'logout'
+
+    visit '/users/sign_up'
+    fill_in "user_email",                 with: "user@yahoo.com"
+    fill_in "user_name",                  with: "user"
+    fill_in "user_password",              with: "testing password 1234"
+    fill_in "user_password_confirmation", with: "testing password 1234"
+    click_button "Sign Up"
+
+    expect(User.find_by(email: "admin@yahoo.com").is_admin).to be(true)
+    expect(User.find_by(email: "user@yahoo.com").is_admin).to be(false)
+  end
 end

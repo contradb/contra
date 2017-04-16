@@ -1,8 +1,4 @@
 module GloboHelper
-  def administrator?() 
-    current_user && (1 == current_user.id)
-  end
-
   def view_icon_html()
     '<span class="glyphicon glyphicon-list" aria-label="view" data-toggle="tooltip" data-placement="left" title="view"></span>'.html_safe
   end
