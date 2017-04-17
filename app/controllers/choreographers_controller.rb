@@ -17,6 +17,7 @@ class ChoreographersController < ApplicationController
   # GET /choreographers/1
   # GET /choreographers/1.json
   def show
+    @dances = @choreographer.dances.published_for(current_user).alphabetical
   end
 
   # GET /choreographers/new
