@@ -8,7 +8,7 @@ class Dance < ActiveRecord::Base
   accepts_nested_attributes_for :choreographer
 
   scope :alphabetical, ->() { order "LOWER(title)" }
-  scope :published_for, ->(user=nil) {
+  scope :readable_by, ->(user=nil) {
     if user.nil?
       where(publish: true)
     elsif user.is_admin
@@ -17,6 +17,10 @@ class Dance < ActiveRecord::Base
       where('publish= true OR user_id= ?', user.id)
     end
   }
+
+  def readable?(user=nil)
+    publish || user_id == user&.id || user&.is_admin || false
+  end
 
   def figures
     JSON.parse figures_json

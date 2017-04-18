@@ -25,7 +25,7 @@ module JSLibFigure
 
   def self.teaching_name(figure_ruby_hash)
     move_string = self.move figure_ruby_hash
-    self.eval("teachingName(#{move_string.inspect})")
+    move_string ? self.eval("teachingName(#{move_string.inspect})") : "empty figure"
   end
 
   def self.sanitize_json(figures_json_string)

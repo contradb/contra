@@ -30,6 +30,7 @@ RSpec.describe DancesController, type: :controller do
     let! (:dance_b2) { FactoryGirl.create(:dance, user: user_b, title: "dance b2", publish: true) }
     let! (:dance_a1) { FactoryGirl.create(:dance, user: user_a, title: "dance a1", publish: false) }
     let! (:dance_a2) { FactoryGirl.create(:dance, user: user_a, title: "dance a2", publish: true) }
+
     context "without login" do
       it "assigns public dances as alphabeticized @dances" do
         get :index, {}
@@ -71,6 +72,14 @@ RSpec.describe DancesController, type: :controller do
       dance = FactoryGirl.create(:dance)
       get :show, {:id => dance.to_param}
       expect(assigns(:dance)).to eq(dance)
+    end
+
+    it "refuses to show a private dance, instead redirecting back and giving a warning" do
+      dance = FactoryGirl.create(:dance, publish: false)
+      @request.env['HTTP_REFERER'] = '/'
+      get :show, {:id => dance.to_param}
+      expect(response).to redirect_to '/'
+      expect(flash[:notice]).to eq('this dance has not been published')
     end
   end
 

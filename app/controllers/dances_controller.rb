@@ -2,9 +2,10 @@ class DancesController < ApplicationController
   before_action :set_dance, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :edit, :update, :destroy]
   before_action :authenticate_dance_ownership!, only: [:edit, :update, :destroy]
+  before_action :authenticate_dance_readable!, only: [:show]
 
   def index
-    @dances = Dance.published_for(current_user).alphabetical
+    @dances = Dance.readable_by(current_user).alphabetical
   end
 
   def show
@@ -65,6 +66,15 @@ class DancesController < ApplicationController
     
     def authenticate_dance_ownership!
       authenticate_ownership! @dance.user_id
+    end
+
+    def authenticate_dance_readable!
+      unless @dance.readable?(current_user)
+        flash[:notice] = "this dance has not been published"
+        redirect_to(:back)
+        # rails 5 will have the superior:
+        # redirect_back(fallback_location: '/')
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
