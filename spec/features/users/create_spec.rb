@@ -48,7 +48,7 @@ describe 'Creating user from welcome page' do
     fill_in "user_password_confirmation", with: "testing password 1234"
     click_button "Sign Up"
 
-    expect(User.find_by(email: "admin@yahoo.com").is_admin).to be(true)
-    expect(User.find_by(email: "user@yahoo.com").is_admin).to be(false)
+    expect(User.find_by(email: "admin@yahoo.com").admin?).to be(true)
+    expect(User.find_by(email: "user@yahoo.com").admin?).to be(false)
   end
 end

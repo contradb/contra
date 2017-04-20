@@ -11,7 +11,7 @@ class Dance < ActiveRecord::Base
   scope :readable_by, ->(user=nil) {
     if user.nil?
       where(publish: true)
-    elsif user.is_admin
+    elsif user.admin?
       all
     else
       where('publish= true OR user_id= ?', user.id)
@@ -19,7 +19,7 @@ class Dance < ActiveRecord::Base
   }
 
   def readable?(user=nil)
-    publish || user_id == user&.id || user&.is_admin || false
+    publish || user_id == user&.id || user&.admin? || false
   end
 
   def figures

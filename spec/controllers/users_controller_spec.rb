@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
   describe "GET #show" do
-    let! (:user_admin) { FactoryGirl.create(:user, is_admin: true) }
+    let! (:user_admin) { FactoryGirl.create(:user, admin: true) }
     let! (:user_b) { FactoryGirl.create(:user) }
     let! (:dance_b2) { FactoryGirl.create(:dance, user: user_b, title: "dance b2", publish: true) }
     let! (:dance_b1) { FactoryGirl.create(:dance, user: user_b, title: "dance b1", publish: false) }

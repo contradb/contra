@@ -10,7 +10,7 @@ Warden.test_mode!
 describe 'Showing programs' do
   let (:owner) {FactoryGirl.create(:user) }
   let (:user) {FactoryGirl.create(:user)}
-  let (:admin) {FactoryGirl.create(:user, is_admin: true)}
+  let (:admin) {FactoryGirl.create(:user, admin: true)}
   let (:dance_private) {FactoryGirl.create(:dance, publish: false, user: owner, title: "Hopscotch")}
   let (:dance) {FactoryGirl.create(:dance, title: "Awendigo")}
   let (:program) {FactoryGirl.create(:program)}

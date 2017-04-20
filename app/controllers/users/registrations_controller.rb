@@ -6,6 +6,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   private
 
   def create_first_user_as_admin
-    User.first.update(is_admin: true) if 1==User.all.count
+    User.first.update(admin: true) if 1==User.all.count
   end
 end

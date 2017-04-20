@@ -2,7 +2,7 @@
   <%= @user.name %>
 </h1>
 
-<% if @user.is_admin %>
+<% if @user.admin? %>
   <h2>Administrator</h2>
 <% end %>
 

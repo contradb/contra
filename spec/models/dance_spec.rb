@@ -8,7 +8,7 @@ RSpec.describe Dance, type: :model do
   end
 
   describe "permissions" do 
-    let! (:admonsterator) { FactoryGirl.create(:user, is_admin: true) }
+    let! (:admonsterator) { FactoryGirl.create(:user, admin: true) }
     let (:user_a) { FactoryGirl.create(:user) }
     let (:user_b) { FactoryGirl.create(:user) }
     let! (:dance_a1) { FactoryGirl.create(:dance, user: user_a, title: "dance a1", publish: false) }
