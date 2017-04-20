@@ -20,142 +20,155 @@ require 'fake_user_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe ProgramsController, type: :controller do
-
-  # This should return the minimal set of attributes required to create a valid
-  # Program. As you add validations to Program, be sure to
-  # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
-
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
-
-  include_context 'user is signed in'
-
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # ProgramsController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
+  let (:dances) {[FactoryGirl.create(:dance), FactoryGirl.create(:box_the_gnat_contra, publish: true)]}
+  let (:program) {FactoryGirl.create(:program, dances: dances)}
 
   describe "GET #index" do
     it "assigns all programs as @programs" do
-      program = Program.create! valid_attributes
-      get :index, {}, valid_session
+      program
+      get :index, {}
       expect(assigns(:programs)).to eq([program])
     end
   end
 
   describe "GET #show" do
     it "assigns the requested program as @program" do
-      program = Program.create! valid_attributes
-      get :show, {:id => program.to_param}, valid_session
+      program
+      get :show, {:id => program.to_param}
       expect(assigns(:program)).to eq(program)
     end
   end
 
   describe "GET #new" do
-    it "assigns a new program as @program" do
-      get :new, {}, valid_session
+    it "assigns @program and @dance_autocomplete_hash_json" do
+      program
+      sign_in FactoryGirl.create(:user)
+      get :new, {}
       expect(assigns(:program)).to be_a_new(Program)
+      json = JSON.parse(assigns(:dance_autocomplete_hash_json))
+      expect(json.map {|d| d['title']}).to eq(dances.select(&:publish).map(&:title))
     end
   end
 
   describe "GET #edit" do
-    it "assigns the requested program as @program" do
-      program = Program.create! valid_attributes
-      get :edit, {:id => program.to_param}, valid_session
+    it "assigns @program and @dance_autocomplete_hash_json" do
+      sign_in program.user
+      get :edit, {:id => program.to_param}
       expect(assigns(:program)).to eq(program)
+      json = JSON.parse(assigns(:dance_autocomplete_hash_json))
+      expect(json.map {|d| d['title']}).to eq(dances.select(&:publish).map(&:title))
+    end
+
+    it "If not logged in as program owner, refuses to show page" do
+      sign_in FactoryGirl.create(:user)
+      request.env["HTTP_REFERER"] = "where_i_came_from"
+      get :edit, {:id => program.to_param}
+      expect(response).to redirect_to "where_i_came_from"
     end
   end
 
   describe "POST #create" do
+    before(:each) {sign_in FactoryGirl.create(:user)}
     context "with valid params" do
       it "creates a new Program" do
         expect {
-          post :create, {:program => valid_attributes}, valid_session
+          post :create, {:program => FactoryGirl.attributes_for(:program)}
         }.to change(Program, :count).by(1)
       end
 
       it "assigns a newly created program as @program" do
-        post :create, {:program => valid_attributes}, valid_session
+        post :create, {:program => FactoryGirl.attributes_for(:program)}
         expect(assigns(:program)).to be_a(Program)
         expect(assigns(:program)).to be_persisted
       end
 
       it "redirects to the created program" do
-        post :create, {:program => valid_attributes}, valid_session
+        post :create, {:program => FactoryGirl.attributes_for(:program)}
         expect(response).to redirect_to(Program.last)
       end
     end
 
     context "with invalid params" do
+      let (:invalid_attributes) {FactoryGirl.attributes_for(:program).tap {|h| h.delete(:title)}}
       it "assigns a newly created but unsaved program as @program" do
-        post :create, {:program => invalid_attributes}, valid_session
+        post :create, {:program => invalid_attributes}
         expect(assigns(:program)).to be_a_new(Program)
       end
 
       it "re-renders the 'new' template" do
-        post :create, {:program => invalid_attributes}, valid_session
+        post :create, {:program => invalid_attributes}
         expect(response).to render_template("new")
       end
     end
   end
 
   describe "PUT #update" do
-    context "with valid params" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
+    let(:new_attributes) {{title: "New Title"}}
 
-      it "updates the requested program" do
-        program = Program.create! valid_attributes
-        put :update, {:id => program.to_param, :program => new_attributes}, valid_session
-        program.reload
-        skip("Add assertions for updated state")
-      end
-
-      it "assigns the requested program as @program" do
-        program = Program.create! valid_attributes
-        put :update, {:id => program.to_param, :program => valid_attributes}, valid_session
-        expect(assigns(:program)).to eq(program)
-      end
-
-      it "redirects to the program" do
-        program = Program.create! valid_attributes
-        put :update, {:id => program.to_param, :program => valid_attributes}, valid_session
-        expect(response).to redirect_to(program)
+    it "with wrong login redirects and does not change data" do
+      sign_in FactoryGirl.create(:user)
+      request.env["HTTP_REFERER"] = "where_i_came_from"
+      put :update, {:id => program.to_param, :program => new_attributes}
+      expect(response).to redirect_to "where_i_came_from"
+      program.reload
+      new_attributes.each do |k,v|
+        expect(program.public_send(k)).to_not eq(v)
       end
     end
 
-    context "with invalid params" do
-      it "assigns the program as @program" do
-        program = Program.create! valid_attributes
-        put :update, {:id => program.to_param, :program => invalid_attributes}, valid_session
-        expect(assigns(:program)).to eq(program)
+    context "with login" do
+      before(:each) {sign_in program.user}
+      context "with valid params" do
+        it "updates the requested program" do
+          put :update, {:id => program.to_param, :program => new_attributes}
+          program.reload
+          new_attributes.each do |k,v|
+            expect(program.public_send(k)).to eq(v)
+          end
+        end
+
+        it "assigns the requested program as @program" do
+          put :update, {:id => program.to_param, :program => FactoryGirl.attributes_for(:program)}
+          expect(assigns(:program)).to eq(program)
+        end
+
+        it "redirects to the program" do
+          put :update, {:id => program.to_param, :program => FactoryGirl.attributes_for(:program)}
+          expect(response).to redirect_to(program)
+        end
       end
 
-      it "re-renders the 'edit' template" do
-        program = Program.create! valid_attributes
-        put :update, {:id => program.to_param, :program => invalid_attributes}, valid_session
-        expect(response).to render_template("edit")
+      context "with invalid params" do
+        let (:invalid_attributes) {FactoryGirl.attributes_for(:program).merge({title: ''})}
+
+        it "assigns the program as @program" do
+          put :update, {:id => program.to_param, :program => invalid_attributes}
+          expect(assigns(:program)).to eq(program)
+        end
+
+        it "re-renders the 'edit' template" do
+          put :update, {:id => program.to_param, :program => invalid_attributes}
+          expect(response).to render_template("edit")
+        end
       end
     end
   end
 
   describe "DELETE #destroy" do
+    before(:each) do
+      sign_in program.user;
+      request.env["HTTP_REFERER"] = "where_i_came_from"
+    end
+
     it "destroys the requested program" do
-      program = Program.create! valid_attributes
       expect {
-        delete :destroy, {:id => program.to_param}, valid_session
+        delete :destroy, {:id => program.to_param}
       }.to change(Program, :count).by(-1)
     end
 
     it "redirects to the programs list" do
-      program = Program.create! valid_attributes
-      delete :destroy, {:id => program.to_param}, valid_session
-      expect(response).to redirect_to(programs_url)
+      delete :destroy, {:id => program.to_param}
+      expect(response).to redirect_to("where_i_came_from")
     end
   end
 
