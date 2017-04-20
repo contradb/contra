@@ -20,7 +20,7 @@ require 'fake_user_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe ProgramsController, type: :controller do
-  let (:dances) {[FactoryGirl.create(:dance), FactoryGirl.create(:box_the_gnat_contra, publish: true)]}
+  let (:dances) {[FactoryGirl.create(:dance), FactoryGirl.create(:box_the_gnat_contra, publish: false)]}
   let (:program) {FactoryGirl.create(:program, dances: dances)}
 
   describe "GET #index" do
