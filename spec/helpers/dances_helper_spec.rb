@@ -97,6 +97,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['gentlespoons give & take partners for 4', 'give & take', 'gentlespoons', 'partners', true, 4],
    ['ladles take neighbors', 'give & take', 'ladles', 'neighbors', false, 4],
    ['ladles take neighbors for 8', 'give & take', 'ladles', 'neighbors', false, 8],
+   ['partners gyre meltdown', 'gyre meltdown', 'partners', 16],
+   ['neighbors gyre meltdown for 12', 'gyre meltdown', 'neighbors', 12],
    # below here has issues requiring implementation changes, I think -dm 08-16-2016
    ['gentlespoons see saw once', 'see saw', 'gentlespoons', false, 360, 8],
    ['petronella', 'petronella', false, 4],
