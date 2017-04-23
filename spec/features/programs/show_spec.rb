@@ -8,27 +8,56 @@ Warden.test_mode!
 
 
 describe 'Showing programs' do
-  before (:each) do
-    @user1 = FactoryGirl.create(:user)
-    @user2 = FactoryGirl.create(:user)
-    login_as(@user1, :scope => :user)
-    @program = FactoryGirl.create(:program, user: @user1, 
-                                  title: "Fleur De Lis Fling Friday")
+  let (:owner) {FactoryGirl.create(:user) }
+  let (:user) {FactoryGirl.create(:user)}
+  let (:admin) {FactoryGirl.create(:user, admin: true)}
+  let (:dance_private) {FactoryGirl.create(:dance, publish: false, user: owner, title: "Hopscotch")}
+  let (:dance) {FactoryGirl.create(:dance, title: "Awendigo")}
+  let (:program) {FactoryGirl.create(:program)}
+  
+  it "renders stored values" do
+    program.append_new_activity(dance: dance)
+    program.append_new_activity(text: 'hambo')
+    figure_html = JSLibFigure.html(dance.figures.first)
+
+    visit program_path(program)
+
+    expect(page).to have_content(program.title)
+    expect(page).to have_content(dance.title)
+    expect(figure_html).to match(/neighbors +balance +& +swing/)
+    expect(page).to have_content(figure_html)
+    expect(page).to have_content('hambo')
   end
 
-  after (:each) do
-    visit "/programs/#{@program.id}"
+  describe 'privacy' do
+    let (:figure_html) {JSLibFigure.html(dance_private.figures.first)}
+    before(:each) {program.append_new_activity(dance: dance_private)}
 
-    scrutinize_layout page
-    expect(page).to have_css("h1", text: "Fleur De Lis Fling Friday")
+    it "does not display figures of a private dance" do
+      visit program_path(program)
+      expect(page).to_not have_content(figure_html)
+      expect(page).to have_content('This dance is not published')
+    end
+
+    it "does display figures of a private dance if owner" do
+      login_as(owner, scope: :user)
+      visit program_path(program)
+      expect(page).to have_content(figure_html)
+      expect(page).to_not have_content('This dance is not published')
+    end
+
+    it "does not display figures of a private dance if logged in as some random person" do
+      login_as(user, scope: :user)
+      visit program_path(program)
+      expect(page).to_not have_content(figure_html)
+      expect(page).to have_content('This dance is not published')
+    end
+
+    it "does display figures of a private dance if admin" do
+      login_as(admin, scope: :user)
+      visit program_path(program)
+      expect(page).to have_content(figure_html)
+      expect(page).to_not have_content('This dance is not published')
+    end
   end
-
-  it "renders logged in as the same user" do end
-  it "renders logged out"                 do logout(:user) end
-  it "renders logged in as a different user" do
-    logout(:user)
-    login_as(@user2, :scope => :user)
-  end
-
-  pending "shows the activities of a dance"
 end

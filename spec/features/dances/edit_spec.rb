@@ -31,6 +31,22 @@ describe 'Editing dances', js: true do
       expect(dance1.choreographer.name).to eql dance2.choreographer.name
     end
   end
+  it 'editing a dance saves form values (except figure editor edits)' do
+    with_login do |user|
+      dance = FactoryGirl.create(:box_the_gnat_contra, user: user)
+      visit edit_dance_path dance.id
+      fill_in 'dance_title', with: 'Call Me'
+      fill_in 'dance[choreographer_name]', with: 'Cary Ravitz'
+      fill_in 'dance[start_type]', with: 'Beckett'
+      choose 'Publish'
+      click_button 'Save Dance'
+      dance.reload
+
+      expect(dance.title).to eq('Call Me')
+      expect(dance.choreographer.name).to eq('Cary Ravitz')
+      expect(dance.start_type).to eq('Beckett')
+    end
+  end
 end
 
 

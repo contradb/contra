@@ -15,6 +15,7 @@
       </div>
     <% end %>
 
+    <%# todo: rip this copy dance logic out of the view %>
     <% copy_dance = params[:copy_dance_id] && Dance.find(params[:copy_dance_id]) %>
 
     <% if copy_dance %>
@@ -197,8 +198,18 @@
     </div>
     <br>
 
+    <div>
+      <%= f.label :publish, value: 'true' do %>
+        <%= f.radio_button :publish, 'true' %> 
+        Publish
+      <% end %>
+      <%= f.label :publish, value: 'false' do %>
+        <%= f.radio_button :publish, 'false' %> 
+        Private
+      <% end %>
+    </div>
+
     <div class="actions">
-      <div></div>
       <%= save_submit_button_html "Save Dance", {class: "update-dance"} %>
     </div>
 

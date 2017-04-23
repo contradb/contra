@@ -8,17 +8,19 @@ class UsersController < ApplicationController
   end
 
   def show
+    @dances = @user.dances.readable_by(current_user).alphabetical
+    @programs = @user.programs
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_user
+    @user = User.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params.require(:user).permit(:email,:name)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def user_params
+    params.require(:user).permit(:email,:name)
+  end
 end
 

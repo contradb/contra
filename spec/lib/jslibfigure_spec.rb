@@ -26,6 +26,9 @@ RSpec.describe JSLibFigure do
     it 'swat the flea => swat the flea' do
       expect(JSLibFigure.teaching_name({'move' => 'swat the flea'})).to eql('swat the flea')
     end
+    it '[empty figure] => "empty figure"' do
+      expect(JSLibFigure.teaching_name({})).to eql('empty figure')
+    end
   end
 
   # calling code moved to a migration, delete this someday

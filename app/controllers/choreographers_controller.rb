@@ -11,11 +11,13 @@ class ChoreographersController < ApplicationController
   # GET /choreographers.json
   def index
     @choreographers = Choreographer.all.order "LOWER(name)"
+    @show_admin_actions = current_user&.admin?
   end
 
   # GET /choreographers/1
   # GET /choreographers/1.json
   def show
+    @dances = @choreographer.dances.readable_by(current_user).alphabetical
   end
 
   # GET /choreographers/new

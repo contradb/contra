@@ -11,13 +11,13 @@ class ApplicationController < ActionController::Base
     if signed_in? && (current_user.id == user_id)
       # continue to current_user url
     else
-        flash[:error] = "Please access one of your own pages"
+        flash[:notice] = "Please access one of your own pages"
         redirect_to(:back)
     end
   end
 
   def authenticate_administrator!
-    if signed_in? && (current_user.id == 1)
+    if signed_in? && current_user.admin?
       # continue to current_user url
     else
         flash[:error] = "Only an admin can do this"

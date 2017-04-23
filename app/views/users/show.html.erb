@@ -2,6 +2,10 @@
   <%= @user.name %>
 </h1>
 
+<% if @user.admin? %>
+  <h2>Administrator</h2>
+<% end %>
+
 <h2>Dances</h2>
 <%= if user_signed_in? && (current_user.id == @user.id)
     then new_dance_button_html()
@@ -10,7 +14,7 @@
 %>
 
 
-<%= render partial: "dances/showtable", object: @user.dances, 
+<%= render partial: "dances/showtable", object: @dances, 
     locals: {user: false} %>
 
 
@@ -22,7 +26,7 @@
 %>
 
 
-<%= render partial: "programs/showtable", object: @user.programs, 
+<%= render partial: "programs/showtable", object: @programs, 
     locals: {user: false} %>
 
 

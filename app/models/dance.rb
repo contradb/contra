@@ -6,6 +6,22 @@ class Dance < ActiveRecord::Base
   validates :title, length: { in: 3..100 }
   validates :start_type, length: { in: 1..100 }
   accepts_nested_attributes_for :choreographer
+
+  scope :alphabetical, ->() { order "LOWER(title)" }
+  scope :readable_by, ->(user=nil) {
+    if user.nil?
+      where(publish: true)
+    elsif user.admin?
+      all
+    else
+      where('publish= true OR user_id= ?', user.id)
+    end
+  }
+
+  def readable?(user=nil)
+    publish || user_id == user&.id || user&.admin? || false
+  end
+
   def figures
     JSON.parse figures_json
   end

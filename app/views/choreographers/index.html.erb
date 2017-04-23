@@ -1,4 +1,4 @@
-<p><%= administrator?() ? "You may modify existing choreographers." : "" %></p>
+<p><%= @show_admin_actions ? "You may modify existing choreographers." : "" %></p>
 
 <h1>Choreographers</h1>
 
@@ -7,7 +7,7 @@
 <table class="table table-striped table-bordered table-hover table-condensed contra-table-nonfluid">
   <thead>
     <tr>
-      <% if administrator?() then %>
+      <% if @show_admin_actions then %>
       <th colspan=2>Actions</th>
       <% end %>
       <th>Name</th>
@@ -18,21 +18,18 @@
   <tbody>
     <% @choreographers.each do |choreographer| %>
       <tr>
-       <% if administrator?() then begin
-            # choreographer 1 is special system 'unknown' choreographer
-            # don't mess with it, even if you're administrator
-            if 1==choreographer.id then%>
-              <td></td>
-              <td></td>
-            <% else %>
-              <td><%= link_to edit_icon_html, edit_choreographer_path(choreographer) %></td>
-              <td><%= link_to delete_icon_html, choreographer, method:
-                      :delete, data: { confirm: 
-                      "Delete Choreographer #{choreographer.name}?\n\n All their dances will become choreographed by 'unknown'." } %></td>
-       <%   end end
-          end %>
-              <td><%= link_to choreographer.name, choreographer %></td>
-              <td class="text-right"><%= choreographer.dances.length %></td>
+        <% if @show_admin_actions %>
+          <% if 1==choreographer.id %>
+            <td></td>
+            <td></td>
+          <% else %>
+            <td><%= link_to edit_icon_html, edit_choreographer_path(choreographer) %></td>
+            <td><%= link_to delete_icon_html, choreographer, method: :delete, 
+                            data: { confirm: "Delete Choreographer #{choreographer.name}?\n\n All their dances will become choreographed by 'unknown'." } %></td>
+          <% end %>
+        <% end %>
+        <td><%= link_to choreographer.name, choreographer %></td>
+        <td class="text-right"><%= choreographer.dances.length %></td>
       </tr>
     <% end %>
   </tbody>

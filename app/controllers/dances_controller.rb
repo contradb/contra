@@ -2,9 +2,10 @@ class DancesController < ApplicationController
   before_action :set_dance, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :edit, :update, :destroy]
   before_action :authenticate_dance_ownership!, only: [:edit, :update, :destroy]
+  before_action :authenticate_dance_readable!, only: [:show]
 
   def index
-    @dances = Dance.all.order "LOWER(title)"
+    @dances = Dance.readable_by(current_user).alphabetical
   end
 
   def show
@@ -67,6 +68,15 @@ class DancesController < ApplicationController
       authenticate_ownership! @dance.user_id
     end
 
+    def authenticate_dance_readable!
+      unless @dance.readable?(current_user)
+        flash[:notice] = "this dance has not been published"
+        redirect_to(:back)
+        # rails 5 will have the superior:
+        # redirect_back(fallback_location: '/')
+      end
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def dance_params
       dirty_json = params.require(:dance).permit(:title,
@@ -75,7 +85,8 @@ class DancesController < ApplicationController
                                                  :start_type,
                                                  :figures_json,
                                                  :notes,
-                                                 :copy_dance_id)
+                                                 :copy_dance_id,
+                                                 :publish)
       cleaned_json = JSLibFigure.sanitize_json dirty_json[:figures_json]
       dirty_json.merge(figures_json: cleaned_json)
     end

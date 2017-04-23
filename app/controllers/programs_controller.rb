@@ -18,6 +18,7 @@ class ProgramsController < ApplicationController
   # GET /programs/new
   def new
     @program = Program.new
+    @dance_autocomplete_hash_json = dance_autocomplete_hash_json
     if params[:copy_program_id]
       then (Program.find params[:copy_program_id]).activities_sorted.each_with_index do |a,i|
       @program.activities.build(index: i, text: a.text, dance_id: a.dance_id)
@@ -28,6 +29,7 @@ class ProgramsController < ApplicationController
 
   # GET /programs/1/edit
   def edit
+    @dance_autocomplete_hash_json = dance_autocomplete_hash_json
   end
 
   # POST /programs
@@ -50,20 +52,19 @@ class ProgramsController < ApplicationController
   # PATCH/PUT /programs/1
   # PATCH/PUT /programs/1.json
   def update
+    # wipe out all associated activities and start fresh
+    @program.activities.destroy(@program.activities)
+
+    # install 'index' attribute into pp hash
+    pp = program_params.deep_dup
+    ppaa = pp["activities_attributes"]
+    i = 0
+    while ppaa[i.to_s] do
+      ppaa[i.to_s]["index"] = i
+      i += 1
+    end unless ppaa.nil?
+
     respond_to do |format|
-
-      # wipe out all associated activities and start fresh
-      @program.activities.destroy(@program.activities)
-
-      # install 'index' attribute into pp hash
-      pp = program_params.deep_dup
-      ppaa = pp["activities_attributes"]
-      i = 0
-      while ppaa[i.to_s] do
-        ppaa[i.to_s]["index"] = i
-        i += 1
-      end
-
       # pp hash is deltas to @program, try to save it...
       if @program.update(pp)
         format.html { redirect_to @program, notice: 'Program was successfully updated.' }
@@ -103,5 +104,12 @@ class ProgramsController < ApplicationController
       params.require(:program).permit(:title, :copy_program_id, activities_attributes: [:text, :dance_id])
     end
 
+    def dance_autocomplete_hash_json
+      JSON.generate(Dance.readable_by(current_user).map do |dance|
+                      {"title" => dance.title,
+                       "choreographer" => dance.choreographer.name,
+                       "id" => dance.id}
+                    end)
+    end
 end
 

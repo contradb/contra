@@ -16,7 +16,7 @@
   <h2>Table of Contents</h2>
   <ol>
     <% @program.activities_sorted.each_with_index do |activity,index| %>
-    <li><a href=<%= "\"\##{activity_anchor_id(index)}\"".html_safe %>><%= activity.dance ? (content_tag(:span,activity.dance.title,class: "activity-toc-dance-title") + " by " + activity.dance.choreographer.name) : (activity.text.empty? ? "~~~" : ApplicationHelper::renderMarkdownInlineNoLinks(activity.text)) %></a></li>
+    <li><a href=<%= "\"\##{activity_anchor_id(index)}\"".html_safe %>><%= activity.dance ? (content_tag(:span,activity.dance.title,class: "activity-toc-dance-title") + " by " + activity.dance.choreographer.name) : (activity.text.blank? ? "~~~" : ApplicationHelper::renderMarkdownInlineNoLinks(activity.text)) %></a></li>
     <% end %>
   </ol>
 </div>
@@ -25,7 +25,7 @@
   <%= "<div class='activity-breakdown' id='#{activity_anchor_id(index)}'>".html_safe %>
     <%= if activity.dance 
         then content_tag(:h2, (link_to activity.dance.title, activity.dance), class: "activity-breakdown-dance-title")
-        elsif !activity.text.empty?
+        elsif activity.text.present?
         then content_tag(:h2, ApplicationHelper::renderMarkdown(activity.text), class: "activity-breakdown-text")
         else content_tag(:h2, "~ ~ ~", class: "activity-breakdown-empty-activity")
         end %>
@@ -35,11 +35,11 @@
           content_tag(:p, "by: ".html_safe + authorspan)
         end %>
 
-    <%= if activity.dance && !activity.text.empty?
+    <%= if activity.dance && activity.text.present?
         then content_tag(:p, ApplicationHelper::renderMarkdown(activity.text), class: "activity-breakdown-text")
         end %>
 
-    <%= if activity.dance then
+    <%= if activity.dance&.readable?(current_user)
           introduce_moves = []
           activity.dance.figures.each do |figure|
             move = JSLibFigure.teaching_name figure
@@ -57,7 +57,11 @@
           end
         end %>
 
-    <%= render partial: 'dances/bodyshow', locals: {dance: activity.dance} if activity.dance %>
+    <% if activity.dance&.readable?(current_user) %>
+      <%= render partial: 'dances/bodyshow', locals: {dance: activity.dance} %>
+    <% elsif activity.dance %>
+      <div class="warn-private-dance">This dance is not published.</div>
+    <% end %>
   <%= '</div>'.html_safe %>
 <% end %>
 
