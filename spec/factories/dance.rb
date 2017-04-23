@@ -7,6 +7,14 @@ FactoryGirl.define do
     figures_json '[{"parameter_values":["neighbors",true,16],"move":"swing"},{"parameter_values":[8],"move":"long lines"},{"parameter_values":["ladles",true,540,8],"move":"do si do"},{"parameter_values":["partners",true,16],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":[true,2],"move":"slide along set"},{"parameter_values":[true,270,6],"move":"circle"}]'
   end
 
+  factory :dance_with_a_swing, class: Dance do
+    title      'Monofigure'
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json '[{"parameter_values":["neighbors",true,16],"move":"swing"}]'
+  end
+
   factory :old_figure_format_dance, class: Dance do
     title      'The Rendevouz'
     user { FactoryGirl.create(:user) }

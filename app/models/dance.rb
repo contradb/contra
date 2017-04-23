@@ -37,4 +37,16 @@ class Dance < ActiveRecord::Base
   def figure7 () JSON.generate (figures[6]||{}); end
   def figure8 () JSON.generate (figures[7]||{}); end
 
+  # Returns a hash. Keys are moves (strings). Values are dances containing that figure.
+  def self.move_index(dances)
+    moves_dances = {}
+    dances.each do |dance|
+      dance.figures.each do |figure|
+        move = JSLibFigure.move figure
+        moves_dances[move] ||= Set.new
+        moves_dances[move] << dance
+      end
+    end
+    moves_dances
+  end
 end

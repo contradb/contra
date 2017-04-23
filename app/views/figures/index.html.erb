@@ -1,0 +1,24 @@
+<h1>Figures</h1>
+
+<table class="table table-striped table-bordered table-hover table-condensed contra-table-nonfluid">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Dance Count</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <% @moves.each do |move| %>
+      <tr>
+        <td><%= move %></td>
+        <td class="text-right"><%= @move_index[move]&.length || 0 %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+

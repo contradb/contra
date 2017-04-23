@@ -45,4 +45,24 @@ RSpec.describe Dance, type: :model do
       end
     end
   end
+
+  describe "move_index" do
+    it 'returns a hash' do
+      expect(Dance.move_index([])).to eq({})
+    end
+
+    it 'hash maps moves to dances' do
+      dance = FactoryGirl.build(:dance_with_a_swing)
+      expect(Dance.move_index([dance])).to eq({'swing' => Set.new([dance])})
+    end
+
+    it 'works with larger numbers of dances and figures' do
+      dance = FactoryGirl.build(:dance_with_a_swing)
+      dance2 = FactoryGirl.build(:box_the_gnat_contra)
+      index = Dance.move_index([dance,dance2])
+      expect(index['swing']).to eq(Set.new([dance,dance2]))
+      expect(index['box the gnat']).to eq(Set.new([dance2]))
+      expect(index['long lines']).to be_blank
+    end
+  end
 end

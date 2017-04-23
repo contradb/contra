@@ -18,6 +18,10 @@ module JSLibFigure
     figure_ruby_hash['move']
   end
 
+  def self.moves
+    self.eval('moves()')
+  end
+
   def self.de_aliased_move(figure_ruby_hash)
     move_string = self.move figure_ruby_hash
     self.eval("deAliasMove(#{move_string.inspect})")

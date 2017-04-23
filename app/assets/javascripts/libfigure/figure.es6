@@ -137,10 +137,9 @@ function deAliasMove(move) {
     return defined_events[move].name;
 }
 
+
 function moves() {
-  var a = [];
-  $.each(defined_events,function(k,v){a.push(k)});
-  return a.sort(function(a,b) {
+  return Object.keys(defined_events).sort(function(a,b) {
     var aa = a.toLowerCase();
     var bb = b.toLowerCase();
     if (aa < bb) { return -1 ;}
