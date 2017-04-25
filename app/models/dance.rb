@@ -64,6 +64,16 @@ class Dance < ActiveRecord::Base
     followers
   end
 
+  def moves_that_precede_move(move)
+    preceders = Set.new
+    mvs = moves
+    mvs.each_with_index do |m,index|
+      move_matches = move == m
+      preceders << mvs[index-1] if move_matches # index-1 is occassionally -1, that's great!
+    end
+    preceders
+  end
+
   # {move => {dance1, dance2}}
   def self.moves_and_dances_that_follow_move(dances,move)
     r = {}
@@ -74,6 +84,26 @@ class Dance < ActiveRecord::Base
         r[following_move] << dance
       end
     end
-    r
+    sort_hash(r)
+  end
+
+  # {move => {dance1, dance2}}
+  def self.moves_and_dances_that_precede_move(dances,move)
+    r = {}
+    dances.each do |dance|
+      preceding_moves = dance.moves_that_precede_move(move)
+      preceding_moves.each do |following_move|
+        r[following_move] ||= Set.new
+        r[following_move] << dance
+      end
+    end
+    sort_hash(r)
+  end
+
+  private 
+  def self.sort_hash(r)
+    s = {}
+    r.keys.sort_by(&:downcase).each {|key| s[key] = r[key]}
+    s
   end
 end

@@ -1,37 +1,48 @@
 
-<h1><%= @move =~ /[A-Z]/ ? @move : @move.titleize %></h1>
 
-Followed by moves
-<ul>
-<% @followed_by.each do |move,dances| %>
-  <li>
-    <%= move %>
-    <ul>
-      <% dances.each do |dance| %>
-        <li><%= dance.title %></li>
+<div class="container">
+  <h1><%= @move_titleize %></h1>
+
+
+  <% if @dances.present? %>
+    <div class="row">
+      <div class="col-md-12">
+        <h2>Appears in</h2>
+        <% @dances.each_with_index do |dance,i| %>
+          <%= link_to dance.title, dance %><%= ',' if i<@dances.length-1 %>
+        <% end %>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-md-6">
+        <h2>Moves Before</h2>
+        <% @preceded_by.each do |move,dances| %>
+          <p>
+            <h3><%= move %></h3>
+            <% dances.to_a.sort_by(&:title).each_with_index do |dance,i| %>
+              <%= link_to dance.title, dance %><%= ',' if i<dances.length-1 %>
+            <% end %>
+          </p>
       <% end %>
-    </ul>
-  </li>
-<% end %>
-</ul>
+      </div>
+      <div class="col-md-6">
+        <h2>Moves After</h2>
+        <% @followed_by.each do |move,dances| %>
+          <h3><%= move %></h3>
+          <ul>
+            <% dances.to_a.sort_by(&:title).each do |dance| %>
+              <li><%= link_to dance.title, dance %></li>
+            <% end %>
+          </ul>
+        <% end %>
+      </div>
+    </div>
 
-<table class="table table-striped table-bordered table-hover table-condensed contra-table-nonfluid">
-  <thead>
-    <tr>
-      <th>Name</th>
-    </tr>
-  </thead>
+  <% end %>
+</div>
 
-  <tbody>
 
-    <% @dances.each do |dance| %>
-      <tr>
-        <td><%= link_to dance.title, dance %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
 
 

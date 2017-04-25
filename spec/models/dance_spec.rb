@@ -66,6 +66,13 @@ RSpec.describe Dance, type: :model do
     end
   end
 
+  describe "#moves_that_precede_move" do
+    it 'works' do
+      dance = FactoryGirl.build(:box_the_gnat_contra)
+      expect(dance.moves_that_precede_move('swat the flea')).to eq(Set.new(['box the gnat']))
+    end
+  end
+
   describe ".moves_and_dances_that_follow_move" do
     it "works" do
       box_the_gnat = FactoryGirl.build(:box_the_gnat_contra)
@@ -87,4 +94,20 @@ RSpec.describe Dance, type: :model do
       expect(Dance.moves_and_dances_that_follow_move([box_the_gnat, call_me], 'swing')).to eq(expected)
     end
   end
+
+  describe ".moves_and_dances_that_precede_move" do
+    it "works" do
+      box_the_gnat = FactoryGirl.build(:box_the_gnat_contra)
+      expected = {'swat the flea'=>Set.new([box_the_gnat]), 'allemande'=>Set.new([box_the_gnat])}
+      expect(Dance.moves_and_dances_that_precede_move([box_the_gnat], 'swing')).to eq(expected)
+    end
+
+    it "works off the end of the array" do
+      box_the_gnat = FactoryGirl.build(:box_the_gnat_contra)
+      expected = {'chain'=>Set.new([box_the_gnat])}
+      expect(Dance.moves_and_dances_that_precede_move([box_the_gnat], 'box the gnat')).to eq(expected)
+    end
+
+  end
+
 end
