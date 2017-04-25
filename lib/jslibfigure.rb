@@ -55,6 +55,19 @@ module JSLibFigure
     end
   end
 
+  def self.slugify_move(move)
+    move.gsub('&','and').gsub(' ','-').downcase.gsub(/[^a-z0-9-]/,'')
+  end
+
+  def self.deslugify_move(slug)
+    # sorry for the regexp
+    # split..join takes the string apart, and allows punctuation between any character, and puts it back together
+    # split(_,-1) tacks a null string on the end of the split
+    # unshift '' tacks a null string on the beginning of the split
+    regexp = /\A#{slug.gsub('-and-', ' & ').gsub('-',' ').split('',-1).tap {|s| s.unshift ''}.join("[^a-z0-9]*")}\z/i
+    moves.find {|move| regexp =~ move}
+  end
+
   private
   def self.eval(string_of_javascript)
     context.eval(string_of_javascript)

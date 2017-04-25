@@ -7,8 +7,8 @@ class FiguresController < ApplicationController
   end
 
   def show
-    @move = params[:id]
-    raise "#{@move.inspect} is not a move" unless @move.in?(JSLibFigure.moves)
+    @move = JSLibFigure.deslugify_move(params[:id])
+    raise "#{params[:id].inspect} is not a move" unless @move
     @move_titleize = @move =~ /[A-Z]/ ? @move : @move.titleize # correctly passes "Rory O'Moore"
     dances = Dance.readable_by(current_user)
     move_index = Dance.move_index(dances)
