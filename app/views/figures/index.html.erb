@@ -12,7 +12,7 @@
 
     <% @moves.each do |move| %>
       <tr>
-        <td><%= move %></td>
+        <td><%= link_to move, figure_path(move) %></td>
         <td class="text-right"><%= @move_index[move]&.length || 0 %></td>
       </tr>
     <% end %>

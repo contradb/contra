@@ -22,6 +22,10 @@ class Dance < ActiveRecord::Base
     publish || user_id == user&.id || user&.admin? || false
   end
 
+  def moves
+    figures.map {|f| JSLibFigure.move f}
+  end
+
   def figures
     JSON.parse figures_json
   end
@@ -48,5 +52,28 @@ class Dance < ActiveRecord::Base
       end
     end
     moves_dances
+  end
+
+  def moves_that_follow_move(move)
+    followers = Set.new
+    mvs = moves
+    mvs.each_with_index do |m,index|
+      previous_move_matches = move == mvs[index-1] # yes, index-1 is occassionaly -1, that's great!
+      followers << m if previous_move_matches
+    end
+    followers
+  end
+
+  # {move => {dance1, dance2}}
+  def self.moves_and_dances_that_follow_move(dances,move)
+    r = {}
+    dances.each do |dance|
+      following_moves = dance.moves_that_follow_move(move)
+      following_moves.each do |following_move|
+        r[following_move] ||= Set.new
+        r[following_move] << dance
+      end
+    end
+    r
   end
 end

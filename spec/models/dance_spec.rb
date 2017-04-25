@@ -65,4 +65,26 @@ RSpec.describe Dance, type: :model do
       expect(index['long lines']).to be_blank
     end
   end
+
+  describe ".moves_and_dances_that_follow_move" do
+    it "works" do
+      box_the_gnat = FactoryGirl.build(:box_the_gnat_contra)
+      expected = {'allemande'=>Set.new([box_the_gnat]),
+                  'right left through'=>Set.new([box_the_gnat])}
+      expect(Dance.moves_and_dances_that_follow_move([box_the_gnat], 'swing')).to eq(expected)
+    end
+
+    it "works off the end of the array" do
+      dance = FactoryGirl.build(:dance)
+      expected = {'slide along set'=>Set.new([dance]), 'swing'=>Set.new([dance])}
+      expect(Dance.moves_and_dances_that_follow_move([dance], 'circle')).to eq(expected)
+    end
+
+    it "works with two dances with partially overlapping moves" do
+      call_me = FactoryGirl.build(:call_me)
+      box_the_gnat = FactoryGirl.build(:box_the_gnat_contra)
+      expected = {'allemande'=>Set.new([box_the_gnat]), 'right left through'=>Set.new([box_the_gnat, call_me]), 'circle'=>Set.new([call_me])}
+      expect(Dance.moves_and_dances_that_follow_move([box_the_gnat, call_me], 'swing')).to eq(expected)
+    end
+  end
 end
