@@ -4,7 +4,9 @@
   <h1><%= @move_titleize %></h1>
 
 
-  <% if @dances.present? %>
+  <% if @dances.blank? %>
+    <p>This figure does not appear in any dances yet.</p>
+  <% else %>
     <div class="row">
       <div class="col-md-12">
         <h2>Appears in</h2>
