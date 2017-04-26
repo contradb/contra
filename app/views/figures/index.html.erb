@@ -1,24 +1,7 @@
 <h1>Figures</h1>
 
-<table class="table table-striped table-bordered table-hover table-condensed contra-table-nonfluid">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Dance Count</th>
-    </tr>
-  </thead>
-
-  <tbody>
-
-    <% @moves.each do |move| %>
-      <tr>
-        <td><%= link_to move, figure_path(JSLibFigure.slugify_move(move)) %></td>
-        <td class="text-right"><%= @move_index[move]&.length || 0 %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-
+<% @moves.each_with_index do |move,i| %>
+  <%= content_tag :h2, {style: "font-size: #{(10 + 3 * Math.sqrt(@move_index[move]&.length || 0)).round}px"} do %>
+    <%= link_to move, figure_path(JSLibFigure.slugify_move(move)) %>
+  <% end %>
+<% end %>
