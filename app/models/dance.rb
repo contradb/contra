@@ -22,7 +22,7 @@ class Dance < ActiveRecord::Base
     publish || user_id == user&.id || user&.admin? || false
   end
 
-  def moves
+  def moves # beware of nils in the array for empty moves
     figures.map {|f| JSLibFigure.move f}
   end
 
@@ -56,7 +56,7 @@ class Dance < ActiveRecord::Base
 
   def moves_that_follow_move(move)
     followers = Set.new
-    mvs = moves
+    mvs = moves.compact
     mvs.each_with_index do |m,index|
       previous_move_matches = move == mvs[index-1] # yes, index-1 is occassionaly -1, that's great!
       followers << m if previous_move_matches
@@ -66,7 +66,7 @@ class Dance < ActiveRecord::Base
 
   def moves_that_precede_move(move)
     preceders = Set.new
-    mvs = moves
+    mvs = moves.compact
     mvs.each_with_index do |m,index|
       move_matches = move == m
       preceders << mvs[index-1] if move_matches # index-1 is occassionally -1, that's great!
@@ -80,6 +80,7 @@ class Dance < ActiveRecord::Base
     dances.each do |dance|
       following_moves = dance.moves_that_follow_move(move)
       following_moves.each do |following_move|
+        raise 'null move' unless following_move
         r[following_move] ||= Set.new
         r[following_move] << dance
       end
@@ -93,6 +94,7 @@ class Dance < ActiveRecord::Base
     dances.each do |dance|
       preceding_moves = dance.moves_that_precede_move(move)
       preceding_moves.each do |following_move|
+        raise 'null move' unless following_move
         r[following_move] ||= Set.new
         r[following_move] << dance
       end
