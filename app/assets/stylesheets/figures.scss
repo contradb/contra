@@ -12,11 +12,12 @@
 .figures-index-content {
   max-width: 30em;
   text-align: justify;
+   white-space: prewrap;
 }
 
 .figures-index-content h2 {
    display: inline;
-   white-space: prewrap;
+   white-space: nowrap;
 }
 
 .figures-index-content h2:nth-child(even) {
