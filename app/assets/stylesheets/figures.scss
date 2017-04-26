@@ -16,14 +16,17 @@
 
 .figures-index-content h2 {
    display: inline;
-   white-space: nowrap;
+   white-space: prewrap;
 }
+
 .figures-index-content h2:nth-child(even) {
   font-family: 'PT Serif', serif;
 }
+
 .figures-index-content h2:nth-child(3n+1) {
   a {color: #0A7;}
 }
+
 .figures-index-content h2:nth-child(3n) {
   a {color: #21D;}
 }
