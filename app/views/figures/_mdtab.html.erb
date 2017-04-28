@@ -1,0 +1,8 @@
+<% mdtab.each do |move,dances| %>
+  <h3><%= move %></h3>
+  <ul>
+    <% dances.to_a.sort_by(&:title).each do |dance| %>
+      <li><%= link_to dance.title, dance %></li>
+    <% end %>
+  </ul>
+<% end %>
