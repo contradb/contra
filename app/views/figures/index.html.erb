@@ -1,7 +1,7 @@
 <h1>Figures</h1>
 
 <% @moves.each_with_index do |move,i| %>
-  <%= content_tag :h2, {style: "font-size: #{(10 + 3 * Math.sqrt(@move_index[move]&.length || 0)).round}px"} do %>
+  <%= content_tag :h2, {style: "font-size: #{(10 + 3 * Math.sqrt(@mdtab[move]&.length || 0)).round}px"} do %>
     <%= link_to move, figure_path(JSLibFigure.slugify_move(move)) %>
   <% end %>
 <% end %>

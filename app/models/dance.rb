@@ -41,19 +41,6 @@ class Dance < ActiveRecord::Base
   def figure7 () JSON.generate (figures[6]||{}); end
   def figure8 () JSON.generate (figures[7]||{}); end
 
-  # Returns a hash. Keys are moves (strings). Values are dances containing that figure.
-  def self.move_index(dances)
-    moves_dances = {}
-    dances.each do |dance|
-      dance.figures.each do |figure|
-        move = JSLibFigure.move figure
-        moves_dances[move] ||= Set.new
-        moves_dances[move] << dance
-      end
-    end
-    moves_dances
-  end
-
   def moves_that_follow_move(move)
     followers = Set.new
     mvs = moves.compact
@@ -72,40 +59,5 @@ class Dance < ActiveRecord::Base
       preceders << mvs[index-1] if move_matches # index-1 is occassionally -1, that's great!
     end
     preceders
-  end
-
-  # {move => {dance1, dance2}}
-  def self.moves_and_dances_that_follow_move(dances,move)
-    r = {}
-    dances.each do |dance|
-      following_moves = dance.moves_that_follow_move(move)
-      following_moves.each do |following_move|
-        raise 'null move' unless following_move
-        r[following_move] ||= Set.new
-        r[following_move] << dance
-      end
-    end
-    sort_hash(r)
-  end
-
-  # {move => {dance1, dance2}}
-  def self.moves_and_dances_that_precede_move(dances,move)
-    r = {}
-    dances.each do |dance|
-      preceding_moves = dance.moves_that_precede_move(move)
-      preceding_moves.each do |following_move|
-        raise 'null move' unless following_move
-        r[following_move] ||= Set.new
-        r[following_move] << dance
-      end
-    end
-    sort_hash(r)
-  end
-
-  private 
-  def self.sort_hash(r)
-    s = {}
-    r.keys.sort_by(&:downcase).each {|key| s[key] = r[key]}
-    s
   end
 end

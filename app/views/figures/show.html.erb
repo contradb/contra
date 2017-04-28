@@ -7,41 +7,54 @@
   <% if @dances.blank? %>
     <p>This figure does not appear in any dances yet.</p>
   <% else %>
-    <div class="row">
-      <div class="col-md-12">
-        <h2>Appears in</h2>
-        <% @dances.each_with_index do |dance,i| %>
-          <%= link_to dance.title, dance %><%= ',' if i<@dances.length-1 %>
-        <% end %>
+
+    <ul class="nav nav-pills">
+      <li class="active"><a data-toggle="tab" href="#dances">Dances</a></li>
+      <li><a data-toggle="tab" href="#with-figure">With Move</a></li>
+      <li><a data-toggle="tab" href="#beside-figure">Beside Move</a></li>
+    </ul>
+    <div class="tab-content figure-nobullets">
+      <div id="dances" class="tab-pane fade in active">
+        <div class="row">
+          <div class="col-sm-6 col-md-4 col-lg-3">
+            <h2>Appears in</h2>
+            <ul>
+              <% @dances.each_with_index do |dance,i| %>
+                <li><%= link_to dance.title, dance %></li>
+              <% end %>
+            </ul>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-3">
+            <h2>Not in</h2>
+            <ul>
+              <% @dances_absent.each_with_index do |dance,i| %>
+                <li><%= link_to dance.title, dance %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div id="with-figure" class="tab-pane fade">
+        <div class="row">
+          <div class="col-sm-12">
+            <h2>Moves Sharing a Dance</h2>
+            <%= render partial: 'mdtab', object: @coappearing_mdtab %>
+          </div>
+        </div>
+      </div>
+      <div id="beside-figure" class="tab-pane fade">
+        <div class="row">
+          <div class="col-sm-6 col-md-4 col-lg-3">
+            <h2>Moves Before</h2>
+            <%= render partial: 'mdtab', object: @preceeding_mdtab %>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-3">
+            <h2>Moves After</h2>
+            <%= render partial: 'mdtab', object: @following_mdtab %>
+          </div>
+        </div>
       </div>
     </div>
-
-
-    <div class="row">
-      <div class="col-md-6">
-        <h2>Moves Before</h2>
-        <% @preceded_by.each do |move,dances| %>
-          <p>
-            <h3><%= move %></h3>
-            <% dances.to_a.sort_by(&:title).each_with_index do |dance,i| %>
-              <%= link_to dance.title, dance %><%= ',' if i<dances.length-1 %>
-            <% end %>
-          </p>
-      <% end %>
-      </div>
-      <div class="col-md-6">
-        <h2>Moves After</h2>
-        <% @followed_by.each do |move,dances| %>
-          <h3><%= move %></h3>
-          <ul>
-            <% dances.to_a.sort_by(&:title).each do |dance| %>
-              <li><%= link_to dance.title, dance %></li>
-            <% end %>
-          </ul>
-        <% end %>
-      </div>
-    </div>
-
   <% end %>
 </div>
 

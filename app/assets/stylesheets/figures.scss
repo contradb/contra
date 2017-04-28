@@ -31,3 +31,8 @@
 .figures-index-content h2:nth-child(3n) {
   a {color: #21D;}
 }
+
+.figure-nobullets ul {
+  list-style: none;
+  padding-left: 0px;
+}
