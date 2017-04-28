@@ -10,15 +10,15 @@
 
         <div class="btn-toolbar">
           <div class="btn-group" role="group">
+            <%= link_to 'About', about_path, GloboHelper::BUTTON_HTML_ATTR %>
+          </div>
+          <div class="btn-group" role="group">
             <% if signed_in? then %>
             <%= link_to 'Profile', current_user, GloboHelper::BUTTON_HTML_ATTR %>
             <% else %>
             <%= link_to 'Sign Up', new_user_registration_path, GloboHelper::BUTTON_HTML_ATTR %>
             <%= link_to 'Login', new_user_session_path, GloboHelper::BUTTON_HTML_ATTR %>
             <% end %>
-          </div>
-          <div class="btn-group" role="group">
-            <%= link_to 'About', about_path, GloboHelper::BUTTON_HTML_ATTR %>
           </div>
         </div>
 
@@ -27,8 +27,7 @@
           <div class="btn-group" role="group">
             <%= link_to 'Dances', dances_path, GloboHelper::BUTTON_HTML_ATTR %>
             <%= link_to 'Programs', programs_path, GloboHelper::BUTTON_HTML_ATTR %>
-            <%= link_to 'Choreographers', choreographers_path, GloboHelper::BUTTON_HTML_ATTR %>
-            <%= link_to 'Users', users_path, GloboHelper::BUTTON_HTML_ATTR %>
+            <%= link_to 'Figures', figures_path, GloboHelper::BUTTON_HTML_ATTR %>
           </div>
         </div>
 
