@@ -5,15 +5,15 @@ RSpec.describe JSLibFigure do
   it 'an empty figure has 8 beats' do
     expect(JSLibFigure.beats(JSLibFigure.new)).to eql(8)
   end
-  describe 'de_aliased_move' do
+  describe 'de_alias_move' do
     it 'see saw => do si do' do
-      expect(JSLibFigure.de_aliased_move({'move' => 'see saw'})).to eql('do si do')
+      expect(JSLibFigure.de_alias_move('see saw')).to eql('do si do')
     end
     it 'allemande => allemande' do
-      expect(JSLibFigure.de_aliased_move({'move' => 'allemande'})).to eql('allemande')
+      expect(JSLibFigure.de_alias_move('allemande')).to eql('allemande')
     end
     it 'swat the flea => box the gnat' do
-      expect(JSLibFigure.de_aliased_move({'move' => 'swat the flea'})).to eql('box the gnat')
+      expect(JSLibFigure.de_alias_move('swat the flea')).to eql('box the gnat')
     end
   end
 

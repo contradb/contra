@@ -9,12 +9,23 @@
   <% else %>
 
     <ul class="nav nav-pills">
-      <li class="active"><a data-toggle="tab" href="#dances">Dances</a></li>
+      <li class="active"><a data-toggle="tab" href="#overview">Figures</a></li>
+      <li><a data-toggle="tab" href="#dances">Dances</a></li>
       <li><a data-toggle="tab" href="#with-figure">With Move</a></li>
       <li><a data-toggle="tab" href="#beside-figure">Beside Move</a></li>
     </ul>
     <div class="tab-content figure-nobullets">
-      <div id="dances" class="tab-pane fade in active">
+      <div id="overview" class="tab-pane fade in active">
+        <div class="row">
+          <div class="col-xs-12">
+            <h2>Overview</h2>
+            <% if @move != JSLibFigure.de_alias_move(@move) %>
+            Alias for <%= link_to(JSLibFigure.de_alias_move(@move),figure_path(JSLibFigure.de_alias_move(@move))) %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div id="dances" class="tab-pane fade">
         <div class="row">
           <div class="col-sm-6 col-md-4 col-lg-3">
             <h2>Appears in</h2>

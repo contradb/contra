@@ -22,9 +22,8 @@ module JSLibFigure
     self.eval('moves()')
   end
 
-  def self.de_aliased_move(figure_ruby_hash)
-    move_string = self.move figure_ruby_hash
-    self.eval("deAliasMove(#{move_string.inspect})")
+  def self.de_alias_move(str)
+    self.eval("deAliasMove(#{str.inspect})")
   end
 
   def self.teaching_name(figure_ruby_hash)
