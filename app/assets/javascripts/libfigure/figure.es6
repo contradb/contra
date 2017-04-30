@@ -100,6 +100,31 @@ function defineTeachingName(alias_move) {
 
 var teachingNames = {};
 
+// === Related Moves =============
+// These are reigster relationships between moves that aren't aliases.
+// Specifically linking: 
+// gyre meltdown to swing and gyre,
+// pull by for 2 to pull by for 4
+// 'star promenade' and 'butterfly whirl' to 'star promenade with a butterfly whirl'
+// Note that a lot of these are 'is composed of' relationships, and as such they
+// might be moved to another representation later.
+
+var _relatedMoves = {};
+
+function defineRelatedMove1Way(from, to) {
+  _relatedMoves[from] = _relatedMoves[from] || [];
+  _relatedMoves[from].push(to);
+}
+
+function defineRelatedMove2Way(from, to) {
+  defineRelatedMove1Way(from, to);
+  defineRelatedMove1Way(to, from);
+}
+
+function relatedMoves(move) {
+  return _relatedMoves[move] || [];
+}
+
 //      _       __ _            _____ _                      
 //   __| | ___ / _(_)_ __   ___|  ___(_) __ _ _   _ _ __ ___ 
 //  / _` |/ _ \ |_| | '_ \ / _ \ |_  | |/ _` | | | | '__/ _ \
@@ -135,6 +160,19 @@ function defineFigureAlias (newName, targetName, parameter_defaults) {
 
 function deAliasMove(move) {
     return defined_events[move].name;
+}
+
+// does not include itself
+function aliases(move) {
+  // loop through defined_events, returning all keys where value.name == move
+  var acc = []
+  Object.keys(defined_events).forEach(function(key) {
+    var value = defined_events[key];
+    if (value.name == move && key != move) {
+      acc.push(key)
+    }
+  })
+  return acc;
 }
 
 
@@ -334,6 +372,8 @@ function up_or_down_the_hall_view(move, pvs) {
 defineFigure( "down the hall", [param_facing_forward, param_down_the_hall_ender_turn_couples, param_beats_8], {view: up_or_down_the_hall_view})
 defineFigure( "up the hall",   [param_facing_forward, param_down_the_hall_ender_circle,       param_beats_8], {view: up_or_down_the_hall_view})
 
+defineRelatedMove2Way('down the hall', 'up the hall');
+
 ////////////////////////////////////////////////
 // GIVE AND TAKE                              //
 ////////////////////////////////////////////////
@@ -395,6 +435,8 @@ function hey_rename(figure,index) {
 defineFigure( "hey",      [param_subject_pair_ladles, param_set_direction_across, param_beats_16], {view: hey_view_maker(16), change: hey_rename})
 defineFigure( "half hey", [param_subject_pair_ladles, param_set_direction_across, param_beats_8],  {view: hey_view_maker(8), change: hey_rename})
 
+defineRelatedMove2Way('hey', 'half hey');
+
 ////////////////////////////////////////////////
 // LONG LINES forward and back                //
 ////////////////////////////////////////////////
@@ -406,6 +448,8 @@ defineFigure( "long lines",               [param_beats_8])
 ////////////////////////////////////////////////
 
 defineFigure( "long lines forward only",  [param_beats_4])
+
+defineRelatedMove2Way('long lines', 'long lines forward only');
 
 ////////////////////////////////////////////////
 // MAD ROBIN                                  //
@@ -515,6 +559,8 @@ function pull_by_for_4_view(move,pvs) {
 
 defineFigure( "pull by for 4", [param_balance_false, param_set_direction_along, param_right_hand_spin, param_beats_2], {view: pull_by_for_4_view})
 
+defineRelatedMove2Way('pull by for 4', 'pull by for 2');
+
 ////////////////////////////////////////////////
 // RIGHT LEFT THROUGH                         //
 ////////////////////////////////////////////////
@@ -532,6 +578,8 @@ defineFigure( "right left through", [param_set_direction_across, param_beats_8],
 ////////////////////////////////////////////////
 
 defineFigure( "roll away", [param_subject_role_gentlespoons, param_object_hetero_partners, param_half_sashay_false, param_beats_4]);
+
+defineRelatedMove2Way('roll away', 'long lines forward only');
 
 ////////////////////////////////////////////////
 // RORY O'MOORE                               //

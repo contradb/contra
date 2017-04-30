@@ -19,20 +19,25 @@
         <div class="row">
           <div class="col-xs-12">
             <h2>Usage</h2>
+            <h3>jargon</h3>
             <p>
-              related figures: _<br>
-              superfigure of: _</br>
+              <% if JSLibFigure.related_moves(@move).present? %>
+                related figures: <%= move_list_to_links(JSLibFigure.related_moves(@move)) %><br>
+              <% end %>
+              <% if JSLibFigure.aliases(@move).present? %>
+                superfigure of: <%= move_list_to_links(JSLibFigure.aliases(@move)) %></br>
+              <% end %>
               <% if @move != JSLibFigure.de_alias_move(@move) %>
-                subfigure of <%= link_to(JSLibFigure.de_alias_move(@move),figure_path(JSLibFigure.de_alias_move(@move))) %><br>
+                subfigure of <%= link_to(JSLibFigure.de_alias_move(@move),sluggified_figure_path(JSLibFigure.de_alias_move(@move))) %><br>
               <% end %>
               <% if JSLibFigure.de_alias_move(@move) != JSLibFigure.teaching_name(@move) %>
-                taught as <%= link_to(JSLibFigure.teaching_name(@move),figure_path(JSLibFigure.teaching_name(@move))) %> in programs<br>
+                taught as <%= link_to(JSLibFigure.teaching_name(@move),sluggified_figure_path(JSLibFigure.teaching_name(@move))) %> in programs<br>
               <% end %>
               formal parameters: 
               <%= JSLibFigure.formal_parameters(@move).map {|param| param['name'] }.join(', ') %>
             </p>
 
-            <h3>Examples</h3>
+            <h3>examples</h3>
             <table class="table table-bordered table-condensed contra-table-nonfluid">
               <thead>
                 <tr>

@@ -26,6 +26,14 @@ module JSLibFigure
     self.eval("deAliasMove(#{move_str.inspect})")
   end
 
+  def self.aliases(move_str)
+    self.eval("aliases(#{move_str.inspect})")
+  end
+
+  def self.related_moves(move_str)
+    self.eval("relatedMoves(#{move_str.inspect})")
+  end
+
   def self.teaching_name(move_string)
     move_string ? self.eval("teachingName(#{move_string.inspect})") : "empty figure"
   end
