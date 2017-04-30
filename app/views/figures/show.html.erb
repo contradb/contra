@@ -66,7 +66,9 @@
     </div>
     <div id="without" class="tab-pane fade">
       <h2>Dances without <%= @move_titleize %></h2>
-      <% if @dances.blank? %>
+      <% if @dances_absent.blank? %>
+        <p>This list is empty because this figure is in every dance.</p>
+      <% elsif @dances.blank? %>
         <p>This is all the dances because this figure isn't in any dances.</p>
       <% end %>
       <ul>
@@ -85,11 +87,11 @@
     </div>
     <div id="beside-figure" class="tab-pane fade">
       <div class="row">
-        <div class="col-sm-6 col-md-4 col-lg-3">
+        <div class="col-sm-6 col-md-4 col-lg-3" id="moves-preceding">
           <h2>Moves Preceding <%= @move_titleize %></h2>
           <%= render partial: 'mdtab', object: @preceeding_mdtab %>
         </div>
-        <div class="col-sm-6 col-md-4 col-lg-3">
+        <div class="col-sm-6 col-md-4 col-lg-3" id="moves-following">
           <h2>Moves Following <%= @move_titleize %></h2>
           <%= render partial: 'mdtab', object: @following_mdtab %>
         </div>

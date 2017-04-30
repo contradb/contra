@@ -231,6 +231,8 @@ function allemande_orbit_view(move,pvs) {
 
 defineFigure( "allemande orbit", [param_subject_pair, param_left_hand_spin, param_once_and_a_half, param_half_around, param_beats_8], {view: allemande_orbit_view, labels: ["","allemande","inner","outer", "for"]})
 
+defineRelatedMove2Way('allemande orbit', 'allemande');
+
 ////////////////////////////////////////////////
 // ALLEMANDE                                  //
 ////////////////////////////////////////////////
@@ -243,16 +245,19 @@ defineFigure( "allemande", [param_subject_pairz, param_xhand_spin, param_once_ar
 
 defineFigure( "balance", [param_subject_pairz, param_beats_4])
 
+// TODO: auto-generate related moves that have a balance checkbox
+
 ////////////////////////////////////////////////
 // BALANCE THE RING (see also: petronella)    //
 ////////////////////////////////////////////////
 
 defineFigure( "balance the ring", [param_beats_4])
 
+defineRelatedMove2Way('balance the ring', 'balance');
+
 ////////////////////////////////////////////////
 // BOX THE GNAT                               //
 ////////////////////////////////////////////////
-
 
 function box_the_gnat_change(figure,index) {
     var pvs = figure.parameter_values
@@ -650,7 +655,11 @@ defineFigure( "star", [param_xhand_spin, param_four_places, param_star_grip, par
 
 defineFigure( "star promenade", [param_xhand_spin, param_half_around, param_beats_4]);
 
-////////////////////////////////////////////////
+defineRelatedMove2Way('star promenade', 'allemande');
+defineRelatedMove2Way('star promenade', 'promenade');
+defineRelatedMove2Way('star promenade', 'butterfly whirl');
+
+///////////////////////////////////////////////
 // SWING                                      //
 ////////////////////////////////////////////////
 
