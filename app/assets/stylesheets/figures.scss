@@ -1,0 +1,39 @@
+// Place all the styles related to the Figures controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.figures-index-content,
+.figures-show-content {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+@media only screen and (min-width : 480px) {
+  .figures-index-content {
+    margin-left: 45px;
+    margin-right: 45px;
+  }
+}
+
+.figures-index-content {
+  max-width: 30em;
+  text-align: justify;
+  a {
+    margin-right: 10px;
+  }
+}
+
+.figures-index-content h2 {
+   display: inline;
+   white-space: nowrap;
+}
+
+.figure-nobullets ul {
+  list-style: none;
+  padding-left: 0px;
+}
+
+.figure-table-striping {
+  background-color: #f9f9f9;    /* try to match bootstrap */
+}

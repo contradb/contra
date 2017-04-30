@@ -82,4 +82,12 @@ module GloboHelper
     span = content_tag(:span, save_icon_html() + ' ' + label)
     button_tag span, opts
   end
+
+  def sluggified_figure_path(move_name_containing_spaces_and_whatnot)
+    figure_path(JSLibFigure.slugify_move(move_name_containing_spaces_and_whatnot))
+  end
+
+  def move_list_to_links(moves_which_had_better_already_be_html_safe)
+    moves_which_had_better_already_be_html_safe.map {|move| link_to(move, sluggified_figure_path(move))}.join(', ').html_safe
+  end
 end

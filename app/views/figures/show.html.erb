@@ -1,0 +1,101 @@
+
+
+<div class="container">
+  <%= link_to(content_tag(:span, '', class: "glyphicon glyphicon-arrow-left", 'aria-label'=> 'previous'), sluggified_figure_path(@prev_figure)) %> &nbsp;
+  <%= link_to(content_tag(:span, '', class: "glyphicon glyphicon-arrow-up", 'aria-label'=> 'next'), figures_path) %> &nbsp;
+  <%= link_to(content_tag(:span, '', class: "glyphicon glyphicon-arrow-right", 'aria-label'=> 'next'), sluggified_figure_path(@next_figure)) %>
+
+  <h1><%= @move_titleize %></h1>
+
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#usage">Usage</a></li>
+    <li><a data-toggle="tab" href="#without">Without</a></li>
+    <li><a data-toggle="tab" href="#with-figure">With Move</a></li>
+    <li><a data-toggle="tab" href="#beside-figure">Beside Move</a></li>
+  </ul>
+  <div class="tab-content figure-nobullets">
+    <div id="usage" class="tab-pane fade in active">
+      <div class="row">
+        <div class="col-xs-12">
+          <h2>Usage</h2>
+          <h3>jargon</h3>
+          <p>
+            <% if JSLibFigure.related_moves(@move).present? %>
+              related figures: <%= move_list_to_links(JSLibFigure.related_moves(@move)) %><br>
+            <% end %>
+            <% if JSLibFigure.aliases(@move).present? %>
+              superfigure of: <%= move_list_to_links(JSLibFigure.aliases(@move)) %></br>
+            <% end %>
+            <% if @move != JSLibFigure.de_alias_move(@move) %>
+              subfigure of <%= link_to(JSLibFigure.de_alias_move(@move),sluggified_figure_path(JSLibFigure.de_alias_move(@move))) %><br>
+            <% end %>
+            <% if JSLibFigure.de_alias_move(@move) != JSLibFigure.teaching_name(@move) %>
+              taught as <%= link_to(JSLibFigure.teaching_name(@move),sluggified_figure_path(JSLibFigure.teaching_name(@move))) %> in programs<br>
+            <% end %>
+            formal parameters: 
+            <%= JSLibFigure.formal_parameters(@move).map {|param| param['name'] }.join(', ') %>
+          </p>
+
+          <h3>examples</h3>
+
+          <% if @dances.blank? %>
+            <p>There are no examples because this figure is not in any dances.</p>
+          <% else %>
+            <table class="table table-bordered table-condensed contra-table-nonfluid">
+              <thead>
+                <tr>
+                  <th>Dance</th>
+                  <th>Figure</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @dances.each_with_index do |dance, dance_index| %>
+                  <% figures = dance.figures.select {|figure| JSLibFigure.move(figure) == @move} %>
+                  <% figures.each_with_index do |figure,figure_index| %>
+                    <%= content_tag :tr, dance_index.odd? && {class: 'figure-table-striping'} do %><!-- can't simply use bootstrap table-striped because of weird rowspans -->
+                      <%= content_tag(:td, (figures.length > 1) && {rowspan: figures.length}) do link_to(dance.title, dance) end if 0==figure_index %>
+                      <td><%= truncate(JSLibFigure.html(figure), length: 70, separator: ' ') %></td>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              </tbody>
+            </table>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div id="without" class="tab-pane fade">
+      <h2>Dances without <%= @move_titleize %></h2>
+      <% if @dances_absent.blank? %>
+        <p>This list is empty because this figure is in every dance.</p>
+      <% elsif @dances.blank? %>
+        <p>This is all the dances because this figure isn't in any dances.</p>
+      <% end %>
+      <ul>
+        <% @dances_absent.each_with_index do |dance,i| %>
+        <li><%= link_to dance.title, dance %></li>
+        <% end %>
+      </ul>
+    </div>
+    <div id="with-figure" class="tab-pane fade">
+      <div class="row">
+        <div class="col-sm-12">
+          <h2>Moves Sharing a Dance with <%= @move_titleize %></h2>
+          <%= render partial: 'mdtab', object: @coappearing_mdtab %>
+        </div>
+      </div>
+    </div>
+    <div id="beside-figure" class="tab-pane fade">
+      <div class="row">
+        <div class="col-sm-6 col-md-4 col-lg-3" id="moves-preceding">
+          <h2>Moves Preceding <%= @move_titleize %></h2>
+          <%= render partial: 'mdtab', object: @preceeding_mdtab %>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-3" id="moves-following">
+          <h2>Moves Following <%= @move_titleize %></h2>
+          <%= render partial: 'mdtab', object: @following_mdtab %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

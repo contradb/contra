@@ -18,14 +18,28 @@ module JSLibFigure
     figure_ruby_hash['move']
   end
 
-  def self.de_aliased_move(figure_ruby_hash)
-    move_string = self.move figure_ruby_hash
-    self.eval("deAliasMove(#{move_string.inspect})")
+  def self.moves
+    self.eval('moves()')
   end
 
-  def self.teaching_name(figure_ruby_hash)
-    move_string = self.move figure_ruby_hash
+  def self.de_alias_move(move_str)
+    self.eval("deAliasMove(#{move_str.inspect})")
+  end
+
+  def self.aliases(move_str)
+    self.eval("aliases(#{move_str.inspect})")
+  end
+
+  def self.related_moves(move_str)
+    self.eval("relatedMoves(#{move_str.inspect})")
+  end
+
+  def self.teaching_name(move_string)
     move_string ? self.eval("teachingName(#{move_string.inspect})") : "empty figure"
+  end
+
+  def self.formal_parameters(move_string)
+    self.eval("parameters(#{move_string.inspect})")
   end
 
   def self.sanitize_json(figures_json_string)
@@ -49,6 +63,19 @@ module JSLibFigure
     else
       raise 'client submitted figures_json was not an array'
     end
+  end
+
+  def self.slugify_move(move)
+    move.gsub('&','and').gsub(' ','-').downcase.gsub(/[^a-z0-9-]/,'')
+  end
+
+  def self.deslugify_move(slug)
+    # sorry for the regexp
+    # split..join takes the string apart, and allows punctuation between any character, and puts it back together
+    # split(_,-1) tacks a null string on the end of the split
+    # unshift '' tacks a null string on the beginning of the split
+    regexp = /\A#{slug.gsub('-and-', ' & ').gsub('-',' ').split('',-1).tap {|s| s.unshift ''}.join("[^a-z0-9]*")}\z/i
+    moves.find {|move| regexp =~ move}
   end
 
   private
