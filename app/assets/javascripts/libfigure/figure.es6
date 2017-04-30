@@ -371,6 +371,12 @@ function gyre_view(move, pvs) {
 defineFigure( "gyre", [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8], {view: gyre_view})
 
 ////////////////////////////////////////////////
+// GYRE MELTDOWN                              //
+////////////////////////////////////////////////
+
+defineFigure( "gyre meltdown", [param_subject_pairz, param_beats_16])
+
+////////////////////////////////////////////////
 // HEY                                        //
 ////////////////////////////////////////////////
 
