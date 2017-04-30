@@ -8,20 +8,22 @@
     <p>This figure does not appear in any dances yet.</p>
   <% else %>
 
-    <ul class="nav nav-pills">
-      <li class="active"><a data-toggle="tab" href="#overview">Figures</a></li>
-      <li><a data-toggle="tab" href="#dances">Dances</a></li>
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#usage">Usage</a></li>
+      <li><a data-toggle="tab" href="#without">Without</a></li>
       <li><a data-toggle="tab" href="#with-figure">With Move</a></li>
       <li><a data-toggle="tab" href="#beside-figure">Beside Move</a></li>
     </ul>
     <div class="tab-content figure-nobullets">
-      <div id="overview" class="tab-pane fade in active">
+      <div id="usage" class="tab-pane fade in active">
         <div class="row">
           <div class="col-xs-12">
-            <h2>Overview</h2>
+            <h2>Usage</h2>
             <p>
+              related figures: _<br>
+              superfigure of: _</br>
               <% if @move != JSLibFigure.de_alias_move(@move) %>
-                alias for <%= link_to(JSLibFigure.de_alias_move(@move),figure_path(JSLibFigure.de_alias_move(@move))) %><br>
+                subfigure of <%= link_to(JSLibFigure.de_alias_move(@move),figure_path(JSLibFigure.de_alias_move(@move))) %><br>
               <% end %>
               <% if JSLibFigure.de_alias_move(@move) != JSLibFigure.teaching_name(@move) %>
                 taught as <%= link_to(JSLibFigure.teaching_name(@move),figure_path(JSLibFigure.teaching_name(@move))) %> in programs<br>
@@ -30,6 +32,7 @@
               <%= JSLibFigure.formal_parameters(@move).map {|param| param['name'] }.join(', ') %>
             </p>
 
+            <h3>Examples</h3>
             <table class="table table-bordered table-condensed contra-table-nonfluid">
               <thead>
                 <tr>
@@ -38,13 +41,13 @@
                 </tr>
               </thead>
               <tbody>
-                <% @dances.each do |dance| %>
+                <% @dances.each_with_index do |dance, dance_index| %>
                   <% figures = dance.figures.select {|figure| JSLibFigure.move(figure) == @move} %>
-                  <% figures.each_with_index do |figure,index| %>
-                    <tr>
-                      <%= content_tag(:td, (figures.length > 1) && {rowspan: figures.length}) do link_to(dance.title, dance) end if 0==index %>
-                      <td><%= JSLibFigure.html figure %></td>
-                    </tr>
+                  <% figures.each_with_index do |figure,figure_index| %>
+                    <%= content_tag :tr, dance_index.odd? && {class: 'figure-table-striping'} do %><!-- can't simply use bootstrap table-striped because of weird rowspans -->
+                      <%= content_tag(:td, (figures.length > 1) && {rowspan: figures.length}) do link_to(dance.title, dance) end if 0==figure_index %>
+                      <td><%= truncate(JSLibFigure.html(figure), length: 70, separator: ' ') %></td>
+                    <% end %>
                   <% end %>
                 <% end %>
               </tbody>
@@ -52,30 +55,18 @@
           </div>
         </div>
       </div>
-      <div id="dances" class="tab-pane fade">
-        <div class="row">
-          <div class="col-sm-6 col-md-4 col-lg-3">
-            <h2>Appears in</h2>
-            <ul>
-              <% @dances.each_with_index do |dance,i| %>
-                <li><%= link_to dance.title, dance %></li>
-              <% end %>
-            </ul>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3">
-            <h2>Not in</h2>
-            <ul>
-              <% @dances_absent.each_with_index do |dance,i| %>
-                <li><%= link_to dance.title, dance %></li>
-              <% end %>
-            </ul>
-          </div>
-        </div>
+      <div id="without" class="tab-pane fade">
+        <h2>Dances without <%= @move_titleize %></h2>
+        <ul>
+          <% @dances_absent.each_with_index do |dance,i| %>
+          <li><%= link_to dance.title, dance %></li>
+          <% end %>
+        </ul>
       </div>
       <div id="with-figure" class="tab-pane fade">
         <div class="row">
           <div class="col-sm-12">
-            <h2>Moves Sharing a Dance</h2>
+            <h2>Moves Sharing a Dance with <%= @move_titleize %></h2>
             <%= render partial: 'mdtab', object: @coappearing_mdtab %>
           </div>
         </div>
@@ -83,11 +74,11 @@
       <div id="beside-figure" class="tab-pane fade">
         <div class="row">
           <div class="col-sm-6 col-md-4 col-lg-3">
-            <h2>Moves Before</h2>
+            <h2>Moves Preceding <%= @move_titleize %></h2>
             <%= render partial: 'mdtab', object: @preceeding_mdtab %>
           </div>
           <div class="col-sm-6 col-md-4 col-lg-3">
-            <h2>Moves After</h2>
+            <h2>Moves Following <%= @move_titleize %></h2>
             <%= render partial: 'mdtab', object: @following_mdtab %>
           </div>
         </div>
