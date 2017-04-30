@@ -37,30 +37,38 @@
           </p>
 
           <h3>examples</h3>
-          <table class="table table-bordered table-condensed contra-table-nonfluid">
-            <thead>
-              <tr>
-                <th>Dance</th>
-                <th>Figure</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @dances.each_with_index do |dance, dance_index| %>
-                <% figures = dance.figures.select {|figure| JSLibFigure.move(figure) == @move} %>
-                <% figures.each_with_index do |figure,figure_index| %>
-                  <%= content_tag :tr, dance_index.odd? && {class: 'figure-table-striping'} do %><!-- can't simply use bootstrap table-striped because of weird rowspans -->
-                    <%= content_tag(:td, (figures.length > 1) && {rowspan: figures.length}) do link_to(dance.title, dance) end if 0==figure_index %>
-                    <td><%= truncate(JSLibFigure.html(figure), length: 70, separator: ' ') %></td>
+
+          <% if @dances.blank? %>
+            <p>There are no examples because this figure is not in any dances.</p>
+          <% else %>
+            <table class="table table-bordered table-condensed contra-table-nonfluid">
+              <thead>
+                <tr>
+                  <th>Dance</th>
+                  <th>Figure</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @dances.each_with_index do |dance, dance_index| %>
+                  <% figures = dance.figures.select {|figure| JSLibFigure.move(figure) == @move} %>
+                  <% figures.each_with_index do |figure,figure_index| %>
+                    <%= content_tag :tr, dance_index.odd? && {class: 'figure-table-striping'} do %><!-- can't simply use bootstrap table-striped because of weird rowspans -->
+                      <%= content_tag(:td, (figures.length > 1) && {rowspan: figures.length}) do link_to(dance.title, dance) end if 0==figure_index %>
+                      <td><%= truncate(JSLibFigure.html(figure), length: 70, separator: ' ') %></td>
+                    <% end %>
                   <% end %>
                 <% end %>
-              <% end %>
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          <% end %>
         </div>
       </div>
     </div>
     <div id="without" class="tab-pane fade">
       <h2>Dances without <%= @move_titleize %></h2>
+      <% if @dances.blank? %>
+        <p>This is all the dances because this figure isn't in any dances.</p>
+      <% end %>
       <ul>
         <% @dances_absent.each_with_index do |dance,i| %>
         <li><%= link_to dance.title, dance %></li>
