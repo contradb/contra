@@ -1,13 +1,15 @@
 
 
 <div class="container">
-  <h1><%= @move_titleize %></h1>
+  <%= link_to(content_tag(:span, '', class: "glyphicon glyphicon-arrow-left", 'aria-label'=> 'previous'), sluggified_figure_path(@prev_figure)) %> &nbsp;
+  <%= link_to(content_tag(:span, '', class: "glyphicon glyphicon-arrow-up", 'aria-label'=> 'next'), figures_path) %> &nbsp;
+  <%= link_to(content_tag(:span, '', class: "glyphicon glyphicon-arrow-right", 'aria-label'=> 'next'), sluggified_figure_path(@next_figure)) %>
 
+  <h1><%= @move_titleize %></h1>
 
   <% if @dances.blank? %>
     <p>This figure does not appear in any dances yet.</p>
   <% else %>
-
     <ul class="nav nav-tabs">
       <li class="active"><a data-toggle="tab" href="#usage">Usage</a></li>
       <li><a data-toggle="tab" href="#without">Without</a></li>
@@ -91,7 +93,3 @@
     </div>
   <% end %>
 </div>
-
-
-
-

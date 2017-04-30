@@ -18,5 +18,9 @@ class FiguresController < ApplicationController
     @coappearing_mdtab = Move.coappearing_mdtab(all_dances,@move)
     @preceeding_mdtab = Move.preceeding_mdtab(all_dances,@move)
     @following_mdtab = Move.following_mdtab(all_dances,@move)
+    moves = JSLibFigure.moves
+    idx = moves.find_index(@move)
+    @prev_figure = idx.zero? ? moves.last : moves[idx-1]
+    @next_figure = @move == moves.last ? moves.first : moves[idx+1]
   end
 end

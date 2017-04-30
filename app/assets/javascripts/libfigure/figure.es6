@@ -416,6 +416,9 @@ defineFigure( "gyre", [param_subject_pairz, param_right_shoulder_spin, param_onc
 
 defineFigure( "gyre meltdown", [param_subject_pairz, param_beats_16])
 
+defineRelatedMove2Way('gyre meltdown', 'gyre');
+defineRelatedMove2Way('gyre meltdown', 'swing');
+
 ////////////////////////////////////////////////
 // HEY                                        //
 ////////////////////////////////////////////////
