@@ -19,9 +19,36 @@
         <div class="row">
           <div class="col-xs-12">
             <h2>Overview</h2>
-            <% if @move != JSLibFigure.de_alias_move(@move) %>
-            Alias for <%= link_to(JSLibFigure.de_alias_move(@move),figure_path(JSLibFigure.de_alias_move(@move))) %>
-            <% end %>
+            <p>
+              <% if @move != JSLibFigure.de_alias_move(@move) %>
+                alias for <%= link_to(JSLibFigure.de_alias_move(@move),figure_path(JSLibFigure.de_alias_move(@move))) %><br>
+              <% end %>
+              <% if JSLibFigure.de_alias_move(@move) != JSLibFigure.teaching_name(@move) %>
+                taught as <%= link_to(JSLibFigure.teaching_name(@move),figure_path(JSLibFigure.teaching_name(@move))) %> in programs<br>
+              <% end %>
+              formal parameters: 
+              <%= JSLibFigure.formal_parameters(@move).map {|param| param['name'] }.join(', ') %>
+            </p>
+
+            <table class="table table-bordered table-condensed contra-table-nonfluid">
+              <thead>
+                <tr>
+                  <th>Dance</th>
+                  <th>Figure</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @dances.each do |dance| %>
+                  <% figures = dance.figures.select {|figure| JSLibFigure.move(figure) == @move} %>
+                  <% figures.each_with_index do |figure,index| %>
+                    <tr>
+                      <%= content_tag(:td, (figures.length > 1) && {rowspan: figures.length}) do link_to(dance.title, dance) end if 0==index %>
+                      <td><%= JSLibFigure.html figure %></td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

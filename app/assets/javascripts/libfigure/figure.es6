@@ -150,6 +150,7 @@ function moves() {
 
 var issued_parameter_warning = false;
 
+// consider renaming to formalParameters
 function parameters(move){
     var fig = defined_events[move];
     if (fig)

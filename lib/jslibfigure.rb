@@ -22,13 +22,16 @@ module JSLibFigure
     self.eval('moves()')
   end
 
-  def self.de_alias_move(str)
-    self.eval("deAliasMove(#{str.inspect})")
+  def self.de_alias_move(move_str)
+    self.eval("deAliasMove(#{move_str.inspect})")
   end
 
-  def self.teaching_name(figure_ruby_hash)
-    move_string = self.move figure_ruby_hash
+  def self.teaching_name(move_string)
     move_string ? self.eval("teachingName(#{move_string.inspect})") : "empty figure"
+  end
+
+  def self.formal_parameters(move_string)
+    self.eval("parameters(#{move_string.inspect})")
   end
 
   def self.sanitize_json(figures_json_string)

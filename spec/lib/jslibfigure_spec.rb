@@ -19,16 +19,16 @@ RSpec.describe JSLibFigure do
 
   describe 'teaching_name' do
     it 'swing => swing' do
-      expect(JSLibFigure.teaching_name({'move' => 'swing'})).to eql('swing')
+      expect(JSLibFigure.teaching_name('swing')).to eql('swing')
     end
     it 'allemande => allemande' do
-      expect(JSLibFigure.teaching_name({'move' => 'allemande'})).to eql('allemande')
+      expect(JSLibFigure.teaching_name('allemande')).to eql('allemande')
     end
     it 'swat the flea => swat the flea' do
-      expect(JSLibFigure.teaching_name({'move' => 'swat the flea'})).to eql('swat the flea')
+      expect(JSLibFigure.teaching_name('swat the flea')).to eql('swat the flea')
     end
     it '[empty figure] => "empty figure"' do
-      expect(JSLibFigure.teaching_name({})).to eql('empty figure')
+      expect(JSLibFigure.teaching_name(nil)).to eql('empty figure')
     end
   end
 
@@ -58,6 +58,14 @@ RSpec.describe JSLibFigure do
         expect(JSLibFigure.deslugify_move(JSLibFigure.slugify_move(move))).to eq(move)
       end
     end
+  end
+
+  it 'formal_parameters works' do
+    params = JSLibFigure.formal_parameters('balance the ring')
+    expect(params.length).to eq 1
+    beats = params.first
+    expect(beats['name']).to eq 'beats'
+    expect(beats['value']).to eq 4
   end
 
   pending 'test the whole libfigure library, ha ha'
