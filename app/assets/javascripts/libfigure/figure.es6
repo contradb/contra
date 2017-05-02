@@ -101,11 +101,6 @@ function defineTeachingName(alias_move) {
 var teachingNames = {};
 
 // === Related Moves =============
-// These are reigster relationships between moves that aren't aliases.
-// Specifically linking: 
-// gyre meltdown to swing and gyre,
-// pull by for 2 to pull by for 4
-// 'star promenade' and 'butterfly whirl' to 'star promenade with a butterfly whirl'
 // Note that a lot of these are 'is composed of' relationships, and as such they
 // might be moved to another representation later.
 
@@ -174,7 +169,6 @@ function aliases(move) {
   })
   return acc;
 }
-
 
 function moves() {
   return Object.keys(defined_events).sort(function(a,b) {
@@ -684,3 +678,11 @@ function swing_view(move,pvs) {
 }
 
 defineFigure( "swing", [param_subject_pairz_partners, param_balance_false, param_beats_8], {change: swing_change, view: swing_view})
+
+////
+// autorelate moves with param_balance to the balance move
+moves().forEach(function (move) {
+  parameters(move).forEach(function(param) {
+    if (param.name === param_balance_true.name) {
+      defineRelatedMove2Way(move, 'balance');
+    }})});
