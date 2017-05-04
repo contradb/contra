@@ -103,6 +103,17 @@
                     <option value="same_roles">same roles</option>
                   </select>
                 </div>
+                <div ng-if="p.ui == chooser_pairs_or_everyone">
+                  <select ng-model="figure.parameter_values[$index]"
+                          ng-change="user_changed_parameter(figure,$index)"
+                          class='form-control'>
+                    <option value="everyone">everyone</option>
+                    <option value="partners">partners</option>
+                    <option value="neighbors">neighbors</option>
+                    <option value="shadows">shadows</option>
+                    <option value="same_roles">same roles</option>
+                  </select>
+                </div>
                 <div ng-if="p.ui == chooser_dancer">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="user_changed_parameter(figure,$index)"

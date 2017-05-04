@@ -27,6 +27,7 @@ RSpec.describe DancesHelper, type: :helper do
    ['gentlespoons allemande right 1½', 'allemande', 'gentlespoons', true, 540, 8],
    ['gentlespoons allemande right twice for 10', 'allemande', 'gentlespoons', true, 720, 10],
    ['ladles allemande left 1½ around while the gentlespoons orbit clockwise ½ around', 'allemande orbit','ladles',false,540,180,8],
+   ['balance', 'balance', 'everyone', 4],
    ['ones balance', 'balance', 'ones', 4],
    ['ones balance for 8', 'balance', 'ones', 8],
    ['balance the ring for 6', 'balance the ring', 6],

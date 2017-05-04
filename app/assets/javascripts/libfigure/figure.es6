@@ -237,9 +237,15 @@ defineFigure( "allemande", [param_subject_pairz, param_xhand_spin, param_once_ar
 // BALANCE                                    //
 ////////////////////////////////////////////////
 
-defineFigure( "balance", [param_subject_pairz, param_beats_4])
+function balance_view(move,pvs) {
+  var [who,beats] = pvs
+  var [swho,sbeats] = parameter_strings(move, pvs)
+  return words(('everyone' == who) ? '' : swho, move, sbeats);
+}
 
-// TODO: auto-generate related moves that have a balance checkbox
+defineFigure( "balance", [param_subject_pairs_or_everyone, param_beats_4], {view: balance_view})
+
+// Note: at time of writing, auto-generation of related moves happens to any move with a balance - see the end of this file
 
 ////////////////////////////////////////////////
 // BALANCE THE RING (see also: petronella)    //

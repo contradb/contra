@@ -84,6 +84,7 @@ param_subject_pair_gentlespoons  = {name: "who", value: "gentlespoons", ui: choo
 param_subject_pairz              = {name: "who",                        ui: chooser_pairz} // 1-2 pairs of dancers
 param_subject_pairz_partners     = {name: "who", value: "partners",     ui: chooser_pairz}
 param_subject_pairs              = {name: "who",                        ui: chooser_pairs} // 2 pairs of dancers
+param_subject_pairs_or_everyone  = {name: "who",                        ui: chooser_pairs_or_everyone}
 param_subject_pairs_partners     = {name: "who", value: "partners",     ui: chooser_pairs}
 param_subject_dancer             = {name: "who",                        ui: chooser_dancer}
 param_subject_role               = {name: "who",                        ui: chooser_role}
