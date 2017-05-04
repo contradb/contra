@@ -84,7 +84,7 @@ RSpec.describe DancesHelper, type: :helper do
    ['star right 4 places', 'star', true, 360, '', 8],
    ['star left 5 places, wrist grip, for 10', 'star', false, 450, 'wrist grip', 10],
    ['partners balance & swat the flea', 'swat the flea', 'partners',  true,  false, 8],
-   ['ocean wave', 'ocean wave', 4],
+   ['to ocean wave', 'to ocean wave', 4],
    ['gentlespoons roll away neighbors with a half sashay', 'roll away', 'gentlespoons', 'neighbors', true, 4],
    ['ladles roll away partners for 2', 'roll away', 'ladles', 'partners', false, 2],
    ["balance & Rory O'Moore right", "Rory O'Moore", 'everyone', true, false, 8],
