@@ -81,6 +81,12 @@
   font-size: 1.3em;
   text-decoration: none;
   color: black;
+
+  /* indent all but first line */
+  display: block;
+  text-indent: -1em;
+  padding-left: 1em;
+
   &:hover {
     text-decoration: none;
     color: #00A; /* dark blue */
@@ -90,7 +96,6 @@
     color: black;
   }
 }
-
  
 .figure-edit-label {
   height: 34px;                 /* manually sync to equal .form-control :( */

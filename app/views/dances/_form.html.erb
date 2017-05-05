@@ -85,10 +85,6 @@
             {{labelForBeats(sumBeats(figures.arr,figureIdx))}}&nbsp;
           </td>
           <td class="figure-edit-text-and-menu-dots">
-            <a ng-click="clickFigure(figureIdx);"
-               href="" class="figure-view" ng-attr-id="{{'figure-'+figureIdx}}">
-              {{figure_html_readonly(figures.arr[figureIdx])}}
-            </a>
             <span class="dropdown" style="float: right" aria-label="menu">
               <a href="#" role="button" class="dropdown-toggle" ng-attr-id="{{'figure-menu-'+figureIdx}}"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <span class="glyphicon glyphicon-option-vertical"></span>
@@ -101,6 +97,10 @@
                 <li><a href="#" ng-click="deleteFigureIdx(figureIdx)">Delete</a></li>
               </ul>
             </span>
+            <a ng-click="clickFigure(figureIdx);"
+               href="" class="figure-view" ng-attr-id="{{'figure-'+figureIdx}}">
+              {{figure_html_readonly(figures.arr[figureIdx])}}
+            </a>
           </td>
         </tr>
         <tr ng-repeat-end ng-if="edit_index_box.indexOf(figureIdx) >= 0">
