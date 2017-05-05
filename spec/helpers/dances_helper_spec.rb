@@ -45,6 +45,7 @@ RSpec.describe DancesHelper, type: :helper do
    ['long lines', 'long lines', 8],
    ['long lines forward only for 3', 'long lines forward only', 3],
    ['balance & petronella', 'petronella', true, 8],
+   ['cross trails - partners up & down the set by the right shoulder, neighbors across the set by the left shoulder', 'cross trails', 'partners', 'along', true, 'neighbors', 8],
    # ['petronella', 'petronella', false, 8], ambiguous
    ['balance & petronella', 'petronella', true, 8],
    ['progress to new neighbors', 'progress', 0],

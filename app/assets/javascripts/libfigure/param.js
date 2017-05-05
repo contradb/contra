@@ -84,6 +84,7 @@ param_subject_pair_gentlespoons  = {name: "who", value: "gentlespoons", ui: choo
 param_subject_pairz              = {name: "who",                        ui: chooser_pairz} // 1-2 pairs of dancers
 param_subject_pairz_partners     = {name: "who", value: "partners",     ui: chooser_pairz}
 param_subject_pairs              = {name: "who",                        ui: chooser_pairs} // 2 pairs of dancers
+param_subject2_pairs             = {name: "who2",                       ui: chooser_pairs}
 param_subject_pairs_or_everyone  = {name: "who",                        ui: chooser_pairs_or_everyone}
 param_subject_pairs_partners     = {name: "who", value: "partners",     ui: chooser_pairs}
 param_subject_dancer             = {name: "who",                        ui: chooser_dancer}
@@ -132,24 +133,28 @@ param_slide_left  = {name: "slide", value: true, ui: chooser_slide, string: stri
 param_slide_right = {name: "slide", value: false, ui: chooser_slide, string: stringParamSlide};
 
 
-function stringParamSetDirectionNot(value_default) {
-  return function stringParamSetDirection(value) {
-    if (value === value_default) {
-      return '';
-    } else if (value === 'across') {
-      return 'across the set';
-    } else if (value === 'along') {
-      return 'up & down the set';
-    } else if (value === 'right diagonal' || value === 'left diagonal') {
-      return value;
-    } else {
-      throw_up('unexpected set direction value: '+ value);
-    }
+function stringParamSetDirection(value) {
+  if (value === 'across') {
+    return 'across the set';
+  } else if (value === 'along') {
+    return 'up & down the set';
+  } else if (value === 'right diagonal' || value === 'left diagonal' || value === undefined) {
+    return value;
+  } else {
+    throw_up('unexpected set direction value: '+ value);
   }
 }
-param_set_direction        = {name: "dir", ui: chooser_set_direction,                  string: stringParamSetDirectionNot('something impossible')};
-param_set_direction_along  = {name: "dir", ui: chooser_set_direction, value: "along",  string: stringParamSetDirectionNot('along')};
-param_set_direction_across = {name: "dir", ui: chooser_set_direction, value: "across", string: stringParamSetDirectionNot('across')};
+
+function stringParamSetDirectionSilencingDefault(value_default) {
+  return function(value) {
+    return (value === value_default) ? '' : stringParamSetDirection(value);
+  }
+}
+
+param_set_direction        = {name: "dir", ui: chooser_set_direction,                  string: stringParamSetDirection};
+param_set_direction_along  = {name: "dir", ui: chooser_set_direction, value: "along",  string: stringParamSetDirectionSilencingDefault('along')};
+param_set_direction_across = {name: "dir", ui: chooser_set_direction, value: "across", string: stringParamSetDirectionSilencingDefault('across')};
+param_set_direction_grid   = {name: "dir", ui: chooser_set_direction_grid,             string: stringParamSetDirectionSilencingDefault('nope')};
 
 function stringParamSliceReturn (value) {
   if      ('straight' === value) { return 'and straight back'; }

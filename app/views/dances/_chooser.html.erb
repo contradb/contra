@@ -56,7 +56,7 @@
                     <option value="shadows">shadows</option>
                     <option value="ones">ones</option>
                     <option value="twos">twos</option>
-                    <option value="same_roles">same roles</option>
+                    <option value="same roles">same roles</option>
                     <option value="first corners">first corners</option>
                     <option value="second corners">second corners</option>
                     <option value="G1">gentlespoon 1</option>
@@ -88,7 +88,7 @@
                     <option value="shadows">shadows</option>
                     <option value="ones">ones</option>
                     <option value="twos">twos</option>
-                    <option value="same_roles">same roles</option>
+                    <option value="same roles">same roles</option>
                     <option value="first corners">first corners</option>
                     <option value="second corners">second corners</option>
                   </select>
@@ -100,7 +100,7 @@
                     <option value="partners">partners</option>
                     <option value="neighbors">neighbors</option>
                     <option value="shadows">shadows</option>
-                    <option value="same_roles">same roles</option>
+                    <option value="same roles">same roles</option>
                   </select>
                 </div>
                 <div ng-if="p.ui == chooser_pairs_or_everyone">
@@ -111,7 +111,7 @@
                     <option value="partners">partners</option>
                     <option value="neighbors">neighbors</option>
                     <option value="shadows">shadows</option>
-                    <option value="same_roles">same roles</option>
+                    <option value="same roles">same roles</option>
                   </select>
                 </div>
                 <div ng-if="p.ui == chooser_dancer">
@@ -178,6 +178,14 @@
                     <option value="across">across the set</option>
                     <option value="right diagonal">right diagonal</option>
                     <option value="left diagonal">left diagonal</option>
+                  </select>
+                </div>
+                <div ng-if="p.ui == chooser_set_direction_grid">
+                  <select ng-model="figure.parameter_values[$index]"
+                          ng-change="user_changed_parameter(figure,$index)"
+                          class='form-control'>
+                    <option value="along">up & down the set</option>
+                    <option value="across">across the set</option>
                   </select>
                 </div>
                 <div ng-if="p.ui == chooser_slice_return">
