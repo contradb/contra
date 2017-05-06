@@ -70,7 +70,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['right left through', 'right left through', 'across', 8],
    ['left diagonal right left through', 'right left through', 'left diagonal', 8],
    ['slide left along set to new neighbors', 'slide along set', true, 2],
-   ['star promenade left ½', 'star promenade', false, 180, 4], # prefer: "scoop up partners for star promenade"
+   ['star promenade left ½', 'star promenade', 'gentlespoons', false, 180, 4], # prefer: "scoop up partners for star promenade"
+   ['ladles star promenade right ½', 'star promenade', 'ladles', true, 180, 4],
    ['butterfly whirl', 'butterfly whirl', 4],
    ['butterfly whirl for 8', 'butterfly whirl', 8],
    ['down the hall', 'down the hall', 'forward', '', 8],

@@ -210,6 +210,12 @@ function is_progression(move) {
 //      (sorted alphabetically - keep it sorted)
 
 ////////////////////////////////////////////////
+// ALLEMANDE                                  //
+////////////////////////////////////////////////
+
+defineFigure( "allemande", [param_subject_pairz, param_xhand_spin, param_once_around, param_beats_8])
+
+////////////////////////////////////////////////
 // ALLEMANDE ORBIT                            //
 ////////////////////////////////////////////////
 
@@ -226,12 +232,6 @@ function allemande_orbit_view(move,pvs) {
 defineFigure( "allemande orbit", [param_subject_pair, param_left_hand_spin, param_once_and_a_half, param_half_around, param_beats_8], {view: allemande_orbit_view, labels: ["","allemande","inner","outer", "for"]})
 
 defineRelatedMove2Way('allemande orbit', 'allemande');
-
-////////////////////////////////////////////////
-// ALLEMANDE                                  //
-////////////////////////////////////////////////
-
-defineFigure( "allemande", [param_subject_pairz, param_xhand_spin, param_once_around, param_beats_8])
 
 ////////////////////////////////////////////////
 // BALANCE                                    //
@@ -653,7 +653,13 @@ defineFigure( "star", [param_xhand_spin, param_four_places, param_star_grip, par
 // STAR PROMENADE                             //
 ////////////////////////////////////////////////
 
-defineFigure( "star promenade", [param_xhand_spin, param_half_around, param_beats_4]);
+function star_promenade_view(move,pvs) {
+  var [ who,  dir,  angle,  beats] = pvs
+  var [swho, sdir, sangle, sbeats] = parameter_strings(move, pvs)
+  return words((who != 'gentlespoons') && swho, move, sdir, sangle, sbeats);
+}
+
+defineFigure( "star promenade", [param_subject_pair_gentlespoons, param_xhand_spin, param_half_around, param_beats_4], {view: star_promenade_view});
 
 defineRelatedMove2Way('star promenade', 'allemande');
 defineRelatedMove2Way('star promenade', 'promenade');
