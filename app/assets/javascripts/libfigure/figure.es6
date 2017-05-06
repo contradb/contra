@@ -43,25 +43,30 @@ function figure_html_readonly(f) {
 
 // Called if they don't specify a view function in the figure definition:
 function figure_html_readonly_default(move, parameter_values) {
-    // todo: clean this up so it's not so obnoxiously ugly
-    var ps = parameters(move);
-    var pstrings = parameter_strings(move, parameter_values)
-    var acc = ""
-    var subject_index = find_parameter_index_by_name("who", ps);
-    var balance_index = find_parameter_index_by_name("bal", ps);
-    var beats_index   = find_parameter_index_by_name("beats",ps);
-    if (subject_index >= 0) acc += pstrings[subject_index] + ' ';
-    if (balance_index >= 0) acc += pstrings[balance_index] + ' ';
-    acc += move;
-    ps.length == parameter_values.length || throw_up("parameter type mismatch. "+ps.length+" formals and "+parameter_values.length+" values");
-    for (var i=0; i < parameter_values.length; i++) {
-        if ((i != subject_index) && (i != balance_index) && (i != beats_index)) 
-            acc += ' ' + pstrings[i];
+  // todo: clean this up so it's not so obnoxiously ugly
+  // it's thouroughly tested, so it will be safe to remove the fishing expeditions for who, balance and beats.
+  var ps = parameters(move);
+  var pstrings = parameter_strings(move, parameter_values)
+  var acc = ""
+  var subject_index = find_parameter_index_by_name("who", ps);
+  var balance_index = find_parameter_index_by_name("bal", ps);
+  var beats_index   = find_parameter_index_by_name("beats",ps);
+  if (subject_index >= 0) { acc += pstrings[subject_index] + ' '; }
+  if (balance_index >= 0) { acc += pstrings[balance_index] + ' '; }
+  acc += move;
+  ps.length == parameter_values.length || throw_up("parameter type mismatch. "+ps.length+" formals and "+parameter_values.length+" values");
+  for (var i=0; i < parameter_values.length; i++) {
+    if ((i != subject_index) && (i != balance_index) && (i != beats_index)) {
+      acc += ' ' + pstrings[i];
     }
-    if (is_progression(move)) acc += ' ' + progressionString;
-    if ((beats_index >= 0) && (parameter_values[beats_index].value != ps[beats_index].value))
-        acc +=  ' ' + pstrings[beats_index];
-    return acc;
+  }
+  if (is_progression(move)) {
+    acc += ' ' + progressionString;
+  }
+  if ((beats_index >= 0) && (parameter_values[beats_index].value != ps[beats_index].value)) {
+    acc +=  ' ' + pstrings[beats_index];
+  }
+  return acc;
 }
 
 function find_parameter_index_by_name(name, parameters) {
@@ -73,16 +78,19 @@ var progressionString = "to new neighbors"
 
 // ================
 
-function parameter_string_helper (x,y) {
-    return String(x)
-}
-
 function parameter_strings(move, parameter_values) {
+  // new! improved! catch null and undefined, and convert them to '____', without calling the individual parameter function
   var formal_parameters = parameters(move);
   var acc = [];
   for (var i=0; i<parameter_values.length; i++) {
-    var string_fn = formal_parameters[i].string || parameter_string_helper;
-    acc.push(string_fn(parameter_values[i], move));
+    var pvi = parameter_values[i];
+    if ((pvi === undefined) || (pvi === null)) {
+      acc.push('____');
+    } else if (formal_parameters[i].string) {
+      acc.push(formal_parameters[i].string(pvi,move));
+    } else {
+      acc.push(String(pvi));
+    }
   }
   return acc;
 }
@@ -210,6 +218,12 @@ function is_progression(move) {
 //      (sorted alphabetically - keep it sorted)
 
 ////////////////////////////////////////////////
+// ALLEMANDE                                  //
+////////////////////////////////////////////////
+
+defineFigure( "allemande", [param_subject_pairz, param_xhand_spin, param_once_around, param_beats_8])
+
+////////////////////////////////////////////////
 // ALLEMANDE ORBIT                            //
 ////////////////////////////////////////////////
 
@@ -226,12 +240,6 @@ function allemande_orbit_view(move,pvs) {
 defineFigure( "allemande orbit", [param_subject_pair, param_left_hand_spin, param_once_and_a_half, param_half_around, param_beats_8], {view: allemande_orbit_view, labels: ["","allemande","inner","outer", "for"]})
 
 defineRelatedMove2Way('allemande orbit', 'allemande');
-
-////////////////////////////////////////////////
-// ALLEMANDE                                  //
-////////////////////////////////////////////////
-
-defineFigure( "allemande", [param_subject_pairz, param_xhand_spin, param_once_around, param_beats_8])
 
 ////////////////////////////////////////////////
 // BALANCE                                    //
@@ -653,7 +661,13 @@ defineFigure( "star", [param_xhand_spin, param_four_places, param_star_grip, par
 // STAR PROMENADE                             //
 ////////////////////////////////////////////////
 
-defineFigure( "star promenade", [param_xhand_spin, param_half_around, param_beats_4]);
+function star_promenade_view(move,pvs) {
+  var [ who,  dir,  angle,  beats] = pvs
+  var [swho, sdir, sangle, sbeats] = parameter_strings(move, pvs)
+  return words((who != 'gentlespoons') && swho, move, sdir, sangle, sbeats);
+}
+
+defineFigure( "star promenade", [param_subject_pair_gentlespoons, param_xhand_spin, param_half_around, param_beats_4], {view: star_promenade_view});
 
 defineRelatedMove2Way('star promenade', 'allemande');
 defineRelatedMove2Way('star promenade', 'promenade');

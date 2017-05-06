@@ -17,7 +17,8 @@ RSpec.describe DancesHelper, type: :helper do
     end
   end
 
-  [['partners balance & swing', 'swing', 'partners',true, 16],
+  [['____ allemande ____ once', 'allemande', nil, nil, 360, 8],
+   ['partners balance & swing', 'swing', 'partners',true, 16],
    ['neighbors balance & swing', 'swing', 'neighbors', true, 16],
    ['neighbors swing', 'swing', 'neighbors', false, 8],
    ['neighbors balance & swing for 8', 'swing', 'neighbors', true, 8],
@@ -70,7 +71,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['right left through', 'right left through', 'across', 8],
    ['left diagonal right left through', 'right left through', 'left diagonal', 8],
    ['slide left along set to new neighbors', 'slide along set', true, 2],
-   ['star promenade left ½', 'star promenade', false, 180, 4], # prefer: "scoop up partners for star promenade"
+   ['star promenade left ½', 'star promenade', 'gentlespoons', false, 180, 4], # prefer: "scoop up partners for star promenade"
+   ['ladles star promenade right ½', 'star promenade', 'ladles', true, 180, 4],
    ['butterfly whirl', 'butterfly whirl', 4],
    ['butterfly whirl for 8', 'butterfly whirl', 8],
    ['down the hall', 'down the hall', 'forward', '', 8],
