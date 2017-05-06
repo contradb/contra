@@ -17,7 +17,8 @@ RSpec.describe DancesHelper, type: :helper do
     end
   end
 
-  [['partners balance & swing', 'swing', 'partners',true, 16],
+  [['____ allemande ____ once', 'allemande', nil, nil, 360, 8],
+   ['partners balance & swing', 'swing', 'partners',true, 16],
    ['neighbors balance & swing', 'swing', 'neighbors', true, 16],
    ['neighbors swing', 'swing', 'neighbors', false, 8],
    ['neighbors balance & swing for 8', 'swing', 'neighbors', true, 8],
