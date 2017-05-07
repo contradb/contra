@@ -326,10 +326,11 @@ function cross_trails_change(figure, index) {
 
 function cross_trails_view(move,pvs) {
   var [ first_who,  first_dir,  first_shoulder,  second_who,  beats] = pvs
-  var [sfirst_who, sfirst_dir, sfirst_shoulder, ssecond_who, sbeats] = parameter_strings(move, pvs);
-  var ssecond_dir = stringParamSetDirection({across: 'along', along: 'across'}[first_dir]);
-  var ssecond_shoulder = stringParamShoulder(!first_shoulder);
-  return words(move, '-',  sfirst_who, sfirst_dir, 'by the', sfirst_shoulder+',', ssecond_who, ssecond_dir, 'by the', ssecond_shoulder, sbeats);
+  var [sfirst_who,    _ignore, sfirst_shoulder, ssecond_who, sbeats] = parameter_strings(move, pvs);
+  var sfirst_dir = first_dir ? (first_dir + ' the set') :  '____'
+  var ssecond_dir = {across: 'along the set', along: 'across the set'}[first_dir] || '____';
+  var ssecond_shoulder = stringParamShoulder(!first_shoulder) + (sbeats.length ? ',' : '');
+  return words(move, '-',  sfirst_who, sfirst_dir, sfirst_shoulder+',', ssecond_who, ssecond_dir, ssecond_shoulder, sbeats);
 }
 
 defineFigure( "cross trails", [param_subject_pairs, param_set_direction_grid, param_right_shoulder_spin, param_subject2_pairs, param_beats_4], {view: cross_trails_view, change: cross_trails_change})
@@ -377,7 +378,7 @@ function do_si_do_change(figure,index) {
 function do_si_do_view(move, pvs) {
   var [who,   _shoulder,  rots,  beats] = pvs
   var [swho, _sshoulder, srots, sbeats] = parameter_strings(move, pvs)
-  return words(swho, move, srots)
+  return words(swho, move, srots, sbeats)
 }
 
 defineFigure( "do si do", [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8], {change: do_si_do_change, view: do_si_do_view})
