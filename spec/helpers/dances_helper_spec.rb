@@ -46,6 +46,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['long lines', 'long lines', 8],
    ['long lines forward only for 3', 'long lines forward only', 3],
    ['balance & petronella', 'petronella', true, 8],
+   ['cross trails - partners along the set right shoulder, neighbors across the set left shoulder, for 8', 'cross trails', 'partners', 'along', true, 'neighbors', 8],
+   ['cross trails - neighbors across the set right shoulder, partners along the set left shoulder', 'cross trails', 'neighbors', 'across', true, 'partners', 4],
    # ['petronella', 'petronella', false, 8], ambiguous
    ['balance & petronella', 'petronella', true, 8],
    ['progress to new neighbors', 'progress', 0],
@@ -110,6 +112,7 @@ RSpec.describe DancesHelper, type: :helper do
    ['balance the ring for 8', 'balance the ring', 8], # debatable
    ['partners balance & box the gnat',  'box the gnat',  'partners',  true,  true,  8],
    ['ladles do si do once', 'do si do', 'ladles', true, 360, 8],
+   ['neighbors do si do twice for 16', 'do si do', 'neighbors', true, 720, 16],
    ['shadows gyre 1½', 'gyre', 'shadows', true, 540, 8],
    ['ones gyre left shoulder 1½', 'gyre', 'ones', false, 540, 8],
    ['neighbors box the gnat', 'box the gnat',  'neighbors', false, true,  4]
