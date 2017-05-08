@@ -415,6 +415,26 @@ defineFigure( "up the hall",   [param_facing_forward, param_down_the_hall_ender_
 defineRelatedMove2Way('down the hall', 'up the hall');
 
 ////////////////////////////////////////////////
+// GATE                                       //
+////////////////////////////////////////////////
+
+function gate_view(move, pvs) {
+  var [ subject,  gate_face,  beats] = pvs
+  var [ssubject, sgate_face, sbeats] = parameter_strings(move, pvs)
+  var sobject = _gate_pair_invert[subject] || '____';
+  return words(ssubject, move, sobject, 'to face', sgate_face, sbeats);
+}
+
+var _gate_pair_invert = {ones: 'twos',
+                         twos: 'ones',
+                         ladles: 'gentlespoons',
+                         gentlespoons: 'ladles',
+                         'first corners': 'second corners',
+                         'second corners': 'first corners'}
+
+defineFigure( "gate", [param_subject_pair, param_gate_face, param_beats_8], {view: gate_view})
+
+////////////////////////////////////////////////
 // GIVE AND TAKE                              //
 ////////////////////////////////////////////////
 

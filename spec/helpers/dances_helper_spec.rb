@@ -104,6 +104,7 @@ RSpec.describe DancesHelper, type: :helper do
    ['ladles take neighbors for 8', 'give & take', 'ladles', 'neighbors', false, 8],
    ['partners gyre meltdown', 'gyre meltdown', 'partners', 16],
    ['neighbors gyre meltdown for 12', 'gyre meltdown', 'neighbors', 12],
+   ['ones gate twos to face out of the set', 'gate', 'ones', 'out', 8],
    # below here has issues requiring implementation changes, I think -dm 08-16-2016
    ['gentlespoons see saw once', 'see saw', 'gentlespoons', false, 360, 8],
    ['petronella', 'petronella', false, 4],
