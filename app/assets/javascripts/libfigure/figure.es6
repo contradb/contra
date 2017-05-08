@@ -519,7 +519,13 @@ defineFigure( "mad robin",  [param_subject_role, param_once_around, param_beats_
 // OCEAN WAVE                                 //
 ////////////////////////////////////////////////
 
-defineFigure( "ocean wave",  [param_beats_4])
+function ocean_wave_view(move,pvs) {
+  var [ beats] = pvs;
+  var [sbeats] = parameter_strings(move, pvs);
+  return words('to', move, sbeats); 
+}
+
+defineFigure( "ocean wave",  [param_beats_4], {view: ocean_wave_view})
 
 ////////////////////////////////////////////////
 // PASS THROUGH                               //
