@@ -475,6 +475,18 @@ function mad_robin_view(move,pvs) {
 defineFigure( "mad robin",  [param_subject_role, param_once_around, param_beats_8], {view: mad_robin_view})
 
 ////////////////////////////////////////////////
+// OCEAN WAVE                                 //
+////////////////////////////////////////////////
+
+function ocean_wave_view(move,pvs) {
+  var [ beats] = pvs;
+  var [sbeats] = parameter_strings(move, pvs);
+  return words('to', move, sbeats); 
+}
+
+defineFigure( "ocean wave",  [param_beats_4], {view: ocean_wave_view})
+
+////////////////////////////////////////////////
 // PASS THROUGH                               //
 ////////////////////////////////////////////////
 
@@ -672,12 +684,6 @@ function swing_view(move,pvs) {
 }
 
 defineFigure( "swing", [param_subject_pairz_partners, param_balance_false, param_beats_8], {change: swing_change, view: swing_view})
-
-////////////////////////////////////////////////
-// TO OCEAN WAVE                              //
-////////////////////////////////////////////////
-
-defineFigure( "to ocean wave",  [param_beats_4])
 
 ////
 // autorelate moves with param_balance to the balance move
