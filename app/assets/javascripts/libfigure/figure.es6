@@ -580,12 +580,11 @@ defineFigure( "progress", [param_beats_0], {progression: true})
 function pull_by_for_2_view(move,pvs) {
   var [ who,  bal,  spin,  beats] = pvs;
   var [swho, sbal, sspin, sbeats] = parameter_strings(move, pvs);
-  var left_hand = spin ? '' : 'left';
   var standard_beats = ((beats == 8) && bal) || ((beats == 2) && !bal);
   if (standard_beats) {
-    return words(swho, sbal, 'pull by', left_hand);
+    return words(swho, sbal, 'pull by', sspin);
   } else {
-    return words(swho, sbal, 'pull by', left_hand, 'for', beats);
+    return words(swho, sbal, 'pull by', sspin, 'for', beats);
   }
 }
 
@@ -599,10 +598,9 @@ function pull_by_for_4_view(move,pvs) {
   var [ bal,  dir,  spin,  beats] = pvs;
   var [sbal, sdir, sspin, sbeats] = parameter_strings(move, pvs);
   var is_diagonal = dir === 'left diagonal' || dir === 'right diagonal';
-  var left_hand = spin ? '' : 'left';
   var w;
   if (!is_diagonal) {
-    w = words(sbal, 'pull by', left_hand, sdir);
+    w = words(sbal, 'pull by', sspin, sdir);
   } else if (('right diagonal' === dir) === spin) {
     w = words(sbal, 'pull by', sdir); // "pull by left diagonal" left hand is implicit - this makes XYZ a non-mouthful
   } else {
