@@ -98,10 +98,11 @@ param_subject_hetero_shadows     = {name: "who", value: "shadows",      ui: choo
 param_subject_partners           = {name: "who", value: "partners",     ui: chooser_pairs} // allows more options if they
 param_subject_neighbors          = {name: "who", value: "neighbors",    ui: chooser_pairs} // don't go with default
 param_subject_shadows            = {name: "who", value: "shadows",      ui: chooser_pairs} // than param_subject_hetero_*
-// param_object_hetero           = {name: "whom",                       ui: chooser_hetero} not used
 param_subject_everyone_or_centers = {name: "who", value: "everyone",    ui: chooser_everyone_or_centers}
+// param_object_hetero           = {name: "whom",                       ui: chooser_hetero} not used
 param_object_hetero_partners     = {name: "whom", value: "partners",    ui: chooser_hetero}
-// param_object_hetero_neighbors = {name: "whom", value: "neighbors",   ui: chooser_hetero} not used
+
+
 
 // not used anymore
 // param_pass_on_left = {name: "pass", value: false, ui: chooser_right_left_shoulder}
@@ -186,3 +187,11 @@ param_down_the_hall_ender_circle       = {name: "ender", ui: chooser_down_the_ha
 param_down_the_hall_ender_turn_couples = {name: "ender", ui: chooser_down_the_hall_ender, value: 'turn-couples', string: stringParamDownTheHallEnder}
 
 param_give = {name: "give", ui: chooser_give, value: true}
+
+var _stringParamGateFace = {up: 'up the set', down: 'down the set', 'in': 'into the set', out: 'out of the set'};
+
+function stringParamGateFace (value) {
+  return _stringParamGateFace[value];
+}
+
+param_gate_face = {name: "face", ui: chooser_gate_direction, string: stringParamGateFace}

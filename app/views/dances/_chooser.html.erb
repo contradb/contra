@@ -188,6 +188,16 @@
                     <option value="across">across the set</option>
                   </select>
                 </div>
+                <div ng-if="p.ui == chooser_gate_direction">
+                  <select ng-model="figure.parameter_values[$index]"
+                          ng-change="user_changed_parameter(figure,$index)"
+                          class='form-control'>
+                    <option value="up">up the set</option>
+                    <option value="down">down the set</option>
+                    <option value="in">into the set</option>
+                    <option value="out">out of the set</option>
+                  </select>
+                </div>
                 <div ng-if="p.ui == chooser_slice_return">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="user_changed_parameter(figure,$index)"
