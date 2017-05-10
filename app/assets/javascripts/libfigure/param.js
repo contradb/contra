@@ -37,7 +37,7 @@ param_beats_16 = {name: "beats", value: 16, ui: chooser_beats, string: stringPar
 function stringParamClock     (value) {return value ? "clockwise" : "counter-clockwise"}
 function stringParamLeftRight (value) {return value ? "left" : "right"}
 function stringParamHand      (value) {return value ? "right" : "left"}
-function stringParamShoulder  (value) {return value ? "right shoulder" : "left shoulder"}
+function stringParamShoulder  (value) {return value ? "right shoulders" : "left shoulders"}
 
 // spin = clockwise | ccw | undefined
 param_spin                   = {name: "turn",               ui: chooser_spin, string: stringParamClock}
