@@ -432,6 +432,7 @@ var _gate_pair_invert = {ones: 'twos',
                          'first corners': 'second corners',
                          'second corners': 'first corners'}
 
+// 'ones gate twos' means: ones, extend a hand to twos - twos walk forward, ones back up, orbiting around the joined hands
 defineFigure( "gate", [param_subject_pair, param_gate_face, param_beats_8], {view: gate_view})
 
 ////////////////////////////////////////////////
