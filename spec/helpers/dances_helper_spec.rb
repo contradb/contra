@@ -46,8 +46,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['long lines', 'long lines', 8],
    ['long lines forward only for 3', 'long lines forward only', 3],
    ['balance & petronella', 'petronella', true, 8],
-   ['cross trails - partners along the set right shoulder, neighbors across the set left shoulder, for 8', 'cross trails', 'partners', 'along', true, 'neighbors', 8],
-   ['cross trails - neighbors across the set right shoulder, partners along the set left shoulder', 'cross trails', 'neighbors', 'across', true, 'partners', 4],
+   ['cross trails - partners along the set right shoulders, neighbors across the set left shoulders, for 8', 'cross trails', 'partners', 'along', true, 'neighbors', 8],
+   ['cross trails - neighbors across the set right shoulders, partners along the set left shoulders', 'cross trails', 'neighbors', 'across', true, 'partners', 4],
    # ['petronella', 'petronella', false, 8], ambiguous
    ['balance & petronella', 'petronella', true, 8],
    ['progress to new neighbors', 'progress', 0],
@@ -97,7 +97,7 @@ RSpec.describe DancesHelper, type: :helper do
    ["centers Rory O'Moore left", "Rory O'Moore", 'centers', false, true, 4],
    ['pass through for 4', 'pass through', 'along', true, 4],
    ['pass through', 'pass through', 'along', true, 2],
-   ['pass through left shoulder across the set', 'pass through', 'across', false, 2],
+   ['pass through left shoulders across the set', 'pass through', 'across', false, 2],
    ['gentlespoons give & take partners', 'give & take', 'gentlespoons', 'partners', true, 8],
    ['gentlespoons give & take partners for 4', 'give & take', 'gentlespoons', 'partners', true, 4],
    ['ladles take neighbors', 'give & take', 'ladles', 'neighbors', false, 4],
@@ -113,9 +113,9 @@ RSpec.describe DancesHelper, type: :helper do
    ['ladles do si do once', 'do si do', 'ladles', true, 360, 8],
    ['neighbors do si do twice for 16', 'do si do', 'neighbors', true, 720, 16],
    ['shadows gyre 1½', 'gyre', 'shadows', true, 540, 8],
-   ['ones gyre left shoulder 1½', 'gyre', 'ones', false, 540, 8],
+   ['ones gyre left shoulders 1½', 'gyre', 'ones', false, 540, 8],
    ['neighbors box the gnat', 'box the gnat',  'neighbors', false, true,  4],
-   ['gentlespoons pass by right shoulder', 'pass by', 'gentlespoons', true, 2],
+   ['gentlespoons pass by right shoulders', 'pass by', 'gentlespoons', true, 2],
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}'" do
