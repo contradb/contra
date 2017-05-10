@@ -104,7 +104,6 @@ RSpec.describe DancesHelper, type: :helper do
    ['ladles take neighbors for 8', 'give & take', 'ladles', 'neighbors', false, 8],
    ['partners gyre meltdown', 'gyre meltdown', 'partners', 16],
    ['neighbors gyre meltdown for 12', 'gyre meltdown', 'neighbors', 12],
-   # below here has issues requiring implementation changes, I think -dm 08-16-2016
    ['gentlespoons see saw once', 'see saw', 'gentlespoons', false, 360, 8],
    ['petronella', 'petronella', false, 4],
    ['long lines forward only', 'long lines forward only', 4],
@@ -115,7 +114,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['neighbors do si do twice for 16', 'do si do', 'neighbors', true, 720, 16],
    ['shadows gyre 1½', 'gyre', 'shadows', true, 540, 8],
    ['ones gyre left shoulder 1½', 'gyre', 'ones', false, 540, 8],
-   ['neighbors box the gnat', 'box the gnat',  'neighbors', false, true,  4]
+   ['neighbors box the gnat', 'box the gnat',  'neighbors', false, true,  4],
+   ['gentlespoons pass by right shoulder', 'pass by', 'gentlespoons', true, 2],
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}'" do

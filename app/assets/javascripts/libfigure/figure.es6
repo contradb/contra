@@ -528,6 +528,12 @@ function ocean_wave_view(move,pvs) {
 defineFigure( "ocean wave",  [param_beats_4], {view: ocean_wave_view})
 
 ////////////////////////////////////////////////
+// PASS BY                                    //
+////////////////////////////////////////////////
+
+defineFigure( "pass by", [param_subject_pair, param_right_shoulder_spin, param_beats_2])
+
+////////////////////////////////////////////////
 // PASS THROUGH                               //
 ////////////////////////////////////////////////
 
@@ -539,6 +545,8 @@ function pass_through_view(move,pvs) {
 }
 
 defineFigure( "pass through", [param_set_direction_along, param_right_shoulder_spin, param_beats_2], {view: pass_through_view})
+
+defineRelatedMove2Way('pass by', 'pass through');
 
 ////////////////////////////////////////////////
 // PETRONELLA                                 //
