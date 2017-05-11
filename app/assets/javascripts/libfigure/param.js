@@ -101,8 +101,7 @@ param_subject_shadows            = {name: "who", value: "shadows",      ui: choo
 param_subject_everyone_or_centers = {name: "who", value: "everyone",    ui: chooser_everyone_or_centers}
 // param_object_hetero           = {name: "whom",                       ui: chooser_hetero} not used
 param_object_hetero_partners     = {name: "whom", value: "partners",    ui: chooser_hetero}
-
-
+param_object_pairs               = {name: "whom",                       ui: chooser_pairs}
 
 // not used anymore
 // param_pass_on_left = {name: "pass", value: false, ui: chooser_right_left_shoulder}

@@ -419,21 +419,13 @@ defineRelatedMove2Way('down the hall', 'up the hall');
 ////////////////////////////////////////////////
 
 function gate_view(move, pvs) {
-  var [ subject,  gate_face,  beats] = pvs
-  var [ssubject, sgate_face, sbeats] = parameter_strings(move, pvs)
-  var sobject = _gate_pair_invert[subject] || '____';
+  var [ subject,  object,  gate_face,  beats] = pvs
+  var [ssubject, sobject, sgate_face, sbeats] = parameter_strings(move, pvs)
   return words(ssubject, move, sobject, 'to face', sgate_face, sbeats);
 }
 
-var _gate_pair_invert = {ones: 'twos',
-                         twos: 'ones',
-                         ladles: 'gentlespoons',
-                         gentlespoons: 'ladles',
-                         'first corners': 'second corners',
-                         'second corners': 'first corners'}
-
 // 'ones gate twos' means: ones, extend a hand to twos - twos walk forward, ones back up, orbiting around the joined hands
-defineFigure( "gate", [param_subject_pair, param_gate_face, param_beats_8], {view: gate_view})
+defineFigure( "gate", [param_subject_pair, param_object_pairs, param_gate_face, param_beats_8], {view: gate_view})
 
 ////////////////////////////////////////////////
 // GIVE AND TAKE                              //
