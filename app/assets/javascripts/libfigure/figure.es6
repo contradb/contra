@@ -415,6 +415,12 @@ defineFigure( "up the hall",   [param_facing_forward, param_down_the_hall_ender_
 defineRelatedMove2Way('down the hall', 'up the hall');
 
 ////////////////////////////////////////////////
+// FIGURE 8                                   //
+////////////////////////////////////////////////
+
+defineFigure( "figure 8", [param_subject_pair, param_lead_dancer, param_half_or_whole, param_beats_8])
+
+////////////////////////////////////////////////
 // GATE                                       //
 ////////////////////////////////////////////////
 

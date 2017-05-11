@@ -102,6 +102,7 @@ param_subject_everyone_or_centers = {name: "who", value: "everyone",    ui: choo
 // param_object_hetero           = {name: "whom",                       ui: chooser_hetero} not used
 param_object_hetero_partners     = {name: "whom", value: "partners",    ui: chooser_hetero}
 param_object_pairs               = {name: "whom",                       ui: chooser_pairs}
+param_lead_dancer                = {name: "lead",                       ui: chooser_dancer}
 
 // not used anymore
 // param_pass_on_left = {name: "pass", value: false, ui: chooser_right_left_shoulder}
@@ -194,3 +195,5 @@ function stringParamGateFace (value) {
 }
 
 param_gate_face = {name: "face", ui: chooser_gate_direction, string: stringParamGateFace}
+
+param_half_or_whole  = {name: "half", value: 0.5,  ui: chooser_half_or_whole}
