@@ -415,6 +415,19 @@ defineFigure( "up the hall",   [param_facing_forward, param_down_the_hall_ender_
 defineRelatedMove2Way('down the hall', 'up the hall');
 
 ////////////////////////////////////////////////
+// GATE                                       //
+////////////////////////////////////////////////
+
+function gate_view(move, pvs) {
+  var [ subject,  object,  gate_face,  beats] = pvs
+  var [ssubject, sobject, sgate_face, sbeats] = parameter_strings(move, pvs)
+  return words(ssubject, move, sobject, 'to face', sgate_face, sbeats);
+}
+
+// 'ones gate twos' means: ones, extend a hand to twos - twos walk forward, ones back up, orbiting around the joined hands
+defineFigure( "gate", [param_subject_pair, param_object_pairs, param_gate_face, param_beats_8], {view: gate_view})
+
+////////////////////////////////////////////////
 // GIVE AND TAKE                              //
 ////////////////////////////////////////////////
 
