@@ -429,10 +429,14 @@ function figure_8_change(figure,index) {
     } else if (('twos' === subject) && led_by_one_of_the_twos) {
       pvs[1] = 'second ladle';
     }
+  } else if (index == 2) { // half_or_full
+    if (1.0 == half_or_full && beats == 8) {
+      pvs[3] = 16;
+    } else if (0.5 == half_or_full && beats == 16) {
+      pvs[3] = 8;
+    }
   }
-  // TODO: electric beats on full/half
 }
-
 
 function figure_8_view(move, pvs) {
   var [ subject,  lead, half_or_full, beats] = pvs;
