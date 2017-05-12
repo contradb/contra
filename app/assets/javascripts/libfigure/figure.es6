@@ -1,10 +1,9 @@
-//  -*-Javascript-*-
 // In this file we can use some emca6 features such as array variable assignment. 
 // That's the reason for the .es6 suffix.
 
 // always freshly allocated
 function newFigure () {
-    return { parameter_values: [] }
+  return { parameter_values: [] };
 }
 
 
@@ -418,7 +417,36 @@ defineRelatedMove2Way('down the hall', 'up the hall');
 // FIGURE 8                                   //
 ////////////////////////////////////////////////
 
-defineFigure( "figure 8", [param_subject_pair, param_lead_dancer, param_half_or_whole, param_beats_8])
+function figure_8_change(figure,index) {
+  var pvs = figure.parameter_values;
+  var [ subject,  lead, half_or_full, beats] = pvs;
+  if (index === 0) { // subject
+    var led_by_one_of_the_ones = ['first gentlespoon', 'first ladle'].indexOf(lead) < 0;
+    var led_by_one_of_the_twos = ['second gentlespoon', 'second ladle'].indexOf(lead) < 0;
+    // do the electric lead for ones and twos only
+    if (('ones' === subject) && led_by_one_of_the_ones) {
+      pvs[1] = 'first ladle';
+    } else if (('twos' === subject) && led_by_one_of_the_twos) {
+      pvs[1] = 'second ladle';
+    }
+  }
+  // TODO: electric beats on full/half
+}
+
+
+function figure_8_view(move, pvs) {
+  var [ subject,  lead, half_or_full, beats] = pvs;
+  var [ssubject, slead, shalf_or_full, sbeats] = parameter_strings(move, pvs);
+  var dancer_role = {'first gentlespoon': 'gentlespoon',
+                     'second gentlespoon': 'gentlespoon',
+                     'first ladle': false,
+                     'second ladle': false};
+  var tlead = (subject === 'ones' || subject === 'twos') ? dancer_role[lead] : slead; 
+  var the_rest = words(tlead, tlead && ('leading' + comma_unless_blank(sbeats)), sbeats);
+  return words(ssubject, shalf_or_full, move+comma_unless_blank(the_rest), the_rest);
+}
+
+defineFigure( "figure 8", [param_subject_pair_ones, param_lead_dancer_l1, param_half_or_full, param_beats_8], {view: figure_8_view, change: figure_8_change});
 
 ////////////////////////////////////////////////
 // GATE                                       //
