@@ -26,6 +26,9 @@ isInteger = Number.isInteger || function(value) {
 
 // throw is a keyword and can't be in expressions, but function calls can be, so wrap throw.
 function throw_up(str) {
-    throw new Error(str)
+  throw new Error(str);
 }
 
+function comma_unless_blank(str) {
+  return ((!str) || (str.trim() === '')) ? '' : ',';
+}
