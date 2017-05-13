@@ -582,7 +582,10 @@ defineFigure( "ocean wave",  [param_beats_4], {view: ocean_wave_view})
 // PASS BY                                    //
 ////////////////////////////////////////////////
 
-defineFigure( "pass by", [param_subject_pair, param_right_shoulder_spin, param_beats_2])
+defineFigure( "pass by", [param_subject_pairz, param_right_shoulder_spin, param_beats_2])
+
+defineRelatedMove2Way('pass by', 'hey');
+defineRelatedMove2Way('pass by', 'half hey');
 
 ////////////////////////////////////////////////
 // PASS THROUGH                               //
