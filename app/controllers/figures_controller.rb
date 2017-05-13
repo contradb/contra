@@ -11,6 +11,7 @@ class FiguresController < ApplicationController
     @move = JSLibFigure.deslugify_move(params[:id])
     raise "#{params[:id].inspect} is not a move" unless @move
     @move_titleize = @move =~ /[A-Z]/ ? @move : @move.titleize # correctly passes "Rory O'Moore"
+    @titlebar = @move_titleize
     all_dances = Dance.readable_by(current_user)
     mdtab = Move.mdtab(all_dances)
     @dances = mdtab[@move]&.sort_by(&:title) || []

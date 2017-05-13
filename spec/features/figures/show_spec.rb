@@ -8,6 +8,7 @@ describe 'figures show' do
   it 'usage tab' do
     box
     visit figure_path('swing')
+    expect(page).to have_title("Swing | Figure | Contra")
     expect(page).to have_css("h1", text: 'Swing')
     expect(page).to have_content('related figures: gyre meltdown')
     expect(page).to have_content('formal parameters: who, bal, beats')

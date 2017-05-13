@@ -25,7 +25,7 @@ module ApplicationHelper
     looking_at_name = ActiveSupport::Inflector.singularize controller_name
     if looking_at_name
       looking_at = begin
-                     eval("@#{looking_at_name}")
+                     eval("@titlebar || @#{looking_at_name}")
                    rescue
                      return "Contra"
                    end
@@ -33,6 +33,8 @@ module ApplicationHelper
         "#{looking_at.name} | #{looking_at_name.capitalize} | Contra"
       elsif looking_at.respond_to?(:title) && looking_at.title.present?
         "#{looking_at.title} | #{looking_at_name.capitalize} | Contra"
+      elsif looking_at.is_a? String
+        "#{looking_at} | #{looking_at_name.capitalize} | Contra"
       else
         "#{looking_at_name.capitalize} | Contra"
       end
