@@ -2,7 +2,9 @@
 
 <h1>Choreographers</h1>
 
-<%= new_choreographer_button_html() %>
+<% if @show_admin_actions then %>
+  <%= new_choreographer_button_html() %>
+<% end %>
 
 <table class="table table-striped table-bordered table-hover table-condensed contra-table-nonfluid">
   <thead>

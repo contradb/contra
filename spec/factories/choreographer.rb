@@ -5,5 +5,11 @@ FactoryGirl.define do
       "#{'Turbo '*(n / a.length)} #{a[n % a.length]}"
     end
   end
+
+  factory :friendly_choreographer, class: :choreographer do
+    sequence(:name) do |n| "choreographer-#{1000+n}" end
+    publish :always
+    website "www.friendly-choreographer.com/dances"
+  end
 end
 

@@ -5,6 +5,28 @@ class Choreographer < ActiveRecord::Base
 
   before_destroy :reattribute_dances_to_unknown
 
+  enum publish: {never: 0, sometimes: 5, always: 10}
+  # wait for Rails 5 to use _prefix: instead of these:
+  alias :publish_never? :never?
+  alias :publish_sometimes? :sometimes?
+  alias :publish_always? :always?
+
+  # human readable website
+  def website_text
+    if website
+      w = String.new(website)
+      w.slice!(%r{^https?://})
+      w
+    end
+  end
+
+  # machine readable website
+  def website_url
+    if website
+      (website =~ %r{^https?://}) ? website : "http://#{website}"
+    end
+  end
+
   protected
    def reattribute_dances_to_unknown
      # attribute my dances to 1 - the unknown choreographer

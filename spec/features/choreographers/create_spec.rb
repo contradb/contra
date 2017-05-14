@@ -7,26 +7,22 @@ include Warden::Test::Helpers
 Warden.test_mode!
 
 describe 'Creating choreographer from index page' do
+  it "saves form values" do
+    user = FactoryGirl.create(:user, admin: true)
+    login_as(user, scope: :user)
 
-  it "with logged in user, goes to the New Choreographer page" do
-    user = FactoryGirl.create(:user)
-    login_as(user, :scope => :user)
+    visit '/choreographers/new'
 
-    visit '/choreographers'
-    click_link "New Choreographer"
+    fill_in "choreographer_name", with: "Bob Green"
+    fill_in "choreographer_website", with: "www.bobgreen.com"
+    select "Always"
 
-    expect(page).to have_content("New Choreographer")
-    scrutinize_layout page
+    click_on "Save Choreographer"
+
+    choreographer = Choreographer.last
+    expect(choreographer.name).to eq("Bob Green")
+    expect(choreographer.website).to eq("www.bobgreen.com")
+    expect(choreographer.publish).to eq("always")
+    scrutinize_layout(page)
   end
-
-  it "sans logged in user, refuses to go the New Choreographer page" do
-
-    visit '/choreographers'
-    click_link "New Choreographer"
-
-    expect(page).to have_content("You need to sign in or sign up before continuing")
-    scrutinize_layout page
-  end
-
-
 end
