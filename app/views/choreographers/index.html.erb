@@ -14,6 +14,8 @@
       <% end %>
       <th>Name</th>
       <th>Dance Count</th>
+      <th>Publish?</th>
+      <th>Website</th>
     </tr>
   </thead>
 
@@ -32,6 +34,8 @@
         <% end %>
         <td><%= link_to choreographer.name, choreographer %></td>
         <td class="text-right"><%= choreographer.dances.length %></td>
+        <td><%= choreographer.publish&.titleize %></td>
+        <td><%= choreographer.website && link_to(choreographer.website_text, choreographer.website_url) %></td>
       </tr>
     <% end %>
   </tbody>
