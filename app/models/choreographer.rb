@@ -12,7 +12,7 @@ class Choreographer < ActiveRecord::Base
   alias :publish_always? :always?
 
   # human readable website
-  def website_text
+  def website_label
     if website
       w = String.new(website)
       w.slice!(%r{^https?://})

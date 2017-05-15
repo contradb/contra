@@ -9,6 +9,6 @@ describe 'Choreographer index' do
     expect(page).to have_link(choreographer.name, href: choreographer_path(choreographer))
     expect(page).to have_link(choreographer.website)
     expect(page).to have_text(choreographer.publish.titleize)
-    expect(page).to have_link(choreographer.website_text, href: choreographer.website_url)
+    expect(page).to have_link(choreographer.website_label, href: choreographer.website_url)
   end
 end

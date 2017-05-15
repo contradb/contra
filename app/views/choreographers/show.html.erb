@@ -20,7 +20,7 @@
   <% if @choreographer.website.present? %>
   <div>
     <span>Website: </span>
-    <strong><%= link_to @choreographer.website_text, @choreographer.website_url, target: '_blank' %></strong>
+    <strong><%= link_to @choreographer.website_label, @choreographer.website_url, target: '_blank' %></strong>
   </div>
   <% end %>
 </p>
