@@ -18,7 +18,7 @@
     </div>
     <div class="field">
       <%= f.label :publish %><br>
-      <%= f.select(:publish, Choreographer.publishes.keys.map {|key| [key.humanize, key]}) %>
+      <%= f.select(:publish, [["Unknown", nil]].concat(Choreographer.publishes.keys.map {|key| [key.humanize, key]})) %>
     </div>
     <div class="field">
       <%= f.label :website %><br>
