@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170415114550) do
+ActiveRecord::Schema.define(version: 20170513114820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,8 @@ ActiveRecord::Schema.define(version: 20170415114550) do
     t.string   "name",       default: "", null: false
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+    t.integer  "publish"
+    t.string   "website"
   end
 
   add_index "choreographers", ["name"], name: "index_choreographers_on_name", unique: true, using: :btree

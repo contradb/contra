@@ -40,7 +40,6 @@ RSpec.describe DancesController, type: :controller do
 
     context "with login" do
       it "assigns public dances as alphabeticized @dances" do
-        # User.any_instance.stub(:admin) { self.id == admonsterator.id }
         # hacky login
         @request.env["devise.mapping"] = Devise.mappings[:user]
         sign_in user_a

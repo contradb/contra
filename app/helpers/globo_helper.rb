@@ -75,6 +75,13 @@ module GloboHelper
             BUTTON_HTML_ATTR)
   end
 
+  def edit_choreographer_button_html(choreographer, label: "Edit Choreographer")
+    link_to(content_tag( :span, edit_icon_html() + ' ' + label ),
+            edit_choreographer_path(choreographer), 
+            BUTTON_HTML_ATTR)
+  end
+
+
   # e.g. save_submit_button_html "Save Choreographer", {class: "blahclasses"}
   def save_submit_button_html(label = "Save", opts={})
     opts = opts.clone

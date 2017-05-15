@@ -20,4 +20,11 @@ describe 'Choreographer show' do
     expect(page).to_not have_link(dance_private.title)
     expect(page).to_not have_link(not_my_dance.title)
   end
+
+  it "Displays that choreographer's publishing information" do
+    friendly = FactoryGirl.create(:friendly_choreographer)
+    visit choreographer_path(friendly)
+    expect(page).to have_link(friendly.website)
+    expect(page).to have_text("Permission to publish dances: #{friendly.publish.titleize}")
+  end
 end

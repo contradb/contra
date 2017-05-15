@@ -5,6 +5,31 @@
   <%= @choreographer.name %>
 </h1>
 
+<p>
+  <div>
+    <span>Permission to publish dances: </span>
+    <strong>
+      <% if @choreographer.publish.present? %>
+        <%= link_to @choreographer.publish.titleize, "https://github.com/dcmorse/contra/wiki/Caller-Consent", target: "_blank" %>
+      <% else %>
+        Unknown
+      <% end %>
+    </strong>
+  </div>
+
+  <% if @choreographer.website.present? %>
+  <div>
+    <span>Website: </span>
+    <strong><%= link_to @choreographer.website_label, @choreographer.website_url, target: '_blank' %></strong>
+  </div>
+  <% end %>
+</p>
+
+
+<% if @show_admin_actions %>
+  <%= edit_choreographer_button_html(@choreographer) %>
+<% end %>
+
 <%= new_dance_button_html({choreographer_id: @choreographer.id}) %>
 
 <%= render partial: "dances/showtable", object: @dances, locals: {choreographer: false} %>

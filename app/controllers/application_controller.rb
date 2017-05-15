@@ -5,26 +5,19 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-
-
   def authenticate_ownership! (user_id)
-    if signed_in? && (current_user.id == user_id)
-      # continue to current_user url
-    else
-        flash[:notice] = "Please access one of your own pages"
-        redirect_to(:back)
+    unless signed_in? && (current_user.id == user_id)
+      flash[:notice] = "Please access one of your own pages"
+      redirect_to(:back)
     end
   end
 
   def authenticate_administrator!
-    if signed_in? && current_user.admin?
-      # continue to current_user url
-    else
-        flash[:error] = "Only an admin can do this"
-        redirect_to(:back)
+    unless signed_in? && current_user.admin?
+      flash[:error] = "Only an admin can do this"
+      redirect_to(:back)
     end
   end
-
 
   protected
 

@@ -11,11 +11,21 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name, style: "width: 30rem; margin-bottom: 2em;" %>
-  </div>
-  <div class="actions">
-  <%= save_submit_button_html "Save Choreographer", {style: "width: 30rem"} %>
+  <div class="choreographer-form-fields-deluxe">
+    <div class="field">
+      <%= f.label :name %><br>
+      <%= f.text_field :name %>
+    </div>
+    <div class="field">
+      <%= f.label :publish %><br>
+      <%= f.select(:publish, Choreographer.publishes.keys.map {|key| [key.humanize, key]}) %>
+    </div>
+    <div class="field">
+      <%= f.label :website %><br>
+      <%= f.text_field :website %>
+    </div>
+    <div class="actions">
+    <%= save_submit_button_html "Save Choreographer" %>
+    </div>
   </div>
 <% end %>
