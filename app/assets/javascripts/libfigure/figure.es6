@@ -622,12 +622,14 @@ defineFigure( "petronella", [param_balance_true, param_beats_8], {view: petronel
 ////////////////////////////////////////////////
 
 function promenade_view(move,pvs) {
-  var [ subject,  spin,  beats] = pvs;
-  var [ssubject, sspin, sbeats] = parameter_strings(move, pvs);
-  return words(ssubject, move, spin ? 'passing on the left' : '', sbeats);
+  var [ subject,  dir, spin,  beats] = pvs;
+  var [ssubject, sdir, sspin, sbeats] = parameter_strings(move, pvs);
+  var tspin = spin ? 'on the left' : (dir === 'along' ? 'on the right' : '');
+  return words(ssubject, move, sdir, tspin, sbeats);
 }
 
-defineFigure( "promenade across", [param_subject_pairs_partners, param_spin_right, param_beats_8], {view: promenade_view})
+defineFigure( "promenade", [param_subject_pairs_partners, param_set_direction_across, param_spin_right, param_beats_8],
+              {view: promenade_view, labels: [,,'keep',]})
 
 ////////////////////////////////////////////////
 // PROGRESS -- progression                    //
@@ -726,8 +728,8 @@ defineFigure( "slice", [param_slide_left, param_slice_increment, param_slice_ret
 ////////////////////////////////////////////////
 
 function slide_along_set_view(move,pvs) {
-  var [ dir,  beats] = pvs
-  var [sdir, sbeats] = parameter_strings(move, pvs)
+  var [ dir,  beats] = pvs;
+  var [sdir, sbeats] = parameter_strings(move, pvs);
   return words('slide', sdir, 'along set', sbeats, 'to new neighbors');
 }
 
@@ -738,8 +740,8 @@ defineFigure( "slide along set", [param_slide_left, param_beats_2], {progression
 ////////////////////////////////////////////////
 
 function star_view(move,pvs) {
-  var [ right_hand,  places,  wrist_grip,  beats] = pvs
-  var [sright_hand, splaces, swrist_grip, sbeats] = parameter_strings(move, pvs)
+  var [ right_hand,  places,  wrist_grip,  beats] = pvs;
+  var [sright_hand, splaces, swrist_grip, sbeats] = parameter_strings(move, pvs);
   if ('' === wrist_grip) {
     return words("star", sright_hand, splaces, sbeats);
   } else {
@@ -798,4 +800,6 @@ moves().forEach(function (move) {
   parameters(move).forEach(function(param) {
     if (param.name === param_balance_true.name) {
       defineRelatedMove2Way(move, 'balance');
-    }})});
+    }
+  });
+});
