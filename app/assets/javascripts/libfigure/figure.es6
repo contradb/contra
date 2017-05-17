@@ -463,7 +463,7 @@ function gate_view(move, pvs) {
 }
 
 // 'ones gate twos' means: ones, extend a hand to twos - twos walk forward, ones back up, orbiting around the joined hands
-defineFigure( "gate", [param_subject_pair, param_object_pairs, param_gate_face, param_beats_8], {view: gate_view})
+defineFigure( "gate", [param_subject_pair, param_object_pairs_or_ones_or_twos, param_gate_face, param_beats_8], {view: gate_view})
 
 ////////////////////////////////////////////////
 // GIVE AND TAKE                              //

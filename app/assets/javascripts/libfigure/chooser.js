@@ -38,6 +38,7 @@ defineChooser("chooser_dancers")  // some collection of dancers
 defineChooser("chooser_pair")     // 1 pair of dancers
 defineChooser("chooser_pairz")    // 1-2 pairs of dancers
 defineChooser("chooser_pairs")    // 2 pairs of dancers
+defineChooser("chooser_pairs_or_ones_or_twos")
 defineChooser("chooser_pairs_or_everyone")
 defineChooser("chooser_dancer")   // one dancer, e.g. ladle 1
 defineChooser("chooser_role")     // ladles or gentlespoons

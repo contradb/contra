@@ -103,6 +103,7 @@ var param_subject_everyone_or_centers = {name: "who", value: "everyone",    ui: 
 // param_object_hetero           = {name: "whom",                       ui: chooser_hetero} not used
 var param_object_hetero_partners     = {name: "whom", value: "partners",    ui: chooser_hetero};
 var param_object_pairs               = {name: "whom",                       ui: chooser_pairs};
+var param_object_pairs_or_ones_or_twos = {name: "whom",                     ui: chooser_pairs_or_ones_or_twos};
 var param_lead_dancer_l1             = {name: "lead", value: "first ladle", ui: chooser_dancer};
 
 
