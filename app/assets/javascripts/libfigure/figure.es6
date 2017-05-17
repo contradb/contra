@@ -521,7 +521,7 @@ function gyre_star_view(move, pvs) {
   var sright = who ? invertPair(who) : '____';
   var sback = turn ? sleft : sright;
   var sforward = turn ? sright : sleft;
-  return words(move, sturn, splaces, sbeats, comma, sback, 'backing', '-', sleft, 'take left hands, ', sright, 'take right hands,', sback, 'back up,', sforward, 'go forward');
+  return words(move, sturn, splaces, 'with', sback, 'backing up', sbeats, '-', sleft, 'take left hands, ', sright, 'take right hands');
 }
 
 defineFigure( "gyre star", [param_subject_pair, param_spin_clockwise,  param_three_places, param_beats_8], {view: gyre_star_view, labels: ['left']});
