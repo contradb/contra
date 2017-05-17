@@ -517,14 +517,11 @@ defineRelatedMove2Way('gyre meltdown', 'swing');
 function gyre_star_view(move, pvs) {
   var [ who,  turn,  places,  beats] = pvs;
   var [swho, sturn, splaces, sbeats] = parameter_strings(move, pvs);
-  var sleft = swho;
-  var sright = who ? invertPair(who) : '____';
-  var sback = turn ? sleft : sright;
-  var sforward = turn ? sright : sleft;
-  return words(move, sturn, splaces, 'with', sback, 'backing up', sbeats, '-', sleft, 'take left hands, ', sright, 'take right hands');
+  var shand = turn ? 'left' : 'right';
+  return words(move, sturn, splaces, 'with', swho, 'putting their', shand, 'hands in and backing up', sbeats);
 }
 
-defineFigure( "gyre star", [param_subject_pair, param_spin_clockwise,  param_three_places, param_beats_8], {view: gyre_star_view, labels: ['left']});
+defineFigure( "gyre star", [param_subject_pair, param_spin_clockwise,  param_places, param_beats_8], {view: gyre_star_view});
 
 defineRelatedMove2Way('gyre star', 'gyre');
 defineRelatedMove2Way('gyre star', 'star');
