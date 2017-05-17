@@ -231,7 +231,7 @@ function allemande_orbit_view(move,pvs) {
     var [swho,sdir,sinner_angle,souter_angle,sbeats] = parameter_strings(move, pvs)
     return words(swho, "allemande", sdir,
                  sinner_angle, "around",
-                 "while the", who ? dancersComplement(who) : "others", "orbit",
+                 "while the", who ? invertPair(who) : "others", "orbit",
                  dir ? "counter clockwise" : "clockwise",
                  souter_angle, "around", sbeats)
 }
@@ -509,6 +509,25 @@ defineFigure( "gyre meltdown", [param_subject_pairz, param_beats_16])
 
 defineRelatedMove2Way('gyre meltdown', 'gyre');
 defineRelatedMove2Way('gyre meltdown', 'swing');
+
+////////////////////////////////////////////////
+// GYRE STAR                                  //
+////////////////////////////////////////////////
+
+function gyre_star_view(move, pvs) {
+  var [ who,  turn,  places,  beats] = pvs;
+  var [swho, sturn, splaces, sbeats] = parameter_strings(move, pvs);
+  var sleft = swho;
+  var sright = who ? invertPair(who) : '____';
+  var sback = turn ? sleft : sright;
+  var sforward = turn ? sright : sleft;
+  return words(move, sturn, splaces, sbeats, comma, sback, 'backing', '-', sleft, 'take left hands, ', sright, 'take right hands,', sback, 'back up,', sforward, 'go forward');
+}
+
+defineFigure( "gyre star", [param_subject_pair, param_spin_clockwise,  param_three_places, param_beats_8], {view: gyre_star_view, labels: ['left']});
+
+defineRelatedMove2Way('gyre star', 'gyre');
+defineRelatedMove2Way('gyre star', 'star');
 
 ////////////////////////////////////////////////
 // HEY                                        //

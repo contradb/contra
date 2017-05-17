@@ -1,5 +1,5 @@
 
-var dancersComplementHash =
+var invertPairHash =
     {"ladles": "gentlespoons"
     ,"gentlespoons": "ladles"
     ,"ones": "twos"
@@ -9,9 +9,8 @@ var dancersComplementHash =
     };
 // If this names 2 dancers, this returns the names for the other 2 dancers
 // it's sketchy, because it assumes 4 dancers, so only use it in contra moves
-function dancersComplement(whostr) {
-    return dancersComplementHash[whostr] ||
-        throw_up("bogus parameter to dancersComplementHash: "+ whostr)
+function invertPair(whostr) {
+  return invertPairHash[whostr] || (throw_up("bogus parameter to invertPairHash: "+ whostr));
 }
 
 function labelForBeats(beats) {
