@@ -73,8 +73,10 @@ var param_revolutions     = {name: "circling",             ui: chooser_revolutio
 var param_half_around     = {name: "circling", value: 180, ui: chooser_revolutions, string: stringParamDegrees};
 var param_once_around     = {name: "circling", value: 360, ui: chooser_revolutions, string: stringParamDegrees};
 var param_once_and_a_half = {name: "cirlcing", value: 540, ui: chooser_revolutions, string: stringParamDegrees};
+var param_places          = {name: "places",             ui: chooser_places,      string: stringParamDegrees};
 var param_three_places    = {name: "places", value: 270, ui: chooser_places,      string: stringParamDegrees};
 var param_four_places     = {name: "places", value: 360, ui: chooser_places,      string: stringParamDegrees};
+
 
 // always 'everyone' and never 'everybody'!
 var param_subject                    = {name: "who", value: "everyone",     ui: chooser_dancers};
@@ -105,7 +107,6 @@ var param_object_hetero_partners     = {name: "whom", value: "partners",    ui: 
 var param_object_pairs               = {name: "whom",                       ui: chooser_pairs};
 var param_object_pairs_or_ones_or_twos = {name: "whom",                     ui: chooser_pairs_or_ones_or_twos};
 var param_lead_dancer_l1             = {name: "lead", value: "first ladle", ui: chooser_dancer};
-
 
 // not used anymore
 // param_pass_on_left = {name: "pass", value: false, ui: chooser_right_left_shoulder};

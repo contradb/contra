@@ -115,6 +115,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['neighbors do si do twice for 16', 'do si do', 'neighbors', true, 720, 16],
    ['shadows gyre 1½', 'gyre', 'shadows', true, 540, 8],
    ['ones gyre left shoulders 1½', 'gyre', 'ones', false, 540, 8],
+   ['gyre star clockwise 3 places with gentlespoons putting their left hands in and backing up for 10',
+   'gyre star', 'gentlespoons', true, 270, 10],
    ['neighbors box the gnat', 'box the gnat',  'neighbors', false, true,  4],
    ['gentlespoons pass by right shoulders', 'pass by', 'gentlespoons', true, 2],
    ['neighbors pass by right shoulders', 'pass by', 'neighbors', true, 2],

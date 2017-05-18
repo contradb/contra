@@ -21,7 +21,7 @@ function moveCaresAboutRotations (move) {
     return moveCaresAboutRotationsHash[deAliasMove(move)];
 }
 
-var moveCaresAboutPlacesHash = {circle: true, star: true};
+var moveCaresAboutPlacesHash = {circle: true, star: true, 'gyre star': true};
 // it now seems to me that this should be defined by defineFigure -dm 03-07-2017
 function moveCaresAboutPlaces (move) {
     return moveCaresAboutPlacesHash[deAliasMove(move)];
