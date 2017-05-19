@@ -23,7 +23,9 @@
 //= require libfigure/move
 //= require libfigure/chooser
 //= require libfigure/param
+//= require libfigure/define-figure
 //= require libfigure/figure
+//= require libfigure/after-figure
 //= require libfigure/dance
 //= require dances
 //= require_tree .
