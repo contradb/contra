@@ -34,7 +34,10 @@ var degrees2rotations = { 90: "¼",
                          450: "1¼",
                          540: "1½",
                          630: "1¾",
-                         720: "twice"}
+                         720: "twice",
+                         810: "2¼",
+                         900: "2½"};
+
 var degrees2places = { 90: "1 place", 
                       180: "2 places", 
                       270: "3 places",
@@ -42,7 +45,10 @@ var degrees2places = { 90: "1 place",
                       450: "5 places",
                       540: "6 places",
                       630: "7 places",
-                      720: "8 places"}
+                      720: "8 places",
+                      810: "9 places",
+                      900: "10 places"};
+
 function degreesToWords (degrees,optional_move) {
     if (moveCaresAboutRotations(optional_move) && degrees2rotations[degrees]) 
         return degrees2rotations[degrees];
@@ -50,6 +56,7 @@ function degreesToWords (degrees,optional_move) {
         return degrees2places[degrees];
     return degrees.toString();
 }
+
 function degreesToRotations(degrees) {
   if (degrees) {
     return degrees2rotations[degrees] || (degrees.toString() + " degrees");
@@ -57,6 +64,7 @@ function degreesToRotations(degrees) {
     return "?";
   }
 }
+
 function degreesToPlaces(degrees) {
   if (degrees) {
     return degrees2places[degrees] || (degrees.toString() + " degrees");
@@ -65,9 +73,10 @@ function degreesToPlaces(degrees) {
   }
 }
 
-var anglesForMoveArr = [90,180,270,360,450,540,630,720];
+var anglesForMoveArr = [90,180,270,360,450,540,630,720,810,900];
+
 function anglesForMove (move) {
-    // move is intentionally ignored
-    return anglesForMoveArr
+  // move is intentionally ignored
+  return anglesForMoveArr;
 }
 
