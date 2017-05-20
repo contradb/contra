@@ -469,8 +469,8 @@ defineFigure("petronella", [param_balance_true, param_beats_8], {view: petronell
 function poussette_view(move,pvs) {
   var [ half_or_full,  who,  whom,  turn, beats] = pvs;
   var [shalf_or_full, swho, swhom, sturn, sbeats] = parameter_strings(move, pvs);
-  var tturn = turn === undefined ? '____' : (turn ? 'forward then right' : 'forward then left');
-  return words(shalf_or_full, move, '-', swho, 'push', swhom, tturn, sbeats);
+  var tturn = turn === undefined ? '____' : (turn ? 'back then left' : 'back then right');
+  return words(shalf_or_full, move, '-', swho, 'pull', swhom, tturn, sbeats);
 }
 
 defineFigure("poussette",
