@@ -26,6 +26,7 @@ function stringParamBeatsNotN (n) {
     return value && (value != n) ? "for "+value : "";
   }
 }
+var param_beats   = {name: "beats",           ui: chooser_beats, string: stringParamBeatsNotN(-100)}; // always display beats
 var param_beats_0 = {name: "beats", value: 0, ui: chooser_beats, string: stringParamBeatsNotN(0)};
 var param_beats_2 = {name: "beats", value: 2, ui: chooser_beats, string: stringParamBeatsNotN(2)};
 var param_beats_4 = {name: "beats", value: 4, ui: chooser_beats, string: stringParamBeatsNotN(4)};
@@ -114,7 +115,7 @@ var param_lead_dancer_l1             = {name: "lead", value: "first ladle", ui: 
 
 var param_custom_figure = {name: "custom", value: "", ui: chooser_text};
 
-var wristGrips = ['', 'wrist grip', 'hands across']
+var wristGrips = ['', 'wrist grip', 'hands across'];
 
 var param_star_grip = {name: "grip", value: wristGrips[0], ui: chooser_star_grip};
 
@@ -198,16 +199,22 @@ function stringParamGateFace (value) {
   return _stringParamGateFace[value];
 }
 
-var param_gate_face = {name: "face", ui: chooser_gate_direction, string: stringParamGateFace}
+var param_gate_face = {name: "face", ui: chooser_gate_direction, string: stringParamGateFace};
 
-function stringParamHalfOrFull (value) {
-  if (0.5 === value) {
-    return '';
-  } else if (1.0 === value) {
-    return 'full';
-  } else {
-    throw_up('bad half_or_full parameter value: '+value);
-  }
+function stringParamHalfOrFullNotN(default_value) {
+  return function (value) {
+    if (default_value === value) {
+      return '';
+    } else if (0.5 === value) {
+      return 'half';
+    } else if (1.0 === value) {
+      return 'full';
+    } else {
+      throw_up('bad half_or_full parameter value: '+value);
+    }
+  };
 }
 
-var param_half_or_full  = {name: "half", value: 0.5,  ui: chooser_half_or_full, string: stringParamHalfOrFull};
+var param_half_or_full       = {name: "half",              ui: chooser_half_or_full, string: stringParamHalfOrFullNotN(-100.0)};
+var param_half_or_full_half  = {name: "half", value: 0.5,  ui: chooser_half_or_full, string: stringParamHalfOrFullNotN(0.5)};
+var param_half_or_full_full  = {name: "half", value: 1.0,  ui: chooser_half_or_full, string: stringParamHalfOrFullNotN(1.0)};

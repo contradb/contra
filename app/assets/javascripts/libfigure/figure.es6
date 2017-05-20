@@ -260,7 +260,7 @@ function figure_8_view(move, pvs) {
 }
 
 defineFigure("figure 8",
-             [param_subject_pair_ones, param_lead_dancer_l1, param_half_or_full, param_beats_8],
+             [param_subject_pair_ones, param_lead_dancer_l1, param_half_or_full_half, param_beats_8],
              {view: figure_8_view, change: figure_8_change});
 
 ////////////////////////////////////////////////
@@ -461,6 +461,21 @@ function petronella_view(move,pvs) {
 
 defineFigure("petronella", [param_balance_true, param_beats_8], {view: petronella_view});
 // supported on request: turning to the left
+
+////////////////////////////////////////////////
+// POUSSETTE                                  //
+////////////////////////////////////////////////
+
+function poussette_view(move,pvs) {
+  var [ half_or_full,  who,  whom,  turn, beats] = pvs;
+  var [shalf_or_full, swho, swhom, sturn, sbeats] = parameter_strings(move, pvs);
+  var tturn = turn === undefined ? '____' : (turn ? 'forward then right' : 'forward then left');
+  return words(shalf_or_full, move, '-', swho, 'push', swhom, tturn, sbeats);
+}
+
+defineFigure("poussette",
+             [param_half_or_full, param_subject_pair, param_object_pairs_or_ones_or_twos, param_spin, param_beats],
+             {view: poussette_view});
 
 ////////////////////////////////////////////////
 // PROMENADE                                  //
