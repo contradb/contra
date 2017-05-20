@@ -14,9 +14,11 @@ class DancesController < ApplicationController
   def new
     @dance = Dance.new
     @dance.title ||= "New Dance" 
+    @admin_email = Rails.application.secrets.admin_gmail_username
   end
 
   def edit
+    @admin_email = Rails.application.secrets.admin_gmail_username
   end
 
 
