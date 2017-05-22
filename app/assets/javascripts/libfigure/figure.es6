@@ -407,7 +407,7 @@ function mad_robin_view(move,pvs) {
 }
 
 defineFigure("mad robin",
-             [param_subject_role, param_once_around, param_beats_8],
+             [param_subject_pair, param_once_around, param_beats_8],
              {view: mad_robin_view});
 
 ////////////////////////////////////////////////
