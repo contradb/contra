@@ -630,38 +630,48 @@ function square_through_change_subjects(figure, index) {
 }
 
 function square_through_change_beats(figure, index) {
-  const balance_idx = 2;
-  const angle_idx = 4;
   const beats_idx = 5;
   const pvs = figure.parameter_values;
+
+  const balance_idx = 2;
+  const angle_idx = 4;
   const changed_balance_or_places = (index === balance_idx) || (index === angle_idx);
   if (changed_balance_or_places) { 
-    const angle = pvs[angle_idx];
-    const places = angle / 90;
-    if ((places !== 2) && (places !== 3) && (places !== 4)) {
-      throw_up('unexpected number of places to square_through_change');
-    }
-    const balance_beats = (places >> 1) * 4 * pvs[balance_idx];
-    const pull_by_beats = places * 2;
-    const beats_recommendation = balance_beats + pull_by_beats;
-    console.log('beats_recommendation = '+beats_recommendation);
-    pvs[beats_idx] = beats_recommendation;
+    pvs[beats_idx] = square_through_expected_beats(pvs);
   }
 }
+
+function square_through_expected_beats(pvs) {
+  const balance_idx = 2;
+  const angle_idx = 4;
+
+  const angle = pvs[angle_idx];
+  const places = angle / 90;
+  if ((places !== 2) && (places !== 3) && (places !== 4)) {
+    throw_up('unexpected number of places to square_through_expected_beats');
+  }
+  const balance_beats = (places+1 >> 1) * 4 * pvs[balance_idx];
+  const pull_by_beats = places * 2;
+  return balance_beats + pull_by_beats;
+}
+
 
 function square_through_view(move,pvs) {
   var [ subject1,  subject2,  bal,  hand,  angle,  beats] = pvs;
   var [ssubject1, ssubject2, sbal, shand, sangle, sbeats] = parameter_strings(move, pvs);
   var shand2 = hand ? 'left' : 'right';
   var places = angle / 90;
+  var beats_unexpected = beats !== square_through_expected_beats(pvs);
+  var beats_not_divisible_by_four = 0 !== beats % 4;
+  var tbeats = (beats_unexpected || beats_not_divisible_by_four) && sbeats;
   if ((places !== 2) && (places !== 3) && (places !== 4)) {
     throw_up('unexpected number of places to square_through_view');
   }
   var placewords = [,,'two', 'three', 'four'][places];
   if (places===3) {
-    return words(move, placewords, '-', ssubject1, sbal, 'pull by', shand, comma, 'then', ssubject2, 'pull by', shand2, comma, 'then', ssubject1, sbal, 'pull by', shand);
+    return words(move, placewords, tbeats, '-', ssubject1, sbal, 'pull by', shand, comma, 'then', ssubject2, 'pull by', shand2, comma, 'then', ssubject1, sbal, 'pull by', shand);
   } else {
-    return words(move, placewords, '-', ssubject1, sbal, 'pull by', shand, comma, 'then', ssubject2, 'pull by', shand2, (places===4) && comma, (places===4) && 'then repeat');
+    return words(move, placewords, tbeats, '-', ssubject1, sbal, 'pull by', shand, comma, 'then', ssubject2, 'pull by', shand2, (places===4) && comma, (places===4) && 'then repeat');
   }
 }
 
