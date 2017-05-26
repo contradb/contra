@@ -125,6 +125,10 @@ RSpec.describe DancesHelper, type: :helper do
    ['twos figure 8, gentlespoon leading', 'figure 8', 'twos', 'second gentlespoon', 0.5, 8],
    ['half poussette - ladles pull neighbors back then left for 8', 'poussette', 0.5, 'ladles', 'neighbors', true, 8],
    ['full poussette - twos pull ones back then right for 6', 'poussette', 1.0, 'twos', 'ones', false, 6],
+   ['square through two - partners balance & pull by right, then neighbors pull by left', 'square through', 'partners', 'neighbors', true, true, 180, 8],
+   ['square through three for 6 - same roles pull by right, then partners pull by left, then same roles pull by right', 'square through', 'same roles', 'partners', false, true, 270, 6],
+   ['square through three for 8 - same roles pull by right, then partners pull by left, then same roles pull by right', 'square through', 'same roles', 'partners', false, true, 270, 8],
+   ['square through four - shadows balance & pull by right, then neighbors pull by left, then repeat', 'square through', 'shadows', 'neighbors', true, true, 360, 16],
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}'" do
