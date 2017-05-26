@@ -123,6 +123,10 @@ RSpec.describe DancesHelper, type: :helper do
    ['ones figure 8', 'figure 8', 'ones', 'first ladle', 0.5, 8],
    ['gentlespoons full figure 8, first gentlespoon leading, for 16', 'figure 8', 'gentlespoons', 'first gentlespoon', 1.0, 16],
    ['twos figure 8, gentlespoon leading', 'figure 8', 'twos', 'second gentlespoon', 0.5, 8],
+   ['zig zag left then right into a ring', 'zig zag', true, 'ring', 6],
+   ['zig zag left then right into a ring for 8', 'zig zag', true, 'ring', 8],
+   ['zig zag left then right, trailing two catching hands', 'zig zag', true, 'allemande', 6],
+   ['zig zag right then left, trailing two catching hands, for 8', 'zig zag', false, 'allemande', 8],
    ['half poussette - ladles pull neighbors back then left for 8', 'poussette', 0.5, 'ladles', 'neighbors', true, 8],
    ['full poussette - twos pull ones back then right for 6', 'poussette', 1.0, 'twos', 'ones', false, 6],
   ].each do |arr|
