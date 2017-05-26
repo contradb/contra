@@ -671,3 +671,19 @@ function swing_view(move,pvs) {
 defineFigure("swing",
              [param_subject_pairz_partners, param_balance_false, param_beats_8],
              {change: swing_change, view: swing_view});
+
+///////////////////////////////////////////////
+// ZIG ZAG                                    //
+////////////////////////////////////////////////
+
+function zig_zag_view(move,pvs) {
+  var [ spin,  ender,  beats] = pvs;
+  var [sspin, sender, sbeats] = parameter_strings(move, pvs);
+  var [swho,sbalance,sbeats] = parameter_strings(move, pvs);
+  var comma_maybe = (ender === 'allemande') && comma;
+  return words(move, sspin, 'then', spin ? 'right' : 'left', comma_maybe, sender, (sbeats !== '') && comma_maybe, sbeats);
+}
+
+defineFigure("zig zag",
+             [param_spin_left, param_zig_zag_ender_ring, param_beats_6],
+             {view: zig_zag_view});

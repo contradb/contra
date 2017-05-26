@@ -191,6 +191,15 @@ var param_down_the_hall_ender              = {name: "ender", ui: chooser_down_th
 var param_down_the_hall_ender_circle       = {name: "ender", ui: chooser_down_the_hall_ender, value: 'circle', string: stringParamDownTheHallEnder};
 var param_down_the_hall_ender_turn_couples = {name: "ender", ui: chooser_down_the_hall_ender, value: 'turn-couples', string: stringParamDownTheHallEnder};
 
+function stringParamZigZagEnder (value) {
+  if ('ring' === value) { return 'into a ring'; }
+  else if ('allemande' === value) { return 'trailing two catching hands'; }
+  else { throw_up('bad zig zag ender: '+value); }
+}
+
+var param_zig_zag_ender_ring = {name: "ender", ui: chooser_zig_zag_ender, value: 'ring', string: stringParamZigZagEnder};
+
+
 var param_give = {name: "give", ui: chooser_give, value: true};
 
 var _stringParamGateFace = {up: 'up the set', down: 'down the set', 'in': 'into the set', out: 'out of the set'};
