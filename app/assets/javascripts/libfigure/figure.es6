@@ -686,4 +686,4 @@ function zig_zag_view(move,pvs) {
 
 defineFigure("zig zag",
              [param_spin_left, param_zig_zag_ender_ring, param_beats_6],
-             {view: zig_zag_view});
+             {view: zig_zag_view, progression: true});
