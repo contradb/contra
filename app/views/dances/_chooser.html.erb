@@ -232,6 +232,14 @@
                     <option value='circle'>bend into a ring</option>
                   </select>
                 </div>
+                <div ng-if="p.ui == chooser_zig_zag_ender">
+                  <select ng-model="figure.parameter_values[$index]"
+                          ng-change="user_changed_parameter(figure,$index)"
+                          class='form-control'>
+                    <option value='ring'>into a ring</option>
+                    <option value='allemande'>trailing two catch hands</option>
+                  </select>
+                </div>
                 <div ng-if="p.ui == chooser_give">
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)"/> give &amp; take</label>
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)"/> take</label>
