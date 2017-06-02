@@ -21,7 +21,13 @@ function moveCaresAboutRotations (move) {
     return moveCaresAboutRotationsHash[deAliasMove(move)];
 }
 
-var moveCaresAboutPlacesHash = {circle: true, star: true, 'gyre star': true, 'square through': true};
+var moveCaresAboutPlacesHash =
+    {circle: true
+    , star: true
+    , 'gyre star': true
+    , 'square through': true
+    , 'box circulate': true
+    };
 // it now seems to me that this should be defined by defineFigure -dm 03-07-2017
 function moveCaresAboutPlaces (move) {
     return moveCaresAboutPlacesHash[deAliasMove(move)];
@@ -78,6 +84,8 @@ var anglesForMoveArr = [90,180,270,360,450,540,630,720,810,900];
 function anglesForMove (move) {
   if (move === 'square through') {
     return [180, 270, 360];
+  } else if (move === 'box circulate') {
+    return [90, 180, 270, 360];
   } else {
     return anglesForMoveArr;
   }
