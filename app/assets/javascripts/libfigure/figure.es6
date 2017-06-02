@@ -86,7 +86,7 @@ function box_circulate_view(move,pvs) {
   var [ssubject, sbal, sspin, sangle, sbeats] = parameter_strings(move, pvs);
   var tbeats = beats === box_circulate_expected_beats(pvs) ? false : ('for '+ beats);
   var places = angle/90;
-  var tangle = [,'once','twice','three times','four times'][places];
+  var stimes = [,'once','twice','three times','four times'][places];
   var repeats = (places === 4) ? 2 : places;
   var details = '';
   for (var i=0; i < repeats; i++) {
@@ -96,9 +96,9 @@ function box_circulate_view(move,pvs) {
     details = words(details, (details !== '') && comma, first_ssubject, 'cross while', second_ssubject, 'loop', sspin);
   }
   if (places === 4) {
-    details = words(details, comma, 'etcetera');
+    details = words(details, comma, 'repeat');
   }
-  return words(sbal, move, tangle, '-', details, tbeats && comma, tbeats);
+  return words(sbal, move, comma, stimes, '-', details, tbeats && comma, tbeats);
 }
 
 defineFigure("box circulate",
