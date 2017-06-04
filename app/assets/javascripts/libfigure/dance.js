@@ -9,8 +9,12 @@ var invertPairHash =
     };
 // If this names 2 dancers, this returns the names for the other 2 dancers
 // it's sketchy, because it assumes 4 dancers, so only use it in contra moves
-function invertPair(whostr) {
-  return invertPairHash[whostr] || (throw_up("bogus parameter to invertPairHash: "+ whostr));
+function invertPair(whostr, falsey_ok) {
+  if (falsey_ok && !whostr) {
+    return whostr;
+  } else {
+    return invertPairHash[whostr] || (throw_up("bogus parameter to invertPairHash: "+ whostr));
+  }
 }
 
 function labelForBeats(beats) {

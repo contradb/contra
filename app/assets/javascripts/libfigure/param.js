@@ -75,6 +75,7 @@ var param_half_around     = {name: "circling", value: 180, ui: chooser_revolutio
 var param_once_around     = {name: "circling", value: 360, ui: chooser_revolutions, string: stringParamDegrees};
 var param_once_and_a_half = {name: "cirlcing", value: 540, ui: chooser_revolutions, string: stringParamDegrees};
 var param_places          = {name: "places",             ui: chooser_places,      string: stringParamDegrees};
+var param_two_places      = {name: "places", value: 180, ui: chooser_places,      string: stringParamDegrees};
 var param_three_places    = {name: "places", value: 270, ui: chooser_places,      string: stringParamDegrees};
 var param_four_places     = {name: "places", value: 360, ui: chooser_places,      string: stringParamDegrees};
 

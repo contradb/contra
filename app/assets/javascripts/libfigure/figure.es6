@@ -55,6 +55,33 @@ defineFigure("balance the ring", [param_beats_4]);
 defineRelatedMove2Way('balance the ring', 'balance');
 
 ////////////////////////////////////////////////
+// BOX CIRCULATE                              //
+////////////////////////////////////////////////
+
+function box_circulate_change(figure,index) {
+  var pvs = figure.parameter_values;
+  const bal_index = 1;
+  const beats_index = 3;
+  if (index === bal_index) {
+    pvs[beats_index] = pvs[bal_index] ? 8 : 4;
+  }
+}
+
+function box_circulate_view(move,pvs) {
+  var [subject, bal, spin, beats] = pvs;
+  var [ssubject, sbal, sspin, sbeats] = parameter_strings(move, pvs);
+  var expected_beats = bal ? 8 : 4;
+  var tbeats = (beats === expected_beats) ? false : ('for '+ beats);
+  var second_ssubject = subject ? invertPair(subject) : "others";
+  var details = words(ssubject, 'cross while', second_ssubject, 'loop', sspin);
+  return words(sbal, move, '-', details, tbeats);
+}
+
+defineFigure("box circulate",
+             [param_subject_pair, param_balance_true, param_right_hand_spin, param_beats_8],
+             {change: box_circulate_change, view: box_circulate_view});
+
+////////////////////////////////////////////////
 // BOX THE GNAT                               //
 ////////////////////////////////////////////////
 
