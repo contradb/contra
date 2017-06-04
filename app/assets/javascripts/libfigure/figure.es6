@@ -61,48 +61,24 @@ defineRelatedMove2Way('balance the ring', 'balance');
 function box_circulate_change(figure,index) {
   var pvs = figure.parameter_values;
   const bal_index = 1;
-  const angle_index = 3;
-  const beats_index = 4;
-  if (index === bal_index || index === angle_index) {
-    pvs[beats_index] = box_circulate_expected_beats(pvs);
+  const beats_index = 3;
+  if (index === bal_index) {
+    pvs[beats_index] = pvs[bal_index] ? 8 : 4;
   }
-}
-
-function box_circulate_expected_beats(pvs) {
-  const balance_idx = 1;
-  const angle_idx = 3;
-
-  const angle = pvs[angle_idx];
-  const places = angle / 90;
-  if ((places < 1) || (places > 4)) {
-    throw_up('unexpected number of places to box_circulate_expected_beats');
-  }
-  const beats_per_place = pvs[balance_idx] ? 8 : 4;
-  return places * beats_per_place;
 }
 
 function box_circulate_view(move,pvs) {
-  var [subject, bal, spin, angle, beats] = pvs;
-  var [ssubject, sbal, sspin, sangle, sbeats] = parameter_strings(move, pvs);
-  var tbeats = beats === box_circulate_expected_beats(pvs) ? false : ('for '+ beats);
-  var places = angle/90;
-  var stimes = [,'once','twice','three times','four times'][places];
-  var repeats = (places === 4) ? 2 : places;
-  var details = '';
-  for (var i=0; i < repeats; i++) {
-    var first_subject = (i%2) ? invertPair(subject, true) : subject;
-    var first_ssubject = first_subject || '____';
-    var second_ssubject = first_subject ? invertPair(first_subject) : "others";
-    details = words(details, (details !== '') && comma, first_ssubject, 'cross while', second_ssubject, 'loop', sspin);
-  }
-  if (places === 4) {
-    details = words(details, comma, 'repeat');
-  }
-  return words(sbal, move, comma, stimes, '-', details, tbeats && comma, tbeats);
+  var [subject, bal, spin, beats] = pvs;
+  var [ssubject, sbal, sspin, sbeats] = parameter_strings(move, pvs);
+  var expected_beats = bal ? 8 : 4;
+  var tbeats = (beats === expected_beats) ? false : ('for '+ beats);
+  var second_ssubject = subject ? invertPair(subject) : "others";
+  var details = words(ssubject, 'cross while', second_ssubject, 'loop', sspin);
+  return words(sbal, move, '-', details, tbeats);
 }
 
 defineFigure("box circulate",
-             [param_subject_pair, param_balance_true, param_right_hand_spin, param_two_places, param_beats_16],
+             [param_subject_pair, param_balance_true, param_right_hand_spin, param_beats_8],
              {change: box_circulate_change, view: box_circulate_view});
 
 ////////////////////////////////////////////////

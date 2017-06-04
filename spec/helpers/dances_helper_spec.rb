@@ -133,6 +133,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['square through three for 6 - same roles pull by right, then partners pull by left, then same roles pull by right', 'square through', 'same roles', 'partners', false, true, 270, 6],
    ['square through three for 8 - same roles pull by right, then partners pull by left, then same roles pull by right', 'square through', 'same roles', 'partners', false, true, 270, 8],
    ['square through four - shadows balance & pull by right, then neighbors pull by left, then repeat', 'square through', 'shadows', 'neighbors', true, true, 360, 16],
+   ['balance & box circulate - gentlespoons cross while ladles loop right', 'box circulate', 'gentlespoons', true, true, 8],
+   ['box circulate - ones cross while twos loop left for 2', 'box circulate', 'ones', false, false, 2],
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}'" do
