@@ -1,6 +1,10 @@
 require 'jslibfigure'
 
 class LongLinesAddForwardOnly < ActiveRecord::Migration
+  def down
+    raise "not implemented - its possible just not worth the time"
+  end
+
   def up
     count = 0
     Dance.all.each do |dance|
@@ -19,8 +23,9 @@ class LongLinesAddForwardOnly < ActiveRecord::Migration
       end
       unless oldfigures == newfigures
         count += 1
-        puts "#{dance.title} (#{dance.id})"
+        dance.record_timestamps = false
         dance.update!(figures: newfigures) 
+        puts "#{dance.title} (#{dance.id})"
       end
     end
     puts "#{count}/#{Dance.all.count} dances updated"
