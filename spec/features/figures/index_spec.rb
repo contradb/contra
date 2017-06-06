@@ -6,7 +6,7 @@ describe 'figures index' do
     visit figures_path
     expect(page).to have_title('Figure | Contra')
     expect(page).to have_link('swing', href: figure_path('swing'))
-    expect(page).to have_link('do si do', figure_path('do-si-do'))
-    expect(page).to have_link("Rory O'Moore", figure_path('rory-omoore'))
+    expect(page).to have_link('do si do', href: figure_path('do-si-do'))
+    expect(page).to have_link("Rory O'Moore", href: figure_path('rory-omoore'))
   end
 end
