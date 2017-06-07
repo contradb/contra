@@ -376,37 +376,30 @@ defineRelatedMove2Way('gyre star', 'star');
 // HEY                                        //
 ////////////////////////////////////////////////
 
-function hey_view_maker(default_beats) {
-  return function (move,pvs) {
-    var [  who,  dir,  beats] = pvs;
-    var [leader, sdir, sbeats] = parameter_strings(move, pvs);
-    var sdir2 = dir === 'across' ? '' : sdir;
-    if (beats == default_beats) {
-      return  words(sdir2, move+",", leader, "lead");
-    } else {
-      return words(sdir2, move+",", leader, "lead,", sbeats);
-    }
-  };
-}
-
-function hey_rename(figure,index) {
+function hey_change(figure,index) {
   var pvs = figure.parameter_values;
-  var beats = pvs[1];
-  if (beats ==  8) {
-    figure.move = "half hey";
-  } else if (beats == 16) {
-    figure.move = "hey";
+  var half_or_full_idx = 1;
+  var beats_idx = 3;
+  var half_or_full = pvs[half_or_full_idx];
+  var beats = pvs[beats_idx];
+  if (half_or_full_idx === index && (half_or_full * beats === 8)) {
+    pvs[beats_idx] = half_or_full * 16;
   }
 }
 
-defineFigure("hey",
-             [param_subject_pair_ladles, param_set_direction_across, param_beats_16],
-             {view: hey_view_maker(16), change: hey_rename});
-defineFigure("half hey",
-             [param_subject_pair_ladles, param_set_direction_across, param_beats_8],
-             {view: hey_view_maker(8), change: hey_rename});
+function hey_view(move,pvs) {
+  var [  who,   half,  dir,  beats] = pvs;
+  var [leader, shalf, sdir, sbeats] = parameter_strings(move, pvs);
+  var sdir2 = dir === 'across' ? '' : sdir;
+  var tbeats = beats / half === 16 ? '' : ('for '+beats);
+  var thalf = (1 === half) ? false : shalf;
+  return words(sdir2, thalf, move, comma, leader, "lead", tbeats);
+}
 
-defineRelatedMove2Way('hey', 'half hey');
+defineFigure("hey",
+             [param_subject_pair_ladles, param_half_or_full, param_set_direction_across, param_beats_16],
+             {view: hey_view, change: hey_change});
+
 
 ////////////////////////////////////////////////
 // LONG LINES                                 //
