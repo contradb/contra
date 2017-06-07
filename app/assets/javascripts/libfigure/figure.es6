@@ -409,18 +409,29 @@ defineFigure("half hey",
 defineRelatedMove2Way('hey', 'half hey');
 
 ////////////////////////////////////////////////
-// LONG LINES forward and back                //
+// LONG LINES                                 //
 ////////////////////////////////////////////////
 
-defineFigure("long lines", [param_beats_8]);
+function long_lines_change(figure,index) {
+  var pvs = figure.parameter_values;
+  const back_index = 0;
+  const beats_index = 1;
+  if (index === back_index) {
+    pvs[beats_index] = pvs[back_index] ? 8 : 4;
+  }
+}
 
-////////////////////////////////////////////////
-// LONG LINES FORWARD ONLY                    //
-////////////////////////////////////////////////
+function long_lines_view(move,pvs) {
+  var [ back,  beats] = pvs;
+  var [sback, sbeats] = parameter_strings(move, pvs);
+  var expected_beats = back ? 8 : 4;
+  var tbeats = (beats === expected_beats) ? '' : ('for '+beats);
+  return words(move, !back && 'forward', tbeats);
+}
 
-defineFigure("long lines forward only",  [param_beats_4]);
-
-defineRelatedMove2Way('long lines', 'long lines forward only');
+defineFigure("long lines",
+             [param_go_back, param_beats_8],
+             {view: long_lines_view, change: long_lines_change});
 
 ////////////////////////////////////////////////
 // MAD ROBIN                                  //

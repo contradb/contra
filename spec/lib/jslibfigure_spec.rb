@@ -32,7 +32,7 @@ RSpec.describe JSLibFigure do
 
   describe 'related_moves' do
     it 'long lines forward only => long lines' do
-      expect(JSLibFigure.related_moves('long lines forward only')).to include('long lines')
+      expect(JSLibFigure.related_moves('allemande')).to include('allemande orbit')
     end
   end
 

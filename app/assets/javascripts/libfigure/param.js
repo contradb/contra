@@ -200,7 +200,7 @@ function stringParamZigZagEnder (value) {
 
 var param_zig_zag_ender_ring = {name: "ender", ui: chooser_zig_zag_ender, value: 'ring', string: stringParamZigZagEnder};
 
-
+var param_go_back = {name: "go", ui: chooser_go_back, value: true};
 var param_give = {name: "give", ui: chooser_give, value: true};
 
 var _stringParamGateFace = {up: 'up the set', down: 'down the set', 'in': 'into the set', out: 'out of the set'};

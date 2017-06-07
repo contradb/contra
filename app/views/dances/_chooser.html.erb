@@ -244,6 +244,10 @@
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)"/> give &amp; take</label>
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)"/> take</label>
                 </div>
+                <div ng-if="p.ui == chooser_go_back">
+                  <label class='radio-tweaks figure-multiline-radio'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="user_changed_parameter(figure,$index)"/> forward &amp; back</label>
+                  <label class='radio-tweaks figure-multiline-radio'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="user_changed_parameter(figure,$index)"/> forward</label>
+                </div>
                 <div ng-if="p.ui == chooser_half_or_full">
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="0.5" ng-change="user_changed_parameter(figure,$index)"/> half</label>
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="1.0" ng-change="user_changed_parameter(figure,$index)"/> full</label>
