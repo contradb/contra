@@ -227,5 +227,6 @@ function stringParamHalfOrFullNotN(default_value) {
 
 var param_half_or_full       = {name: "half",              ui: chooser_half_or_full, string: stringParamHalfOrFullNotN(-100.0)};
 var param_half_or_full_half  = {name: "half", value: 0.5,  ui: chooser_half_or_full, string: stringParamHalfOrFullNotN(0.5)};
-var param_half_or_full_half_hey  = {name: "half", value: 0.5,  ui: chooser_half_or_full, string: stringParamHalfOrFullNotN(1.0)}; // hey is chatty about its halfness
+var param_half_or_full_half_chatty_half = {name: "half", value: 0.5,  ui: chooser_half_or_full, string: stringParamHalfOrFullNotN(1.0)}; // hey is chatty about its halfness
+var param_half_or_full_half_chatty_max  = {name: "half", value: 0.5,  ui: chooser_half_or_full, string: stringParamHalfOrFullNotN(-100)}; // hey is chatty about its halfness
 var param_half_or_full_full  = {name: "half", value: 1.0,  ui: chooser_half_or_full, string: stringParamHalfOrFullNotN(1.0)};

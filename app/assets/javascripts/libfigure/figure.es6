@@ -397,7 +397,7 @@ function hey_view(move,pvs) {
 }
 
 defineFigure("hey",
-             [param_subject_pair_ladles, param_half_or_full_half_hey, param_set_direction_across, param_beats_8],
+             [param_subject_pair_ladles, param_half_or_full_half_chatty_half, param_set_direction_across, param_beats_8],
              {view: hey_view, change: hey_change});
 
 
@@ -505,7 +505,7 @@ function poussette_view(move,pvs) {
 }
 
 defineFigure("poussette",
-             [param_half_or_full, param_subject_pair, param_object_pairs_or_ones_or_twos, param_spin, param_beats],
+             [param_half_or_full_half_chatty_max, param_subject_pair, param_object_pairs_or_ones_or_twos, param_spin, param_beats],
              {view: poussette_view});
 
 ////////////////////////////////////////////////
