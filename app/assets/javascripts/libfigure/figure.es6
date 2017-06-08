@@ -397,7 +397,7 @@ function hey_view(move,pvs) {
 }
 
 defineFigure("hey",
-             [param_subject_pair_ladles, param_half_or_full, param_set_direction_across, param_beats_16],
+             [param_subject_pair_ladles, param_half_or_full_half_hey, param_set_direction_across, param_beats_8],
              {view: hey_view, change: hey_change});
 
 
