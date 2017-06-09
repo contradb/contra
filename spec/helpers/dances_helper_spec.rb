@@ -137,6 +137,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['square through four - shadows balance & pull by right, then neighbors pull by left, then repeat', 'square through', 'shadows', 'neighbors', true, true, 360, 16],
    ['balance & box circulate - gentlespoons cross while ladles loop right', 'box circulate', 'gentlespoons', true, true, 8],
    ['box circulate - ones cross while twos loop left for 2', 'box circulate', 'ones', false, false, 2],
+   ['partners California twirl', 'California twirl', 'partners', 4],
+   ['neighbors California twirl for 2', 'California twirl', 'neighbors', 2],
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}'" do

@@ -123,6 +123,15 @@ defineTeachingName("swat the flea");
 defineFigure("butterfly whirl", [param_beats_4]);
 
 ////////////////////////////////////////////////
+// CALIFORNIA TWIRL                           //
+////////////////////////////////////////////////
+
+defineFigure("California twirl",
+             [param_subject_pairs_partners, param_beats_4]);
+
+defineRelatedMove2Way('California twirl', 'box the gnat');
+
+////////////////////////////////////////////////
 // CHAIN                                      //
 ////////////////////////////////////////////////
 
