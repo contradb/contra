@@ -149,7 +149,15 @@ defineFigure("chain",
 // CIRCLE                                     //
 ////////////////////////////////////////////////
 
-defineFigure("circle", [param_spin_left,  param_four_places, param_beats_8]);
+defineFigure("circle",
+             [param_spin_left,  param_four_places, param_beats_8]);
+
+////////////////////////////////////////////////
+// CONTRA CORNERS                             //
+////////////////////////////////////////////////
+
+defineFigure("contra corners",
+             [param_custom_figure, param_beats_16]);
 
 ////////////////////////////////////////////////
 // CROSS TRAILS                               //
