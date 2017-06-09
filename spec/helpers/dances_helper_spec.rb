@@ -39,6 +39,7 @@ RSpec.describe DancesHelper, type: :helper do
    ['circle left 3 places', 'circle', true, 270, 8],
    ['put your right hand in', 'custom', 'put your right hand in', 8],
    ['put your right hand in for 16', 'custom', 'put your right hand in', 16],
+   ['custom', 'custom', '  ', 8],
    ['gentlespoons balance & twerk', 'custom yucky', 'gentlespoons', true, 'twerk', 8],
    ['half hey, ladles lead', 'hey', 'ladles', 0.5, 'across', 8],
    ['hey, gentlespoons lead', 'hey', 'gentlespoons', 1.0, 'across', 16],

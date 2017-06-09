@@ -197,7 +197,8 @@ defineFigure("cross trails",
 function custom_view(move,pvs) {
   // remove the word 'custom'
   var [scustom,sbeats] = parameter_strings(move, pvs);
-  return words(scustom,sbeats);
+  var tcustom = scustom.trim()==='' ? 'custom' : scustom;
+  return words(tcustom,sbeats);
 }
 
 defineFigure("custom", [param_custom_figure, param_beats_8], {view: custom_view});
