@@ -139,8 +139,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['box circulate - ones cross while twos loop left for 2', 'box circulate', 'ones', false, false, 2],
    ['partners California twirl', 'California twirl', 'partners', 4],
    ['neighbors California twirl for 2', 'California twirl', 'neighbors', 2],
-   ['contra corners', 'contra corners', '', 16],
-   ['contra corners left hands for 10', 'contra corners', 'left hands', 10],
+   ['ones contra corners', 'contra corners', 'ones', '', 16],
+   ['twos contra corners left hands for 10', 'contra corners', 'twos', 'left hands', 10],
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}'" do

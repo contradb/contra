@@ -157,7 +157,7 @@ defineFigure("circle",
 ////////////////////////////////////////////////
 
 defineFigure("contra corners",
-             [param_custom_figure, param_beats_16]);
+             [param_subject_pair_ones, param_custom_figure, param_beats_16]);
 
 defineRelatedMove2Way('allemande', 'contra corners');
 
