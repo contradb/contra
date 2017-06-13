@@ -439,7 +439,7 @@ function long_lines_view(move,pvs) {
   var [sback, sbeats] = parameter_strings(move, pvs);
   var expected_beats = back ? 8 : 4;
   var tbeats = (beats === expected_beats) ? '' : ('for '+beats);
-  return words(move, !back && 'forward', tbeats);
+  return words(move, back ? 'forward & back' : 'forward', tbeats);
 }
 
 defineFigure("long lines",
@@ -614,8 +614,6 @@ defineFigure("right left through",
 
 defineFigure("roll away",
              [param_subject_pair, param_object_pairs_or_ones_or_twos, param_half_sashay_false, param_beats_4]);
-
-defineRelatedMove2Way('roll away', 'long lines forward only');
 
 ////////////////////////////////////////////////
 // RORY O'MOORE                               //

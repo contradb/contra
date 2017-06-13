@@ -44,7 +44,7 @@ RSpec.describe DancesHelper, type: :helper do
    ['half hey, ladles lead', 'hey', 'ladles', 0.5, 'across', 8],
    ['hey, gentlespoons lead', 'hey', 'gentlespoons', 1.0, 'across', 16],
    ['right diagonal hey, gentlespoons lead', 'hey', 'gentlespoons', 1.0, 'right diagonal', 16],
-   ['long lines', 'long lines', true, 8],
+   ['long lines forward & back', 'long lines', true, 8],
    ['long lines forward for 3', 'long lines', false, 3],
    ['long lines forward', 'long lines', false, 4],
    ['balance & petronella', 'petronella', true, 8],
