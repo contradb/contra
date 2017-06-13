@@ -100,7 +100,7 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
-    json (1.8.3)
+    json (1.8.6)
     kgio (2.11.0)
     libv8 (5.0.71.48.3)
     loofah (2.0.3)
@@ -269,4 +269,4 @@ DEPENDENCIES
   web-console (~> 2.0)
 
 BUNDLED WITH
-   1.13.6
+   1.15.1
