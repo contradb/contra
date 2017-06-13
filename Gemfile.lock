@@ -241,7 +241,7 @@ DEPENDENCIES
   capybara
   coffee-rails (~> 4.1.0)
   database_cleaner
-  devise
+  devise (~> 3)
   factory_girl_rails
   jbuilder (~> 2.0)
   jquery-rails
