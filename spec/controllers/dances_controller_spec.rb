@@ -92,12 +92,52 @@ RSpec.describe DancesController, type: :controller do
   end
 
   describe "GET #edit" do
-    login_user
-    it "assigns the requested dance as @dance" do
-      @request.env['HTTP_REFERER'] = 'http://yahoo.com' # set it to whatever nonsense just to not get an error.
-      dance = FactoryGirl.create(:dance)
-      get :edit, {:id => dance.to_param}
-      expect(assigns(:dance)).to eq(dance)
+
+    context 'regular user' do
+      let (:user) { FactoryGirl.create(:user) }
+
+      before(:each) do
+        @request.env["devise.mapping"] = Devise.mappings[:user]
+        sign_in user
+      end
+
+      it "assigns the requested dance as @dance" do
+        @request.env['HTTP_REFERER'] = 'http://yahoo.com' # set it to whatever nonsense just to not get an error.
+        dance = FactoryGirl.create(:dance)
+        get :edit, {:id => dance.to_param}
+        expect(assigns(:dance)).to eq(dance)
+      end
+
+      it "does not render template if not owner" do
+        @request.env['HTTP_REFERER'] = 'http://yahoo.com' # set it to whatever nonsense just to not get an error.
+        dance = FactoryGirl.create(:dance)
+        get :edit, {:id => dance.to_param}
+        expect(response).to_not render_template("edit")
+      end
+
+      it "does render template if owner" do
+        @request.env['HTTP_REFERER'] = 'http://yahoo.com' # set it to whatever nonsense just to not get an error.
+        dance = FactoryGirl.create(:dance, user: user)
+        get :edit, {:id => dance.to_param}
+        expect(response).to render_template("edit")
+      end
+
+    end
+
+    context 'admin user' do
+      let (:admin_user) { FactoryGirl.create(:user, admin: true) }
+      before(:each) do
+        @request.env["devise.mapping"] = Devise.mappings[:user]
+        sign_in admin_user
+      end
+
+      it 'renders the form' do
+        @request.env['HTTP_REFERER'] = 'http://yahoo.com' # set it to whatever nonsense just to not get an error.
+        dance = FactoryGirl.create(:dance)
+        get :edit, {:id => dance.to_param}
+        expect(response).to render_template("edit")
+      end
+      
     end
   end
 
