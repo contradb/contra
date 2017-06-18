@@ -11,6 +11,7 @@ def with_login (admin: false, &block)
     #click_on ' Sign Up':
     find('button[type="submit"]').click
     user = User.last
-    user.update(admin: true) if admin
+    # users controller helpfully creates first user as admin - override it
+    user.update(admin: admin) if admin != user.admin?
     block.call user
 end

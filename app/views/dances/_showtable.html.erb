@@ -42,12 +42,12 @@ dances = showtable
       <tr>
 
         <td><%= link_to copy_icon_html, new_dance_path({copy_dance_id: dance.id}) %></td>               
-        <td><%= if (signed_in? && (current_user.id == dance.user_id))
+        <td><%= if (signed_in? && (current_user.admin? || (current_user.id == dance.user_id)))
                 then link_to(edit_icon_html, edit_dance_path(dance))
                 else "" 
                 end
                 %></td>               
-        <td><%= if (signed_in? && (current_user.id == dance.user_id))
+        <td><%= if (signed_in? && (current_user.admin? || (current_user.id == dance.user_id)))
                 then link_to(delete_icon_html, dance, method: :delete, data: { confirm: "Delete '#{dance.title}?'" })
                 else ""
                 end %></td>

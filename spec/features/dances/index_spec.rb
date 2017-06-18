@@ -7,6 +7,8 @@ describe 'Indexing dances' do
     with_login do |user|
       dance = FactoryGirl.create(:box_the_gnat_contra, user: user)
       visit dances_path
+      expect(user.admin?).to be(false)
+      expect(user.id).to be(dance.user_id)
       expect(page).to have_link(dance.title)
       expect(page).to have_link(dance.choreographer.name)
       expect(page).to have_link(dance.user.name)
@@ -20,6 +22,8 @@ describe 'Indexing dances' do
     with_login do |user|
       dance = FactoryGirl.create(:box_the_gnat_contra)
       visit dances_path
+      expect(user.admin?).to be(false)
+      expect(user.id).to_not be(dance.user_id)
       expect(page).to have_link(dance.title)
       expect(page).to have_link(dance.choreographer.name)
       expect(page).to have_link(dance.user.name)
@@ -33,6 +37,8 @@ describe 'Indexing dances' do
     with_login(admin: true) do |admin|
       dance = FactoryGirl.create(:box_the_gnat_contra)
       visit dances_path
+      expect(admin.admin?).to be(true)
+      expect(admin.id).to_not be(dance.user_id)
       expect(page).to have_link(dance.title)
       expect(page).to have_link(dance.choreographer.name)
       expect(page).to have_link(dance.user.name)
