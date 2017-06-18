@@ -6,7 +6,7 @@ end
 gem 'angularjs-rails', '~> 1.4', '>= 1.4.7'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.7.1'
+gem 'rails', '~> 4.2'
 
 
 gem 'pg'
@@ -79,6 +79,6 @@ gem 'sprockets-es6'
 gem 'bootstrap-sass', '~> 3.3.5'
 gem 'sprockets-rails' # , '~> 2.3.2'
 
-gem 'devise'
+gem 'devise', '~> 3'
 
 gem 'redcarpet'
