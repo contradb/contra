@@ -2,7 +2,7 @@
 
 <div class="btn-group">
 <%= copy_dance_button_html(@dance, label: "Copy") %>
-<%= if (signed_in? && (current_user.id == @dance.user_id)) then
+<%= if (signed_in? && (current_user.admin? || (current_user.id == @dance.user_id))) then
     edit_dance_button_html(@dance, label: "Edit") +
     delete_dance_button_html(@dance, label: "Delete")
     end %>

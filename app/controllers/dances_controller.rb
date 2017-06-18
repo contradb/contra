@@ -67,7 +67,7 @@ class DancesController < ApplicationController
     end
     
     def authenticate_dance_ownership!
-      authenticate_ownership! @dance.user_id
+      current_user&.admin? || authenticate_ownership!(@dance.user_id)
     end
 
     def authenticate_dance_readable!

@@ -10,9 +10,9 @@ describe 'Editing dances', js: true do
       expect(page.body).to include "Box the Gnat Contra" # dance.title
       expect(page.body).to include "Becky Hill" # dance.choreographer.name
       expect(page.body).to include "improper" # dance.start_type
-      expect(page.body).to_not match /Becket/i
-      expect(page).to have_text ('neighbors balance & swing')
-      expect(page).to have_text ('ladles allemande right 1½')
+      expect(page.body).to_not match(/Becket/i)
+      expect(page).to have_text('neighbors balance & swing')
+      expect(page).to have_text('ladles allemande right 1½')
       expect(page.body).to include dance.notes
       expect(page).to have_current_path(edit_dance_path(dance.id))
     end

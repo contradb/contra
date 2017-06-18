@@ -1,7 +1,7 @@
 
 # ONLY TO BE USED IN FEATURE TESTS, because I have no idea what I am doing-dm 07-04-2016
 
-def with_login (&block)
+def with_login (admin: false, &block)
     # hackily sign in - there's got to be a better way
     visit '/users/sign_up'
     fill_in 'user_email', with: 'test@test.com'
@@ -10,5 +10,8 @@ def with_login (&block)
     fill_in 'user_password_confirmation', with: 'aaaaaaaa'
     #click_on ' Sign Up':
     find('button[type="submit"]').click
-    block.call User.last
+    user = User.last
+    # users controller helpfully creates first user as admin - override it
+    user.update(admin: admin) if admin != user.admin?
+    block.call user
 end
