@@ -1,7 +1,7 @@
 class DancesController < ApplicationController
   before_action :set_dance, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :edit, :update, :destroy]
-  before_action :authenticate_dance_ownership!, only: [:edit, :update, :destroy]
+  before_action :authenticate_dance_writable!, only: [:edit, :update, :destroy]
   before_action :authenticate_dance_readable!, only: [:show]
 
   def index
@@ -66,8 +66,8 @@ class DancesController < ApplicationController
       @dance = Dance.find(params[:id])
     end
     
-    def authenticate_dance_ownership!
-      authenticate_ownership! @dance.user_id
+    def authenticate_dance_writable!
+      current_user&.admin? || authenticate_ownership!(@dance.user_id)
     end
 
     def authenticate_dance_readable!

@@ -204,25 +204,6 @@ function custom_view(move,pvs) {
 defineFigure("custom", [param_custom_figure, param_beats_8], {view: custom_view});
 
 ////////////////////////////////////////////////
-// CUSTOM YUCKY                               //
-////////////////////////////////////////////////
-
-// under the earlier versions of ContraDB, custom took a balance
-// parameter and a who parameter. Custom yucky provides a migration
-// path, but hopefully is named yuckily enough that new users won't be
-// drawn to it.
-
-function custom_yucky_view(move,pvs) {
-  var [ who,  bal,  custom, beats] = pvs;
-  var [swho, sbal, scustom,sbeats] = parameter_strings(move, pvs);
-  return words(swho, sbal, scustom, sbeats);
-}
-
-defineFigure("custom yucky",
-             [param_subject, param_balance_false, param_custom_figure, param_beats_8],
-             {view: custom_yucky_view});
-
-////////////////////////////////////////////////
 // DO SI DO (and see saw)                     //
 ////////////////////////////////////////////////
 
