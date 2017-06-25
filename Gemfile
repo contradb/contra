@@ -81,3 +81,5 @@ gem 'sprockets-rails' # , '~> 2.3.2'
 gem 'devise', '~> 4.0.0'
 
 gem 'redcarpet'
+
+gem 'rails-controller-testing'
