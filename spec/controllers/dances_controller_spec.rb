@@ -33,7 +33,7 @@ RSpec.describe DancesController, type: :controller do
 
     context "without login" do
       it "assigns public dances as alphabeticized @dances" do
-        get :index, {}
+        get :index, params: {}
         expect(assigns(:dances)).to eq([dance_a2, dance_b2])
       end
     end
@@ -44,7 +44,7 @@ RSpec.describe DancesController, type: :controller do
         @request.env["devise.mapping"] = Devise.mappings[:user]
         sign_in user_a
 
-        get :index, {}
+        get :index, params: {}
         expect(assigns(:dances)).to eq([dance_a1, dance_a2, dance_b2])
       end
     end
@@ -59,7 +59,7 @@ RSpec.describe DancesController, type: :controller do
         @request.env["devise.mapping"] = Devise.mappings[:user]
         sign_in admonsterator
 
-        get :index, {}
+        get :index, params: {}
         expect(admonsterator.admin?).to be(true)
         expect(assigns(:dances).pluck(:title)).to eq([dance_a1, dance_a2, dance_b1, dance_b2].map &:title)
       end
@@ -69,14 +69,14 @@ RSpec.describe DancesController, type: :controller do
   describe "GET #show" do
     it "assigns the requested dance as @dance" do
       dance = FactoryGirl.create(:dance)
-      get :show, {:id => dance.to_param}
+      get :show, params: {:id => dance.to_param}
       expect(assigns(:dance)).to eq(dance)
     end
 
     it "refuses to show a private dance, instead redirecting back and giving a warning" do
       dance = FactoryGirl.create(:dance, publish: false)
       @request.env['HTTP_REFERER'] = '/'
-      get :show, {:id => dance.to_param}
+      get :show, params: {:id => dance.to_param}
       expect(response).to redirect_to '/'
       expect(flash[:notice]).to eq('this dance has not been published')
     end
@@ -86,7 +86,7 @@ RSpec.describe DancesController, type: :controller do
   describe "GET #new" do
     login_user
     it "assigns a new dance as @dance" do
-      get :new, {}
+      get :new, params: {}
       expect(assigns(:dance)).to be_a_new(Dance)
     end
   end
@@ -104,21 +104,21 @@ RSpec.describe DancesController, type: :controller do
       it "assigns the requested dance as @dance" do
         @request.env['HTTP_REFERER'] = 'http://yahoo.com' # set it to whatever nonsense just to not get an error.
         dance = FactoryGirl.create(:dance)
-        get :edit, {:id => dance.to_param}
+        get :edit, params: {:id => dance.to_param}
         expect(assigns(:dance)).to eq(dance)
       end
 
       it "does not render template if not owner" do
         @request.env['HTTP_REFERER'] = 'http://yahoo.com' # set it to whatever nonsense just to not get an error.
         dance = FactoryGirl.create(:dance)
-        get :edit, {:id => dance.to_param}
+        get :edit, params: {:id => dance.to_param}
         expect(response).to_not render_template("edit")
       end
 
       it "does render template if owner" do
         @request.env['HTTP_REFERER'] = 'http://yahoo.com' # set it to whatever nonsense just to not get an error.
         dance = FactoryGirl.create(:dance, user: user)
-        get :edit, {:id => dance.to_param}
+        get :edit, params: {:id => dance.to_param}
         expect(response).to render_template("edit")
       end
 
@@ -134,7 +134,7 @@ RSpec.describe DancesController, type: :controller do
       it 'renders the form' do
         @request.env['HTTP_REFERER'] = 'http://yahoo.com' # set it to whatever nonsense just to not get an error.
         dance = FactoryGirl.create(:dance)
-        get :edit, {:id => dance.to_param}
+        get :edit, params: {:id => dance.to_param}
         expect(response).to render_template("edit")
       end
       
@@ -145,22 +145,22 @@ RSpec.describe DancesController, type: :controller do
     login_user
     context "with valid params" do
       it "creates a new Dance" do
-        expect {post :create, {:dance => valid_attributes}}.to change(Dance, :count).by(1)
+        expect {post :create, params: {:dance => valid_attributes}}.to change(Dance, :count).by(1)
       end
 
       it "assigns a newly created dance as @dance" do
-        post :create, {:dance => valid_attributes}
+        post :create, params: {:dance => valid_attributes}
         expect(assigns(:dance)).to be_a(Dance)
         expect(assigns(:dance)).to be_persisted
       end
 
       it "redirects to the created dance" do
-        post :create, {:dance => valid_attributes}
+        post :create, params: {:dance => valid_attributes}
         expect(response).to redirect_to(Dance.last)
       end
 
       it "saves attributes" do
-        post :create, {:dance => valid_attributes}
+        post :create, params: {:dance => valid_attributes}
         dance = Dance.last
         expect(dance.title).to eq(valid_attributes[:title])
         expect(dance.choreographer_name).to eq(valid_attributes[:choreographer_name])
@@ -172,17 +172,17 @@ RSpec.describe DancesController, type: :controller do
 
     context "with invalid params" do
       it "assigns a newly created but unsaved dance as @dance" do
-        post :create, {:dance => invalid_attributes}
+        post :create, params: {:dance => invalid_attributes}
         expect(assigns(:dance)).to be_a_new(Dance)
       end
 
       it "re-renders the 'new' template" do
-        post :create, {:dance => invalid_attributes}
+        post :create, params: {:dance => invalid_attributes}
         expect(response).to render_template("new")
       end
 
       it "does not save a dance" do
-        expect {post :create, {:dance => invalid_attributes}}.to change(Dance, :count).by(0)
+        expect {post :create, params: {:dance => invalid_attributes}}.to change(Dance, :count).by(0)
       end
     end
   end
@@ -195,19 +195,19 @@ RSpec.describe DancesController, type: :controller do
       before(:each) { @request.env['HTTP_REFERER'] = dance_url(dance) }
 
       xit "updates the requested dance" do
-        put :update, {:id => dance.to_param, :dance => new_attributes}
+        put :update, params: {:id => dance.to_param, :dance => new_attributes}
         dance.reload
         expect(dance.start_type).to eq('four face four')
         expect(dance.choreographer.name).to eq('Abe Baker')
       end
 
       it "assigns the requested dance as @dance" do
-        put :update, {:id => dance.to_param, :dance => valid_attributes}
+        put :update, params: {:id => dance.to_param, :dance => valid_attributes}
         expect(assigns(:dance)).to eq(dance)
       end
 
       it "redirects to the dance" do
-        put :update, {:id => dance.to_param, :dance => valid_attributes}
+        put :update, params: {:id => dance.to_param, :dance => valid_attributes}
         expect(response).to redirect_to(dance)
       end
     end
@@ -217,13 +217,13 @@ RSpec.describe DancesController, type: :controller do
       # I can't mark these pending, because then the test would succeed for the wrong reason.
       # it "assigns the dance as @dance" do
       #   dance = FactoryGirl.create(:dance)
-      #   put :update, {:id => dance.to_param, :dance => invalid_attributes}
+      #   put :update, params: {:id => dance.to_param, :dance => invalid_attributes}
       #   expect(assigns(:dance)).to eq(dance)
       # end
       #
       # it "re-renders the 'edit' template" do
       #   dance = FactoryGirl.create(:dance)
-      #   put :update, {:id => dance.to_param, :dance => invalid_attributes}
+      #   put :update, params: {:id => dance.to_param, :dance => invalid_attributes}
       #   expect(response).to render_template("edit")
       # end
     end
@@ -234,13 +234,13 @@ RSpec.describe DancesController, type: :controller do
     xit "destroys the requested dance" do
       @request.env['HTTP_REFERER'] = '/dances'
       dance = FactoryGirl.create(:dance)
-      expect {delete :destroy, {:id => dance.to_param}}.to change(Dance, :count).by(-1)
+      expect {delete :destroy, params: {:id => dance.to_param}}.to change(Dance, :count).by(-1)
     end
 
     it "redirects to the dances list" do
       @request.env['HTTP_REFERER'] = '/dances'
       dance = FactoryGirl.create(:dance)
-      delete :destroy, {:id => dance.to_param}
+      delete :destroy, params: {:id => dance.to_param}
       expect(response).to redirect_to(dances_url)
     end
   end

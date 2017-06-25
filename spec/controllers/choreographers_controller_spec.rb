@@ -40,7 +40,7 @@ RSpec.describe ChoreographersController, type: :controller do
   describe "GET #index" do
     it "assigns all choreographers as @choreographers" do
       choreographer = Choreographer.create! valid_attributes
-      get :index, {}, valid_session
+      get :index, params: {}, session: valid_session
       expect(assigns(:choreographers)).to eq([choreographer])
     end
   end
@@ -48,7 +48,7 @@ RSpec.describe ChoreographersController, type: :controller do
   describe "GET #show" do
     it "assigns the requested choreographer as @choreographer" do
       choreographer = Choreographer.create! valid_attributes
-      get :show, {:id => choreographer.to_param}, valid_session
+      get :show, params: {:id => choreographer.to_param}, session: valid_session
       expect(assigns(:choreographer)).to eq(choreographer)
     end
   end
@@ -57,14 +57,14 @@ RSpec.describe ChoreographersController, type: :controller do
     it "assigns a new choreographer as @choreographer" do
       @request.env["devise.mapping"] = Devise.mappings[:user]
       sign_in admin
-      get :new, {}, valid_session
+      get :new, params: {}, session: valid_session
       expect(assigns(:choreographer)).to be_a_new(Choreographer)
     end
 
     it "doesn't work as a non-admin user" do
       @request.env["devise.mapping"] = Devise.mappings[:user]
       sign_in user
-      get :new, {}, valid_session
+      get :new, params: {}, session: valid_session
       expect(assigns(:choreographer)).to be(nil)
     end
   end
@@ -74,7 +74,7 @@ RSpec.describe ChoreographersController, type: :controller do
       choreographer = Choreographer.create! valid_attributes
       @request.env["devise.mapping"] = Devise.mappings[:user]
       sign_in admin
-      get :edit, {:id => choreographer.to_param}, valid_session
+      get :edit, params: {:id => choreographer.to_param}, session: valid_session
       expect(assigns(:choreographer)).to eq(choreographer)
     end
 
@@ -82,7 +82,7 @@ RSpec.describe ChoreographersController, type: :controller do
       choreographer = Choreographer.create! valid_attributes
       @request.env["devise.mapping"] = Devise.mappings[:user]
       sign_in user
-      get :edit, {:id => choreographer.to_param}, valid_session
+      get :edit, params: {:id => choreographer.to_param}, session: valid_session
       expect(assigns(:choreographer)).to be(nil)
     end
   end
@@ -93,7 +93,7 @@ RSpec.describe ChoreographersController, type: :controller do
         @request.env["devise.mapping"] = Devise.mappings[:user]
         sign_in admin
         expect {
-          post :create, {:choreographer => valid_attributes}, valid_session
+          post :create, params: {:choreographer => valid_attributes}, session: valid_session
         }.to change(Choreographer, :count).by(1)
       end
 
@@ -101,14 +101,14 @@ RSpec.describe ChoreographersController, type: :controller do
         @request.env["devise.mapping"] = Devise.mappings[:user]
         sign_in user
         expect {
-          post :create, {:choreographer => valid_attributes}, valid_session
+          post :create, params: {:choreographer => valid_attributes}, session: valid_session
         }.to change(Choreographer, :count).by(0)
       end
 
       it "assigns a newly created choreographer as @choreographer" do
         @request.env["devise.mapping"] = Devise.mappings[:user]
         sign_in admin
-        post :create, {:choreographer => valid_attributes}, valid_session
+        post :create, params: {:choreographer => valid_attributes}, session: valid_session
         expect(assigns(:choreographer)).to be_a(Choreographer)
         expect(assigns(:choreographer)).to be_persisted
       end
@@ -116,14 +116,14 @@ RSpec.describe ChoreographersController, type: :controller do
       it "redirects to the created choreographer" do
         @request.env["devise.mapping"] = Devise.mappings[:user]
         sign_in admin
-        post :create, {:choreographer => valid_attributes}, valid_session
+        post :create, params: {:choreographer => valid_attributes}, session: valid_session
         expect(response).to redirect_to(Choreographer.last)
       end
 
       it "saves form values" do
         @request.env["devise.mapping"] = Devise.mappings[:user]
         sign_in admin
-        post :create, {:choreographer => valid_attributes}, valid_session
+        post :create, params: {:choreographer => valid_attributes}, session: valid_session
         choreographer = assigns(:choreographer).reload
         expect(choreographer.name).to eq(valid_attributes[:name])
         expect(choreographer.publish.to_s).to eq(valid_attributes[:publish])
@@ -135,14 +135,14 @@ RSpec.describe ChoreographersController, type: :controller do
       it "assigns a newly created but unsaved choreographer as @choreographer" do
         @request.env["devise.mapping"] = Devise.mappings[:user]
         sign_in admin
-        post :create, {:choreographer => invalid_attributes}, valid_session
+        post :create, params: {:choreographer => invalid_attributes}, session: valid_session
         expect(assigns(:choreographer)).to be_a_new(Choreographer)
       end
 
       it "re-renders the 'new' template" do
         @request.env["devise.mapping"] = Devise.mappings[:user]
         sign_in admin
-        post :create, {:choreographer => invalid_attributes}, valid_session
+        post :create, params: {:choreographer => invalid_attributes}, session: valid_session
         expect(response).to render_template("new")
       end
     end
@@ -161,7 +161,7 @@ RSpec.describe ChoreographersController, type: :controller do
         choreographer = Choreographer.create! valid_attributes
         @request.env["devise.mapping"] = Devise.mappings[:user]
         sign_in admin
-        put :update, {:id => choreographer.to_param, :choreographer => new_attributes}, valid_session
+        put :update, params: {:id => choreographer.to_param, :choreographer => new_attributes}, session: valid_session
         choreographer.reload
         expect(choreographer.publish_always?).to be_truthy
         expect(choreographer.website).to eq(new_attributes[:website])
@@ -172,7 +172,7 @@ RSpec.describe ChoreographersController, type: :controller do
         @request.env["devise.mapping"] = Devise.mappings[:user]
         sign_in admin
         choreographer = Choreographer.create! valid_attributes
-        put :update, {:id => choreographer.to_param, :choreographer => valid_attributes}, valid_session
+        put :update, params: {:id => choreographer.to_param, :choreographer => valid_attributes}, session: valid_session
         expect(assigns(:choreographer)).to eq(choreographer)
       end
 
@@ -180,7 +180,7 @@ RSpec.describe ChoreographersController, type: :controller do
         @request.env["devise.mapping"] = Devise.mappings[:user]
         sign_in admin
         choreographer = Choreographer.create! valid_attributes
-        put :update, {:id => choreographer.to_param, :choreographer => valid_attributes}, valid_session
+        put :update, params: {:id => choreographer.to_param, :choreographer => valid_attributes}, session: valid_session
         expect(response).to redirect_to(choreographer)
       end
     end
@@ -190,7 +190,7 @@ RSpec.describe ChoreographersController, type: :controller do
         @request.env["devise.mapping"] = Devise.mappings[:user]
         sign_in admin
         choreographer = Choreographer.create! valid_attributes
-        put :update, {:id => choreographer.to_param, :choreographer => invalid_attributes}, valid_session
+        put :update, params: {:id => choreographer.to_param, :choreographer => invalid_attributes}, session: valid_session
         expect(assigns(:choreographer)).to eq(choreographer)
       end
 
@@ -198,7 +198,7 @@ RSpec.describe ChoreographersController, type: :controller do
         @request.env["devise.mapping"] = Devise.mappings[:user]
         sign_in admin
         choreographer = Choreographer.create! valid_attributes
-        put :update, {:id => choreographer.to_param, :choreographer => invalid_attributes}, valid_session
+        put :update, params: {:id => choreographer.to_param, :choreographer => invalid_attributes}, session: valid_session
         expect(response).to render_template("edit")
       end
     end
@@ -210,7 +210,7 @@ RSpec.describe ChoreographersController, type: :controller do
       sign_in admin
       choreographer = Choreographer.create! valid_attributes
       expect {
-        delete :destroy, {:id => choreographer.to_param}, valid_session
+        delete :destroy, params: {:id => choreographer.to_param}, session: valid_session
       }.to change(Choreographer, :count).by(-1)
     end
 
@@ -218,7 +218,7 @@ RSpec.describe ChoreographersController, type: :controller do
       @request.env["devise.mapping"] = Devise.mappings[:user]
       sign_in admin
       choreographer = Choreographer.create! valid_attributes
-      delete :destroy, {:id => choreographer.to_param}, valid_session
+      delete :destroy, params: {:id => choreographer.to_param}, session: valid_session
       expect(response).to redirect_to(choreographers_url)
     end
   end
