@@ -36,8 +36,8 @@ class Program < ApplicationRecord
   def append_new_activity(hash)
     Private.assert !hash[:program]
     Private.assert !hash[:index]
-    Activity.create(hash.merge({program: self, index: activities_length}))
-    self.clear_association_cache
+    Activity.create!(hash.merge({program: self, index: activities_length}))
+    self.reload # reloads associations
     self
   end
 
