@@ -73,9 +73,7 @@ class DancesController < ApplicationController
     def authenticate_dance_readable!
       unless @dance.readable?(current_user)
         flash[:notice] = "this dance has not been published"
-        redirect_to(:back)
-        # rails 5 will have the superior:
-        # redirect_back(fallback_location: '/')
+        redirect_back(fallback_location: '/dances')
       end
     end
 
