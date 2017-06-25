@@ -159,11 +159,16 @@ RSpec.describe ChoreographersController, type: :controller do
 
       it "updates the requested choreographer" do
         choreographer = Choreographer.create! valid_attributes
+        expect(choreographer.publish_always?).to be(false)
+        expect(choreographer.publish_sometimes?).to be(false)
+        expect(choreographer.publish_never?).to be(true)
         @request.env["devise.mapping"] = Devise.mappings[:user]
         sign_in admin
         put :update, params: {:id => choreographer.to_param, :choreographer => new_attributes}, session: valid_session
         choreographer.reload
-        expect(choreographer.publish_always?).to be_truthy
+        expect(choreographer.publish_always?).to be(true)
+        expect(choreographer.publish_sometimes?).to be(false)
+        expect(choreographer.publish_never?).to be(false)
         expect(choreographer.website).to eq(new_attributes[:website])
         expect(choreographer.name).to eq(new_attributes[:name])
       end
