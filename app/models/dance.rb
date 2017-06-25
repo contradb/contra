@@ -14,7 +14,7 @@ class Dance < ApplicationRecord
     elsif user.admin?
       all
     else
-      where('publish= true OR user_id= ?', user.id)
+      where(publish: true).or(where(user_id: user.id))
     end
   }
 
