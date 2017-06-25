@@ -1,6 +1,6 @@
 require 'json'
 
-class Dance < ActiveRecord::Base
+class Dance < ApplicationRecord
   belongs_to :user
   belongs_to :choreographer
   validates :title, length: { in: 3..100 }

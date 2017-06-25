@@ -1,7 +1,7 @@
 # I tried to require 'test/unit/assertions', but couldn't make it work. Just rolled my own.
 
 
-class Program < ActiveRecord::Base
+class Program < ApplicationRecord
   belongs_to :user
   validates :title, length: { in: 4..100 }  
   has_many :activities, dependent: :destroy

@@ -1,4 +1,4 @@
-class Choreographer < ActiveRecord::Base
+class Choreographer < ApplicationRecord
   has_many :dances, -> { order "LOWER(title)" }
 
   validates :name, length: { in: 4..100 }
