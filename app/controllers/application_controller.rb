@@ -8,21 +8,21 @@ class ApplicationController < ActionController::Base
   def authenticate_ownership! (user_id)
     unless signed_in? && (current_user.id == user_id)
       flash[:notice] = "Please access one of your own pages"
-      redirect_to(:back)
+      redirect_back(fallback_location: '/')
     end
   end
 
   def authenticate_administrator!
     unless signed_in? && current_user.admin?
       flash[:error] = "Only an admin can do this"
-      redirect_to(:back)
+      redirect_back(fallback_location: '/')
     end
   end
 
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up)        << :name
-    devise_parameter_sanitizer.for(:account_update) << :name
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name])
   end
 end

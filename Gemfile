@@ -6,8 +6,7 @@ end
 gem 'angularjs-rails', '~> 1.4', '>= 1.4.7'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.2'
-
+gem 'rails', '~> 5.0'
 
 gem 'pg'
 
@@ -49,7 +48,7 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
+  gem 'web-console'
 end
 
 group :development, :test do
@@ -79,6 +78,8 @@ gem 'sprockets-es6'
 gem 'bootstrap-sass', '~> 3.3.5'
 gem 'sprockets-rails' # , '~> 2.3.2'
 
-gem 'devise', '~> 3'
+gem 'devise', '~> 4.0.0'
 
 gem 'redcarpet'
+
+gem 'rails-controller-testing'

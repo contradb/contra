@@ -26,7 +26,7 @@ RSpec.describe ProgramsController, type: :controller do
   describe "GET #index" do
     it "assigns all programs as @programs" do
       program
-      get :index, {}
+      get :index, params: {}
       expect(assigns(:programs)).to eq([program])
     end
   end
@@ -34,7 +34,7 @@ RSpec.describe ProgramsController, type: :controller do
   describe "GET #show" do
     it "assigns the requested program as @program" do
       program
-      get :show, {:id => program.to_param}
+      get :show, params: {:id => program.to_param}
       expect(assigns(:program)).to eq(program)
     end
   end
@@ -43,7 +43,7 @@ RSpec.describe ProgramsController, type: :controller do
     it "assigns @program and @dance_autocomplete_hash_json" do
       program
       sign_in FactoryGirl.create(:user)
-      get :new, {}
+      get :new, params: {}
       expect(assigns(:program)).to be_a_new(Program)
       json = JSON.parse(assigns(:dance_autocomplete_hash_json))
       expect(json.map {|d| d['title']}).to eq(dances.select(&:publish).map(&:title))
@@ -53,7 +53,7 @@ RSpec.describe ProgramsController, type: :controller do
   describe "GET #edit" do
     it "assigns @program and @dance_autocomplete_hash_json" do
       sign_in program.user
-      get :edit, {:id => program.to_param}
+      get :edit, params: {:id => program.to_param}
       expect(assigns(:program)).to eq(program)
       json = JSON.parse(assigns(:dance_autocomplete_hash_json))
       expect(json.map {|d| d['title']}).to eq(dances.select(&:publish).map(&:title))
@@ -62,7 +62,7 @@ RSpec.describe ProgramsController, type: :controller do
     it "If not logged in as program owner, refuses to show page" do
       sign_in FactoryGirl.create(:user)
       request.env["HTTP_REFERER"] = "where_i_came_from"
-      get :edit, {:id => program.to_param}
+      get :edit, params: {:id => program.to_param}
       expect(response).to redirect_to "where_i_came_from"
     end
   end
@@ -72,18 +72,18 @@ RSpec.describe ProgramsController, type: :controller do
     context "with valid params" do
       it "creates a new Program" do
         expect {
-          post :create, {:program => FactoryGirl.attributes_for(:program)}
+          post :create, params: {:program => FactoryGirl.attributes_for(:program)}
         }.to change(Program, :count).by(1)
       end
 
       it "assigns a newly created program as @program" do
-        post :create, {:program => FactoryGirl.attributes_for(:program)}
+        post :create, params: {:program => FactoryGirl.attributes_for(:program)}
         expect(assigns(:program)).to be_a(Program)
         expect(assigns(:program)).to be_persisted
       end
 
       it "redirects to the created program" do
-        post :create, {:program => FactoryGirl.attributes_for(:program)}
+        post :create, params: {:program => FactoryGirl.attributes_for(:program)}
         expect(response).to redirect_to(Program.last)
       end
     end
@@ -91,12 +91,12 @@ RSpec.describe ProgramsController, type: :controller do
     context "with invalid params" do
       let (:invalid_attributes) {FactoryGirl.attributes_for(:program).tap {|h| h.delete(:title)}}
       it "assigns a newly created but unsaved program as @program" do
-        post :create, {:program => invalid_attributes}
+        post :create, params: {:program => invalid_attributes}
         expect(assigns(:program)).to be_a_new(Program)
       end
 
       it "re-renders the 'new' template" do
-        post :create, {:program => invalid_attributes}
+        post :create, params: {:program => invalid_attributes}
         expect(response).to render_template("new")
       end
     end
@@ -108,7 +108,7 @@ RSpec.describe ProgramsController, type: :controller do
     it "with wrong login redirects and does not change data" do
       sign_in FactoryGirl.create(:user)
       request.env["HTTP_REFERER"] = "where_i_came_from"
-      put :update, {:id => program.to_param, :program => new_attributes}
+      put :update, params: {:id => program.to_param, :program => new_attributes}
       expect(response).to redirect_to "where_i_came_from"
       program.reload
       new_attributes.each do |k,v|
@@ -120,7 +120,7 @@ RSpec.describe ProgramsController, type: :controller do
       before(:each) {sign_in program.user}
       context "with valid params" do
         it "updates the requested program" do
-          put :update, {:id => program.to_param, :program => new_attributes}
+          put :update, params: {:id => program.to_param, :program => new_attributes}
           program.reload
           new_attributes.each do |k,v|
             expect(program.public_send(k)).to eq(v)
@@ -128,12 +128,12 @@ RSpec.describe ProgramsController, type: :controller do
         end
 
         it "assigns the requested program as @program" do
-          put :update, {:id => program.to_param, :program => FactoryGirl.attributes_for(:program)}
+          put :update, params: {:id => program.to_param, :program => FactoryGirl.attributes_for(:program)}
           expect(assigns(:program)).to eq(program)
         end
 
         it "redirects to the program" do
-          put :update, {:id => program.to_param, :program => FactoryGirl.attributes_for(:program)}
+          put :update, params: {:id => program.to_param, :program => FactoryGirl.attributes_for(:program)}
           expect(response).to redirect_to(program)
         end
       end
@@ -142,12 +142,12 @@ RSpec.describe ProgramsController, type: :controller do
         let (:invalid_attributes) {FactoryGirl.attributes_for(:program).merge({title: ''})}
 
         it "assigns the program as @program" do
-          put :update, {:id => program.to_param, :program => invalid_attributes}
+          put :update, params: {:id => program.to_param, :program => invalid_attributes}
           expect(assigns(:program)).to eq(program)
         end
 
         it "re-renders the 'edit' template" do
-          put :update, {:id => program.to_param, :program => invalid_attributes}
+          put :update, params: {:id => program.to_param, :program => invalid_attributes}
           expect(response).to render_template("edit")
         end
       end
@@ -162,12 +162,12 @@ RSpec.describe ProgramsController, type: :controller do
 
     it "destroys the requested program" do
       expect {
-        delete :destroy, {:id => program.to_param}
+        delete :destroy, params: {:id => program.to_param}
       }.to change(Program, :count).by(-1)
     end
 
     it "redirects to the programs list" do
-      delete :destroy, {:id => program.to_param}
+      delete :destroy, params: {:id => program.to_param}
       expect(response).to redirect_to("where_i_came_from")
     end
   end

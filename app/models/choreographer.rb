@@ -1,15 +1,11 @@
-class Choreographer < ActiveRecord::Base
+class Choreographer < ApplicationRecord
   has_many :dances, -> { order "LOWER(title)" }
 
   validates :name, length: { in: 4..100 }
 
   before_destroy :reattribute_dances_to_unknown
 
-  enum publish: {never: 0, sometimes: 5, always: 10}
-  # wait for Rails 5 to use _prefix: instead of these:
-  alias :publish_never? :never?
-  alias :publish_sometimes? :sometimes?
-  alias :publish_always? :always?
+  enum publish: {never: 0, sometimes: 5, always: 10}, _prefix: true
 
   # human readable website
   def website_label

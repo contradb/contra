@@ -9,7 +9,7 @@ RSpec.describe UsersController, type: :controller do
 
     context "without login" do
       it "renderer gets @dances with visible dances in alphabetical order" do
-        get :show, {id: user_b.to_param}
+        get :show, params: {id: user_b.to_param}
         expect(assigns(:dances).to_a).to eq([dance_b2])
       end
     end
@@ -17,7 +17,7 @@ RSpec.describe UsersController, type: :controller do
     context "with login" do
       it "renderer gets @dances with visible dances in alphabetical order" do
         sign_in user_b
-        get :show, {id: user_b.to_param}
+        get :show, params: {id: user_b.to_param}
         expect(assigns(:dances).to_a).to eq([dance_b1,dance_b2])
       end
     end
@@ -25,7 +25,7 @@ RSpec.describe UsersController, type: :controller do
     context "with admin login" do
       it "renderer gets @dances with visible dances in alphabetical order" do
         sign_in user_admin
-        get :show, {id: user_b.to_param}
+        get :show, params: {id: user_b.to_param}
         expect(assigns(:dances).to_a).to eq([dance_b1,dance_b2])
       end
     end
