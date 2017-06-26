@@ -1,35 +1,41 @@
 default: &default
-
-development:
-  <<: *default
-  adapter: postgresql
   encoding: unicode
   pool: 5
+
+postgres: &postgres
+  <<: *default
+  adapter: postgresql
+  # host was set to "localhost" (no quotes), but rails console production
+  # needed it to be empty string, as per 
+  # http://stackoverflow.com/questions/32186349/rails-console-no-password-supply-error
   host: ""
-  database: "contradev"
   password: "balance+swing"
+
+sqlite: &sqlite
+  <<: *default
+  adapter: sqlite3
+
+
+# To use sqlite3 for development or testing, change the "postgres" reference to
+# "sqlite" and set the database field to a path to the database file.  E.g.:
+#
+#development:
+#  <<: *sqlite
+#  database: "db/contradev.sqlite3"
+
+development:
+  <<: *postgres
+  database: contradev
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  <<: *default
-  adapter: postgresql
-  encoding: unicode
-  pool: 5
-  host: ""
-  database: "contratest"
-  password: "balance+swing"
+  <<: *postgres
+  database: contratest
 
 production:
-  <<: *default
-  adapter: postgresql
-  encoding: unicode
-  pool: 5
-  # host was set to "localhost" (no quotes), but rails console production
-  # needed it to be empty string, as per 
-  # http://stackoverflow.com/questions/32186349/rails-console-no-password-supply-error
-  host: ""
+  <<: *postgres
   username: rails
   password: <%= ENV['APP_DATABASE_PASSWORD'] %>
   database: app_production
