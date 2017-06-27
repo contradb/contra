@@ -54,6 +54,7 @@ end
 group :development, :test do
   gem 'pry'
   gem 'pry-doc'
+  gem 'sqlite3'
 end
 
 group :test do
