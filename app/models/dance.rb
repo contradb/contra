@@ -34,8 +34,9 @@ class Dance < ApplicationRecord
     self.figures_json = JSON.generate(value)
   end
 
-  # eases form defaulting:
-  def choreographer_name () choreographer ? choreographer.name : "" end
+  def choreographer_name
+    choreographer ? choreographer.name : ""
+  end
 
   def moves_that_follow_move(move)
     followers = Set.new
@@ -55,5 +56,29 @@ class Dance < ApplicationRecord
       preceders << mvs[index-1] if move_matches # index-1 is occassionally -1, that's great!
     end
     preceders
+  end
+
+  def beats
+    figures.sum {|figure| JSLibFigure.beats(figure)}
+  end
+
+  def stompiness
+    beats_of_stomping = figures.sum do |figure|
+      move = JSLibFigure.move(figure)
+      if 'balance' == move || 'balance the ring' == move
+        JSLibFigure.beats(figure)
+      else
+        # see if the move has a balance checkbox, if so, 4 beats of
+        # the move are a balance, otherwise 0 beats are.
+        formals = JSLibFigure.formal_parameters(move)
+        actuals = JSLibFigure.parameter_values(figure)
+        has_balance = formals.zip(actuals).any? do |formal_and_actual|
+          formal, actual = formal_and_actual
+          'bal' == formal['name'] && actual
+        end
+        has_balance ? 4 : 0
+      end
+    end
+    beats_of_stomping.to_f / beats
   end
 end

@@ -14,6 +14,10 @@ module JSLibFigure
     self.eval('newFigure()')
   end
 
+  def self.parameter_values(figure_ruby_hash)
+    figure_ruby_hash['parameter_values']
+  end
+
   def self.move(figure_ruby_hash)
     figure_ruby_hash['move']
   end

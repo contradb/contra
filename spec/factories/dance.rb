@@ -5,6 +5,11 @@ FactoryGirl.define do
     choreographer { FactoryGirl.create(:choreographer) }
     start_type 'improper'
     figures_json '[{"parameter_values":["neighbors",true,16],"move":"swing"},{"parameter_values":[true, 8],"move":"long lines"},{"parameter_values":["ladles",true,540,8],"move":"do si do"},{"parameter_values":["partners",true,16],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":[true,2],"move":"slide along set"},{"parameter_values":[true,270,6],"move":"circle"}]'
+
+    factory :balances do
+      title "Balances"
+      figures_json '[{"parameter_values":["partners",true,16],"move":"swing"}, {"parameter_values":["everyone", 4],"move":"balance"}, {"parameter_values":["centers", true, false, 8], "move":"Rory O\'Moore"}, {"parameter_values":[4], "move":"balance the ring"}]'
+    end
   end
 
   factory :dance_with_empty_figure, class: Dance do

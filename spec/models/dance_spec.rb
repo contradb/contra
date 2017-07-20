@@ -85,4 +85,19 @@ RSpec.describe Dance, type: :model do
       expect(dance.moves_that_follow_move('swing')).to eq(Set.new(['swing']))
     end
   end
+
+  describe '#beats' do
+    it 'works on a real dance' do
+      expect(FactoryGirl.build(:box_the_gnat_contra).beats).to eq(64)
+    end
+
+    it 'works on a dance with a bogus figure' do
+      # :dance_with_empty_figure = long swing(16) + empty figure(8, defaulted)
+      expect(FactoryGirl.build(:dance_with_empty_figure).beats).to be_a(Integer)
+    end
+  end
+
+  it '#stompiness works' do
+    expect(FactoryGirl.build(:balances).stompiness).to eq(16.0 / 32.0)
+  end
 end
