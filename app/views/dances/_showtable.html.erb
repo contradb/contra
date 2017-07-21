@@ -1,5 +1,6 @@
 <% 
 title         = local_assigns.fetch(:title,true) 
+stompiness    = local_assigns.fetch(:stompiness,true) 
 choreographer = local_assigns.fetch(:choreographer,true) 
 user          = local_assigns.fetch(:user,true) 
 start_type    = local_assigns.fetch(:start_type,true) 
@@ -23,6 +24,7 @@ dances = showtable
     <tr>
       <th colspan="3">Actions</th>
       <% if title then %>         <th>Title</th>         <% end %>
+      <% if stompiness then %>    <th>Stompiness</th>    <% end %>
       <% if choreographer then %> <th>Choreographer</th> <% end %>
       <% if user then %>          <th>User</th>          <% end %>
       <% if start_type then %>    <th>Formation</th>    <% end %>
@@ -55,6 +57,8 @@ dances = showtable
 
         <% if title then %>         
           <td><strong><%= link_to dance.title, dance %></strong></td><% end %>
+        <% if stompiness then %>         
+          <td align='right'><strong><%= dance.stompiness_str %></strong></td><% end %>
         <% if choreographer then %> 
           <td><%= if dance && dance.choreographer then 
                     link_to dance.choreographer.name, dance.choreographer

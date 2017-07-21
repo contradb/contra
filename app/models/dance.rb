@@ -67,7 +67,7 @@ class Dance < ApplicationRecord
       move = JSLibFigure.move(figure)
       if 'balance' == move || 'balance the ring' == move
         JSLibFigure.beats(figure)
-      else
+      elsif move.present?
         # see if the move has a balance checkbox, if so, 4 beats of
         # the move are a balance, otherwise 0 beats are.
         formals = JSLibFigure.formal_parameters(move)
@@ -77,8 +77,14 @@ class Dance < ApplicationRecord
           'bal' == formal['name'] && actual
         end
         has_balance ? 4 : 0
+      else
+        0
       end
     end
     beats_of_stomping.to_f / beats
+  end
+
+  def stompiness_str
+    (stompiness * 100).round.to_s + '%'
   end
 end

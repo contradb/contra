@@ -2,9 +2,6 @@
 
 require 'rails_helper'
 
-
-
-
 RSpec.describe "dances/show", type: :view do
   before(:each) do
     @dance = assign(:dance, FactoryGirl.build_stubbed(:dance,
@@ -48,4 +45,9 @@ RSpec.describe "dances/show", type: :view do
     expect(rendered).to have_content("<script>alert('no dialog pops up');</script>")
   end
 
+  it 'renders stompiness' do
+    expect(@dance).to receive(:stompiness).and_return(0.666666)
+    render
+    expect(rendered).to have_content('Stompiness 67%')
+  end
 end
