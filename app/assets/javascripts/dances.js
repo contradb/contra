@@ -1,3 +1,18 @@
+jQuery(document).ready(function() {
+  $('#dances-table').dataTable({
+    "processing": true,
+    "serverSide": true,
+    "ajax": $('#dances-table').data('source'),
+    "pagingType": "full_numbers",
+    "columns": [
+      {"data": "id"},
+      {"data": "title"}
+    ]
+    // pagingType is optional, if you want full pagination controls.
+    // Check dataTables documentation to learn more about
+    // available options.
+  });
+});
 
 $(function () {
   $( "#choreographer-autocomplete" ).autocomplete({
