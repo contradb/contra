@@ -6,16 +6,18 @@ class DanceDatatable < AjaxDatatablesRails::Base
     @view_columns ||= {
       id: { source: "Dance.id" },
       title: { source: "Dance.title" },
-      choreographer_name: { source: "Choreographer.name" }
+      choreographer_name: { source: "Choreographer.name" },
+      user_name: { source: "User.name" }
     }
   end
 
   def data
-    records.map do |record|
+    records.map do |dance|
       {
-        id: record.id,
-        title: record.title,
-        choreographer_name: record.choreographer.name
+        id: dance.id,
+        title: dance.title,
+        choreographer_name: dance.choreographer.name,
+        user_name: dance.user.name
       }
     end
   end
@@ -23,7 +25,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
   private
 
   def get_raw_records
-    Dance.includes(:choreographer).references(:choreographer)
+    Dance.includes(:choreographer, :user).references(:choreographer, :user)
   end
 
   # ==== These methods represent the basic operations to perform on records

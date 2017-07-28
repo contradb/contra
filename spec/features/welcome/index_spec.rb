@@ -9,7 +9,6 @@ describe 'Welcome page', js: true do
     visit '/'
     expect(page).to have_text(dance.title)
     expect(page).to have_text(dance.choreographer.name)
-    # TODO
-    # expect(page).to have_text(dance.user.name) 
+    expect(page).to have_text(dance.user.name)
   end
 end
