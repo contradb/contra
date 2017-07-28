@@ -5,7 +5,6 @@ jQuery(document).ready(function() {
     "ajax": $('#dances-table').data('source'),
     "pagingType": "full_numbers",
     "columns": [
-      {"data": "id"},
       {"data": "title"},
       {"data": "choreographer_name"},
       {"data": "user_name"}

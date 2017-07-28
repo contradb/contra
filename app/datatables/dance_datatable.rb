@@ -4,7 +4,6 @@ class DanceDatatable < AjaxDatatablesRails::Base
     # Declare strings in this format: ModelName.column_name
     # or in aliased_join_table.column_name format
     @view_columns ||= {
-      id: { source: "Dance.id" },
       title: { source: "Dance.title" },
       choreographer_name: { source: "Choreographer.name" },
       user_name: { source: "User.name" }
@@ -14,7 +13,6 @@ class DanceDatatable < AjaxDatatablesRails::Base
   def data
     records.map do |dance|
       {
-        id: dance.id,
         title: dance.title,
         choreographer_name: dance.choreographer.name,
         user_name: dance.user.name
