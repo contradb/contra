@@ -1,5 +1,7 @@
 class DanceDatatable < AjaxDatatablesRails::Base
 
+  def_delegators :@view, :link_to, :dance_path, :choreographer_path, :user_path
+
   def view_columns
     # Declare strings in this format: ModelName.column_name
     # or in aliased_join_table.column_name format
@@ -13,9 +15,9 @@ class DanceDatatable < AjaxDatatablesRails::Base
   def data
     records.map do |dance|
       {
-        title: dance.title,
-        choreographer_name: dance.choreographer.name,
-        user_name: dance.user.name
+        title: link_to(dance.title, dance_path(dance)),
+        choreographer_name: link_to(dance.choreographer.name, choreographer_path(dance.choreographer)),
+        user_name: link_to(dance.user.name, user_path(dance.user))
       }
     end
   end
