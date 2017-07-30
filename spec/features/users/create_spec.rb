@@ -3,13 +3,12 @@ require 'spec_helper'
 require 'support/scrutinize_layout'
 
 describe 'Creating user from welcome page' do
-  it "Splash page links to Sign Up page" do
+  it "Splash page links to Create Dance, which actually prompts for login" do
     visit '/'
     scrutinize_layout page
-    click_link "Sign Up"
-    expect(page).to have_content("Sign Up")
+    click_link "New Dance"
+    expect(page).to have_content("You need to sign in or sign up before continuing.")
     expect(page).to have_content("Email:")
-    expect(page).to have_content("Name:")
     expect(page).to have_content("Password:")
     scrutinize_layout page
   end
@@ -27,7 +26,7 @@ describe 'Creating user from welcome page' do
     fill_in "user_password_confirmation", with: "testing password 1234"
     click_button "Sign Up"
     expect(page).to have_content("Welcome! You have signed up successfully")
-    expect(page).to have_content("Find and Share Contra Dances") # is the splash page
+    expect(page).to have_content("find and share contra dances") # is the splash page
     scrutinize_layout page
   end
 

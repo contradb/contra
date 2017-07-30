@@ -4,7 +4,10 @@ jQuery(document).ready(function() {
     "serverSide": true,
     "ajax": $('#dances-table').data('source'),
     "pagingType": "full_numbers",
-    "dom": 'tf<"row"<"col-sm-6"i><"col-sm-6"l>><rp>',
+    "dom": 'ft<"row"<"col-sm-6 col-md-3"i><"col-sm-6 col-md-3"l>>pr',
+    language: {
+        searchPlaceholder: "search"
+    },
     "order": [[ 3, "desc" ]],
     "columns": [
       {"data": "title"},

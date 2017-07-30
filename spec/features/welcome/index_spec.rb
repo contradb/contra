@@ -20,4 +20,11 @@ describe 'Welcome page', js: true do
     visit '/'
     expect(page).to have_content(/#{dance2.title}.*#{dance.title}.*#{dance3.title}/)
   end
+
+  it 'has links to sluggified figures' do
+    visit '/'
+    expect(page).to have_link('swing', href: figure_path('swing'))
+    expect(page).to have_link('do si do', href: figure_path('do-si-do'))
+    expect(page).to have_link("Rory O'Moore", href: figure_path('rory-omoore'))
+  end
 end
