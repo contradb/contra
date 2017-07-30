@@ -8,6 +8,20 @@
   cursor: hand;
 }
 
+#dances-table_filter {
+  position: relative;
+  margin-bottom: 0.7em;
+  label {
+    visibility: hidden;
+    input {
+      visibility: visible;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+    }
+  }
+}
+
 #site-purpose {
   font-size: 22.5px;
   font-weight: bold;
