@@ -84,3 +84,6 @@ gem 'devise', '~> 4.0.0'
 gem 'redcarpet'
 
 gem 'rails-controller-testing'
+
+gem 'jquery-datatables-rails'
+gem 'ajax-datatables-rails'

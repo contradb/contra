@@ -1,38 +1,30 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-2"></div>
 
-    <div class="jumbotron col-sm-8 contra_splash_jumbotron" id="contra_splash_jumbotron">
-      <div>
-        <h1>ContraDB</h1>
-        <p>Find and Share Contra Dances</p>
+<section>
+  <h1 id="site-logo">ContraDB</h1>
+  <div id="site-purpose">find and share contra dances</div>
+  <%= new_dance_button_html %>
+  <%= new_program_button_html %>
+</section>
 
+<section>
+  <h2>Figures</h2>
+  <%= render partial: '/figures/link_cloud' %>
+</section>
 
-        <div class="btn-toolbar">
-          <div class="btn-group" role="group">
-            <%= link_to 'About', about_path, GloboHelper::BUTTON_HTML_ATTR %>
-          </div>
-          <div class="btn-group" role="group">
-            <% if signed_in? then %>
-            <%= link_to 'Profile', current_user, GloboHelper::BUTTON_HTML_ATTR %>
-            <% else %>
-            <%= link_to 'Sign Up', new_user_registration_path, GloboHelper::BUTTON_HTML_ATTR %>
-            <%= link_to 'Login', new_user_session_path, GloboHelper::BUTTON_HTML_ATTR %>
-            <% end %>
-          </div>
-        </div>
+<section>
+  <h2>Dances</h2>
+  <table id="dances-table", class="table table-bordered table-hover table-condensed", data-source="<%= dances_path(format: :json) %>">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Choreographer</th>
+        <th>User</th>
+        <th>Updated</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</section>
 
-
-        <div class="btn-toolbar">
-          <div class="btn-group" role="group">
-            <%= link_to 'Dances', dances_path, GloboHelper::BUTTON_HTML_ATTR %>
-            <%= link_to 'Programs', programs_path, GloboHelper::BUTTON_HTML_ATTR %>
-            <%= link_to 'Figures', figures_path, GloboHelper::BUTTON_HTML_ATTR %>
-          </div>
-        </div>
-
-      </div>
-    </div>
-    <div class="col-sm-2"></div>
-  </div>
-</div>
+<%= link_to 'About ContraDB.com', about_path %>

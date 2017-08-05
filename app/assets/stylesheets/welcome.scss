@@ -1,35 +1,50 @@
-// Place all the styles related to the welcome controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
-
-
-
-// I can't figure out how to override Bootstrap's color choices using 
-// classes alone, so I'm going for the cheap shot. Hey, at least I didn't
-// use inline styles. :P        -dm 08-09-2015
-#contra_splash_jumbotron {
-    color: white;
+.welcome-index-content {
+  margin-left: 15px;
+  margin-right: 15px;
+  section {
+    margin-bottom: 3em;
+  }
 }
 
-.contra_splash_jumbotron {
-    background-image: asset-data-url("fleur4.jpg");
-    background-position: center center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-color: #BBB;
-    padding-left: 11.5% !important;
-    text-shadow: #222 0.3em 0.3em 0.3em;
+#dances-table .sorting:hover {
+  cursor: pointer;
+  cursor: hand;
 }
 
-.contra_splash_jumbotron h1 {
-    color: white !important;
-    font-weight: bold;
+/* hide search label, use placeholder instead */
+#dances-table_filter {
+  position: relative;
+  margin-bottom: 0.7em;
+  label {
+    visibility: hidden;
+    input {
+      visibility: visible;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+    }
+  }
 }
 
-.contra_splash_jumbotron p {
-    color: white;
+#site-purpose {
+  font-size: 22.5px;
+  font-weight: bold;
+  margin-bottom: 18px;
 }
 
-.contra_splash_jumbotron .btn {
-      text-shadow: none;
+#site-logo {
+  font-size: 55px;
+}
+
+.figures-link-cloud {
+  text-align: justify;
+
+  a {
+    margin-right: 10px;
+  }
+
+  h2 {
+    display: inline;
+    white-space: nowrap;
+  }
 }

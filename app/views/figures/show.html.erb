@@ -2,7 +2,6 @@
 
 <div class="container">
   <%= link_to(content_tag(:span, '', class: "glyphicon glyphicon-arrow-left", 'aria-label'=> 'previous'), sluggified_figure_path(@prev_figure)) %> &nbsp;
-  <%= link_to(content_tag(:span, '', class: "glyphicon glyphicon-arrow-up", 'aria-label'=> 'next'), figures_path) %> &nbsp;
   <%= link_to(content_tag(:span, '', class: "glyphicon glyphicon-arrow-right", 'aria-label'=> 'next'), sluggified_figure_path(@next_figure)) %>
 
   <h1><%= @move_titleize %></h1>

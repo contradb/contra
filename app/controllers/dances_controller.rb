@@ -6,6 +6,10 @@ class DancesController < ApplicationController
 
   def index
     @dances = Dance.readable_by(current_user).alphabetical
+    respond_to do |format|
+      format.html
+      format.json { render json: DanceDatatable.new(view_context, user: current_user) }
+    end
   end
 
   def show

@@ -1,4 +1,3 @@
-
 $(function () {
   $( "#choreographer-autocomplete" ).autocomplete({
     source: (typeof __choreographers__secret !== 'undefined') && __choreographers__secret,
