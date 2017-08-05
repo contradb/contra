@@ -27,7 +27,11 @@ class DanceDatatable < AjaxDatatablesRails::Base
   private
 
   def get_raw_records
-    Dance.includes(:choreographer, :user).references(:choreographer, :user)
+    Dance.readable_by(user).includes(:choreographer, :user).references(:choreographer, :user)
+  end
+
+  def user
+    @user ||= options[:user]
   end
 
   # ==== These methods represent the basic operations to perform on records
