@@ -71,6 +71,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['ones balance & pull by left for 6', 'pull by for 2', 'ones', true, false, 6],
    ['neighbors promenade left diagonal on the left', 'promenade', 'neighbors', 'left diagonal', true, 8],
    ['neighbors promenade', 'promenade', 'neighbors', 'across', false, 8],
+   ['neighbors promenade along the set on the right', 'promenade', 'neighbors', 'along', false, 8],
+   ['neighbors promenade along the set on the left', 'promenade', 'neighbors', 'along', true, 8],
    ['right left through', 'right left through', 'across', 8],
    ['left diagonal right left through', 'right left through', 'left diagonal', 8],
    ['slide left along set to new neighbors', 'slide along set', true, 2],

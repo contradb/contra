@@ -139,12 +139,11 @@ var param_slide       = {name: "slide",              ui: chooser_slide, string: 
 var param_slide_left  = {name: "slide", value: true, ui: chooser_slide, string: stringParamSlide};
 var param_slide_right = {name: "slide", value: false, ui: chooser_slide, string: stringParamSlide};
 
-
 function stringParamSetDirection(value) {
   if (value === 'across') {
     return 'across the set';
   } else if (value === 'along') {
-    return 'up & down the set';
+    return 'along the set';
   } else if (value === 'right diagonal' || value === 'left diagonal' || value === undefined) {
     return value;
   } else {
