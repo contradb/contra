@@ -1,17 +1,17 @@
 
-<div>
+<section>
   <h1 id="site-logo">ContraDB</h1>
   <div id="site-purpose">find and share contra dances</div>
   <%= new_dance_button_html %>
   <%= new_program_button_html %>
-</div>
+</section>
 
-<div>
+<section>
   <h2>Figures</h2>
   <%= render partial: '/figures/link_cloud' %>
-</div>
+</section>
 
-<div>
+<section>
   <h2>Dances</h2>
   <table id="dances-table", class="table table-bordered table-hover table-condensed", data-source="<%= dances_path(format: :json) %>">
     <thead>
@@ -25,6 +25,6 @@
     <tbody>
     </tbody>
   </table>
-</div>
+</section>
 
 <%= link_to 'About ContraDB.com', about_path %>
