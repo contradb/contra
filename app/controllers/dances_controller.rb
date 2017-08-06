@@ -8,7 +8,11 @@ class DancesController < ApplicationController
     @dances = Dance.readable_by(current_user).alphabetical
     respond_to do |format|
       format.html
-      format.json { render json: DanceDatatable.new(view_context, user: current_user) }
+      format.json { render json: DanceDatatable.new(view_context,
+                                                    user: current_user,
+                                                    include_moves: index_params['includeMoves'] || [],
+                                                    exclude_moves: index_params['excludeMoves'] || []
+                                                   ) }
     end
   end
 
@@ -93,6 +97,11 @@ class DancesController < ApplicationController
                                                  :publish)
       cleaned_json = JSLibFigure.sanitize_json dirty_json[:figures_json]
       dirty_json.merge(figures_json: cleaned_json)
+    end
+
+    def index_params
+      # TODO: this is a hot mess
+      params.permit(includeMoves: [], excludeMoves: [])
     end
 
     def dance_params_with_real_choreographer(c)

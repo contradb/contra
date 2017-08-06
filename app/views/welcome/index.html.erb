@@ -13,6 +13,23 @@
 
 <section>
   <h2>Dances</h2>
+
+  <label>Include Moves
+    <select id="include-moves" multiple>
+      <% JSLibFigure.moves.each do |move| %>
+        <%= content_tag(:option, move, value: move)  %>
+      <% end %>
+    </select>
+  </label>
+
+  <label>Exclude Moves
+    <select id="exclude-moves" multiple>
+      <% JSLibFigure.moves.each do |move| %>
+        <%= content_tag(:option, move, value: move)  %>
+      <% end %>
+    </select>
+  </label>
+
   <table id="dances-table", class="table table-bordered table-hover table-condensed", data-source="<%= dances_path(format: :json) %>">
     <thead>
       <tr>

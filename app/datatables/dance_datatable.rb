@@ -27,11 +27,28 @@ class DanceDatatable < AjaxDatatablesRails::Base
   private
 
   def get_raw_records
-    Dance.readable_by(user).includes(:choreographer, :user).references(:choreographer, :user)
+    dances = Dance.readable_by(user).to_a.
+             reject do |dance|
+               dance_moves = dance.figures.map {|figure| figure['move']}
+               exclude_moves.any? {|exclude_move| exclude_move.in? dance_moves}
+             end. 
+             select do |dance|
+               dance_moves = dance.figures.map {|figure| figure['move']}
+               include_moves.all? {|include_move| include_move.in? dance_moves}
+             end
+    Dance.where(id: dances.map(&:id)).includes(:choreographer, :user).references(:choreographer, :user)
   end
 
   def user
     @user ||= options[:user]
+  end
+
+  def include_moves
+    @include_moves ||= options[:include_moves]
+  end
+
+  def exclude_moves
+    @exclude_moves ||= options[:exclude_moves]
   end
 
   # ==== These methods represent the basic operations to perform on records
