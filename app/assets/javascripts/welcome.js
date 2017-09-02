@@ -1,4 +1,23 @@
 jQuery(document).ready(function() {
+  if (!Array.isArray) {
+    Array.isArray = function(arg) {
+      return Object.prototype.toString.call(arg) === '[object Array]';
+    };
+  }
+
+  // oh, I can't use arrays in params? Fine, I'll create hashes with indexes as keys
+  function arrayToObject (a) {
+    if (Array.isArray(a)) {
+      var o = { faux_array: true };
+      for (var i=0; i<a.length; i++) {
+        o[i] = arrayToObject(a[i]);
+      }
+      return o;
+    } else {
+      return a;
+    }
+  }
+
   var dataTable = 
         $('#dances-table').DataTable({
           "processing": true,
@@ -8,6 +27,9 @@ jQuery(document).ready(function() {
             data: function(d) {
               d.includeMoves = $('#include-moves').val(); 
               d.excludeMoves = $('#exclude-moves').val();
+              d.wackyJson = arrayToObject(['and', ['follows', ['figure', 'roll away'], ['figure', 'swing', 'partner']], ['not', ['figure', 'gyre']]]);
+                // {op: 'and', l: {op: 'figure', l: 'roll away'}, r: {op: 'figure', l: 'swing', r: ['foo', 'bar']}};
+              // ['and', ['follows', ['figure', 'roll away'], ['figure', 'swing', 'partner']], ['not', ['figure', 'gyre']]]
             }
           },
           "pagingType": "full_numbers",

@@ -38,7 +38,7 @@ FactoryGirl.define do
     choreographer { Choreographer.find_by(name: "Cary Ravitz") ||
                     FactoryGirl.create(:choreographer, name: "Cary Ravitz") }
     start_type 'Becket ccw'
-    figures_json '[{"parameter_values":["across",8],"move":"right left through"},{"parameter_values":["ladles","across",8],"move":"chain"},{"parameter_values":[false,360,"",8],"move":"star","note":"look for new neighbor"},{"parameter_values":["neighbors",false,8],"move":"swing"},{"parameter_values":[true,270,8],"move":"circle"},{"parameter_values":["ladles","across",8],"move":"half hey"},{"parameter_values":["partners",true,16],"move":"swing"}]'
+    figures_json '[{"parameter_values":["across",8],"move":"right left through"},{"parameter_values":["ladles","across",8],"move":"chain"},{"parameter_values":[false,360,"",8],"move":"star","note":"look for new neighbor"},{"parameter_values":["neighbors",false,8],"move":"swing"},{"parameter_values":[true,270,8],"move":"circle"},{"parameter_values":["ladles",0.5,"across",8],"move":"hey"},{"parameter_values":["partners",true,16],"move":"swing"}]'
   end
 end
 

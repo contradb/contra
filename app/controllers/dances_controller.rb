@@ -11,7 +11,8 @@ class DancesController < ApplicationController
       format.json { render json: DanceDatatable.new(view_context,
                                                     user: current_user,
                                                     include_moves: index_params['includeMoves'] || [],
-                                                    exclude_moves: index_params['excludeMoves'] || []
+                                                    exclude_moves: index_params['excludeMoves'] || [],
+                                                    wacky_json: index_params['wackyJson']
                                                    ) }
     end
   end
@@ -100,8 +101,8 @@ class DancesController < ApplicationController
     end
 
     def index_params
-      # TODO: this is a hot mess
-      params.permit(includeMoves: [], excludeMoves: [])
+      # params.permit(:draw, :columns, :order, :start, :length, :search, :format, includeMoves: [], excludeMoves: [], wackyJson: [])
+      params.permit!
     end
 
     def dance_params_with_real_choreographer(c)
