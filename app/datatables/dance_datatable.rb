@@ -27,23 +27,11 @@ class DanceDatatable < AjaxDatatablesRails::Base
   private
 
   def get_raw_records
-    puts "WACKY JSON "+ wacky_json.inspect
     filter = DanceDatatable.hash_to_array (wacky_json)
-    filter = ['figure', 'chain']
     dances = Dance.readable_by(user).to_a
     dances = DanceDatatable.filter_dances(dances, filter)
 
     Dance.where(id: dances.map(&:id)).includes(:choreographer, :user).references(:choreographer, :user)
-    # dances = Dance.readable_by(user).to_a.
-    #          reject do |dance|
-    #            dance_moves = dance.figures.map {|figure| figure['move']}
-    #            exclude_moves.any? {|exclude_move| exclude_move.in? dance_moves}
-    #          end. 
-    #          select do |dance|
-    #            dance_moves = dance.figures.map {|figure| figure['move']}
-    #            include_moves.all? {|include_move| include_move.in? dance_moves}
-    #          end
-    # Dance.where(id: dances.map(&:id)).includes(:choreographer, :user).references(:choreographer, :user)
   end
 
   def user
@@ -81,35 +69,125 @@ class DanceDatatable < AjaxDatatablesRails::Base
 
   def self.filter_dances(dances, filter)
     raise "filter must be an array, but got #{filter.inspect} of class #{filter.class}" unless filter.is_a? Array
-    dances.select {|dance| select_dance?(filter, dance)}
+    dances.select {|dance| matching_figures?(filter, dance)}
   end
 
-  # FILTER_OPERATORS = %w[figure and or not follows]
-  
-  def self.select_dance?(filter, dance)
+  def self.matching_figures?(filter, dance)
+    matching_figures(filter, dance) != nil
+  end
+
+  # These functions return either nil (failure) or an array of matching figure indicies.
+  # 
+  # The array may have zero elements, which means a successful match, but no specific index matches all criteria.
+  # To see an example of that, think of the dance (and (figure 'chain') (figure 'right left through')), which can
+  # match because it has a chain, and a right left through, but no figure satisfies both of those exactly. 
+  #
+  # The array must always be sorted
+
+  def self.matching_figures(filter, dance)
     operator = filter.first
-    self.send(:"select_dance_for_#{operator}?", filter, dance)
+    matches = self.send(:"matching_figures_for_#{operator}", filter, dance)
+    # puts "matching_figures #{dance.title} #{filter.inspect} = #{matches.inspect}"
+    matches
   end
 
-  def self.select_dance_for_figure?(filter, dance)
+  def self.matching_figures_for_figure(filter, dance)
     move = filter[1]
-    dance.figures.any? {|figure| figure['move'] == move}
+    indicies = dance.figures.each_with_index.map {|figure, index| figure['move'] == move ? index : nil}
+    indicies.any? ? indicies.compact : nil
   end
 
-  def self.select_dance_for_and?(filter, dance)
-    subfilters = filter.drop(1)
-    subfilters.all? {|subfilter| select_dance?(subfilter, dance)}
-  end
-
-  def self.select_dance_for_or?(filter, dance)
-    subfilters = filter.drop(1)
-    subfilters.any? {|subfilter| select_dance?(subfilter, dance)}
-  end
-
-  def self.select_dance_for_not?(filter, dance)
+  def self.matching_figures_for_none(filter, dance)
     subfilter = filter[1]
-    not select_dance?(subfilter, dance)
+    if matching_figures(subfilter, dance).present? # Hmmm... XXX worry
+      nil
+    else
+      all_figure_indicies(dance)
+    end
   end
+
+  def self.matching_figures_for_all(filter, dance)
+    subfilter = filter[1]
+    all = all_figure_indicies(dance)
+    if matching_figures(subfilter, dance) == all
+      all
+    else
+      nil
+    end
+  end
+
+  def self.matching_figures_for_or(filter, dance)
+    subfilters = filter.drop(1)
+    figures_length = dance.figures.length
+    matches = []
+    subfilters.each do |subfilter|
+      matches |= matching_figures(subfilter, dance) || []
+      return matches.sort if matches.length == figures_length
+    end
+    matches.present? ? matches.sort : nil
+  end
+
+  def self.matching_figures_for_and(filter, dance)
+    subfilters = filter.drop(1)
+    matching_figs = subfilters.map {|subfilter| matching_figures(subfilter, dance)}
+    if matching_figs.all?
+      matches = all_figure_indicies(dance)
+      matching_figs.each {|x| matches &= x}
+      matches
+    else
+      nil
+    end
+  end
+
+  def self.matching_figures_for_not(filter, dance)
+    subfilter = filter[1]
+    figures = all_figure_indicies(dance) - (matching_figures(subfilter, dance) || [])
+    figures.present? ? figures.sort : nil
+  end
+
+  def self.matching_figures_for_follows(filter, dance)
+    subfilters = filter.drop(1)
+    figures_count = dance.figures.count
+    current_figures = all_figure_indicies(dance)
+    subfilters.each do |subfilter|
+      current_figures = shift_figure_indicies(current_figures, figures_count) & (matching_figures(subfilter, dance) || [])
+      return nil if current_figures.empty?
+    end
+    current_figures
+  end
+
+  def self.shift_figure_indicies(figure_indicies, figures_count)
+    x = figure_indicies.map {|f| f+1}
+    if figure_indicies.last + 1 == figures_count
+      x.pop
+      x.unshift(0)
+    end
+    x
+  end
+
+  def self.all_figure_indicies(dance)
+    [*0...dance.figures.count]
+  end
+
+  # def self.select_dance_for_figure?(filter, dance)
+  #   move = filter[1]
+  #   dance.figures.any? {|figure| figure['move'] == move}
+  # end
+
+  # def self.select_dance_for_and?(filter, dance)
+  #   subfilters = filter.drop(1)
+  #   subfilters.all? {|subfilter| select_dance?(subfilter, dance)}
+  # end
+
+  # def self.select_dance_for_or?(filter, dance)
+  #   subfilters = filter.drop(1)
+  #   subfilters.any? {|subfilter| select_dance?(subfilter, dance)}
+  # end
+
+  # def self.select_dance_for_not?(filter, dance)
+  #   subfilter = filter[1]
+  #   not select_dance?(subfilter, dance)
+  # end
 
   def self.hash_to_array(h)
     if !(h.instance_of?(Hash) || h.instance_of?(ActionController::Parameters))
