@@ -25,8 +25,7 @@ jQuery(document).ready(function() {
           "ajax": {
             url: $('#dances-table').data('source'),
             data: function(d) {
-              d.includeMoves = $('#include-moves').val(); 
-              d.excludeMoves = $('#exclude-moves').val();
+              // d.excludeMoves = $('#exclude-moves').val();
               d.wackyJson = arrayToObject(['and', ['none', ['figure', 'gyre']], ['follows', ['figure', 'roll away'], ['figure', 'swing']]]);
             }
           },
@@ -43,6 +42,5 @@ jQuery(document).ready(function() {
             {"data": "updated_at"}
           ]
         });
-  $('#include-moves').change(function () { dataTable.draw();});
-  $('#exclude-moves').change(function () { dataTable.draw();});
+  // $('#exclude-moves').change(function () { dataTable.draw();});
 });

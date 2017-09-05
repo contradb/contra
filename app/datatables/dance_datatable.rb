@@ -37,14 +37,6 @@ class DanceDatatable < AjaxDatatablesRails::Base
     @user ||= options[:user]
   end
 
-  def include_moves
-    @include_moves ||= options[:include_moves]
-  end
-
-  def exclude_moves
-    @exclude_moves ||= options[:exclude_moves]
-  end
-
   def wacky_json
     @wacky_json ||= options[:wacky_json]
   end
