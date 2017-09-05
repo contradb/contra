@@ -27,9 +27,7 @@ jQuery(document).ready(function() {
             data: function(d) {
               d.includeMoves = $('#include-moves').val(); 
               d.excludeMoves = $('#exclude-moves').val();
-              d.wackyJson = arrayToObject(['and', ['follows', ['figure', 'roll away'], ['figure', 'swing', 'partner']], ['not', ['figure', 'gyre']]]);
-                // {op: 'and', l: {op: 'figure', l: 'roll away'}, r: {op: 'figure', l: 'swing', r: ['foo', 'bar']}};
-              // ['and', ['follows', ['figure', 'roll away'], ['figure', 'swing', 'partner']], ['not', ['figure', 'gyre']]]
+              d.wackyJson = arrayToObject(['and', ['none', ['figure', 'gyre']], ['follows', ['figure', 'roll away'], ['figure', 'swing']]]);
             }
           },
           "pagingType": "full_numbers",

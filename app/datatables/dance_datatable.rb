@@ -29,8 +29,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
   def get_raw_records
     filter = DanceDatatable.hash_to_array (wacky_json)
     dances = Dance.readable_by(user).to_a
-    dances = DanceDatatable.filter_dances(dances, filter)
-
+    # dances = DanceDatatable.filter_dances(dances, filter)
     Dance.where(id: dances.map(&:id)).includes(:choreographer, :user).references(:choreographer, :user)
   end
 
@@ -86,7 +85,10 @@ class DanceDatatable < AjaxDatatablesRails::Base
 
   def self.matching_figures(filter, dance)
     operator = filter.first
-    matches = self.send(:"matching_figures_for_#{operator}", filter, dance)
+    fn = :"matching_figures_for_#{operator}"
+    # binding.pry unless self.respond_to?(fn)
+    raise "#{operator.inspect} is not a valid operator in #{filter.inspect}" unless self.respond_to?(fn)
+    matches = self.send(fn, filter, dance)
     # puts "matching_figures #{dance.title} #{filter.inspect} = #{matches.inspect}"
     matches
   end
@@ -190,15 +192,16 @@ class DanceDatatable < AjaxDatatablesRails::Base
   # end
 
   def self.hash_to_array(h)
-    if !(h.instance_of?(Hash) || h.instance_of?(ActionController::Parameters))
+    h = h.to_h if h.instance_of?(ActionController::Parameters)
+    if !(h.instance_of?(Hash) || h.instance_of?(ActiveSupport::HashWithIndifferentAccess))
       h
     elsif !h['faux_array']
       h
     else
       i = 0
       arr = []
-      while h.key?(i)
-        arr << hash_to_array(h[i])
+      while h.key?(i.to_s)
+        arr << hash_to_array(h[i.to_s])
         i += 1
       end
       arr

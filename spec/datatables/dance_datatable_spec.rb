@@ -79,12 +79,12 @@ describe DanceDatatable do
 
   describe '.hash_to_array' do
     it 'works' do
-      h = {'faux_array' => true, 0 => 'figure', 1 => 'swing'}
+      h = {'faux_array' => true, "0" => 'figure', "1" => 'swing'}
       expect(DanceDatatable.send(:hash_to_array, h)).to eq(['figure', 'swing'])
     end
 
     it 'is recursive' do
-      h = {'faux_array' => true, 0 => 'not', 1 => {'faux_array' => true, 0 => 'figure', 1 => 'swing'}}
+      h = {'faux_array' => true, "0" => 'not', "1" => {'faux_array' => true, "0" => 'figure', "1" => 'swing'}}
       expect(DanceDatatable.send(:hash_to_array, h)).to eq(['not', ['figure', 'swing']])
     end
 
