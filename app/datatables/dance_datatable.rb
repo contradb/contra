@@ -27,9 +27,9 @@ class DanceDatatable < AjaxDatatablesRails::Base
   private
 
   def get_raw_records
-    filter = DanceDatatable.hash_to_array (wacky_json)
+    filter = DanceDatatable.hash_to_array(figure_query)
     dances = Dance.readable_by(user).to_a
-    # dances = DanceDatatable.filter_dances(dances, filter)
+    dances = DanceDatatable.filter_dances(dances, filter)
     Dance.where(id: dances.map(&:id)).includes(:choreographer, :user).references(:choreographer, :user)
   end
 
@@ -37,8 +37,8 @@ class DanceDatatable < AjaxDatatablesRails::Base
     @user ||= options[:user]
   end
 
-  def wacky_json
-    @wacky_json ||= options[:wacky_json]
+  def figure_query
+    @figure_query ||= options[:figure_query]
   end
 
   # ==== These methods represent the basic operations to perform on records

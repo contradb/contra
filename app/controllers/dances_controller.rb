@@ -9,7 +9,7 @@ class DancesController < ApplicationController
     respond_to do |format|
       format.html
       format.json do
-        render(json: DanceDatatable.new(view_context, user: current_user, wacky_json: index_params['wackyJson']))
+        render(json: DanceDatatable.new(view_context, user: current_user, figure_query: index_params['figureQuery']))
       end
     end
   end
@@ -98,7 +98,7 @@ class DancesController < ApplicationController
     end
 
     def index_params
-      # params.permit(:draw, :columns, :order, :start, :length, :search, :format, includeMoves: [], excludeMoves: [], wackyJson: [])
+      # params.permit(:draw, :columns, :order, :start, :length, :search, :format, excludeMoves: [], figureQuery: [])
       params.permit!
     end
 

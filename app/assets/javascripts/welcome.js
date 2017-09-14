@@ -26,7 +26,8 @@ jQuery(document).ready(function() {
             url: $('#dances-table').data('source'),
             data: function(d) {
               // d.excludeMoves = $('#exclude-moves').val();
-              d.wackyJson = arrayToObject(['and', ['none', ['figure', 'gyre']], ['follows', ['figure', 'roll away'], ['figure', 'swing']]]);
+              // d.figureQuery = arrayToObject(['and', ['none', ['figure', 'gyre']], ['follows', ['figure', 'roll away'], ['figure', 'swing']]]);
+              d.figureQuery = arrayToObject(['and']);
             }
           },
           "pagingType": "full_numbers",
