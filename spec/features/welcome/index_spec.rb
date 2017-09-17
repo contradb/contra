@@ -58,7 +58,13 @@ describe 'Welcome page', js: true do
         click_button('Add')
         expect(page).to have_css('.figure-filter', count: 3)
         expect(page).to have_css('.figure-move', count: 2)
+        all('.figure-move').last.select('circle') # first select is 'chain'
+
+        expect(page).to have_content('Call Me')
+        expect(page).to_not have_content('Box the Gnat Contra') # if failing here, probably need to install event handlers
+        expect(page).to_not have_content('The Rendevouz')
       end
+
 
       it "changing from 'and' to 'figure' purges subfilters and installs a new move select" do
         expect(page).to have_css('.figure-filter', count: 2)

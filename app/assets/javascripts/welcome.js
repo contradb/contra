@@ -1,9 +1,9 @@
-  function installEventHandlers(selector) {
-    selector.find('.figure-filter-op').change(filterOpChanged);
-    selector.find('.figure-filter-add').click(filterAddSubfilter);
-  }
-  
-  var filterHtml = "\
+function installEventHandlers(selector) {
+  selector.find('.figure-filter-op').change(filterOpChanged);
+  selector.find('.figure-filter-add').click(filterAddSubfilter);
+}
+
+var filterHtml = "\
     <div class='figure-filter'>\
       <select class='figure-filter-op'>\
         <option value='figure' selected>figure</option>\
@@ -14,61 +14,97 @@
         <option value='all'>all</option>\
         <option value='not'>not</option>\
       </select>\
+      <span class='figure-filter-end-of-subfigures'></span>\
       <select class='figure-move'>\
         <option value='swing'>swing</option>\
         <option value='chain' selected>chain</option>\
+        <option value='circle'>circle</option>\
         <option value='right left through'>right left through</option>\
       </select>\
     </div>\
 "
 
-  function filterOpChanged(e) {
-    var opSelect = $(e.target);
-    var filter = opSelect.closest('.figure-filter');
-    var op = opSelect.val();
-    console.log('op = '+op);
-    // TODO right-size subfilters
-    if (op === 'figure') {
-      // TODO 
-    } else {
-      $(filter).remove('.figure-move'); // if we were a figure filter
-      // TODO add
-    }
-    updateQuery();
+function minSubfilterCount(op) {
+  switch(op) {
+  case 'none':
+  case 'all':
+  case 'not':
+    return 1;
+  default:
+    return 0;
   }
+}
 
-  function filterAddSubfilter(e) {
-    var newFilter = $(filterHtml);
-    newFilter.insertBefore(this);
-    installEventHandlers(newFilter);
-    updateQuery();
+function maxSubfilterCount(op) {
+  switch(op) {
+  case 'figure':
+    return 0;
+  case 'all':
+  case 'none':
+  case 'not':
+    return 1;
+  default:
+    return Infinity;
   }
+}
 
-  function filterX(e) {         // delete filter
-    // if (it makes sense)
-    // remove the filter
-    updateQuery();
+
+function filterOpChanged(e) {
+  var opSelect = $(e.target);
+  var filter = opSelect.closest('.figure-filter');
+  var op = opSelect.val();
+  // console.log('op = '+op);
+  var actualSubfilterCount = filter.children('.figure-filter').length;
+  while (actualSubfilterCount > maxSubfilterCount(op)) {
+    filter.children('.figure-filter').last().remove();
+    actualSubfilterCount--;
   }
+  while (actualSubfilterCount < minSubfilterCount(op)) {
+    // var newFilter = $(filterHtml);
+    // newFilter.insertBefore(this);
+    // installEventHandlers(newFilter);
 
-  var updateQuery;              // defined below...
-
-  function buildFilter(figure_filter) {
-    figure_filter = $(figure_filter);
-    var op = figure_filter.children('.figure-filter-op').val();
-    console.log('op = '+op);
-    if (op === 'figure') {
-       return [op, figure_filter.children('.figure-move').val()];
-    } else {
-      var kids = figure_filter.children('.figure-filter').get();
-      if (!Array.prototype.map) { throw "I was expecting Array.map to be defined"; }
-      var filter = kids.map(buildFilter);
-      filter.unshift(op);
-      console.log(filter);
-      return filter;
-    }
+    // TODO add subfilter - figure out where to add it by adding inviso element
+    actualSubfilterCount++;
   }
+  if (op === 'figure') {
+    // TODO 
+  } else {
+    $(filter).remove('.figure-move'); // if we were a figure filter
+    // TODO add
+  }
+  updateQuery();
+}
 
+function filterAddSubfilter(e) {
+  var newFilter = $(filterHtml);
+  var thisFilter = $(this).closest('.figure-filter');
+  newFilter.insertBefore(thisFilter.children('.figure-filter-end-of-subfigures'));
+  installEventHandlers(newFilter);
+  updateQuery();
+}
 
+function filterX(e) {         // delete filter
+  // if (it makes sense)
+  // remove the filter
+  updateQuery();
+}
+
+var updateQuery;              // defined below...
+
+function buildFilter(figure_filter) {
+  figure_filter = $(figure_filter);
+  var op = figure_filter.children('.figure-filter-op').val();
+  if (op === 'figure') {
+    return [op, figure_filter.children('.figure-move').val()];
+  } else {
+    var kids = figure_filter.children('.figure-filter').get();
+    if (!Array.prototype.map) { throw "I was expecting Array.map to be defined"; }
+    var filter = kids.map(buildFilter);
+    filter.unshift(op);
+    return filter;
+  }
+}
 
 jQuery(document).ready(function() {
 
