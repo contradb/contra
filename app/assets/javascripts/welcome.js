@@ -1,15 +1,46 @@
   function installEventHandlers(selector) {
-    selector.find('.figure-filter-op').onChange(filterOpChanged);
-    selector.find('.figure-filter-add').onClick(filterAddSubfilter);
+    selector.find('.figure-filter-op').change(filterOpChanged);
+    selector.find('.figure-filter-add').click(filterAddSubfilter);
   }
   
+  var filterHtml = "\
+    <div class='figure-filter'>\
+      <select class='figure-filter-op'>\
+        <option value='figure' selected>figure</option>\
+        <option value='and'>and</option> \
+        <option value='or'>or</option>\
+        <option value='follows'>follows</option>\
+        <option value='none'>none</option>\
+        <option value='all'>all</option>\
+        <option value='not'>not</option>\
+      </select>\
+      <select class='figure-move'>\
+        <option value='swing'>swing</option>\
+        <option value='chain' selected>chain</option>\
+        <option value='right left through'>right left through</option>\
+      </select>\
+    </div>\
+"
+
   function filterOpChanged(e) {
-    // xNonsenseSubfilters();
+    var opSelect = $(e.target);
+    var filter = opSelect.closest('.figure-filter');
+    var op = opSelect.val();
+    console.log('op = '+op);
+    // TODO right-size subfilters
+    if (op === 'figure') {
+      // TODO 
+    } else {
+      $(filter).remove('.figure-move'); // if we were a figure filter
+      // TODO add
+    }
     updateQuery();
   }
 
   function filterAddSubfilter(e) {
-    // add the subfilter
+    var newFilter = $(filterHtml);
+    newFilter.insertBefore(this);
+    installEventHandlers(newFilter);
     updateQuery();
   }
 
@@ -40,6 +71,9 @@
 
 
 jQuery(document).ready(function() {
+
+
+  installEventHandlers($('#figure-filter-root'));
 
 
   // ================================================================

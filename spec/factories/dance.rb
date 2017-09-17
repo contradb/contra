@@ -35,6 +35,7 @@ FactoryGirl.define do
 
   factory :call_me, class: Dance do
     title "Call Me"
+    user { FactoryGirl.create(:user) }
     choreographer { Choreographer.find_by(name: "Cary Ravitz") ||
                     FactoryGirl.create(:choreographer, name: "Cary Ravitz") }
     start_type 'Becket ccw'

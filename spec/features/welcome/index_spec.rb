@@ -32,6 +32,42 @@ describe 'Welcome page', js: true do
         expect(page).to_not have_content(dance3.title)
       end
     end
+
+    describe 'figure filter' do
+      let (:dances) {[:dance, :box_the_gnat_contra, :call_me].map {|d| FactoryGirl.create(d)}}
+      before (:each) do
+        dances
+        visit '/'
+        # install an and, with one figure in it
+      end
+      
+      it 'the test filter is present and works' do
+
+        expect(find("#figure-filter-root>.figure-filter-op").value).to eq('and')
+        expect(find("#figure-filter-root>.figure-filter .figure-filter-op").value).to eq('figure')
+        expect(find("#figure-filter-root>.figure-filter .figure-move").value).to eq('chain')
+
+        expect(page).to have_content('Call Me')
+        expect(page).to have_content('Box the Gnat Contra')
+        expect(page).to_not have_content('The Rendevouz')
+      end
+
+      it "clicking 'add' works" do
+        expect(page).to have_css('.figure-filter', count: 2)
+        expect(page).to have_css('.figure-move', count: 1)
+        click_button('Add')
+        expect(page).to have_css('.figure-filter', count: 3)
+        expect(page).to have_css('.figure-move', count: 2)
+      end
+
+      it "changing from 'and' to 'figure' purges subfilters and installs a new move select" do
+        expect(page).to have_css('.figure-filter', count: 2)
+        expect(page).to have_css('.figure-move', count: 1)
+        first('.figure-filter-op').select('figure')
+        expect(page).to have_css('.figure-filter', count: 1)
+        expect(page).to have_css('.figure-move', count: 1)
+      end
+    end
   end
 
   context 'link cloud' do
