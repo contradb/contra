@@ -1,6 +1,9 @@
 function installEventHandlers(selector) {
+  // console.log('installEventHandlers');
+  // console.log(selector);
   selector.find('.figure-filter-op').change(filterOpChanged);
   selector.find('.figure-filter-add').click(filterAddSubfilter);
+  selector.find('.figure-move').change(updateQuery);
 }
 
 var filterHtml = "\
@@ -50,6 +53,7 @@ function maxSubfilterCount(op) {
 
 
 function filterOpChanged(e) {
+  // console.log("filterOpChanged");
   var opSelect = $(e.target);
   var filter = opSelect.closest('.figure-filter');
   var op = opSelect.val();
@@ -79,8 +83,8 @@ function filterOpChanged(e) {
 function filterAddSubfilter(e) {
   var newFilter = $(filterHtml);
   var thisFilter = $(this).closest('.figure-filter');
-  newFilter.insertBefore(thisFilter.children('.figure-filter-end-of-subfigures'));
   installEventHandlers(newFilter);
+  newFilter.insertBefore(thisFilter.children('.figure-filter-end-of-subfigures'));
   updateQuery();
 }
 
@@ -109,18 +113,18 @@ function buildFilter(figure_filter) {
 jQuery(document).ready(function() {
 
 
-  installEventHandlers($('#figure-filter-root'));
-
-
   // ================================================================
 
   updateQuery = function() {
+    // console.log('updateQuery');
     $('#query-buffer').val(JSON.stringify(buildFilter($('#figure-filter-root'))));
     if (dataTable) {
       dataTable.draw(); 
     }
   }
   updateQuery();
+
+  installEventHandlers($('#figure-filter-root'));
 
   if (!Array.isArray) {
     Array.isArray = function(arg) {

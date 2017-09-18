@@ -52,7 +52,18 @@ describe 'Welcome page', js: true do
         expect(page).to_not have_content('The Rendevouz')
       end
 
-      it "clicking 'add' works" do
+      it "changing figure changes values" do
+        expect(page).to have_css('.figure-filter', count: 2)
+        expect(page).to have_css('.figure-move', count: 1)
+        select('circle')
+
+        expect(page).to have_content('The Rendevouz')
+        expect(page).to_not have_content('Box the Gnat Contra')
+        expect(page).to have_content('Call Me')
+      end
+
+
+      it "clicking 'add' insert a figure filter that responds to change events" do
         expect(page).to have_css('.figure-filter', count: 2)
         expect(page).to have_css('.figure-move', count: 1)
         click_button('Add')
@@ -61,7 +72,7 @@ describe 'Welcome page', js: true do
         all('.figure-move').last.select('circle') # first select is 'chain'
 
         expect(page).to have_content('Call Me')
-        expect(page).to_not have_content('Box the Gnat Contra') # if failing here, probably need to install event handlers
+        expect(page).to_not have_content('Box the Gnat Contra')
         expect(page).to_not have_content('The Rendevouz')
       end
 
