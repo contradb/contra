@@ -77,13 +77,22 @@ describe 'Welcome page', js: true do
       end
 
 
-      it "changing from 'and' to 'figure' purges subfilters and installs a new move select" do
+      it "changing from 'and' to 'figure' purges subfilters and installs a new working move select" do
+        select('circle')        # rendevous and call me
         expect(page).to have_css('.figure-filter', count: 2)
         expect(page).to have_css('.figure-move', count: 1)
         first('.figure-filter-op').select('figure')
         expect(page).to have_css('.figure-filter', count: 1)
         expect(page).to have_css('.figure-move', count: 1)
+        expect(page).to_not have_content('The Rendevouz')
+        expect(page).to have_content('Box the Gnat Contra')
+        expect(page).to have_content('Call Me')
       end
+
+      it 'change from empty-and to none'
+      it 'change from double-and to none'
+      it 'change from figure to none'
+      it 'change from figure to and'
     end
   end
 

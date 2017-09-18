@@ -6,6 +6,15 @@ function installEventHandlers(selector) {
   selector.find('.figure-move').change(updateQuery);
 }
 
+var figureMoveHtml = "\
+      <select class='figure-move'>\
+        <option value='swing'>swing</option>\
+        <option value='chain' selected>chain</option>\
+        <option value='circle'>circle</option>\
+        <option value='right left through'>right left through</option>\
+      </select>";
+
+
 var filterHtml = "\
     <div class='figure-filter'>\
       <select class='figure-filter-op'>\
@@ -17,15 +26,10 @@ var filterHtml = "\
         <option value='all'>all</option>\
         <option value='not'>not</option>\
       </select>\
-      <span class='figure-filter-end-of-subfigures'></span>\
-      <select class='figure-move'>\
-        <option value='swing'>swing</option>\
-        <option value='chain' selected>chain</option>\
-        <option value='circle'>circle</option>\
-        <option value='right left through'>right left through</option>\
-      </select>\
-    </div>\
-"
+      <span class='figure-filter-end-of-subfigures'></span>"+
+      figureMoveHtml+"\
+    </div>";
+
 
 function minSubfilterCount(op) {
   switch(op) {
@@ -72,7 +76,9 @@ function filterOpChanged(e) {
     actualSubfilterCount++;
   }
   if (op === 'figure') {
-    // TODO 
+    var moveSelect = $(figureMoveHtml);
+    moveSelect.change(updateQuery);
+    filter.append(moveSelect);
   } else {
     $(filter).remove('.figure-move'); // if we were a figure filter
     // TODO add
