@@ -6,6 +6,8 @@ function installEventHandlers(selector) {
   selector.find('.figure-move').change(updateQuery);
 }
 
+var addButtonHtml = "<button class='figure-filter-add'>Add</button>";
+
 var figureMoveHtml = "\
       <select class='figure-move'>\
         <option value='swing'>swing</option>\
@@ -37,6 +39,8 @@ function minSubfilterCount(op) {
   case 'all':
   case 'not':
     return 1;
+  case undefined:
+    throw 'missing argument to minSubfilterCount';
   default:
     return 0;
   }
@@ -50,6 +54,8 @@ function maxSubfilterCount(op) {
   case 'none':
   case 'not':
     return 1;
+  case undefined:
+    throw 'missing argument to maxSubfilterCount';
   default:
     return Infinity;
   }
@@ -68,11 +74,9 @@ function filterOpChanged(e) {
     actualSubfilterCount--;
   }
   while (actualSubfilterCount < minSubfilterCount(op)) {
-    // var newFilter = $(filterHtml);
-    // newFilter.insertBefore(this);
-    // installEventHandlers(newFilter);
-
-    // TODO add subfilter - figure out where to add it by adding inviso element
+    var newFilter = $(filterHtml);
+    installEventHandlers(newFilter);
+    newFilter.insertBefore(filter.children('.figure-filter-end-of-subfigures'));
     actualSubfilterCount++;
   }
   if (op === 'figure') {
@@ -80,8 +84,15 @@ function filterOpChanged(e) {
     moveSelect.change(updateQuery);
     filter.append(moveSelect);
   } else {
-    $(filter).remove('.figure-move'); // if we were a figure filter
-    // TODO add
+    filter.children('.figure-move').remove(); // if we were a figure filter
+  }
+  var addButtonCount = filter.children('.figure-filter-add').length;
+  if (actualSubfilterCount < maxSubfilterCount(op) && addButtonCount === 0) {
+    var addButton = $(addButtonHtml);
+    addButton.click(filterAddSubfilter);
+    filter.append(addButton);
+  } else if (actualSubfilterCount >= maxSubfilterCount(op) && addButtonCount > 0) {
+    filter.children('.figure-filter-add').remove();
   }
   updateQuery();
 }

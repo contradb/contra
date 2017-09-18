@@ -90,9 +90,43 @@ describe 'Welcome page', js: true do
       end
 
       it 'change from empty-and to none'
-      it 'change from double-and to none'
-      it 'change from figure to none'
+
+      it 'change from double-and to none' do
+        click_button('Add')
+        all('.figure-move').last.select('circle') # first select is 'chain'
+        expect(page).to_not have_content('The Rendevouz')
+        expect(page).to_not have_content('Box the Gnat Contra')
+        expect(page).to have_content('Call Me')
+        all('.figure-filter-op').first.select('none'); # have none chain
+        expect(page).to have_content('The Rendevouz')
+        expect(page).to_not have_content('Box the Gnat Contra')
+        expect(page).to_not have_content('Call Me')
+      end
+
+      it 'change from figure to none' do
+        # now we're ['and', ['figure', 'chain']]
+        first('.figure-filter-op').select('figure')
+        # now we're just ['figure', 'chain']
+        select('none')
+        # now we're ['none', ['figure', something]]
+        select('circle')
+        # now we're ['none', ['figure', 'circle']]
+        expect(page).to_not have_content('The Rendevouz')
+        expect(page).to have_content('Box the Gnat Contra')
+        expect(page).to_not have_content('Call Me')
+      end
+
       it 'change from figure to and'
+
+      it "it adds/removes 'add' button depending on arity of the filter" do
+        expect(page).to have_css('.figure-filter-add', count: 1)
+        all('.figure-filter-op').first.select('none')
+        expect(page).to have_css('.figure-filter-add', count: 0)
+        all('.figure-filter-op').first.select('and')
+        expect(page).to have_css('.figure-filter-add', count: 1)
+        click_button('Add')
+        expect(page).to have_css('.figure-filter', count: 3)
+      end
     end
   end
 
