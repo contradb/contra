@@ -75,6 +75,18 @@ describe DanceDatatable do
       figure_indicies = DanceDatatable.matching_figures(['follows', ['figure', 'circle'], ['figure', 'swing']], dance)
       expect(figure_indicies).to eq([0])
     end
+
+    it 'returns everything with zero arguments' do
+      dance = FactoryGirl.create(:dance)
+      figure_indicies = DanceDatatable.matching_figures(['follows'], dance)
+      expect(figure_indicies).to eq([*(0...dance.figures.length)])
+    end
+
+    it 'returns index of figure with one argument' do
+      dance = FactoryGirl.create(:dance)
+      figure_indicies = DanceDatatable.matching_figures(['follows', ['figure', 'circle']], dance)
+      expect(figure_indicies).to eq([4,6])
+    end
   end
 
   describe '.hash_to_array' do

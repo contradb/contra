@@ -43,7 +43,9 @@ describe 'Welcome page', js: true do
       
       it 'the test filter is present and works' do
 
+        expect(page).to have_css("#figure-filter-root>.figure-filter-op") # js wait for...
         expect(find("#figure-filter-root>.figure-filter-op").value).to eq('and')
+
         expect(find("#figure-filter-root>.figure-filter .figure-filter-op").value).to eq('figure')
         expect(find("#figure-filter-root>.figure-filter .figure-move").value).to eq('chain')
 
@@ -89,7 +91,13 @@ describe 'Welcome page', js: true do
         expect(page).to have_content('Call Me')
       end
 
-      it 'change from empty-and to none'
+      it 'change from empty-or to none' do
+        all('.figure-filter-op').last.select('or');
+        expect(page).to have_css('.figure-filter-op', count: 2) # css wait
+        expect(page).to have_css('.figure-filter', count: 2)
+        expect(page).to have_css('.figure-filter-add', count: 2)
+        expect(page).to_not have_css('.figure-move')
+      end
 
       it 'change from double-and to none' do
         click_button('Add')
