@@ -8,13 +8,24 @@ function installEventHandlers(selector) {
 
 var addButtonHtml = "<button class='figure-filter-add'>Add</button>";
 
-var figureMoveHtml = "\
-      <select class='figure-move'>\
-        <option value='swing'>swing</option>\
-        <option value='chain' selected>chain</option>\
-        <option value='circle'>circle</option>\
-        <option value='right left through'>right left through</option>\
-      </select>";
+
+if (!Array.prototype.forEach) { throw "I was expecting Array.forEach to be defined"; }
+
+
+// figureMoveHtml variable looks like this, but with every move:
+// var figureMoveHtml = "\
+//       <select class='figure-move'>\
+//         <option value='swing'>swing</option>\
+//         <option value='chain' selected>chain</option>\
+//         <option value='circle'>circle</option>\
+//         <option value='right left through'>right left through</option>\
+//       </select>";
+var figureMoveHtml = "<select class='figure-move'>";
+moves().forEach(function(move) {
+  var selectedIfChain = ('chain'===move) ? ' selected ' : '';
+  figureMoveHtml += "<option value='"+move+"'" + selectedIfChain +">"+move+"</option>";
+});
+figureMoveHtml += "</select>";
 
 
 var filterHtml = "\
