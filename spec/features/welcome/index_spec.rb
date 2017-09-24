@@ -124,7 +124,12 @@ describe 'Welcome page', js: true do
         expect(page).to_not have_content('Call Me')
       end
 
-      it 'change from figure to and'
+      it 'change from figure to or' do
+        all('.figure-filter-op').last.select('or')
+        expect(page).to have_css('.figure-filter', count: 2)
+        expect(page).to have_css('.figure-filter-add', count: 2)
+        expect(find("#query-buffer").value).to eq('["and",["or"]]')
+      end
 
       it "it adds/removes 'add' button depending on arity of the filter" do
         expect(page).to have_css('.figure-filter-add', count: 1)
