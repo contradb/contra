@@ -91,9 +91,7 @@ function filterOpChanged(e) {
     actualSubfilterCount++;
   }
   if (op === 'figure') {
-    var moveSelect = $(figureMoveHtml);
-    moveSelect.change(updateQuery);
-    filter.append(moveSelect);
+    addFigureMoveSelect(filter);
   } else {
     filter.children('.figure-move').remove(); // if we were a figure filter
   }
@@ -106,6 +104,12 @@ function filterOpChanged(e) {
     filter.children('.figure-filter-add').remove();
   }
   updateQuery();
+}
+
+function addFigureMoveSelect(filter) {
+    var moveSelect = $(figureMoveHtml);
+    moveSelect.change(updateQuery);
+    filter.append(moveSelect);
 }
 
 function filterAddSubfilter(e) {
@@ -140,9 +144,6 @@ function buildFilter(figure_filter) {
 
 jQuery(document).ready(function() {
 
-
-  // ================================================================
-
   updateQuery = function() {
     // console.log('updateQuery');
     $('#query-buffer').val(JSON.stringify(buildFilter($('#figure-filter-root'))));
@@ -150,8 +151,9 @@ jQuery(document).ready(function() {
       dataTable.draw(); 
     }
   }
-  updateQuery();
 
+  addFigureMoveSelect($('#figure-filter-root > .figure-filter'));
+  updateQuery();
   installEventHandlers($('#figure-filter-root'));
 
   if (!Array.isArray) {
