@@ -3,11 +3,12 @@ function installEventHandlers(selector) {
   // console.log(selector);
   selector.find('.figure-filter-op').change(filterOpChanged);
   selector.find('.figure-filter-add').click(filterAddSubfilter);
+  selector.find('.figure-filter-remove').click(filterRemoveSubfilter);
   selector.find('.figure-move').change(updateQuery);
 }
 
 var addButtonHtml = "<button class='figure-filter-add'>Add</button>";
-
+var removeButtonHtml = "<button class='figure-filter-remove'>X</button>";
 
 if (!Array.prototype.forEach) { throw "I was expecting Array.forEach to be defined"; }
 
@@ -99,17 +100,37 @@ function filterOpChanged(e) {
   if (actualSubfilterCount < maxSubfilterCount(op) && addButtonCount === 0) {
     var addButton = $(addButtonHtml);
     addButton.click(filterAddSubfilter);
-    filter.append(addButton);
+    filter.children('.figure-filter-end-of-subfigures').after(addButton);
   } else if (actualSubfilterCount >= maxSubfilterCount(op) && addButtonCount > 0) {
     filter.children('.figure-filter-add').remove();
   }
+  ensureChildRemoveButtons(filter);
   updateQuery();
+}
+
+function ensureChildRemoveButtons(filter) {
+  var subfilters = filter.children('.figure-filter');
+  var op = filter.children('.figure-filter-op').val();
+  if (subfilters.length > minSubfilterCount(op)) {
+    subfilters.each(function () {
+      var $this = $(this);
+      if (0 === $this.children('.figure-filter-remove').length) {
+        var removeButton = $(removeButtonHtml);
+        removeButton.click(filterRemoveSubfilter);
+        $this.append(removeButton);
+      }
+    });
+  } else if (subfilters.length <= minSubfilterCount(op)) {
+    filter.children('.figure-filter').each(function() {
+      $(this).children('.figure-filter-remove').remove();
+    });
+  }
 }
 
 function addFigureMoveSelect(filter) {
     var moveSelect = $(figureMoveHtml);
     moveSelect.change(updateQuery);
-    filter.append(moveSelect);
+    filter.children('.figure-filter-end-of-subfigures').after(moveSelect);
 }
 
 function filterAddSubfilter(e) {
@@ -117,8 +138,15 @@ function filterAddSubfilter(e) {
   var thisFilter = $(this).closest('.figure-filter');
   installEventHandlers(newFilter);
   newFilter.insertBefore(thisFilter.children('.figure-filter-end-of-subfigures'));
+  ensureChildRemoveButtons(thisFilter);
   updateQuery();
 }
+
+function filterRemoveSubfilter(e) {
+  $(this).closest('.figure-filter').remove();
+  updateQuery();
+}
+
 
 function filterX(e) {         // delete filter
   // if (it makes sense)

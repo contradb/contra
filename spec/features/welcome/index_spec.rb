@@ -140,6 +140,42 @@ describe 'Welcome page', js: true do
         click_button('Add')
         expect(page).to have_css('.figure-filter', count: 3)
       end
+
+      describe 'filter remove button' do
+        it "root filter does not have a remove button" do
+          expect(page).to_not have_css('#figure-filter-root > button.figure-filter-remove')
+        end
+
+        it "initial subfilter has a working remove button" do
+          expect(page).to have_css('.figure-filter > button.figure-filter-remove', count: 1)
+          click_button('X')
+          expect(page).to have_css('.figure-filter', count: 1)
+        end
+
+        it "another subfilter has a working remove button" do
+          select('circle')
+          click_button('Add')   # adds a chain
+          expect(page).to have_css('.figure-filter > button.figure-filter-remove', count: 2)
+          all('.figure-filter-remove').last.click
+          expect(page).to have_css('.figure-filter', count: 2)
+          expect(find("#query-buffer").value).to eq('["and",["figure","circle"]]')
+        end
+
+        it "changing my op still allows my remove button" do # this was a bug at one point
+          all('.figure-filter-op').last.select('or')
+          expect(page).to have_css('#figure-filter-root > .figure-filter > .figure-filter-remove')
+          expect(page).to have_css('.figure-filter-remove', count: 1)
+        end
+
+        it "changing my op removes illegal remove buttons among my children, and adds them back in when they are legal" do
+          first('.figure-filter-op').select('none')
+          # [none, [figure chain]]
+          expect(page).to_not have_css('.figure-filter-remove') # remove illegal X buttons
+          first('.figure-filter-op').select('and')
+          expect(page).to have_css('#figure-filter-root > .figure-filter > .figure-filter-remove') # re-add X button
+          expect(page).to have_css('.figure-filter-remove', count: 1)
+        end
+      end
     end
   end
 
