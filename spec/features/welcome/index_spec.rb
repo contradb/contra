@@ -128,7 +128,7 @@ describe 'Welcome page', js: true do
         all('.figure-filter-op').last.select('or')
         expect(page).to have_css('.figure-filter', count: 2)
         expect(page).to have_css('.figure-filter-add', count: 2)
-        expect(find("#query-buffer").value).to eq('["and",["or"]]')
+        expect(find("#query-buffer", visible: false).value).to eq('["and",["or"]]')
       end
 
       it "it adds/removes 'add' button depending on arity of the filter" do
@@ -158,7 +158,7 @@ describe 'Welcome page', js: true do
           expect(page).to have_css('.figure-filter > button.figure-filter-remove', count: 2)
           all('.figure-filter-remove').last.click
           expect(page).to have_css('.figure-filter', count: 2)
-          expect(find("#query-buffer").value).to eq('["and",["figure","circle"]]')
+          expect(find("#query-buffer", visible: false).value).to eq('["and",["figure","circle"]]')
         end
 
         it "changing my op still allows my remove button" do # this was a bug at one point

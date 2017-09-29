@@ -50,9 +50,21 @@
 }
 
 /* figure filters */
+
 .figure-filter {
-  margin-left: 20px;
+  padding: 20px 20px;
+  margin-top: 5px;
+  // @include translate(100px, 100px);
+  border: 1px solid black;
+  position: relative;
 }
-.figure-filter-op {
-  margin-left: -20px;
+
+.figure-filter-remove {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+}
+
+#query-buffer {
+  display: none;
 }
