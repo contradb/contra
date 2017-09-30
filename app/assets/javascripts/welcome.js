@@ -89,6 +89,9 @@ function filterOpChanged(e) {
     var newFilter = $(filterHtml);
     installEventHandlers(newFilter);
     newFilter.insertBefore(filter.children('.figure-filter-end-of-subfigures'));
+    if (actualSubfilterCount >= 1) {
+      $('<div class="infix-word">op</div>').insertBefore(newFilter);
+    }
     actualSubfilterCount++;
   }
   if (op === 'figure') {
@@ -105,7 +108,12 @@ function filterOpChanged(e) {
     filter.children('.figure-filter-add').remove();
   }
   ensureChildRemoveButtons(filter);
+  updateInfixContent(filter, op);
   updateQuery();
+}
+
+function updateInfixContent(filter, op) {
+  console.log('TODO: change infix content');
 }
 
 function ensureChildRemoveButtons(filter) {
@@ -138,6 +146,11 @@ function filterAddSubfilter(e) {
   var thisFilter = $(this).closest('.figure-filter');
   installEventHandlers(newFilter);
   newFilter.insertBefore(thisFilter.children('.figure-filter-end-of-subfigures'));
+  console.log(thisFilter.children('.figure-filter').length);
+  if (thisFilter.children('.figure-filter').length >= 1) { // TODO: this code is duped subfilter-changed
+    var op = thisFilter.children('.figure-filter-op').val();
+    $('<div class="infix-word">'+op+'</div>').insertBefore(newFilter);
+  }
   ensureChildRemoveButtons(thisFilter);
   updateQuery();
 }

@@ -52,11 +52,16 @@
 /* figure filters */
 
 .figure-filter {
-  padding: 20px 20px;
+  margin-left: 20px;
   margin-top: 5px;
   // @include translate(100px, 100px);
-  border: 1px solid black;
+  // border: 1px solid #CCC;
   position: relative;
+}
+
+
+#figure-filter-root {
+  margin-bottom: 20px;
 }
 
 .figure-filter-remove {
