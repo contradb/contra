@@ -40,9 +40,9 @@ var filterHtml = "\
         <option value='none'>none</option>\
         <option value='all'>all</option>\
         <option value='not'>not</option>\
-      </select>\
-      <span class='figure-filter-end-of-subfigures'></span>"+
+      </select>"+
       figureMoveHtml+"\
+      <span class='figure-filter-end-of-subfigures'></span>\
     </div>";
 
 
@@ -123,7 +123,7 @@ function ensureChildRemoveButtons(filter) {
       if (0 === $this.children('.figure-filter-remove').length) {
         var removeButton = $(removeButtonHtml);
         removeButton.click(filterRemoveSubfilter);
-        $this.append(removeButton);
+        $this.children('.figure-filter-end-of-subfigures').before(removeButton);
       }
     });
   } else if (subfilters.length <= minSubfilterCount(op)) {
@@ -134,9 +134,9 @@ function ensureChildRemoveButtons(filter) {
 }
 
 function addFigureMoveSelect(filter) {
-    var moveSelect = $(figureMoveHtml);
-    moveSelect.change(updateQuery);
-    filter.children('.figure-filter-end-of-subfigures').after(moveSelect);
+  var moveSelect = $(figureMoveHtml);
+  moveSelect.change(updateQuery);
+  filter.children('.figure-filter-op').after(moveSelect);
 }
 
 function clickFilterAddSubfilter(e) {
@@ -189,7 +189,7 @@ jQuery(document).ready(function() {
     if (dataTable) {
       dataTable.draw(); 
     }
-  }
+  };
 
   addFigureMoveSelect($('#figure-filter-root > .figure-filter'));
   updateQuery();

@@ -52,22 +52,23 @@
 /* figure filters */
 
 .figure-filter {
-  margin-left: 2em;
+  margin-left: 1em;
   margin-top: 5px;
-  // border: 1px solid #CCC;
-  width: fit-content; // not in IE
-  /* display: table; */
+  display: table;
 }
-
 
 .figure-filter + .figure-filter:before {
   content: attr(data-op);
   display: block;
-  margin-left: -2em;
 }
 
+.figure-filter-add {
+  display: block;
+  margin-bottom: 0.4em;
+}
 
 #figure-filter-root {
+  margin-left: 0em;
   margin-bottom: 20px;
 }
 
