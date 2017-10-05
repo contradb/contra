@@ -2,7 +2,7 @@ function installEventHandlers(selector) {
   // console.log('installEventHandlers');
   // console.log(selector);
   selector.find('.figure-filter-op').change(filterOpChanged);
-  selector.find('.figure-filter-add').click(filterAddSubfilter);
+  selector.find('.figure-filter-add').click(clickFilterAddSubfilter);
   selector.find('.figure-filter-remove').click(filterRemoveSubfilter);
   selector.find('.figure-move').change(updateQuery);
 }
@@ -29,8 +29,9 @@ moves().forEach(function(move) {
 figureMoveHtml += "</select>";
 
 
+// TODO: defualt data-op to something other than 'and'
 var filterHtml = "\
-    <div class='figure-filter'>\
+    <div class='figure-filter' data-op=and>\
       <select class='figure-filter-op'>\
         <option value='figure' selected>figure</option>\
         <option value='and'>and</option> \
@@ -86,12 +87,7 @@ function filterOpChanged(e) {
     actualSubfilterCount--;
   }
   while (actualSubfilterCount < minSubfilterCount(op)) {
-    var newFilter = $(filterHtml);
-    installEventHandlers(newFilter);
-    newFilter.insertBefore(filter.children('.figure-filter-end-of-subfigures'));
-    if (actualSubfilterCount >= 1) {
-      $('<div class="infix-word">op</div>').insertBefore(newFilter);
-    }
+    filterAddSubfilter(filter);
     actualSubfilterCount++;
   }
   if (op === 'figure') {
@@ -102,18 +98,20 @@ function filterOpChanged(e) {
   var addButtonCount = filter.children('.figure-filter-add').length;
   if (actualSubfilterCount < maxSubfilterCount(op) && addButtonCount === 0) {
     var addButton = $(addButtonHtml);
-    addButton.click(filterAddSubfilter);
+    addButton.click(clickFilterAddSubfilter);
     filter.children('.figure-filter-end-of-subfigures').after(addButton);
   } else if (actualSubfilterCount >= maxSubfilterCount(op) && addButtonCount > 0) {
     filter.children('.figure-filter-add').remove();
   }
   ensureChildRemoveButtons(filter);
-  updateInfixContent(filter, op);
+  updateAddButtonText(filter, op);
+  
+  filter.children('.figure-filter').attr('data-op', op);
   updateQuery();
 }
 
-function updateInfixContent(filter, op) {
-  console.log('TODO: change infix content');
+function updateAddButtonText(filter, op) {
+  filter.children('.figure-filter-add').text('add '+ op);
 }
 
 function ensureChildRemoveButtons(filter) {
@@ -141,17 +139,17 @@ function addFigureMoveSelect(filter) {
     filter.children('.figure-filter-end-of-subfigures').after(moveSelect);
 }
 
-function filterAddSubfilter(e) {
-  var newFilter = $(filterHtml);
-  var thisFilter = $(this).closest('.figure-filter');
-  installEventHandlers(newFilter);
-  newFilter.insertBefore(thisFilter.children('.figure-filter-end-of-subfigures'));
-  console.log(thisFilter.children('.figure-filter').length);
-  if (thisFilter.children('.figure-filter').length >= 1) { // TODO: this code is duped subfilter-changed
-    var op = thisFilter.children('.figure-filter-op').val();
-    $('<div class="infix-word">'+op+'</div>').insertBefore(newFilter);
-  }
-  ensureChildRemoveButtons(thisFilter);
+function clickFilterAddSubfilter(e) {
+  filterAddSubfilter($(this).closest('.figure-filter'));
+}
+
+function filterAddSubfilter(parentFilter) {
+  var childFilter = $(filterHtml);
+  installEventHandlers(childFilter);
+  childFilter.insertBefore(parentFilter.children('.figure-filter-end-of-subfigures'));
+  ensureChildRemoveButtons(parentFilter);
+  var op = parentFilter.children('.figure-filter-op').val();
+  childFilter.attr('data-op', op);
   updateQuery();
 }
 

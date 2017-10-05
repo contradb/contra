@@ -65,10 +65,10 @@ describe 'Welcome page', js: true do
       end
 
 
-      it "clicking 'add' insert a figure filter that responds to change events" do
+      it "clicking 'add and' inserts a figure filter that responds to change events" do
         expect(page).to have_css('.figure-filter', count: 2)
         expect(page).to have_css('.figure-move', count: 1)
-        click_button('Add')
+        click_button('add and')
         expect(page).to have_css('.figure-filter', count: 3)
         expect(page).to have_css('.figure-move', count: 2)
         all('.figure-move').last.select('circle') # first select is 'chain'
@@ -100,7 +100,7 @@ describe 'Welcome page', js: true do
       end
 
       it 'change from double-and to none' do
-        click_button('Add')
+        click_button('add and')
         all('.figure-move').last.select('circle') # first select is 'chain'
         expect(page).to_not have_content('The Rendevouz')
         expect(page).to_not have_content('Box the Gnat Contra')
@@ -137,7 +137,7 @@ describe 'Welcome page', js: true do
         expect(page).to have_css('.figure-filter-add', count: 0)
         all('.figure-filter-op').first.select('and')
         expect(page).to have_css('.figure-filter-add', count: 1)
-        click_button('Add')
+        click_button('add and')
         expect(page).to have_css('.figure-filter', count: 3)
       end
 
@@ -154,7 +154,7 @@ describe 'Welcome page', js: true do
 
         it "another subfilter has a working remove button" do
           select('circle')
-          click_button('Add')   # adds a chain
+          click_button('add and')   # adds a chain
           expect(page).to have_css('.figure-filter > button.figure-filter-remove', count: 2)
           all('.figure-filter-remove').last.click
           expect(page).to have_css('.figure-filter', count: 2)
