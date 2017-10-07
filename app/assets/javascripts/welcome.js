@@ -15,13 +15,13 @@ if (!Array.prototype.forEach) { throw "I was expecting Array.forEach to be defin
 
 // figureMoveHtml variable looks like this, but with every move:
 // var figureMoveHtml = "\
-//       <select class='figure-move'>\
+//       <select class='figure-move form-control'>\
 //         <option value='swing'>swing</option>\
 //         <option value='chain' selected>chain</option>\
 //         <option value='circle'>circle</option>\
 //         <option value='right left through'>right left through</option>\
 //       </select>";
-var figureMoveHtml = "<select class='figure-move'>";
+var figureMoveHtml = "<select class='figure-move form-control'>";
 moves().forEach(function(move) {
   var selectedIfChain = ('chain'===move) ? ' selected ' : '';
   figureMoveHtml += "<option value='"+move+"'" + selectedIfChain +">"+move+"</option>";
@@ -32,7 +32,7 @@ figureMoveHtml += "</select>";
 // TODO: defualt data-op to something other than 'and'
 var filterHtml = "\
     <div class='figure-filter' data-op=and>\
-      <select class='figure-filter-op'>\
+      <select class='figure-filter-op form-control'>\
         <option value='figure' selected>figure</option>\
         <option value='and'>and</option> \
         <option value='or'>or</option>\
@@ -182,7 +182,6 @@ function buildFilter(figure_filter) {
 }
 
 jQuery(document).ready(function() {
-
   updateQuery = function() {
     // console.log('updateQuery');
     $('#query-buffer').val(JSON.stringify(buildFilter($('#figure-filter-root'))));
@@ -229,7 +228,7 @@ jQuery(document).ready(function() {
           "pagingType": "full_numbers",
           "dom": 'ft<"row"<"col-sm-6 col-md-3"i><"col-sm-6 col-md-3"l>>pr',
           language: {
-            searchPlaceholder: "search"
+            searchPlaceholder: "search by title, choreographer, and user"
           },
           "order": [[ 3, "desc" ]],
           "columns": [
@@ -239,5 +238,6 @@ jQuery(document).ready(function() {
             {"data": "updated_at"}
           ]
         });
+
   // $('#exclude-moves').change(function () { dataTable.draw();});
 });

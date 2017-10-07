@@ -1,3 +1,6 @@
+$icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/error-with-javascript-enabled-tests-bootstrap-3-rails-4-travis-ci */
+@import "bootstrap";
+
 .welcome-index-content {
   margin-left: 15px;
   margin-right: 15px;
@@ -49,6 +52,14 @@
   }
 }
 
+#dances-table_filter input {
+    margin-bottom: 1em;
+    width: 30em;
+    margin-top: -20px;
+    margin-left: 0px;
+    @extend .input-lg           /* overwrite too-small .input-sm provided by datatables */
+}
+
 /* figure filters */
 
 .figure-filter {
@@ -65,13 +76,21 @@
 .figure-filter-add {
   display: block;
   margin-bottom: 0.4em;
+  @extend .btn;
+  @extend .btn-default;
+}
+
+.figure-filter-remove {
+  @extend .btn;
+  @extend .btn-default;
 }
 
 #figure-filter-root {
   margin-left: 0em;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 #query-buffer {
   display: none;
 }
+
