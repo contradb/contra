@@ -66,6 +66,7 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
   margin-left: 1em;
   margin-top: 5px;
   display: table;
+  @extend .form-inline;
 }
 
 .figure-filter + .figure-filter:before {
@@ -75,7 +76,7 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
 
 .figure-filter-add {
   display: block;
-  margin-bottom: 0.4em;
+  margin-top: 0.4em;
   @extend .btn;
   @extend .btn-default;
 }
@@ -83,6 +84,7 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
 .figure-filter-remove {
   @extend .btn;
   @extend .btn-default;
+  margin-left: 0.4em;
 }
 
 #figure-filter-root {
