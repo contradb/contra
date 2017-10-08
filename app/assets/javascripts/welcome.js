@@ -190,9 +190,9 @@ jQuery(document).ready(function() {
     }
   };
 
-  addFigureMoveSelect($('#figure-filter-root > .figure-filter'));
-  updateQuery();
+  addFigureMoveSelect($('#figure-filter-root'));
   installEventHandlers($('#figure-filter-root'));
+  updateQuery();
 
   if (!Array.isArray) {
     Array.isArray = function(arg) {

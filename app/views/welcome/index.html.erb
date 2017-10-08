@@ -14,38 +14,21 @@
 <section>
   <h2>Dances</h2>
 
-  <div id='figure-filter-root' class='figure-filter'>
+  <div class='figure-filter' id='figure-filter-root'>
     <select class='figure-filter-op form-control'>
-      <option value="figure">figure</option> 
-      <option value="and" selected>and</option> 
+      <option value="figure" selected>figure</option> 
+      <option value="and">and</option> 
       <option value="or">or</option>
       <option value="follows">follows</option>
       <option value="none">none</option>
       <option value="all">all</option>
       <option value="not">not</option>
     </select>
-
-    <div class='figure-filter'>
-      <select class='figure-filter-op form-control'>
-        <option value="figure" selected>figure</option> 
-        <option value="and">and</option> 
-        <option value="or">or</option>
-        <option value="follows">follows</option>
-        <option value="none">none</option>
-        <option value="all">all</option>
-        <option value="not">not</option>
-      </select>
-      <!-- figure-filter-move will go here - thanks JS -->
-      <button class='figure-filter-remove'>X</button>
-      <span class='figure-filter-end-of-subfigures'></span>
-    </div>
-
+    <!-- figure-filter-move will go here - thanks JS -->
     <span class='figure-filter-end-of-subfigures'></span>
-    <button class='figure-filter-add'>add and</button>
   </div>
 
   <input id="query-buffer" type='text'>
-
 
   <table id="dances-table", class="table table-bordered table-hover table-condensed", data-source="<%= dances_path(format: :json) %>">
     <thead>

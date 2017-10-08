@@ -33,12 +33,19 @@ describe 'Welcome page', js: true do
       end
     end
 
-    describe 'figure filter' do
+    it 'figure filter is initially just one figure' do
+      visit '/'
+      expect(page).to have_css("#figure-filter-root>.figure-filter-op")
+      expect(find("#figure-filter-root>.figure-filter-op").value).to eq('figure')
+    end
+
+    describe 'figure filter machinantions' do
       let (:dances) {[:dance, :box_the_gnat_contra, :call_me].map {|d| FactoryGirl.create(d)}}
       before (:each) do
         dances
         visit '/'
-        # install an and, with one figure in it
+        select('and')
+        click_button('add and')
       end
       
       it 'the test filter is present and works' do
