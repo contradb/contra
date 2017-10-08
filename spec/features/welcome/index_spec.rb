@@ -55,7 +55,7 @@ describe 'Welcome page', js: true do
         visit '/'
         # get down to (and (filter '*')):
         select('and')
-        all('.figure-filter').last.click_button('X')
+        all('.figure-filter-remove').last.click
       end
       
       it 'the precondition of all these other tests is fulfilled' do
@@ -118,9 +118,9 @@ describe 'Welcome page', js: true do
         expect(page).to have_css('.figure-filter', count: 4)
         expect(page).to have_css('.figure-filter-add', count: 2)
         expect(page).to have_css('.figure-filter-move', count: 2)
-        all('.figure-filter').last.click_button('X')
+        all('.figure-filter-remove').last.click
         expect(page).to have_css('.figure-filter', count: 3) # css wait
-        all('.figure-filter').last.click_button('X')
+        all('.figure-filter-remove').last.click
         expect(page).to have_css('.figure-filter', count: 2) # css wait
         all('.figure-filter-op').last.select('none');
         expect(page).to have_css('.figure-filter', count: 3) # <- the main point here
@@ -177,7 +177,7 @@ describe 'Welcome page', js: true do
 
         it "initial subfilter has a working remove button" do
           expect(page).to have_css('.figure-filter > button.figure-filter-remove', count: 1)
-          click_button('X')
+          find('.figure-filter-remove').click
           expect(page).to have_css('.figure-filter', count: 1)
         end
 

@@ -8,7 +8,7 @@ function installEventHandlers(selector) {
 }
 
 var addButtonHtml = "<button class='figure-filter-add'>Add</button>";
-var removeButtonHtml = "<button class='figure-filter-remove'>X</button>";
+var removeButtonHtml = "<button class='figure-filter-remove'><span class='glyphicon glyphicon-remove'></span></button>";
 
 if (!Array.prototype.forEach) { throw "I was expecting Array.forEach to be defined"; }
 
