@@ -21,10 +21,10 @@ if (!Array.prototype.forEach) { throw "I was expecting Array.forEach to be defin
 //         <option value='circle'>circle</option>\
 //         <option value='right left through'>right left through</option>\
 //       </select>";
-var figureMoveHtml = "<select class='figure-move form-control'>";
+var figureMoveHtml = "<select class='figure-move form-control'><option value='*' selected=true>*</option>";
 moves().forEach(function(move) {
   var selectedIfChain = ('chain'===move) ? ' selected ' : '';
-  figureMoveHtml += "<option value='"+move+"'" + selectedIfChain +">"+move+"</option>";
+  figureMoveHtml += "<option value='"+move+"'>"+move+"</option>";
 });
 figureMoveHtml += "</select>";
 

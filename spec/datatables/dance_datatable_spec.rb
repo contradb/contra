@@ -6,9 +6,16 @@ describe DanceDatatable do
   describe '.filter_dances' do
     let (:dances) { [:dance, :box_the_gnat_contra, :call_me].map {|name| FactoryGirl.create(name)} }
 
-    it 'figure' do
-      filtered = DanceDatatable.send(:filter_dances, dances, ['figure', 'hey'])
-      expect(filtered.map(&:title)).to eq(['Call Me'])
+    describe 'figure' do
+      it 'works' do
+        filtered = DanceDatatable.send(:filter_dances, dances, ['figure', 'hey'])
+        expect(filtered.map(&:title)).to eq(['Call Me'])
+      end
+
+      it 'wildcard' do
+        filtered = DanceDatatable.send(:filter_dances, dances, ['figure', '*'])
+        expect(filtered.map(&:title)).to eq(dances.map(&:title))
+      end
     end
 
     describe 'and' do

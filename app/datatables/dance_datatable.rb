@@ -87,8 +87,12 @@ class DanceDatatable < AjaxDatatablesRails::Base
 
   def self.matching_figures_for_figure(filter, dance)
     move = filter[1]
-    indicies = dance.figures.each_with_index.map {|figure, index| figure['move'] == move ? index : nil}
-    indicies.any? ? indicies.compact : nil
+    if '*' == move              # wildcard
+      [*0...dance.figures.length]
+    else
+      indicies = dance.figures.each_with_index.map {|figure, index| figure['move'] == move ? index : nil}
+      indicies.any? ? indicies.compact : nil
+    end
   end
 
   def self.matching_figures_for_none(filter, dance)
