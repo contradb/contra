@@ -4,7 +4,7 @@ function installEventHandlers(selector) {
   selector.find('.figure-filter-op').change(filterOpChanged);
   selector.find('.figure-filter-add').click(clickFilterAddSubfilter);
   selector.find('.figure-filter-remove').click(filterRemoveSubfilter);
-  selector.find('.figure-move').change(updateQuery);
+  selector.find('.figure-filter-move').change(updateQuery);
 }
 
 var addButtonHtml = "<button class='figure-filter-add'>Add</button>";
@@ -15,13 +15,13 @@ if (!Array.prototype.forEach) { throw "I was expecting Array.forEach to be defin
 
 // figureMoveHtml variable looks like this, but with every move:
 // var figureMoveHtml = "\
-//       <select class='figure-move form-control'>\
+//       <select class='figure-filter-move form-control'>\
 //         <option value='swing'>swing</option>\
 //         <option value='chain' selected>chain</option>\
 //         <option value='circle'>circle</option>\
 //         <option value='right left through'>right left through</option>\
 //       </select>";
-var figureMoveHtml = "<select class='figure-move form-control'><option value='*' selected=true>*</option>";
+var figureMoveHtml = "<select class='figure-filter-move form-control'><option value='*' selected=true>*</option>";
 moves().forEach(function(move) {
   var selectedIfChain = ('chain'===move) ? ' selected ' : '';
   figureMoveHtml += "<option value='"+move+"'>"+move+"</option>";
@@ -103,7 +103,7 @@ function filterOpChanged(e) {
   if (op === 'figure') {
     addFigureMoveSelect(filter);
   } else {
-    filter.children('.figure-move').remove(); // if we were a figure filter
+    filter.children('.figure-filter-move').remove(); // if we were a figure filter
   }
   var addButtonCount = filter.children('.figure-filter-add').length;
   if (actualSubfilterCount < maxSubfilterCount(op) && addButtonCount === 0) {
@@ -181,7 +181,7 @@ function buildFilter(figure_filter) {
   figure_filter = $(figure_filter);
   var op = figure_filter.children('.figure-filter-op').val();
   if (op === 'figure') {
-    return [op, figure_filter.children('.figure-move').val()];
+    return [op, figure_filter.children('.figure-filter-move').val()];
   } else {
     var kids = figure_filter.children('.figure-filter').get();
     if (!Array.prototype.map) { throw "I was expecting Array.map to be defined"; }

@@ -37,15 +37,15 @@ describe 'Welcome page', js: true do
       visit '/'
       expect(page).to have_css("#figure-filter-root>.figure-filter-op")
       expect(find("#figure-filter-root>.figure-filter-op").value).to eq('figure')
-      expect(page).to have_css("#figure-filter-root>.figure-move")
-      expect(find("#figure-filter-root>.figure-move").value).to eq('*')
+      expect(page).to have_css("#figure-filter-root>.figure-filter-move")
+      expect(find("#figure-filter-root>.figure-filter-move").value).to eq('*')
     end
 
     it "changing figure filter from 'figure' to 'and' installs two subfilters" do
       visit '/'
       select('and')
       expect(page).to have_css('.figure-filter', count: 3)
-      expect(page).to have_css('.figure-move', count: 2)
+      expect(page).to have_css('.figure-filter-move', count: 2)
     end
 
     describe 'figure filter machinantions' do
@@ -64,7 +64,7 @@ describe 'Welcome page', js: true do
         expect(find("#figure-filter-root>.figure-filter-op").value).to eq('and')
 
         expect(find("#figure-filter-root>.figure-filter .figure-filter-op").value).to eq('figure')
-        expect(find("#figure-filter-root>.figure-filter .figure-move").value).to eq('*')
+        expect(find("#figure-filter-root>.figure-filter .figure-filter-move").value).to eq('*')
 
         expect(page).to have_content('Call Me')
         expect(page).to have_content('Box the Gnat Contra')
@@ -73,7 +73,7 @@ describe 'Welcome page', js: true do
 
       it "changing figure changes values" do
         expect(page).to have_css('.figure-filter', count: 2)
-        expect(page).to have_css('.figure-move', count: 1)
+        expect(page).to have_css('.figure-filter-move', count: 1)
         expect(page).to have_content('The Rendevouz')
         expect(page).to have_content('Box the Gnat Contra')
         expect(page).to have_content('Call Me')
@@ -87,12 +87,12 @@ describe 'Welcome page', js: true do
 
       it "clicking 'add and' inserts a figure filter that responds to change events" do
         expect(page).to have_css('.figure-filter', count: 2)
-        expect(page).to have_css('.figure-move', count: 1)
+        expect(page).to have_css('.figure-filter-move', count: 1)
         click_button('add and')
         expect(page).to have_css('.figure-filter', count: 3)
-        expect(page).to have_css('.figure-move', count: 2)
-        all('.figure-move').first.select('chain')
-        all('.figure-move').last.select('circle')
+        expect(page).to have_css('.figure-filter-move', count: 2)
+        all('.figure-filter-move').first.select('chain')
+        all('.figure-filter-move').last.select('circle')
 
         expect(page).to have_content('Call Me')
         expect(page).to_not have_content('Box the Gnat Contra')
@@ -102,11 +102,11 @@ describe 'Welcome page', js: true do
       it "changing from 'and' to 'figure' purges subfilters and installs a new working move select" do
         select('circle')        # rendevous and call me
         expect(page).to have_css('.figure-filter', count: 2)
-        expect(page).to have_css('.figure-move', count: 1)
+        expect(page).to have_css('.figure-filter-move', count: 1)
         first('.figure-filter-op').select('figure')
         select('chain')
         expect(page).to have_css('.figure-filter', count: 1)
-        expect(page).to have_css('.figure-move', count: 1)
+        expect(page).to have_css('.figure-filter-move', count: 1)
         expect(page).to_not have_content('The Rendevouz')
         expect(page).to have_content('Box the Gnat Contra')
         expect(page).to have_content('Call Me')
@@ -117,7 +117,7 @@ describe 'Welcome page', js: true do
         expect(page).to have_css('.figure-filter-op', count: 4)
         expect(page).to have_css('.figure-filter', count: 4)
         expect(page).to have_css('.figure-filter-add', count: 2)
-        expect(page).to have_css('.figure-move', count: 2)
+        expect(page).to have_css('.figure-filter-move', count: 2)
         all('.figure-filter').last.click_button('X')
         expect(page).to have_css('.figure-filter', count: 3) # css wait
         all('.figure-filter').last.click_button('X')
@@ -128,8 +128,8 @@ describe 'Welcome page', js: true do
 
       it "change from binary 'and' to 'none'" do
         click_button('add and')
-        all('.figure-move').first.select('chain')
-        all('.figure-move').last.select('circle')
+        all('.figure-filter-move').first.select('chain')
+        all('.figure-filter-move').last.select('circle')
         expect(page).to_not have_content('The Rendevouz')
         expect(page).to_not have_content('Box the Gnat Contra')
         expect(page).to have_content('Call Me')
