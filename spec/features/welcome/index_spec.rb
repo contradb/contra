@@ -1,4 +1,17 @@
 # coding: utf-8
+=begin
+  __ _       _                                    _ 
+ / _| | __ _| | ___   _   ___ _ __   ___  ___ ___| |
+| |_| |/ _` | |/ / | | | / __| '_ \ / _ \/ __/ __| |
+|  _| | (_| |   <| |_| | \__ \ |_) |  __/ (__\__ \_|
+|_| |_|\__,_|_|\_\\__, | |___/ .__/ \___|\___|___(_)
+                  |___/      |_|                    
+
+The specs in this file are flaky, showing false reds. Run them a couple times. -dm 10-08-2017
+=end
+
+
+
 require 'rails_helper'
 require 'login_helper'
 
@@ -156,7 +169,7 @@ describe 'Welcome page', js: true do
         all('.figure-filter-op').last.select('or')
         expect(page).to have_css('.figure-filter', count: 4)
         expect(page).to have_css('.figure-filter-add', count: 2)
-        expect(find("#query-buffer", visible: false).value).to eq('["and",["or",["figure","*"],["figure","*"]]]')
+        expect(find("#figure-query-buffer", visible: false).value).to eq('["and",["or",["figure","*"],["figure","*"]]]')
       end
 
       it "it adds/removes 'add' button depending on arity of the filter, and 'add' button works" do
@@ -187,7 +200,7 @@ describe 'Welcome page', js: true do
           expect(page).to have_css('.figure-filter > button.figure-filter-remove', count: 2)
           all('.figure-filter-remove').last.click
           expect(page).to have_css('.figure-filter', count: 2)
-          expect(find("#query-buffer", visible: false).value).to eq('["and",["figure","circle"]]')
+          expect(find("#figure-query-buffer", visible: false).value).to eq('["and",["figure","circle"]]')
         end
 
         it "changing my op still allows my remove button" do # this was a bug at one point

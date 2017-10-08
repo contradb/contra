@@ -1,6 +1,4 @@
 function installEventHandlers(selector) {
-  // console.log('installEventHandlers');
-  // console.log(selector);
   selector.find('.figure-filter-op').change(filterOpChanged);
   selector.find('.figure-filter-add').click(clickFilterAddSubfilter);
   selector.find('.figure-filter-remove').click(filterRemoveSubfilter);
@@ -13,14 +11,6 @@ var removeButtonHtml = "<button class='figure-filter-remove'><span class='glyphi
 if (!Array.prototype.forEach) { throw "I was expecting Array.forEach to be defined"; }
 
 
-// figureMoveHtml variable looks like this, but with every move:
-// var figureMoveHtml = "\
-//       <select class='figure-filter-move form-control'>\
-//         <option value='swing'>swing</option>\
-//         <option value='chain' selected>chain</option>\
-//         <option value='circle'>circle</option>\
-//         <option value='right left through'>right left through</option>\
-//       </select>";
 var figureMoveHtml = "<select class='figure-filter-move form-control'><option value='*' selected=true>*</option>";
 moves().forEach(function(move) {
   var selectedIfChain = ('chain'===move) ? ' selected ' : '';
@@ -28,8 +18,6 @@ moves().forEach(function(move) {
 });
 figureMoveHtml += "</select>";
 
-
-// TODO: defualt data-op to something other than 'and'
 var filterHtml = "\
     <div class='figure-filter' data-op=and>\
       <select class='figure-filter-op form-control'>\
@@ -86,11 +74,9 @@ function minUsefulSubfilterCount(op) {
 }
 
 function filterOpChanged(e) {
-  // console.log("filterOpChanged");
   var opSelect = $(e.target);
   var filter = opSelect.closest('.figure-filter');
   var op = opSelect.val();
-  // console.log('op = '+op);
   var actualSubfilterCount = filter.children('.figure-filter').length;
   while (actualSubfilterCount > maxSubfilterCount(op)) {
     filter.children('.figure-filter').last().remove();
@@ -105,12 +91,12 @@ function filterOpChanged(e) {
   } else {
     filter.children('.figure-filter-move').remove(); // if we were a figure filter
   }
-  var addButtonCount = filter.children('.figure-filter-add').length;
-  if (actualSubfilterCount < maxSubfilterCount(op) && addButtonCount === 0) {
+  var hasNoAddButton = filter.children('.figure-filter-add').length === 0;
+  if (hasNoAddButton && actualSubfilterCount < maxSubfilterCount(op)) {
     var addButton = $(addButtonHtml);
     addButton.click(clickFilterAddSubfilter);
     filter.children('.figure-filter-end-of-subfigures').after(addButton);
-  } else if (actualSubfilterCount >= maxSubfilterCount(op) && addButtonCount > 0) {
+  } else if ((!hasNoAddButton) && actualSubfilterCount >= maxSubfilterCount(op)) {
     filter.children('.figure-filter-add').remove();
   }
   ensureChildRemoveButtons(filter);
@@ -168,16 +154,9 @@ function filterRemoveSubfilter(e) {
   updateQuery();
 }
 
-
-function filterX(e) {         // delete filter
-  // if (it makes sense)
-  // remove the filter
-  updateQuery();
-}
-
 var updateQuery;              // defined below...
 
-function buildFilter(figure_filter) {
+function buildFigureQuery(figure_filter) {
   figure_filter = $(figure_filter);
   var op = figure_filter.children('.figure-filter-op').val();
   if (op === 'figure') {
@@ -185,7 +164,7 @@ function buildFilter(figure_filter) {
   } else {
     var kids = figure_filter.children('.figure-filter').get();
     if (!Array.prototype.map) { throw "I was expecting Array.map to be defined"; }
-    var filter = kids.map(buildFilter);
+    var filter = kids.map(buildFigureQuery);
     filter.unshift(op);
     return filter;
   }
@@ -193,8 +172,7 @@ function buildFilter(figure_filter) {
 
 jQuery(document).ready(function() {
   updateQuery = function() {
-    // console.log('updateQuery');
-    $('#query-buffer').val(JSON.stringify(buildFilter($('#figure-filter-root'))));
+    $('#figure-query-buffer').val(JSON.stringify(buildFigureQuery($('#figure-filter-root'))));
     if (dataTable) {
       dataTable.draw(); 
     }
@@ -231,7 +209,7 @@ jQuery(document).ready(function() {
             url: $('#dances-table').data('source'),
             data: function(d) {
               // d.figureQuery = arrayToObject(['and', ['none', ['figure', 'gyre']], ['follows', ['figure', 'roll away'], ['figure', 'swing']]]);
-              d.figureQuery = arrayToObject(JSON.parse($('#query-buffer').val()));
+              d.figureQuery = arrayToObject(JSON.parse($('#figure-query-buffer').val()));
               // d.figureQuery = arrayToObject(['and']);
             }
           },

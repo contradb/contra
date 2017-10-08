@@ -26,7 +26,7 @@ class Dance < ApplicationRecord
     figures.map {|f| JSLibFigure.move f}
   end
 
-  def figures # TODO: memoize, invalidate cache on write of figures= or figures_json=
+  def figures
     @figures ||= JSON.parse figures_json
   end
 
