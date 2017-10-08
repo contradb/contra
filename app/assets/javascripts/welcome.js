@@ -46,19 +46,6 @@ var filterHtml = "\
     </div>";
 
 
-function minSubfilterCount(op) {
-  switch(op) {
-  case 'none':
-  case 'all':
-  case 'not':
-    return 1;
-  case undefined:
-    throw 'missing argument to minSubfilterCount';
-  default:
-    return 0;
-  }
-}
-
 function maxSubfilterCount(op) {
   switch(op) {
   case 'figure':
@@ -74,6 +61,29 @@ function maxSubfilterCount(op) {
   }
 }
 
+function minSubfilterCount(op) {
+  switch(op) {
+  case 'none':
+  case 'all':
+  case 'not':
+    return 1;
+  case undefined:
+    throw 'missing argument to minSubfilterCount';
+  default:
+    return 0;
+  }
+}
+
+function minUsefulSubfilterCount(op) {
+  switch(op) {
+  case 'and':
+  case 'or':
+  case 'follows':
+    return 2;
+  default:
+    return minSubfilterCount(op);
+  }
+}
 
 function filterOpChanged(e) {
   // console.log("filterOpChanged");
@@ -86,7 +96,7 @@ function filterOpChanged(e) {
     filter.children('.figure-filter').last().remove();
     actualSubfilterCount--;
   }
-  while (actualSubfilterCount < minSubfilterCount(op)) {
+  while (actualSubfilterCount < minUsefulSubfilterCount(op)) {
     filterAddSubfilter(filter);
     actualSubfilterCount++;
   }

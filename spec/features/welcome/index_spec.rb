@@ -39,16 +39,24 @@ describe 'Welcome page', js: true do
       expect(find("#figure-filter-root>.figure-filter-op").value).to eq('figure')
     end
 
+    it "changing figure filter from 'figure' to 'and' installs two subfilters" do
+      visit '/'
+      select('and')
+      expect(page).to have_css('.figure-filter', count: 3)
+      expect(page).to have_css('.figure-move', count: 2)
+    end
+
     describe 'figure filter machinantions' do
       let (:dances) {[:dance, :box_the_gnat_contra, :call_me].map {|d| FactoryGirl.create(d)}}
       before (:each) do
         dances
         visit '/'
+        # get down to (and (filter 'chain')):
         select('and')
-        click_button('add and')
+        all('.figure-filter').last.click_button('X')
       end
       
-      it 'the test filter is present and works' do
+      it 'the precondition of all these other tests is fulfilled' do
 
         expect(page).to have_css("#figure-filter-root>.figure-filter-op") # js wait for...
         expect(find("#figure-filter-root>.figure-filter-op").value).to eq('and')
@@ -71,7 +79,6 @@ describe 'Welcome page', js: true do
         expect(page).to have_content('Call Me')
       end
 
-
       it "clicking 'add and' inserts a figure filter that responds to change events" do
         expect(page).to have_css('.figure-filter', count: 2)
         expect(page).to have_css('.figure-move', count: 1)
@@ -84,7 +91,6 @@ describe 'Welcome page', js: true do
         expect(page).to_not have_content('Box the Gnat Contra')
         expect(page).to_not have_content('The Rendevouz')
       end
-
 
       it "changing from 'and' to 'figure' purges subfilters and installs a new working move select" do
         select('circle')        # rendevous and call me
@@ -100,10 +106,16 @@ describe 'Welcome page', js: true do
 
       it 'change from empty-or to none' do
         all('.figure-filter-op').last.select('or');
-        expect(page).to have_css('.figure-filter-op', count: 2) # css wait
-        expect(page).to have_css('.figure-filter', count: 2)
+        expect(page).to have_css('.figure-filter-op', count: 4)
+        expect(page).to have_css('.figure-filter', count: 4)
         expect(page).to have_css('.figure-filter-add', count: 2)
-        expect(page).to_not have_css('.figure-move')
+        expect(page).to have_css('.figure-move', count: 2)
+        all('.figure-filter').last.click_button('X')
+        expect(page).to have_css('.figure-filter', count: 3) # css wait
+        all('.figure-filter').last.click_button('X')
+        expect(page).to have_css('.figure-filter', count: 2) # css wait
+        all('.figure-filter-op').last.select('none');
+        expect(page).to have_css('.figure-filter', count: 3) # <- the main point here
       end
 
       it 'change from double-and to none' do
@@ -133,19 +145,20 @@ describe 'Welcome page', js: true do
 
       it 'change from figure to or' do
         all('.figure-filter-op').last.select('or')
-        expect(page).to have_css('.figure-filter', count: 2)
+        expect(page).to have_css('.figure-filter', count: 4)
         expect(page).to have_css('.figure-filter-add', count: 2)
-        expect(find("#query-buffer", visible: false).value).to eq('["and",["or"]]')
+        expect(find("#query-buffer", visible: false).value).to eq('["and",["or",["figure","chain"],["figure","chain"]]]')
       end
 
-      it "it adds/removes 'add' button depending on arity of the filter" do
+      it "it adds/removes 'add' button depending on arity of the filter, and 'add' button works" do
         expect(page).to have_css('.figure-filter-add', count: 1)
         all('.figure-filter-op').first.select('none')
         expect(page).to have_css('.figure-filter-add', count: 0)
         all('.figure-filter-op').first.select('and')
         expect(page).to have_css('.figure-filter-add', count: 1)
-        click_button('add and')
         expect(page).to have_css('.figure-filter', count: 3)
+        click_button('add and')
+        expect(page).to have_css('.figure-filter', count: 4)
       end
 
       describe 'filter remove button' do
@@ -171,7 +184,7 @@ describe 'Welcome page', js: true do
         it "changing my op still allows my remove button" do # this was a bug at one point
           all('.figure-filter-op').last.select('or')
           expect(page).to have_css('#figure-filter-root > .figure-filter > .figure-filter-remove')
-          expect(page).to have_css('.figure-filter-remove', count: 1)
+          expect(page).to have_css('.figure-filter-remove', count: 3)
         end
 
         it "changing my op removes illegal remove buttons among my children, and adds them back in when they are legal" do
@@ -180,7 +193,7 @@ describe 'Welcome page', js: true do
           expect(page).to_not have_css('.figure-filter-remove') # remove illegal X buttons
           first('.figure-filter-op').select('and')
           expect(page).to have_css('#figure-filter-root > .figure-filter > .figure-filter-remove') # re-add X button
-          expect(page).to have_css('.figure-filter-remove', count: 1)
+          expect(page).to have_css('.figure-filter-remove', count: 2)
         end
       end
     end
