@@ -119,7 +119,11 @@ function ensureChildRemoveButtons(filter) {
       if (0 === $this.children('.figure-filter-remove').length) {
         var removeButton = $(removeButtonHtml);
         removeButton.click(filterRemoveSubfilter);
-        $this.children('.figure-filter-end-of-subfigures').before(removeButton);
+        if ($this.children('.figure-filter').length > 0) {
+          $this.children('.figure-filter').first().before(removeButton);
+        } else {
+          $this.children('.figure-filter-end-of-subfigures').before(removeButton);
+        }
       }
     });
   } else if (subfilters.length <= minSubfilterCount(op)) {

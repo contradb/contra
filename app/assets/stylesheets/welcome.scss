@@ -93,6 +93,13 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
   margin-right: 0.4em;          
 }
 
+.figure-filter-op + .figure-filter-remove {
+  /* sometimes the close is scrunched up against the op, in which case
+     space it out a little like above */
+  margin-left: 0.4em;          
+}
+
+
 #figure-filter-root {
   margin-left: 0em;
   margin-bottom: 40px;
