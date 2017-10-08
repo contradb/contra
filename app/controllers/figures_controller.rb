@@ -1,6 +1,11 @@
 require 'move'
 
 class FiguresController < ApplicationController
+  def index
+    @moves = JSLibFigure.moves
+    @mdtab = Move.mdtab(Dance.readable_by(current_user))
+  end
+
   def show
     @move = JSLibFigure.deslugify_move(params[:id])
     raise "#{params[:id].inspect} is not a move" unless @move

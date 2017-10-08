@@ -207,13 +207,4 @@ describe 'Welcome page', js: true do
       end
     end
   end
-
-  context 'link cloud' do
-    it 'has links to sluggified figures' do
-      visit '/'
-      expect(page).to have_link('swing', href: figure_path('swing'))
-      expect(page).to have_link('do si do', href: figure_path('do-si-do'))
-      expect(page).to have_link("Rory O'Moore", href: figure_path('rory-omoore'))
-    end
-  end
 end
