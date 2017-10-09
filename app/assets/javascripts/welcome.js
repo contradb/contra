@@ -11,7 +11,7 @@ var removeButtonHtml = "<button class='figure-filter-remove'><span class='glyphi
 if (!Array.prototype.forEach) { throw "I was expecting Array.forEach to be defined"; }
 
 
-var figureMoveHtml = "<select class='figure-filter-move form-control'><option value='*' selected=true>*</option>";
+var figureMoveHtml = "<select class='figure-filter-move form-control'><option value='*' selected=true>any figure</option>";
 moves().forEach(function(move) {
   var selectedIfChain = ('chain'===move) ? ' selected ' : '';
   figureMoveHtml += "<option value='"+move+"'>"+move+"</option>";
