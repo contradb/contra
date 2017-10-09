@@ -78,6 +78,7 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
 .figure-filter-add {
   display: block;
   margin-top: 0.4em;
+  margin-left: 2em;
   @extend .btn;
   @extend .btn-default;
 }
