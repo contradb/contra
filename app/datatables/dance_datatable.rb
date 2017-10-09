@@ -79,8 +79,8 @@ class DanceDatatable < AjaxDatatablesRails::Base
     operator = filter.first
     fn = :"matching_figures_for_#{operator}"
     # binding.pry unless self.respond_to?(fn)
-    raise "#{operator.inspect} is not a valid operator in #{filter.inspect}" unless self.respond_to?(fn)
-    matches = self.send(fn, filter, dance)
+    raise "#{operator.inspect} is not a valid operator in #{filter.inspect}" unless self.respond_to?(fn, true)
+    matches = send(fn, filter, dance)
     # puts "matching_figures #{dance.title} #{filter.inspect} = #{matches.inspect}"
     matches
   end
@@ -88,7 +88,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
   def self.matching_figures_for_figure(filter, dance)
     move = filter[1]
     if '*' == move              # wildcard
-      [*0...dance.figures.length]
+      all_figure_indicies(dance)
     else
       indicies = dance.figures.each_with_index.map {|figure, index| figure['move'] == move ? index : nil}
       indicies.any? ? indicies.compact : nil
@@ -97,7 +97,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
 
   def self.matching_figures_for_none(filter, dance)
     subfilter = filter[1]
-    if matching_figures(subfilter, dance).present? # Hmmm... XXX worry
+    if matching_figures(subfilter, dance)
       nil
     else
       all_figure_indicies(dance)
@@ -137,6 +137,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
     end
   end
 
+  # not is mainly useful when paired with follows
   def self.matching_figures_for_not(filter, dance)
     subfilter = filter[1]
     figures = all_figure_indicies(dance) - (matching_figures(subfilter, dance) || [])
@@ -166,26 +167,6 @@ class DanceDatatable < AjaxDatatablesRails::Base
   def self.all_figure_indicies(dance)
     [*0...dance.figures.count]
   end
-
-  # def self.select_dance_for_figure?(filter, dance)
-  #   move = filter[1]
-  #   dance.figures.any? {|figure| figure['move'] == move}
-  # end
-
-  # def self.select_dance_for_and?(filter, dance)
-  #   subfilters = filter.drop(1)
-  #   subfilters.all? {|subfilter| select_dance?(subfilter, dance)}
-  # end
-
-  # def self.select_dance_for_or?(filter, dance)
-  #   subfilters = filter.drop(1)
-  #   subfilters.any? {|subfilter| select_dance?(subfilter, dance)}
-  # end
-
-  # def self.select_dance_for_not?(filter, dance)
-  #   subfilter = filter[1]
-  #   not select_dance?(subfilter, dance)
-  # end
 
   def self.hash_to_array(h)
     h = h.to_h if h.instance_of?(ActionController::Parameters)

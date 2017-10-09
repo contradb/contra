@@ -9,7 +9,7 @@ class DancesController < ApplicationController
     respond_to do |format|
       format.html
       format.json do
-        render(json: DanceDatatable.new(view_context, user: current_user, figure_query: index_params['figureQuery']))
+        render(json: DanceDatatable.new(view_context, user: current_user, figure_query: figure_query_param))
       end
     end
   end
@@ -97,9 +97,9 @@ class DancesController < ApplicationController
       dirty_json.merge(figures_json: cleaned_json)
     end
 
-    def index_params
+    def figure_query_param
       # params.permit(:draw, :columns, :order, :start, :length, :search, :format, excludeMoves: [], figureQuery: [])
-      params.permit!
+      params.permit!['figureQuery']
     end
 
     def dance_params_with_real_choreographer(c)

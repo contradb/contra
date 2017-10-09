@@ -57,6 +57,12 @@ describe DanceDatatable do
         filtered = DanceDatatable.send(:filter_dances, dances, ['follows', ['figure', 'swing'], ['figure', 'circle']])
         expect(filtered.map(&:title)).to eq(['The Rendevouz', 'Call Me'])
       end
+
+      it 'works with not' do
+        # All the swings in Call Me are immediately followed by either a circle or a right left through.
+        filtered = DanceDatatable.send(:filter_dances, dances, ['follows', ['figure', 'swing'], ['not', ['or', ['figure', 'circle'], ['figure', 'right left through']]]])
+        expect(filtered.map(&:title)).to eq(['The Rendevouz', 'Box the Gnat Contra'])
+      end
     end
   end
 

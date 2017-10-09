@@ -214,7 +214,6 @@ jQuery(document).ready(function() {
             data: function(d) {
               // d.figureQuery = arrayToObject(['and', ['none', ['figure', 'gyre']], ['follows', ['figure', 'roll away'], ['figure', 'swing']]]);
               d.figureQuery = arrayToObject(JSON.parse($('#figure-query-buffer').val()));
-              // d.figureQuery = arrayToObject(['and']);
             }
           },
           "pagingType": "full_numbers",
@@ -230,6 +229,4 @@ jQuery(document).ready(function() {
             {"data": "updated_at"}
           ]
         });
-
-  // $('#exclude-moves').change(function () { dataTable.draw();});
 });

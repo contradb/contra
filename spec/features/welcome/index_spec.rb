@@ -72,25 +72,18 @@ describe 'Welcome page', js: true do
       end
       
       it 'the precondition of all these other tests is fulfilled' do
-
+        expect(page).to have_css('.figure-filter', count: 2)
+        expect(page).to have_css('.figure-filter-move', count: 1)
         expect(page).to have_css("#figure-filter-root>.figure-filter-op") # js wait for...
         expect(find("#figure-filter-root>.figure-filter-op").value).to eq('and')
-
         expect(find("#figure-filter-root>.figure-filter .figure-filter-op").value).to eq('figure')
         expect(find("#figure-filter-root>.figure-filter .figure-filter-move").value).to eq('*')
-
         expect(page).to have_content('Call Me')
         expect(page).to have_content('Box the Gnat Contra')
         expect(page).to have_content('The Rendevouz')
       end
 
       it "changing figure changes values" do
-        expect(page).to have_css('.figure-filter', count: 2)
-        expect(page).to have_css('.figure-filter-move', count: 1)
-        expect(page).to have_content('The Rendevouz')
-        expect(page).to have_content('Box the Gnat Contra')
-        expect(page).to have_content('Call Me')
-
         select('circle')
 
         expect(page).to have_content('The Rendevouz')

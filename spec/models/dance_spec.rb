@@ -19,7 +19,7 @@ RSpec.describe Dance, type: :model do
       dance2 = FactoryGirl.build(:box_the_gnat_contra)
       figures = dance.figures
       dance.figures = dance2.figures
-      expect(dance.figures).to_not be(figures)
+      expect(dance.figures).to_not eq(figures)
       expect(dance.figures).to be(dance2.figures)
     end
 
