@@ -211,6 +211,15 @@ describe 'Welcome page', js: true do
           expect(page).to have_css('.figure-filter-remove', count: 2)
         end
       end
+
+      describe 'figure query sentence' do
+        # "figure: chain" => "dances with a chain"
+        # "no (figure: chain)" => "dances with no chain"
+        # "no ((figure: chain) or (figure: hey))" => "dances with no chain or hey"
+        it 'works with precondition' do
+          expect(page).to have_content('dances with any figure')
+        end
+      end
     end
   end
 end
