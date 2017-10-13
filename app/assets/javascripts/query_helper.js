@@ -1,5 +1,4 @@
 
-
 function buildFigureSentence(query) {
   return 'dances with ' + buildFigureSentenceHelper(query, 'a');
 }
@@ -51,7 +50,7 @@ function sentenceForNone(query, article) {
   var flippedArticle = (article === 'a') ? 'no' : 'a';
   var subop = query[1][0];
   if (subop === 'and' || subop === 'or') {
-    // distribute the not, flip the and/or
+    // distribute the none, flip the and/or
     var new_query = query[1].slice(1);
     new_query.unshift ((subop === 'and') ? 'or' : 'and');
     return buildFigureSentenceHelper(new_query, flippedArticle);
@@ -71,6 +70,6 @@ function sentenceForAll(query, article) {
 
 function sentenceForNot(query, article) {
   var subop = query[1][0];
-  return article + ' ' + sentenceForMaybeComplex(query[1], 'not');
+  return sentenceForMaybeComplex(query[1], 'not');
 }
 
