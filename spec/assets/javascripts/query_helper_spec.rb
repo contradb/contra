@@ -3,8 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe 'query-helper' do
-  it 'works' do
-    expect(eval("buildFigureSentenceHelper(['figure', '*'], 'a');")).to eq('any figure')
+  [["buildFigureSentenceHelper(['figure', '*'], 'a');", 'any figure'],
+   ["buildFigureSentenceHelper(['figure', '*'], 'no');", 'no figure'],
+   ["buildFigureSentenceHelper(['figure', 'swing'], 'a');", 'a swing'],
+   ["buildFigureSentenceHelper(['figure', 'allemande'], 'a');", 'an allemande']
+  ].each do |a|
+    expression, value = a
+    it "#{expression} == #{value.inspect}" do
+      expect(eval(expression)).to eq(value)
+    end
   end
 
   private
