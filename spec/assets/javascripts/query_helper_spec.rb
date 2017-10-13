@@ -12,15 +12,16 @@ RSpec.describe 'query-helper' do
    [['none', ['and', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no allemande or no swing'],
    [['none', ['follows', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no (an allemande follows a swing)'],
    [['follows', ['figure', 'allemande'], ['figure', 'swing']], 'a', 'an allemande follows a swing'],
-   [['follows', ['figure', 'allemande'], ['not', ['figure', 'swing']]], 'a', 'an allemande follows not swing'],
-   [['not', ['figure', 'swing']], 'a', 'not swing'],
-   [['not', ['or', ['figure', 'swing'], ['figure', 'chain']]], 'a', 'not (swing or chain)'],
-
+   [['follows', ['figure', 'allemande'], ['not', ['figure', 'swing']]], 'a', 'an allemande follows a non swing'],
+   [['follows', ['figure', 'allemande'], ['not', ['or', ['figure', 'swing'], ['figure', 'chain']]]], 'a', /an allemande follows +not \(a swing or a chain\)/],
+   [['not', ['figure', 'swing']], 'a', 'a non swing'],
+   [['not', ['or', ['figure', 'swing'], ['figure', 'chain']]], 'a', 'not (a swing or a chain)'],
+   [["and",["follows",["figure","allemande"],["figure","balance"]],["figure","box circulate"]], 'a', '(an allemande follows a balance) and a box circulate'],
    [['figure', '*'], 'a', 'any figure']
   ].each do |a|
     q, article, value = a
-    it "buildFigureSentenceHelper(#{q.to_s}, #{article.inspect}); == #{value.inspect}" do
-      expect(eval("buildFigureSentenceHelper(#{q.to_s}, #{article.inspect});")).to eq(value)
+    it "buildFigureSentenceHelper(#{q.to_s}, #{article.inspect}) => #{value.inspect}" do
+      expect(eval("buildFigureSentenceHelper(#{q.to_s}, #{article.inspect});")).to match(value)
     end
   end
 

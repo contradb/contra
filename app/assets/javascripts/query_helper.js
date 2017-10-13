@@ -1,4 +1,5 @@
 
+
 function buildFigureSentence(query) {
   return 'dances with ' + buildFigureSentenceHelper(query, 'a');
 }
@@ -25,6 +26,8 @@ function sentenceForFigure(query, article) {
     return (article === 'a') ? 'any figure' : (article +' figure');
   } else if (article === 'a') {
     return ('aeiou'.indexOf(fig[0]) >= 0) ? ('an ' + fig) : ('a ' + fig); // 'an allemande'
+  } else if (article === 'not') {
+    return 'non ' + fig;
   } else {
     return article + ' ' + fig;
   }
@@ -41,6 +44,8 @@ function sentenceForMaybeComplex(query, article) {
   var op = query[0];
   if (op==='figure') {
     return sentenceForFigure(query, article);
+  } else if ('a' === article && (op === 'not' || op === 'none')) {
+    return buildFigureSentenceHelper(query, (query[1][0] === 'figure') ? 'a' : '');
   } else {
     return article + ' (' + buildFigureSentenceHelper(query, 'a') + ')';
   }
@@ -70,6 +75,5 @@ function sentenceForAll(query, article) {
 
 function sentenceForNot(query, article) {
   var subop = query[1][0];
-  return sentenceForMaybeComplex(query[1], 'not');
+  return article + ' ' + sentenceForMaybeComplex(query[1], 'not');
 }
-
