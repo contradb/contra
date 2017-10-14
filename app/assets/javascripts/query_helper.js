@@ -39,13 +39,22 @@ function sentenceForBinOp(query, article) {
   return query.slice(1).map(function(query) { return sentenceForMaybeComplex(query, article); }).join(' '+op+' ');
 }
 
+// returns true if sentenceForMaybeComplex uses parens
+function isComplex(query, article) {
+  var op = query[0];
+  return !(op === 'figure' || ('a' === article && (op === 'not' || op === 'none')));
+}
+
 function sentenceForMaybeComplex(query, article) {
-  // introduce parens if we start to get confused
+  // Introduce parens if we start to get confused.
+  // Modify isComplex() if you change this function.
   var op = query[0];
   if (op==='figure') {
     return sentenceForFigure(query, article);
   } else if ('a' === article && (op === 'not' || op === 'none')) {
     return buildFigureSentenceHelper(query, (query[1][0] === 'figure') ? 'a' : '');
+  } else if ('a' === article) {
+    return '(' + buildFigureSentenceHelper(query, 'a') + ')';
   } else {
     return article + ' (' + buildFigureSentenceHelper(query, 'a') + ')';
   }
@@ -74,6 +83,9 @@ function sentenceForAll(query, article) {
 }
 
 function sentenceForNot(query, article) {
-  var subop = query[1][0];
-  return article + ' ' + sentenceForMaybeComplex(query[1], 'not');
+  if (isComplex(query[1], article)) {
+    return 'not '+ sentenceForMaybeComplex(query[1], '');
+  } else {
+    return article + ' non ' + sentenceForMaybeComplex(query[1], '');
+  }
 }
