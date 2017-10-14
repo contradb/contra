@@ -14,7 +14,7 @@ var figureSentenceDispatchTable = {
   figure: sentenceForFigure,
   and: sentenceForBinOp,
   or: sentenceForBinOp,
-  follows: sentenceForBinOp,
+  then: sentenceForBinOp,
   none: sentenceForNone,
   all: sentenceForAll,
   not: sentenceForNot

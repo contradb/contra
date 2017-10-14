@@ -69,7 +69,7 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
   @extend .form-inline;
 }
 
-/* Display 'and', 'or', or 'follows' between binary++ operand terms */
+/* Display 'and', 'or', or 'then' between binary++ operand terms */
 .figure-filter + .figure-filter:before {
   content: attr(data-op);
   display: block;

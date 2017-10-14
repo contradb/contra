@@ -52,15 +52,15 @@ describe DanceDatatable do
       expect(filtered.map(&:title)).to eq(['The Rendevouz', 'Box the Gnat Contra', 'Call Me'])
     end
 
-    describe 'follows' do
+    describe 'then' do
       it 'basically works' do
-        filtered = DanceDatatable.send(:filter_dances, dances, ['follows', ['figure', 'swing'], ['figure', 'circle']])
+        filtered = DanceDatatable.send(:filter_dances, dances, ['then', ['figure', 'swing'], ['figure', 'circle']])
         expect(filtered.map(&:title)).to eq(['The Rendevouz', 'Call Me'])
       end
 
       it 'works with not' do
         # All the swings in Call Me are immediately followed by either a circle or a right left through.
-        filtered = DanceDatatable.send(:filter_dances, dances, ['follows', ['figure', 'swing'], ['not', ['or', ['figure', 'circle'], ['figure', 'right left through']]]])
+        filtered = DanceDatatable.send(:filter_dances, dances, ['then', ['figure', 'swing'], ['not', ['or', ['figure', 'circle'], ['figure', 'right left through']]]])
         expect(filtered.map(&:title)).to eq(['The Rendevouz', 'Box the Gnat Contra'])
       end
     end
@@ -76,28 +76,28 @@ describe DanceDatatable do
     end
   end
 
-  describe '.matching_figures_for_follows' do
+  describe '.matching_figures_for_then' do
     it 'basically works' do
       dance = FactoryGirl.create(:box_the_gnat_contra)
-      figure_indicies = DanceDatatable.matching_figures(['follows', ['figure', 'box the gnat'], ['figure', 'swat the flea']], dance)
+      figure_indicies = DanceDatatable.matching_figures(['then', ['figure', 'box the gnat'], ['figure', 'swat the flea']], dance)
       expect(figure_indicies).to eq([1])
     end
 
     it 'wraps' do
       dance = FactoryGirl.create(:dance)
-      figure_indicies = DanceDatatable.matching_figures(['follows', ['figure', 'circle'], ['figure', 'swing']], dance)
+      figure_indicies = DanceDatatable.matching_figures(['then', ['figure', 'circle'], ['figure', 'swing']], dance)
       expect(figure_indicies).to eq([0])
     end
 
     it 'returns everything with zero arguments' do
       dance = FactoryGirl.create(:dance)
-      figure_indicies = DanceDatatable.matching_figures(['follows'], dance)
+      figure_indicies = DanceDatatable.matching_figures(['then'], dance)
       expect(figure_indicies).to eq([*(0...dance.figures.length)])
     end
 
     it 'returns index of figure with one argument' do
       dance = FactoryGirl.create(:dance)
-      figure_indicies = DanceDatatable.matching_figures(['follows', ['figure', 'circle']], dance)
+      figure_indicies = DanceDatatable.matching_figures(['then', ['figure', 'circle']], dance)
       expect(figure_indicies).to eq([4,6])
     end
   end

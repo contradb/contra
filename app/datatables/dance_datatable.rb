@@ -137,14 +137,14 @@ class DanceDatatable < AjaxDatatablesRails::Base
     end
   end
 
-  # not is mainly useful when paired with follows
+  # not is mainly useful when paired with then
   def self.matching_figures_for_not(filter, dance)
     subfilter = filter[1]
     figures = all_figure_indicies(dance) - (matching_figures(subfilter, dance) || [])
     figures.present? ? figures.sort : nil
   end
 
-  def self.matching_figures_for_follows(filter, dance)
+  def self.matching_figures_for_then(filter, dance)
     subfilters = filter.drop(1)
     figures_count = dance.figures.count
     current_figures = all_figure_indicies(dance)

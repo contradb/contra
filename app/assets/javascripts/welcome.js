@@ -24,7 +24,7 @@ var filterHtml = "\
         <option value='figure' selected>figure</option>\
         <option value='and'>and</option> \
         <option value='or'>or</option>\
-        <option value='follows'>follows</option>\
+        <option value='then'>then</option>\
         <option value='none'>none</option>\
         <option value='all'>all</option>\
         <option value='not'>not</option>\
@@ -66,7 +66,7 @@ function minUsefulSubfilterCount(op) {
   switch(op) {
   case 'and':
   case 'or':
-  case 'follows':
+  case 'then':
     return 2;
   default:
     return minSubfilterCount(op);
@@ -216,7 +216,7 @@ jQuery(document).ready(function() {
           "ajax": {
             url: $('#dances-table').data('source'),
             data: function(d) {
-              // d.figureQuery = arrayToObject(['and', ['none', ['figure', 'gyre']], ['follows', ['figure', 'roll away'], ['figure', 'swing']]]);
+              // d.figureQuery = arrayToObject(['and', ['none', ['figure', 'gyre']], ['then', ['figure', 'roll away'], ['figure', 'swing']]]);
               d.figureQuery = arrayToObject(JSON.parse($('#figure-query-buffer').val()));
             }
           },
