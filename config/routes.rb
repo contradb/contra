@@ -3,8 +3,8 @@ Rails.application.routes.draw do
   get 'about/index'
 
 
-  post 'dances', to: 'dances#index'
   resources :dances
+  post 'dances_filter', to: 'dances#index'
   resources :choreographers
   devise_for :users, controllers: { registrations: "users/registrations" }
   resources :users, only: [:show, :index]
