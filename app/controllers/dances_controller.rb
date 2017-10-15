@@ -8,7 +8,9 @@ class DancesController < ApplicationController
     @dances = Dance.readable_by(current_user).alphabetical
     respond_to do |format|
       format.html
-      format.json { render json: DanceDatatable.new(view_context, user: current_user) }
+      format.json do
+        render(json: DanceDatatable.new(view_context, user: current_user, figure_query: figure_query_param))
+      end
     end
   end
 
@@ -93,6 +95,11 @@ class DancesController < ApplicationController
                                                  :publish)
       cleaned_json = JSLibFigure.sanitize_json dirty_json[:figures_json]
       dirty_json.merge(figures_json: cleaned_json)
+    end
+
+    def figure_query_param
+      # params.permit(:draw, :columns, :order, :start, :length, :search, :format, excludeMoves: [], figureQuery: [])
+      params.permit!['figureQuery']
     end
 
     def dance_params_with_real_choreographer(c)

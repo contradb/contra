@@ -2,18 +2,39 @@
 <section>
   <h1 id="site-logo">ContraDB</h1>
   <div id="site-purpose">find and share contra dances</div>
+</section>
+
+<section>
+  <h2>Share</h2>
   <%= new_dance_button_html %>
   <%= new_program_button_html %>
 </section>
 
 <section>
-  <h2>Figures</h2>
-  <%= render partial: '/figures/link_cloud' %>
-</section>
+  <h2>Find</h2>
 
-<section>
-  <h2>Dances</h2>
-  <table id="dances-table", class="table table-bordered table-hover table-condensed", data-source="<%= dances_path(format: :json) %>">
+  <div>
+    <span class="figure-query-sentence"></span>
+    <a href="https://github.com/dcmorse/contra/wiki/Dance-Figure-Filters" target="_"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>
+  </div>
+
+  <div class='figure-filter' id='figure-filter-root'>
+    <select class='figure-filter-op form-control'>
+      <option value="figure" selected>figure</option> 
+      <option value="and">and</option> 
+      <option value="or">or</option>
+      <option value="then">then</option>
+      <option value="no">no</option>
+      <option value="all">all</option>
+      <option value="not">not</option>
+    </select>
+    <!-- figure-filter-move will go here - thanks JS -->
+    <span class='figure-filter-end-of-subfigures'></span>
+  </div>
+
+  <input id="figure-query-buffer" type='text'>
+
+  <table id="dances-table", class="table table-bordered table-hover table-condensed", data-source="<%= dances_filter_path(format: :json) %>">
     <thead>
       <tr>
         <th>Title</th>

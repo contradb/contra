@@ -27,11 +27,17 @@ class Dance < ApplicationRecord
   end
 
   def figures
-    JSON.parse figures_json
+    @figures ||= JSON.parse figures_json
   end
 
   def figures=(value)
     self.figures_json = JSON.generate(value)
+    @figures = value
+  end
+
+  def figures_json=(value)
+    @figures = nil              # invalidate cache
+    super
   end
 
   # eases form defaulting:

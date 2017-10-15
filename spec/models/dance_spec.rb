@@ -7,6 +7,32 @@ RSpec.describe Dance, type: :model do
     expect(Dance.alphabetical.pluck(:title)).to eq ["AAAA","BBBB","cccc","DDDD"]
   end
 
+  describe 'memoizing figures' do
+    it 'caches' do
+      dance = FactoryGirl.build(:dance)
+      figures = dance.figures
+      expect(dance.figures).to be(figures)
+    end
+
+    it 'cache invalidates on figures=' do
+      dance = FactoryGirl.build(:dance)
+      dance2 = FactoryGirl.build(:box_the_gnat_contra)
+      figures = dance.figures
+      dance.figures = dance2.figures
+      expect(dance.figures).to_not eq(figures)
+      expect(dance.figures).to be(dance2.figures)
+    end
+
+    it 'cache invalidates on figures_json=' do
+      dance = FactoryGirl.build(:dance)
+      dance2 = FactoryGirl.build(:box_the_gnat_contra)
+      figures = dance.figures
+      dance.figures_json = dance2.figures_json
+      expect(dance.figures).to_not eq(figures)
+      expect(dance.figures).to eq(dance2.figures)
+    end
+  end
+
   describe "permissions" do 
     let! (:admonsterator) { FactoryGirl.create(:user, admin: true) }
     let (:user_a) { FactoryGirl.create(:user) }

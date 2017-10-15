@@ -1,3 +1,6 @@
+$icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/error-with-javascript-enabled-tests-bootstrap-3-rails-4-travis-ci */
+@import "bootstrap";
+
 .welcome-index-content {
   margin-left: 15px;
   margin-right: 15px;
@@ -11,11 +14,11 @@
   cursor: hand;
 }
 
-/* hide search label, use placeholder instead */
 #dances-table_filter {
   position: relative;
   margin-bottom: 0.7em;
-  label {
+
+  label {   /* hide search label, use a placeholder instead */
     visibility: hidden;
     input {
       visibility: visible;
@@ -24,6 +27,18 @@
       top: 0px;
     }
   }
+  input {
+    margin-bottom: 1em;
+    width: 100%;
+    margin-top: -20px;          /* WEIRD 1of2 move above our normal box! */
+    margin-left: 0px;
+    @extend .input-lg           /* overwrite too-small .input-sm provided by datatables */
+}
+
+}
+
+#dances-table_wrapper {
+  margin-top: 40px;             /* WEIRD 2of2 make space above normal box! */
 }
 
 #site-purpose {
@@ -36,15 +51,52 @@
   font-size: 55px;
 }
 
-.figures-link-cloud {
-  text-align: justify;
+/* figure filters */
 
-  a {
-    margin-right: 10px;
-  }
+.figure-filter {
+  margin-left: 2em;
+  margin-top: 5px;
+  display: table;
+  @extend .form-inline;
+}
 
-  h2 {
-    display: inline;
-    white-space: nowrap;
-  }
+/* Display 'and', 'or', or 'then' between binary++ operand terms */
+.figure-filter + .figure-filter:before {
+  content: attr(data-op);
+  display: block;
+}
+
+.figure-filter-add {
+  display: block;
+  margin-top: 0.4em;
+  margin-left: 2em;
+  @extend .btn;
+  @extend .btn-default;
+}
+
+.figure-filter-remove {
+  @extend .btn;
+  @extend .btn-default;
+}
+
+.figure-filter-move {
+  /* space out the figure-filter-remove button, if it's there. Don't
+     style the left margin of the close button, because that mucks up
+     it's alignment when it's on it's own line (i.e. when on mobile) */
+  margin-right: 0.4em;          
+}
+
+.figure-filter-op + .figure-filter-remove {
+  /* sometimes the close is scrunched up against the op, in which case
+     space it out a little like above */
+  margin-left: 0.4em;          
+}
+
+
+#figure-filter-root {
+  margin-left: 0em;
+}
+
+#figure-query-buffer {
+  display: none;
 }
