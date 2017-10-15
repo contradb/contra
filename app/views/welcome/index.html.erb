@@ -13,6 +13,8 @@
 <section>
   <h2>Find</h2>
 
+  <div class="figure-query-sentence"></div>
+
   <div class='figure-filter' id='figure-filter-root'>
     <select class='figure-filter-op form-control'>
       <option value="figure" selected>figure</option> 
@@ -28,9 +30,6 @@
   </div>
 
   <input id="figure-query-buffer" type='text'>
-
-  <div class="figure-query-sentence"></div>
-
 
   <table id="dances-table", class="table table-bordered table-hover table-condensed", data-source="<%= dances_path(format: :json) %>">
     <thead>

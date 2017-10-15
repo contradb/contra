@@ -224,7 +224,7 @@ jQuery(document).ready(function() {
           "pagingType": "full_numbers",
           "dom": 'ft<"row"<"col-sm-6 col-md-3"i><"col-sm-6 col-md-3"l>>pr',
           language: {
-            searchPlaceholder: "search by title, choreographer, and user"
+            searchPlaceholder: "filter by title, choreographer, and user"
           },
           "order": [[ 3, "desc" ]],
           "columns": [

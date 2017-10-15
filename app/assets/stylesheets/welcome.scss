@@ -14,11 +14,11 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
   cursor: hand;
 }
 
-/* hide search label, use placeholder instead */
 #dances-table_filter {
   position: relative;
   margin-bottom: 0.7em;
-  label {
+
+  label {   /* hide search label, use a placeholder instead */
     visibility: hidden;
     input {
       visibility: visible;
@@ -27,6 +27,18 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
       top: 0px;
     }
   }
+  input {
+    margin-bottom: 1em;
+    width: 100%;
+    margin-top: -20px;          /* WEIRD 1of2 move above our normal box! */
+    margin-left: 0px;
+    @extend .input-lg           /* overwrite too-small .input-sm provided by datatables */
+}
+
+}
+
+#dances-table_wrapper {
+  margin-top: 40px;             /* WEIRD 2of2 make space above normal box! */
 }
 
 #site-purpose {
@@ -37,27 +49,6 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
 
 #site-logo {
   font-size: 55px;
-}
-
-.figures-link-cloud {
-  text-align: justify;
-
-  a {
-    margin-right: 10px;
-  }
-
-  h2 {
-    display: inline;
-    white-space: nowrap;
-  }
-}
-
-#dances-table_filter input {
-    margin-bottom: 1em;
-    width: 100%;
-    margin-top: -20px;
-    margin-left: 0px;
-    @extend .input-lg           /* overwrite too-small .input-sm provided by datatables */
 }
 
 /* figure filters */
@@ -104,13 +95,8 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
 
 #figure-filter-root {
   margin-left: 0em;
-  margin-bottom: 40px;
 }
 
 #figure-query-buffer {
   display: none;
-}
-
-.figure-query-sentence {
-  margin-bottom: 100px;
 }
