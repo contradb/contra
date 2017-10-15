@@ -215,6 +215,7 @@ jQuery(document).ready(function() {
           "serverSide": true,
           "ajax": {
             url: $('#dances-table').data('source'),
+            type: 'POST',
             data: function(d) {
               // d.figureQuery = arrayToObject(['and', ['no', ['figure', 'gyre']], ['then', ['figure', 'roll away'], ['figure', 'swing']]]);
               d.figureQuery = arrayToObject(JSON.parse($('#figure-query-buffer').val()));

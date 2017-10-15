@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   resources :programs
   get 'about/index'
 
+
+  post 'dances', to: 'dances#index'
   resources :dances
   resources :choreographers
   devise_for :users, controllers: { registrations: "users/registrations" }
