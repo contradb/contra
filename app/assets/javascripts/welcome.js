@@ -27,7 +27,7 @@ var filterHtml = "\
         <option value='then'>then</option>\
         <option value='none'>none</option>\
         <option value='all'>all</option>\
-        <option value='not'>not</option>\
+        <option value='anything but'>anything but</option>\
       </select>"+
       figureMoveHtml+"\
       <span class='figure-filter-end-of-subfigures'></span>\
@@ -40,7 +40,7 @@ function maxSubfilterCount(op) {
     return 0;
   case 'all':
   case 'none':
-  case 'not':
+  case 'anything but':
     return 1;
   case undefined:
     throw 'missing argument to maxSubfilterCount';
@@ -53,7 +53,7 @@ function minSubfilterCount(op) {
   switch(op) {
   case 'none':
   case 'all':
-  case 'not':
+  case 'anything but':
     return 1;
   case undefined:
     throw 'missing argument to minSubfilterCount';

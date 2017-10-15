@@ -77,7 +77,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
 
   def self.matching_figures(filter, dance)
     operator = filter.first
-    fn = :"matching_figures_for_#{operator}"
+    fn = :"matching_figures_for_#{operator.gsub(' ', '_')}"
     # binding.pry unless self.respond_to?(fn)
     raise "#{operator.inspect} is not a valid operator in #{filter.inspect}" unless self.respond_to?(fn, true)
     matches = send(fn, filter, dance)
@@ -137,8 +137,8 @@ class DanceDatatable < AjaxDatatablesRails::Base
     end
   end
 
-  # not is mainly useful when paired with then
-  def self.matching_figures_for_not(filter, dance)
+  # anything but is mainly useful when paired with then
+  def self.matching_figures_for_anything_but(filter, dance)
     subfilter = filter[1]
     figures = all_figure_indicies(dance) - (matching_figures(subfilter, dance) || [])
     figures.present? ? figures.sort : nil

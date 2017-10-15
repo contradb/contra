@@ -12,14 +12,14 @@ RSpec.describe 'query-helper' do
    [['none', ['and', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no allemande or no swing'],
    [['none', ['then', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no (an allemande then a swing)'],
    [['then', ['figure', 'allemande'], ['figure', 'swing']], 'a', 'an allemande then a swing'],
-   [['then', ['figure', 'allemande'], ['not', ['figure', 'swing']]], 'a', /an allemande then a non +swing/],
-   [['then', ['figure', 'allemande'], ['not', ['or', ['figure', 'swing'], ['figure', 'chain']]]], 'a',
-    /an allemande then +not +\(a swing or a chain\)/],
-   [['not', ['figure', 'swing']], 'a', /a non +swing/],
-   [['not', ['or', ['figure', 'swing'], ['figure', 'chain']]], 'a', /not +\(a swing or a chain\)/],
+   [['then', ['figure', 'allemande'], ['anything but', ['figure', 'swing']]], 'a', /an allemande then a non +swing/],
+   [['then', ['figure', 'allemande'], ['anything but', ['or', ['figure', 'swing'], ['figure', 'chain']]]], 'a',
+    /an allemande then +anything but +\(a swing or a chain\)/],
+   [['anything but', ['figure', 'swing']], 'a', /a non +swing/],
+   [['anything but', ['or', ['figure', 'swing'], ['figure', 'chain']]], 'a', /anything but +\(a swing or a chain\)/],
    [["and",["then",["figure","allemande"],["figure","balance"]],["figure","box circulate"]],
     'a', '(an allemande then a balance) and a box circulate'],
-   [['none', ['not', ['figure', 'swing']]], 'a', 'no non swing'],
+   [['none', ['anything but', ['figure', 'swing']]], 'a', 'no non swing'],
    [['figure', '*'], 'a', 'any figure']
   ].each do |a|
     q, article, value = a

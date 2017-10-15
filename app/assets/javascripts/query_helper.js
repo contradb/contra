@@ -17,7 +17,7 @@ var figureSentenceDispatchTable = {
   then: sentenceForBinOp,
   none: sentenceForNone,
   all: sentenceForAll,
-  not: sentenceForNot
+  'anything but': sentenceForAnythingBut
 };
 
 function sentenceForFigure(query, article) {
@@ -26,8 +26,6 @@ function sentenceForFigure(query, article) {
     return (article === 'a') ? 'any figure' : (article +' figure');
   } else if (article === 'a') {
     return ('aeiou'.indexOf(fig[0]) >= 0) ? ('an ' + fig) : ('a ' + fig); // 'an allemande'
-  } else if (article === 'not') {
-    return 'non ' + fig;
   } else {
     return article + ' ' + fig;
   }
@@ -42,7 +40,7 @@ function sentenceForBinOp(query, article) {
 // returns true if sentenceForMaybeComplex uses parens
 function isComplex(query, article) {
   var op = query[0];
-  return !(op === 'figure' || ('a' === article && (op === 'not' || op === 'none')));
+  return !(op === 'figure' || ('a' === article && (op === 'anything but' || op === 'none')));
 }
 
 function sentenceForMaybeComplex(query, article) {
@@ -52,7 +50,7 @@ function sentenceForMaybeComplex(query, article) {
   var boringArticle = 'a' === article || '' === article;
   if (op==='figure') {
     return sentenceForFigure(query, article);
-  } else if (boringArticle && (op === 'not' || op === 'none')) {
+  } else if (boringArticle && (op === 'anything but' || op === 'none')) {
     return buildFigureSentenceHelper(query, article);
   } else if (boringArticle) {
     return '(' + buildFigureSentenceHelper(query, 'a') + ')';
@@ -77,13 +75,13 @@ function sentenceForNone(query, article) {
 }
 
 function sentenceForAll(query, article) {
-  // could aggressively reduce 'all not' to 'none', but that's too nice
+  // could aggressively reduce 'all anything but' to 'none', but that's too nice
   return 'all (' + buildFigureSentenceHelper(query[1], article) + ')';
 }
 
-function sentenceForNot(query, article) {
+function sentenceForAnythingBut(query, article) {
   if (isComplex(query[1], article)) {
-    return 'not '+ sentenceForMaybeComplex(query[1], 'a');
+    return 'anything but '+ sentenceForMaybeComplex(query[1], 'a');
   } else {
     return article + ' non ' + sentenceForMaybeComplex(query[1], '');
   }
