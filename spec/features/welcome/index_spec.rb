@@ -16,9 +16,13 @@ require 'rails_helper'
 require 'login_helper'
 
 describe 'Welcome page', js: true do
-  let (:dance) {FactoryGirl.create(:box_the_gnat_contra)}
+  it 'has a link to help on filters' do
+    visit '/'
+    expect(page).to have_link('', href: "https://github.com/dcmorse/contra/wiki/Dance-Figure-Filters")
+  end
 
   context 'datatable' do
+    let (:dance) {FactoryGirl.create(:box_the_gnat_contra)}
     it 'displays dance columns' do
       dance
       visit '/'
