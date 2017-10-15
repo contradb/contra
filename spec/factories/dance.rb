@@ -23,6 +23,14 @@ FactoryGirl.define do
     figures_json '[{"parameter_values":["neighbors",true,16],"move":"swing"}]'
   end
 
+  factory :dance_with_a_rory_o_moore, class: Dance do
+    title      'Just Rory'
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json '[{"parameter_values":["neighbors",true,false,8],"move":"Rory O\'Moore"}]'
+  end
+
   factory :box_the_gnat_contra, class: Dance do
     title      'Box the Gnat Contra'
     user { FactoryGirl.create(:user) }
