@@ -7,10 +7,10 @@ RSpec.describe 'query-helper' do
    [['figure', '*'], 'no', 'no figure'],
    [['figure', 'swing'], 'a', 'a swing'],
    [['figure', 'allemande'], 'a', 'an allemande'],
-   [['none', ['figure', 'allemande']], 'a', 'no allemande'],
-   [['none', ['or', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no allemande and no swing'],
-   [['none', ['and', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no allemande or no swing'],
-   [['none', ['then', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no (an allemande then a swing)'],
+   [['no', ['figure', 'allemande']], 'a', 'no allemande'],
+   [['no', ['or', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no allemande and no swing'],
+   [['no', ['and', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no allemande or no swing'],
+   [['no', ['then', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no (an allemande then a swing)'],
    [['then', ['figure', 'allemande'], ['figure', 'swing']], 'a', 'an allemande then a swing'],
    [['then', ['figure', 'allemande'], ['anything but', ['figure', 'swing']]], 'a', /an allemande then a non +swing/],
    [['then', ['figure', 'allemande'], ['anything but', ['or', ['figure', 'swing'], ['figure', 'chain']]]], 'a',
@@ -19,7 +19,7 @@ RSpec.describe 'query-helper' do
    [['anything but', ['or', ['figure', 'swing'], ['figure', 'chain']]], 'a', /anything but +\(a swing or a chain\)/],
    [["and",["then",["figure","allemande"],["figure","balance"]],["figure","box circulate"]],
     'a', '(an allemande then a balance) and a box circulate'],
-   [['none', ['anything but', ['figure', 'swing']]], 'a', 'no non swing'],
+   [['no', ['anything but', ['figure', 'swing']]], 'a', 'no non swing'],
    [['figure', '*'], 'a', 'any figure']
   ].each do |a|
     q, article, value = a

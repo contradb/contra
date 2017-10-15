@@ -15,7 +15,7 @@ var figureSentenceDispatchTable = {
   and: sentenceForBinOp,
   or: sentenceForBinOp,
   then: sentenceForBinOp,
-  none: sentenceForNone,
+  no: sentenceForNo,
   all: sentenceForAll,
   'anything but': sentenceForAnythingBut
 };
@@ -40,7 +40,7 @@ function sentenceForBinOp(query, article) {
 // returns true if sentenceForMaybeComplex uses parens
 function isComplex(query, article) {
   var op = query[0];
-  return !(op === 'figure' || ('a' === article && (op === 'anything but' || op === 'none')));
+  return !(op === 'figure' || ('a' === article && (op === 'anything but' || op === 'no')));
 }
 
 function sentenceForMaybeComplex(query, article) {
@@ -50,7 +50,7 @@ function sentenceForMaybeComplex(query, article) {
   var boringArticle = 'a' === article || '' === article;
   if (op==='figure') {
     return sentenceForFigure(query, article);
-  } else if (boringArticle && (op === 'anything but' || op === 'none')) {
+  } else if (boringArticle && (op === 'anything but' || op === 'no')) {
     return buildFigureSentenceHelper(query, article);
   } else if (boringArticle) {
     return '(' + buildFigureSentenceHelper(query, 'a') + ')';
@@ -59,11 +59,11 @@ function sentenceForMaybeComplex(query, article) {
   }
 }
 
-function sentenceForNone(query, article) {
+function sentenceForNo(query, article) {
   var flippedArticle = (article === 'a') ? 'no' : 'a';
   var subop = query[1][0];
   if (subop === 'and' || subop === 'or') {
-    // distribute the none, flip the and/or
+    // distribute the no, flip the and/or
     var new_query = query[1].slice(1);
     new_query.unshift ((subop === 'and') ? 'or' : 'and');
     return buildFigureSentenceHelper(new_query, flippedArticle);
@@ -75,7 +75,7 @@ function sentenceForNone(query, article) {
 }
 
 function sentenceForAll(query, article) {
-  // could aggressively reduce 'all anything but' to 'none', but that's too nice
+  // could aggressively reduce 'all anything but' to 'no', but that's too nice
   return 'all (' + buildFigureSentenceHelper(query[1], article) + ')';
 }
 

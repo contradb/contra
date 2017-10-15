@@ -95,7 +95,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
     end
   end
 
-  def self.matching_figures_for_none(filter, dance)
+  def self.matching_figures_for_no(filter, dance)
     subfilter = filter[1]
     if matching_figures(subfilter, dance)
       nil

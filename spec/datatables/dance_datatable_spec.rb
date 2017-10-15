@@ -24,8 +24,8 @@ describe DanceDatatable do
         expect(filtered.map(&:title)).to eq(['Call Me'])
       end
 
-      it 'works with none' do
-        filtered = DanceDatatable.send(:filter_dances, dances, ['and', ['none', ['figure', 'chain']], ['figure', 'star']])
+      it 'works with no' do
+        filtered = DanceDatatable.send(:filter_dances, dances, ['and', ['no', ['figure', 'chain']], ['figure', 'star']])
         expect(filtered).to eq([])        
       end
     end
@@ -35,8 +35,8 @@ describe DanceDatatable do
       expect(filtered.map(&:title)).to eq(dances.map(&:title))
     end
 
-    it 'none' do
-      filtered = DanceDatatable.send(:filter_dances, dances, ['none', ['figure', 'hey']])
+    it 'no' do
+      filtered = DanceDatatable.send(:filter_dances, dances, ['no', ['figure', 'hey']])
       expect(filtered.map(&:title)).to eq(['The Rendevouz', 'Box the Gnat Contra'])
     end
 

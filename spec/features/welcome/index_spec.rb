@@ -118,7 +118,7 @@ describe 'Welcome page', js: true do
         expect(page).to have_content('Call Me')
       end
 
-      it "change from an empty 'or' to 'none'" do
+      it "change from an empty 'or' to 'no'" do
         all('.figure-filter-op').last.select('or');
         expect(page).to have_css('.figure-filter-op', count: 4)
         expect(page).to have_css('.figure-filter', count: 4)
@@ -128,31 +128,31 @@ describe 'Welcome page', js: true do
         expect(page).to have_css('.figure-filter', count: 3) # css wait
         all('.figure-filter-remove').last.click
         expect(page).to have_css('.figure-filter', count: 2) # css wait
-        all('.figure-filter-op').last.select('none');
+        all('.figure-filter-op').last.select('no');
         expect(page).to have_css('.figure-filter', count: 3) # <- the main point here
       end
 
-      it "change from binary 'and' to 'none'" do
+      it "change from binary 'and' to 'no'" do
         click_button('add and')
         all('.figure-filter-move').first.select('chain')
         all('.figure-filter-move').last.select('circle')
         expect(page).to_not have_content('The Rendevouz')
         expect(page).to_not have_content('Box the Gnat Contra')
         expect(page).to have_content('Call Me')
-        all('.figure-filter-op').first.select('none'); # have none chain
+        all('.figure-filter-op').first.select('no'); # have no chain
         expect(page).to have_content('The Rendevouz')
         expect(page).to_not have_content('Box the Gnat Contra')
         expect(page).to_not have_content('Call Me')
       end
 
-      it "change from 'figure' to 'none'" do
+      it "change from 'figure' to 'no'" do
         # now we're ['and', ['figure', '*']]
         first('.figure-filter-op').select('figure')
         # now we're just ['figure', '*']
-        select('none')
-        # now we're ['none', ['figure', '*']]
+        select('no')
+        # now we're ['no', ['figure', '*']]
         select('circle')
-        # now we're ['none', ['figure', 'circle']]
+        # now we're ['no', ['figure', 'circle']]
         expect(page).to_not have_content('The Rendevouz')
         expect(page).to have_content('Box the Gnat Contra')
         expect(page).to_not have_content('Call Me')
@@ -167,7 +167,7 @@ describe 'Welcome page', js: true do
 
       it "it adds/removes 'add' button depending on arity of the filter, and 'add' button works" do
         expect(page).to have_css('.figure-filter-add', count: 1)
-        all('.figure-filter-op').first.select('none')
+        all('.figure-filter-op').first.select('no')
         expect(page).to have_css('.figure-filter-add', count: 0)
         all('.figure-filter-op').first.select('and')
         expect(page).to have_css('.figure-filter-add', count: 1)
@@ -203,8 +203,8 @@ describe 'Welcome page', js: true do
         end
 
         it "changing my op removes illegal remove buttons among my children, and adds them back in when they are legal" do
-          first('.figure-filter-op').select('none')
-          # [none, [figure *]]
+          first('.figure-filter-op').select('no')
+          # [no, [figure *]]
           expect(page).to_not have_css('.figure-filter-remove') # remove illegal X buttons
           first('.figure-filter-op').select('and')
           expect(page).to have_css('#figure-filter-root > .figure-filter > .figure-filter-remove') # re-add X button
