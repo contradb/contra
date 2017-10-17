@@ -65,6 +65,16 @@ describe 'Welcome page', js: true do
       expect(page).to have_css('.figure-filter-move', count: 2)
     end
 
+    it "Rory O'Moore" do
+      rory = FactoryGirl.create(:dance_with_a_rory_o_moore)
+      box = FactoryGirl.create(:box_the_gnat_contra)
+      visit '/'
+      select "Rory O'Moore"
+      expect(page).to_not have_content(box.title) # js wait
+      expect(page).to have_content(rory.title)
+      expect(rory.title).to eq("Just Rory")
+    end
+
     describe 'figure filter machinantions' do
       let (:dances) {[:dance, :box_the_gnat_contra, :call_me].map {|d| FactoryGirl.create(d)}}
       before (:each) do

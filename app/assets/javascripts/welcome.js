@@ -14,7 +14,7 @@ if (!Array.prototype.forEach) { throw "I was expecting Array.forEach to be defin
 var figureMoveHtml = "<select class='figure-filter-move form-control'><option value='*' selected=true>any figure</option>";
 moves().forEach(function(move) {
   var selectedIfChain = ('chain'===move) ? ' selected ' : '';
-  figureMoveHtml += "<option value='"+move+"'>"+move+"</option>";
+  figureMoveHtml += '<option value="'+move+'">'+move+'</option>';
 });
 figureMoveHtml += "</select>";
 

@@ -19,6 +19,7 @@ describe DanceDatatable do
 
       it "quotes and spaces work - Rory O'Moore" do      # something about this figure didn't work -dm 10-15-2017
         rory = FactoryGirl.create(:dance_with_a_rory_o_moore);
+        dances << rory
         filtered = DanceDatatable.send(:filter_dances, dances, ['figure', "Rory O'Moore"])
         expect(filtered.map(&:title)).to eq([rory.title])
       end
