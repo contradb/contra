@@ -55,7 +55,7 @@ var param_left_shoulder_spin     = {name: "shoulder", value: false, ui: chooser_
 
 
 function stringParamSide (value) {
-  return value ? "passing left sides" : "passing right sides";
+  return value ? "pass right" : "pass left";
 }
 
 function stringParamDegrees (value,move) { 
@@ -110,9 +110,8 @@ var param_object_pairs               = {name: "whom",                       ui: 
 var param_object_pairs_or_ones_or_twos = {name: "whom",                     ui: chooser_pairs_or_ones_or_twos};
 var param_lead_dancer_l1             = {name: "lead", value: "first ladle", ui: chooser_dancer};
 
-// not used anymore
-// param_pass_on_left = {name: "pass", value: false, ui: chooser_right_left_shoulder};
-// param_pass_on_right = {name: "pass", value: true, ui: chooser_right_left_shoulder};
+var param_pass_on_left = {name: "pass", value: false, ui: chooser_right_left_shoulder, string: stringParamSide};
+var param_pass_on_right = {name: "pass", value: true, ui: chooser_right_left_shoulder, string: stringParamSide};
 
 var param_custom_figure = {name: "custom", value: "", ui: chooser_text};
 
