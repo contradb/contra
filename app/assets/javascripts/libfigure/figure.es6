@@ -379,8 +379,8 @@ defineRelatedMove2Way('gyre star', 'star');
 
 function hey_change(figure,index) {
   var pvs = figure.parameter_values;
-  var half_or_full_idx = 1;
-  var beats_idx = 3;
+  var half_or_full_idx = 2;
+  var beats_idx = 4;
   var half_or_full = pvs[half_or_full_idx];
   var beats = pvs[beats_idx];
   if (half_or_full_idx === index && (half_or_full * beats === 8)) {
@@ -389,16 +389,16 @@ function hey_change(figure,index) {
 }
 
 function hey_view(move,pvs) {
-  var [  who,   half,  dir,  beats] = pvs;
-  var [leader, shalf, sdir, sbeats] = parameter_strings(move, pvs);
+  var [  who,   pass,  half,  dir,  beats] = pvs;
+  var [leader, spass, shalf, sdir, sbeats] = parameter_strings(move, pvs);
   var sdir2 = dir === 'across' ? '' : sdir;
   var tbeats = beats / half === 16 ? '' : ('for '+beats);
   var thalf = (1 === half) ? false : shalf;
-  return words(sdir2, thalf, move, comma, leader, "lead", tbeats);
+  return words(sdir2, thalf, move, comma, leader, spass, tbeats);
 }
 
 defineFigure("hey",
-             [param_subject_pair_ladles, param_half_or_full_half_chatty_half, param_set_direction_across, param_beats_8],
+             [param_subject_pair_ladles, param_pass_on_right, param_half_or_full_half_chatty_half, param_set_direction_across, param_beats_8],
              {view: hey_view, change: hey_change});
 
 
