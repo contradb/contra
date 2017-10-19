@@ -17,6 +17,7 @@
 
     <%# todo: rip this copy dance logic out of the view %>
     <% copy_dance = params[:copy_dance_id] && Dance.find(params[:copy_dance_id]) %>
+    <% choreographer = params[:choreographer_id] && Choreographer.find(params[:choreographer_id]) %>
 
     <% if copy_dance %>
       <div>
@@ -33,7 +34,8 @@
       <div>
         <%= f.text_field :choreographer_name,
             {id: "choreographer-autocomplete", placeholder: "Choreographer"}.
-            merge(copy_dance ? {value: copy_dance.choreographer.name} : {}) %>
+            merge(copy_dance ? {value: copy_dance.choreographer.name} :
+                  choreographer ? {value: choreographer.name} : {} ) %>
         <%= f.text_field :start_type,
             {id: "start-type-autocomplete", placeholder: "Formation"}
             .merge(copy_dance ? {value: copy_dance.start_type} : {}) %>
