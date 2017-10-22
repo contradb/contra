@@ -600,6 +600,15 @@ defineFigure("roll away",
 // RORY O'MOORE                               //
 ////////////////////////////////////////////////
 
+function rory_o_moore_change(figure,index) {
+  var pvs = figure.parameter_values;
+  const bal_index = 1;
+  const beats_index = 3;
+  if (index === bal_index) {
+    pvs[beats_index] = pvs[bal_index] ? 8 : 4;
+  }
+}
+
 function rory_o_moore_view(move,pvs) {
   var [ who,  balance,  dir,  beats] = pvs;
   var [swho, sbalance, sdir, sbeats] = parameter_strings(move, pvs);
@@ -614,7 +623,7 @@ function rory_o_moore_view(move,pvs) {
 
 defineFigure("Rory O'Moore",
              [param_subject_pairc_or_everyone, param_balance_true, param_slide_right, param_beats_8],
-             {view: rory_o_moore_view});
+             {view: rory_o_moore_view, change: rory_o_moore_change});
 
 ////////////////////////////////////////////////
 // SLICE                                      //
