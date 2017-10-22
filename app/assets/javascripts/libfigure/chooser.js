@@ -36,6 +36,7 @@ defineChooser("chooser_revolutions")
 defineChooser("chooser_places")
 defineChooser("chooser_dancers")  // some collection of dancers
 defineChooser("chooser_pair")     // 1 pair of dancers
+defineChooser("chooser_pairc_or_everyone")
 defineChooser("chooser_pairz")    // 1-2 pairs of dancers
 defineChooser("chooser_pairs")    // 2 pairs of dancers
 defineChooser("chooser_pairs_or_ones_or_twos")
@@ -43,7 +44,6 @@ defineChooser("chooser_pairs_or_everyone")
 defineChooser("chooser_dancer")   // one dancer, e.g. ladle 1
 defineChooser("chooser_role")     // ladles or gentlespoons
 defineChooser("chooser_hetero")   // partners or neighbors or shadows
-defineChooser("chooser_everyone_or_centers")
 defineChooser("chooser_text")
 defineChooser("chooser_star_grip")
 defineChooser("chooser_facing")

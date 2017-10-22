@@ -76,6 +76,22 @@
                     <option value="second corners">second corners</option>
                   </select>
                 </div>
+                <div ng-if="p.ui == chooser_pairc_or_everyone">
+                  <select ng-model="figure.parameter_values[$index]"
+                          ng-change="user_changed_parameter(figure,$index)"
+                          class='form-control'>
+                    <option value="everyone">everyone</option>
+                    <option value="gentlespoons">gentlespoons</option>
+                    <option value="ladles">ladles</option>
+                    <option value="centers">centers</option> <%# 'centers' is the 'c' in 'pairc' %>
+                    <option value="ones">ones</option>
+                    <option value="twos">twos</option>
+                     <%# too confusing to actually call - 'centers' should be preferred here
+                      <option value="first corners">first corners</option>
+                      <option value="second corners">second corners</option>
+                    %>
+                  </select>
+                </div>
                 <div ng-if="p.ui == chooser_pairz">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="user_changed_parameter(figure,$index)"
@@ -150,14 +166,6 @@
                     <option value="partners">partners</option>
                     <option value="neighbors">neighbors</option>
                     <option value="shadows">shadows</option>
-                  </select>
-                </div>
-                <div ng-if="p.ui == chooser_everyone_or_centers">
-                  <select ng-model="figure.parameter_values[$index]"
-                          ng-change="user_changed_parameter(figure,$index)"
-                          class='form-control'>
-                    <option value="everyone">everyone</option>
-                    <option value="centers">centers</option>
                   </select>
                 </div>
                 <div ng-if="p.ui == chooser_text">

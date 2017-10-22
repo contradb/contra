@@ -613,7 +613,7 @@ function rory_o_moore_view(move,pvs) {
 }
 
 defineFigure("Rory O'Moore",
-             [param_subject_everyone_or_centers, param_balance_true, param_slide_right, param_beats_8],
+             [param_subject_pairc_or_everyone, param_balance_true, param_slide_right, param_beats_8],
              {view: rory_o_moore_view});
 
 ////////////////////////////////////////////////
