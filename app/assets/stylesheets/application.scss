@@ -65,9 +65,6 @@ label {
 
 .contra-btn-midpage {margin-bottom: 1em;}
 
-// debugging aid
-.yellow {background-color: #FF3}
-
 .autocomplete-match-text { color: red; font-weight: bold; }
 
 .contra-label { font-weight: bold; }
@@ -116,7 +113,6 @@ label {
 }
 .contra-markdown-block {
 }
-
 
 /* fix ugly mozilla selects https://stackoverflow.com/a/38187626/5158597 */
 @-moz-document url-prefix() {
