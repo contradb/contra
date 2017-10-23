@@ -100,3 +100,7 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
 #figure-query-buffer {
   display: none;
 }
+
+.figure-filter .ellipsis-expanded {
+   @extend .btn-primary;
+}

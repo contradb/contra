@@ -235,5 +235,53 @@ describe 'Welcome page', js: true do
         end
       end
     end
+
+    describe 'figure ... button' do
+      before (:each) do
+        visit '/'
+      end
+
+      it "not visible figure is 'any figure'" do
+        expect(page).to_not have_button('...')
+      end
+
+      it 'is clickable after switching to a real move' do
+        select('chain')        
+        click_button '...'
+      end
+
+      it 'appears only once no matter how many times the move changes' do
+        select('chain')        
+        select('swing')        
+        expect(page).to have_button('...', count: 1)
+      end
+
+      it 'changing back to * hides it' do
+        select('chain')
+        select('any figure')
+        expect(page).to_not have_button('...')
+      end
+
+      context 'color' do
+        before (:each) do
+          select('chain')        
+        end
+
+        it "does not have class 'figure-toggle' initially" do
+          expect(page).to_not have_css('.figure-filter-ellipsis.ellipsis-expanded')
+        end
+
+        it "does have class 'figure-toggle' after click" do
+          click_button '...'
+          expect(page).to have_css('.figure-filter-ellipsis.ellipsis-expanded')
+        end
+
+        it "does not have class 'figure-toggle' after two clicks" do
+          click_button '...'
+          click_button '...'
+          expect(page).to_not have_css('.figure-filter-ellipsis.ellipsis-expanded')
+        end
+      end
+    end
   end
 end

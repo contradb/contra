@@ -2,7 +2,7 @@ function installEventHandlers(selector) {
   selector.find('.figure-filter-op').change(filterOpChanged);
   selector.find('.figure-filter-add').click(clickFilterAddSubfilter);
   selector.find('.figure-filter-remove').click(filterRemoveSubfilter);
-  selector.find('.figure-filter-move').change(updateQuery);
+  selector.find('.figure-filter-move').change(figureMoveChanged);
 }
 
 var addButtonHtml = "<button class='figure-filter-add'>Add</button>";
@@ -71,6 +71,28 @@ function minUsefulSubfilterCount(op) {
   default:
     return minSubfilterCount(op);
   }
+}
+
+function figureMoveChanged(e) {
+  var filter = $(e.target).closest('.figure-filter');
+  resetFigureParameters(filter);
+  updateQuery();
+}
+
+function resetFigureParameters(filter) {
+  var $move = filter.children('.figure-filter-move');
+  var $ellipsis = filter.children('.figure-filter-ellipsis');
+  if (($move.val() === '*')) {
+    $ellipsis.remove();
+  } else if (0===$ellipsis.length) {
+    var el = $("<button class='btn btn-default figure-filter-ellipsis'>...</button>");
+    el.click(clickEllipsis);
+    $move.after(el);
+  }
+}
+
+function clickEllipsis(e) {
+  $(this).toggleClass('ellipsis-expanded');
 }
 
 function filterOpChanged(e) {
