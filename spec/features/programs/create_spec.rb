@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'spec_helper'
 require 'support/scrutinize_layout'
 
 # from https://github.com/plataformatec/devise/wiki/How-To:-Test-with-Capybara :
