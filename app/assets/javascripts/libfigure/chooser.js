@@ -13,48 +13,48 @@
 // Choosers can be compared with == in this file and in angular controller scopey thing.
 // They are basically a big enum with all the functionality in a giant case statement in dances/_form.erb
 
-var defined_choosers = {}
+var defined_choosers = {};
 
 
 function defineChooser(name){
-    "string" == typeof name || throw_up("first argument isn't a string")
-    "chooser_" == name.slice(0,8) || throw_up("first argument doesn't begin with 'chooser_'")
-    defined_choosers[name] = defined_choosers[name] || name
-    eval(name+"='"+name+"'")
+  "string" == typeof name || throw_up("first argument isn't a string");
+  "chooser_" == name.slice(0,8) || throw_up("first argument doesn't begin with 'chooser_'");
+  defined_choosers[name] = defined_choosers[name] || name;
+  eval(name+"='"+name+"'");
 }
 function setChoosers(hash){
-    $.each(defined_choosers,function(k,v){hash[k]=v})
+  $.each(defined_choosers,function(k,v){hash[k]=v});
 }
 
-defineChooser("chooser_boolean")
-defineChooser("chooser_beats")
-defineChooser("chooser_spin")
-defineChooser("chooser_left_right_spin")
-defineChooser("chooser_right_left_hand")
-defineChooser("chooser_right_left_shoulder")
-defineChooser("chooser_revolutions")
-defineChooser("chooser_places")
-defineChooser("chooser_dancers")  // some collection of dancers
-defineChooser("chooser_pair")     // 1 pair of dancers
-defineChooser("chooser_pairc_or_everyone")
-defineChooser("chooser_pairz")    // 1-2 pairs of dancers
-defineChooser("chooser_pairs")    // 2 pairs of dancers
-defineChooser("chooser_pairs_or_ones_or_twos")
-defineChooser("chooser_pairs_or_everyone")
-defineChooser("chooser_dancer")   // one dancer, e.g. ladle 1
-defineChooser("chooser_role")     // ladles or gentlespoons
-defineChooser("chooser_hetero")   // partners or neighbors or shadows
-defineChooser("chooser_text")
-defineChooser("chooser_star_grip")
-defineChooser("chooser_facing")
-defineChooser("chooser_slide")
-defineChooser("chooser_set_direction")
-defineChooser("chooser_set_direction_grid")
-defineChooser("chooser_gate_direction")
-defineChooser("chooser_slice_return")
-defineChooser("chooser_slice_increment")
-defineChooser("chooser_down_the_hall_ender")
-defineChooser("chooser_zig_zag_ender")
-defineChooser("chooser_go_back")
-defineChooser("chooser_give")
-defineChooser("chooser_half_or_full")
+defineChooser("chooser_boolean");
+defineChooser("chooser_beats");
+defineChooser("chooser_spin");
+defineChooser("chooser_left_right_spin");
+defineChooser("chooser_right_left_hand");
+defineChooser("chooser_right_left_shoulder");
+defineChooser("chooser_revolutions");
+defineChooser("chooser_places");
+defineChooser("chooser_dancers");  // some collection of dancers
+defineChooser("chooser_pair");     // 1 pair of dancers
+defineChooser("chooser_pairc_or_everyone");
+defineChooser("chooser_pairz");    // 1-2 pairs of dancers
+defineChooser("chooser_pairs");    // 2 pairs of dancers
+defineChooser("chooser_pairs_or_ones_or_twos");
+defineChooser("chooser_pairs_or_everyone");
+defineChooser("chooser_dancer");   // one dancer, e.g. ladle 1
+defineChooser("chooser_role");     // ladles or gentlespoons
+defineChooser("chooser_hetero");   // partners or neighbors or shadows
+defineChooser("chooser_text");
+defineChooser("chooser_star_grip");
+defineChooser("chooser_facing");
+defineChooser("chooser_slide");
+defineChooser("chooser_set_direction");
+defineChooser("chooser_set_direction_grid");
+defineChooser("chooser_gate_direction");
+defineChooser("chooser_slice_return");
+defineChooser("chooser_slice_increment");
+defineChooser("chooser_down_the_hall_ender");
+defineChooser("chooser_zig_zag_ender");
+defineChooser("chooser_go_back");
+defineChooser("chooser_give");
+defineChooser("chooser_half_or_full");

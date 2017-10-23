@@ -10,7 +10,10 @@
 // ALLEMANDE                                  //
 ////////////////////////////////////////////////
 
-defineFigure("allemande", [param_subject_pairz, param_xhand_spin, param_once_around, param_beats_8]);
+defineFigure("allemande", [param_subject_pairz, 
+                           param_xhand_spin, 
+                           param_once_around, 
+                           param_beats_8]);
 
 ////////////////////////////////////////////////
 // ALLEMANDE ORBIT                            //
@@ -27,8 +30,15 @@ function allemande_orbit_view(move,pvs) {
 }
 
 defineFigure("allemande orbit",
-             [param_subject_pair, param_left_hand_spin, param_once_and_a_half, param_half_around, param_beats_8],
-             {view: allemande_orbit_view, labels: ["","allemande","inner","outer", "for"]});
+             [param_subject_pair,
+              param_left_hand_spin,
+              param_once_and_a_half,
+              param_half_around,
+              param_beats_8],
+             {
+               view: allemande_orbit_view,
+               labels: ["","allemande","inner","outer", "for"]
+             });
 
 defineRelatedMove2Way('allemande orbit', 'allemande');
 
@@ -42,9 +52,12 @@ function balance_view(move,pvs) {
   return words(('everyone' == who) ? '' : swho, move, sbeats);
 }
 
-defineFigure("balance", [param_subject_pairs_or_everyone, param_beats_4], {view: balance_view});
+defineFigure("balance",
+             [param_subject_pairs_or_everyone, param_beats_4],
+             {view: balance_view});
 
-// Note: at time of writing, auto-generation of related moves happens to any move with a balance - see the end of this file
+// Note: at time of writing, auto-generation of related moves happens
+// to any move with a balance - see the end of this file
 
 ////////////////////////////////////////////////
 // BALANCE THE RING (see also: petronella)    //
@@ -187,7 +200,11 @@ function cross_trails_view(move,pvs) {
 }
 
 defineFigure("cross trails",
-             [param_subject_pairs, param_set_direction_grid, param_right_shoulder_spin, param_subject2_pairs, param_beats_4],
+             [param_subject_pairs,
+              param_set_direction_grid,
+              param_right_shoulder_spin,
+              param_subject2_pairs,
+              param_beats_4],
              {view: cross_trails_view, change: cross_trails_change});
 
 ////////////////////////////////////////////////
@@ -301,9 +318,13 @@ function gate_view(move, pvs) {
   return words(ssubject, move, sobject, 'to face', sgate_face, sbeats);
 }
 
-// 'ones gate twos' means: ones, extend a hand to twos - twos walk forward, ones back up, orbiting around the joined hands
+// 'ones gate twos' means: ones, extend a hand to twos - twos walk
+// forward, ones back up, orbiting around the joined hands
 defineFigure("gate",
-             [param_subject_pair, param_object_pairs_or_ones_or_twos, param_gate_face, param_beats_8],
+             [param_subject_pair,
+              param_object_pairs_or_ones_or_twos,
+              param_gate_face,
+              param_beats_8],
              {view: gate_view});
 
 ////////////////////////////////////////////////
@@ -329,7 +350,10 @@ function give_and_take_view(move, pvs) {
 }
 
 defineFigure("give & take",
-             [param_subject_role_gentlespoons, param_object_hetero_partners, param_give, param_beats_8],
+             [param_subject_role_gentlespoons,
+              param_object_hetero_partners,
+              param_give,
+              param_beats_8],
              {view: give_and_take_view, change: give_and_take_change});
 
 ////////////////////////////////////////////////
@@ -343,7 +367,10 @@ function gyre_view(move, pvs) {
 }
 
 defineFigure("gyre",
-             [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8],
+             [param_subject_pairz,
+              param_right_shoulder_spin,
+              param_once_around,
+              param_beats_8],
              {view: gyre_view});
 
 ////////////////////////////////////////////////
@@ -367,7 +394,10 @@ function gyre_star_view(move, pvs) {
 }
 
 defineFigure("gyre star",
-             [param_subject_pair, param_spin_clockwise,  param_places, param_beats_8],
+             [param_subject_pair,
+              param_spin_clockwise,
+              param_places,
+              param_beats_8],
              {view: gyre_star_view});
 
 defineRelatedMove2Way('gyre star', 'gyre');
@@ -398,7 +428,10 @@ function hey_view(move,pvs) {
 }
 
 defineFigure("hey",
-             [param_subject_pair_ladles, param_half_or_full_half_chatty_half, param_set_direction_across, param_beats_8],
+             [param_subject_pair_ladles,
+              param_half_or_full_half_chatty_half,
+              param_set_direction_across,
+              param_beats_8],
              {view: hey_view, change: hey_change});
 
 
@@ -506,7 +539,10 @@ function poussette_view(move,pvs) {
 }
 
 defineFigure("poussette",
-             [param_half_or_full_half_chatty_max, param_subject_pair, param_object_pairs_or_ones_or_twos, param_spin, param_beats],
+             [param_half_or_full_half_chatty_max,
+              param_subject_pair,
+              param_object_pairs_or_ones_or_twos,
+              param_spin, param_beats],
              {view: poussette_view});
 
 ////////////////////////////////////////////////
@@ -594,7 +630,10 @@ defineFigure("right left through",
 ////////////////////////////////////////////////
 
 defineFigure("roll away",
-             [param_subject_pair, param_object_pairs_or_ones_or_twos, param_half_sashay_false, param_beats_4]);
+             [param_subject_pair,
+              param_object_pairs_or_ones_or_twos,
+              param_half_sashay_false,
+              param_beats_4]);
 
 ////////////////////////////////////////////////
 // RORY O'MOORE                               //
@@ -715,8 +754,16 @@ function square_through_view(move,pvs) {
 }
 
 defineFigure("square through",
-             [param_subject_pairs, param_subject2_pairs, param_balance_true, param_right_hand_spin, param_four_places, param_beats_16],
-             {view: square_through_view, change: square_through_change, labels: [,,'odd bal']});
+             [param_subject_pairs,
+              param_subject2_pairs,
+              param_balance_true,
+              param_right_hand_spin,
+              param_four_places,
+              param_beats_16],
+             {view: square_through_view,
+              change: square_through_change,
+              labels: [,,'odd bal']
+             });
 
 ////////////////////////////////////////////////
 // STAR                                       //

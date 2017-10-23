@@ -169,7 +169,7 @@ function aliases(move) {
   Object.keys(defined_events).forEach(function(key) {
     var value = defined_events[key];
     if (value.name == move && key != move) {
-      acc.push(key)
+      acc.push(key);
     }
   });
   return acc;
