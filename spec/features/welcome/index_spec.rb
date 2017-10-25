@@ -270,6 +270,18 @@ describe 'Welcome page', js: true do
           expect(page).to_not have_css('.figure-filter-ellipsis.ellipsis-expanded')
         end
       end
+
+      context 'accordion' do
+        it 'lurks invisibly' do
+          expect(page).to_not have_css('.figure-filter-accordion')
+          expect(page).to have_css('.figure-filter-accordion', visible: false)
+        end
+
+        it 'pops forth when clicked' do
+          click_button '...'
+          expect(page).to have_css('.figure-filter-accordion', visible: true)
+        end
+      end
     end
   end
 end

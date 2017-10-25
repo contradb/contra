@@ -145,7 +145,11 @@ function removeFigureFilterMoveConstellation(filter) {
 }
 
 function addFigureFilterMoveConstellation(filter) {
-  filter.children('.figure-filter-op').after(makeFigureFilterEllipsisButton(filter)).after(makeFigureFilterMoveSelect(filter));
+  filter
+    .append(makeFigureFilterAccordion(filter)) // even to the right of the 'X'
+    .children('.figure-filter-op')
+    .after(makeFigureFilterEllipsisButton(filter)) // 2 right of figure-filter-op
+    .after(makeFigureFilterMoveSelect(filter));    // 1 right of figure-filter-op
 }
 
 function makeFigureFilterMoveSelect(filter) {
@@ -157,10 +161,8 @@ function makeFigureFilterEllipsisButton(filter) {
 }
 
 function makeFigureFilterAccordion(filter) {
-  // return $(figureMoveHtml).change(updateQuery);
+  return $("<div class='figure-filter-accordion'>oh the parameters you'll filter</div>").hide();
 }
-
-
 
 function clickFilterAddSubfilter(e) {
   filterAddSubfilter($(this).closest('.figure-filter'));
