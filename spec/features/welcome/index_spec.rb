@@ -241,25 +241,13 @@ describe 'Welcome page', js: true do
         visit '/'
       end
 
-      it "not visible figure is 'any figure'" do
-        expect(page).to_not have_button('...')
+      it "is visible initially, when figure is 'any figure'" do
+        expect(page).to have_button('...')
       end
 
-      it 'is clickable after switching to a real move' do
-        select('chain')        
-        click_button '...'
-      end
-
-      it 'appears only once no matter how many times the move changes' do
-        select('chain')        
-        select('swing')        
-        expect(page).to have_button('...', count: 1)
-      end
-
-      it 'changing back to * hides it' do
-        select('chain')
-        select('any figure')
-        expect(page).to_not have_button('...')
+      it 'changing figure filter hides this one but creates two more' do
+        select('then')
+        expect(page).to have_button('...', count: 2)
       end
 
       context 'color' do

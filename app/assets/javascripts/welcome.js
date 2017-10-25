@@ -2,7 +2,7 @@ function installEventHandlers(selector) {
   selector.find('.figure-filter-op').change(filterOpChanged);
   selector.find('.figure-filter-add').click(clickFilterAddSubfilter);
   selector.find('.figure-filter-remove').click(filterRemoveSubfilter);
-  selector.find('.figure-filter-move').change(figureMoveChanged);
+  // selector.find('.figure-filter-move').change(updateQuery); // removed because now done by constellation
 }
 
 var addButtonHtml = "<button class='figure-filter-add'>Add</button>";
@@ -28,8 +28,7 @@ var filterHtml = "\
         <option value='no'>no</option>\
         <option value='all'>all</option>\
         <option value='anything but'>anything but</option>\
-      </select>"+
-      figureMoveHtml+"\
+      </select>\
       <span class='figure-filter-end-of-subfigures'></span>\
     </div>";
 
@@ -73,26 +72,10 @@ function minUsefulSubfilterCount(op) {
   }
 }
 
-function figureMoveChanged(e) {
-  var filter = $(e.target).closest('.figure-filter');
-  resetFigureParameters(filter);
-  updateQuery();
-}
-
-function resetFigureParameters(filter) {
-  var $move = filter.children('.figure-filter-move');
-  var $ellipsis = filter.children('.figure-filter-ellipsis');
-  if (($move.val() === '*')) {
-    $ellipsis.remove();
-  } else if (0===$ellipsis.length) {
-    var el = $("<button class='btn btn-default figure-filter-ellipsis'>...</button>");
-    el.click(clickEllipsis);
-    $move.after(el);
-  }
-}
-
 function clickEllipsis(e) {
-  $(this).toggleClass('ellipsis-expanded');
+  var $this = $(this);
+  $this.toggleClass('ellipsis-expanded');
+  $this.siblings('.figure-filter-accordion').toggle();
 }
 
 function filterOpChanged(e) {
@@ -109,9 +92,9 @@ function filterOpChanged(e) {
     actualSubfilterCount++;
   }
   if (op === 'figure') {
-    addFigureMoveSelect(filter);
+    addFigureFilterMoveConstellation(filter);
   } else {
-    filter.children('.figure-filter-move').remove(); // if we were a figure filter
+    removeFigureFilterMoveConstellation(filter);
   }
   var hasNoAddButton = filter.children('.figure-filter-add').length === 0;
   if (hasNoAddButton && actualSubfilterCount < maxSubfilterCount(op)) {
@@ -155,24 +138,43 @@ function ensureChildRemoveButtons(filter) {
   }
 }
 
-function addFigureMoveSelect(filter) {
-  var moveSelect = $(figureMoveHtml);
-  moveSelect.change(updateQuery);
-  filter.children('.figure-filter-op').after(moveSelect);
+function removeFigureFilterMoveConstellation(filter) {
+  filter.children('.figure-filter-move').remove();
+  filter.children('.figure-filter-ellipsis').remove();
+  filter.children('.figure-filter-accordion').remove();
 }
+
+function addFigureFilterMoveConstellation(filter) {
+  filter.children('.figure-filter-op').after(makeFigureFilterEllipsisButton(filter)).after(makeFigureFilterMoveSelect(filter));
+}
+
+function makeFigureFilterMoveSelect(filter) {
+  return $(figureMoveHtml).change(updateQuery);
+}
+
+function makeFigureFilterEllipsisButton(filter) {
+  return $("<button class='btn btn-default figure-filter-ellipsis'>...</button>").click(clickEllipsis);
+}
+
+function makeFigureFilterAccordion(filter) {
+  // return $(figureMoveHtml).change(updateQuery);
+}
+
+
 
 function clickFilterAddSubfilter(e) {
   filterAddSubfilter($(this).closest('.figure-filter'));
+  updateQuery();
 }
 
-function filterAddSubfilter(parentFilter) {
+function filterAddSubfilter(parentFilter) { // caller should updateQuery() when done
   var childFilter = $(filterHtml);
   installEventHandlers(childFilter);
+  addFigureFilterMoveConstellation(childFilter);
   childFilter.insertBefore(parentFilter.children('.figure-filter-end-of-subfigures'));
   ensureChildRemoveButtons(parentFilter);
   var op = parentFilter.children('.figure-filter-op').val();
   childFilter.attr('data-op', op);
-  updateQuery();
 }
 
 function filterRemoveSubfilter(e) {
@@ -208,7 +210,7 @@ jQuery(document).ready(function() {
     }
   };
 
-  addFigureMoveSelect($('#figure-filter-root'));
+  addFigureFilterMoveConstellation($('#figure-filter-root'));
   installEventHandlers($('#figure-filter-root'));
   updateQuery();
 
