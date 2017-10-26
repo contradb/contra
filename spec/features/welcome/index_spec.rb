@@ -16,6 +16,7 @@ require 'rails_helper'
 require 'login_helper'
 
 describe 'Welcome page', js: true do
+  let (:dances) {[:dance, :box_the_gnat_contra, :call_me].map {|d| FactoryGirl.create(d)}}
   it 'has a link to help on filters' do
     visit '/'
     expect(page).to have_link('', href: "https://github.com/dcmorse/contra/wiki/Dance-Figure-Filters")
@@ -76,7 +77,6 @@ describe 'Welcome page', js: true do
     end
 
     describe 'figure filter machinantions' do
-      let (:dances) {[:dance, :box_the_gnat_contra, :call_me].map {|d| FactoryGirl.create(d)}}
       before (:each) do
         dances
         visit '/'
@@ -280,6 +280,13 @@ describe 'Welcome page', js: true do
         it 'pops forth when clicked' do
           click_button '...'
           expect(page).to have_css('.figure-filter-accordion', visible: true)
+        end
+
+        it "circle 4 places finds only 'The Rendevouz'" do
+          dances
+          select('circle')
+          select('4 places')
+          # TODO: check that only The Rendevouz is showing
         end
       end
     end

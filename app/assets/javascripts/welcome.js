@@ -153,7 +153,7 @@ function addFigureFilterMoveConstellation(filter) {
 }
 
 function makeFigureFilterMoveSelect(filter) {
-  return $(figureMoveHtml).change(updateQuery);
+  return $(figureMoveHtml).change(figureFilterMoveChange);
 }
 
 function makeFigureFilterEllipsisButton(filter) {
@@ -162,6 +162,19 @@ function makeFigureFilterEllipsisButton(filter) {
 
 function makeFigureFilterAccordion(filter) {
   return $("<div class='figure-filter-accordion'>oh the parameters you'll filter</div>").hide();
+}
+
+function figureFilterMoveChange() {
+  var figureFilterMove = $(this);
+  var accordion = figureFilterMove.siblings('.figure-filter-accordion');
+  accordion.children().remove();
+  var move = figureFilterMove.val();
+  var formals = isMove(move) ? parameters(move) : [];
+  formals.forEach(function(formal) {
+    console.log(formal.name);
+    accordion.append($('<div>'+formal.name+'</div>'));
+  });
+  updateQuery();
 }
 
 function clickFilterAddSubfilter(e) {

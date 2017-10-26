@@ -185,6 +185,10 @@ function moves() {
   });
 }
 
+function isMove(string) {
+  return !!defined_events[string];
+}
+
 var issued_parameter_warning = false;
 
 // consider renaming to formalParameters
