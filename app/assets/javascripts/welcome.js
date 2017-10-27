@@ -171,8 +171,11 @@ function figureFilterMoveChange() {
   var move = figureFilterMove.val();
   var formals = isMove(move) ? parameters(move) : [];
   formals.forEach(function(formal) {
-    console.log(formal.name);
-    accordion.append($('<div>'+formal.name+'</div>'));
+    if (formal.name === 'places') {
+      accordion.append($('<select><option>4 places</option></select>'));
+    } else {
+      accordion.append($('<div>'+formal.name+'</div>'));
+    }
   });
   updateQuery();
 }

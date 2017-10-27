@@ -278,15 +278,19 @@ describe 'Welcome page', js: true do
         end
 
         it 'pops forth when clicked' do
-          click_button '...'
+          click_button('...') 
           expect(page).to have_css('.figure-filter-accordion', visible: true)
         end
 
         it "circle 4 places finds only 'The Rendevouz'" do
           dances
           select('circle')
+          click_button('...')
           select('4 places')
-          # TODO: check that only The Rendevouz is showing
+
+          expect(page).to have_content('The Rendevouz') # has circle left 3 & 4 places
+          expect(page).to_not have_content('Box the Gnat Contra') # no circles
+          expect(page).to_not have_content('Call Me') # has circle left 3 places
         end
       end
     end
