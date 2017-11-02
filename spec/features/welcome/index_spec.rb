@@ -288,6 +288,8 @@ describe 'Welcome page', js: true do
           click_button('...')
           select('4 places')
 
+          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","circle","*","360","*"]')
+
           expect(page).to have_content('The Rendevouz') # has circle left 3 & 4 places
           expect(page).to_not have_content('Box the Gnat Contra') # no circles
           expect(page).to_not have_content('Call Me') # has circle left 3 places

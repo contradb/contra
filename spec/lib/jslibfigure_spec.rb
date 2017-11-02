@@ -90,5 +90,15 @@ RSpec.describe JSLibFigure do
     expect(beats['value']).to eq 4
   end
 
+  describe 'is_move?' do
+    it "'circle' => true" do
+      expect(JSLibFigure.is_move?('circle')).to be(true)
+    end
+
+    it "'flibbergibit' => false" do
+      expect(JSLibFigure.is_move?('flibbergibit')).to be(false)
+    end
+  end
+
   pending 'test the whole libfigure library, ha ha'
 end

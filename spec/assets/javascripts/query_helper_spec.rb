@@ -3,28 +3,31 @@
 require 'rails_helper'
 
 RSpec.describe 'query-helper' do
-  [[['figure', '*'], 'a', 'any figure'],
-   [['figure', '*'], 'no', 'no figure'],
-   [['figure', 'swing'], 'a', 'a swing'],
-   [['figure', 'allemande'], 'a', 'an allemande'],
-   [['no', ['figure', 'allemande']], 'a', 'no allemande'],
-   [['no', ['or', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no allemande and no swing'],
-   [['no', ['and', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no allemande or no swing'],
-   [['no', ['then', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no (an allemande then a swing)'],
-   [['then', ['figure', 'allemande'], ['figure', 'swing']], 'a', 'an allemande then a swing'],
-   [['then', ['figure', 'allemande'], ['anything but', ['figure', 'swing']]], 'a', /an allemande then a non +swing/],
-   [['then', ['figure', 'allemande'], ['anything but', ['or', ['figure', 'swing'], ['figure', 'chain']]]], 'a',
-    /an allemande then +anything but +\(a swing or a chain\)/],
-   [['anything but', ['figure', 'swing']], 'a', /a non +swing/],
-   [['anything but', ['or', ['figure', 'swing'], ['figure', 'chain']]], 'a', /anything but +\(a swing or a chain\)/],
-   [["and",["then",["figure","allemande"],["figure","balance"]],["figure","box circulate"]],
-    'a', '(an allemande then a balance) and a box circulate'],
-   [['no', ['anything but', ['figure', 'swing']]], 'a', 'no non swing'],
-   [['figure', '*'], 'a', 'any figure']
-  ].each do |a|
-    q, article, value = a
-    it "buildFigureSentenceHelper(#{q.to_s}, #{article.inspect}) => #{value.inspect}" do
-      expect(eval("buildFigureSentenceHelper(#{q.to_s}, #{article.inspect});")).to match(whitespice(value))
+  describe 'sentence' do
+    [[['figure', '*'], 'a', 'any figure'],
+     [['figure', '*'], 'no', 'no figure'],
+     [['figure', 'swing'], 'a', 'a swing'],
+     [['figure', 'allemande'], 'a', 'an allemande'],
+     [['figure', 'circle', 360], 'a' 'a circle 4 places'], # wip syntax will change
+     [['no', ['figure', 'allemande']], 'a', 'no allemande'],
+     [['no', ['or', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no allemande and no swing'],
+     [['no', ['and', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no allemande or no swing'],
+     [['no', ['then', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no (an allemande then a swing)'],
+     [['then', ['figure', 'allemande'], ['figure', 'swing']], 'a', 'an allemande then a swing'],
+     [['then', ['figure', 'allemande'], ['anything but', ['figure', 'swing']]], 'a', /an allemande then a non +swing/],
+     [['then', ['figure', 'allemande'], ['anything but', ['or', ['figure', 'swing'], ['figure', 'chain']]]], 'a',
+      /an allemande then +anything but +\(a swing or a chain\)/],
+     [['anything but', ['figure', 'swing']], 'a', /a non +swing/],
+     [['anything but', ['or', ['figure', 'swing'], ['figure', 'chain']]], 'a', /anything but +\(a swing or a chain\)/],
+     [["and",["then",["figure","allemande"],["figure","balance"]],["figure","box circulate"]],
+      'a', '(an allemande then a balance) and a box circulate'],
+     [['no', ['anything but', ['figure', 'swing']]], 'a', 'no non swing'],
+     [['figure', '*'], 'a', 'any figure']
+    ].each do |a|
+      q, article, value = a
+      it "buildFigureSentenceHelper(#{q.to_s}, #{article.inspect}) => #{value.inspect}" do
+        expect(eval("buildFigureSentenceHelper(#{q.to_s}, #{article.inspect});")).to match(whitespice(value))
+      end
     end
   end
 

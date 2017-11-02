@@ -172,7 +172,7 @@ function figureFilterMoveChange() {
   var formals = isMove(move) ? parameters(move) : [];
   formals.forEach(function(formal) {
     if (formal.name === 'places') {
-      accordion.append($('<select><option>4 places</option></select>'));
+      accordion.append($('<select><option value="270">3 places</option><option value="360">4 places</option></select>').change(updateQuery));
     } else {
       accordion.append($('<div>'+formal.name+'</div>'));
     }
@@ -206,7 +206,19 @@ function buildFigureQuery(figure_filter) {
   figure_filter = $(figure_filter);
   var op = figure_filter.children('.figure-filter-op').val();
   if (op === 'figure') {
-    return [op, figure_filter.children('.figure-filter-move').val()];
+    var move = figure_filter.children('.figure-filter-move').val();
+    var a = [op, move];
+    var formals = isMove(move) ? parameters(move) : [];
+    formals.forEach(function(formal, i) {
+      // TODO: make this actually use choosers and not suck
+      if (formal.name === 'places') {
+        var degrees = figure_filter.children('.figure-filter-accordion').children('select').val();
+        a.push(degrees);
+      } else {
+        a.push('*');
+      }
+    });
+    return a;
   } else {
     var kids = figure_filter.children('.figure-filter').get();
     if (!Array.prototype.map) { throw "I was expecting Array.map to be defined"; }

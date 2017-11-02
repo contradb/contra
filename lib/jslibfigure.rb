@@ -18,8 +18,12 @@ module JSLibFigure
     figure_ruby_hash['move']
   end
 
+  def self.is_move?(move)
+    move.in?(moves)
+  end
+
   def self.moves
-    self.eval('moves()')
+    @moves ||= self.eval('moves()')
   end
 
   def self.de_alias_move(move_str)
