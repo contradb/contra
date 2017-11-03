@@ -202,6 +202,7 @@ describe 'Welcome page', js: true do
         end
 
         it "another subfilter has a working remove button" do
+          puts 'this is the hot spec' # if they don't press '...' then don't include those params at all
           select('circle')
           click_button('add and')   # adds a '*'
           expect(page).to have_css('.figure-filter > button.figure-filter-remove', count: 2)

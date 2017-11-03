@@ -25,7 +25,6 @@ describe DanceDatatable do
       end
 
       it 'circle works with an angle' do
-        puts 'this is the hot spec'
         filtered = DanceDatatable.send(:filter_dances, dances, ['figure', 'circle', '*', 360, '*'])
         expect(filtered.map(&:title)).to eq(['The Rendevouz'])
       end
