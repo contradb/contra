@@ -208,6 +208,7 @@ function buildFigureQuery(figure_filter) {
   if (op === 'figure') {
     var move = figure_filter.children('.figure-filter-move').val();
     var a = [op, move];
+    if (accordionIsHidden(figure_filter)) { return a; }
     var formals = isMove(move) ? parameters(move) : [];
     formals.forEach(function(formal, i) {
       // TODO: make this actually use choosers and not suck
@@ -226,6 +227,10 @@ function buildFigureQuery(figure_filter) {
     filter.unshift(op);
     return filter;
   }
+}
+
+function accordionIsHidden($figure_filter) {
+  return ! $figure_filter.children('.figure-filter-accordion').is(':visible');
 }
 
 ///////////////////// PAGE LOADED
