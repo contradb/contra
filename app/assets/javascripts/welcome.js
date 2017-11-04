@@ -9,7 +9,7 @@ var addButtonHtml = "<button class='figure-filter-add'>Add</button>";
 var removeButtonHtml = "<button class='figure-filter-remove'><span class='glyphicon glyphicon-remove'></span></button>";
 
 if (!Array.prototype.forEach) { throw "I was expecting Array.forEach to be defined"; }
-
+if (!Array.prototype.map) { throw "I was expecting Array.map to be defined"; }
 
 var figureMoveHtml = "<select class='figure-filter-move form-control'><option value='*' selected=true>any figure</option>";
 moves().forEach(function(move) {
@@ -164,6 +164,14 @@ function makeFigureFilterAccordion(filter) {
   return $("<div class='figure-filter-accordion'>oh the parameters you'll filter</div>").hide();
 }
 
+var chooserToFilterHtml = {};
+chooserToFilterHtml[chooser_places] = function(move) {
+  var options = anglesForMove(move).map(function(angle) {
+    return '<option value="'+angle.toString()+'">'+degreesToWords(angle,move)+'</option>';
+  });
+  return '<select class="form-control">'+options.join()+'</select>';
+};
+
 function figureFilterMoveChange() {
   var figureFilterMove = $(this);
   var accordion = figureFilterMove.siblings('.figure-filter-accordion');
@@ -171,11 +179,8 @@ function figureFilterMoveChange() {
   var move = figureFilterMove.val();
   var formals = isMove(move) ? parameters(move) : [];
   formals.forEach(function(formal) {
-    if (formal.name === 'places') {
-      accordion.append($('<select><option value="270">3 places</option><option value="360">4 places</option></select>').change(updateQuery));
-    } else {
-      accordion.append($('<div>'+formal.name+'</div>'));
-    }
+    var html_fn = chooserToFilterHtml[formal.ui] || function() {return '<div>'+formal.name+'</div>';};
+    accordion.append($(html_fn(move)).change(updateQuery));
   });
   updateQuery();
 }
@@ -212,7 +217,7 @@ function buildFigureQuery(figure_filter) {
     var formals = isMove(move) ? parameters(move) : [];
     formals.forEach(function(formal, i) {
       // TODO: make this actually use choosers and not suck
-      if (formal.name === 'places') {
+      if (formal.ui === chooser_places) {
         var degrees = figure_filter.children('.figure-filter-accordion').children('select').val();
         a.push(degrees);
       } else {
@@ -222,7 +227,6 @@ function buildFigureQuery(figure_filter) {
     return a;
   } else {
     var kids = figure_filter.children('.figure-filter').get();
-    if (!Array.prototype.map) { throw "I was expecting Array.map to be defined"; }
     var filter = kids.map(buildFigureQuery);
     filter.unshift(op);
     return filter;

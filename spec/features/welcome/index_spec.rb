@@ -202,7 +202,6 @@ describe 'Welcome page', js: true do
         end
 
         it "another subfilter has a working remove button" do
-          puts 'this is the hot spec' # if they don't press '...' then don't include those params at all
           select('circle')
           click_button('add and')   # adds a '*'
           expect(page).to have_css('.figure-filter > button.figure-filter-remove', count: 2)
@@ -294,6 +293,20 @@ describe 'Welcome page', js: true do
           expect(page).to have_content('The Rendevouz') # has circle left 3 & 4 places
           expect(page).to_not have_content('Box the Gnat Contra') # no circles
           expect(page).to_not have_content('Call Me') # has circle left 3 places
+        end
+
+        it 'circle has an angle select box with the right options' do
+          select('circle')
+          click_button('...')
+          angles = JSLibFigure.angles_for_move('circle')
+          too_small_angle = angles.min - 90
+          too_big_angle = angles.max + 90
+          expect(page).to_not have_css("#figure-filter-root select option", text: JSLibFigure.degrees_to_words(too_small_angle, 'circle'))
+          expect(page).to_not have_css("#figure-filter-root select option", text: JSLibFigure.degrees_to_words(too_big_angle, 'circle'))
+          angles.each do |angle|
+            expect(page).to have_css("#figure-filter-root select option[value='#{angle}']", text: JSLibFigure.degrees_to_words(angle, 'circle'))
+          end
+          expect(page).to have_css("#figure-filter-root .figure-filter-accordion select option[value='*']")
         end
       end
     end

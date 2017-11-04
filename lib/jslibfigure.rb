@@ -42,6 +42,18 @@ module JSLibFigure
     move_string ? self.eval("teachingName(#{move_string.inspect})") : "empty figure"
   end
 
+  def self.angles_for_move(move_string)
+    self.eval("anglesForMove(#{move_string.inspect})")
+  end
+
+  def self.degrees_to_words(degrees, optional_move=nil)
+    if optional_move
+      self.eval("degreesToWords(#{degrees}, #{optional_move.inspect})")
+    else
+      self.eval("degreesToWords(#{degrees})")
+    end
+  end
+
   def self.formal_parameters(move_string)
     self.eval("parameters(#{move_string.inspect})")
   end

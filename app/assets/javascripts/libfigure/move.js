@@ -56,11 +56,14 @@ var degrees2places = { 90: "1 place",
                       900: "10 places"};
 
 function degreesToWords (degrees,optional_move) {
-    if (moveCaresAboutRotations(optional_move) && degrees2rotations[degrees]) 
-        return degrees2rotations[degrees];
-    else if (moveCaresAboutPlaces(optional_move) && degrees2places[degrees]) 
-        return degrees2places[degrees];
-    return degrees.toString();
+  if (optional_move) {
+    if (moveCaresAboutRotations(optional_move) && degrees2rotations[degrees]) {
+      return degrees2rotations[degrees];
+    } else if (moveCaresAboutPlaces(optional_move) && degrees2places[degrees]) {
+      return degrees2places[degrees];
+    }
+  }
+  return degrees.toString() + ' degrees';
 }
 
 function degreesToRotations(degrees) {

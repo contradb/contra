@@ -12,6 +12,7 @@
 // Choosers are referenced by global variables, e.g. chooser_boolean evaluates to a chooser object. 
 // Choosers can be compared with == in this file and in angular controller scopey thing.
 // They are basically a big enum with all the functionality in a giant case statement in dances/_form.erb
+// TODO: update this comment with further information about how choosers integrate with filters
 
 var defined_choosers = {};
 
@@ -23,7 +24,7 @@ function defineChooser(name){
   eval(name+"='"+name+"'");
 }
 function setChoosers(hash){
-  $.each(defined_choosers,function(k,v){hash[k]=v});
+  $.each(defined_choosers,function(k,v) {hash[k]=v;});
 }
 
 defineChooser("chooser_boolean");
