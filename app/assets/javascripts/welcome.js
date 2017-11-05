@@ -166,9 +166,10 @@ function makeFigureFilterAccordion(filter) {
 
 var chooserToFilterHtml = {};
 chooserToFilterHtml[chooser_places] = function(move) {
-  var options = anglesForMove(move).map(function(angle) {
-    return '<option value="'+angle.toString()+'">'+degreesToWords(angle,move)+'</option>';
-  });
+  var options = ['<option value="*">*</option>'].concat(
+    anglesForMove(move).map(function(angle) {
+      return '<option value="'+angle.toString()+'">'+degreesToWords(angle,move)+'</option>';
+    }));
   return '<select class="form-control">'+options.join()+'</select>';
 };
 
