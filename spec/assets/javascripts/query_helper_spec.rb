@@ -8,7 +8,8 @@ RSpec.describe 'query-helper' do
      [['figure', '*'], 'no', 'no figure'],
      [['figure', 'swing'], 'a', 'a swing'],
      [['figure', 'allemande'], 'a', 'an allemande'],
-     [['figure', 'circle', true, 360, 8], 'a' 'a circle 4 places'], # wip syntax will change
+     [['figure', 'circle'], 'a', /a circle/],
+     [['figure', 'circle', true, 360, 8], 'a', 'a circle 4 places'], # wip syntax will change
      [['no', ['figure', 'allemande']], 'a', 'no allemande'],
      [['no', ['or', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no allemande and no swing'],
      [['no', ['and', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no allemande or no swing'],
