@@ -294,11 +294,25 @@ describe 'Welcome page', js: true do
           expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","circle","*","360","*"]')
         end
 
-        it "circle * places finds 'The Rendevouz' and 'Call Me'" do
+        it "circle right finds only a dance with circle right" do
+          right = FactoryGirl.create(:dance_with_a_circle_right)
           dances
           select('circle')
           click_button('...')
-          select('*')
+          select('right')
+
+          expect(page).to_not have_content('The Rendevouz') # has circle left 3 & 4 places
+          expect(page).to_not have_content('Box the Gnat Contra') # no circles
+          expect(page).to_not have_content('Call Me') # has circle left 3 places
+          expect(page).to have_content(right.title) # has circle right
+          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","circle","false","*","*"]')
+        end
+
+        it "circle to the *, * places finds 'The Rendevouz' and 'Call Me'" do
+          dances
+          select('circle')
+          click_button('...')
+          first('.figure-filter-accordion select').select('*')
 
           expect(page).to have_content('The Rendevouz') # has circle left 3 & 4 places
           expect(page).to_not have_content('Box the Gnat Contra') # no circles
@@ -318,6 +332,18 @@ describe 'Welcome page', js: true do
             expect(page).to have_css("#figure-filter-root select option[value='#{angle}']", text: JSLibFigure.degrees_to_words(angle, 'circle'))
           end
           expect(page).to have_css("#figure-filter-root .figure-filter-accordion select option[value='*']")
+        end
+
+        it "swing for 8 doesn't find 'The Rendevouz', which features only long swings" do
+          dances
+          select('swing')
+          click_button('...')
+          select('8', match: :prefer_exact) # '8' is in the menu twice, and also in 'figure 8'
+
+          expect(page).to_not have_content('The Rendevouz') # has circle left 3 & 4 places
+          expect(page).to have_content('Box the Gnat Contra') # no circles
+          expect(page).to have_content('Call Me') # has circle left 3 places
+          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","swing","*","*","8"]')
         end
       end
     end

@@ -10,22 +10,28 @@
 // 
 
 function stringParamBalance (value) {
-  return value ? "balance & " : "";
+  if (value === '*') {
+    return 'optional balance & ';
+  } else if (value) {
+    return 'balance & ';
+  } else return '';
 }
 var param_balance_true  = {name: "bal", value: true,  ui: chooser_boolean, string: stringParamBalance};
 var param_balance_false = {name: "bal", value: false, ui: chooser_boolean, string: stringParamBalance};
 
 function stringParamHalfSashay (value) {
-  return value ? "with a half sashay" : "";
+  if (value === '*') {
+    return 'maybe with a half sashay';
+  } else if (value) {
+    return 'with a half sashay';
+  } else return '';
 }
 // param_half_sashay_true  = {name: "½sash", value: true,  ui: chooser_boolean, string: stringParamHalfSashay} not used
 var param_half_sashay_false = {name: "½sash", value: false, ui: chooser_boolean, string: stringParamHalfSashay};
 
 function stringParamBeatsNotN (n) {
-  return function (value) {
-    return value && (value != n) ? "for "+value : "";
-  }
-}
+  return function (value) {return value && (value != n) ? "for "+value : "";}; 
+} // TODO working here down to integrate '*'
 var param_beats   = {name: "beats",           ui: chooser_beats, string: stringParamBeatsNotN(-100)}; // always display beats
 var param_beats_0 = {name: "beats", value: 0, ui: chooser_beats, string: stringParamBeatsNotN(0)};
 var param_beats_2 = {name: "beats", value: 2, ui: chooser_beats, string: stringParamBeatsNotN(2)};
@@ -218,6 +224,8 @@ function stringParamHalfOrFullNotN(default_value) {
       return 'half';
     } else if (1.0 === value) {
       return 'full';
+    } else if ('*' === value) {
+      return '*';
     } else {
       throw_up('bad half_or_full parameter value: '+value);
     }

@@ -31,6 +31,14 @@ FactoryGirl.define do
     figures_json '[{"parameter_values":["neighbors",true,false,8],"move":"Rory O\'Moore"}]'
   end
 
+  factory :dance_with_a_circle_right, class: Dance do
+    title      'Just Circle Right'
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json '[{"parameter_values":[false,270,8],"move":"circle"}]'
+  end
+
   factory :box_the_gnat_contra, class: Dance do
     title      'Box the Gnat Contra'
     user { FactoryGirl.create(:user) }

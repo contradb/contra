@@ -161,15 +161,30 @@ function makeFigureFilterEllipsisButton(filter) {
 }
 
 function makeFigureFilterAccordion(filter) {
-  return $("<div class='figure-filter-accordion'>oh the parameters you'll filter</div>").hide();
+  return $("<div class='figure-filter-accordion'></div>").hide();
 }
 
 var chooserToFilterHtml = {};
+
 chooserToFilterHtml[chooser_places] = function(move) {
   var options = ['<option value="*">*</option>'].concat(
     anglesForMove(move).map(function(angle) {
       return '<option value="'+angle.toString()+'">'+degreesToWords(angle,move)+'</option>';
     }));
+  return '<select class="form-control">'+options.join()+'</select>';
+};
+
+chooserToFilterHtml[chooser_left_right_spin] = function(move) {
+  var options = ['<option value="*">*</option>',
+                 '<option value="true">left</option>',
+                 '<option value="false">right</option>'];
+  return '<select class="form-control">'+options.join()+'</select>';
+};
+
+chooserToFilterHtml[chooser_beats] = function(move) {
+  var options = ['*',8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64].map(function(b) {
+    return '<option value="'+b+'">'+b+'</option>';
+  });
   return '<select class="form-control">'+options.join()+'</select>';
 };
 
@@ -217,10 +232,17 @@ function buildFigureQuery(figure_filter) {
     if (accordionIsHidden(figure_filter)) { return a; }
     var formals = isMove(move) ? parameters(move) : [];
     formals.forEach(function(formal, i) {
-      // TODO: make this actually use choosers and not suck
-      if (formal.ui === chooser_places) {
-        var degrees = figure_filter.children('.figure-filter-accordion').children('select').val();
+      var chooser = $(figure_filter.children('.figure-filter-accordion').children()[i]);
+      // TODO: add more choosers
+      if (chooser_places === formal.ui) {
+        var degrees = chooser.val();
         a.push(degrees);
+      } else if (chooser_left_right_spin === formal.ui) {
+        var left = chooser.val();
+        a.push(left);
+      } else if (chooser_beats === formal.ui) {
+        var beats = chooser.val();
+        a.push(beats);
       } else {
         a.push('*');
       }
