@@ -9,7 +9,7 @@ RSpec.describe 'query-helper' do
      [['figure', 'swing'], 'a', 'a swing'],
      [['figure', 'allemande'], 'a', 'an allemande'],
      [['figure', 'circle'], 'a', /a circle/],
-     [['figure', 'circle', true, 360, 8], 'a', 'a circle 4 places'], # wip syntax will change
+     [['figure', 'circle', true, 360, 8], 'a', 'a circle left 4 places'],
      [['no', ['figure', 'allemande']], 'a', 'no allemande'],
      [['no', ['or', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no allemande and no swing'],
      [['no', ['and', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no allemande or no swing'],
@@ -43,6 +43,9 @@ RSpec.describe 'query-helper' do
 
   def new_context
     context = MiniRacer::Context.new
+    JSLibFigure::JSLIBFIGURE_FILES.each do |file|
+      context.load(Rails.root.join('app','assets','javascripts','libfigure',file))
+    end
     context.load(Rails.root.join('app','assets','javascripts','query_helper.js'))
     context
   end

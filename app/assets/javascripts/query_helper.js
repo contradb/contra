@@ -21,13 +21,18 @@ var figureSentenceDispatchTable = {
 };
 
 function sentenceForFigure(query, article) {
-  var fig = query[1];
-  if (fig === '*') {
+  var move = query[1];
+  if (move === '*') {
     return (article === 'a') ? 'any figure' : (article +' figure');
-  } else if (article === 'a') {
-    return ('aeiou'.indexOf(fig[0]) >= 0) ? ('an ' + fig) : ('a ' + fig); // 'an allemande'
   } else {
-    return article + ' ' + fig;
+    var params = query.slice(2);
+    var fig = {move: move, parameter_values: params};
+    var fig_text = parameters(move).length === params.length ? figure_html_readonly(fig) : move;
+    if (article === 'a') {
+      return ('aeiou'.indexOf(fig_text[0]) >= 0) ? ('an ' + fig_text) : ('a ' + fig_text); // 'an allemande'
+    } else {
+      return article + ' ' + fig_text;
+    }
   }
 }
 
