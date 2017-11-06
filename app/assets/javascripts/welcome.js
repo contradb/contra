@@ -188,6 +188,22 @@ chooserToFilterHtml[chooser_beats] = function(move) {
   return '<select class="form-control">'+options.join()+'</select>';
 };
 
+chooserToFilterHtml[chooser_boolean] = function(move) {
+  var name = generateUniqueNameForRadio();
+  var radios = ["<label><input type='radio' name='"+name+"' value='*' checked />*</label>",
+                "<label><input type='radio' name='"+name+"' value='true'/>yes</label>",
+                "<label><input type='radio' name='"+name+"' value='false'/>no</label>"];
+  return "<div>"+radios.join()+"</div>";
+};
+
+var _uniqueNameForRadioCounter = 9000;
+function generateUniqueNameForRadio() {
+  return 'uniqueNameForRadio' + _uniqueNameForRadioCounter++;
+}
+
+// TODO: add more choosers
+
+
 function figureFilterMoveChange() {
   var figureFilterMove = $(this);
   var accordion = figureFilterMove.siblings('.figure-filter-accordion');
@@ -227,6 +243,7 @@ function buildFigureQuery(figure_filter) {
   figure_filter = $(figure_filter);
   var op = figure_filter.children('.figure-filter-op').val();
   if (op === 'figure') {
+    // TODO: this then-clause is getting big - relo to it's own function?
     var move = figure_filter.children('.figure-filter-move').val();
     var a = [op, move];
     if (accordionIsHidden(figure_filter)) { return a; }
@@ -243,6 +260,11 @@ function buildFigureQuery(figure_filter) {
       } else if (chooser_beats === formal.ui) {
         var beats = chooser.val();
         a.push(beats);
+      } else if (chooser_boolean === formal.ui) {
+        // $('#figure-filter-root .figure-filter-accordion input[type="radio"]:checked').val()
+        var boolish = chooser.find('input:checked').val();
+        console.log('boolish = '+boolish+' '+i);
+        a.push(boolish);
       } else {
         a.push('*');
       }

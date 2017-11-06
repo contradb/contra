@@ -345,6 +345,18 @@ describe 'Welcome page', js: true do
           expect(page).to have_content('Call Me') # has circle left 3 places
           expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","swing","*","*","8"]')
         end
+
+        it "non-balance & swing doesn't find 'The Rendevouz', which features only balance & swings" do
+          dances
+          select('swing')
+          click_button('...')
+          choose('no')
+
+          expect(page).to_not have_content('The Rendevouz') # has circle left 3 & 4 places
+          expect(page).to have_content('Box the Gnat Contra') # no circles
+          expect(page).to have_content('Call Me') # has circle left 3 places
+          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","swing","*","false","*"]')
+        end
       end
     end
   end
