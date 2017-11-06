@@ -42,7 +42,9 @@ var degrees2rotations = { 90: "¼",
                          630: "1¾",
                          720: "twice",
                          810: "2¼",
-                         900: "2½"};
+                         900: "2½",
+                         '*': "*"
+                        };
 
 var degrees2places = { 90: "1 place", 
                       180: "2 places", 
@@ -53,7 +55,9 @@ var degrees2places = { 90: "1 place",
                       630: "7 places",
                       720: "8 places",
                       810: "9 places",
-                      900: "10 places"};
+                      900: "10 places",
+                      '*': "* places"
+                     };
 
 function degreesToWords (degrees,optional_move) {
   if (optional_move) {

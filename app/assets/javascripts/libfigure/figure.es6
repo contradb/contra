@@ -22,10 +22,11 @@ defineFigure("allemande", [param_subject_pairz,
 function allemande_orbit_view(move,pvs) {
   var [ who, dir, inner_angle, outer_angle, beats] = pvs;
   var [swho,sdir,sinner_angle,souter_angle,sbeats] = parameter_strings(move, pvs);
+  var sopposite_dir = dir ? (dir === '*' ? '*' : "counter clockwise") : "clockwise";
   return words(swho, "allemande", sdir,
                sinner_angle, "around",
                "while the", who ? invertPair(who) : "others", "orbit",
-               dir ? "counter clockwise" : "clockwise",
+               sopposite_dir,
                souter_angle, "around", sbeats);
 }
 
@@ -194,8 +195,9 @@ function cross_trails_view(move,pvs) {
   var [ first_who,  first_dir,  first_shoulder,  second_who,  beats] = pvs;
   var [sfirst_who,    _ignore, sfirst_shoulder, ssecond_who, sbeats] = parameter_strings(move, pvs);
   var sfirst_dir = first_dir ? (first_dir + ' the set') :  '____';
-  var ssecond_dir = {across: 'along the set', along: 'across the set'}[first_dir] || '____';
-  var ssecond_shoulder = stringParamShoulder(!first_shoulder) + (sbeats.length ? ',' : '');
+  var ssecond_dir = {across: 'along the set', along: 'across the set', '*':'* the set'}[first_dir] || '____';
+  var second_shoulder = '*'===first_shoulder ? '*' : !first_shoulder;
+  var ssecond_shoulder = stringParamShoulder(second_shoulder) + (sbeats.length ? ',' : '');
   return words(move, '-',  sfirst_who, sfirst_dir, sfirst_shoulder+',', ssecond_who, ssecond_dir, ssecond_shoulder, sbeats);
 }
 
@@ -214,7 +216,7 @@ defineFigure("cross trails",
 function custom_view(move,pvs) {
   // remove the word 'custom'
   var [scustom,sbeats] = parameter_strings(move, pvs);
-  var tcustom = scustom.trim()==='' ? 'custom' : scustom;
+  var tcustom = (scustom.trim()==='' || scustom==='*') ? 'custom' : scustom;
   return words(tcustom,sbeats);
 }
 
@@ -346,7 +348,8 @@ function give_and_take_view(move, pvs) {
   var [swho,  swhom, sgive, sbeats] = parameter_strings(move, pvs);
   var default_beats = give ? 8 : 4;
   var final_sbeats = default_beats === beats ? '' : words('for', beats);
-  return words(swho, give ? move : 'take', swhom, final_sbeats);
+  var smove = give ? (give==='*' ? 'give? & take' : move) : 'take';
+  return words(swho, smove, swhom, final_sbeats);
 }
 
 defineFigure("give & take",
@@ -389,7 +392,7 @@ defineRelatedMove2Way('gyre meltdown', 'swing');
 function gyre_star_view(move, pvs) {
   var [ who,  turn,  places,  beats] = pvs;
   var [swho, sturn, splaces, sbeats] = parameter_strings(move, pvs);
-  var shand = turn ? 'left' : 'right';
+  var shand = turn ? ('*'===turn ? '*': 'left') : 'right';
   return words(move, sturn, splaces, 'with', swho, 'putting their', shand, 'hands in and backing up', sbeats);
 }
 
@@ -453,7 +456,8 @@ function long_lines_view(move,pvs) {
   var [sback, sbeats] = parameter_strings(move, pvs);
   var expected_beats = back ? 8 : 4;
   var tbeats = (beats === expected_beats) ? '' : ('for '+beats);
-  return words(move, back ? 'forward & back' : 'forward', tbeats);
+  var directions = back ? (back==='*' ? 'forward & maybe back' : 'forward & back') : 'forward';
+  return words(move, directions, tbeats);
 }
 
 defineFigure("long lines",
@@ -502,7 +506,7 @@ defineRelatedMove2Way('pass by', 'half hey');
 function pass_through_view(move,pvs) {
   var [ dir,  spin,  beats] = pvs;
   var [sdir, sspin, sbeats] = parameter_strings(move, pvs);
-  var left_shoulder_maybe = spin ? '' : sspin;
+  var left_shoulder_maybe = (spin && spin !== '*') ? '' : sspin;
   return words(move, left_shoulder_maybe, sdir, sbeats);
 }
 
@@ -534,7 +538,16 @@ defineFigure("petronella", [param_balance_true, param_beats_8], {view: petronell
 function poussette_view(move,pvs) {
   var [ half_or_full,  who,  whom,  turn, beats] = pvs;
   var [shalf_or_full, swho, swhom, sturn, sbeats] = parameter_strings(move, pvs);
-  var tturn = turn === undefined ? '____' : (turn ? 'back then left' : 'back then right');
+  var tturn;
+  if (undefined === turn) {
+    tturn = '____';
+  } else if ('*' === turn) {
+    tturn = 'back then *';
+  } else if (turn) {
+    tturn = 'back then left';
+  } else {
+    tturn = 'back then right';
+  }
   return words(shalf_or_full, move, '-', swho, 'pull', swhom, tturn, sbeats);
 }
 
@@ -552,7 +565,7 @@ defineFigure("poussette",
 function promenade_view(move,pvs) {
   var [ subject,  dir, spin,  beats] = pvs;
   var [ssubject, sdir, sspin, sbeats] = parameter_strings(move, pvs);
-  var tspin = spin ? 'on the left' : (dir === 'along' ? 'on the right' : '');
+  var tspin = spin ? (spin==='*' ? 'on the *' : 'on the left') : (dir === 'along' ? 'on the right' : '');
   return words(ssubject, move, sdir, tspin, sbeats);
 }
 
@@ -724,8 +737,8 @@ function square_through_expected_beats(pvs) {
   const angle_idx = 4;
 
   const angle = pvs[angle_idx];
-  const places = angle / 90;
-  if ((places !== 2) && (places !== 3) && (places !== 4)) {
+  const places = '*'===angle ? '*' : (angle / 90);
+  if ([2,3,4,'*'].indexOf(places) < 0) {
     throw_up('unexpected number of places to square_through_expected_beats');
   }
   const balance_beats = (places+1 >> 1) * 4 * pvs[balance_idx];
@@ -737,19 +750,19 @@ function square_through_expected_beats(pvs) {
 function square_through_view(move,pvs) {
   var [ subject1,  subject2,  bal,  hand,  angle,  beats] = pvs;
   var [ssubject1, ssubject2, sbal, shand, sangle, sbeats] = parameter_strings(move, pvs);
-  var shand2 = hand ? 'left' : 'right';
-  var places = angle / 90;
+  var shand2 = hand ? ('*'===hand ? '*' : 'left') : 'right';
+  var places = '*'===angle ? '*' : (angle / 90);
   var beats_unexpected = beats !== square_through_expected_beats(pvs);
   var beats_not_divisible_by_four = 0 !== beats % 4;
   var tbeats = (beats_unexpected || beats_not_divisible_by_four) && sbeats;
-  if ((places !== 2) && (places !== 3) && (places !== 4)) {
-    throw_up('unexpected number of places to square_through_view');
-  }
-  var placewords = [,,'two', 'three', 'four'][places];
-  if (places===3) {
+  var placewords = {2: 'two', 3: 'three', 4: 'four', '*': '*'}[places] ||
+        throw_up('unexpected number of places to square_through_view');
+
+  if (3===places) {
     return words(move, placewords, tbeats, '-', ssubject1, sbal, 'pull by', shand, comma, 'then', ssubject2, 'pull by', shand2, comma, 'then', ssubject1, sbal, 'pull by', shand);
   } else {
-    return words(move, placewords, tbeats, '-', ssubject1, sbal, 'pull by', shand, comma, 'then', ssubject2, 'pull by', shand2, (places===4) && comma, (places===4) && 'then repeat');
+    var yadda_text = {2: false, 4: 'then repeat', '*': 'yadda yadda yadda'}[places];
+    return words(move, placewords, tbeats, '-', ssubject1, sbal, 'pull by', shand, comma, 'then', ssubject2, 'pull by', shand2, yadda_text && comma, yadda_text);
   }
 }
 
@@ -838,7 +851,8 @@ function zig_zag_view(move,pvs) {
   var [sspin, sender, sbeats] = parameter_strings(move, pvs);
   var [swho,sbalance,sbeats] = parameter_strings(move, pvs);
   var comma_maybe = (ender === 'allemande') && comma;
-  return words(move, sspin, 'then', spin ? 'right' : 'left', comma_maybe, sender, (sbeats !== '') && comma_maybe, sbeats);
+  var return_sspin = spin ? ('*'===spin ? '*' : 'right') : 'left';
+  return words(move, sspin, 'then', return_sspin, comma_maybe, sender, (sbeats !== '') && comma_maybe, sbeats);
 }
 
 defineFigure("zig zag",

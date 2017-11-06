@@ -31,7 +31,7 @@ var param_half_sashay_false = {name: "½sash", value: false, ui: chooser_boolean
 
 function stringParamBeatsNotN (n) {
   return function (value) {return value && (value != n) ? "for "+value : "";}; 
-} // TODO working here down to integrate '*'
+}
 var param_beats   = {name: "beats",           ui: chooser_beats, string: stringParamBeatsNotN(-100)}; // always display beats
 var param_beats_0 = {name: "beats", value: 0, ui: chooser_beats, string: stringParamBeatsNotN(0)};
 var param_beats_2 = {name: "beats", value: 2, ui: chooser_beats, string: stringParamBeatsNotN(2)};
@@ -41,10 +41,10 @@ var param_beats_8 = {name: "beats", value: 8, ui: chooser_beats, string: stringP
 var param_beats_12 = {name: "beats", value: 12, ui: chooser_beats, string: stringParamBeatsNotN(12)};
 var param_beats_16 = {name: "beats", value: 16, ui: chooser_beats, string: stringParamBeatsNotN(16)};
 
-function stringParamClock     (value) {return value ? "clockwise" : "counter-clockwise";}
-function stringParamLeftRight (value) {return value ? "left" : "right";}
-function stringParamHand      (value) {return value ? "right" : "left";}
-function stringParamShoulder  (value) {return value ? "right shoulders" : "left shoulders";}
+function stringParamClock     (value) {return value ? ('*'===value ? '*' : "clockwise") : "counter-clockwise";}
+function stringParamLeftRight (value) {return value ? ('*'===value ? '*' : "left") : "right";}
+function stringParamHand      (value) {return value ? ('*'===value ? '* hand' : "right") : "left";}
+function stringParamShoulder  (value) {return value ? ('*'===value ? '* shoulders' : "right shoulders") : "left shoulders";}
 
 // spin = clockwise | ccw | undefined
 var param_spin                   = {name: "turn",               ui: chooser_spin, string: stringParamClock};
@@ -58,11 +58,6 @@ var param_left_hand_spin         = {name: "hand", value: false, ui: chooser_righ
 var param_xshoulder_spin         = {name: "shoulder",               ui: chooser_right_left_shoulder, string: stringParamShoulder};
 var param_right_shoulder_spin    = {name: "shoulder", value: true,  ui: chooser_right_left_shoulder, string: stringParamShoulder};
 var param_left_shoulder_spin     = {name: "shoulder", value: false, ui: chooser_right_left_shoulder, string: stringParamShoulder};
-
-
-function stringParamSide (value) {
-  return value ? "passing left sides" : "passing right sides";
-}
 
 function stringParamDegrees (value,move) { 
   // this second parameter should go away, it should be handled in figure.es6,
@@ -124,7 +119,11 @@ var param_custom_figure = {name: "custom", value: "", ui: chooser_text};
 
 var wristGrips = ['', 'wrist grip', 'hands across'];
 
-var param_star_grip = {name: "grip", value: wristGrips[0], ui: chooser_star_grip};
+function stringParamStarGrip (value) {
+  return ('*' === value) ? 'any grip' : value;
+}
+
+var param_star_grip = {name: "grip", value: wristGrips[0], ui: chooser_star_grip, string: stringParamStarGrip};
 
 function stringParamFacing (value) {
   if (value) {
@@ -138,7 +137,13 @@ var param_facing         = {name: "facing", ui: chooser_facing};
 var param_facing_forward = {name: "facing", ui: chooser_facing, value: "forward", string: stringParamFacing};
 
 function stringParamSlide (value) {
-  return value ? 'left' : 'right';
+  if (value === '*') {
+    return '*';
+  } else if (value) {
+    return 'left';
+  } else {
+    return 'right';
+  }
 }
 
 var param_slide       = {name: "slide",              ui: chooser_slide, string: stringParamSlide};
@@ -150,7 +155,7 @@ function stringParamSetDirection(value) {
     return 'across the set';
   } else if (value === 'along') {
     return 'along the set';
-  } else if (value === 'right diagonal' || value === 'left diagonal' || value === undefined) {
+  } else if (['right diagonal', 'left diagonal','*',undefined].indexOf(value) >= 0) {
     return value;
   } else {
     throw_up('unexpected set direction value: '+ value);
@@ -160,7 +165,7 @@ function stringParamSetDirection(value) {
 function stringParamSetDirectionSilencingDefault(value_default) {
   return function(value) {
     return (value === value_default) ? '' : stringParamSetDirection(value);
-  }
+  };
 }
 
 var param_set_direction        = {name: "dir", ui: chooser_set_direction,                  string: stringParamSetDirection};
@@ -172,6 +177,7 @@ function stringParamSliceReturn (value) {
   if      ('straight' === value) { return 'and straight back'; }
   else if ('diagonal' === value) { return 'and diagonal back'; }
   else if ('none'     === value) { return ''; }
+  else if ('*'        === value) { return 'and *'; }
   else { throw_up('bad slice return value: '+value); }
 }
 
@@ -180,16 +186,18 @@ var param_slice_return = {name: "slice return", ui: chooser_slice_return, value:
 function stringParamSliceIncrement (value) {
   if      ('couple' === value) { return ''; }
   else if ('dancer' === value) { return 'one dancer'; }
+  else if ('*'       === value) { return 'one *'; }
   else { throw_up('bad slice increment: '+value); }
 }
 
 var param_slice_increment = {name: "slice increment", ui: chooser_slice_increment, value: 'couple', string: stringParamSliceIncrement};
 
 function stringParamDownTheHallEnder (value) {
-  if      ('' === value) { return ''; }
+  if      ('' === value)             { return ''; }
   else if ('turn-couples' === value) { return 'turn as couples'; }
-  else if ('turn-alone' === value) { return 'turn alone'; }
-  else if ('circle' === value) { return 'bend into a ring'; }
+  else if ('turn-alone'   === value) { return 'turn alone'; }
+  else if ('circle'       === value) { return 'bend into a ring'; }
+  else if ('*'            === value) { return 'end however'; }
   else { throw_up('bad down the hall ender: '+value); }
 }
 
@@ -198,9 +206,15 @@ var param_down_the_hall_ender_circle       = {name: "ender", ui: chooser_down_th
 var param_down_the_hall_ender_turn_couples = {name: "ender", ui: chooser_down_the_hall_ender, value: 'turn-couples', string: stringParamDownTheHallEnder};
 
 function stringParamZigZagEnder (value) {
-  if ('ring' === value) { return 'into a ring'; }
-  else if ('allemande' === value) { return 'trailing two catching hands'; }
-  else { throw_up('bad zig zag ender: '+value); }
+  if ('ring' === value) {
+    return 'into a ring';
+  } else if ('allemande' === value) {
+    return 'trailing two catching hands';
+  } else if ('*' === value) {
+    return 'ending however';
+  }  else {
+    throw_up('bad zig zag ender: '+value);
+  }
 }
 
 var param_zig_zag_ender_ring = {name: "ender", ui: chooser_zig_zag_ender, value: 'ring', string: stringParamZigZagEnder};
@@ -208,7 +222,7 @@ var param_zig_zag_ender_ring = {name: "ender", ui: chooser_zig_zag_ender, value:
 var param_go_back = {name: "go", ui: chooser_go_back, value: true};
 var param_give = {name: "give", ui: chooser_give, value: true};
 
-var _stringParamGateFace = {up: 'up the set', down: 'down the set', 'in': 'into the set', out: 'out of the set'};
+var _stringParamGateFace = {up: 'up the set', down: 'down the set', 'in': 'into the set', out: 'out of the set', '*': 'any direction'};
 
 function stringParamGateFace (value) {
   return _stringParamGateFace[value];
