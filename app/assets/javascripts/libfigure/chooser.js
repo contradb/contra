@@ -46,7 +46,7 @@ defineChooser("chooser_role");     // ladles or gentlespoons
 defineChooser("chooser_hetero");   // partners or neighbors or shadows
 defineChooser("chooser_text");
 defineChooser("chooser_star_grip");
-defineChooser("chooser_facing");
+defineChooser("chooser_marching_direction");
 defineChooser("chooser_slide");
 defineChooser("chooser_set_direction");
 defineChooser("chooser_set_direction_grid");

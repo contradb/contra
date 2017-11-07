@@ -124,12 +124,12 @@ function stringParamFacing (value) {
   if (value) {
     return (value === 'forward') ? '' : value;
   } else {
-    return "facing ?";
+    return "facing ____";
   }
 }
 
-var param_facing         = {name: "facing", ui: chooser_facing};
-var param_facing_forward = {name: "facing", ui: chooser_facing, value: "forward", string: stringParamFacing};
+var param_marching_direction = {name: "facing", ui: chooser_marching_direction};
+var param_marching_forward   = {name: "facing", ui: chooser_marching_direction, value: "forward", string: stringParamFacing};
 
 function stringParamSlide (value) {
   return value ? 'left' : 'right';
