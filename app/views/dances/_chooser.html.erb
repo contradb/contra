@@ -76,6 +76,19 @@
                     <option value="second corners">second corners</option>
                   </select>
                 </div>
+                <div ng-if="p.ui == chooser_pair_or_everyone">
+                  <select ng-model="figure.parameter_values[$index]"
+                          ng-change="user_changed_parameter(figure,$index)"
+                          class='form-control'>
+                    <option value="everyone">everyone</option>
+                    <option value="gentlespoons">gentlespoons</option>
+                    <option value="ladles">ladles</option>
+                    <option value="ones">ones</option>
+                    <option value="twos">twos</option>
+                    <option value="first corners">first corners</option>
+                    <option value="second corners">second corners</option>
+                  </select>
+                </div>
                 <div ng-if="p.ui == chooser_pairc_or_everyone">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="user_changed_parameter(figure,$index)"

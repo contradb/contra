@@ -830,6 +830,20 @@ defineFigure("swing",
              {change: swing_change, view: swing_view});
 
 ///////////////////////////////////////////////
+// TURN ALONE                                //
+///////////////////////////////////////////////
+
+function turn_alone_view(move,pvs) {
+  var [who,custom,beats] = pvs;
+  var [swho,scustom,sbeats] = parameter_strings(move, pvs);
+  return words(('everyone' !== who) && who, move, scustom, sbeats);
+}
+
+defineFigure("turn alone",
+             [param_subject_pair_or_everyone, param_custom_figure, param_beats_4],
+             {view: turn_alone_view});
+
+///////////////////////////////////////////////
 // ZIG ZAG                                    //
 ////////////////////////////////////////////////
 

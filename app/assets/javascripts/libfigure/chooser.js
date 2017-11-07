@@ -36,7 +36,8 @@ defineChooser("chooser_revolutions");
 defineChooser("chooser_places");
 defineChooser("chooser_dancers");  // some collection of dancers
 defineChooser("chooser_pair");     // 1 pair of dancers
-defineChooser("chooser_pairc_or_everyone");
+defineChooser("chooser_pair_or_everyone"); // 1 pair or everyone
+defineChooser("chooser_pairc_or_everyone"); // 1 pair or centers or everyone
 defineChooser("chooser_pairz");    // 1-2 pairs of dancers
 defineChooser("chooser_pairs");    // 2 pairs of dancers
 defineChooser("chooser_pairs_or_ones_or_twos");
