@@ -180,7 +180,7 @@
                     <option ng-repeat="grip in wristGrips" ng-value='grip'>{{grip}}</option>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_marching_direction">
+                <div ng-if="p.ui == chooser_march_facing">
                   <label class='radio-tweaks figure-multiline-radio'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'forward'" ng-change="user_changed_parameter(figure,$index)"/> forward</label>
                   <label class='radio-tweaks figure-multiline-radio'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'forward then backward'" ng-change="user_changed_parameter(figure,$index)"/> forward then backward</label>
                   <label class='radio-tweaks figure-multiline-radio'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'backward'" ng-change="user_changed_parameter(figure,$index)"/> backward</label>

@@ -120,7 +120,7 @@ var wristGrips = ['', 'wrist grip', 'hands across'];
 
 var param_star_grip = {name: "grip", value: wristGrips[0], ui: chooser_star_grip};
 
-function stringParamFacing (value) {
+function stringParamMarchForward (value) {
   if (value) {
     return (value === 'forward') ? '' : value;
   } else {
@@ -128,8 +128,8 @@ function stringParamFacing (value) {
   }
 }
 
-var param_marching_direction = {name: "facing", ui: chooser_marching_direction};
-var param_marching_forward   = {name: "facing", ui: chooser_marching_direction, value: "forward", string: stringParamFacing};
+var param_march_facing = {name: "facing", ui: chooser_march_facing};
+var param_march_forward = {name: "facing", ui: chooser_march_facing, value: "forward", string: stringParamMarchForward};
 
 function stringParamSlide (value) {
   return value ? 'left' : 'right';
