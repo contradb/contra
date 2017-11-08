@@ -1,7 +1,7 @@
 
 
 function buildFigureSentence(query) {
-  return 'dances with ' + buildFigureSentenceHelper(query, 'a');
+  return 'Showing dances with ' + buildFigureSentenceHelper(query, 'a') + '.';
 }
 
 function buildFigureSentenceHelper(query, article) {
