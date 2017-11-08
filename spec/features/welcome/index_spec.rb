@@ -357,6 +357,14 @@ describe 'Welcome page', js: true do
           expect(page).to have_content('Call Me') # has circle left 3 places
           expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","swing","*","false","*"]')
         end
+
+        it 'labels appear on chooser elements' do
+          select('swing')
+          click_button('...')
+          expect(page).to have_content('bal')
+          expect(page).to have_content('who')
+          expect(page).to have_content('beats')
+        end
       end
     end
   end

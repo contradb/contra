@@ -212,7 +212,11 @@ function figureFilterMoveChange() {
   var formals = isMove(move) ? parameters(move) : [];
   formals.forEach(function(formal) {
     var html_fn = chooserToFilterHtml[formal.ui] || function() {return '<div>'+formal.name+'</div>';};
-    accordion.append($(html_fn(move)).change(updateQuery));
+    var chooser = $(html_fn(move));
+    chooser.change(updateQuery);
+    var label = $('<div>'+ formal.name +' </div>');
+    label.append(chooser);
+    accordion.append(label);
   });
   updateQuery();
 }
@@ -249,7 +253,7 @@ function buildFigureQuery(figure_filter) {
     if (accordionIsHidden(figure_filter)) { return a; }
     var formals = isMove(move) ? parameters(move) : [];
     formals.forEach(function(formal, i) {
-      var chooser = $(figure_filter.children('.figure-filter-accordion').children()[i]);
+      var chooser = $(figure_filter.children('.figure-filter-accordion').children()[i]).children();
       // TODO: add more choosers
       if (chooser_places === formal.ui) {
         var degrees = chooser.val();
@@ -263,7 +267,6 @@ function buildFigureQuery(figure_filter) {
       } else if (chooser_boolean === formal.ui) {
         // $('#figure-filter-root .figure-filter-accordion input[type="radio"]:checked').val()
         var boolish = chooser.find('input:checked').val();
-        console.log('boolish = '+boolish+' '+i);
         a.push(boolish);
       } else {
         a.push('*');
