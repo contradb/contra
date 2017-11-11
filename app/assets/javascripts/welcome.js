@@ -161,7 +161,7 @@ function makeFigureFilterEllipsisButton(filter) {
 }
 
 function makeFigureFilterAccordion(filter) {
-  return $("<div class='figure-filter-accordion'></div>").hide();
+  return $("<table class='figure-filter-accordion'></table>").hide();
 }
 
 var chooserToFilterHtml = {};
@@ -190,10 +190,10 @@ chooserToFilterHtml[chooser_beats] = function(move) {
 
 chooserToFilterHtml[chooser_boolean] = function(move) {
   var name = generateUniqueNameForRadio();
-  var radios = ["<label><input type='radio' name='"+name+"' value='*' checked />*</label>",
-                "<label><input type='radio' name='"+name+"' value='true'/>yes</label>",
-                "<label><input type='radio' name='"+name+"' value='false'/>no</label>"];
-  return "<div class='chooser-argument'>"+radios.join()+"</div>";
+  var radios = ["<label class='radio-inline'><input type='radio' name='"+name+"' value='*' checked />*</label>",
+                "<label class='radio-inline'><input type='radio' name='"+name+"' value='true'/>yes</label>",
+                "<label class='radio-inline'><input type='radio' name='"+name+"' value='false'/>no</label>"];
+  return "<div class='chooser-argument'>"+radios.join('')+"</div>";
 };
 
 var _uniqueNameForRadioCounter = 9000;
@@ -214,8 +214,10 @@ function figureFilterMoveChange() {
     var html_fn = chooserToFilterHtml[formal.ui] || function() {return '<div>'+formal.name+'</div>';};
     var chooser = $(html_fn(move));
     chooser.change(updateQuery);
-    var label = $('<div>'+ formal.name +' </div>');
-    label.append(chooser);
+    var chooser_td = $('<td></td>');
+    chooser_td.append(chooser);
+    var label = $('<tr class="chooser-row"><td class="chooser-label-text">'+ formal.name +'</td></tr>');
+    label.append(chooser_td);
     accordion.append(label);
   });
   updateQuery();
@@ -253,7 +255,7 @@ function buildFigureQuery(figure_filter) {
     if (accordionIsHidden(figure_filter)) { return a; }
     var formals = isMove(move) ? parameters(move) : [];
     formals.forEach(function(formal, i) {
-      var chooser = $(figure_filter.children('.figure-filter-accordion').children()[i]).find('.chooser-argument');
+      var chooser = $(figure_filter.children('.figure-filter-accordion').find('.chooser-row')[i]).find('.chooser-argument');
       // TODO: add more choosers
       if (chooser_places === formal.ui) {
         var degrees = chooser.val();

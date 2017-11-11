@@ -92,7 +92,6 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
   margin-left: 0.4em;          
 }
 
-
 #figure-filter-root {
   margin-left: 0em;
 }
@@ -103,4 +102,15 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
 
 .figure-filter .ellipsis-expanded {
    @extend .btn-primary;
+}
+
+.figure-filter-accordion {
+  margin-left: 2em;
+}
+
+.chooser-label-text {
+  text-align: right;
+  /* vertical-align: top; */
+  /* display: inline-block; */
+  padding-right: 2em;
 }
