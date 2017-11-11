@@ -171,21 +171,21 @@ chooserToFilterHtml[chooser_places] = function(move) {
     anglesForMove(move).map(function(angle) {
       return '<option value="'+angle.toString()+'">'+degreesToWords(angle,move)+'</option>';
     }));
-  return '<select class="form-control">'+options.join()+'</select>';
+  return '<select class="form-control chooser-argument">'+options.join()+'</select>';
 };
 
 chooserToFilterHtml[chooser_left_right_spin] = function(move) {
   var options = ['<option value="*">*</option>',
                  '<option value="true">left</option>',
                  '<option value="false">right</option>'];
-  return '<select class="form-control">'+options.join()+'</select>';
+  return '<select class="form-control chooser-argument">'+options.join()+'</select>';
 };
 
 chooserToFilterHtml[chooser_beats] = function(move) {
   var options = ['*',8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64].map(function(b) {
     return '<option value="'+b+'">'+b+'</option>';
   });
-  return '<select class="form-control">'+options.join()+'</select>';
+  return '<select class="form-control chooser-argument">'+options.join()+'</select>';
 };
 
 chooserToFilterHtml[chooser_boolean] = function(move) {
@@ -193,7 +193,7 @@ chooserToFilterHtml[chooser_boolean] = function(move) {
   var radios = ["<label><input type='radio' name='"+name+"' value='*' checked />*</label>",
                 "<label><input type='radio' name='"+name+"' value='true'/>yes</label>",
                 "<label><input type='radio' name='"+name+"' value='false'/>no</label>"];
-  return "<div>"+radios.join()+"</div>";
+  return "<div class='chooser-argument'>"+radios.join()+"</div>";
 };
 
 var _uniqueNameForRadioCounter = 9000;
@@ -253,7 +253,7 @@ function buildFigureQuery(figure_filter) {
     if (accordionIsHidden(figure_filter)) { return a; }
     var formals = isMove(move) ? parameters(move) : [];
     formals.forEach(function(formal, i) {
-      var chooser = $(figure_filter.children('.figure-filter-accordion').children()[i]).children();
+      var chooser = $(figure_filter.children('.figure-filter-accordion').children()[i]).find('.chooser-argument');
       // TODO: add more choosers
       if (chooser_places === formal.ui) {
         var degrees = chooser.val();
