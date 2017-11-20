@@ -16,13 +16,13 @@
 
 var defined_choosers = {};
 
-
 function defineChooser(name){
   "string" == typeof name || throw_up("first argument isn't a string");
   "chooser_" == name.slice(0,8) || throw_up("first argument doesn't begin with 'chooser_'");
   defined_choosers[name] = defined_choosers[name] || name;
   eval(name+"='"+name+"'");
 }
+
 function setChoosers(hash){
   $.each(defined_choosers,function(k,v) {hash[k]=v;});
 }

@@ -76,6 +76,7 @@ function clickEllipsis(e) {
   var $this = $(this);
   $this.toggleClass('ellipsis-expanded');
   $this.siblings('.figure-filter-accordion').toggle();
+  updateQuery();
 }
 
 function filterOpChanged(e) {
@@ -164,6 +165,7 @@ function makeFigureFilterAccordion(filter) {
   return $("<table class='figure-filter-accordion'></table>").hide();
 }
 
+var chooserWidgetType = {};
 var chooserToFilterHtml = {};
 
 chooserToFilterHtml[chooser_places] = function(move) {
@@ -171,13 +173,6 @@ chooserToFilterHtml[chooser_places] = function(move) {
     anglesForMove(move).map(function(angle) {
       return '<option value="'+angle.toString()+'">'+degreesToWords(angle,move)+'</option>';
     }));
-  return '<select class="form-control chooser-argument">'+options.join()+'</select>';
-};
-
-chooserToFilterHtml[chooser_left_right_spin] = function(move) {
-  var options = ['<option value="*">*</option>',
-                 '<option value="true">left</option>',
-                 '<option value="false">right</option>'];
   return '<select class="form-control chooser-argument">'+options.join()+'</select>';
 };
 
@@ -196,13 +191,76 @@ chooserToFilterHtml[chooser_boolean] = function(move) {
   return "<div class='chooser-argument'>"+radios.join('')+"</div>";
 };
 
+if (!Array.isArray) {
+  Array.isArray = function(arg) {
+    return Object.prototype.toString.call(arg) === '[object Array]';
+  };
+}
+
+function chooserToFilterHtmlRadioButtons(chooser, options) {
+  chooserWidgetType[chooser] = 'radio';
+  var inlin = options.length <= 3;
+  var div_start   = "<div class='"+ inlin ? '' : 'radio' + "'>";
+  var div_end = inlin ? '' : '</div>';
+  var label_class = inlin ? 'radio-inline' : '';
+  chooserToFilterHtml[chooser] = function(move) {
+    var name = generateUniqueNameForRadio();
+    var first_time = true;
+    var radios = options.map(function(dancer){
+      var dancer_value = Array.isArray(dancer) ? dancer[0] : dancer;
+      var dancer_label = Array.isArray(dancer) ? dancer[1] : dancer;
+      var checked = first_time ? 'checked=checked' : '';
+      first_time=false;
+      return div_start+"<label class='"+label_class+"'><input type='radio' name='"+name+"' value='"+dancer_value+"' "+checked+" />"+dancer_label+"</label>"+div_end;
+    });
+    return "<div class='chooser-argument'>"+radios.join('')+"</div>";
+  };
+}
+
+function chooserFilterHtmlSelectOptions(chooser, options) {
+  chooserWidgetType[chooser] = 'select';
+  chooserToFilterHtml[chooser] = function (move) {
+    var htmls = options.map(function(b) {
+      var b_value = Array.isArray(b) ? b[0] : b;
+      var b_label = Array.isArray(b) ? b[1] : b;
+      return '<option value="'+b_value+'">'+b_label+'</option>';
+    });
+    return '<select class="form-control chooser-argument">'+htmls.join()+'</select>';
+  };
+}
+
+
+chooserFilterHtmlSelectOptions(chooser_dancers, ['*','everyone','gentlespoons','ladles','partners','neighbors','shadows','ones','twos','same roles','first corners','second corners','first gentlespoon','first ladle','second gentlespoon','second ladle']);
+chooserFilterHtmlSelectOptions(chooser_pair, ['*','gentlespoons','ladles','ones','twos','first corners','second corners']);
+chooserFilterHtmlSelectOptions(chooser_pairc_or_everyone, ['*','gentlespoons','ladles','centers','ones','twos']);
+chooserFilterHtmlSelectOptions(chooser_pairz, ['*','gentlespoons','ladles','partners','neighbors','shadows','ones','twos','same roles','first corners','second corners']);
+chooserFilterHtmlSelectOptions(chooser_pairs, ['*','partners','neighbors','shadows','same roles']);
+chooserFilterHtmlSelectOptions(chooser_pairs_or_ones_or_twos, ['*','partners','neighbors','shadows','same roles','ones','twos']);
+chooserFilterHtmlSelectOptions(chooser_pairs_or_everyone, ['*','everyone','partners','neighbors','shadows','same roles']);
+chooserFilterHtmlSelectOptions(chooser_dancer, ['*','first gentlespoon','first ladle','second gentlespoon','second ladle']);
+chooserFilterHtmlSelectOptions(chooser_role, ['*','gentlespoons','ladles']);
+chooserFilterHtmlSelectOptions(chooser_hetero, ['*','partners','neighbors','shadows']);
+
+chooserToFilterHtmlRadioButtons(chooser_spin, ['*',[true, 'clockwise'], [false, 'ccw']]);
+chooserToFilterHtmlRadioButtons(chooser_left_right_spin, ['*',[true, 'left'], [false, 'right']]);
+chooserToFilterHtmlRadioButtons(chooser_right_left_hand, ['*',[false, 'left'], [true, 'right']]);
+chooserToFilterHtmlRadioButtons(chooser_right_left_shoulder, ['*',[false, 'left'], [true, 'right']]);
+
+function doesChooserFilterUseSelect(chooser) {
+  return 'select' === chooserWidgetType[chooser];
+}
+
+function doesChooserFilterUseRadio(chooser) {
+  return 'radio' === chooserWidgetType[chooser];
+}
+
+
+// TODO: add more choosers
+
 var _uniqueNameForRadioCounter = 9000;
 function generateUniqueNameForRadio() {
   return 'uniqueNameForRadio' + _uniqueNameForRadioCounter++;
 }
-
-// TODO: add more choosers
-
 
 function figureFilterMoveChange() {
   var figureFilterMove = $(this);
@@ -252,24 +310,29 @@ function buildFigureQuery(figure_filter) {
     // TODO: this then-clause is getting big - relo to it's own function?
     var move = figure_filter.children('.figure-filter-move').val();
     var a = [op, move];
-    if (accordionIsHidden(figure_filter)) { return a; }
+    if (accordionIsHidden(figure_filter)) { 
+      return a; 
+    }
     var formals = isMove(move) ? parameters(move) : [];
     formals.forEach(function(formal, i) {
       var chooser = $(figure_filter.children('.figure-filter-accordion').find('.chooser-row')[i]).find('.chooser-argument');
       // TODO: add more choosers
+      // TODO: refactor old choosers to use doesChooserFilterUseSelect et al
       if (chooser_places === formal.ui) {
         var degrees = chooser.val();
         a.push(degrees);
-      } else if (chooser_left_right_spin === formal.ui) {
-        var left = chooser.val();
-        a.push(left);
       } else if (chooser_beats === formal.ui) {
         var beats = chooser.val();
         a.push(beats);
       } else if (chooser_boolean === formal.ui) {
-        // $('#figure-filter-root .figure-filter-accordion input[type="radio"]:checked').val()
         var boolish = chooser.find('input:checked').val();
         a.push(boolish);
+      } else if (doesChooserFilterUseSelect(formal.ui)) {
+        var val = chooser.val();
+        a.push(val);
+      } else if (doesChooserFilterUseRadio(formal.ui)) {
+        var val = chooser.find('input:checked').val();
+        a.push(val);
       } else {
         a.push('*');
       }
@@ -302,12 +365,6 @@ jQuery(document).ready(function() {
   addFigureFilterMoveConstellation($('#figure-filter-root'));
   installEventHandlers($('#figure-filter-root'));
   updateQuery();
-
-  if (!Array.isArray) {
-    Array.isArray = function(arg) {
-      return Object.prototype.toString.call(arg) === '[object Array]';
-    };
-  }
 
   // oh, I can't use arrays in params? Fine, I'll create hashes with indexes as keys
   function arrayToObject (a) {

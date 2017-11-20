@@ -299,7 +299,7 @@ describe 'Welcome page', js: true do
           dances
           select('circle')
           click_button('...')
-          select('right')
+          choose('right')
 
           expect(page).to_not have_content('The Rendevouz') # has circle left 3 & 4 places
           expect(page).to_not have_content('Box the Gnat Contra') # no circles
@@ -308,16 +308,21 @@ describe 'Welcome page', js: true do
           expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","circle","false","*","*"]')
         end
 
-        it "circle to the *, * places finds 'The Rendevouz' and 'Call Me'" do
+        it "A slightly different query is sent if the ... is clicked" do
           dances
           select('circle')
-          click_button('...')
-          first('.figure-filter-accordion select').select('*')
 
           expect(page).to have_content('The Rendevouz') # has circle left 3 & 4 places
           expect(page).to_not have_content('Box the Gnat Contra') # no circles
           expect(page).to have_content('Call Me') # has circle left 3 places
-          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","circle","*","*","*"]')
+          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","circle"]') # first query
+
+          click_button('...')
+
+          expect(page).to have_content('The Rendevouz') # has circle left 3 & 4 places
+          expect(page).to_not have_content('Box the Gnat Contra') # no circles
+          expect(page).to have_content('Call Me') # has circle left 3 places
+          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","circle","*","*","*"]') # second query
         end
 
         it 'circle has an angle select box with the right options' do
@@ -364,6 +369,36 @@ describe 'Welcome page', js: true do
           expect(page).to have_content('bal')
           expect(page).to have_content('who')
           expect(page).to have_content('beats')
+        end
+
+        it "allemande with ladles finds only 'Box the Gnat'" do
+          dances
+          allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
+
+          select('allemande')
+          click_button('...')
+          select('ladles')
+
+          expect(page).to_not have_content('The Rendevouz')
+          expect(page).to have_content('Box the Gnat Contra')
+          expect(page).to_not have_content('Call Me')
+          expect(page).to_not have_content(allemande.title)
+          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","allemande","ladles","*","*","*"]')
+        end
+
+        it "allemande with allemande left finds only 'Just Allemande'" do
+          dances
+          allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
+
+          select('allemande')
+          click_button('...')
+          choose('left', exact: true)
+ 
+          expect(page).to_not have_content('The Rendevouz')
+          expect(page).to_not have_content('Box the Gnat Contra')
+          expect(page).to_not have_content('Call Me')
+          expect(page).to have_content(allemande.title)
+          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","allemande","*","false","*","*"]')
         end
       end
     end
