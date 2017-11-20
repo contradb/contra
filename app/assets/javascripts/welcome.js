@@ -207,6 +207,7 @@ function chooserFilterHtmlSelectOptions(chooser, options) {
 }
 
 
+chooserToFilterHtml[chooser_revolutions] = 
 chooserToFilterHtml[chooser_places] = function(move) {
   var options = ['<option value="*">*</option>'].concat(
     anglesForMove(move).map(function(angle) {
@@ -307,7 +308,7 @@ function buildFigureQuery(figure_filter) {
       var chooser = $(figure_filter.children('.figure-filter-accordion').find('.chooser-row')[i]).find('.chooser-argument');
       // TODO: add more choosers
       // TODO: refactor old choosers to use doesChooserFilterUseSelect et al
-      if (chooser_places === formal.ui) {
+      if (chooser_places === formal.ui || chooser_revolutions === formal.ui) {
         var degrees = chooser.val();
         a.push(degrees);
       } else if (doesChooserFilterUseSelect(formal.ui)) {

@@ -400,6 +400,21 @@ describe 'Welcome page', js: true do
           expect(page).to have_content(allemande.title)
           expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","allemande","*","false","*","*"]')
         end
+
+        it "allemande once around works" do
+          dances
+          allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
+
+          select('allemande')
+          click_button('...')
+          select('once')
+ 
+          expect(page).to_not have_content('The Rendevouz')
+          expect(page).to_not have_content('Box the Gnat Contra')
+          expect(page).to_not have_content('Call Me')
+          expect(page).to have_content(allemande.title)
+          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","allemande","*","*","360","*"]')
+        end
       end
     end
   end
