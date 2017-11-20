@@ -168,29 +168,6 @@ function makeFigureFilterAccordion(filter) {
 var chooserWidgetType = {};
 var chooserToFilterHtml = {};
 
-chooserToFilterHtml[chooser_places] = function(move) {
-  var options = ['<option value="*">*</option>'].concat(
-    anglesForMove(move).map(function(angle) {
-      return '<option value="'+angle.toString()+'">'+degreesToWords(angle,move)+'</option>';
-    }));
-  return '<select class="form-control chooser-argument">'+options.join()+'</select>';
-};
-
-chooserToFilterHtml[chooser_beats] = function(move) {
-  var options = ['*',8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64].map(function(b) {
-    return '<option value="'+b+'">'+b+'</option>';
-  });
-  return '<select class="form-control chooser-argument">'+options.join()+'</select>';
-};
-
-chooserToFilterHtml[chooser_boolean] = function(move) {
-  var name = generateUniqueNameForRadio();
-  var radios = ["<label class='radio-inline'><input type='radio' name='"+name+"' value='*' checked />*</label>",
-                "<label class='radio-inline'><input type='radio' name='"+name+"' value='true'/>yes</label>",
-                "<label class='radio-inline'><input type='radio' name='"+name+"' value='false'/>no</label>"];
-  return "<div class='chooser-argument'>"+radios.join('')+"</div>";
-};
-
 if (!Array.isArray) {
   Array.isArray = function(arg) {
     return Object.prototype.toString.call(arg) === '[object Array]';
@@ -229,6 +206,18 @@ function chooserFilterHtmlSelectOptions(chooser, options) {
   };
 }
 
+
+chooserToFilterHtml[chooser_places] = function(move) {
+  var options = ['<option value="*">*</option>'].concat(
+    anglesForMove(move).map(function(angle) {
+      return '<option value="'+angle.toString()+'">'+degreesToWords(angle,move)+'</option>';
+    }));
+  return '<select class="form-control chooser-argument">'+options.join()+'</select>';
+};
+
+chooserFilterHtmlSelectOptions(chooser_beats, ['*',8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]);
+
+chooserToFilterHtmlRadioButtons(chooser_boolean, ['*',[true, 'yes'], [false, 'no']]);
 
 chooserFilterHtmlSelectOptions(chooser_dancers, ['*','everyone','gentlespoons','ladles','partners','neighbors','shadows','ones','twos','same roles','first corners','second corners','first gentlespoon','first ladle','second gentlespoon','second ladle']);
 chooserFilterHtmlSelectOptions(chooser_pair, ['*','gentlespoons','ladles','ones','twos','first corners','second corners']);
@@ -321,12 +310,6 @@ function buildFigureQuery(figure_filter) {
       if (chooser_places === formal.ui) {
         var degrees = chooser.val();
         a.push(degrees);
-      } else if (chooser_beats === formal.ui) {
-        var beats = chooser.val();
-        a.push(beats);
-      } else if (chooser_boolean === formal.ui) {
-        var boolish = chooser.find('input:checked').val();
-        a.push(boolish);
       } else if (doesChooserFilterUseSelect(formal.ui)) {
         var val = chooser.val();
         a.push(val);
