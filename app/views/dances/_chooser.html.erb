@@ -76,6 +76,19 @@
                     <option value="second corners">second corners</option>
                   </select>
                 </div>
+                <div ng-if="p.ui == chooser_pair_or_everyone">
+                  <select ng-model="figure.parameter_values[$index]"
+                          ng-change="user_changed_parameter(figure,$index)"
+                          class='form-control'>
+                    <option value="everyone">everyone</option>
+                    <option value="gentlespoons">gentlespoons</option>
+                    <option value="ladles">ladles</option>
+                    <option value="ones">ones</option>
+                    <option value="twos">twos</option>
+                    <option value="first corners">first corners</option>
+                    <option value="second corners">second corners</option>
+                  </select>
+                </div>
                 <div ng-if="p.ui == chooser_pairc_or_everyone">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="user_changed_parameter(figure,$index)"
@@ -180,7 +193,7 @@
                     <option ng-repeat="grip in wristGrips" ng-value='grip'>{{grip}}</option>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_facing">
+                <div ng-if="p.ui == chooser_march_facing">
                   <label class='radio-tweaks figure-multiline-radio'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'forward'" ng-change="user_changed_parameter(figure,$index)"/> forward</label>
                   <label class='radio-tweaks figure-multiline-radio'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'forward then backward'" ng-change="user_changed_parameter(figure,$index)"/> forward then backward</label>
                   <label class='radio-tweaks figure-multiline-radio'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'backward'" ng-change="user_changed_parameter(figure,$index)"/> backward</label>

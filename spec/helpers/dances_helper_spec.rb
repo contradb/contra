@@ -193,7 +193,11 @@ RSpec.describe DancesHelper, type: :helper do
    ['* contra corners * for *', 'contra corners', '*', '*', '*'],
    ['slice left and straight back', 'slice', true, 'couple', 'straight', 8],
    ['slice right one dancer and diagonal back for 10', 'slice', false, 'dancer', 'diagonal', 10],
-   ['slice * one * and * for *', 'slice', '*', '*', '*', '*']
+   ['slice * one * and * for *', 'slice', '*', '*', '*', '*'],
+   ['turn alone', 'turn alone', 'everyone', '', 4],
+   ['ladles turn alone over the right shoulder', 'turn alone', 'ladles', 'over the right shoulder', 4],
+   ['ladles turn alone to a new partner', 'turn alone', 'ladles', 'to a new partner', 4],
+   ['ladles turn alone face out for 2', 'turn alone', 'ladles', 'face out', 2],
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}'" do

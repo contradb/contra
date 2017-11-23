@@ -87,7 +87,8 @@ var param_subject_pair               = {name: "who",                        ui: 
 var param_subject_pair_ladles        = {name: "who", value: "ladles",       ui: chooser_pair};
 var param_subject_pair_gentlespoons  = {name: "who", value: "gentlespoons", ui: chooser_pair};
 var param_subject_pair_ones          = {name: "who", value: "ones",         ui: chooser_pair};
-var param_subject_pairc_or_everyone   = {name: "who", value: "everyone",     ui: chooser_pairc_or_everyone};
+var param_subject_pair_or_everyone   = {name: "who", value: "everyone",     ui: chooser_pair_or_everyone};
+var param_subject_pairc_or_everyone  = {name: "who", value: "everyone",     ui: chooser_pairc_or_everyone}; // has `centers`
 var param_subject_pairz              = {name: "who",                        ui: chooser_pairz}; // 1-2 pairs of dancers
 var param_subject_pairz_partners     = {name: "who", value: "partners",     ui: chooser_pairz};
 var param_subject_pairs              = {name: "who",                        ui: chooser_pairs}; // 2 pairs of dancers
@@ -125,16 +126,16 @@ function stringParamStarGrip (value) {
 
 var param_star_grip = {name: "grip", value: wristGrips[0], ui: chooser_star_grip, string: stringParamStarGrip};
 
-function stringParamFacing (value) {
+function stringParamMarchForward (value) {
   if (value) {
     return (value === 'forward') ? '' : value;
   } else {
-    return "facing ?";
+    return "facing ____";
   }
 }
 
-var param_facing         = {name: "facing", ui: chooser_facing};
-var param_facing_forward = {name: "facing", ui: chooser_facing, value: "forward", string: stringParamFacing};
+var param_march_facing = {name: "facing", ui: chooser_march_facing};
+var param_march_forward = {name: "facing", ui: chooser_march_facing, value: "forward", string: stringParamMarchForward};
 
 function stringParamSlide (value) {
   if (value === '*') {

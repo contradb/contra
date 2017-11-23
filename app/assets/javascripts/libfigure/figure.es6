@@ -261,10 +261,10 @@ function up_or_down_the_hall_view(move, pvs) {
 }
 
 defineFigure("down the hall",
-             [param_facing_forward, param_down_the_hall_ender_turn_couples, param_beats_8],
+             [param_march_forward, param_down_the_hall_ender_turn_couples, param_beats_8],
              {view: up_or_down_the_hall_view});
 defineFigure("up the hall",
-             [param_facing_forward, param_down_the_hall_ender_circle,       param_beats_8],
+             [param_march_forward, param_down_the_hall_ender_circle,       param_beats_8],
              {view: up_or_down_the_hall_view});
 
 defineRelatedMove2Way('down the hall', 'up the hall');
@@ -841,6 +841,20 @@ function swing_view(move,pvs) {
 defineFigure("swing",
              [param_subject_pairz_partners, param_balance_false, param_beats_8],
              {change: swing_change, view: swing_view});
+
+///////////////////////////////////////////////
+// TURN ALONE                                //
+///////////////////////////////////////////////
+
+function turn_alone_view(move,pvs) {
+  var [who,custom,beats] = pvs;
+  var [swho,scustom,sbeats] = parameter_strings(move, pvs);
+  return words(('everyone' !== who) && who, move, scustom, sbeats);
+}
+
+defineFigure("turn alone",
+             [param_subject_pair_or_everyone, param_custom_figure, param_beats_4],
+             {view: turn_alone_view});
 
 ///////////////////////////////////////////////
 // ZIG ZAG                                    //

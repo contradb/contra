@@ -76,6 +76,18 @@ describe 'Welcome page', js: true do
       expect(rory.title).to eq("Just Rory")
     end
 
+    it "'anything but' works" do
+      dance
+      only_a_swing = FactoryGirl.create(:dance_with_a_swing)
+      visit '/'
+      expect(page).to have_text(only_a_swing.title)
+      expect(page).to have_text(dance.title)
+      select('anything but')
+      select('swing')
+      expect(page).to_not have_text(only_a_swing.title)
+      expect(page).to have_text(dance.title) # because it has a figure that's not a swing
+    end
+
     describe 'figure filter machinantions' do
       before (:each) do
         dances

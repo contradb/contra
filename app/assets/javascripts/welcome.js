@@ -245,7 +245,7 @@ chooserToFilterHtml[chooser_text] = function(move) {
 // chooserFilterHtmlSelectOptions(chooser_star_grip, ['*',['', 'unspecified'],'wrist grip','hands across']);
 chooserFilterHtmlSelectOptions(chooser_star_grip, ['*'].concat(wristGrips.map(function(grip) { return (grip === '') ? ['', 'unspecified'] : grip; })));
 
-chooserFilterHtmlSelectOptions(chooser_facing, ['*','forward','backward','forward then backward']);
+chooserFilterHtmlSelectOptions(chooser_march_facing, ['*','forward','backward','forward then backward']);
 
 function doesChooserFilterUseSelect(chooser) {
   return 'select' === chooserWidgetType[chooser];
