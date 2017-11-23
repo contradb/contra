@@ -82,5 +82,17 @@ FactoryGirl.define do
     start_type 'improper'
     figures_json {'[{"parameter_values":[true,360,"wrist grip",8],"move":"star"}]'}
   end
+
+
+  factory :dance_with_a_down_the_hall, class: Dance do
+    transient do
+      facing {'forward'}
+    end
+    sequence(:title) {|n| "StarDance#{n}"}
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json {"[{'parameter_values':['#{facing}','turn as couples',8],'move':'down the hall'}]".gsub("'", '"')}
+  end
 end
 

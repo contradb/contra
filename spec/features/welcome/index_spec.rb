@@ -453,6 +453,20 @@ describe 'Welcome page', js: true do
 
           expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","star","*","*","","*"]')
         end
+
+        it "facing filter works" do
+          fb = FactoryGirl.create(:dance_with_a_down_the_hall, facing: 'forward then backward')
+          f = FactoryGirl.create(:dance_with_a_down_the_hall, facing: 'forward')
+          b = FactoryGirl.create(:dance_with_a_down_the_hall, facing: 'backward')
+
+          select('down the hall')
+          click_button('...')
+          select('forward then backward')
+ 
+          expect(page).to_not have_content(f.title)
+          expect(page).to_not have_content(b.title)
+          expect(page).to have_content(fb.title)
+        end
       end
     end
   end

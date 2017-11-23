@@ -240,13 +240,12 @@ chooserToFilterHtml[chooser_text] = function(move) {
   return '<input class="form-control chooser-argument" type="string" placeholder="words...">';
 };
 
-
-
-// below splicing ugliness is because we take values from JSLibFigure varaible 'wristGrips' rather than
+// Below splicing ugliness is because we take values from JSLibFigure varaible 'wristGrips' rather than
 // just saying what we mean. At time of writing the following two lines are equivalent.
 // chooserFilterHtmlSelectOptions(chooser_star_grip, ['*',['', 'unspecified'],'wrist grip','hands across']);
 chooserFilterHtmlSelectOptions(chooser_star_grip, ['*'].concat(wristGrips.map(function(grip) { return (grip === '') ? ['', 'unspecified'] : grip; })));
 
+chooserFilterHtmlSelectOptions(chooser_facing, ['*','forward','backward','forward then backward']);
 
 function doesChooserFilterUseSelect(chooser) {
   return 'select' === chooserWidgetType[chooser];
