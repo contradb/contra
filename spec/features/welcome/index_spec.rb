@@ -467,9 +467,9 @@ describe 'Welcome page', js: true do
         end
 
         it "facing filter works" do
-          fb = FactoryGirl.create(:dance_with_a_down_the_hall, facing: 'forward then backward')
-          f = FactoryGirl.create(:dance_with_a_down_the_hall, facing: 'forward')
-          b = FactoryGirl.create(:dance_with_a_down_the_hall, facing: 'backward')
+          fb = FactoryGirl.create(:dance_with_a_down_the_hall, march_facing: 'forward then backward')
+          f = FactoryGirl.create(:dance_with_a_down_the_hall, march_facing: 'forward')
+          b = FactoryGirl.create(:dance_with_a_down_the_hall, march_facing: 'backward')
 
           select('down the hall')
           click_button('...')
@@ -478,6 +478,24 @@ describe 'Welcome page', js: true do
           expect(page).to_not have_content(f.title)
           expect(page).to_not have_content(b.title)
           expect(page).to have_content(fb.title)
+        end
+
+        it "down the hall ender filter works" do
+          ta = FactoryGirl.create(:dance_with_a_down_the_hall, down_the_hall_ender: 'turn-alone', title: 'dth_alone')
+          tc = FactoryGirl.create(:dance_with_a_down_the_hall, down_the_hall_ender: 'turn-couples', title: 'dth_couples')
+          circle = FactoryGirl.create(:dance_with_a_down_the_hall, down_the_hall_ender: 'circle', title: 'dth_circle')
+          unspec = FactoryGirl.create(:dance_with_a_down_the_hall, down_the_hall_ender: '', title: 'dth_unspec')
+
+          select('down the hall')
+          click_button('...')
+          select('turn as couples')
+          # select('turn alone') # hard because multiple
+          select('bend into a ring')
+ 
+          expect(page).to_not have_content(ta.title)
+          expect(page).to_not have_content(tc.title)
+          expect(page).to_not have_content(unspec.title)
+          expect(page).to have_content(circle.title)
         end
       end
     end

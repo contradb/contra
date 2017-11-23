@@ -86,13 +86,14 @@ FactoryGirl.define do
 
   factory :dance_with_a_down_the_hall, class: Dance do
     transient do
-      facing {'forward'}
+      march_facing {'forward'}
+      down_the_hall_ender {'turn-couples'}
     end
-    sequence(:title) {|n| "StarDance#{n}"}
+    sequence(:title) {|n| "DownTheHallDance#{n}"}
     user { FactoryGirl.create(:user) }
     choreographer { FactoryGirl.create(:choreographer) }
     start_type 'improper'
-    figures_json {"[{'parameter_values':['#{facing}','turn as couples',8],'move':'down the hall'}]".gsub("'", '"')}
+    figures_json {"[{'parameter_values':['#{march_facing}','#{down_the_hall_ender}',8],'move':'down the hall'}]".gsub("'", '"')}
   end
 end
 

@@ -247,6 +247,13 @@ chooserFilterHtmlSelectOptions(chooser_star_grip, ['*'].concat(wristGrips.map(fu
 
 chooserFilterHtmlSelectOptions(chooser_march_facing, ['*','forward','backward','forward then backward']);
 
+chooserFilterHtmlSelectOptions(chooser_down_the_hall_ender,
+                               ['*',
+                                ['turn-alone', 'turn alone'],
+                                ['turn-couples', 'turn as couples'],
+                                ['circle', 'bend into a ring'],
+                                ['', 'unspecified']]);
+
 function doesChooserFilterUseSelect(chooser) {
   return 'select' === chooserWidgetType[chooser];
 }
