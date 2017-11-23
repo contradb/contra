@@ -437,6 +437,22 @@ describe 'Welcome page', js: true do
           expect(page).to have_content(apple_banana.title)
           expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","custom","apple orange","*"]')
         end
+
+        it "wrist grip filter works" do
+          dances
+          grip = FactoryGirl.create(:dance_with_a_wrist_grip_star)
+
+          select('star')
+          click_button('...')
+          select('unspecified')
+ 
+          expect(page).to_not have_content('The Rendevouz')
+          expect(page).to_not have_content('Box the Gnat Contra')
+          expect(page).to have_content('Call Me')
+          expect(page).to_not have_content(grip.title)
+
+          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","star","*","*","","*"]')
+        end
       end
     end
   end

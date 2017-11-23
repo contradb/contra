@@ -140,5 +140,9 @@ RSpec.describe JSLibFigure do
     end
   end
 
+  it 'wrist_grips' do
+    expect(JSLibFigure.wrist_grips).to eq(['', 'wrist grip', 'hands across'])
+  end
+
   pending 'test the whole libfigure library, ha ha'
 end

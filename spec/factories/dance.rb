@@ -74,5 +74,13 @@ FactoryGirl.define do
     start_type 'improper'
     figures_json {"[{'parameter_values':[#{custom_text.inspect},8],'move':'custom'}]".gsub("'", '"')}
   end
+
+  factory :dance_with_a_wrist_grip_star, class: Dance do
+    sequence(:title) {|n| "StarDance#{n}"}
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json {'[{"parameter_values":[true,360,"wrist grip",8],"move":"star"}]'}
+  end
 end
 

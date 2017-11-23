@@ -95,6 +95,10 @@ module JSLibFigure
     moves.find {|move| regexp =~ move}
   end
 
+  def self.wrist_grips
+    self.eval("wristGrips;")
+  end
+
   JSLIBFIGURE_FILES = %w(polyfill.js util.js move.js chooser.js param.js define-figure.js figure.es6 after-figure.js dance.js)
 
   private
