@@ -90,8 +90,8 @@ class DanceDatatable < AjaxDatatablesRails::Base
     if '*' == move              # wildcard
       all_figure_indicies(dance)
     else
+      formals = JSLibFigure.is_move?(move) ? JSLibFigure.formal_parameters(move) : []
       indicies = dance.figures.each_with_index.map do |figure, figure_index|
-        formals = JSLibFigure.is_move?(move) ? JSLibFigure.formal_parameters(move) : []
         actuals = figure['parameter_values']
         param_filters = filter.drop(2)
         matches = figure['move'] == move &&

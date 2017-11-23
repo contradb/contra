@@ -55,7 +55,8 @@ module JSLibFigure
   end
 
   def self.formal_parameters(move_string)
-    self.eval("parameters(#{move_string.inspect})")
+    @formal_parameters ||= {}
+    @formal_parameters[move_string] ||= self.eval("parameters(#{move_string.inspect})")
   end
 
   def self.sanitize_json(figures_json_string)
