@@ -198,7 +198,7 @@ RSpec.describe DancesHelper, type: :helper do
    ['ladles turn alone over the right shoulder', 'turn alone', 'ladles', 'over the right shoulder', 4],
    ['ladles turn alone to a new partner', 'turn alone', 'ladles', 'to a new partner', 4],
    ['ladles turn alone face out for 2', 'turn alone', 'ladles', 'face out', 2],
-   # TODO: add turn alone wildcard tests
+   ['* turn alone for *', 'turn alone', '*', '', '*'],
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}'" do
