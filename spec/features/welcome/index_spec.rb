@@ -415,6 +415,28 @@ describe 'Welcome page', js: true do
           expect(page).to have_content(allemande.title)
           expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","allemande","*","*","360","*"]')
         end
+
+
+        it "text input keywords work" do
+          dances
+          apple = FactoryGirl.create(:dance_with_a_custom, custom_text: 'apple', title: 'just apple')
+          banana = FactoryGirl.create(:dance_with_a_custom, custom_text: 'banana', title: 'just banana')
+          orange = FactoryGirl.create(:dance_with_a_custom, custom_text: 'orange', title: 'just orange')
+          apple_banana = FactoryGirl.create(:dance_with_a_custom, custom_text: 'apple banana', title: 'apple_banana')
+
+          select('custom')
+          click_button('...')
+          find(:css, "input.chooser-argument[type=string]").set('apple orange')
+ 
+          dances.each do |dance|
+            expect(page).to_not have_content(dance.title)
+          end
+          expect(page).to have_content(apple.title)
+          expect(page).to_not have_content(banana.title)
+          expect(page).to have_content(orange.title)
+          expect(page).to have_content(apple_banana.title)
+          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","custom","apple orange","*"]')
+        end
       end
     end
   end

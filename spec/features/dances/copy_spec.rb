@@ -7,13 +7,13 @@ describe 'Copying dances', js: true do
     with_login do |user|
       dance = FactoryGirl.create(:box_the_gnat_contra, user: user)
       visit new_dance_path copy_dance_id: dance.id
-      expect(page.body).to include "Box the Gnat Contra variation" # dance.title
-      expect(page.body).to include "Becky Hill" # dance.choreographer.name
-      expect(page.body).to include "improper" # dance.start_type
-      expect(page.body).to_not match /Becket/i
-      expect(page).to have_text ('neighbors balance & swing')
-      expect(page).to have_text ('ladles allemande right 1½')
-      expect(page.body).to include dance.notes
+      expect(page.body).to include(dance.title)
+      expect(page.body).to include(dance.choreographer.name)
+      expect(page.body).to include(dance.start_type)
+      expect(page).to_not match(/Becket/i)
+      expect(page).to have_text('neighbors balance & swing')
+      expect(page).to have_text('ladles allemande right 1½')
+      expect(page.body).to include(dance.notes)
       expect(page).to have_current_path(new_dance_path copy_dance_id: dance.id)
     end
   end

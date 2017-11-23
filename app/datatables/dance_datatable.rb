@@ -91,19 +91,26 @@ class DanceDatatable < AjaxDatatablesRails::Base
       all_figure_indicies(dance)
     else
       indicies = dance.figures.each_with_index.map do |figure, figure_index|
-        # formals = JSLibFigure.is_move?(move) ? JSLibFigure.formal_parameters(move) : []
+        formals = JSLibFigure.is_move?(move) ? JSLibFigure.formal_parameters(move) : []
         actuals = figure['parameter_values']
         param_filters = filter.drop(2)
         matches = figure['move'] == move &&
-                  param_filters.each_with_index.all? {|param_filter, i| param_passes_filter?(actuals[i], param_filter)}
+                  param_filters.each_with_index.all? {|param_filter, i| param_passes_filter?(formals[i], actuals[i], param_filter)}
         matches ? figure_index : nil
       end
       indicies.any? ? indicies.compact : nil
     end
   end
 
-  def self.param_passes_filter?(dance_param, param_filter)
-    param_filter == '*' || param_filter.to_s == dance_param.to_s
+  def self.param_passes_filter?(formal_param, dance_param, param_filter)
+    if formal_param['ui'] == 'chooser_text' # TODO this needs a better test
+      # substring search
+      keywords = param_filter.split(' ')
+      keywords.any? {|keyword| dance_param.include?(keyword)}
+    else
+      # asterisk always matches, or exact match
+      param_filter == '*' || param_filter.to_s == dance_param.to_s
+    end
   end
 
   def self.matching_figures_for_no(filter, dance)

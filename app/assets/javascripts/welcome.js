@@ -236,6 +236,10 @@ chooserToFilterHtmlRadioButtons(chooser_left_right_spin, ['*',[true, 'left'], [f
 chooserToFilterHtmlRadioButtons(chooser_right_left_hand, ['*',[false, 'left'], [true, 'right']]);
 chooserToFilterHtmlRadioButtons(chooser_right_left_shoulder, ['*',[false, 'left'], [true, 'right']]);
 
+chooserToFilterHtml[chooser_text] = function(move) {
+  return '<input class="form-control chooser-argument" type="string" placeholder="words...">';
+};
+
 function doesChooserFilterUseSelect(chooser) {
   return 'select' === chooserWidgetType[chooser];
 }
@@ -317,6 +321,9 @@ function buildFigureQuery(figure_filter) {
       } else if (doesChooserFilterUseRadio(formal.ui)) {
         var val = chooser.find('input:checked').val();
         a.push(val);
+      } else if (chooser_text === formal.ui) {
+        var text = chooser.val();
+        a.push(text);
       } else {
         a.push('*');
       }

@@ -1,6 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Dance, type: :model do
+  it ':dance_with_a_custom factory produces dances with a custom figure' do
+    dance = FactoryGirl.build(:dance_with_a_custom, custom_text: 'wombats')
+    expect(dance).to be_valid
+    expect(dance.figures.first['parameter_values'].first).to eq('wombats')
+  end
+
   it "'alphabetical' scope returns dances in case-insensitive alphabetical order" do
     titles = ["AAAA","DDDD","cccc","BBBB"]
     titles.each {|title| FactoryGirl.create :dance, title: title }
