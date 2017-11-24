@@ -254,6 +254,8 @@ chooserFilterHtmlSelectOptions(chooser_down_the_hall_ender,
                                 ['circle', 'bend into a ring'],
                                 ['', 'unspecified']]);
 
+chooserToFilterHtmlRadioButtons(chooser_slide, ['*',[true, 'left'], [false, 'right']]);
+
 function doesChooserFilterUseSelect(chooser) {
   return 'select' === chooserWidgetType[chooser];
 }
