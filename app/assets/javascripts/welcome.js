@@ -259,6 +259,7 @@ chooserFilterHtmlSelectOptions(chooser_set_direction, ['*',['along', 'along the 
 chooserFilterHtmlSelectOptions(chooser_set_direction_grid, ['*',['along', 'along the set'], ['across', 'across the set']]);
 
 chooserFilterHtmlSelectOptions(chooser_gate_direction, ['*',['up', 'up the set'], ['down', 'down the set'], ['in', 'into the set'], ['out', 'out of the set']]);
+chooserFilterHtmlSelectOptions(chooser_slice_return, ['*', ['straight', 'straight back'], ['diagonal', 'diagonal back']]);
 
 
 function doesChooserFilterUseSelect(chooser) {
