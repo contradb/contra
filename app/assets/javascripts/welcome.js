@@ -247,13 +247,6 @@ chooserSelect(chooser_star_grip, ['*'].concat(wristGrips.map(function(grip) { re
 
 chooserSelect(chooser_march_facing, ['*','forward','backward','forward then backward']);
 
-chooserSelect(chooser_down_the_hall_ender,
-                               ['*',
-                                ['turn-alone', 'turn alone'],
-                                ['turn-couples', 'turn as couples'],
-                                ['circle', 'bend into a ring'],
-                                ['', 'unspecified']]);
-
 chooserRadioButtons(chooser_slide, ['*',[true, 'left'], [false, 'right']]);
 chooserSelect(chooser_set_direction, ['*',['along', 'along the set'], ['across', 'across the set'], 'right diagonal', 'left diagonal']);
 chooserSelect(chooser_set_direction_grid, ['*',['along', 'along the set'], ['across', 'across the set']]);
@@ -262,6 +255,14 @@ chooserSelect(chooser_gate_direction, ['*',['up', 'up the set'], ['down', 'down 
 chooserSelect(chooser_slice_return, ['*', ['straight', 'straight back'], ['diagonal', 'diagonal back'], 'none']);
 chooserRadioButtons(chooser_slice_increment, ['*', 'couple', 'dancer']);
 
+chooserSelect(chooser_down_the_hall_ender,
+                               ['*',
+                                ['turn-alone', 'turn alone'],
+                                ['turn-couples', 'turn as couples'],
+                                ['circle', 'bend into a ring'],
+                                ['', 'unspecified']]);
+
+chooserSelect(chooser_zig_zag_ender, ['*', ['ring', 'into a ring'], ['allemande', 'training two catch hands']]);
 
 function doesChooserFilterUseSelect(chooser) {
   return 'select' === chooserWidgetType[chooser];
