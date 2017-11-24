@@ -264,6 +264,8 @@ chooserSelect(chooser_down_the_hall_ender,
 
 chooserSelect(chooser_zig_zag_ender, ['*', ['ring', 'into a ring'], ['allemande', 'training two catch hands']]);
 
+chooserRadioButtons(chooser_go_back, ['*', [true, 'forward &amp; back'], [false, 'forward']]);
+
 function doesChooserFilterUseSelect(chooser) {
   return 'select' === chooserWidgetType[chooser];
 }
