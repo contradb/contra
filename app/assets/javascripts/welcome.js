@@ -258,6 +258,8 @@ chooserToFilterHtmlRadioButtons(chooser_slide, ['*',[true, 'left'], [false, 'rig
 chooserFilterHtmlSelectOptions(chooser_set_direction, ['*',['along', 'along the set'], ['across', 'across the set'], 'right diagonal', 'left diagonal']);
 chooserFilterHtmlSelectOptions(chooser_set_direction_grid, ['*',['along', 'along the set'], ['across', 'across the set']]);
 
+chooserFilterHtmlSelectOptions(chooser_gate_direction, ['*',['up', 'up the set'], ['down', 'down the set'], ['in', 'into the set'], ['out', 'out of the set']]);
+
 
 function doesChooserFilterUseSelect(chooser) {
   return 'select' === chooserWidgetType[chooser];
