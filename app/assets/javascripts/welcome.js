@@ -174,7 +174,7 @@ if (!Array.isArray) {
   };
 }
 
-function chooserToFilterHtmlRadioButtons(chooser, options) {
+function chooserRadioButtons(chooser, options) {
   chooserWidgetType[chooser] = 'radio';
   var inlin = options.length <= 3;
   var div_start   = "<div class='"+ inlin ? '' : 'radio' + "'>";
@@ -194,7 +194,7 @@ function chooserToFilterHtmlRadioButtons(chooser, options) {
   };
 }
 
-function chooserFilterHtmlSelectOptions(chooser, options) {
+function chooserSelect(chooser, options) {
   chooserWidgetType[chooser] = 'select';
   chooserToFilterHtml[chooser] = function (move) {
     var htmls = options.map(function(b) {
@@ -216,25 +216,25 @@ chooserToFilterHtml[chooser_places] = function(move) {
   return '<select class="form-control chooser-argument">'+options.join()+'</select>';
 };
 
-chooserFilterHtmlSelectOptions(chooser_beats, ['*',8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]);
+chooserSelect(chooser_beats, ['*',8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]);
 
-chooserToFilterHtmlRadioButtons(chooser_boolean, ['*',[true, 'yes'], [false, 'no']]);
+chooserRadioButtons(chooser_boolean, ['*',[true, 'yes'], [false, 'no']]);
 
-chooserFilterHtmlSelectOptions(chooser_dancers, ['*','everyone','gentlespoons','ladles','partners','neighbors','shadows','ones','twos','same roles','first corners','second corners','first gentlespoon','first ladle','second gentlespoon','second ladle']);
-chooserFilterHtmlSelectOptions(chooser_pair, ['*','gentlespoons','ladles','ones','twos','first corners','second corners']);
-chooserFilterHtmlSelectOptions(chooser_pairc_or_everyone, ['*','gentlespoons','ladles','centers','ones','twos']);
-chooserFilterHtmlSelectOptions(chooser_pairz, ['*','gentlespoons','ladles','partners','neighbors','shadows','ones','twos','same roles','first corners','second corners']);
-chooserFilterHtmlSelectOptions(chooser_pairs, ['*','partners','neighbors','shadows','same roles']);
-chooserFilterHtmlSelectOptions(chooser_pairs_or_ones_or_twos, ['*','partners','neighbors','shadows','same roles','ones','twos']);
-chooserFilterHtmlSelectOptions(chooser_pairs_or_everyone, ['*','everyone','partners','neighbors','shadows','same roles']);
-chooserFilterHtmlSelectOptions(chooser_dancer, ['*','first gentlespoon','first ladle','second gentlespoon','second ladle']);
-chooserFilterHtmlSelectOptions(chooser_role, ['*','gentlespoons','ladles']);
-chooserFilterHtmlSelectOptions(chooser_hetero, ['*','partners','neighbors','shadows']);
+chooserSelect(chooser_dancers, ['*','everyone','gentlespoons','ladles','partners','neighbors','shadows','ones','twos','same roles','first corners','second corners','first gentlespoon','first ladle','second gentlespoon','second ladle']);
+chooserSelect(chooser_pair, ['*','gentlespoons','ladles','ones','twos','first corners','second corners']);
+chooserSelect(chooser_pairc_or_everyone, ['*','gentlespoons','ladles','centers','ones','twos']);
+chooserSelect(chooser_pairz, ['*','gentlespoons','ladles','partners','neighbors','shadows','ones','twos','same roles','first corners','second corners']);
+chooserSelect(chooser_pairs, ['*','partners','neighbors','shadows','same roles']);
+chooserSelect(chooser_pairs_or_ones_or_twos, ['*','partners','neighbors','shadows','same roles','ones','twos']);
+chooserSelect(chooser_pairs_or_everyone, ['*','everyone','partners','neighbors','shadows','same roles']);
+chooserSelect(chooser_dancer, ['*','first gentlespoon','first ladle','second gentlespoon','second ladle']);
+chooserSelect(chooser_role, ['*','gentlespoons','ladles']);
+chooserSelect(chooser_hetero, ['*','partners','neighbors','shadows']);
 
-chooserToFilterHtmlRadioButtons(chooser_spin, ['*',[true, 'clockwise'], [false, 'ccw']]);
-chooserToFilterHtmlRadioButtons(chooser_left_right_spin, ['*',[true, 'left'], [false, 'right']]);
-chooserToFilterHtmlRadioButtons(chooser_right_left_hand, ['*',[false, 'left'], [true, 'right']]);
-chooserToFilterHtmlRadioButtons(chooser_right_left_shoulder, ['*',[false, 'left'], [true, 'right']]);
+chooserRadioButtons(chooser_spin, ['*',[true, 'clockwise'], [false, 'ccw']]);
+chooserRadioButtons(chooser_left_right_spin, ['*',[true, 'left'], [false, 'right']]);
+chooserRadioButtons(chooser_right_left_hand, ['*',[false, 'left'], [true, 'right']]);
+chooserRadioButtons(chooser_right_left_shoulder, ['*',[false, 'left'], [true, 'right']]);
 
 chooserToFilterHtml[chooser_text] = function(move) {
   return '<input class="form-control chooser-argument" type="string" placeholder="words...">';
@@ -242,24 +242,24 @@ chooserToFilterHtml[chooser_text] = function(move) {
 
 // Below splicing ugliness is because we take values from JSLibFigure varaible 'wristGrips' rather than
 // just saying what we mean. At time of writing the following two lines are equivalent.
-// chooserFilterHtmlSelectOptions(chooser_star_grip, ['*',['', 'unspecified'],'wrist grip','hands across']);
-chooserFilterHtmlSelectOptions(chooser_star_grip, ['*'].concat(wristGrips.map(function(grip) { return (grip === '') ? ['', 'unspecified'] : grip; })));
+// chooserSelect(chooser_star_grip, ['*',['', 'unspecified'],'wrist grip','hands across']);
+chooserSelect(chooser_star_grip, ['*'].concat(wristGrips.map(function(grip) { return (grip === '') ? ['', 'unspecified'] : grip; })));
 
-chooserFilterHtmlSelectOptions(chooser_march_facing, ['*','forward','backward','forward then backward']);
+chooserSelect(chooser_march_facing, ['*','forward','backward','forward then backward']);
 
-chooserFilterHtmlSelectOptions(chooser_down_the_hall_ender,
+chooserSelect(chooser_down_the_hall_ender,
                                ['*',
                                 ['turn-alone', 'turn alone'],
                                 ['turn-couples', 'turn as couples'],
                                 ['circle', 'bend into a ring'],
                                 ['', 'unspecified']]);
 
-chooserToFilterHtmlRadioButtons(chooser_slide, ['*',[true, 'left'], [false, 'right']]);
-chooserFilterHtmlSelectOptions(chooser_set_direction, ['*',['along', 'along the set'], ['across', 'across the set'], 'right diagonal', 'left diagonal']);
-chooserFilterHtmlSelectOptions(chooser_set_direction_grid, ['*',['along', 'along the set'], ['across', 'across the set']]);
+chooserRadioButtons(chooser_slide, ['*',[true, 'left'], [false, 'right']]);
+chooserSelect(chooser_set_direction, ['*',['along', 'along the set'], ['across', 'across the set'], 'right diagonal', 'left diagonal']);
+chooserSelect(chooser_set_direction_grid, ['*',['along', 'along the set'], ['across', 'across the set']]);
 
-chooserFilterHtmlSelectOptions(chooser_gate_direction, ['*',['up', 'up the set'], ['down', 'down the set'], ['in', 'into the set'], ['out', 'out of the set']]);
-chooserFilterHtmlSelectOptions(chooser_slice_return, ['*', ['straight', 'straight back'], ['diagonal', 'diagonal back']]);
+chooserSelect(chooser_gate_direction, ['*',['up', 'up the set'], ['down', 'down the set'], ['in', 'into the set'], ['out', 'out of the set']]);
+chooserSelect(chooser_slice_return, ['*', ['straight', 'straight back'], ['diagonal', 'diagonal back']]);
 
 
 function doesChooserFilterUseSelect(chooser) {
