@@ -255,6 +255,9 @@ chooserFilterHtmlSelectOptions(chooser_down_the_hall_ender,
                                 ['', 'unspecified']]);
 
 chooserToFilterHtmlRadioButtons(chooser_slide, ['*',[true, 'left'], [false, 'right']]);
+chooserFilterHtmlSelectOptions(chooser_set_direction, ['*',['along', 'along the set'], ['across', 'across the set'], 'right diagonal', 'left diagonal']);
+chooserFilterHtmlSelectOptions(chooser_set_direction_grid, ['*',['along', 'along the set'], ['across', 'across the set']]);
+
 
 function doesChooserFilterUseSelect(chooser) {
   return 'select' === chooserWidgetType[chooser];
