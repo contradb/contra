@@ -99,6 +99,10 @@ module JSLibFigure
     self.eval("wristGrips;")
   end
 
+  def self.parameter_uses_chooser(formal_parameter, chooser_name_string)
+    formal_parameter['ui'] == chooser_name_string; # 'should' be compared with address-equals in javascript land, but this is faster
+  end
+
   JSLIBFIGURE_FILES = %w(polyfill.js util.js move.js chooser.js param.js define-figure.js figure.es6 after-figure.js dance.js)
 
   private

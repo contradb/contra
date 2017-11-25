@@ -144,5 +144,11 @@ RSpec.describe JSLibFigure do
     expect(JSLibFigure.wrist_grips).to eq(['', 'wrist grip', 'hands across'])
   end
 
+  it 'parameter_uses_chooser' do
+    formal_parameter = JSLibFigure.formal_parameters('swing').first
+    expect(JSLibFigure.parameter_uses_chooser(formal_parameter, 'chooser_pairz')).to be(true)
+    expect(JSLibFigure.parameter_uses_chooser(formal_parameter, 'chooser_half_or_full')).to be(false)
+  end
+
   pending 'test the whole libfigure library, ha ha'
 end

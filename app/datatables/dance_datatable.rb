@@ -103,11 +103,11 @@ class DanceDatatable < AjaxDatatablesRails::Base
   end
 
   def self.param_passes_filter?(formal_param, dance_param, param_filter)
-    if formal_param['ui'] == 'chooser_text' # TODO this needs a better test
+    if JSLibFigure.parameter_uses_chooser(formal_param, 'chooser_text')
       # substring search
       keywords = param_filter.split(' ')
       keywords.any? {|keyword| dance_param.include?(keyword)}
-    elsif formal_param['ui'] == 'chooser_half_or_full' # TODO this needs a better test
+    elsif JSLibFigure.parameter_uses_chooser(formal_param, 'chooser_half_or_full')
       param_filter == '*' || param_filter.to_f == dance_param.to_f
     else
       # asterisk always matches, or exact match
