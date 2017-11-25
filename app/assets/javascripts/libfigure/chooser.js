@@ -12,7 +12,7 @@
 // Choosers are referenced by global variables, e.g. chooser_boolean evaluates to a chooser object. 
 // Choosers can be compared with == in this file and in angular controller scopey thing.
 // They are basically a big enum with all the functionality in a giant case statement in dances/_form.erb
-// TODO: update this comment with further information about how choosers integrate with filters
+// They also have to define dance filter UI in app/assets/javascripts/welcome.js
 
 var defined_choosers = {};
 

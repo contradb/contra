@@ -207,6 +207,9 @@ function chooserSelect(chooser, options) {
 }
 
 
+chooserWidgetType[chooser_revolutions] = 'select';
+chooserWidgetType[chooser_places] = 'select';
+
 chooserToFilterHtml[chooser_revolutions] = 
 chooserToFilterHtml[chooser_places] = function(move) {
   var options = ['<option value="*">*</option>'].concat(
@@ -267,6 +270,7 @@ chooserSelect(chooser_zig_zag_ender, ['*', ['ring', 'into a ring'], ['allemande'
 chooserRadioButtons(chooser_go_back, ['*', [true, 'forward &amp; back'], [false, 'forward']]);
 chooserRadioButtons(chooser_give, ['*', [true,'give &amp; take'], [false,'take']]);
 chooserRadioButtons(chooser_half_or_full, ['*', [0.5,'half'], [1.0,'full']]);
+// additional choosers go here -dm 11-24-2017
 
 
 function doesChooserFilterUseSelect(chooser) {
@@ -276,9 +280,6 @@ function doesChooserFilterUseSelect(chooser) {
 function doesChooserFilterUseRadio(chooser) {
   return 'radio' === chooserWidgetType[chooser];
 }
-
-
-// TODO: add more choosers
 
 var _uniqueNameForRadioCounter = 9000;
 function generateUniqueNameForRadio() {
@@ -330,7 +331,6 @@ function buildFigureQuery(figure_filter) {
   figure_filter = $(figure_filter);
   var op = figure_filter.children('.figure-filter-op').val();
   if (op === 'figure') {
-    // TODO: this then-clause is getting big - relo to it's own function?
     var move = figure_filter.children('.figure-filter-move').val();
     var a = [op, move];
     if (accordionIsHidden(figure_filter)) { 
@@ -339,12 +339,7 @@ function buildFigureQuery(figure_filter) {
     var formals = isMove(move) ? parameters(move) : [];
     formals.forEach(function(formal, i) {
       var chooser = $(figure_filter.children('.figure-filter-accordion').find('.chooser-row')[i]).find('.chooser-argument');
-      // TODO: add more choosers
-      // TODO: refactor old choosers to use doesChooserFilterUseSelect et al
-      if (chooser_places === formal.ui || chooser_revolutions === formal.ui) {
-        var degrees = chooser.val();
-        a.push(degrees);
-      } else if (doesChooserFilterUseSelect(formal.ui)) {
+      if (doesChooserFilterUseSelect(formal.ui)) {
         var val = chooser.val();
         a.push(val);
       } else if (doesChooserFilterUseRadio(formal.ui)) {
@@ -353,7 +348,7 @@ function buildFigureQuery(figure_filter) {
       } else if (chooser_text === formal.ui) {
         var text = chooser.val();
         a.push(text);
-      } else {
+      } else { // add complicated choosers here
         a.push('*');
       }
     });
