@@ -184,11 +184,11 @@ function chooserRadioButtons(chooser, options) {
     var name = generateUniqueNameForRadio();
     var first_time = true;
     var radios = options.map(function(dancer){
-      var dancer_value = Array.isArray(dancer) ? dancer[0] : dancer;
-      var dancer_label = Array.isArray(dancer) ? dancer[1] : dancer;
+      var value = Array.isArray(dancer) ? dancer[0] : dancer;
+      var label = Array.isArray(dancer) ? dancer[1] : dancer;
       var checked = first_time ? 'checked=checked' : '';
       first_time=false;
-      return div_start+"<label class='"+label_class+"'><input type='radio' name='"+name+"' value='"+dancer_value+"' "+checked+" />"+dancer_label+"</label>"+div_end;
+      return div_start+"<label class='"+label_class+"'><input type='radio' name='"+name+"' value='"+value+"' "+checked+" />"+label+"</label>"+div_end;
     });
     return "<div class='chooser-argument'>"+radios.join('')+"</div>";
   };
@@ -265,8 +265,8 @@ chooserSelect(chooser_down_the_hall_ender,
 chooserSelect(chooser_zig_zag_ender, ['*', ['ring', 'into a ring'], ['allemande', 'training two catch hands']]);
 
 chooserRadioButtons(chooser_go_back, ['*', [true, 'forward &amp; back'], [false, 'forward']]);
-
 chooserRadioButtons(chooser_give, ['*', [true,'give &amp; take'], [false,'take']]);
+chooserRadioButtons(chooser_half_or_full, ['*', [0.5,'half'], [1.0,'full']]);
 
 
 function doesChooserFilterUseSelect(chooser) {

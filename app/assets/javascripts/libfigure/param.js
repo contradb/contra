@@ -242,7 +242,7 @@ function stringParamHalfOrFullNotN(default_value) {
     } else if ('*' === value) {
       return '*';
     } else {
-      throw_up('bad half_or_full parameter value: '+value);
+      throw_up('bad half_or_full parameter value: '+value+' of type '+ (typeof value));
     }
   };
 }

@@ -20,12 +20,23 @@ var figureSentenceDispatchTable = {
   'anything but': sentenceForAnythingBut
 };
 
+function destringifyFigureParam(param) {
+  // good enough for now, lol. Maybe want to take arbitrary numbers or bools or something.
+  if ('0.5' === param) {
+    return 0.5;
+  } else if ('1.0' === param || '1' === param) {
+    return 1.0;
+  } else {
+    return param;
+  }
+}
+
 function sentenceForFigure(query, article) {
   var move = query[1];
   if (move === '*') {
     return (article === 'a') ? 'any figure' : (article +' figure');
   } else {
-    var params = query.slice(2);
+    var params = query.slice(2).map(destringifyFigureParam);
     var fig = {move: move, parameter_values: params};
     var fig_text = parameters(move).length === params.length ? figure_html_readonly(fig) : move;
     if (article === 'a') {

@@ -497,6 +497,21 @@ describe 'Welcome page', js: true do
           expect(page).to_not have_content(unspec.title)
           expect(page).to have_content(circle.title)
         end
+
+        it "half_or_full filter works" do
+          hey = FactoryGirl.create(:dance_with_a_full_hey)
+          dances
+
+          select('hey',  match: :prefer_exact)
+          click_button('...')
+          choose('full')
+ 
+          dances.each do |dance|
+            expect(page).to_not have_content(dance.title)
+          end
+          expect(page).to have_content(hey.title)
+          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","hey","*","1","*","*"]')
+        end
       end
     end
   end

@@ -107,6 +107,8 @@ class DanceDatatable < AjaxDatatablesRails::Base
       # substring search
       keywords = param_filter.split(' ')
       keywords.any? {|keyword| dance_param.include?(keyword)}
+    elsif formal_param['ui'] == 'chooser_half_or_full' # TODO this needs a better test
+      param_filter == '*' || param_filter.to_f == dance_param.to_f
     else
       # asterisk always matches, or exact match
       param_filter == '*' || param_filter.to_s == dance_param.to_s
