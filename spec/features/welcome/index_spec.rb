@@ -262,25 +262,13 @@ describe 'Welcome page', js: true do
         expect(page).to have_button('...', count: 2)
       end
 
-      context 'color' do
-        before (:each) do
-          select('chain')        
-        end
-
-        it "does not have class 'figure-toggle' initially" do
-          expect(page).to_not have_css('.figure-filter-ellipsis.ellipsis-expanded')
-        end
-
-        it "does have class 'figure-toggle' after click" do
-          click_button '...'
-          expect(page).to have_css('.figure-filter-ellipsis.ellipsis-expanded')
-        end
-
-        it "does not have class 'figure-toggle' after two clicks" do
-          click_button '...'
-          click_button '...'
-          expect(page).to_not have_css('.figure-filter-ellipsis.ellipsis-expanded')
-        end
+      it "clicking '...' toggles 'ellipsis-expanded' class" do
+        select('chain')
+        expect(page).to_not have_css('.figure-filter-ellipsis.ellipsis-expanded')
+        click_button '...'
+        expect(page).to have_css('.figure-filter-ellipsis.ellipsis-expanded')
+        click_button '...'
+        expect(page).to_not have_css('.figure-filter-ellipsis.ellipsis-expanded')
       end
 
       context 'accordion' do
@@ -376,11 +364,17 @@ describe 'Welcome page', js: true do
         end
 
         it 'labels appear on chooser elements' do
-          select('swing')
           click_button('...')
+          select('swing')                            # swing uses simple label system
           expect(page).to have_content('bal')
           expect(page).to have_content('who')
           expect(page).to have_content('beats')
+          select('allemande orbit')                  # allemande orbit uses fancier label system
+          expect(page).to have_content('who')
+          expect(page).to have_content('allemande')
+          expect(page).to have_content('inner')
+          expect(page).to have_content('outer')
+          expect(page).to have_content('for')
         end
 
         it "allemande with ladles finds only 'Box the Gnat'" do
