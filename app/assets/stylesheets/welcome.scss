@@ -86,11 +86,38 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
   margin-left: 0.4em;          
 }
 
-
 #figure-filter-root {
   margin-left: 0em;
 }
 
 #figure-query-buffer {
-  display: none;
+  display: none; 
+}
+
+
+.figure-filter .ellipsis-expanded {
+   @extend .btn-primary;
+}
+
+.figure-filter-accordion {
+  margin-left: 2em;
+  tr {
+    min-height: 34px;
+    div.radio {
+      display: block;           /* Bootstrap why aren't you stacking them without this? */
+      line-height: 34px;
+    }
+  }
+}
+
+.chooser-label-text {
+  text-align: right;
+  vertical-align: top;
+  line-height: 34px;            /* sync to form-control */
+  /* display: inline-block; */
+  padding-right: 2em;
+}
+
+select.chooser-argument {
+  min-width: 10em;
 }

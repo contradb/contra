@@ -6,6 +6,7 @@ var invertPairHash =
        ,"twos": "ones"
        ,"first corners": "second corners"
        ,"second corners": "first corners"
+       ,"*": "*"
       };
 // If this names 2 dancers, this returns the names for the other 2 dancers
 // it's sketchy, because it assumes 4 dancers, so only use it in contra moves

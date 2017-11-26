@@ -90,5 +90,65 @@ RSpec.describe JSLibFigure do
     expect(beats['value']).to eq 4
   end
 
+  describe 'is_move?' do
+    it "'circle' => true" do
+      expect(JSLibFigure.is_move?('circle')).to be(true)
+    end
+
+    it "'flibbergibit' => false" do
+      expect(JSLibFigure.is_move?('flibbergibit')).to be(false)
+    end
+  end
+
+  describe 'angles_for_move' do
+    it "'circle' => [90,180,270,360,450,540,630,720,810,900]" do
+      expect(JSLibFigure.angles_for_move('circle')).to eq([90,180,270,360,450,540,630,720,810,900])
+    end
+
+    it "'allemande' => [90,180,270,360,450,540,630,720,810,900]" do
+      expect(JSLibFigure.angles_for_move('allemande')).to eq([90,180,270,360,450,540,630,720,810,900])
+    end
+
+    it "'square through' => [180, 270, 360]" do
+      expect(JSLibFigure.angles_for_move('square through')).to eq([180, 270, 360])
+    end
+
+    it "'box circulate' => [90, 180, 270, 360]" do
+      expect(JSLibFigure.angles_for_move('box circulate')).to eq([90, 180, 270, 360])
+    end
+  end
+
+  describe 'degrees_to_words' do
+    it "(90, 'circle') => '1 place'" do
+      expect(JSLibFigure.degrees_to_words(270, 'circle')).to eq('3 places')
+    end
+
+    it "(270, 'circle') => '3 places'" do
+      expect(JSLibFigure.degrees_to_words(270, 'circle')).to eq('3 places')
+    end
+
+    it "(360, 'circle') => '4 places'" do
+      expect(JSLibFigure.degrees_to_words(360, 'circle')).to eq('4 places')
+    end
+
+    it "(360, 'allemande') => 'once'" do
+      expect(JSLibFigure.degrees_to_words(360, 'allemande')).to eq('once')
+    end
+ 
+    it "(90) => '90 degrees'" do
+      expect(JSLibFigure.degrees_to_words(90)).to eq('90 degrees')
+    end
+  end
+
+  it 'wrist_grips' do
+    expect(JSLibFigure.wrist_grips).to eq(['', 'wrist grip', 'hands across'])
+  end
+
+  it 'parameter_uses_chooser' do
+    formal_parameter = JSLibFigure.formal_parameters('swing').first
+    expect(JSLibFigure.parameter_uses_chooser(formal_parameter, 'chooser_pairz')).to be(true)
+    expect(JSLibFigure.parameter_uses_chooser(formal_parameter, 'chooser_half_or_full')).to be(false)
+  end
+
   pending 'test the whole libfigure library, ha ha'
 end

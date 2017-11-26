@@ -18,8 +18,12 @@ module JSLibFigure
     figure_ruby_hash['move']
   end
 
+  def self.is_move?(move)
+    move.in?(moves)
+  end
+
   def self.moves
-    self.eval('moves()')
+    @moves ||= self.eval('moves()')
   end
 
   def self.de_alias_move(move_str)
@@ -38,8 +42,21 @@ module JSLibFigure
     move_string ? self.eval("teachingName(#{move_string.inspect})") : "empty figure"
   end
 
+  def self.angles_for_move(move_string)
+    self.eval("anglesForMove(#{move_string.inspect})")
+  end
+
+  def self.degrees_to_words(degrees, optional_move=nil)
+    if optional_move
+      self.eval("degreesToWords(#{degrees}, #{optional_move.inspect})")
+    else
+      self.eval("degreesToWords(#{degrees})")
+    end
+  end
+
   def self.formal_parameters(move_string)
-    self.eval("parameters(#{move_string.inspect})")
+    @formal_parameters ||= {}
+    @formal_parameters[move_string] ||= self.eval("parameters(#{move_string.inspect})")
   end
 
   def self.sanitize_json(figures_json_string)
@@ -78,6 +95,16 @@ module JSLibFigure
     moves.find {|move| regexp =~ move}
   end
 
+  def self.wrist_grips
+    self.eval("wristGrips;")
+  end
+
+  def self.parameter_uses_chooser(formal_parameter, chooser_name_string)
+    formal_parameter['ui'] == chooser_name_string; # 'should' be compared with address-equals in javascript land, but this is faster
+  end
+
+  JSLIBFIGURE_FILES = %w(polyfill.js util.js move.js chooser.js param.js define-figure.js figure.es6 after-figure.js dance.js)
+
   private
   def self.eval(string_of_javascript)
     context.eval(string_of_javascript)
@@ -89,7 +116,7 @@ module JSLibFigure
 
   def self.new_context
     context = MiniRacer::Context.new
-    %w(polyfill.js util.js move.js chooser.js param.js define-figure.js figure.es6 after-figure.js dance.js).each do |file|
+    JSLIBFIGURE_FILES.each do |file|
       context.load(Rails.root.join('app','assets','javascripts','libfigure',file))
     end
     context

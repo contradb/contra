@@ -43,30 +43,27 @@ function defaultFigures (figures) {
 
 // =====================================================================================
 
-function user_changed_parameter (figure, index) {
-    var fig_def = defined_events[figure.move];
-    if (fig_def && fig_def.props.change)
-        fig_def.props.change(figure, index)
+function userChangedParameter (figure, index) {
+  var fig_def = defined_events[figure.move];
+  if (fig_def && fig_def.props.change) {
+    fig_def.props.change(figure, index);
+  }
 }
 
-function user_changed_move (figure) {
-    var params = parameters(figure.move);
-    figure.parameter_values = [];
-    for (var i=0; i<params.length; i++)
-        figure.parameter_values[i] = params[i].value
+function userChangedMove (figure) {
+  var params = parameters(figure.move);
+  figure.parameter_values = [];
+  for (var i=0; i<params.length; i++) {
+    figure.parameter_values[i] = params[i].value;
+  }
 }
 
-function parameter_label (movestring, index) {
+function parameterLabel (movestring, index) {
   var fig_def = defined_events[movestring];
   var ps = parameters(movestring);
   return (fig_def && fig_def.props && fig_def.props.labels && fig_def.props.labels[index]) ||
-    (ps[index] && ps[index].name)
+    (ps[index] && ps[index].name);
 }
-
-// =====================================================================================
-
-
-
 
 // =====================================================================================
 
@@ -103,9 +100,9 @@ function menuMoveLabel(from,to) {
         $scope.wristGrips = wristGrips;
         $scope.figure_html_readonly = figure_html_readonly;
         $scope.set_if_unset = set_if_unset;
-        $scope.user_changed_parameter = user_changed_parameter
-        $scope.user_changed_move = user_changed_move
-        $scope.parameter_label = parameter_label
+        $scope.userChangedParameter = userChangedParameter
+        $scope.userChangedMove = userChangedMove
+        $scope.parameterLabel = parameterLabel
         $scope.edit_index_box = []
         $scope.clickFigure = function(figureIdx) {
           if ($scope.edit_index_box[0] === figureIdx) {

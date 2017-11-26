@@ -7,6 +7,23 @@ FactoryGirl.define do
     figures_json '[{"parameter_values":["neighbors",true,16],"move":"swing"},{"parameter_values":[true, 8],"move":"long lines"},{"parameter_values":["ladles",true,540,8],"move":"do si do"},{"parameter_values":["partners",true,16],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":[true,2],"move":"slide along set"},{"parameter_values":[true,270,6],"move":"circle"}]'
   end
 
+  factory :box_the_gnat_contra, class: Dance do
+    title      'Box the Gnat Contra'
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json '[{"parameter_values":["neighbors",true,true,8],"move":"box the gnat"},{"parameter_values":["partners",true,false,8],"move":"swat the flea"},{"parameter_values":["neighbors",true,16],"move":"swing"},{"parameter_values":["ladles",true,540,8],"move":"allemande"},{"parameter_values":["partners",false,8],"move":"swing"},{"parameter_values":["across",8],"move":"right left through"},{"parameter_values":["ladles","across",8],"move":"chain"}]'
+    notes 'swat the flea variation'
+  end
+
+  factory :call_me, class: Dance do
+    title "Call Me"
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'Becket ccw'
+    figures_json '[{"parameter_values":["across",8],"move":"right left through"},{"parameter_values":["ladles","across",8],"move":"chain"},{"parameter_values":[false,360,"",8],"move":"star","note":"look for new neighbor"},{"parameter_values":["neighbors",false,8],"move":"swing"},{"parameter_values":[true,270,8],"move":"circle"},{"parameter_values":["ladles",0.5,"across",8],"move":"hey"},{"parameter_values":["partners",true,16],"move":"swing"}]'
+  end
+
   factory :dance_with_empty_figure, class: Dance do
     title      'Emptyish'
     user { FactoryGirl.create(:user) }
@@ -31,23 +48,60 @@ FactoryGirl.define do
     figures_json '[{"parameter_values":["neighbors",true,false,8],"move":"Rory O\'Moore"}]'
   end
 
-  factory :box_the_gnat_contra, class: Dance do
-    title      'Box the Gnat Contra'
+  factory :dance_with_a_circle_right, class: Dance do
+    title      'Just Circle Right'
     user { FactoryGirl.create(:user) }
-    choreographer { Choreographer.find_by(name: "Becky Hill") ||
-                    FactoryGirl.create(:choreographer, name: "Becky Hill") }
+    choreographer { FactoryGirl.create(:choreographer) }
     start_type 'improper'
-    figures_json '[{"parameter_values":["neighbors",true,true,8],"move":"box the gnat"},{"parameter_values":["partners",true,false,8],"move":"swat the flea"},{"parameter_values":["neighbors",true,16],"move":"swing"},{"parameter_values":["ladles",true,540,8],"move":"allemande"},{"parameter_values":["partners",false,8],"move":"swing"},{"parameter_values":["across",8],"move":"right left through"},{"parameter_values":["ladles","across",8],"move":"chain"}]'
-    notes 'swat the flea variation'
+    figures_json '[{"parameter_values":[false,270,8],"move":"circle"}]'
   end
 
-  factory :call_me, class: Dance do
-    title "Call Me"
+  factory :dance_with_a_gentlespoons_allemande_left_once, class: Dance do
+    title      'Just Allemande'
     user { FactoryGirl.create(:user) }
-    choreographer { Choreographer.find_by(name: "Cary Ravitz") ||
-                    FactoryGirl.create(:choreographer, name: "Cary Ravitz") }
-    start_type 'Becket ccw'
-    figures_json '[{"parameter_values":["across",8],"move":"right left through"},{"parameter_values":["ladles","across",8],"move":"chain"},{"parameter_values":[false,360,"",8],"move":"star","note":"look for new neighbor"},{"parameter_values":["neighbors",false,8],"move":"swing"},{"parameter_values":[true,270,8],"move":"circle"},{"parameter_values":["ladles",0.5,"across",8],"move":"hey"},{"parameter_values":["partners",true,16],"move":"swing"}]'
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json '[{"parameter_values":["gentlespoons",false,360,8],"move":"allemande"}]'
+  end
+
+  factory :dance_with_a_custom, class: Dance do
+    transient do
+      custom_text {'this is my custom text'}
+    end
+    sequence(:title) {|n| "CustomDance#{n}Boop"}
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json {"[{'parameter_values':[#{custom_text.inspect},8],'move':'custom'}]".gsub("'", '"')}
+  end
+
+  factory :dance_with_a_wrist_grip_star, class: Dance do
+    sequence(:title) {|n| "StarDance#{n}"}
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json {'[{"parameter_values":[true,360,"wrist grip",8],"move":"star"}]'}
+  end
+
+
+  factory :dance_with_a_down_the_hall, class: Dance do
+    transient do
+      march_facing {'forward'}
+      down_the_hall_ender {'turn-couples'}
+    end
+    sequence(:title) {|n| "DownTheHallDance#{n}"}
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json {"[{'parameter_values':['#{march_facing}','#{down_the_hall_ender}',8],'move':'down the hall'}]".gsub("'", '"')}
+  end
+
+  factory :dance_with_a_full_hey, class: Dance do
+    sequence(:title) {|n| "HeyDance#{n}"}
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json {'[{"parameter_values":["gentlespoons",1.0,"across",8],"move":"hey"}]'}
   end
 end
 
