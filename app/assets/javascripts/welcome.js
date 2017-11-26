@@ -292,13 +292,13 @@ function figureFilterMoveChange() {
   accordion.children().remove();
   var move = figureFilterMove.val();
   var formals = isMove(move) ? parameters(move) : [];
-  formals.forEach(function(formal) {
+  formals.forEach(function(formal, index) {
     var html_fn = chooserToFilterHtml[formal.ui] || function() {return '<div>'+formal.name+'</div>';};
     var chooser = $(html_fn(move));
     chooser.change(updateQuery);
     var chooser_td = $('<td></td>');
     chooser_td.append(chooser);
-    var label = $('<tr class="chooser-row"><td class="chooser-label-text">'+ formal.name +'</td></tr>');
+    var label = $('<tr class="chooser-row"><td class="chooser-label-text">'+ parameterLabel(move, index) +'</td></tr>');
     label.append(chooser_td);
     accordion.append(label);
   });

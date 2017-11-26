@@ -117,3 +117,7 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
   /* display: inline-block; */
   padding-right: 2em;
 }
+
+select.chooser-argument {
+  min-width: 10em;
+}

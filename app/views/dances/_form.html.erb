@@ -115,7 +115,7 @@
               <div class='figure-value-setter-div'>
                 <select ng-model="figure.move"
                         ng-options="m for m in moves()"
-                        ng-change="user_changed_move(figure)"
+                        ng-change="userChangedMove(figure)"
                         ng-attr-id="{{'move-'+figureIdx}}"
                         class='form-control'>
                 </select>
@@ -123,7 +123,7 @@
             </label>
             <div ng-repeat="p in parameters(figure.move)">
               <label class="figure-edit-label" ng-init="set_if_unset(figure.parameter_values, $index, p.value)">
-                <span class="figure-edit-label-text">{{parameter_label(figure.move, $index)}}</span>
+                <span class="figure-edit-label-text">{{parameterLabel(figure.move, $index)}}</span>
                 <div class='figure-value-setter-div'>
                   <%= render 'chooser' %>
                 </div>
