@@ -1,3 +1,5 @@
+// TODO: all these definitions should probalby only run if the page has a #dance-table
+
 function installEventHandlers(selector) {
   selector.find('.figure-filter-op').change(filterOpChanged);
   selector.find('.figure-filter-add').click(clickFilterAddSubfilter);
@@ -365,9 +367,17 @@ function accordionIsHidden($figure_filter) {
   return ! $figure_filter.children('.figure-filter-accordion').is(':visible');
 }
 
+function buildDOMtoMatchQuery(query) {
+  console.log('here');
+}
+
 ///////////////////// PAGE LOADED
 
 jQuery(document).ready(function() {
+  if (0 === $('#dances-table').length) {
+    return;                     // don't do any of this stuff if we're not on a page with a query.
+  }
+  
   updateQuery = function() {
     var fq = buildFigureQuery($('#figure-filter-root'));
     $('#figure-query-buffer').val(JSON.stringify(fq));
@@ -377,9 +387,17 @@ jQuery(document).ready(function() {
     }
   };
 
-  addFigureFilterMoveConstellation($('#figure-filter-root'));
-  installEventHandlers($('#figure-filter-root'));
-  updateQuery();
+  if (''===$('#figure-query-buffer').val()) {
+    // first time visiting the page, e.g. not returning via browser 'back' button
+    var root = $(filterHtml);
+    root.attr('id', 'figure-filter-root');
+    $('#figure-filter-root-container').append(root);
+    addFigureFilterMoveConstellation(root);
+    installEventHandlers(root);
+    updateQuery();
+  } else {
+    buildDOMtoMatchQuery($('#figure-query-buffer').val());
+  }
 
   // oh, I can't use arrays in params? Fine, I'll create hashes with indexes as keys
   function arrayToObject (a) {
