@@ -6,67 +6,66 @@
   </div>
 
 
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= devise_error_messages! %>
-
   <div class='form-group'>
-    <div class="row field">
-      <div class="col-sm-2 contra-label">Email:</div>
-      <div class='col-sm-6'><%= f.email_field :email, autofocus: true, class: 'form-control' %></div>
-      <div class="col-sm-4 understated">e.g. 'jane@gmail.com'</div>
-    </div>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+      <%= devise_error_messages! %>
 
-    <div class="row field">
-      <div class="col-sm-2 contra-label">Name:</div>
-      <div class='col-sm-6'><%= f.text_field :name, class: "form-control" %></div>
-      <div class="col-sm-4 understated">e.g. 'Cary Ravitz'</div>
-    </div>
+      <div class="row field">
+        <div class="col-sm-2 contra-label">Email:</div>
+        <div class='col-sm-6'><%= f.email_field :email, autofocus: true, class: 'form-control' %></div>
+        <div class="col-sm-4 understated">e.g. 'jane@gmail.com'</div>
+      </div>
 
-    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div class="row">
-      <div class="col-sm-2"></div>
-      <div class="col-sm-10">Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-    </div>
+      <div class="row field">
+        <div class="col-sm-2 contra-label">Name:</div>
+        <div class='col-sm-6'><%= f.text_field :name, class: "form-control" %></div>
+        <div class="col-sm-4 understated">e.g. 'Cary Ravitz'</div>
+      </div>
+
+      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10">Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+      </div>
+      <% end %>
+
+      <div class="row field">
+        <div class="col-sm-2 contra-label">Current Password:</div>
+        <div class='col-sm-6'><%= f.password_field :current_password, autocomplete: "off", class: "form-control" %></div>
+        <div class="col-sm-4 understated">* required</div>
+      </div>
+
+      <div class="row field">
+        <div class="col-sm-2 contra-label">New Password:</div>
+        <div class='col-sm-6'><%= f.password_field :password, autocomplete: "off", class: "form-control" %></div>
+        <div class="col-sm-4 understated">leave blank if you don't want to change it</div>
+      </div>
+
+      <div class="row field">
+        <div class="col-sm-2 contra-label">New Password Confirm:</div>
+        <div class='col-sm-6'><%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %></div>
+        <div class="col-sm-4 understated"></div>
+      </div>
+
+      <div class="row actions">
+        <div class="col-sm-2"></div>
+        <div class='col-sm-2'><%= save_submit_button_html "Update", class: 'btn-block' %></div>
+      </div>
     <% end %>
 
-    <div class="row field">
-      <div class="col-sm-2 contra-label">New Password:</div>
-      <div class='col-sm-6'><%= f.password_field :password, autocomplete: "off", class: "form-control" %></div>
-      <div class="col-sm-4 understated">leave blank if you don't want to change it</div>
+    <div class="row">
+      <div class="col-sm-2"></div>
+      <h2 class="col-sm-10">Delete Account</h2>
     </div>
 
-    <div class="row field">
-      <div class="col-sm-2 contra-label">New Password Confirm:</div>
-      <div class='col-sm-6'><%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %></div>
-      <div class="col-sm-4 understated"></div>
-    </div>
-
-    <div class="row field">
-      <div class="col-sm-2 contra-label">Current Password:</div>
-      <div class='col-sm-6'><%= f.password_field :current_password, autocomplete: "off", class: "form-control" %></div>
-      <div class="col-sm-4 understated">* required</div>
+    <div class="row">
+      <div class="col-sm-2"></div>
+      <div class='col-sm-2'>
+        <%= button_to "Delete",
+            registration_path(resource_name),
+            {class: "btn btn-danger btn-lg btn-block", data: {confirm: "Really delete account?"}, method: :delete}
+            %>
+      </div>
     </div>
   </div> <!-- form group -->
-
-  <div class="row actions">
-    <div class="col-sm-2"></div>
-    <div class='col-sm-2'><%= save_submit_button_html "Update", class: 'btn-block' %></div>
-  </div>
-
-
-  <div class="row">
-    <div class="col-sm-2"></div>
-    <h2 class="col-sm-10">Delete Account</h2>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-2"></div>
-    <div class='col-sm-2'>
-      <%= button_to "Delete",
-          registration_path(resource_name),
-          {class: "btn btn-danger btn-lg btn-block", data: {confirm: "Really delete account?"}, method: :delete}
-          %>
-    </div>
-  </div>
-  <% end %>
 </div>
