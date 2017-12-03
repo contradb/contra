@@ -508,5 +508,19 @@ describe 'Welcome page', js: true do
         end
       end
     end
+
+    describe 'back button' do
+      it 'works' do
+        dances
+        visit '/'
+        select('allemande')
+        click_link('Box the Gnat Contra')
+        expect(page).to have_content('partners swing')
+        page.go_back
+        move_selector = '#figure-filter-root>.figure-filter-move'
+        expect(page).to have_css(move_selector, count: 1)
+        expect(find(move_selector).value).to eq('allemande')
+      end
+    end
   end
 end

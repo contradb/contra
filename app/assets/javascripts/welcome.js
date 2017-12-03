@@ -368,7 +368,24 @@ function accordionIsHidden($figure_filter) {
 }
 
 function buildDOMtoMatchQuery(query) {
-  console.log('here');
+  console.log('buildDOMtoMatchQuery '+query);
+  var op = query[0];
+  var figureFilter = $(filterHtml);
+
+  switch(op) {
+  case 'figure':
+    addFigureFilterMoveConstellation(figureFilter);
+    installEventHandlers(figureFilter);
+    figureFilter.children('.figure-filter-move').val(query[1]);
+    break;
+  default:
+    figureFilter.children('.figure-filter-op').val(op);
+    for (var i=1; i<query.length; i++) {
+      figureFilter.append(buildDOMtoMatchQuery(query[i]));
+    }
+    break;
+  }
+  return figureFilter;
 }
 
 ///////////////////// PAGE LOADED
@@ -396,7 +413,10 @@ jQuery(document).ready(function() {
     installEventHandlers(root);
     updateQuery();
   } else {
-    buildDOMtoMatchQuery($('#figure-query-buffer').val());
+    var root = buildDOMtoMatchQuery(JSON.parse($('#figure-query-buffer').val()));
+    $('#figure-filter-root-container').append(root);
+    root.attr('id', 'figure-filter-root');
+    // TODO: rebuild sentance
   }
 
   // oh, I can't use arrays in params? Fine, I'll create hashes with indexes as keys
