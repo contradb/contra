@@ -30,6 +30,12 @@
       <% end %>
 
       <div class="row field">
+        <div class="col-sm-2 contra-label">Current Password:</div>
+        <div class='col-sm-6'><%= f.password_field :current_password, autocomplete: "off", class: "form-control" %></div>
+        <div class="col-sm-4 understated">* required</div>
+      </div>
+
+      <div class="row field">
         <div class="col-sm-2 contra-label">New Password:</div>
         <div class='col-sm-6'><%= f.password_field :password, autocomplete: "off", class: "form-control" %></div>
         <div class="col-sm-4 understated">leave blank if you don't want to change it</div>
@@ -39,12 +45,6 @@
         <div class="col-sm-2 contra-label">New Password Confirm:</div>
         <div class='col-sm-6'><%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %></div>
         <div class="col-sm-4 understated"></div>
-      </div>
-
-      <div class="row field">
-        <div class="col-sm-2 contra-label">Current Password:</div>
-        <div class='col-sm-6'><%= f.password_field :current_password, autocomplete: "off", class: "form-control" %></div>
-        <div class="col-sm-4 understated">* required</div>
       </div>
 
       <div class="row actions">
