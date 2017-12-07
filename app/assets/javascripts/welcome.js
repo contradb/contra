@@ -85,7 +85,6 @@ function filterOpChanged(e) {
   var opSelect = $(e.target);
   var filter = opSelect.closest('.figure-filter');
   var op = opSelect.val();
-  console.log('figureOpChanged to '+op);
   var actualSubfilterCount = filter.children('.figure-filter').length;
   while (actualSubfilterCount > maxSubfilterCount(op)) {
     filter.children('.figure-filter').last().remove();
@@ -159,7 +158,8 @@ function addFigureFilterMoveConstellation(filter) {
 function makeFigureFilterMoveSelect(filter) {
   return $(figureMoveHtml).change(function () {
     var $move = $(this);
-    populateAccordionForMove($move, $move.val());
+    var $accordion = $move.siblings('.figure-filter-accordion');
+    populateAccordionForMove($accordion, $move.val());
     updateQuery();
   });
 }
@@ -293,19 +293,19 @@ function generateUniqueNameForRadio() {
   return 'uniqueNameForRadio' + _uniqueNameForRadioCounter++;
 }
 
-function populateAccordionForMove(figureFilterMove, move) {
-  console.log("populateAccordionForMove "+move);
-  var accordion = figureFilterMove.siblings('.figure-filter-accordion');
+function populateAccordionForMove(accordion, move, optional_parameter_values) {
+  optional_parameter_values = optional_parameter_values || [];
   accordion.children().remove();
   var formals = isMove(move) ? parameters(move) : [];
   formals.forEach(function(formal, index) {
     var html_fn = chooserToFilterHtml[formal.ui] || function() {return '<div>'+formal.name+'</div>';};
     var chooser = $(html_fn(move));
-    console.log('installing accordion param change fn');
+    if (index < optional_parameter_values.length) { chooser.val(optional_parameter_values[index]); }
     chooser.change(updateQuery);
     var chooser_td = $('<td></td>');
     chooser_td.append(chooser);
     var label = $('<tr class="chooser-row"><td class="chooser-label-text">'+ parameterLabel(move, index) +'</td></tr>');
+    console.log('formal '+parameterLabel(move, index));
     label.append(chooser_td);
     accordion.append(label);
   });
@@ -373,7 +373,6 @@ function accordionIsHidden($figure_filter) {
 }
 
 function buildDOMtoMatchQuery(query) {
-  console.log('buildDOMtoMatchQuery '+query);
   var op = query[0];
   var figureFilter = $(filterHtml);
 
@@ -387,7 +386,7 @@ function buildDOMtoMatchQuery(query) {
       figureFilter.children('.figure-filter-ellipsis').toggleClass('ellipsis-expanded');
       var accordion = figureFilter.children('.figure-filter-accordion');
       accordion.show();
-      populateAccordionForMove(accordion, query[1]);
+      populateAccordionForMove(accordion, query[1], query.slice(2));
     }
     break;
   default:
@@ -410,8 +409,6 @@ jQuery(document).ready(function() {
   updateQuery = function() {
     var fq = buildFigureQuery($('#figure-filter-root'));
     $('#figure-query-buffer').val(JSON.stringify(fq));
-    console.log('fq = ');
-    console.log(fq);
     $('.figure-query-sentence').text(buildFigureSentence(fq));
     if (dataTable) {
       dataTable.draw(); 

@@ -529,8 +529,8 @@ describe 'Welcome page', js: true do
         expect(all(move_selector).last.value).to eq('allemande')
         expect(page).to have_css('.figure-filter-ellipsis.ellipsis-expanded', count: 1)
         expect(page).to have_css('.figure-filter-accordion', count: 1, visible: true)
-        expect(page).to have_css('.chooser-argument', count: 3)
-        expect(all(".chooser-argument").first.value).to be('ladles')
+        expect(page).to have_css('.chooser-argument', count: 4)
+        expect(all(".chooser-argument").first.value).to eq('ladles')
         # select who=ladles and and hand=right
         expect(false).to eq(true)
       end
