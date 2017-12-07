@@ -513,13 +513,26 @@ describe 'Welcome page', js: true do
       it 'works' do
         dances
         visit '/'
-        select('allemande')
+        select('and')
+        expect(page).to have_css('.figure-filter-move', count: 2) # wait for js to run
+        all('.figure-filter-move').first.select('swing')
+        all('.figure-filter-move').last.select('allemande')
+        all('.figure-filter-ellipsis').last.click
+        select('ladles')        # ladles allemande right
+        choose('right')
         click_link('Box the Gnat Contra')
-        expect(page).to have_content('partners swing')
+        expect(page).to have_content('partners swing') # wait for page to load
         page.go_back
-        move_selector = '#figure-filter-root>.figure-filter-move'
-        expect(page).to have_css(move_selector, count: 1)
-        expect(find(move_selector).value).to eq('allemande')
+        move_selector = '.figure-filter-move'
+        expect(page).to have_css(move_selector, count: 2)
+        expect(all(move_selector).first.value).to eq('swing')
+        expect(all(move_selector).last.value).to eq('allemande')
+        expect(page).to have_css('.figure-filter-ellipsis.ellipsis-expanded', count: 1)
+        expect(page).to have_css('.figure-filter-accordion', count: 1, visible: true)
+        expect(page).to have_css('.chooser-argument', count: 3)
+        expect(all(".chooser-argument").first.value).to be('ladles')
+        # select who=ladles and and hand=right
+        expect(false).to eq(true)
       end
     end
   end

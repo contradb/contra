@@ -75,9 +75,9 @@ function minUsefulSubfilterCount(op) {
 }
 
 function clickEllipsis(e) {
-  var $this = $(this);
-  $this.toggleClass('ellipsis-expanded');
-  $this.siblings('.figure-filter-accordion').toggle();
+  var $move = $(this);
+  $move.toggleClass('ellipsis-expanded');
+  $move.siblings('.figure-filter-accordion').toggle();
   updateQuery();
 }
 
@@ -85,6 +85,7 @@ function filterOpChanged(e) {
   var opSelect = $(e.target);
   var filter = opSelect.closest('.figure-filter');
   var op = opSelect.val();
+  console.log('figureOpChanged to '+op);
   var actualSubfilterCount = filter.children('.figure-filter').length;
   while (actualSubfilterCount > maxSubfilterCount(op)) {
     filter.children('.figure-filter').last().remove();
@@ -123,14 +124,14 @@ function ensureChildRemoveButtons(filter) {
   var op = filter.children('.figure-filter-op').val();
   if (subfilters.length > minSubfilterCount(op)) {
     subfilters.each(function () {
-      var $this = $(this);
-      if (0 === $this.children('.figure-filter-remove').length) {
+      var $subfilter = $(this);
+      if (0 === $subfilter.children('.figure-filter-remove').length) {
         var removeButton = $(removeButtonHtml);
         removeButton.click(filterRemoveSubfilter);
-        if ($this.children('.figure-filter').length > 0) {
-          $this.children('.figure-filter').first().before(removeButton);
+        if ($subfilter.children('.figure-filter').length > 0) {
+          $subfilter.children('.figure-filter').first().before(removeButton);
         } else {
-          $this.children('.figure-filter-end-of-subfigures').before(removeButton);
+          $subfilter.children('.figure-filter-end-of-subfigures').before(removeButton);
         }
       }
     });
@@ -156,7 +157,11 @@ function addFigureFilterMoveConstellation(filter) {
 }
 
 function makeFigureFilterMoveSelect(filter) {
-  return $(figureMoveHtml).change(figureFilterMoveChange);
+  return $(figureMoveHtml).change(function () {
+    var $move = $(this);
+    populateAccordionForMove($move, $move.val());
+    updateQuery();
+  });
 }
 
 function makeFigureFilterEllipsisButton(filter) {
@@ -288,15 +293,15 @@ function generateUniqueNameForRadio() {
   return 'uniqueNameForRadio' + _uniqueNameForRadioCounter++;
 }
 
-function figureFilterMoveChange() {
-  var figureFilterMove = $(this);
+function populateAccordionForMove(figureFilterMove, move) {
+  console.log("populateAccordionForMove "+move);
   var accordion = figureFilterMove.siblings('.figure-filter-accordion');
   accordion.children().remove();
-  var move = figureFilterMove.val();
   var formals = isMove(move) ? parameters(move) : [];
   formals.forEach(function(formal, index) {
     var html_fn = chooserToFilterHtml[formal.ui] || function() {return '<div>'+formal.name+'</div>';};
     var chooser = $(html_fn(move));
+    console.log('installing accordion param change fn');
     chooser.change(updateQuery);
     var chooser_td = $('<td></td>');
     chooser_td.append(chooser);
@@ -304,7 +309,6 @@ function figureFilterMoveChange() {
     label.append(chooser_td);
     accordion.append(label);
   });
-  updateQuery();
 }
 
 function clickFilterAddSubfilter(e) {
@@ -320,6 +324,7 @@ function filterAddSubfilter(parentFilter) { // caller should updateQuery() when 
   ensureChildRemoveButtons(parentFilter);
   var op = parentFilter.children('.figure-filter-op').val();
   childFilter.attr('data-op', op);
+  updateQuery();
 }
 
 function filterRemoveSubfilter(e) {
@@ -377,6 +382,13 @@ function buildDOMtoMatchQuery(query) {
     addFigureFilterMoveConstellation(figureFilter);
     installEventHandlers(figureFilter);
     figureFilter.children('.figure-filter-move').val(query[1]);
+    if (query.length > 2) {
+      // ... was clicked
+      figureFilter.children('.figure-filter-ellipsis').toggleClass('ellipsis-expanded');
+      var accordion = figureFilter.children('.figure-filter-accordion');
+      accordion.show();
+      populateAccordionForMove(accordion, query[1]);
+    }
     break;
   default:
     figureFilter.children('.figure-filter-op').val(op);
@@ -398,6 +410,8 @@ jQuery(document).ready(function() {
   updateQuery = function() {
     var fq = buildFigureQuery($('#figure-filter-root'));
     $('#figure-query-buffer').val(JSON.stringify(fq));
+    console.log('fq = ');
+    console.log(fq);
     $('.figure-query-sentence').text(buildFigureSentence(fq));
     if (dataTable) {
       dataTable.draw(); 
