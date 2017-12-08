@@ -518,8 +518,9 @@ describe 'Welcome page', js: true do
         all('.figure-filter-move').first.select('swing')
         all('.figure-filter-move').last.select('allemande')
         all('.figure-filter-ellipsis').last.click
-        select('ladles')        # ladles allemande right
+        select('ladles')        # ladles allemande right 1½ for '*' beats
         choose('right')
+        select('1½')
         click_link('Box the Gnat Contra')
         expect(page).to have_content('partners swing') # wait for page to load
         page.go_back
@@ -530,9 +531,16 @@ describe 'Welcome page', js: true do
         expect(page).to have_css('.figure-filter-ellipsis.ellipsis-expanded', count: 1)
         expect(page).to have_css('.figure-filter-accordion', count: 1, visible: true)
         expect(page).to have_css('.chooser-argument', count: 4)
-        expect(all(".chooser-argument").first.value).to eq('ladles')
-        # select who=ladles and and hand=right
-        expect(false).to eq(true)
+        expect(all(".chooser-argument")[0].value).to eq('ladles')
+        expect(find(".chooser-argument [type=radio][value='true']")).to be_checked
+        expect(find(".chooser-argument [type=radio][value='*']")).to_not be_checked
+        expect(find(".chooser-argument [type=radio][value='false']")).to_not be_checked
+        expect(all(".chooser-argument")[2].value.to_s).to eq(540.to_s)
+        expect(all(".chooser-argument")[3].value).to eq('*')
+        expect(page).to have_content('Box the Gnat Contra')
+        expect(page).to_not have_content('The Rendevouz')
+        expect(page).to_not have_content('Call Me')
+        
       end
     end
   end

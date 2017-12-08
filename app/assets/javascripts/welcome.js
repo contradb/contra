@@ -300,12 +300,14 @@ function populateAccordionForMove(accordion, move, optional_parameter_values) {
   formals.forEach(function(formal, index) {
     var html_fn = chooserToFilterHtml[formal.ui] || function() {return '<div>'+formal.name+'</div>';};
     var chooser = $(html_fn(move));
-    if (index < optional_parameter_values.length) { chooser.val(optional_parameter_values[index]); }
+    if (index < optional_parameter_values.length) {
+      chooser.val(optional_parameter_values[index]);
+    }
     chooser.change(updateQuery);
     var chooser_td = $('<td></td>');
     chooser_td.append(chooser);
     var label = $('<tr class="chooser-row"><td class="chooser-label-text">'+ parameterLabel(move, index) +'</td></tr>');
-    console.log('formal '+parameterLabel(move, index));
+    console.log('formal '+parameterLabel(move, index) + ' ' + optional_parameter_values[index] + ' aka ' + chooser.val());
     label.append(chooser_td);
     accordion.append(label);
   });
