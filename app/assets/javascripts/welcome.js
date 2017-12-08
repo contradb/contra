@@ -1,3 +1,5 @@
+(function () { // skipped indenting inside this one element
+
 function installEventHandlers(selector) {
   selector.find('.figure-filter-op').change(filterOpChanged);
   selector.find('.figure-filter-add').click(clickFilterAddSubfilter);
@@ -73,9 +75,9 @@ function minUsefulSubfilterCount(op) {
 }
 
 function clickEllipsis(e) {
-  var $this = $(this);
-  $this.toggleClass('ellipsis-expanded');
-  $this.siblings('.figure-filter-accordion').toggle();
+  var $dotdotdot = $(this);
+  $dotdotdot.toggleClass('ellipsis-expanded');
+  $dotdotdot.siblings('.figure-filter-accordion').toggle();
   updateQuery();
 }
 
@@ -121,14 +123,14 @@ function ensureChildRemoveButtons(filter) {
   var op = filter.children('.figure-filter-op').val();
   if (subfilters.length > minSubfilterCount(op)) {
     subfilters.each(function () {
-      var $this = $(this);
-      if (0 === $this.children('.figure-filter-remove').length) {
+      var $subfilter = $(this);
+      if (0 === $subfilter.children('.figure-filter-remove').length) {
         var removeButton = $(removeButtonHtml);
         removeButton.click(filterRemoveSubfilter);
-        if ($this.children('.figure-filter').length > 0) {
-          $this.children('.figure-filter').first().before(removeButton);
+        if ($subfilter.children('.figure-filter').length > 0) {
+          $subfilter.children('.figure-filter').first().before(removeButton);
         } else {
-          $this.children('.figure-filter-end-of-subfigures').before(removeButton);
+          $subfilter.children('.figure-filter-end-of-subfigures').before(removeButton);
         }
       }
     });
@@ -154,7 +156,12 @@ function addFigureFilterMoveConstellation(filter) {
 }
 
 function makeFigureFilterMoveSelect(filter) {
-  return $(figureMoveHtml).change(figureFilterMoveChange);
+  return $(figureMoveHtml).change(function () {
+    var $move = $(this);
+    var $accordion = $move.siblings('.figure-filter-accordion');
+    populateAccordionForMove($accordion, $move.val());
+    updateQuery();
+  });
 }
 
 function makeFigureFilterEllipsisButton(filter) {
@@ -286,15 +293,21 @@ function generateUniqueNameForRadio() {
   return 'uniqueNameForRadio' + _uniqueNameForRadioCounter++;
 }
 
-function figureFilterMoveChange() {
-  var figureFilterMove = $(this);
-  var accordion = figureFilterMove.siblings('.figure-filter-accordion');
+function populateAccordionForMove(accordion, move, optionalParameterValues) {
+  optionalParameterValues = optionalParameterValues || [];
   accordion.children().remove();
-  var move = figureFilterMove.val();
   var formals = isMove(move) ? parameters(move) : [];
   formals.forEach(function(formal, index) {
     var html_fn = chooserToFilterHtml[formal.ui] || function() {return '<div>'+formal.name+'</div>';};
     var chooser = $(html_fn(move));
+    if (index < optionalParameterValues.length) {
+      var v = optionalParameterValues[index];
+      if (chooserWidgetType[formal.ui] === 'radio') {
+        chooser.find("[value='"+v+"']").prop('checked', true);
+      } else {
+        chooser.val(v);
+      }
+    }
     chooser.change(updateQuery);
     var chooser_td = $('<td></td>');
     chooser_td.append(chooser);
@@ -302,7 +315,6 @@ function figureFilterMoveChange() {
     label.append(chooser_td);
     accordion.append(label);
   });
-  updateQuery();
 }
 
 function clickFilterAddSubfilter(e) {
@@ -310,7 +322,7 @@ function clickFilterAddSubfilter(e) {
   updateQuery();
 }
 
-function filterAddSubfilter(parentFilter) { // caller should updateQuery() when done
+function filterAddSubfilter(parentFilter) { // caller is responsible to updateQuery() when done
   var childFilter = $(filterHtml);
   installEventHandlers(childFilter);
   addFigureFilterMoveConstellation(childFilter);
@@ -365,9 +377,40 @@ function accordionIsHidden($figure_filter) {
   return ! $figure_filter.children('.figure-filter-accordion').is(':visible');
 }
 
+function buildDOMtoMatchQuery(query) {
+  var op = query[0];
+  var figureFilter = $(filterHtml);
+
+  switch(op) {
+  case 'figure':
+    addFigureFilterMoveConstellation(figureFilter);
+    installEventHandlers(figureFilter);
+    figureFilter.children('.figure-filter-move').val(query[1]);
+    if (query.length > 2) {
+      // ... was clicked
+      figureFilter.children('.figure-filter-ellipsis').toggleClass('ellipsis-expanded');
+      var accordion = figureFilter.children('.figure-filter-accordion');
+      accordion.show();
+      populateAccordionForMove(accordion, query[1], query.slice(2));
+    }
+    break;
+  default:
+    figureFilter.children('.figure-filter-op').val(op);
+    for (var i=1; i<query.length; i++) {
+      figureFilter.append(buildDOMtoMatchQuery(query[i]));
+    }
+    break;
+  }
+  return figureFilter;
+}
+
 ///////////////////// PAGE LOADED
 
 jQuery(document).ready(function() {
+  if (0 === $('#dances-table').length) {
+    return;                     // don't do any of this stuff if we're not on a page with a query.
+  }
+  
   updateQuery = function() {
     var fq = buildFigureQuery($('#figure-filter-root'));
     $('#figure-query-buffer').val(JSON.stringify(fq));
@@ -377,9 +420,22 @@ jQuery(document).ready(function() {
     }
   };
 
-  addFigureFilterMoveConstellation($('#figure-filter-root'));
-  installEventHandlers($('#figure-filter-root'));
-  updateQuery();
+  if (''===$('#figure-query-buffer').val()) {
+    // first time visiting the page, e.g. not returning via browser 'back' button
+    var root = $(filterHtml);
+    root.attr('id', 'figure-filter-root');
+    $('#figure-filter-root-container').append(root);
+    addFigureFilterMoveConstellation(root);
+    installEventHandlers(root);
+    updateQuery();
+  } else {
+    // back button pressed -> rebuilding the dom from figure query buffer
+    var fq = JSON.parse($('#figure-query-buffer').val());
+    var root = buildDOMtoMatchQuery(fq);
+    $('#figure-filter-root-container').append(root);
+    root.attr('id', 'figure-filter-root');
+    $('.figure-query-sentence').text(buildFigureSentence(fq));
+  }
 
   // oh, I can't use arrays in params? Fine, I'll create hashes with indexes as keys
   function arrayToObject (a) {
@@ -420,3 +476,5 @@ jQuery(document).ready(function() {
           ]
         });
 });
+
+})();
