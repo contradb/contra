@@ -1,4 +1,4 @@
-// TODO: all these definitions should probalby only run if the page has a #dance-table
+(function () { // skipped indenting inside this one element
 
 function installEventHandlers(selector) {
   selector.find('.figure-filter-op').change(filterOpChanged);
@@ -75,9 +75,9 @@ function minUsefulSubfilterCount(op) {
 }
 
 function clickEllipsis(e) {
-  var $move = $(this);
-  $move.toggleClass('ellipsis-expanded');
-  $move.siblings('.figure-filter-accordion').toggle();
+  var $dotdotdot = $(this);
+  $dotdotdot.toggleClass('ellipsis-expanded');
+  $dotdotdot.siblings('.figure-filter-accordion').toggle();
   updateQuery();
 }
 
@@ -293,15 +293,15 @@ function generateUniqueNameForRadio() {
   return 'uniqueNameForRadio' + _uniqueNameForRadioCounter++;
 }
 
-function populateAccordionForMove(accordion, move, optional_parameter_values) {
-  optional_parameter_values = optional_parameter_values || [];
+function populateAccordionForMove(accordion, move, optionalParameterValues) {
+  optionalParameterValues = optionalParameterValues || [];
   accordion.children().remove();
   var formals = isMove(move) ? parameters(move) : [];
   formals.forEach(function(formal, index) {
     var html_fn = chooserToFilterHtml[formal.ui] || function() {return '<div>'+formal.name+'</div>';};
     var chooser = $(html_fn(move));
-    if (index < optional_parameter_values.length) {
-      var v = optional_parameter_values[index];
+    if (index < optionalParameterValues.length) {
+      var v = optionalParameterValues[index];
       if (chooserWidgetType[formal.ui] === 'radio') {
         chooser.find("[value='"+v+"']").prop('checked', true);
       } else {
@@ -322,7 +322,7 @@ function clickFilterAddSubfilter(e) {
   updateQuery();
 }
 
-function filterAddSubfilter(parentFilter) { // caller should updateQuery() when done
+function filterAddSubfilter(parentFilter) { // caller is responsible to updateQuery() when done
   var childFilter = $(filterHtml);
   installEventHandlers(childFilter);
   addFigureFilterMoveConstellation(childFilter);
@@ -330,7 +330,6 @@ function filterAddSubfilter(parentFilter) { // caller should updateQuery() when 
   ensureChildRemoveButtons(parentFilter);
   var op = parentFilter.children('.figure-filter-op').val();
   childFilter.attr('data-op', op);
-  updateQuery();
 }
 
 function filterRemoveSubfilter(e) {
@@ -477,3 +476,5 @@ jQuery(document).ready(function() {
           ]
         });
 });
+
+})();
