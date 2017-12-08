@@ -540,7 +540,7 @@ describe 'Welcome page', js: true do
         expect(page).to have_content('Box the Gnat Contra')
         expect(page).to_not have_content('The Rendevouz')
         expect(page).to_not have_content('Call Me')
-        
+        expect(page).to have_content('Showing dances with a swing and a ladles allemande right 1½ for *.')
       end
     end
   end

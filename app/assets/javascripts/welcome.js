@@ -430,10 +430,12 @@ jQuery(document).ready(function() {
     installEventHandlers(root);
     updateQuery();
   } else {
-    var root = buildDOMtoMatchQuery(JSON.parse($('#figure-query-buffer').val()));
+    // back button pressed -> rebuilding the dom from figure query buffer
+    var fq = JSON.parse($('#figure-query-buffer').val());
+    var root = buildDOMtoMatchQuery(fq);
     $('#figure-filter-root-container').append(root);
     root.attr('id', 'figure-filter-root');
-    // TODO: rebuild sentance
+    $('.figure-query-sentence').text(buildFigureSentence(fq));
   }
 
   // oh, I can't use arrays in params? Fine, I'll create hashes with indexes as keys
