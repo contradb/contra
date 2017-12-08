@@ -532,8 +532,8 @@ describe 'Welcome page', js: true do
         expect(page).to have_css('.figure-filter-accordion', count: 1, visible: true)
         expect(page).to have_css('.chooser-argument', count: 4)
         expect(all(".chooser-argument")[0].value).to eq('ladles')
-        expect(find(".chooser-argument [type=radio][value='true']")).to be_checked
         expect(find(".chooser-argument [type=radio][value='*']")).to_not be_checked
+        expect(find(".chooser-argument [type=radio][value='true']")).to be_checked
         expect(find(".chooser-argument [type=radio][value='false']")).to_not be_checked
         expect(all(".chooser-argument")[2].value.to_s).to eq(540.to_s)
         expect(all(".chooser-argument")[3].value).to eq('*')
