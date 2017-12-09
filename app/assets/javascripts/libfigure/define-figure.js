@@ -182,16 +182,11 @@ function moves() {
    if (aa < bb) { return -1 ;}
    else if (aa > bb) { return 1; }
    else { return 0; }
+});
 }
 
 function movesMenuOrdering() {
- var m = Object.keys(defined_events).sort(function(a,b) {
-   var aa = a.toLowerCase();
-   var bb = b.toLowerCase();
-   if (aa < bb) { return -1 ;}
-   else if (aa > bb) { return 1; }
-   else { return 0; }
- });
+ var m = moves();
  m.unshift("swing");
  return m;
 }
