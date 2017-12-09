@@ -15,7 +15,6 @@ if (!Array.prototype.map) { throw "I was expecting Array.map to be defined"; }
 
 var figureMoveHtml = "<select class='figure-filter-move form-control'><option value='*' selected=true>any figure</option>";
 moves().forEach(function(move) {
-  var selectedIfChain = ('chain'===move) ? ' selected ' : '';
   figureMoveHtml += '<option value="'+move+'">'+move+'</option>';
 });
 figureMoveHtml += "</select>";
