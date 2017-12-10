@@ -599,7 +599,7 @@ defineFigure("pull by dancers",
              {view: pull_dancers_view});
 
 ////////////////////////////////////////////////
-// PULL BY FOR 4                              //
+// PULL BY DIRECTION                          //
 ////////////////////////////////////////////////
 
 function pull_by_direction(move,pvs) {
