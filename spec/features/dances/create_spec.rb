@@ -145,4 +145,33 @@ describe 'Creating dances', js: true do
       end
     end
   end
+
+  context 'add figure button' do
+    it 'adds a figure before the selection, and selects it' do
+      with_login do
+        visit '/dances/new'
+        expect(page).to have_content('empty figure', count: 8)
+        find('#figure-0').click
+        select('chain')
+        click_button('Add Figure')
+        expect(page).to have_content(/A1.*empty figure.*move.*note.*ladles chain/)
+      end
+    end
+    it 'adds a figure to the end and selects it if there is no selection' do
+      with_login do
+        visit '/dances/new'
+        click_button('Add Figure')
+        expect(page).to have_content(/empty figure.*empty figure.*empty figure.*empty figure.*empty figure.*empty figure.*empty figure.*empty figure.*empty figure.*move.*note/)
+      end
+    end
+  end
+  context 'remove figure button' do
+    it 'is greyed out when there is no selection'
+    it 'removes the selection and selects the next-down figure'
+    it 'removes the selection and selects the next-up figure if there is no next down figure'
+    it 'removes the selection and selects nothing if there are no figures left'
+  end
+  context 'rotate figures button' do
+    it 'works'
+  end
 end

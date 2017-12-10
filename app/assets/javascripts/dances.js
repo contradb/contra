@@ -41,6 +41,17 @@ function defaultFigures (figures) {
     else return figures;
 }
 
+// lots of side effects
+function addFigure(figures_arr, edit_index_box) {
+  if (edit_index_box.length > 0) {
+    figures_arr.splice(edit_index_box[0], 0, newFigure());
+  } else {
+    figures_arr.push(newFigure());
+    edit_index_box[0] = figures_arr.length-1;
+  }
+};
+
+
 // =====================================================================================
 
 function userChangedParameter (figure, index) {
@@ -125,7 +136,7 @@ function menuMoveLabel(from,to) {
 
         $scope.toJson = angular.toJson;
         $scope.newFigure = newFigure;
-        $scope.addFigure = function() {fctrl42.arr.push(newFigure());};
+        $scope.addFigure = function () { addFigure(fctrl42.arr, $scope.edit_index_box); }
         $scope.deleteFigure = function() {(fctrl42.arr.length>0) && fctrl42.arr.pop(); $scope.edit_index_box.length=0;};
         $scope.deleteFigureIdx = function(idx) {(idx >= 0) && (fctrl42.arr.length > idx) && fctrl42.arr.splice(idx,1); $scope.edit_index_box.length=0;};
         $scope.duplicateIdx = function(idx) {
