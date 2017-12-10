@@ -226,6 +226,24 @@ describe 'Creating dances', js: true do
   end
 
   context 'rotate figures button' do
-    it 'works'
+    it 'works' do
+      with_login do
+        visit '/dances/new'
+        expect(page).to have_css('#figure-0')
+        find('#figure-0').click
+        5.times do
+          click_button('Remove Figure')
+        end
+        select('custom')
+        click_link('custom')
+        expect(page).to have_content('A1 custom empty figure A2 empty figure Notes')
+        click_button('Rotate Figures')
+        expect(page).to have_content('A1 empty figure custom A2 empty figure Notes')
+        click_button('Rotate Figures')
+        expect(page).to have_content('A1 empty figure empty figure A2 custom Notes')
+        click_button('Rotate Figures')
+        expect(page).to have_content('A1 custom empty figure A2 empty figure Notes')
+      end
+    end
   end
 end
