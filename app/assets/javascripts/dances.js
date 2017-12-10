@@ -47,13 +47,14 @@ function addFigure(figures_arr, edit_index_box) {
     var idx = edit_index_box[0];
     if ((0<=idx) && (idx<figures_arr.length)) {
       // valid selection
-      figures_arr.splice(idx, 0, newFigure());
+      figures_arr.splice(idx+1, 0, newFigure());
+      edit_index_box[0]++;
       return;
     }
   }
   // add on end
-  figures_arr.push(newFigure());
-  edit_index_box[0] = figures_arr.length-1;
+  figures_arr.unshift(newFigure());
+  edit_index_box[0] = 0;
 };
 
 // lots of side effects
