@@ -41,6 +41,35 @@ function defaultFigures (figures) {
     else return figures;
 }
 
+// lots of side effects
+function addFigure(figures_arr, edit_index_box) {
+  if (edit_index_box.length > 0) {
+    var idx = edit_index_box[0];
+    if ((0<=idx) && (idx<edit_index_box.length)) {
+      // valid selection
+      figures_arr.splice(idx, 0, newFigure());
+      return;
+    }
+  }
+  // add on end
+  figures_arr.push(newFigure());
+  edit_index_box[0] = figures_arr.length-1;
+};
+
+// lots of side effects
+function deleteFigure(figures_arr, edit_index_box) {
+  if (edit_index_box.length > 0) {
+    var idx = edit_index_box[0];
+    if ((0 <= idx) && (idx < figures_arr.length)) {
+      figures_arr.splice(idx,1);
+      if (idx >= figures_arr.length) { edit_index_box[0]--; }
+      if (0 >= figures_arr.length) { edit_index_box.length = 0; }
+      return;
+    }
+  }
+};
+
+
 // =====================================================================================
 
 function userChangedParameter (figure, index) {
@@ -125,8 +154,8 @@ function menuMoveLabel(from,to) {
 
         $scope.toJson = angular.toJson;
         $scope.newFigure = newFigure;
-        $scope.addFigure = function() {fctrl42.arr.push(newFigure());};
-        $scope.deleteFigure = function() {(fctrl42.arr.length>0) && fctrl42.arr.pop(); $scope.edit_index_box.length=0;};
+        $scope.addFigure = function () { addFigure(fctrl42.arr, $scope.edit_index_box); }
+        $scope.deleteFigure = function() { deleteFigure(fctrl42.arr, $scope.edit_index_box); }
         $scope.deleteFigureIdx = function(idx) {(idx >= 0) && (fctrl42.arr.length > idx) && fctrl42.arr.splice(idx,1); $scope.edit_index_box.length=0;};
         $scope.duplicateIdx = function(idx) {
             (0 <= idx) && (idx < fctrl42.arr.length) && fctrl42.arr.splice(idx,0,angular.copy(fctrl42.arr[idx]));

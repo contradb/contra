@@ -58,21 +58,22 @@
       <div class="actions figure-editor-actions">
         <div class="btn-group btn-group-justified btn-group-lg" role="group">
           <div class="btn-group">
-            <button name="button" type="button" ng-click='addFigure()' class="btn btn-default"
-                    title="add a new figure at the end of the list" 
+            <button name="button" type="button" ng-click='addFigure()' class="btn btn-default add-figure"
+                    title="add a new figure" 
                     aria-label="add a new figure at the end of the list">
               <%= plus_icon_html() %> Add<span class="hide-at-low-res"> Figure</span></button>
           </div>
           <div class="btn-group">
             <button name="button" type="button" ng-click='deleteFigure()' 
-                    ng-show="figures.arr.length > 0" class="btn btn-default"
-                    title="delete the last figure" 
+                    ng-disabled="0 == edit_index_box.length"
+                    class="btn btn-default delete-figure"
+                    title="delete the current figure" 
                     aria-label="delete the last figure">
               <%= x_icon_html() %> Remove<span class="hide-at-low-res"> Figure</span></button>
           </div>
           <div class="btn-group">
             <button name="button" type="button" ng-click='rotateFigures()' 
-                    ng-show="figures.arr.length >= 2" class="btn btn-default"
+                    ng-disabled="figures.arr.length < 2" class="btn btn-default rotate-figures"
                     title="rotate figures, putting the last one first and bumping the rest down" 
                     aria-label="rotate figures, putting the last one first and bumping the rest down">
               <%= rotate_icon_html() %> Rotate<span class="hide-at-low-res"> Figures</span></button>
