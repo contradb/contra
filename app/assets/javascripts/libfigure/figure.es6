@@ -580,10 +580,10 @@ defineFigure("promenade",
 defineFigure("progress", [param_beats_0], {progression: true});
 
 ////////////////////////////////////////////////
-// PULL BY FOR 2                              //
+// PULL BY DANCERS                            //
 ////////////////////////////////////////////////
 
-function pull_by_for_2_view(move,pvs) {
+function pull_dancers_view(move,pvs) {
   var [ who,  bal,  spin,  beats] = pvs;
   var [swho, sbal, sspin, sbeats] = parameter_strings(move, pvs);
   var standard_beats = ((beats == 8) && bal) || ((beats == 2) && !bal);
@@ -594,15 +594,15 @@ function pull_by_for_2_view(move,pvs) {
   }
 }
 
-defineFigure("pull by for 2",
-             [param_subject_pair, param_balance_false, param_right_hand_spin, param_beats_2],
-             {view: pull_by_for_2_view});
+defineFigure("pull by dancers",
+             [param_subject_pairz, param_balance_false, param_right_hand_spin, param_beats_2],
+             {view: pull_dancers_view});
 
 ////////////////////////////////////////////////
-// PULL BY FOR 4                              //
+// PULL BY DIRECTION                          //
 ////////////////////////////////////////////////
 
-function pull_by_for_4_view(move,pvs) {
+function pull_by_direction(move,pvs) {
   var [ bal,  dir,  spin,  beats] = pvs;
   var [sbal, sdir, sspin, sbeats] = parameter_strings(move, pvs);
   var is_diagonal = dir === 'left diagonal' || dir === 'right diagonal';
@@ -618,11 +618,11 @@ function pull_by_for_4_view(move,pvs) {
   return standard_beats ? w : words(w, 'for', beats);
 }
 
-defineFigure("pull by for 4",
+defineFigure("pull by direction",
              [param_balance_false, param_set_direction_along, param_right_hand_spin, param_beats_2],
-             {view: pull_by_for_4_view});
+             {view: pull_by_direction});
 
-defineRelatedMove2Way('pull by for 4', 'pull by for 2');
+defineRelatedMove2Way('pull by dancers', 'pull by direction');
 
 ////////////////////////////////////////////////
 // RIGHT LEFT THROUGH                         //
