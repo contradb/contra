@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'login_helper'
 require 'support/scrutinize_layout'
 
-
 describe 'Creating dances', js: true do
   it 'creates a new dance with non-javascript data' do
     with_login do
@@ -30,6 +29,8 @@ describe 'Creating dances', js: true do
       fill_in 'dance[choreographer_name]', with: 'Cary Ravitz'
       fill_in 'dance[start_type]', with: 'improper'
       
+      expect(page).to have_css('#figure-0')
+      find('#figure-0').click
       7.times { click_button 'Remove Figure' }
 
       click_button 'Save Dance'
@@ -62,9 +63,10 @@ describe 'Creating dances', js: true do
       fill_in 'dance[choreographer_name]', with: 'Cary Ravitz'
       fill_in 'dance[start_type]', with: 'improper'
 
+      expect(page).to have_css('#figure-0')
+      find('#figure-0').click
       7.times { click_button 'Remove Figure' }
 
-      click_on('empty figure')
       select('box the gnat')
       select('partners')
       check('bal')
@@ -157,6 +159,7 @@ describe 'Creating dances', js: true do
         expect(page).to have_content(/A1.*empty figure.*move.*note.*ladles chain/)
       end
     end
+
     it 'adds a figure to the end and selects it if there is no selection' do
       with_login do
         visit '/dances/new'
@@ -165,12 +168,63 @@ describe 'Creating dances', js: true do
       end
     end
   end
+
   context 'remove figure button' do
-    it 'is greyed out when there is no selection'
-    it 'removes the selection and selects the next-down figure'
-    it 'removes the selection and selects the next-up figure if there is no next down figure'
-    it 'removes the selection and selects nothing if there are no figures left'
+    it 'is greyed out when there is no selection' do
+      with_login do
+        visit '/dances/new'
+        expect(page).to have_css('.delete-figure[disabled=disabled]')
+        find('#figure-1').click
+        expect(page).to_not have_css('.delete-figure[disabled=disabled]')
+        find('#figure-1').click
+        expect(page).to have_css('.delete-figure[disabled=disabled]')
+      end
+    end
+
+    it 'removes the selection and selects the next-down figure' do
+      with_login do
+        visit '/dances/new'
+        expect(page).to have_css('#figure-1')
+        find('#figure-1').click
+        select('do si do')
+        find('#figure-0').click
+        select('chain')
+        expect(page).to have_content('A1 ladles chain')
+        click_button('Remove Figure')
+        expect(page).to_not have_content('ladies chain')
+        expect(page).to have_content('A1 ____ do si do once move who')
+      end
+    end
+
+    it 'removes the selection and selects the next-up figure if there is no next down figure' do
+      with_login do
+        visit '/dances/new'
+        expect(page).to have_css('#figure-7')
+        find('#figure-7').click
+        select('do si do')
+        expect(page).to have_content('B2 empty figure ____ do si do')
+        click_button('Remove Figure')
+        expect(page).to_not have_content('do si do')
+        expect(page).to have_content('B2 empty figure move')
+      end
+    end
+
+    it 'removes the selection and selects nothing if there are no figures left' do
+      with_login do
+        visit '/dances/new'
+        expect(page).to have_css('#figure-7')
+        find('#figure-7').click
+        8.times do
+          expect(page).to_not have_css('.delete-figure[disabled=disabled]')
+          expect(page).to have_css('label', text: 'move') # something is selected
+          click_button('Remove Figure')
+        end
+        expect(page).to have_css('.delete-figure[disabled=disabled]')
+        expect(page).to_not have_css('label', text: 'move') # something isn't selected
+      end
+    end
   end
+
   context 'rotate figures button' do
     it 'works'
   end
