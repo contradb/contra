@@ -156,7 +156,10 @@ describe 'Creating dances', js: true do
         find('#figure-0').click
         select('chain')
         click_button('Add Figure')
-        expect(page).to have_content(/A1.*empty figure.*move.*note.*ladles chain/)
+        expect(page).to have_content("A1 empty figure move note ladles chain")
+        find('#figure-1').click
+        click_button('Add Figure')
+        expect(page).to have_content("A1 empty figure empty figure move note A2 ladles chain")
       end
     end
 

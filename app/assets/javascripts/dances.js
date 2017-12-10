@@ -45,7 +45,7 @@ function defaultFigures (figures) {
 function addFigure(figures_arr, edit_index_box) {
   if (edit_index_box.length > 0) {
     var idx = edit_index_box[0];
-    if ((0<=idx) && (idx<edit_index_box.length)) {
+    if ((0<=idx) && (idx<figures_arr.length)) {
       // valid selection
       figures_arr.splice(idx, 0, newFigure());
       return;
