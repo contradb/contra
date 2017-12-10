@@ -149,22 +149,27 @@ describe 'Creating dances', js: true do
   end
 
   context 'add figure button' do
-    it 'adds a figure before the selection, and selects it' do
+    it 'adds a figure after the selection, and selects it' do
       with_login do
         visit '/dances/new'
         expect(page).to have_content('empty figure', count: 8)
         find('#figure-0').click
         select('chain')
         click_button('Add Figure')
-        expect(page).to have_content(/A1.*empty figure.*move.*note.*ladles chain/)
+        expect(page).to have_content("A1 ladles chain empty figure move note")
+        click_button('Add Figure')
+        expect(page).to have_content("A1 ladles chain empty figure A2 empty figure move note")
       end
     end
 
-    it 'adds a figure to the end and selects it if there is no selection' do
+    it 'adds a figure to the beginning and selects it if there is no selection' do
       with_login do
         visit '/dances/new'
+        find('#figure-0').click
+        select('chain')
+        click_link('ladles chain')
         click_button('Add Figure')
-        expect(page).to have_content(/empty figure.*empty figure.*empty figure.*empty figure.*empty figure.*empty figure.*empty figure.*empty figure.*empty figure.*move.*note/)
+        expect(page).to have_content("A1 empty figure move note ladles chain")
       end
     end
   end
