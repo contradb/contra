@@ -14,7 +14,7 @@ if (!Array.prototype.forEach) { throw "I was expecting Array.forEach to be defin
 if (!Array.prototype.map) { throw "I was expecting Array.map to be defined"; }
 
 var figureMoveHtml = "<select class='figure-filter-move form-control'><option value='*' selected=true>any figure</option>";
-moves().forEach(function(move) {
+movesMenuOrdering().forEach(function(move) {
   figureMoveHtml += '<option value="'+move+'">'+move+'</option>';
 });
 figureMoveHtml += "</select>";

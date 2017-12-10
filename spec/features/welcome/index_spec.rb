@@ -83,7 +83,7 @@ describe 'Welcome page', js: true do
       expect(page).to have_text(only_a_swing.title)
       expect(page).to have_text(dance.title)
       select('anything but')
-      select('swing')
+      select('swing', match: :first)
       expect(page).to_not have_text(only_a_swing.title)
       expect(page).to have_text(dance.title) # because it has a figure that's not a swing
     end
@@ -341,7 +341,7 @@ describe 'Welcome page', js: true do
 
         it "swing for 8 doesn't find 'The Rendevouz', which features only long swings" do
           dances
-          select('swing')
+          select('swing', match: :first)
           click_button('...')
           select('8', match: :prefer_exact) # '8' is in the menu twice, and also in 'figure 8'
 
@@ -353,7 +353,7 @@ describe 'Welcome page', js: true do
 
         it "non-balance & swing doesn't find 'The Rendevouz', which features only balance & swings" do
           dances
-          select('swing')
+          select('swing', match: :first)
           click_button('...')
           choose('no')
 
@@ -365,7 +365,7 @@ describe 'Welcome page', js: true do
 
         it 'labels appear on chooser elements' do
           click_button('...')
-          select('swing')                            # swing uses simple label system
+          select('swing', match: :first)             # swing uses simple label system
           expect(page).to have_content('bal')
           expect(page).to have_content('who')
           expect(page).to have_content('beats')
@@ -515,7 +515,7 @@ describe 'Welcome page', js: true do
         visit '/'
         select('and')
         expect(page).to have_css('.figure-filter-move', count: 2) # wait for js to run
-        all('.figure-filter-move').first.select('swing')
+        all('.figure-filter-move').first.select('swing', match: :first)
         all('.figure-filter-move').last.select('allemande')
         all('.figure-filter-ellipsis').last.click
         select('ladles')        # ladles allemande right 1½ for '*' beats
