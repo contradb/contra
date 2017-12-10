@@ -44,16 +44,20 @@ function defaultFigures (figures) {
 // lots of side effects
 function addFigure(figures_arr, edit_index_box) {
   if (edit_index_box.length > 0) {
-    figures_arr.splice(edit_index_box[0], 0, newFigure());
-  } else {
-    figures_arr.push(newFigure());
-    edit_index_box[0] = figures_arr.length-1;
+    var idx = edit_index_box[0];
+    if ((0<=idx) && (idx<edit_index_box.length)) {
+      // valid selection
+      figures_arr.splice(idx, 0, newFigure());
+      return;
+    }
   }
+  // add on end
+  figures_arr.push(newFigure());
+  edit_index_box[0] = figures_arr.length-1;
 };
 
+// lots of side effects
 function deleteFigure(figures_arr, edit_index_box) {
-      // {(fctrl42.arr.length>0) && fctrl42.arr.pop(); $scope.edit_index_box.length=0;};
-  // (idx >= 0) && (fctrl42.arr.length > idx) && fctrl42.arr.splice(idx,1);
   if (edit_index_box.length > 0) {
     var idx = edit_index_box[0];
     if ((0 <= idx) && (idx < figures_arr.length)) {
