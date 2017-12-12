@@ -19,15 +19,6 @@ describe 'Deleting dances' do
     page.find(:css, "a[href=\"/dances/#{@dead.id}\"][data-method=\"delete\"]")
   end
 
-  it "works from dance index" do
-    visit '/dances'
-    find_dead_delete_link.click
-
-    expect(page).to have_css("h1", text: "Dances") # go back to where we started
-    expect(page).to     have_content("I am live")
-    expect(page).to_not have_content("I am dead")
-  end
-
   it "works from user profile" do
     visit "/users/#{@user.id}"
     find_dead_delete_link.click

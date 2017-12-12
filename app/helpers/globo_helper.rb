@@ -33,6 +33,11 @@ module GloboHelper
             new_dance_path({choreographer_id: choreographer_id}), 
             BUTTON_HTML_ATTR)
   end
+  def new_dance_button_green_html(choreographer_id: nil, label: "New Dance")
+    link_to(content_tag(:span, new_icon_html() + ' ' + label),
+            new_dance_path({choreographer_id: choreographer_id}), 
+            {class: "btn btn-default btn-md btn-success contra-btn-midpage", type: "button"})
+  end
   def edit_dance_button_html(dance, label: "Edit Dance")
     link_to(content_tag( :span, edit_icon_html() + ' ' + label ),
             edit_dance_path(dance),

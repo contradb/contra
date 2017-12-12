@@ -3,10 +3,6 @@ require "rails_helper"
 RSpec.describe DancesController, type: :routing do
   describe "routing" do
 
-    it "routes to #index" do
-      expect(:get => "/dances").to route_to("dances#index")
-    end
-
     it "routes to #new" do
       expect(:get => "/dances/new").to route_to("dances#new")
     end
