@@ -8,7 +8,7 @@
 
 def scrutinize_layout (page)
   expect(page).to have_link("ContraDB")
-  expect(page).to have_link("Dances")
+  expect(page).to have_link("Figures")
   expect(page).to have_link("Choreographers")
   expect(page).to have_link("Users")
 end

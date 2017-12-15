@@ -21,51 +21,6 @@ RSpec.describe DancesController, type: :controller do
      choreographer_name: 'no'}
   }
 
-
-  describe "GET #index" do
-    let (:admonsterator) { FactoryGirl.create(:user, admin: true) }
-    let (:user_a) { FactoryGirl.create(:user) }
-    let (:user_b) { FactoryGirl.create(:user) }
-    let! (:dance_b1) { FactoryGirl.create(:dance, user: user_b, title: "dance b1", publish: false) }
-    let! (:dance_b2) { FactoryGirl.create(:dance, user: user_b, title: "dance b2", publish: true) }
-    let! (:dance_a1) { FactoryGirl.create(:dance, user: user_a, title: "dance a1", publish: false) }
-    let! (:dance_a2) { FactoryGirl.create(:dance, user: user_a, title: "dance a2", publish: true) }
-
-    context "without login" do
-      it "assigns public dances as alphabeticized @dances" do
-        get :index, params: {}
-        expect(assigns(:dances)).to eq([dance_a2, dance_b2])
-      end
-    end
-
-    context "with login" do
-      it "assigns public dances as alphabeticized @dances" do
-        # hacky login
-        @request.env["devise.mapping"] = Devise.mappings[:user]
-        sign_in user_a
-
-        get :index, params: {}
-        expect(assigns(:dances)).to eq([dance_a1, dance_a2, dance_b2])
-      end
-    end
-
-    context "with admin login" do
-      it "assigns public dances as alphabeticized @dances" do
-        # can't make rspec any_instnace stubs work, grump
-        # later: hey! why are we testing unit-tested internals of the scope in our controller tests? Howsabout we just verify we call the scope?
-        # later still: because mocking scopes is brittle and hard. Or at any rate hard-er than just calling through. 
-
-        # hacky login
-        @request.env["devise.mapping"] = Devise.mappings[:user]
-        sign_in admonsterator
-
-        get :index, params: {}
-        expect(admonsterator.admin?).to be(true)
-        expect(assigns(:dances).pluck(:title)).to eq([dance_a1, dance_a2, dance_b1, dance_b2].map &:title)
-      end
-    end
-  end
-
   describe "GET #show" do
     it "assigns the requested dance as @dance" do
       dance = FactoryGirl.create(:dance)

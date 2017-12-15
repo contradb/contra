@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get 'about/index'
 
 
-  resources :dances
+  resources :dances, except: [:index]
   post 'dances_filter', to: 'dances#index'
   resources :choreographers
   devise_for :users, controllers: { registrations: "users/registrations" }

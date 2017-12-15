@@ -44,8 +44,23 @@
 // $font-label : 'PT Sans', sans-serif;
 // $font-user : 'Satisfy', cursive;
 
+
+// global color and font
 body {
   font-family: 'PT Sans', sans-serif;
+  background-color: #FFF9F4;
+}
+
+#dances-table {
+  background-color: white;
+}
+
+.navbar {
+  background-color: #F0F0EA
+}
+
+.contra-table-nonfluid {
+  background-color: white;
 }
 
 label {
