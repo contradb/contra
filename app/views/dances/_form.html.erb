@@ -45,7 +45,13 @@
       </div>
       <div>
         <%= f.text_field :hook,
-            {placeholder: "Choreographer"}.merge(copy_dance ? {value: copy_dance.hook} : {}) %>
+            {placeholder: "hook"}.merge(copy_dance ? {value: copy_dance.hook} : {}) %>
+      </div>
+      <div>
+        <%= f.label :premable %>
+        <%= f.text_area :preamble,
+            {placeholder: "Face your neighbor. Take a small step forward and to the left, to take hands in short wavy lines.", class: 'form-control', rows: 2}.merge(copy_dance ? {value: copy_dance.preamble} : {}) %>
+        <%= render 'markdown_advertisement' %>
       </div>
         
     </div>
@@ -192,17 +198,8 @@
     <br />
     <div class="field" id="dance-notes">
       <%= f.label :notes %>
-
-      <%= begin
-          h = {class: 'per_dance_notes_edit form-control'};
-          if copy_dance then
-          h[:value] = copy_dance.notes
-          end
-          f.text_area :notes, h
-          end  %>
-      <div class="understated hide-at-low-res">
-        may use <a href="https://guides.github.com/features/mastering-markdown/" target="_">markdown</a> formatting
-      </div>
+      <%= f.text_area :notes, {rows: 3, class: 'form-control'}.merge(copy_dance ? {value: copy_dance.notes} : {}) %>
+      <%= render 'markdown_advertisement' %>
     </div>
     <br>
 

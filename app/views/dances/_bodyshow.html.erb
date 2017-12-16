@@ -1,5 +1,7 @@
 <p class="dance-show-formation">formation: <%= dance.start_type %> </p>
 
+<div class="dance-show-hook"><%= ApplicationHelper::renderMarkdown(dance.preamble) %></div>
+
 <table class="table table-bordered table-condensed contra-table-nonfluid">
   <% begin
        figures = dance.figures
@@ -17,5 +19,3 @@
 </table>
 
 <div class="dance-show-notes"><%= ApplicationHelper::renderMarkdown(dance.notes) %></div>
-
-

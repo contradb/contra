@@ -10,7 +10,7 @@ describe 'Creating dances', js: true do
       fill_in 'dance_title', with: 'Call Me'
       fill_in 'dance[choreographer_name]', with: 'Cary Ravitz'
       fill_in 'dance[start_type]', with: 'improper'
-      # fill_in 'dance[preamble]', with: 'long wavy lines gents out'
+      fill_in 'dance[preamble]', with: 'long wavy lines gents out'
       fill_in 'dance[hook]', with: 'spin to your partner'
       choose 'Private'
       click_button 'Save Dance'
@@ -18,7 +18,7 @@ describe 'Creating dances', js: true do
       expect(page).to have_css('h1', text: 'Call Me')
       expect(page).to have_content('Cary Ravitz')
       expect(page).to have_content('improper')
-      # expect(page).to have_content('long wavy lines gents out') # preamble
+      expect(page).to have_content('long wavy lines gents out') # preamble
       expect(page).to have_content('spin to your partner') # hook
       expect(page).to have_content('Private')
       expect(page).to_not have_content('Published')

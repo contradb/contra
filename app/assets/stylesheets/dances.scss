@@ -132,15 +132,6 @@
 }
 
 // below here predates new figure editor-dm 10-01-2016
-
-
-
-
-.happy_beats {border-top: solid black}
-.grumpy_beats {@extend .happy_beats; color:red;}
-
-.per_dance_notes_edit {height: 8em;}
-
 .a1b1 {
   background-color: #F3F3F3;
   width: 1.4em;
@@ -177,6 +168,8 @@
   .dance-show-title,
   .dance-show-choreographer,
   .dance-show-formation,
+  .dance-show-hook,
+  .dance-show-preamble,
   .dance-show-notes,
   .a1b1,
   .a2b2 {
