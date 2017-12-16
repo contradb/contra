@@ -4,6 +4,8 @@ FactoryGirl.define do
     user { FactoryGirl.create(:user) }
     choreographer { FactoryGirl.create(:choreographer) }
     start_type 'improper'
+    hook 'pioneered slide progression'
+    preamble 'a preamble appears here'
     figures_json '[{"parameter_values":["neighbors",true,16],"move":"swing"},{"parameter_values":[true, 8],"move":"long lines"},{"parameter_values":["ladles",true,540,8],"move":"do si do"},{"parameter_values":["partners",true,16],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":[true,2],"move":"slide along set"},{"parameter_values":[true,270,6],"move":"circle"}]'
   end
 
@@ -12,6 +14,8 @@ FactoryGirl.define do
     user { FactoryGirl.create(:user) }
     choreographer { FactoryGirl.create(:choreographer) }
     start_type 'improper'
+    hook 'stompy fun'
+    preamble 'blah blah blah'
     figures_json '[{"parameter_values":["neighbors",true,true,8],"move":"box the gnat"},{"parameter_values":["partners",true,false,8],"move":"swat the flea"},{"parameter_values":["neighbors",true,16],"move":"swing"},{"parameter_values":["ladles",true,540,8],"move":"allemande"},{"parameter_values":["partners",false,8],"move":"swing"},{"parameter_values":["across",8],"move":"right left through"},{"parameter_values":["ladles","across",8],"move":"chain"}]'
     notes 'swat the flea variation'
   end
@@ -21,6 +25,8 @@ FactoryGirl.define do
     user { FactoryGirl.create(:user) }
     choreographer { FactoryGirl.create(:choreographer) }
     start_type 'Becket ccw'
+    hook 'Blondie tribute'
+    preamble 'fluffy guppies'
     figures_json '[{"parameter_values":["across",8],"move":"right left through"},{"parameter_values":["ladles","across",8],"move":"chain"},{"parameter_values":[false,360,"",8],"move":"star","note":"look for new neighbor"},{"parameter_values":["neighbors",false,8],"move":"swing"},{"parameter_values":[true,270,8],"move":"circle"},{"parameter_values":["ladles",0.5,"across",8],"move":"hey"},{"parameter_values":["partners",true,16],"move":"swing"}]'
   end
 

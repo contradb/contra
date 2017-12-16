@@ -43,6 +43,11 @@
           var __choreographers__secret = <%= a_to_safe_str(Choreographer.all.map &:name) %>
         </script>
       </div>
+      <div>
+        <%= f.text_field :hook,
+            {placeholder: "Choreographer"}.merge(copy_dance ? {value: copy_dance.hook} : {}) %>
+      </div>
+        
     </div>
 
     <div class="dance-edit-header-end"></div>

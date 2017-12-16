@@ -89,6 +89,7 @@ class DancesController < ApplicationController
                                                  :choreographer,
                                                  :choreographer_name,
                                                  :start_type,
+                                                 :hook,
                                                  :figures_json,
                                                  :notes,
                                                  :copy_dance_id,

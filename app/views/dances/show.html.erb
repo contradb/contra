@@ -9,6 +9,7 @@
 </div>
 
 <h1 class="dance-show-title"><%= @dance.title %></h1>
+<h2><%= @dance.hook %></h2>
 
 <p class="dance-show-choreographer">by: <strong><%= link_to @dance.choreographer.name, @dance.choreographer %></strong></p>
 <%= render partial: 'bodyshow', locals: {dance: @dance} %>
