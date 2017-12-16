@@ -169,6 +169,7 @@ function menuMoveLabel(from,to) {
           $scope.edit_index_box.length=0;
         };
         $scope.defaultFigures = defaultFigures;
+        $scope.hookMaxLength = 80;
 
         // so not angular, but I'm trying anything at this point. 
         $('.update-dance').on('click', function(e) {

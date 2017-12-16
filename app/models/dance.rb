@@ -41,7 +41,9 @@ class Dance < ApplicationRecord
   end
 
   # eases form defaulting:
-  def choreographer_name () choreographer ? choreographer.name : "" end
+  def choreographer_name
+    choreographer ? choreographer.name : ""
+  end
 
   def moves_that_follow_move(move)
     followers = Set.new
@@ -62,4 +64,6 @@ class Dance < ApplicationRecord
     end
     preceders
   end
+
+  HOOK_MAX_LENGTH = 80
 end

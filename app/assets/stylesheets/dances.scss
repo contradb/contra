@@ -44,11 +44,6 @@
     box-sizing: border-box;
   }
 
-  .dance-edit-header-end {
-    /* immediately after the floats above */
-    clear: left;
-  }
-
   .hide-at-low-res {
     display: inline;
   }
@@ -128,6 +123,14 @@
   }
   label {
     font-weight: normal;
+  }
+}
+
+.dance-editor section {
+  margin-top: 1.5em;
+
+  &.dance-editor-help {
+    margin-top: 3em;
   }
 }
 
