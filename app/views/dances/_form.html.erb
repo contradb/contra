@@ -26,23 +26,19 @@
     <% end %>
 
     <section class="dance-header-editors">
-      <div>
-        <%= f.text_field :title, {class: "dance-title-edit",
-            value: (copy_dance ? "#{copy_dance.title} variation" : 
-                    (@dance.title.blank? ? "Untitled" : @dance.title))} %>
-      </div>
-      <div>
-        <%= f.text_field :choreographer_name,
-            {id: "choreographer-autocomplete", placeholder: "Choreographer"}.
-            merge(copy_dance ? {value: copy_dance.choreographer.name} :
-                  choreographer ? {value: choreographer.name} : {} ) %>
-        <%= f.text_field :start_type,
-            {id: "start-type-autocomplete", placeholder: "Formation"}
-            .merge(copy_dance ? {value: copy_dance.start_type} : {}) %>
-        <script>
-          var __choreographers__secret = <%= a_to_safe_str(Choreographer.all.map &:name) %>
-        </script>
-      </div>
+      <%= f.text_field :title, {class: "dance-title-edit form-control input-lg",
+          value: (copy_dance ? "#{copy_dance.title} variation" : 
+          (@dance.title.blank? ? "Untitled" : @dance.title))} %>
+      <%= f.text_field :choreographer_name,
+          {id: "choreographer-autocomplete", placeholder: "Choreographer", class: 'form-control'}.
+          merge(copy_dance ? {value: copy_dance.choreographer.name} :
+          choreographer ? {value: choreographer.name} : {} ) %>
+      <%= f.text_field :start_type,
+          {id: "start-type-autocomplete", placeholder: "Formation", class: 'form-control'}
+          .merge(copy_dance ? {value: copy_dance.start_type} : {}) %>
+      <script>
+        var __choreographers__secret = <%= a_to_safe_str(Choreographer.all.map &:name) %>
+      </script>
     </section>
 
     <section>
@@ -191,12 +187,13 @@
       </div>
     </section>
 
-    <section>
+    <section ng-controller="HookController as hookcon">
+      <div id='dance-hook-initializer'><%= copy_dance&.hook || @dance.hook %></div>
       <%= f.label :hook %>
       <%= f.text_field :hook,
-          {'ng-model': 'hook', 'maxlength': Dance::HOOK_MAX_LENGTH, class: 'form-control'}.merge(copy_dance ? {value: copy_dance.hook} : {}) %>
+          {'ng-model': 'hook', 'maxlength': Dance::HOOK_MAX_LENGTH, class: 'form-control'} %>
       <div class="fiddly-explanation">
-        briefly: what niche does ths dance fill? {{<%= Dance::HOOK_MAX_LENGTH %> - hook.length}} characters remaining
+        briefly: what niche does ths dance fill? &nbsp; &nbsp; {{<%= Dance::HOOK_MAX_LENGTH %> - hook.length}} characters remaining
       </div>
     </section>
 

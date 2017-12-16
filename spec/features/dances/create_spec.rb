@@ -35,7 +35,7 @@ describe 'Creating dances', js: true do
       
       expect(page).to have_css('#figure-0')
       find('#figure-0').click
-      7.times { click_button 'Remove Figure' }
+      7.times { click_button 'Remove' }
 
       click_button 'Save Dance'
 
@@ -47,7 +47,7 @@ describe 'Creating dances', js: true do
 
       click_on 'Edit'
 
-      2.times { click_button 'Add Figure' }
+      2.times { click_button 'Add' }
 
       click_button 'Save Dance'
 
@@ -69,7 +69,7 @@ describe 'Creating dances', js: true do
 
       expect(page).to have_css('#figure-0')
       find('#figure-0').click
-      7.times { click_button 'Remove Figure' }
+      7.times { click_button 'Remove' }
 
       select('box the gnat')
       select('partners')
@@ -159,9 +159,9 @@ describe 'Creating dances', js: true do
         expect(page).to have_content('empty figure', count: 8)
         find('#figure-0').click
         select('chain')
-        click_button('Add Figure')
+        click_button('Add')
         expect(page).to have_content("A1 ladles chain empty figure move note")
-        click_button('Add Figure')
+        click_button('Add')
         expect(page).to have_content("A1 ladles chain empty figure A2 empty figure move note")
       end
     end
@@ -172,7 +172,7 @@ describe 'Creating dances', js: true do
         find('#figure-0').click
         select('chain')
         click_link('ladles chain')
-        click_button('Add Figure')
+        click_button('Add')
         expect(page).to have_content("A1 empty figure move note ladles chain")
       end
     end
@@ -199,7 +199,7 @@ describe 'Creating dances', js: true do
         find('#figure-0').click
         select('chain')
         expect(page).to have_content('A1 ladles chain')
-        click_button('Remove Figure')
+        click_button('Remove')
         expect(page).to_not have_content('ladies chain')
         expect(page).to have_content('A1 ____ do si do once move who')
       end
@@ -212,7 +212,7 @@ describe 'Creating dances', js: true do
         find('#figure-7').click
         select('do si do')
         expect(page).to have_content('B2 empty figure ____ do si do')
-        click_button('Remove Figure')
+        click_button('Remove')
         expect(page).to_not have_content('do si do')
         expect(page).to have_content('B2 empty figure move')
       end
@@ -226,7 +226,7 @@ describe 'Creating dances', js: true do
         8.times do
           expect(page).to_not have_css('.delete-figure[disabled=disabled]')
           expect(page).to have_css('label', text: 'move') # something is selected
-          click_button('Remove Figure')
+          click_button('Remove')
         end
         expect(page).to have_css('.delete-figure[disabled=disabled]')
         expect(page).to_not have_css('label', text: 'move') # something isn't selected
@@ -241,16 +241,16 @@ describe 'Creating dances', js: true do
         expect(page).to have_css('#figure-0')
         find('#figure-0').click
         5.times do
-          click_button('Remove Figure')
+          click_button('Remove')
         end
         select('custom')
         click_link('custom')
         expect(page).to have_content('A1 custom empty figure A2 empty figure Notes')
-        click_button('Rotate Figures')
+        click_button('Rotate')
         expect(page).to have_content('A1 empty figure custom A2 empty figure Notes')
-        click_button('Rotate Figures')
+        click_button('Rotate')
         expect(page).to have_content('A1 empty figure empty figure A2 custom Notes')
-        click_button('Rotate Figures')
+        click_button('Rotate')
         expect(page).to have_content('A1 custom empty figure A2 empty figure Notes')
       end
     end

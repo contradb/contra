@@ -1,10 +1,6 @@
 
 @media only screen {
-  .dance-editor .figures-edit, 
-  .dance-title-edit,
-  #choreographer-autocomplete,
-  #start-type-autocomplete, 
-  #dance-notes {
+  .dance-editor .figures-edit {
     width: 100%;
   }
   .hide-at-low-res {
@@ -12,8 +8,7 @@
   }
 }
 
-.dance-title-edit {
-  font-size: 175%;
+input.dance-title-edit {
   font-weight: bold;
 }
 
@@ -25,35 +20,17 @@
   }
 
   .dance-editor .figures-edit,
-  .dance-title-edit,
-  .figure-editor-actions,
-  #dance-notes {
+  .figure-editor-actions {
     width: 480px;
-    box-sizing: border-box;
-  }
-
-  #choreographer-autocomplete  {
-    width: 240px;
-    float: left;
-    box-sizing: border-box;
-  }
-
-  #start-type-autocomplete {
-    width: 240px;
-    float: left;
     box-sizing: border-box;
   }
 
   .hide-at-low-res {
     display: inline;
   }
-
-  .dance-title-edit {
-    font-size: 200%;
-  }
 }
 
-.dance-title-edit,
+input.dance-title-edit,
 #choreographer-autocomplete,
 #start-type-autocomplete {
   font-family: 'PT Serif', serif;
@@ -134,6 +111,11 @@
   }
 }
 
+#dance-hook-initializer {
+  display: none;
+}
+
+/////////////////////////////////////////////////////////////////////////
 // below here predates new figure editor-dm 10-01-2016
 .a1b1 {
   background-color: #F3F3F3;
