@@ -45,8 +45,8 @@ ActiveRecord::Schema.define(version: 20171216025445) do
     t.datetime "updated_at",                      null: false
     t.text     "figures_json",     default: "[]", null: false
     t.boolean  "publish",          default: true, null: false
-    t.text     "preamble",         default: ""
-    t.text     "hook",             default: ""
+    t.text     "preamble",         default: "",   null: false
+    t.text     "hook",             default: "",   null: false
   end
 
   create_table "programs", force: :cascade do |t|
