@@ -20,207 +20,203 @@
     <% choreographer = params[:choreographer_id] && Choreographer.find(params[:choreographer_id]) %>
 
     <% if copy_dance %>
-      <div>
+      <section>
         <div>Composing a variation of <strong><%= copy_dance.title %></strong></div>
-      </div>
+      </section>
     <% end %>
 
-    <div class="dance-header-editors">
-      <div>
-        <%= f.text_field :title, {class: "dance-title-edit",
-            value: (copy_dance ? "#{copy_dance.title} variation" : 
-                    (@dance.title.blank? ? "Untitled" : @dance.title))} %>
-      </div>
-      <div>
-        <%= f.text_field :choreographer_name,
-            {id: "choreographer-autocomplete", placeholder: "Choreographer"}.
-            merge(copy_dance ? {value: copy_dance.choreographer.name} :
-                  choreographer ? {value: choreographer.name} : {} ) %>
-        <%= f.text_field :start_type,
-            {id: "start-type-autocomplete", placeholder: "Formation"}
-            .merge(copy_dance ? {value: copy_dance.start_type} : {}) %>
-        <script>
-          var __choreographers__secret = <%= a_to_safe_str(Choreographer.all.map &:name) %>
-        </script>
-      </div>
-    </div>
+    <section class="dance-header-editors">
+      <%= f.text_field :title, {class: "dance-title-edit form-control input-lg",
+          value: (copy_dance ? "#{copy_dance.title} variation" : 
+          (@dance.title.blank? ? "Untitled" : @dance.title))} %>
+      <%= f.text_field :choreographer_name,
+          {id: "choreographer-autocomplete", placeholder: "Choreographer", class: 'form-control'}.
+          merge(copy_dance ? {value: copy_dance.choreographer.name} :
+          choreographer ? {value: choreographer.name} : {} ) %>
+      <%= f.text_field :start_type,
+          {id: "start-type-autocomplete", placeholder: "Formation", class: 'form-control'}
+          .merge(copy_dance ? {value: copy_dance.start_type} : {}) %>
+      <script>
+        var __choreographers__secret = <%= a_to_safe_str(Choreographer.all.map &:name) %>
+      </script>
+    </section>
 
-    <div class="dance-edit-header-end"></div>
+    <section>
+      <%= f.label :preamble %>
+      <%= f.text_area :preamble,
+          {placeholder:
+          "Instruct dancers on how to get into formations such as wavy lines. Instruct dancers to identify out-of-set dancers like shadows.",
+          class: 'form-control', rows: 2}.merge(copy_dance ? {value: copy_dance.preamble} : {}) %>
+      <%= render 'markdown_advertisement' %>
+    </section>
 
 
     <%# ============================ figure editors ==================== %>
 
-    <div ng-controller="FiguresController as figures" id="figures">
-      <div class="display:none"
-           ng-init="figures.arr=defaultFigures(<%= copy_dance ? copy_dance.figures_json : @dance.figures_json %>)">
-      </div>
-      <%# Add/delete/rotate figure buttons %>
-      <div class="actions figure-editor-actions">
-        <div class="btn-group btn-group-justified btn-group-lg" role="group">
-          <div class="btn-group">
-            <button name="button" type="button" ng-click='addFigure()' class="btn btn-default add-figure"
-                    title="add a new figure" 
-                    aria-label="add a new figure at the end of the list">
-              <%= plus_icon_html() %> Add<span class="hide-at-low-res"> Figure</span></button>
-          </div>
-          <div class="btn-group">
-            <button name="button" type="button" ng-click='deleteFigure()' 
-                    ng-disabled="0 == edit_index_box.length"
-                    class="btn btn-default delete-figure"
-                    title="delete the current figure" 
-                    aria-label="delete the last figure">
-              <%= x_icon_html() %> Remove<span class="hide-at-low-res"> Figure</span></button>
-          </div>
-          <div class="btn-group">
-            <button name="button" type="button" ng-click='rotateFigures()' 
-                    ng-disabled="figures.arr.length < 2" class="btn btn-default rotate-figures"
-                    title="rotate figures, putting the last one first and bumping the rest down" 
-                    aria-label="rotate figures, putting the last one first and bumping the rest down">
-              <%= rotate_icon_html() %> Rotate<span class="hide-at-low-res"> Figures</span></button>
+    <section>
+      <div ng-controller="FiguresController as figures" id="figures">
+        <div class="display:none"
+             ng-init="figures.arr=defaultFigures(<%= copy_dance ? copy_dance.figures_json : @dance.figures_json %>)">
+        </div>
+        <div class="actions figure-editor-actions">
+          <%= f.label :figures %>
+          <div class="btn-group btn-group-justified btn-group-lg" role="group">
+            <div class="btn-group">
+              <button name="button" type="button" ng-click='addFigure()' class="btn btn-default add-figure"
+                      title="add a new figure" 
+                      aria-label="add a new figure at the end of the list">
+                <%= plus_icon_html() %> Add</button>
+            </div>
+            <div class="btn-group">
+              <button name="button" type="button" ng-click='deleteFigure()' 
+                      ng-disabled="0 == edit_index_box.length"
+                      class="btn btn-default delete-figure"
+                      title="delete the current figure" 
+                      aria-label="delete the last figure">
+                <%= x_icon_html() %> Remove</button>
+            </div>
+            <div class="btn-group">
+              <button name="button" type="button" ng-click='rotateFigures()' 
+                      ng-disabled="figures.arr.length < 2" class="btn btn-default rotate-figures"
+                      title="rotate figures, putting the last one first and bumping the rest down" 
+                      aria-label="rotate figures, putting the last one first and bumping the rest down">
+                <%= rotate_icon_html() %> Rotate</button>
+            </div>
           </div>
         </div>
-      </div>
 
 
-      <table class="figures-edit">
-        <tr ng-repeat-start="(figureIdx, figure) in figures.arr">
-          <td ng-class="classesForFigureA1B2(figures.arr, figureIdx, edit_index_box, true)" class="a1b2">
-            {{labelForBeats(sumBeats(figures.arr,figureIdx))}}&nbsp;
-          </td>
-          <td class="figure-edit-text-and-menu-dots">
-            <span class="dropdown" style="float: right" aria-label="menu">
-              <a href="#" role="button" class="dropdown-toggle" ng-attr-id="{{'figure-menu-'+figureIdx}}"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <span class="glyphicon glyphicon-option-vertical"></span>
+        <table class="figures-edit">
+          <tr ng-repeat-start="(figureIdx, figure) in figures.arr">
+            <td ng-class="classesForFigureA1B2(figures.arr, figureIdx, edit_index_box, true)" class="a1b2">
+              {{labelForBeats(sumBeats(figures.arr,figureIdx))}}&nbsp;
+            </td>
+            <td class="figure-edit-text-and-menu-dots">
+              <span class="dropdown" style="float: right" aria-label="menu">
+                <a href="#" role="button" class="dropdown-toggle" ng-attr-id="{{'figure-menu-'+figureIdx}}"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <span class="glyphicon glyphicon-option-vertical"></span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right" ng-attr-aria-labelledby="{{'figure-menu-'+figureIdx}}">
+                  <li><a href="#" ng-click="duplicateIdx(figureIdx)">Duplicate</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li ng-repeat="figmenu in figures.arr" ng-click="menuMove(figureIdx, $index)" ng-if="$index !== figureIdx"><a href="#">{{menuMoveLabel(figureIdx, $index)}}</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#" ng-click="deleteFigureIdx(figureIdx)">Delete</a></li>
+                </ul>
+              </span>
+              <a ng-click="clickFigure(figureIdx);"
+                 href="" class="figure-view" ng-attr-id="{{'figure-'+figureIdx}}">
+                {{figure_html_readonly(figures.arr[figureIdx])}}
               </a>
-              <ul class="dropdown-menu dropdown-menu-right" ng-attr-aria-labelledby="{{'figure-menu-'+figureIdx}}">
-                <li><a href="#" ng-click="duplicateIdx(figureIdx)">Duplicate</a></li>
-                <li role="separator" class="divider"></li>
-                <li ng-repeat="figmenu in figures.arr" ng-click="menuMove(figureIdx, $index)" ng-if="$index !== figureIdx"><a href="#">{{menuMoveLabel(figureIdx, $index)}}</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#" ng-click="deleteFigureIdx(figureIdx)">Delete</a></li>
-              </ul>
-            </span>
-            <a ng-click="clickFigure(figureIdx);"
-               href="" class="figure-view" ng-attr-id="{{'figure-'+figureIdx}}">
-              {{figure_html_readonly(figures.arr[figureIdx])}}
-            </a>
-          </td>
-        </tr>
-        <tr ng-repeat-end ng-if="edit_index_box.indexOf(figureIdx) >= 0">
-          <td class="a1b2" ng-class="classesForFigureA1B2(figures.arr, figureIdx, edit_index_box, false)">
-            &nbsp;
-          </td>
-          <td>
+            </td>
+          </tr>
+          <tr ng-repeat-end ng-if="edit_index_box.indexOf(figureIdx) >= 0">
+            <td class="a1b2" ng-class="classesForFigureA1B2(figures.arr, figureIdx, edit_index_box, false)">
+              &nbsp;
+            </td>
+            <td>
 
-            <label class="figure-edit-label"><span class="figure-edit-label-text">move</span>
-              <div class='figure-value-setter-div'>
-                <select ng-model="figure.move"
-                        ng-options="m for m in movesMenuOrdering()"
-                        ng-change="userChangedMove(figure)"
-                        ng-attr-id="{{'move-'+figureIdx}}"
-                        class='form-control'>
-                </select>
+              <label class="figure-edit-label"><span class="figure-edit-label-text">move</span>
+                <div class='figure-value-setter-div'>
+                  <select ng-model="figure.move"
+                          ng-options="m for m in movesMenuOrdering()"
+                          ng-change="userChangedMove(figure)"
+                          ng-attr-id="{{'move-'+figureIdx}}"
+                          class='form-control'>
+                  </select>
+                </div>
+              </label>
+              <div ng-repeat="p in parameters(figure.move)">
+                <label class="figure-edit-label" ng-init="set_if_unset(figure.parameter_values, $index, p.value)">
+                  <span class="figure-edit-label-text">{{parameterLabel(figure.move, $index)}}</span>
+                  <div class='figure-value-setter-div'>
+                    <%= render 'chooser' %>
+                  </div>
+                </label>
               </div>
-            </label>
-            <div ng-repeat="p in parameters(figure.move)">
-              <label class="figure-edit-label" ng-init="set_if_unset(figure.parameter_values, $index, p.value)">
-                <span class="figure-edit-label-text">{{parameterLabel(figure.move, $index)}}</span>
-                <div class='figure-value-setter-div'>
-                  <%= render 'chooser' %>
-                </div>
-              </label>
-            </div>
-            <div>
-              <label class="figure-edit-label"><span class='figure-edit-label-text'>note</span>
-                <div class='figure-value-setter-div'>
-                  <input type='text' ng-model='figure.note' class='form-control'/>
-                </div>
-              </label>
-            </div>
+              <div>
+                <label class="figure-edit-label"><span class='figure-edit-label-text'>note</span>
+                  <div class='figure-value-setter-div'>
+                    <input type='text' ng-model='figure.note' class='form-control'/>
+                  </div>
+                </label>
+              </div>
 
-          </td>
-        </tr>
-      </table>
-      <div>
-        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-        <%# drill in to debug with
-            angular.element(document.getElementById('figures')).scope().figures.arr
-            or
-            angular.element(document.getElementById('figures')).scope().figures.arr[4].parameter_values %>
-        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    
+            </td>
+          </tr>
+        </table>
+        <div>
+          <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+          <%# drill in to debug with
+              angular.element(document.getElementById('figures')).scope().figures.arr
+              or
+              angular.element(document.getElementById('figures')).scope().figures.arr[4].parameter_values %>
+          <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-        <!-- debugger -->
-        <% if debug_figure_json then  %>
+
+          <!-- debugger -->
+          <% if debug_figure_json then  %>
           <div><strong style="color: red">debug_figure_json = true </strong></div>
           <div>edit_index_box == {{edit_index_box}}</div>
           <div ng-repeat="figure in figures.arr">
             <div>{{$index}}: {{figure}}</div>
           </div>
-        <% end %> 
-
-
- 
-        <!-- hidden IO field for communicating with Rails -->
-
-        <div class="field" <%= debug_figure_json ?  '' : 'hidden=hidden' %> >
-          <%= f.label :figures_json %>
-          <div>{{toJson(figures.arr)}}</div>
-        </div>
-        <%= f.text_field :figures_json, name: "dance[figures_json]", id: "dance-figures-json", hidden: true %>
-
-      </div> <!-- figures controller -->
-    </div>
+          <% end %> 
 
 
 
+          <!-- hidden IO field for communicating with Rails -->
 
+          <div class="field" <%= debug_figure_json ?  '' : 'hidden=hidden' %> >
+            <%= f.label :figures_json %>
+            <div>{{toJson(figures.arr)}}</div>
+          </div>
+          <%= f.text_field :figures_json, name: "dance[figures_json]", id: "dance-figures-json", hidden: true %>
 
-
+        </div> <!-- figures controller -->
+      </div>
+    </section>
 
     <%# ============================ end figure editors ================ %>
 
-
-
-
-
-    <br />
-    <div class="field" id="dance-notes">
-      <%= f.label :notes %>
-
-      <%= begin
-          h = {class: 'per_dance_notes_edit form-control'};
-          if copy_dance then
-          h[:value] = copy_dance.notes
-          end
-          f.text_area :notes, h
-          end  %>
-      <div class="understated hide-at-low-res">
-        may use <a href="https://guides.github.com/features/mastering-markdown/" target="_">markdown</a> formatting
+    <section>
+      <div class="field" id="dance-notes">
+        <%= f.label :notes %>
+        <%= f.text_area :notes, {rows: 3, class: 'form-control', placeholder: "include nuanced teaching notes, history, and links to other representations of the dance"}.merge(copy_dance ? {value: copy_dance.notes} : {}) %>
+        <%= render 'markdown_advertisement' %>
       </div>
-    </div>
-    <br>
+    </section>
 
-    <div>
-      <%= f.label :publish, value: 'true' do %>
+    <section ng-controller="HookController as hookcon">
+      <div id='dance-hook-initializer'><%= copy_dance&.hook || @dance.hook %></div>
+      <%= f.label :hook %>
+      <%= f.text_field :hook,
+          {'ng-model': 'hook', 'maxlength': Dance::HOOK_MAX_LENGTH, class: 'form-control', placeholder: "catches out of Rory O'Moore spins"} %>
+      <div class="fiddly-explanation">
+        briefly: what niche does ths dance fill? &nbsp; &nbsp; {{<%= Dance::HOOK_MAX_LENGTH %> - hook.length}} characters remaining
+      </div>
+    </section>
+
+    <section>
+      <div>
+        <%= f.label :publish, value: 'true' do %>
         <%= f.radio_button :publish, 'true' %> 
         Publish
-      <% end %>
-      <%= f.label :publish, value: 'false' do %>
+        <% end %>
+        <%= f.label :publish, value: 'false' do %>
         <%= f.radio_button :publish, 'false' %> 
         Private
-      <% end %>
-    </div>
+        <% end %>
+      </div>
 
-    <div class="actions">
-      <%= save_submit_button_html "Save Dance", {class: "update-dance"} %>
-    </div>
+      <div class="actions">
+        <%= save_submit_button_html "Save Dance", {class: "update-dance"} %>
+      </div>
+    </section>
 
-    <br />
-    <br />
-    <br />
-    <p class='understated'>voice your concerns - email <%= link_to @admin_email, "mailto:#{@admin_email}" %></p> <%# Don't paste this email outside the login wall or we'll get spam %>
-    <p class='understated'>see also <a href="https://github.com/dcmorse/contra/wiki/Curating-Dances" target="_blank">community guidelines for curating dances</a></p>
-
-  <% end %>
+    <section class='dance-editor-help'>
+      <p class='understated'>voice your concerns - email <%= link_to @admin_email, "mailto:#{@admin_email}" %></p> <%# Don't paste this email outside the login wall or we'll get spam %>
+      <p class='understated'>see also <a href="https://github.com/dcmorse/contra/wiki/Curating-Dances" target="_blank">community guidelines for curating dances</a></p>
+    </section>
+    <% end %>
 </div>

@@ -8,8 +8,10 @@ describe 'Showing dances' do
     dance = FactoryGirl.create(:box_the_gnat_contra)
     visit dance_path dance.id
     expect(page.body).to include dance.title
+    expect(page.body).to include dance.hook
     expect(page.body).to include dance.choreographer.name
     expect(page.body).to include dance.start_type
+    expect(page.body).to include dance.preamble
     expect(page).to have_text ('neighbors balance & swing')
     expect(page).to have_text ('ladles allemande right 1½')
     expect(page.body).to include dance.notes
@@ -25,6 +27,7 @@ describe 'Showing dances' do
         expect(page).to_not have_link('Delete')
       end
     end
+
     it 'has copy, edit, and delete buttons if we do own the dance' do
       with_login do |user|
         dance = FactoryGirl.create(:dance, user: user)
@@ -34,6 +37,7 @@ describe 'Showing dances' do
         expect(page).to have_link('Delete')
       end
     end
+
     it 'has copy, edit, and delete buttons if we are an admin' do
       with_login(admin: true) do |user|
         dance = FactoryGirl.create(:dance)
