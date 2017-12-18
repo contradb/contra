@@ -117,3 +117,12 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
 select.chooser-argument {
   min-width: 10em;
 }
+
+.toggle-vis-active {
+  @extend .btn-default;
+}
+
+.toggle-vis-inactive {
+  background-color: $contra-grey;
+  @extend .btn-default;
+}

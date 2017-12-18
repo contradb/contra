@@ -543,5 +543,23 @@ describe 'Welcome page', js: true do
         expect(page).to have_content('Showing dances with a swing and a ladles allemande right 1½ for *.')
       end
     end
+
+    describe 'columns' do
+      # %w[title choreographer formation hook user notes created updated]
+      it "Clicking vis toggles buttons cause columns to disappear" do
+        dances
+        visit '/'
+        %w[Title Choreographer User Updated].each do |col|
+          expect(page).to have_css('#dances-table th', text: col)
+          expect(page).to have_css('button.toggle-vis-active', text: col)
+          click_button col
+          expect(page).to_not have_css('#dances-table th', text: col)
+          expect(page).to have_css('button.toggle-vis-inactive', text: col)
+          click_button col
+          expect(page).to have_css('#dances-table th', text: col)
+          expect(page).to have_css('button.toggle-vis-active', text: col)
+        end
+      end
+    end
   end
 end

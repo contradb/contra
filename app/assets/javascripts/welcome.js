@@ -403,6 +403,32 @@ function buildDOMtoMatchQuery(query) {
   return figureFilter;
 }
 
+////////////////////// VIS TOGGLES
+// For each column in the datatable, add a corresponding button that
+// changes color and toggles column visibility when clicked.
+
+function insertVisToggles(dataTable) {
+  var visToggles = $('.table-column-vis-toggles');
+  visToggles.empty();
+  $('#dances-table thead th').each(function(index) {
+    var link = $("<button class='toggle-vis toggle-vis-active btn btn-sm' href='javascript:void(0)'>"+$(this).text()+"</button>");
+    link.click(function () {
+      var column = dataTable.column(index);
+      var active = !column.visible();
+      column.visible(active);
+      if (active) {
+        link.addClass('toggle-vis-active');
+        link.removeClass('toggle-vis-inactive');
+      } else {
+        link.addClass('toggle-vis-inactive');
+        link.removeClass('toggle-vis-active');
+      }
+    });
+    visToggles.append(link);
+  });
+}
+
+
 ///////////////////// PAGE LOADED
 
 jQuery(document).ready(function() {
@@ -474,6 +500,7 @@ jQuery(document).ready(function() {
             {"data": "updated_at"}
           ]
         });
-});
 
+  insertVisToggles(dataTable);
+});
 })();
