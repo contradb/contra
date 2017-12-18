@@ -38,7 +38,7 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
 }
 
 #dances-table_wrapper {
-  margin-top: 40px;             /* WEIRD 2of2 make space above normal box! */
+  margin-top: 29px;             /* WEIRD 2of2 make space above normal box! */
 }
 
 /* figure filters */
@@ -116,6 +116,16 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
 
 select.chooser-argument {
   min-width: 10em;
+}
+
+.table-column-vis-toggles {
+  @extend .btn-group;
+}
+
+.table-column-vis-wrap label {
+  font-weight: normal;
+  font-size: smaller;
+  margin-right: 1em;
 }
 
 .toggle-vis-active {

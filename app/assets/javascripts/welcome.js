@@ -411,7 +411,7 @@ function insertVisToggles(dataTable) {
   var visToggles = $('.table-column-vis-toggles');
   visToggles.empty();
   $('#dances-table thead th').each(function(index) {
-    var link = $("<button class='toggle-vis toggle-vis-active btn btn-sm' href='javascript:void(0)'>"+$(this).text()+"</button>");
+    var link = $("<button class='toggle-vis toggle-vis-active btn btn-xs' href='javascript:void(0)'>"+$(this).text()+"</button>");
     link.click(function () {
       var column = dataTable.column(index);
       var active = !column.visible();
@@ -488,7 +488,7 @@ jQuery(document).ready(function() {
             }
           },
           "pagingType": "full_numbers",
-          "dom": 'ft<"row"<"col-sm-6 col-md-3"i><"col-sm-6 col-md-3"l>>pr',
+          "dom": 'f<"table-column-vis-wrap"<"table-column-vis-toggles">>t<"row"<"col-sm-6 col-md-3"i><"col-sm-6 col-md-3"l>>pr',
           language: {
             searchPlaceholder: "filter by title, choreographer, and user"
           },
@@ -501,6 +501,9 @@ jQuery(document).ready(function() {
           ]
         });
 
+  if (0===$('.table-column-vis-wrap label').length) {
+    $('.table-column-vis-wrap').prepend($('<label>Show Columns: </label>'));
+  }
   insertVisToggles(dataTable);
 });
 })();
