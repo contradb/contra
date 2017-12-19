@@ -492,14 +492,16 @@ jQuery(document).ready(function() {
           language: {
             searchPlaceholder: "filter by title, choreographer, and user"
           },
-          "order": [[ 4, "desc" ]],
           "columns": [
             {"data": "title"},
             {"data": "choreographer_name"},
             {"data": "formation"},
+            {"data": "hook"},
             {"data": "user_name"},
+            {"data": "created_at"},
             {"data": "updated_at"}
-          ]
+          ],
+          "order": [[ 6, "desc" ]] // 6 should = index of 'updated_at' in the array above
         });
 
   if (0===$('.table-column-vis-wrap label').length) {
