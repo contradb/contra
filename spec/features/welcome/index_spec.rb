@@ -29,6 +29,7 @@ describe 'Welcome page', js: true do
       visit '/'
       expect(page).to have_link(dance.title, href: dance_path(dance))
       expect(page).to have_link(dance.choreographer.name, href: choreographer_path(dance.choreographer))
+      expect(page).to have_text(dance.start_type)
       expect(page).to have_link(dance.user.name, href: user_path(dance.user))
       expect(page).to have_text(dance.created_at.strftime('%Y-%m-%d'))
     end
@@ -549,7 +550,7 @@ describe 'Welcome page', js: true do
       it "Clicking vis toggles buttons cause columns to disappear" do
         dances
         visit '/'
-        %w[Title Choreographer User Updated].each do |col|
+        %w[Title Choreographer Formation User Updated].each do |col|
           expect(page).to have_css('#dances-table th', text: col)
           expect(page).to have_css('button.toggle-vis-active', text: col)
           click_button col

@@ -8,6 +8,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
     @view_columns ||= {
       title: { source: "Dance.title" },
       choreographer_name: { source: "Choreographer.name" },
+      formation: { source: "Dance.start_type", searchable: false},
       user_name: { source: "User.name" },
       updated_at: { source: "Dance.updated_at", searchable: false, orderable: true }
     }
@@ -18,6 +19,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
       {
         title: link_to(dance.title, dance_path(dance)),
         choreographer_name: link_to(dance.choreographer.name, choreographer_path(dance.choreographer)),
+        formation: dance.start_type,
         user_name: link_to(dance.user.name, user_path(dance.user)),
         updated_at: dance.updated_at.strftime('%Y-%m-%d')
       }

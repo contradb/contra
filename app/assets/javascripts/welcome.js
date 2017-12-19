@@ -492,10 +492,11 @@ jQuery(document).ready(function() {
           language: {
             searchPlaceholder: "filter by title, choreographer, and user"
           },
-          "order": [[ 3, "desc" ]],
+          "order": [[ 4, "desc" ]],
           "columns": [
             {"data": "title"},
             {"data": "choreographer_name"},
+            {"data": "formation"},
             {"data": "user_name"},
             {"data": "updated_at"}
           ]
