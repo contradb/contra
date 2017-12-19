@@ -65,5 +65,5 @@ class Dance < ApplicationRecord
     preceders
   end
 
-  HOOK_MAX_LENGTH = 40
+  HOOK_MAX_LENGTH = 50
 end
