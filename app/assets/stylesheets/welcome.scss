@@ -9,6 +9,10 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
   }
 }
 
+#dances-table {
+  max-width: 100% !important;
+}
+
 #dances-table .sorting:hover {
   cursor: pointer;
   cursor: hand;

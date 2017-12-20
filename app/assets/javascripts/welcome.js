@@ -429,9 +429,10 @@ function insertVisToggles(dataTable) {
 }
 
 function hideColumnsForResolution(dataTable, width) {
-  var narrowScreenColumns = ['Title', 'Choreographer', 'Hook'];
+  var tinyScreenColumns = ['Title', 'Choreographer'];
+  var narrowScreenColumns = tinyScreenColumns.concat(['Hook']);
   var wideScreenColumns = narrowScreenColumns.concat(['Formation', 'User', 'Updated']);
-  var screenColumns = (width < 768) ? narrowScreenColumns : wideScreenColumns;
+  var screenColumns = (width < 400) ? tinyScreenColumns : ((width < 768) ? narrowScreenColumns : wideScreenColumns);
   var visToggles = $('.table-column-vis-toggles button');
   visToggles.each(function(index) {
     var $this = $(this);
