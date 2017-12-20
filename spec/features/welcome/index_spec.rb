@@ -551,7 +551,7 @@ describe 'Welcome page', js: true do
       it "Clicking vis toggles buttons cause columns to disappear" do
         dances
         visit '/'
-        %w[Title Choreographer Formation Hook User Created Updated].each do |col|
+        %w[Title Choreographer Formation Hook User Updated].each do |col|
           expect(page).to have_css('#dances-table th', text: col)
           expect(page).to have_css('button.toggle-vis-active', text: col)
           click_button col
@@ -560,6 +560,19 @@ describe 'Welcome page', js: true do
           click_button col
           expect(page).to have_css('#dances-table th', text: col)
           expect(page).to have_css('button.toggle-vis-active', text: col)
+        end
+        %w[Created].each do |col|
+          expect(page).to_not have_css('#dances-table th', text: col)
+          expect(page).to_not have_css('button.toggle-vis-active', text: col)
+          expect(page).to  have_css('button.toggle-vis-inactive', text: col)
+          click_button col
+          expect(page).to have_css('#dances-table th', text: col)
+          expect(page).to_not have_css('button.toggle-vis-inactive', text: col)
+          expect(page).to have_css('button.toggle-vis-active', text: col)
+          click_button col
+          expect(page).to_not have_css('#dances-table th', text: col)
+          expect(page).to have_css('button.toggle-vis-inactive', text: col)
+          expect(page).to_not have_css('button.toggle-vis-active', text: col)
         end
       end
     end

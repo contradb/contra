@@ -513,10 +513,10 @@ jQuery(document).ready(function() {
             {"data": "formation"},
             {"data": "hook"},
             {"data": "user_name"},
-            {"data": "created_at"},
-            {"data": "updated_at"}
+            {"data": "updated_at"},
+            {"data": "created_at"}
           ],
-          "order": [[ 6, "desc" ]] // 6 should = index of 'updated_at' in the array above
+          "order": [[ 5, "desc" ]] // 5 should = index of 'updated_at' in the array above
         });
 
   if (0===$('.table-column-vis-wrap label').length) {
