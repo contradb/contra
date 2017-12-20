@@ -124,8 +124,8 @@ select.chooser-argument {
 
 .table-column-vis-wrap label {
   font-weight: normal;
-  font-size: smaller;
-  margin-right: 1em;
+  font-size: 12px; /* match buttons */
+  margin-right: 0.5em;
 }
 
 .toggle-vis-active {

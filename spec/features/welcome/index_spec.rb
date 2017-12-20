@@ -564,7 +564,7 @@ describe 'Welcome page', js: true do
           expect(page).to have_css('button.toggle-vis-active', text: col)
           expect(page).to_not have_css('button.toggle-vis-inactive', text: col)
         end
-        %w[Created].each do |col|
+        %w[Entered].each do |col|
           expect(page).to_not have_css('#dances-table th', text: col)
           expect(page).to_not have_css('button.toggle-vis-active', text: col)
           expect(page).to  have_css('button.toggle-vis-inactive', text: col)

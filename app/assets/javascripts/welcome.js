@@ -510,8 +510,8 @@ jQuery(document).ready(function() {
           "columns": [
             {"data": "title"},
             {"data": "choreographer_name"},
-            {"data": "formation"},
             {"data": "hook"},
+            {"data": "formation"},
             {"data": "user_name"},
             {"data": "updated_at"},
             {"data": "created_at"}
@@ -520,7 +520,7 @@ jQuery(document).ready(function() {
         });
 
   if (0===$('.table-column-vis-wrap label').length) {
-    $('.table-column-vis-wrap').prepend($('<label>Show Columns: </label>'));
+    $('.table-column-vis-wrap').prepend($('<label>Show columns </label>'));
   }
   insertVisToggles(dataTable);
   hideColumnsForResolution(dataTable, $(window).width());
