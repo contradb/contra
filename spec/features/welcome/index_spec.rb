@@ -32,8 +32,8 @@ describe 'Welcome page', js: true do
       expect(page).to have_text(dance.start_type)
       expect(page).to have_text(dance.hook)
       expect(page).to have_link(dance.user.name, href: user_path(dance.user))
-      expect(page).to have_text(dance.created_at.strftime('%Y-%m-%d'))
       expect(page).to have_text(dance.updated_at.strftime('%Y-%m-%d'))
+      expect(page).to have_css('*', text: dance.created_at.strftime('%Y-%m-%d'), visible: false)
     end
 
     it 'displays in descencing updated_at order by default' do

@@ -428,6 +428,21 @@ function insertVisToggles(dataTable) {
   });
 }
 
+function hideColumnsForResolution(dataTable, width) {
+  var narrowScreenColumns = ['Title', 'Choreographer', 'Hook'];
+  var wideScreenColumns = narrowScreenColumns.concat(['Formation', 'User', 'Updated']);
+  var screenColumns = (width < 768) ? narrowScreenColumns : wideScreenColumns;
+  var visToggles = $('.table-column-vis-toggles button');
+  visToggles.each(function(index) {
+    var $this = $(this);
+    var text = $this.text();
+    if (0 > screenColumns.indexOf(text)) {
+      dataTable.column(index).visible(false);
+      $this.addClass('toggle-vis-inactive');
+      $this.removeClass('toggle-vis-active');
+    }
+  });
+}
 
 ///////////////////// PAGE LOADED
 
@@ -508,5 +523,6 @@ jQuery(document).ready(function() {
     $('.table-column-vis-wrap').prepend($('<label>Show Columns: </label>'));
   }
   insertVisToggles(dataTable);
+  hideColumnsForResolution(dataTable, $(window).width());
 });
 })();
