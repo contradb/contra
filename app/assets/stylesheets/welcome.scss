@@ -9,6 +9,12 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
   }
 }
 
+#dances-table {
+  /* width seems a better choice than max-width because max-width leaves the table
+     too narrow when the window expands -dm 12-21-2017 */
+  width: 100% !important;
+}
+
 #dances-table .sorting:hover {
   cursor: pointer;
   cursor: hand;
@@ -38,7 +44,7 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
 }
 
 #dances-table_wrapper {
-  margin-top: 40px;             /* WEIRD 2of2 make space above normal box! */
+  margin-top: 29px;             /* WEIRD 2of2 make space above normal box! */
 }
 
 /* figure filters */
@@ -116,4 +122,23 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
 
 select.chooser-argument {
   min-width: 10em;
+}
+
+.table-column-vis-toggles {
+  @extend .btn-group;
+}
+
+.table-column-vis-wrap label {
+  font-weight: normal;
+  font-size: 12px; /* match buttons */
+  margin-right: 0.5em;
+}
+
+.toggle-vis-active {
+  @extend .btn-default;
+}
+
+.toggle-vis-inactive {
+  background-color: $contra-grey;
+  @extend .btn-default;
 }

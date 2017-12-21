@@ -403,6 +403,55 @@ function buildDOMtoMatchQuery(query) {
   return figureFilter;
 }
 
+////////////////////// VIS TOGGLES
+// For each column in the datatable, add a corresponding button that
+// changes color and toggles column visibility when clicked.
+
+function insertVisToggles(dataTable) {
+  var visToggles = $('.table-column-vis-toggles');
+  visToggles.empty();
+  $('#dances-table thead th').each(function(index) {
+    var link = $("<button class='toggle-vis toggle-vis-active btn btn-xs' href='javascript:void(0)'>"+$(this).text()+"</button>");
+    link.click(function () {
+      var column = dataTable.column(index);
+      var activate = !column.visible();
+      column.visible(activate);
+      if (activate) {
+        link.addClass('toggle-vis-active');
+        link.removeClass('toggle-vis-inactive');
+      } else {
+        link.addClass('toggle-vis-inactive');
+        link.removeClass('toggle-vis-active');
+      }
+    });
+    visToggles.append(link);
+  });
+}
+
+var tinyScreenColumns = ['Title', 'Choreographer'];
+var narrowScreenColumns = tinyScreenColumns.concat(['Hook']);
+var wideScreenColumns = narrowScreenColumns.concat(['Formation', 'User', 'Updated']);
+var recentlySeenColumns = null;
+
+function toggleColumnVisForResolution(dataTable, width) {
+  var screenColumns = (width < 400) ? tinyScreenColumns : ((width < 768) ? narrowScreenColumns : wideScreenColumns);
+  if (recentlySeenColumns === screenColumns) { return; }
+  recentlySeenColumns = screenColumns;
+  $('.table-column-vis-toggles button').each(function(index) {
+    var $this = $(this);
+    var text = $this.text();
+    if (0 <= screenColumns.indexOf(text)) {
+      dataTable.column(index).visible(true);
+      $this.removeClass('toggle-vis-inactive');
+      $this.addClass('toggle-vis-active');
+    } else {
+      dataTable.column(index).visible(false);
+      $this.addClass('toggle-vis-inactive');
+      $this.removeClass('toggle-vis-active');
+    }
+  });
+}
+
 ///////////////////// PAGE LOADED
 
 jQuery(document).ready(function() {
@@ -462,18 +511,30 @@ jQuery(document).ready(function() {
             }
           },
           "pagingType": "full_numbers",
-          "dom": 'ft<"row"<"col-sm-6 col-md-3"i><"col-sm-6 col-md-3"l>>pr',
+          "dom": 'f<"table-column-vis-wrap"<"table-column-vis-toggles">>t<"row"<"col-sm-6 col-md-3"i><"col-sm-6 col-md-3"l>>pr',
           language: {
             searchPlaceholder: "filter by title, choreographer, and user"
           },
-          "order": [[ 3, "desc" ]],
-          "columns": [
+          "columns": [          // mapped, in order, to <th> ordering in the html.erb
             {"data": "title"},
             {"data": "choreographer_name"},
+            {"data": "hook"},
+            {"data": "formation"},
             {"data": "user_name"},
-            {"data": "updated_at"}
-          ]
+            {"data": "updated_at"},
+            {"data": "created_at"}
+          ],
+          "order": [[ 5, "desc" ]] // 5 should = index of 'updated_at' in the array above
         });
-});
 
+  if (0===$('.table-column-vis-wrap label').length) {
+    $('.table-column-vis-wrap').prepend($('<label>Show columns </label>'));
+  }
+  insertVisToggles(dataTable);
+  var resizeFn = function () {
+    toggleColumnVisForResolution(dataTable, $(window).width());
+  };
+  $(window).resize(resizeFn);
+  resizeFn();
+});
 })();

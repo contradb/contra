@@ -23,14 +23,17 @@ describe 'Welcome page', js: true do
   end
 
   context 'datatable' do
-    let (:dance) {FactoryGirl.create(:box_the_gnat_contra)}
+    let (:dance) {FactoryGirl.create(:box_the_gnat_contra, created_at: DateTime.now - 10.years)}
     it 'displays dance columns' do
       dance
       visit '/'
       expect(page).to have_link(dance.title, href: dance_path(dance))
       expect(page).to have_link(dance.choreographer.name, href: choreographer_path(dance.choreographer))
+      expect(page).to have_text(dance.start_type)
+      expect(page).to have_text(dance.hook)
       expect(page).to have_link(dance.user.name, href: user_path(dance.user))
-      expect(page).to have_text(dance.created_at.strftime('%Y-%m-%d'))
+      expect(page).to have_text(dance.updated_at.strftime('%Y-%m-%d'))
+      expect(page).to_not have_text(dance.created_at.strftime('%Y-%m-%d')) # column invisible by default, it's not hidden, it's simply not there
     end
 
     it 'displays in descencing updated_at order by default' do
@@ -541,6 +544,39 @@ describe 'Welcome page', js: true do
         expect(page).to_not have_content('The Rendevouz')
         expect(page).to_not have_content('Call Me')
         expect(page).to have_content('Showing dances with a swing and a ladles allemande right 1½ for *.')
+      end
+    end
+
+    describe 'columns' do
+      it "Clicking vis toggles buttons cause columns to disappear" do
+        dances
+        visit '/'
+        %w[Title Choreographer Formation Hook User Updated].each do |col|
+          expect(page).to have_css('#dances-table th', text: col)
+          expect(page).to have_css('button.toggle-vis-active', text: col)
+          expect(page).to_not have_css('button.toggle-vis-inactive', text: col)
+          click_button col
+          expect(page).to_not have_css('#dances-table th', text: col)
+          expect(page).to have_css('button.toggle-vis-inactive', text: col)
+          expect(page).to_not have_css('button.toggle-vis-active', text: col)
+          click_button col
+          expect(page).to have_css('#dances-table th', text: col)
+          expect(page).to have_css('button.toggle-vis-active', text: col)
+          expect(page).to_not have_css('button.toggle-vis-inactive', text: col)
+        end
+        %w[Entered].each do |col|
+          expect(page).to_not have_css('#dances-table th', text: col)
+          expect(page).to_not have_css('button.toggle-vis-active', text: col)
+          expect(page).to  have_css('button.toggle-vis-inactive', text: col)
+          click_button col
+          expect(page).to have_css('#dances-table th', text: col)
+          expect(page).to_not have_css('button.toggle-vis-inactive', text: col)
+          expect(page).to have_css('button.toggle-vis-active', text: col)
+          click_button col
+          expect(page).to_not have_css('#dances-table th', text: col)
+          expect(page).to have_css('button.toggle-vis-inactive', text: col)
+          expect(page).to_not have_css('button.toggle-vis-active', text: col)
+        end
       end
     end
   end
