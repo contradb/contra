@@ -414,9 +414,9 @@ function insertVisToggles(dataTable) {
     var link = $("<button class='toggle-vis toggle-vis-active btn btn-xs' href='javascript:void(0)'>"+$(this).text()+"</button>");
     link.click(function () {
       var column = dataTable.column(index);
-      var active = !column.visible();
-      column.visible(active);
-      if (active) {
+      var activate = !column.visible();
+      column.visible(activate);
+      if (activate) {
         link.addClass('toggle-vis-active');
         link.removeClass('toggle-vis-inactive');
       } else {
@@ -515,7 +515,7 @@ jQuery(document).ready(function() {
           language: {
             searchPlaceholder: "filter by title, choreographer, and user"
           },
-          "columns": [
+          "columns": [          // mapped, in order, to <th> ordering in the html.erb
             {"data": "title"},
             {"data": "choreographer_name"},
             {"data": "hook"},
