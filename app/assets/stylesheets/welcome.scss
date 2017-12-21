@@ -10,7 +10,9 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
 }
 
 #dances-table {
-  max-width: 100% !important;
+  /* width seems a better choice than max-width because max-width leaves the table
+     too narrow when the window expands -dm 12-21-2017 */
+  width: 100% !important;
 }
 
 #dances-table .sorting:hover {

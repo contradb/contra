@@ -428,16 +428,23 @@ function insertVisToggles(dataTable) {
   });
 }
 
-function hideColumnsForResolution(dataTable, width) {
-  var tinyScreenColumns = ['Title', 'Choreographer'];
-  var narrowScreenColumns = tinyScreenColumns.concat(['Hook']);
-  var wideScreenColumns = narrowScreenColumns.concat(['Formation', 'User', 'Updated']);
+var tinyScreenColumns = ['Title', 'Choreographer'];
+var narrowScreenColumns = tinyScreenColumns.concat(['Hook']);
+var wideScreenColumns = narrowScreenColumns.concat(['Formation', 'User', 'Updated']);
+var recentlySeenColumns = null;
+
+function toggleColumnVisForResolution(dataTable, width) {
   var screenColumns = (width < 400) ? tinyScreenColumns : ((width < 768) ? narrowScreenColumns : wideScreenColumns);
-  var visToggles = $('.table-column-vis-toggles button');
-  visToggles.each(function(index) {
+  if (recentlySeenColumns === screenColumns) { return; }
+  recentlySeenColumns = screenColumns;
+  $('.table-column-vis-toggles button').each(function(index) {
     var $this = $(this);
     var text = $this.text();
-    if (0 > screenColumns.indexOf(text)) {
+    if (0 <= screenColumns.indexOf(text)) {
+      dataTable.column(index).visible(true);
+      $this.removeClass('toggle-vis-inactive');
+      $this.addClass('toggle-vis-active');
+    } else {
       dataTable.column(index).visible(false);
       $this.addClass('toggle-vis-inactive');
       $this.removeClass('toggle-vis-active');
@@ -524,6 +531,10 @@ jQuery(document).ready(function() {
     $('.table-column-vis-wrap').prepend($('<label>Show columns </label>'));
   }
   insertVisToggles(dataTable);
-  hideColumnsForResolution(dataTable, $(window).width());
+  var resizeFn = function () {
+    toggleColumnVisForResolution(dataTable, $(window).width());
+  };
+  $(window).resize(resizeFn);
+  resizeFn();
 });
 })();
