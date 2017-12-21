@@ -207,7 +207,9 @@ var param_down_the_hall_ender_circle       = {name: "ender", ui: chooser_down_th
 var param_down_the_hall_ender_turn_couples = {name: "ender", ui: chooser_down_the_hall_ender, value: 'turn-couples', string: stringParamDownTheHallEnder};
 
 function stringParamZigZagEnder (value) {
-  if ('ring' === value) {
+  if ('' === value) {
+    return '';
+  } else if ('ring' === value) {
     return 'into a ring';
   } else if ('allemande' === value) {
     return 'trailing two catching hands';
@@ -218,7 +220,7 @@ function stringParamZigZagEnder (value) {
   }
 }
 
-var param_zig_zag_ender_ring = {name: "ender", ui: chooser_zig_zag_ender, value: 'ring', string: stringParamZigZagEnder};
+var param_zig_zag_ender = {name: "ender", ui: chooser_zig_zag_ender, value: '', string: stringParamZigZagEnder};
 
 var param_go_back = {name: "go", ui: chooser_go_back, value: true};
 var param_give = {name: "give", ui: chooser_give, value: true};
