@@ -43,8 +43,6 @@ describe DanceDatatable do
         }
         partners_should_not_match = augmented_dances.last
         filtered = DanceDatatable.send(:filter_dances, augmented_dances, ['figure', 'swing', 'neighbors', '*', '*'])
-        puts augmented_dances[-4].title
-        puts augmented_dances[-4].figures.inspect
         expect(filtered.map(&:title).sort).to eq(augmented_dances.map(&:title).sort - [partners_should_not_match.title])
       end
     end
