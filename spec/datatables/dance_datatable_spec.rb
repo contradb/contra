@@ -30,11 +30,22 @@ describe DanceDatatable do
       end
 
       it "'shadow' finds both 'shadow' and '2nd shadow'" do
-        first_shadow = FactoryGirl.create(:dance_with_shadows)
-        second_shadow = FactoryGirl.create(:dance_with_2nd_shadows)
+        first_shadow = FactoryGirl.create(:dance_with_pair, pair: 'shadows')
+        second_shadow = FactoryGirl.create(:dance_with_pair, pair: '2nd shadows')
         augmented_dances = dances + [first_shadow, second_shadow]
         filtered = DanceDatatable.send(:filter_dances, augmented_dances, ['figure', 'swing', 'shadows', '*', '*'])
         expect(filtered.map(&:title).sort).to eq([first_shadow.title, second_shadow.title])
+      end
+
+      it "'neighbors' finds 'neigbhors', 'prev neighbors', 'next neighbors', '3rd neighbors', and '4th neighbors'" do
+        augmented_dances = dances + ['prev neighbors', 'next neighbors', '3rd neighbors', '4th neighbors', 'partners'].map {|n|
+          FactoryGirl.create(:dance_with_pair, pair: n)
+        }
+        partners_should_not_match = augmented_dances.last
+        filtered = DanceDatatable.send(:filter_dances, augmented_dances, ['figure', 'swing', 'neighbors', '*', '*'])
+        puts augmented_dances[-4].title
+        puts augmented_dances[-4].figures.inspect
+        expect(filtered.map(&:title).sort).to eq(augmented_dances.map(&:title).sort - [partners_should_not_match.title])
       end
     end
 
