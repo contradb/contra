@@ -28,6 +28,14 @@ describe DanceDatatable do
         filtered = DanceDatatable.send(:filter_dances, dances, ['figure', 'circle', '*', 360, '*'])
         expect(filtered.map(&:title)).to eq(['The Rendevouz'])
       end
+
+      it "'shadow' finds both 'shadow' and '2nd shadow'" do
+        first_shadow = FactoryGirl.create(:dance_with_shadows)
+        second_shadow = FactoryGirl.create(:dance_with_2nd_shadows)
+        augmented_dances = dances + [first_shadow, second_shadow]
+        filtered = DanceDatatable.send(:filter_dances, augmented_dances, ['figure', 'swing', 'shadows', '*', '*'])
+        expect(filtered.map(&:title).sort).to eq([first_shadow.title, second_shadow.title])
+      end
     end
 
     describe 'and' do
