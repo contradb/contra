@@ -38,7 +38,7 @@ function sentenceForFigure(query, article) {
   } else {
     var params = query.slice(2).map(destringifyFigureParam);
     var fig = {move: move, parameter_values: params};
-    var fig_text = parameters(move).length === params.length ? figure_html_readonly(fig) : move;
+    var fig_text = parameters(move).length === params.length ? figureToString(fig) : move;
     if (article === 'a') {
       return ('aeiou'.indexOf(fig_text[0]) >= 0) ? ('an ' + fig_text) : ('a ' + fig_text); // 'an allemande'
     } else {

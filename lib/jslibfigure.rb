@@ -3,7 +3,7 @@
 module JSLibFigure
 
   def self.html(figure_ruby_hash)
-    self.eval("figure_html_readonly(#{figure_ruby_hash.to_json})")
+    self.eval("figureToString(#{figure_ruby_hash.to_json})")
   end
 
   def self.beats(figure_ruby_hash)

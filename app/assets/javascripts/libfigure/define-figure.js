@@ -28,10 +28,10 @@ function sumBeats(figures,optional_limit) {
   return acc;
 }
 
-function figure_html_readonly(f) {
+function figureToString(f) {
   var fig_def = defined_events[f.move];
   if (fig_def) {
-    var func = fig_def.props.view || figure_html_readonly_default;
+    var func = fig_def.props.stringify || figureGenericStringify;
     var main = func(f.move, f.parameter_values);
     var note = f.note;
     return note ? words(main,note) : main;
@@ -43,9 +43,8 @@ function figure_html_readonly(f) {
   }
 }
 
-
-// Called if they don't specify a view function in the figure definition:
-function figure_html_readonly_default(move, parameter_values) {
+// Called if they don't specify a Stringify function in the figure definition:
+function figureGenericStringify(move, parameter_values) {
   // todo: clean this up so it's not so obnoxiously ugly
   // it's thouroughly tested, so it will be safe to remove the fishing expeditions for who, balance and beats.
   var ps = parameters(move);
