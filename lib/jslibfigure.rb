@@ -2,8 +2,8 @@
 
 module JSLibFigure
 
-  def self.html(figure_ruby_hash)
-    self.eval("figureToString(#{figure_ruby_hash.to_json})")
+  def self.figureToString(figure_ruby_hash)
+    self.eval("figureToString(#{figure_ruby_hash.to_json},{dancers: {ladles: 'ladles'}, moves: {gyre: 'darcy'}})")
   end
 
   def self.beats(figure_ruby_hash)

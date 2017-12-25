@@ -19,9 +19,9 @@ defineFigure("allemande", [param_subject_pairz,
 // ALLEMANDE ORBIT                            //
 ////////////////////////////////////////////////
 
-function allemandeOrbitStringify(move,pvs) {
+function allemandeOrbitStringify(move, pvs, prefs) {
   var [ who, dir, inner_angle, outer_angle, beats] = pvs;
-  var [swho,sdir,sinner_angle,souter_angle,sbeats] = parameter_strings(move, pvs);
+  var [swho,sdir,sinner_angle,souter_angle,sbeats] = parameter_strings(move, pvs, prefs);
   var sopposite_dir = dir ? (dir === '*' ? '*' : "counter clockwise") : "clockwise";
   return words(swho, "allemande", sdir,
                sinner_angle, "around",
@@ -47,9 +47,9 @@ defineRelatedMove2Way('allemande orbit', 'allemande');
 // BALANCE                                    //
 ////////////////////////////////////////////////
 
-function balanceStringify(move,pvs) {
+function balanceStringify(move, pvs, prefs) {
   var [who,beats] = pvs;
-  var [swho,sbeats] = parameter_strings(move, pvs);
+  var [swho,sbeats] = parameter_strings(move, pvs, prefs);
   return words(('everyone' == who) ? '' : swho, move, sbeats);
 }
 
@@ -81,9 +81,9 @@ function boxCirculateChange(figure,index) {
   }
 }
 
-function boxCirculateStringify(move,pvs) {
+function boxCirculateStringify(move, pvs, prefs) {
   var [subject, bal, spin, beats] = pvs;
-  var [ssubject, sbal, sspin, sbeats] = parameter_strings(move, pvs);
+  var [ssubject, sbal, sspin, sbeats] = parameter_strings(move, pvs, prefs);
   var expected_beats = bal ? 8 : 4;
   var tbeats = (beats === expected_beats) ? false : ('for '+ beats);
   var second_ssubject = subject ? invertPair(subject) : "others";
@@ -111,9 +111,9 @@ function boxTheGnatChange(figure,index) {
   }
 }
 
-function boxTheGnatStringify(move,pvs) {
+function boxTheGnatStringify(move, pvs, prefs) {
   var [who,balance,hand,beats] = pvs;
-  var [swho,sbalance,shand,sbeats] = parameter_strings(move, pvs);
+  var [swho,sbalance,shand,sbeats] = parameter_strings(move, pvs, prefs);
   var standard_beats = ((beats == 8) && balance) || ((beats == 4) && !balance);
   if (standard_beats) {
     return words(swho, sbalance, move);
@@ -149,9 +149,9 @@ defineRelatedMove2Way('California twirl', 'box the gnat');
 // CHAIN                                      //
 ////////////////////////////////////////////////
 
-function chainStringify(move,pvs) {
+function chainStringify(move, pvs, prefs) {
   var [ who,  diag,  beats] = pvs;
-  var [swho, sdiag, sbeats] = parameter_strings(move, pvs);
+  var [swho, sdiag, sbeats] = parameter_strings(move, pvs, prefs);
   return words(sdiag, swho, move, sbeats);
 }
 
@@ -191,9 +191,9 @@ function crossTrailsChange(figure, index) {
   }
 }
 
-function crossTrailsStringify(move,pvs) {
+function crossTrailsStringify(move, pvs, prefs) {
   var [ first_who,  first_dir,  first_shoulder,  second_who,  beats] = pvs;
-  var [sfirst_who,    _ignore, sfirst_shoulder, ssecond_who, sbeats] = parameter_strings(move, pvs);
+  var [sfirst_who,    _ignore, sfirst_shoulder, ssecond_who, sbeats] = parameter_strings(move, pvs, prefs);
   var sfirst_dir = first_dir ? (first_dir + ' the set') :  '____';
   var ssecond_dir = {across: 'along the set', along: 'across the set', '*':'* the set'}[first_dir] || '____';
   var second_shoulder = '*'===first_shoulder ? '*' : !first_shoulder;
@@ -213,9 +213,9 @@ defineFigure("cross trails",
 // CUSTOM                                     //
 ////////////////////////////////////////////////
 
-function customStringify(move,pvs) {
+function customStringify(move, pvs, prefs) {
   // remove the word 'custom'
-  var [scustom,sbeats] = parameter_strings(move, pvs);
+  var [scustom,sbeats] = parameter_strings(move, pvs, prefs);
   var tcustom = (scustom.trim()==='' || scustom==='*') ? 'custom' : scustom;
   return words(tcustom,sbeats);
 }
@@ -232,9 +232,9 @@ function doSiDoChange(figure,index) {
   figure.move = shoulder ? "do si do" : "see saw";
 }
 
-function doSiDoStringify(move, pvs) {
+function doSiDoStringify(move, pvs, prefs) {
   var [who,   _shoulder,  rots,  beats] = pvs;
-  var [swho, _sshoulder, srots, sbeats] = parameter_strings(move, pvs);
+  var [swho, _sshoulder, srots, sbeats] = parameter_strings(move, pvs, prefs);
   return words(swho, move, srots, sbeats);
 }
 
@@ -250,9 +250,9 @@ defineTeachingName("see saw");
 // DOWN THE HALL  &  UP THE HALL              //
 ////////////////////////////////////////////////
 
-function upOrDownTheHallStringify(move, pvs) {
+function upOrDownTheHallStringify(move, pvs, prefs) {
   var [ facing,  ender, beats] = pvs;
-  var [sfacing, sender, sbeats] = parameter_strings(move, pvs);
+  var [sfacing, sender, sbeats] = parameter_strings(move, pvs, prefs);
   if (ender === '') {
     return words(move, sfacing, sbeats);
   } else {
@@ -294,9 +294,9 @@ function figure8Change(figure,index) {
   }
 }
 
-function figure8Stringify(move, pvs) {
+function figure8Stringify(move, pvs, prefs) {
   var [ subject,  lead, half_or_full, beats] = pvs;
-  var [ssubject, slead, shalf_or_full, sbeats] = parameter_strings(move, pvs);
+  var [ssubject, slead, shalf_or_full, sbeats] = parameter_strings(move, pvs, prefs);
   var dancer_role = {'first gentlespoon': 'gentlespoon',
                      'second gentlespoon': 'gentlespoon',
                      'first ladle': false,
@@ -314,9 +314,9 @@ defineFigure("figure 8",
 // GATE                                       //
 ////////////////////////////////////////////////
 
-function gate_stringify(move, pvs) {
+function gateStringify(move, pvs, prefs) {
   var [ subject,  object,  gate_face,  beats] = pvs;
-  var [ssubject, sobject, sgate_face, sbeats] = parameter_strings(move, pvs);
+  var [ssubject, sobject, sgate_face, sbeats] = parameter_strings(move, pvs, prefs);
   return words(ssubject, move, sobject, 'to face', sgate_face, sbeats);
 }
 
@@ -327,7 +327,7 @@ defineFigure("gate",
               param_object_pairs_or_ones_or_twos,
               param_gate_face,
               param_beats_8],
-             {stringify: gate_stringify});
+             {stringify: gateStringify});
 
 ////////////////////////////////////////////////
 // GIVE AND TAKE                              //
@@ -343,9 +343,9 @@ function giveAndTakeChange(figure,index) {
   }
 }
 
-function giveAndTakeStringify(move, pvs) {
+function giveAndTakeStringify(move, pvs, prefs) {
   var [who,   whom,  give,  beats] = pvs;
-  var [swho,  swhom, sgive, sbeats] = parameter_strings(move, pvs);
+  var [swho,  swhom, sgive, sbeats] = parameter_strings(move, pvs, prefs);
   var default_beats = give ? 8 : 4;
   var final_sbeats = default_beats === beats ? '' : words('for', beats);
   var smove = give ? (give==='*' ? 'give? & take' : move) : 'take';
@@ -363,9 +363,9 @@ defineFigure("give & take",
 // GYRE (aka circle by the eyes)              //
 ////////////////////////////////////////////////
 
-function gyreStringify(move, pvs) {
+function gyreStringify(move, pvs, prefs) {
   var [who,   shoulder,  rots,  beats] = pvs;
-  var [swho, sshoulder, srots, sbeats] = parameter_strings(move, pvs);
+  var [swho, sshoulder, srots, sbeats] = parameter_strings(move, pvs, prefs);
   return words(swho, move, shoulder ? '' : sshoulder, srots, sbeats);
 }
 
@@ -389,9 +389,9 @@ defineRelatedMove2Way('gyre meltdown', 'swing');
 // GYRE STAR                                  //
 ////////////////////////////////////////////////
 
-function gyreStarStringify(move, pvs) {
+function gyreStarStringify(move, pvs, prefs) {
   var [ who,  turn,  places,  beats] = pvs;
-  var [swho, sturn, splaces, sbeats] = parameter_strings(move, pvs);
+  var [swho, sturn, splaces, sbeats] = parameter_strings(move, pvs, prefs);
   var shand = turn ? ('*'===turn ? '*': 'left') : 'right';
   return words(move, sturn, splaces, 'with', swho, 'putting their', shand, 'hands in and backing up', sbeats);
 }
@@ -421,9 +421,9 @@ function heyChange(figure,index) {
   }
 }
 
-function heyStringify(move,pvs) {
+function heyStringify(move, pvs, prefs) {
   var [  who,   half,  dir,  beats] = pvs;
-  var [leader, shalf, sdir, sbeats] = parameter_strings(move, pvs);
+  var [leader, shalf, sdir, sbeats] = parameter_strings(move, pvs, prefs);
   var sdir2 = dir === 'across' ? '' : sdir;
   var tbeats = beats / half === 16 ? '' : ('for '+beats);
   var thalf = (1 === half) ? false : shalf;
@@ -451,9 +451,9 @@ function longLinesChange(figure,index) {
   }
 }
 
-function longLinesStringify(move,pvs) {
+function longLinesStringify(move, pvs, prefs) {
   var [ back,  beats] = pvs;
-  var [sback, sbeats] = parameter_strings(move, pvs);
+  var [sback, sbeats] = parameter_strings(move, pvs, prefs);
   var expected_beats = back ? 8 : 4;
   var tbeats = (beats === expected_beats) ? '' : ('for '+beats);
   var directions = back ? (back==='*' ? 'forward & maybe back' : 'forward & back') : 'forward';
@@ -468,9 +468,9 @@ defineFigure("long lines",
 // MAD ROBIN                                  //
 ////////////////////////////////////////////////
 
-function madRobinStringify(move,pvs) {
+function madRobinStringify(move, pvs, prefs) {
   var [ role,  angle,  beats] = pvs;
-  var [srole, sangle, sbeats] = parameter_strings(move, pvs);
+  var [srole, sangle, sbeats] = parameter_strings(move, pvs, prefs);
   var tangle = angle!==360 && (sangle + ' around');
   return words(move, tangle, comma, srole, "in front", sbeats); 
 }
@@ -483,8 +483,8 @@ defineFigure("mad robin",
 // OCEAN WAVE                                 //
 ////////////////////////////////////////////////
 
-function oceanWaveStringify(move,pvs) {
-  var [sbeats] = parameter_strings(move, pvs);
+function oceanWaveStringify(move, pvs, prefs) {
+  var [sbeats] = parameter_strings(move, pvs, prefs);
   return words('to', move, sbeats); 
 }
 
@@ -503,9 +503,9 @@ defineRelatedMove2Way('pass by', 'half hey');
 // PASS THROUGH                               //
 ////////////////////////////////////////////////
 
-function passThroughStringify(move,pvs) {
+function passThroughStringify(move, pvs, prefs) {
   var [ dir,  spin,  beats] = pvs;
-  var [sdir, sspin, sbeats] = parameter_strings(move, pvs);
+  var [sdir, sspin, sbeats] = parameter_strings(move, pvs, prefs);
   var left_shoulder_maybe = (spin && spin !== '*') ? '' : sspin;
   return words(move, left_shoulder_maybe, sdir, sbeats);
 }
@@ -520,9 +520,9 @@ defineRelatedMove2Way('pass by', 'pass through');
 // PETRONELLA                                 //
 ////////////////////////////////////////////////
 
-function petronellaStringify(move,pvs) {
+function petronellaStringify(move, pvs, prefs) {
   var [balance, beats] = pvs;
-  var [sbalance, sbeats] = parameter_strings(move, pvs);
+  var [sbalance, sbeats] = parameter_strings(move, pvs, prefs);
   var balance_beats = 4 * !!balance;
   if (balance_beats + 4 == beats) return words(sbalance,move);
   else return words(sbalance,move,"for "+beats);
@@ -535,9 +535,9 @@ defineFigure("petronella", [param_balance_true, param_beats_8], {stringify: petr
 // POUSSETTE                                  //
 ////////////////////////////////////////////////
 
-function poussetteStringify(move,pvs) {
+function poussetteStringify(move, pvs, prefs) {
   var [ half_or_full,  who,  whom,  turn, beats] = pvs;
-  var [shalf_or_full, swho, swhom, sturn, sbeats] = parameter_strings(move, pvs);
+  var [shalf_or_full, swho, swhom, sturn, sbeats] = parameter_strings(move, pvs, prefs);
   var tturn;
   if (undefined === turn) {
     tturn = '____';
@@ -562,9 +562,9 @@ defineFigure("poussette",
 // PROMENADE                                  //
 ////////////////////////////////////////////////
 
-function promenadeStringify(move,pvs) {
+function promenadeStringify(move, pvs, prefs) {
   var [ subject,  dir, spin,  beats] = pvs;
-  var [ssubject, sdir, sspin, sbeats] = parameter_strings(move, pvs);
+  var [ssubject, sdir, sspin, sbeats] = parameter_strings(move, pvs, prefs);
   var tspin = spin ? (spin==='*' ? 'on the *' : 'on the left') : (dir === 'along' ? 'on the right' : '');
   return words(ssubject, move, sdir, tspin, sbeats);
 }
@@ -583,9 +583,9 @@ defineFigure("progress", [param_beats_0], {progression: true});
 // PULL BY DANCERS                            //
 ////////////////////////////////////////////////
 
-function pullDancersStringify(move,pvs) {
+function pullDancersStringify(move, pvs, prefs) {
   var [ who,  bal,  spin,  beats] = pvs;
-  var [swho, sbal, sspin, sbeats] = parameter_strings(move, pvs);
+  var [swho, sbal, sspin, sbeats] = parameter_strings(move, pvs, prefs);
   var standard_beats = ((beats == 8) && bal) || ((beats == 2) && !bal);
   if (standard_beats) {
     return words(swho, sbal, 'pull by', sspin);
@@ -602,9 +602,9 @@ defineFigure("pull by dancers",
 // PULL BY DIRECTION                          //
 ////////////////////////////////////////////////
 
-function pullByDirection(move,pvs) {
+function pullByDirectionStringify(move, pvs, prefs) {
   var [ bal,  dir,  spin,  beats] = pvs;
-  var [sbal, sdir, sspin, sbeats] = parameter_strings(move, pvs);
+  var [sbal, sdir, sspin, sbeats] = parameter_strings(move, pvs, prefs);
   var is_diagonal = dir === 'left diagonal' || dir === 'right diagonal';
   var w;
   if (!is_diagonal) {
@@ -620,7 +620,7 @@ function pullByDirection(move,pvs) {
 
 defineFigure("pull by direction",
              [param_balance_false, param_set_direction_along, param_right_hand_spin, param_beats_2],
-             {stringify: pullByDirection});
+             {stringify: pullByDirectionStringify});
 
 defineRelatedMove2Way('pull by dancers', 'pull by direction');
 
@@ -628,9 +628,9 @@ defineRelatedMove2Way('pull by dancers', 'pull by direction');
 // RIGHT LEFT THROUGH                         //
 ////////////////////////////////////////////////
 
-function rightLeftThroughStringify(move,pvs) {
+function rightLeftThroughStringify(move, pvs, prefs) {
   var [ diag,  beats] = pvs;
-  var [sdiag, sbeats] = parameter_strings(move, pvs);
+  var [sdiag, sbeats] = parameter_strings(move, pvs, prefs);
   return words(sdiag, move, sbeats);
 }
 
@@ -661,9 +661,9 @@ function roryOMooreChange(figure,index) {
   }
 }
 
-function roryOMooreStringify(move,pvs) {
+function roryOMooreStringify(move, pvs, prefs) {
   var [ who,  balance,  dir,  beats] = pvs;
-  var [swho, sbalance, sdir, sbeats] = parameter_strings(move, pvs);
+  var [swho, sbalance, sdir, sbeats] = parameter_strings(move, pvs, prefs);
   var standard_beats = ((beats == 8) && balance) || ((beats == 4) && !balance);
   var swho2 = (who === 'everyone') ? '' : swho;
   if (standard_beats) {
@@ -689,9 +689,9 @@ defineFigure("slice",
 // SLIDE ALONG SET -- progression, couples    //
 ////////////////////////////////////////////////
 
-function slideAlongSetStringify(move,pvs) {
+function slideAlongSetStringify(move, pvs, prefs) {
   var [ dir,  beats] = pvs;
-  var [sdir, sbeats] = parameter_strings(move, pvs);
+  var [sdir, sbeats] = parameter_strings(move, pvs, prefs);
   return words('slide', sdir, 'along set', sbeats, 'to new neighbors');
 }
 
@@ -747,9 +747,9 @@ function squareThroughExpectedBeats(pvs) {
 }
 
 
-function squareThroughStringify(move,pvs) {
+function squareThroughStringify(move, pvs, prefs) {
   var [ subject1,  subject2,  bal,  hand,  angle,  beats] = pvs;
-  var [ssubject1, ssubject2, sbal, shand, sangle, sbeats] = parameter_strings(move, pvs);
+  var [ssubject1, ssubject2, sbal, shand, sangle, sbeats] = parameter_strings(move, pvs, prefs);
   var shand2 = hand ? ('*'===hand ? '*' : 'left') : 'right';
   var places = '*'===angle ? '*' : (angle / 90);
   var beats_unexpected = beats !== squareThroughExpectedBeats(pvs);
@@ -782,9 +782,9 @@ defineFigure("square through",
 // STAR                                       //
 ////////////////////////////////////////////////
 
-function starStringify(move,pvs) {
+function starStringify(move, pvs, prefs) {
   var [ right_hand,  places,  wrist_grip,  beats] = pvs;
-  var [sright_hand, splaces, swrist_grip, sbeats] = parameter_strings(move, pvs);
+  var [sright_hand, splaces, swrist_grip, sbeats] = parameter_strings(move, pvs, prefs);
   if ('' === wrist_grip) {
     return words("star", sright_hand, splaces, sbeats);
   } else {
@@ -800,9 +800,9 @@ defineFigure("star",
 // STAR PROMENADE                             //
 ////////////////////////////////////////////////
 
-function starPromenadeStringify(move,pvs) {
+function starPromenadeStringify(move, pvs, prefs) {
   var [ who,  dir,  angle,  beats] = pvs;
-  var [swho, sdir, sangle, sbeats] = parameter_strings(move, pvs);
+  var [swho, sdir, sangle, sbeats] = parameter_strings(move, pvs, prefs);
   return words((who != 'gentlespoons') && swho, move, sdir, sangle, sbeats);
 }
 
@@ -826,9 +826,9 @@ function swingChange(figure,index) {
   }
 }
 
-function swingStringify(move,pvs) {
+function swingStringify(move, pvs, prefs) {
   var [who,balance,beats] = pvs;
-  var [swho,sbalance,sbeats] = parameter_strings(move, pvs);
+  var [swho,sbalance,sbeats] = parameter_strings(move, pvs, prefs);
   var standard_beats = beats === 16 || (beats === 8 && !balance);
   var slong = ((beats === 16) && !balance) ? 'long' : '';
   if (standard_beats) {
@@ -846,9 +846,9 @@ defineFigure("swing",
 // TURN ALONE                                //
 ///////////////////////////////////////////////
 
-function turnAloneStringify(move,pvs) {
+function turnAloneStringify(move, pvs, prefs) {
   var [who,custom,beats] = pvs;
-  var [swho,scustom,sbeats] = parameter_strings(move, pvs);
+  var [swho,scustom,sbeats] = parameter_strings(move, pvs, prefs);
   return words(('everyone' !== who) && who, move, scustom, sbeats);
 }
 
@@ -860,10 +860,9 @@ defineFigure("turn alone",
 // ZIG ZAG                                    //
 ////////////////////////////////////////////////
 
-function zigZagStringify(move,pvs) {
+function zigZagStringify(move, pvs, prefs) {
   var [ spin,  ender,  beats] = pvs;
-  var [sspin, sender, sbeats] = parameter_strings(move, pvs);
-  var [swho,sbalance,sbeats] = parameter_strings(move, pvs);
+  var [sspin, sender, sbeats] = parameter_strings(move, pvs, prefs);
   var comma_maybe = (ender === 'allemande') && comma;
   var return_sspin = spin ? ('*'===spin ? '*' : 'right') : 'left';
   return words(move, sspin, 'then', return_sspin, comma_maybe, sender, (sbeats !== '') && comma_maybe, sbeats);
