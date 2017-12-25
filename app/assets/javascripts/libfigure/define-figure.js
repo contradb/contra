@@ -29,7 +29,7 @@ function sumBeats(figures,optional_limit) {
 }
 
 function figureToString(f,prefs) {
-  // throw_up('figureToString call forgot a parameter '+ JSON.stringify(prefs.dancers));
+  if (!prefs) {throw_up('forgot prefs argument to figureToString');}
   var fig_def = defined_events[f.move];
   if (fig_def) {
     var func = fig_def.props.stringify || figureGenericStringify;
@@ -46,9 +46,7 @@ function figureToString(f,prefs) {
 
 // Called if they don't specify a Stringify function in the figure definition:
 function figureGenericStringify(move, parameter_values, prefs) {
-  if (!prefs) {
-    throw_up('send me some prefs, generic');
-  }
+  if (!prefs) {throw_up('forgot prefs argument to figureGenericStringify');}
   // todo: clean this up so it's not so obnoxiously ugly
   // it's thouroughly tested, so it will be safe to remove the fishing expeditions for who, balance and beats.
   var ps = parameters(move);
@@ -85,10 +83,7 @@ var progressionString = "to new neighbors";
 // ================
 
 function parameter_strings(move, parameter_values, prefs) {
-  if (!prefs) {
-    throw_up('send me some prefs, strings');
-  }
-
+  if (!prefs) {throw_up('forgot prefs argument to parameter_strings');}
   // new! improved! catch null and undefined, and convert them to '____', without calling the individual parameter function
   var formal_parameters = parameters(move);
   var acc = [];

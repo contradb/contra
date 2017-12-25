@@ -2,8 +2,8 @@
 
 module JSLibFigure
 
-  def self.figureToString(figure_ruby_hash)
-    self.eval("figureToString(#{figure_ruby_hash.to_json},{dancers: {ladles: 'ladles'}, moves: {gyre: 'darcy'}})")
+  def self.figureToString(figure_ruby_hash, prefs)
+    self.eval("figureToString(#{figure_ruby_hash.to_json},#{prefs.to_json})")
   end
 
   def self.beats(figure_ruby_hash)
@@ -101,6 +101,10 @@ module JSLibFigure
 
   def self.parameter_uses_chooser(formal_parameter, chooser_name_string)
     formal_parameter['ui'] == chooser_name_string; # 'should' be compared with address-equals in javascript land, but this is faster
+  end
+
+  def self.stub_prefs
+    @stub_prefs ||= self.eval("stubPrefs;")
   end
 
   JSLIBFIGURE_FILES = %w(polyfill.js util.js move.js chooser.js param.js define-figure.js figure.es6 after-figure.js dance.js)

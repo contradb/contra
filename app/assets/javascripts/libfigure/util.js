@@ -38,3 +38,5 @@ function throw_up(str) {
 function comma_unless_blank(str) {
   return ((!str) || (str.trim() === '')) ? '' : ',';
 }
+
+var stubPrefs = {dancers: {ladles: 'ladles'}, moves: {gyre: 'darcy'}}; // todo: unstub

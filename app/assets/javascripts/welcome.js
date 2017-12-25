@@ -462,7 +462,8 @@ jQuery(document).ready(function() {
   updateQuery = function() {
     var fq = buildFigureQuery($('#figure-filter-root'));
     $('#figure-query-buffer').val(JSON.stringify(fq));
-    $('.figure-query-sentence').text(buildFigureSentence(fq));
+    if (!stubPrefs) { throw new Error('stubPrefs is not defined'); }
+    $('.figure-query-sentence').text(buildFigureSentence(fq, stubPrefs));
     if (dataTable) {
       dataTable.draw(); 
     }
@@ -482,7 +483,7 @@ jQuery(document).ready(function() {
     var root = buildDOMtoMatchQuery(fq);
     $('#figure-filter-root-container').append(root);
     root.attr('id', 'figure-filter-root');
-    $('.figure-query-sentence').text(buildFigureSentence(fq));
+    $('.figure-query-sentence').text(buildFigureSentence(fq, stubPrefs));
   }
 
   // oh, I can't use arrays in params? Fine, I'll create hashes with indexes as keys

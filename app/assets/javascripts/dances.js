@@ -128,6 +128,7 @@ function menuMoveLabel(from,to) {
     $scope.degreesToPlaces = degreesToPlaces;
     setChoosers($scope);
     $scope.wristGrips = wristGrips;
+    $scope.prefs = stubPrefs;
     $scope.figureToString = figureToString;
     $scope.set_if_unset = set_if_unset;
     $scope.userChangedParameter = userChangedParameter;

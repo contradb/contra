@@ -4,7 +4,7 @@ require 'rails_helper'
 RSpec.describe DancesHelper, type: :helper do
 
   figure_txt_for = -> move, *parameter_values {
-    JSLibFigure.figureToString({'move' => move, 'parameter_values' => parameter_values})
+    JSLibFigure.figureToString({'move' => move, 'parameter_values' => parameter_values}, JSLibFigure.stub_prefs)
   }
 
   def whitespice(x) 

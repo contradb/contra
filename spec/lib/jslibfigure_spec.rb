@@ -150,5 +150,9 @@ RSpec.describe JSLibFigure do
     expect(JSLibFigure.parameter_uses_chooser(formal_parameter, 'chooser_half_or_full')).to be(false)
   end
 
+  it 'stub_prefs' do
+    expect(JSLibFigure.stub_prefs).to eq({'dancers' => {'ladles' => 'ladles'}, 'moves' => {'gyre' => 'darcy'}})
+  end
+
   pending 'test the whole libfigure library, ha ha'
 end
