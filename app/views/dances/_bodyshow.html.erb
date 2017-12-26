@@ -13,7 +13,7 @@
              <td><%= beats = JSLibFigure.beats(figure)
                      beats_acc += beats
                      label_printed = false if beats > 0
-                     render partial: "dances/figure", object: figure %></td></tr>
+                     render partial: "dances/figure", object: figure, locals: {prefs: JSLibFigure.prefs_for_figures(JSLibFigure.stub_prefs, figures)} %></td></tr>
   <%   end
      end %>
 </table>

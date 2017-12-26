@@ -68,7 +68,7 @@ dances = showtable
         <% if figures then
            fs = dance.figures
            fs.first(max_number_of_figures_to_display).each do |f| %>       
-           <td><%= render partial: "dances/figure", object: f %></td>
+           <td><%= render partial: "dances/figure", object: f, locals: {prefs: JSLibFigure.prefs_for_figures(JSLibFigure.stub_prefs, fs)} %></td>
         <%   end
            end %>                              
         <% if notes then %>           <td><%= dance.notes %></td>            <% end %>

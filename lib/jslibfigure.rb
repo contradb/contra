@@ -107,6 +107,10 @@ module JSLibFigure
     @stub_prefs ||= self.eval("stubPrefs;")
   end
 
+  def self.prefs_for_figures(prefs, figures)
+    self.eval("prefsForFigures(#{prefs.to_json},#{figures.to_json})")
+  end
+
   JSLIBFIGURE_FILES = %w(polyfill.js util.js move.js chooser.js param.js define-figure.js figure.es6 after-figure.js dance.js)
 
   private
