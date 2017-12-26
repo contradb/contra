@@ -106,7 +106,7 @@
               </span>
               <a ng-click="clickFigure(figureIdx);"
                  href="" class="figure-view" ng-attr-id="{{'figure-'+figureIdx}}">
-                {{figureToString(figures.arr[figureIdx], prefs)}}
+                {{figureToString(figures.arr[figureIdx], prefsForFigures(prefs, figures.arr))}}
               </a>
             </td>
           </tr>

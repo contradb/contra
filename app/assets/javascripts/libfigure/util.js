@@ -40,3 +40,50 @@ function comma_unless_blank(str) {
 }
 
 var stubPrefs = {dancers: {ladles: 'ladles'}, moves: {gyre: 'darcy'}}; // todo: unstub
+
+
+// ________________________________________________________________
+
+
+
+function prefsForFigures(prefs, figures) {
+  var new_prefs = copyPrefs(prefs);
+  if (figuresUseDancers(figures, '3rd neighbors')) {
+    new_prefs.dancers['next neighbors'] = '2nd neighbors';
+  }
+  if (figuresUseDancers(figures, '2nd shadows')) {
+    new_prefs.dancers['shadows'] = '1st shadows';
+  }
+  return new_prefs;
+}
+
+function copyPrefs(prefs) {
+  return {dancers: copy(prefs.dancers),
+          moves: copy(prefs.moves)};
+}
+
+function copy(hash) {
+  var o = {};
+  Object.keys(hash).forEach(function(key) {
+    o[key] = hash[key];
+  });
+  return o;
+}
+
+// used to determine if a dance uses the term 'shadow' or '3rd neighbor'
+function figuresUseDancers(figures, dancers_term) {
+  for (var figi=0; figi<figures.length; figi++) {
+    var figure = figures[figi];
+    var formals = parameters(figure.move);
+    for (var i=0; i < formals.length; i++) {
+      var formal = formals[i];
+      var actual = figure.parameter_values[i];
+      if (paramIsDancer(formal) && (dancers_term === actual)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+// ________________________________________________________________
