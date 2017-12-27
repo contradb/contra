@@ -19,6 +19,7 @@ describe 'Editing dances', js: true do
       expect(page).to have_current_path(edit_dance_path(dance.id))
     end
   end
+
   it 'editing a dance passes it\'s information through unchanged' do
     with_login do |user|
       choreographer = FactoryGirl.create(:choreographer, name: 'Becky Hill')
@@ -34,6 +35,7 @@ describe 'Editing dances', js: true do
       expect(dance1.choreographer.name).to eql dance2.choreographer.name
     end
   end
+
   it 'editing a dance saves form values (except figure editor edits)' do
     with_login do |user|
       dance = FactoryGirl.create(:box_the_gnat_contra, user: user)
@@ -54,6 +56,25 @@ describe 'Editing dances', js: true do
       expect(dance.hook).to eq('wombatty')
       expect(dance.preamble).to eq('prerambling')
       expect(dance.notes).to eq('notey')
+    end
+  end
+
+  it 'rewrites on the fly for 1st shadown & 2nd neigbor' do
+    with_login do |user|
+      dance = FactoryGirl.create(:dance_with_all_shadows_and_neigbors, user: user)
+      visit edit_dance_path dance.id
+      expect(page).to_not have_content('next neighbors')
+      expect(page).to have_content('2nd neighbors')
+      expect(page).to have_content('1st shadows')
+      click_link('3rd neighbors swing')
+      select('partners')
+      expect(page).to have_content('next neighbors')
+      expect(page).to_not have_content('2nd neighbors')
+      click_link('2nd shadows swing')
+      select('partners')
+      expect(page).to_not have_content('1st shadows')
+      select('2nd shadows')
+      expect(page).to have_content('1st shadows')
     end
   end
 end
