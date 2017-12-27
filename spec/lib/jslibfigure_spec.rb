@@ -154,5 +154,23 @@ RSpec.describe JSLibFigure do
     expect(JSLibFigure.stub_prefs).to eq({'dancers' => {'ladles' => 'ladles'}, 'moves' => {'gyre' => 'darcy'}})
   end
 
+  describe 'prefs_for_figures' do
+    let (:empty_prefs) {{'dancers' => {}, 'moves' => {}}}
+
+    it 'does nothing to a dance that is all in-set' do
+      expect(JSLibFigure.prefs_for_figures(empty_prefs,FactoryGirl.build(:box_the_gnat_contra).figures)).to eq(empty_prefs)
+    end
+
+    it "rewrites 'next neighbors' to '2nd neighbors' when '3rd neighbors' are present" do
+      figures = FactoryGirl.build(:dance_with_pair, pair: '3rd neighbors').figures
+      expect(JSLibFigure.prefs_for_figures(empty_prefs, figures)['dancers']).to eq({'next neighbors' => '2nd neighbors'})
+    end
+
+    it "rewrites 'shadows' to '1st shadows' when '2nd shadows' are present" do
+      figures = FactoryGirl.build(:dance_with_pair, pair: '2nd shadows').figures
+      expect(JSLibFigure.prefs_for_figures(empty_prefs, figures)['dancers']).to eq({'shadows' => '1st shadows'})
+    end
+  end
+
   pending 'test the whole libfigure library, ha ha'
 end
