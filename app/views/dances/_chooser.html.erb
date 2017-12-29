@@ -114,23 +114,8 @@
                 <div ng-if="p.ui == chooser_pairz">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          class='form-control'>
-                    <option value="gentlespoons">gentlespoons</option>
-                    <option value="ladles">ladles</option>
-                    <option value="partners">partners</option>
-                    <option value="neighbors">neighbors</option>
-                    <option value="ones">ones</option>
-                    <option value="twos">twos</option>
-                    <option value="same roles">same roles</option>
-                    <option value="first corners">first corners</option>
-                    <option value="second corners">second corners</option>
-                    <option disabled>─────────────</option>
-                    <option value="shadows">shadows</option>
-                    <option value="2nd shadows">2nd shadows</option>
-                    <option value="next neighbors">next neighbors</option>
-                    <option value="prev neighbors">prev neighbors</option>
-                    <option value="3rd neighbors">3rd neighbors</option>
-                    <option value="4th neighbors">4th neighbors</option>
+                          ng-options="dancers as (prefsForFigures(prefs, figures.arr).dancers[dancers]||dancers) for dancers in pairz" 
+                          class="form-control">
                   </select>
                 </div>
                 <div ng-if="p.ui == chooser_pairs">

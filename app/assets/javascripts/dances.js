@@ -171,7 +171,7 @@ function menuMoveLabel(from,to) {
       $scope.edit_index_box.length=0;
     };
     $scope.defaultFigures = defaultFigures;
-
+    $scope.pairz = pairz;
     // so not angular, but I'm trying anything at this point. 
     $('.update-dance').on('click', function(e) {
       $('#dance-figures-json').val(JSON.stringify($scope.figures.arr));
@@ -181,5 +181,6 @@ function menuMoveLabel(from,to) {
   app.controller('HookController', ['$scope', function ($scope) {
     var hook = $('#dance-hook-initializer').text();
     $scope.hook = hook;
+    // probably the wrong controller, buddy. You want the one above
   }]);
 })();

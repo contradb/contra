@@ -60,3 +60,22 @@ defineChooser("chooser_zig_zag_ender");
 defineChooser("chooser_go_back");
 defineChooser("chooser_give");
 defineChooser("chooser_half_or_full");
+
+// experiment
+var pairz = [
+  'gentlespoons',
+  'ladles',
+  'partners',
+  'neighbors',
+  'ones',
+  'twos',
+  'same roles',
+  'first corners',
+  'second corners',
+  'shadows',
+  '2nd shadows',
+  'prev neighbors',
+  'next neighbors',
+  '3rd neighbors',
+  '4th neighbors'
+];

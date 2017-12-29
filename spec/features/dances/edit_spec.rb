@@ -59,25 +59,44 @@ describe 'Editing dances', js: true do
     end
   end
 
-  it 'rewrites on the fly for 1st shadown & 2nd neigbor' do
-    with_login do |user|
-      dance = FactoryGirl.create(:dance_with_all_shadows_and_neigbors, user: user)
-      visit edit_dance_path dance.id
-      expect(page).to_not have_content('next neighbors')
-      expect(page).to have_content('2nd neighbors')
-      expect(page).to have_content('1st shadows')
-      click_link('3rd neighbors swing')
-      select('partners')
-      expect(page).to have_content('next neighbors')
-      expect(page).to_not have_content('2nd neighbors')
-      click_link('2nd shadows swing')
-      select('partners')
-      expect(page).to_not have_content('1st shadows')
-      select('2nd shadows')
-      expect(page).to have_content('1st shadows')
+  describe 'dynamic shadow/1st shadow and next neighbor/2nd neighbor behavior' do
+    it 'rewrites figure texts' do
+      with_login do |user|
+        dance = FactoryGirl.create(:dance_with_all_shadows_and_neigbors, user: user)
+        visit edit_dance_path dance.id
+        expect(page).to_not have_content('next neighbors')
+        expect(page).to have_content('2nd neighbors')
+        expect(page).to have_content('B2 1st shadows swing')
+        click_link('3rd neighbors swing')
+        select('partners')
+        expect(page).to have_content('next neighbors')
+        expect(page).to_not have_content('2nd neighbors')
+        click_link('2nd shadows swing')
+        select('partners')
+        expect(page).to_not have_content('B2 1st shadows swing')
+        expect(page).to have_content('B2 shadows swing')
+        select('2nd shadows')
+        expect(page).to have_content('B2 1st shadows swing')
+      end
+    end
+
+    it 'has dynamic dancer menus' do
+      with_login do |user|
+        dance = FactoryGirl.create(:dance_with_all_shadows_and_neigbors, user: user)
+        visit edit_dance_path dance.id
+        click_link('3rd neighbors swing')
+        expect(page).to_not have_css('option', text: 'next neighbors')
+        expect(page).to have_css('option', text: '2nd neighbors')
+        select('partners')
+        expect(page).to have_css('option', text: 'next neighbors')
+        expect(page).to_not have_css('option', text: '2nd neighbors')
+        click_link('2nd shadows swing')
+        expect(page).to have_css('option', text: '1st shadows')
+        expect(page).to_not have_css('option', text: /\Ashadows\z/)
+        select('partners')
+        expect(page).to_not have_css('option', text: '1st shadows')
+        expect(page).to have_css('option', text: /\Ashadows\z/)
+      end
     end
   end
 end
-
-
-
