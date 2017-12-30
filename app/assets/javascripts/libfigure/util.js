@@ -78,7 +78,7 @@ function figuresUseDancers(figures, dancers_term) {
     for (var i=0; i < formals.length; i++) {
       var formal = formals[i];
       var actual = figure.parameter_values[i];
-      if (paramIsDancer(formal) && (dancers_term === actual)) {
+      if (formalParamIsDancers(formal) && (dancers_term === actual)) {
         return true;
       }
     }

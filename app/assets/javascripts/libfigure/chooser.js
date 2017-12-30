@@ -63,6 +63,31 @@ defineChooser("chooser_go_back");
 defineChooser("chooser_give");
 defineChooser("chooser_half_or_full");
 
+var dancersCategory = {
+  everyone: 'everyone',
+  gentlespoons: 'gentlespoons',
+  ladles: 'ladles',
+  partners: 'partners',
+  neighbors: 'neighbors',
+  ones: 'ones',
+  twos: 'twos',
+  'same roles': 'same roles',
+  'first corners': 'first corners',
+  'second corners': 'second corners',
+  'first gentlespoon': 'first gentlespoon',
+  'first ladle': 'first ladle',
+  'second gentlespoon': 'second gentlespoon',
+  'second ladle': 'second ladle',
+  shadows: 'shadows',
+  // '1st shadows': 'shadows', // not sure if this needs to be included or not - for now: no
+  '2nd shadows': 'shadows',
+  'prev neighbors': 'neighbors',
+  'next neighbors': 'neighbors',
+  // '2nd neighbors': 'neighbors', // not sure if this needs to be included or not - for now: no
+  '3rd neighbors': 'neighbors',
+  '4th neighbors': 'neighbors'
+};
+
 // experiment
 var pairz = [
   'gentlespoons',
@@ -81,3 +106,4 @@ var pairz = [
   '3rd neighbors',
   '4th neighbors'
 ];
+

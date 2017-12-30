@@ -172,5 +172,21 @@ RSpec.describe JSLibFigure do
     end
   end
 
+  describe 'dancers_category' do
+    it "returns 'shadows' for 'shadows'" do
+      expect(JSLibFigure.dancers_category('partners')).to eq('partners')
+    end
+
+    it "returns 'neighbors' for 'prev neighbors'" do
+      expect(JSLibFigure.dancers_category('prev neighbors')).to eq('neighbors')
+    end
+
+    it "returns 'shadows' for '2nd shadows'" do
+      expect(JSLibFigure.dancers_category('prev neighbors')).to eq('neighbors')
+    end
+  end
+
+  it 'formal_param_is_dancers works'
+
   pending 'test the whole libfigure library, ha ha'
 end

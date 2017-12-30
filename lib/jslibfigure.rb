@@ -111,6 +111,15 @@ module JSLibFigure
     self.eval("prefsForFigures(#{prefs.to_json},#{figures.to_json})")
   end
 
+  def self.dancers_category(dancers)
+    @dancers_category_hash ||= self.eval('dancersCategory');
+    @dancers_category_hash[dancers]
+  end
+
+  def self.formal_param_is_dancers(formal_param)
+    self.eval("formalParamIsDancers(#{formal_param.to_json})")
+  end
+
   JSLIBFIGURE_FILES = %w(polyfill.js util.js move.js chooser.js param.js define-figure.js figure.es6 after-figure.js dance.js)
 
   private

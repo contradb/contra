@@ -104,7 +104,7 @@ function parameter_strings(move, parameter_values, prefs) {
 
 function preferenceParameter(prefs, formal_parameter, actual_parameter) {
   var term = actual_parameter;
-  if (paramIsDancer(formal_parameter) && (term in prefs.dancers)) {
+  if (formalParamIsDancers(formal_parameter) && (term in prefs.dancers)) {
     return prefs.dancers[term];
   } else {
     return term;

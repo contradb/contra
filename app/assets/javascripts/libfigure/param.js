@@ -113,7 +113,8 @@ var param_object_pairs_or_ones_or_twos = {name: "whom",                     ui: 
 var param_lead_dancer_l1             = {name: "lead", value: "first ladle", ui: chooser_dancer};
 
 var dancerParamNames = ['who', 'who2', 'whom', 'lead'];
-function paramIsDancer(param) {
+function formalParamIsDancers(param) {
+  // TODO: update to use a list of choosers, once we've got a dancer-chooser-definer -dm 12-30-2017
   return dancerParamNames.indexOf(param.name) >= 0;
 }
 
