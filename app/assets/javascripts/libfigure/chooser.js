@@ -24,7 +24,9 @@ function defineChooser(name){
 }
 
 function setChoosers(hash){
-  $.each(defined_choosers,function(k,v) {hash[k]=v;});
+  Object.keys(defined_choosers).forEach(function(key) {
+    hash[key] = defined_choosers[key];
+  });
 }
 
 defineChooser("chooser_boolean");
