@@ -64,6 +64,14 @@ function dancerMenuForChooser(chooser) {
   return _dancerMenuForChooser[chooser];
 }
 
+function dancerCategoryMenuForChooser(chooser) {
+  return uniq(dancerMenuForChooser(chooser).map(dancersCategory));
+}
+
+function dancerChoosers() {
+  return Object.keys(_dancerMenuForChooser);
+}
+
 var outOfSetDancers = ['shadows',
                        '2nd shadows',
                        'prev neighbors',
@@ -132,7 +140,7 @@ defineDancerChooser("chooser_role",      // ladles or gentlespoons
 defineDancerChooser("chooser_hetero",    // partners or neighbors or shadows but not same-role
                     ['parnters', 'neighbors'].concat(outOfSetDancers));
 
-var dancersCategory = {
+var _dancersCategory = {
   everyone: 'everyone',
   gentlespoons: 'gentlespoons',
   ladles: 'ladles',
@@ -157,3 +165,6 @@ var dancersCategory = {
   '4th neighbors': 'neighbors'
 };
 
+function dancersCategory(chooser) {
+  return _dancersCategory[chooser];
+}

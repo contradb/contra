@@ -70,6 +70,16 @@ function copy(hash) {
   return o;
 }
 
+function uniq(array) { // suboptimal O(n^2)
+  var output = [];
+  for (var i=0; i<array.length; i++) {
+    if (-1 === output.indexOf(array[i])) {
+      output.push(array[i]);
+    }
+  }
+  return output;
+}
+
 // // every element is ===
 // function array_equal(a1, a2) {
 //   var l = a1.length;

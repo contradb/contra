@@ -112,7 +112,7 @@ module JSLibFigure
   end
 
   def self.dancers_category(dancers)
-    @dancers_category_hash ||= self.eval('dancersCategory');
+    @dancers_category_hash ||= self.eval('_dancersCategory');
     @dancers_category_hash[dancers]
   end
 

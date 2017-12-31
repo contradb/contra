@@ -212,7 +212,6 @@ function chooserSelect(chooser, options) {
   };
 }
 
-
 chooserWidgetType[chooser_revolutions] = 'select';
 chooserWidgetType[chooser_places] = 'select';
 
@@ -229,16 +228,12 @@ chooserSelect(chooser_beats, ['*',8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]
 
 chooserRadioButtons(chooser_boolean, ['*',[true, 'yes'], [false, 'no']]);
 
-chooserSelect(chooser_dancers, ['*','everyone','gentlespoons','ladles','partners','neighbors','shadows','ones','twos','same roles','first corners','second corners','first gentlespoon','first ladle','second gentlespoon','second ladle']);
-chooserSelect(chooser_pair, ['*','gentlespoons','ladles','ones','twos','first corners','second corners']);
-chooserSelect(chooser_pairc_or_everyone, ['*','gentlespoons','ladles','centers','ones','twos']);
-chooserSelect(chooser_pairz, ['*','gentlespoons','ladles','partners','neighbors','shadows','ones','twos','same roles','first corners','second corners']);
-chooserSelect(chooser_pairs, ['*','partners','neighbors','shadows','same roles']);
-chooserSelect(chooser_pairs_or_ones_or_twos, ['*','partners','neighbors','shadows','same roles','ones','twos']);
-chooserSelect(chooser_pairs_or_everyone, ['*','everyone','partners','neighbors','shadows','same roles']);
-chooserSelect(chooser_dancer, ['*','first gentlespoon','first ladle','second gentlespoon','second ladle']);
-chooserSelect(chooser_role, ['*','gentlespoons','ladles']);
-chooserSelect(chooser_hetero, ['*','partners','neighbors','shadows']);
+{ // dancer chooser menus
+  var dcs = dancerChoosers();
+  for (var i=0; i < dcs.length; i++) {
+    chooserSelect(dcs[i], ['*'].concat(dancerCategoryMenuForChooser(dcs[i])));
+  }
+}
 
 chooserRadioButtons(chooser_spin, ['*',[true, 'clockwise'], [false, 'ccw']]);
 chooserRadioButtons(chooser_left_right_spin, ['*',[true, 'left'], [false, 'right']]);
