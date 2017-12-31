@@ -37,17 +37,6 @@ defineChooser("chooser_right_left_hand");
 defineChooser("chooser_right_left_shoulder");
 defineChooser("chooser_revolutions");
 defineChooser("chooser_places");
-defineChooser("chooser_dancers");  // some collection of dancers
-defineChooser("chooser_pair");     // 1 pair of dancers
-defineChooser("chooser_pair_or_everyone"); // 1 pair or everyone
-defineChooser("chooser_pairc_or_everyone"); // 1 pair or centers or everyone
-defineChooser("chooser_pairz");    // 1-2 pairs of dancers
-defineChooser("chooser_pairs");    // 2 pairs of dancers
-defineChooser("chooser_pairs_or_ones_or_twos");
-defineChooser("chooser_pairs_or_everyone");
-defineChooser("chooser_dancer");   // one dancer, e.g. ladle 1
-defineChooser("chooser_role");     // ladles or gentlespoons
-defineChooser("chooser_hetero");   // partners or neighbors or shadows
 defineChooser("chooser_text");
 defineChooser("chooser_star_grip");
 defineChooser("chooser_march_facing");
@@ -62,6 +51,51 @@ defineChooser("chooser_zig_zag_ender");
 defineChooser("chooser_go_back");
 defineChooser("chooser_give");
 defineChooser("chooser_half_or_full");
+
+
+var _dancerMenuForChooser = {};
+
+function defineDancerChooser(name, dancers){
+  defineChooser(name);
+  _dancerMenuForChooser[name] = dancers;
+}
+
+function dancerMenuForChooser(chooser) {
+  return _dancerMenuForChooser[chooser];
+}
+
+var outOfSetDancers = ['shadows',
+                       '2nd shadows',
+                       'prev neighbors',
+                       'next neighbors',
+                       '3rd neighbors',
+                       '4th neighbors'];
+
+defineDancerChooser("chooser_dancers"  // some collection of dancers
+                   );
+defineDancerChooser("chooser_pair");     // 1 pair of dancers
+defineDancerChooser("chooser_pair_or_everyone"); // 1 pair or everyone
+defineDancerChooser("chooser_pairc_or_everyone"); // 1 pair or centers or everyone
+defineDancerChooser("chooser_pairz",    // 1-2 pairs of dancers
+                    ['gentlespoons',
+                     'ladles',
+                     'partners',
+                     'neighbors',
+                     'ones',
+                     'twos',
+                     'same roles',
+                     'first corners',
+                     'second corners'
+                    ].concat(outOfSetDancers));
+defineDancerChooser("chooser_pairs");    // 2 pairs of dancers
+defineDancerChooser("chooser_pairs_or_ones_or_twos");
+defineDancerChooser("chooser_pairs_or_everyone");
+defineDancerChooser("chooser_dancer");   // one dancer, e.g. ladle 1
+defineDancerChooser("chooser_role");     // ladles or gentlespoons
+defineDancerChooser("chooser_hetero");   // partners or neighbors or shadows
+
+
+
 
 var dancersCategory = {
   everyone: 'everyone',

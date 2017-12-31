@@ -114,7 +114,7 @@
                 <div ng-if="p.ui == chooser_pairz">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as (prefsForFigures(prefs, figures.arr).dancers[dancers]||dancers) for dancers in pairz" 
+                          ng-options="dancers as (prefsForFigures(prefs, figures.arr).dancers[dancers]||dancers) for dancers in dancerMenuForChooser('chooser_pairz')" 
                           class="form-control">
                   </select>
                 </div>
