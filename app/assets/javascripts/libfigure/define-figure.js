@@ -102,9 +102,20 @@ function parameter_strings(move, parameter_values, prefs) {
   return acc;
 }
 
+// called when we don't know if the parameter is a dancer
 function preferenceParameter(prefs, formal_parameter, actual_parameter) {
   var term = actual_parameter;
   if (formalParamIsDancers(formal_parameter) && (term in prefs.dancers)) {
+    return prefs.dancers[term];
+  } else {
+    return term;
+  }
+}
+
+// called when we do know the parameter is a dancer
+function preferenceDancers(prefs, actual_parameter) {
+  var term = actual_parameter;
+  if (term in prefs.dancers) {
     return prefs.dancers[term];
   } else {
     return term;
