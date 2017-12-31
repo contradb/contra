@@ -14,4 +14,4 @@
 .byebug_history
 /node_modules
 .ruby-version
-spec/examples.txt
+/spec/examples.txt

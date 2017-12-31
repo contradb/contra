@@ -62,7 +62,7 @@ describe 'Editing dances', js: true do
   describe 'dynamic shadow/1st shadow and next neighbor/2nd neighbor behavior' do
     it 'rewrites figure texts' do
       with_login do |user|
-        dance = FactoryGirl.create(:dance_with_all_shadows_and_neigbors, user: user)
+        dance = FactoryGirl.create(:dance_with_all_shadows_and_neighbors, user: user)
         visit edit_dance_path dance.id
         expect(page).to_not have_content('next neighbors')
         expect(page).to have_content('2nd neighbors')
@@ -82,7 +82,7 @@ describe 'Editing dances', js: true do
 
     it 'has dynamic dancer menus' do
       with_login do |user|
-        dance = FactoryGirl.create(:dance_with_all_shadows_and_neigbors, user: user)
+        dance = FactoryGirl.create(:dance_with_all_shadows_and_neighbors, user: user)
         visit edit_dance_path dance.id
         click_link('3rd neighbors swing')
         expect(page).to_not have_css('option', text: 'next neighbors')

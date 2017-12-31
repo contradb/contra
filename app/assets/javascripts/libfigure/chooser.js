@@ -138,7 +138,7 @@ defineDancerChooser("chooser_dancer",  // one dancer
 defineDancerChooser("chooser_role",      // ladles or gentlespoons
                     ['gentlespoons', 'ladles']);
 defineDancerChooser("chooser_hetero",    // partners or neighbors or shadows but not same-role
-                    ['parnters', 'neighbors'].concat(outOfSetDancers));
+                    ['partners', 'neighbors'].concat(outOfSetDancers));
 
 var _dancersCategory = {
   everyone: 'everyone',

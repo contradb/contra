@@ -55,7 +55,7 @@ FactoryGirl.define do
     figures_json {"[{\"parameter_values\":[#{pair.inspect},true,16],\"move\":\"swing\"}]"}
   end
 
-  factory :dance_with_all_shadows_and_neigbors, class: Dance do
+  factory :dance_with_all_shadows_and_neighbors, class: Dance do
     sequence(:title) {|n| "All Shadows and Neighbors#{n}"}
     user { FactoryGirl.create(:user) }
     choreographer { FactoryGirl.create(:choreographer) }
