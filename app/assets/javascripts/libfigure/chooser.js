@@ -71,11 +71,40 @@ var outOfSetDancers = ['shadows',
                        '3rd neighbors',
                        '4th neighbors'];
 
-defineDancerChooser("chooser_dancers"  // some collection of dancers
-                   );
-defineDancerChooser("chooser_pair");     // 1 pair of dancers
-defineDancerChooser("chooser_pair_or_everyone"); // 1 pair or everyone
-defineDancerChooser("chooser_pairc_or_everyone"); // 1 pair or centers or everyone
+defineDancerChooser("chooser_dancers",  // some collection of dancers
+                    ['everyone',
+                     'gentlespoons',
+                     'ladles',
+                     'partners',
+                     'neighbors',
+                     'ones',
+                     'twos',
+                     'same roles',
+                     'first corners',
+                     'second corners',
+                     'first gentlespoon',
+                     'first ladle',
+                     'second gentlespoon',
+                     'second ladle'
+                    ].concat(outOfSetDancers));
+defineDancerChooser("chooser_pair",     // 1 pair of dancers
+                    ['gentlespoons',
+                     'ladles',
+                     'ones',
+                     'twos',
+                     'first corners',
+                     'second corners']);
+defineDancerChooser("chooser_pair_or_everyone", // 1 pair or everyone
+                    ['everyone'].concat(dancerMenuForChooser('chooser_pair')));
+defineDancerChooser("chooser_pairc_or_everyone", // 1 pair or centers or everyone
+                    ['everyone', 
+                     'gentlespoons',
+                     'ladles',
+                     'centers',
+                     'ones',
+                     'twos'
+                     // intentionally omitting 'first corners' and 'second corners', because 'centers' is clearer
+                    ]);
 defineDancerChooser("chooser_pairz",    // 1-2 pairs of dancers
                     ['gentlespoons',
                      'ladles',
@@ -87,15 +116,21 @@ defineDancerChooser("chooser_pairz",    // 1-2 pairs of dancers
                      'first corners',
                      'second corners'
                     ].concat(outOfSetDancers));
-defineDancerChooser("chooser_pairs");    // 2 pairs of dancers
-defineDancerChooser("chooser_pairs_or_ones_or_twos");
-defineDancerChooser("chooser_pairs_or_everyone");
-defineDancerChooser("chooser_dancer");   // one dancer, e.g. ladle 1
-defineDancerChooser("chooser_role");     // ladles or gentlespoons
-defineDancerChooser("chooser_hetero");   // partners or neighbors or shadows
-
-
-
+defineDancerChooser("chooser_pairs",     // 2 pairs of dancers
+                    ['partners', 'neighbors', 'same roles'].concat(outOfSetDancers));
+defineDancerChooser("chooser_pairs_or_ones_or_twos",
+                    ['partners', 'neighbors', 'same roles','ones','twos'].concat(outOfSetDancers));
+defineDancerChooser("chooser_pairs_or_everyone",
+                   ['everyone'].concat(dancerMenuForChooser('chooser_pairs')));
+defineDancerChooser("chooser_dancer",  // one dancer
+                    ['first gentlespoon',
+                     'first ladle',
+                     'second gentlespoon',
+                     'second ladle']);
+defineDancerChooser("chooser_role",      // ladles or gentlespoons
+                    ['gentlespoons', 'ladles']);
+defineDancerChooser("chooser_hetero",    // partners or neighbors or shadows but not same-role
+                    ['parnters', 'neighbors'].concat(outOfSetDancers));
 
 var dancersCategory = {
   everyone: 'everyone',
@@ -121,23 +156,4 @@ var dancersCategory = {
   '3rd neighbors': 'neighbors',
   '4th neighbors': 'neighbors'
 };
-
-// experiment
-var pairz = [
-  'gentlespoons',
-  'ladles',
-  'partners',
-  'neighbors',
-  'ones',
-  'twos',
-  'same roles',
-  'first corners',
-  'second corners',
-  'shadows',
-  '2nd shadows',
-  'prev neighbors',
-  'next neighbors',
-  '3rd neighbors',
-  '4th neighbors'
-];
 
