@@ -41,7 +41,10 @@ function comma_unless_blank(str) {
 
 var stubPrefs = {moves: {},
                  dancers: {}};
-var testPrefs = {moves: {gyre: 'darcy'},
+var testPrefs = {moves: {gyre: 'darcy',
+                         allemande: 'almond',
+                         'see saw': 'do si do left shoulder',
+                         'ocean wave': 'mush into short wavy lines'},
                  dancers: {ladles: 'ravens',
                            gentlespoons: 'larks'}};
 
@@ -112,6 +115,10 @@ function figuresUseDancers(figures, dancers_term) {
     }
   }
   return false;
+}
+
+function preferredMove(move, prefs) {
+  return prefs.moves[move] || move;
 }
 
 // ________________________________________________________________
