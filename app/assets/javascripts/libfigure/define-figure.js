@@ -29,7 +29,6 @@ function sumBeats(figures,optional_limit) {
 }
 
 function figureToString(f,prefs) {
-  if (!prefs) {throw_up('forgot prefs argument to figureToString');}
   var fig_def = defined_events[f.move];
   if (fig_def) {
     var func = fig_def.props.stringify || figureGenericStringify;
@@ -46,7 +45,6 @@ function figureToString(f,prefs) {
 
 // Called if they don't specify a Stringify function in the figure definition:
 function figureGenericStringify(move, parameter_values, prefs) {
-  if (!prefs) {throw_up('forgot prefs argument to figureGenericStringify');}
   // todo: clean this up so it's not so obnoxiously ugly
   // it's thouroughly tested, so it will be safe to remove the fishing expeditions for who, balance and beats.
   var ps = parameters(move);

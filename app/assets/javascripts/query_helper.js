@@ -1,12 +1,10 @@
 
 
 function buildFigureSentence(query, prefs) {
-  if (!prefs) { throw new Error('forgot prefs argument to buildFigureSentence'); }  // TODO: remove
   return 'Showing dances with ' + buildFigureSentenceHelper(query, 'a', prefs) + '.';
 }
 
 function buildFigureSentenceHelper(query, article, prefs) {
-  if (!prefs) { throw new Error('forgot prefs argument to buildFigureSentenceHelper'); } // TODO: remove
   var op = query[0];
   var f = figureSentenceDispatchTable[op];
   return f ? f(query, article, prefs) : ('figureSentenceDispatchTable['+op+'] is not a function');
@@ -34,7 +32,6 @@ function destringifyFigureParam(param) {
 }
 
 function sentenceForFigure(query, article, prefs) {
-  if (!prefs) { throw new Error('forgot prefs argument to sentenceForFigure'); } // TODO: remove
   var move = query[1];
   if (move === '*') {
     return (article === 'a') ? 'any figure' : (article +' figure');
