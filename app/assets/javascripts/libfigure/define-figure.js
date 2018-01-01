@@ -55,7 +55,7 @@ function figureGenericStringify(move, parameter_values, prefs) {
   var beats_index   = find_parameter_index_by_name("beats",ps);
   if (subject_index >= 0) { acc += pstrings[subject_index] + ' '; }
   if (balance_index >= 0) { acc += pstrings[balance_index] + ' '; }
-  acc += move;
+  acc += preferredMove(move, prefs);
   ps.length == parameter_values.length || throw_up("parameter type mismatch. "+ps.length+" formals and "+parameter_values.length+" values");
   for (var i=0; i < parameter_values.length; i++) {
     if ((i != subject_index) && (i != balance_index) && (i != beats_index)) {

@@ -206,8 +206,11 @@ RSpec.describe DancesHelper, type: :helper do
     end
   end
 
-  [['ravens allemande right 1½', 'allemande', 'ladles', true, 540, 8],
+  [['ravens almond right 1½', 'allemande', 'ladles', true, 540, 8],
    ['ravens darcy 1½', 'gyre', 'ladles', true, 540, 8],
+   ['ravens swing', 'swing', 'ladles', false, 8],
+   ['ravens do si do left shoulder once', 'see saw', 'ladles', false, 360, 8],
+   ['mush into short wavy lines', 'ocean wave', 4]
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}' with prefs" do
