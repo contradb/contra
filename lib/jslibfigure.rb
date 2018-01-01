@@ -107,6 +107,10 @@ module JSLibFigure
     @stub_prefs ||= self.eval("stubPrefs;")
   end
 
+  def self.test_prefs
+    @test_prefs ||= self.eval("testPrefs;")
+  end
+
   def self.prefs_for_figures(prefs, figures)
     self.eval("prefsForFigures(#{prefs.to_json},#{figures.to_json})")
   end

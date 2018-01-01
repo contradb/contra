@@ -151,7 +151,7 @@ RSpec.describe JSLibFigure do
   end
 
   it 'stub_prefs' do
-    expect(JSLibFigure.stub_prefs).to eq({'dancers' => {'ladles' => 'ladles'}, 'moves' => {'gyre' => 'darcy'}})
+    expect(JSLibFigure.stub_prefs).to eq({'dancers' => {}, 'moves' => {}})
   end
 
   describe 'prefs_for_figures' do

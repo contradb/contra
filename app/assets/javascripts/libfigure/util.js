@@ -39,7 +39,11 @@ function comma_unless_blank(str) {
   return ((!str) || (str.trim() === '')) ? '' : ',';
 }
 
-var stubPrefs = {dancers: {ladles: 'ladles'}, moves: {gyre: 'darcy'}}; // todo: unstub
+var stubPrefs = {moves: {},
+                 dancers: {}};
+var testPrefs = {moves: {gyre: 'darcy'},
+                 dancers: {ladles: 'ravens',
+                           gentlespoons: 'larks'}};
 
 
 // ________________________________________________________________
