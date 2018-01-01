@@ -24,7 +24,9 @@ function defineChooser(name){
 }
 
 function setChoosers(hash){
-  $.each(defined_choosers,function(k,v) {hash[k]=v;});
+  Object.keys(defined_choosers).forEach(function(key) {
+    hash[key] = defined_choosers[key];
+  });
 }
 
 defineChooser("chooser_boolean");
@@ -35,17 +37,6 @@ defineChooser("chooser_right_left_hand");
 defineChooser("chooser_right_left_shoulder");
 defineChooser("chooser_revolutions");
 defineChooser("chooser_places");
-defineChooser("chooser_dancers");  // some collection of dancers
-defineChooser("chooser_pair");     // 1 pair of dancers
-defineChooser("chooser_pair_or_everyone"); // 1 pair or everyone
-defineChooser("chooser_pairc_or_everyone"); // 1 pair or centers or everyone
-defineChooser("chooser_pairz");    // 1-2 pairs of dancers
-defineChooser("chooser_pairs");    // 2 pairs of dancers
-defineChooser("chooser_pairs_or_ones_or_twos");
-defineChooser("chooser_pairs_or_everyone");
-defineChooser("chooser_dancer");   // one dancer, e.g. ladle 1
-defineChooser("chooser_role");     // ladles or gentlespoons
-defineChooser("chooser_hetero");   // partners or neighbors or shadows
 defineChooser("chooser_text");
 defineChooser("chooser_star_grip");
 defineChooser("chooser_march_facing");
@@ -60,3 +51,120 @@ defineChooser("chooser_zig_zag_ender");
 defineChooser("chooser_go_back");
 defineChooser("chooser_give");
 defineChooser("chooser_half_or_full");
+
+
+var _dancerMenuForChooser = {};
+
+function defineDancerChooser(name, dancers){
+  defineChooser(name);
+  _dancerMenuForChooser[name] = dancers;
+}
+
+function dancerMenuForChooser(chooser) {
+  return _dancerMenuForChooser[chooser];
+}
+
+function dancerCategoryMenuForChooser(chooser) {
+  return uniq(dancerMenuForChooser(chooser).map(dancersCategory));
+}
+
+function dancerChoosers() {
+  return Object.keys(_dancerMenuForChooser);
+}
+
+var outOfSetDancers = ['shadows',
+                       '2nd shadows',
+                       'prev neighbors',
+                       'next neighbors',
+                       '3rd neighbors',
+                       '4th neighbors'];
+
+defineDancerChooser("chooser_dancers",  // some collection of dancers
+                    ['everyone',
+                     'gentlespoons',
+                     'ladles',
+                     'partners',
+                     'neighbors',
+                     'ones',
+                     'twos',
+                     'same roles',
+                     'first corners',
+                     'second corners',
+                     'first gentlespoon',
+                     'first ladle',
+                     'second gentlespoon',
+                     'second ladle'
+                    ].concat(outOfSetDancers));
+defineDancerChooser("chooser_pair",     // 1 pair of dancers
+                    ['gentlespoons',
+                     'ladles',
+                     'ones',
+                     'twos',
+                     'first corners',
+                     'second corners']);
+defineDancerChooser("chooser_pair_or_everyone", // 1 pair or everyone
+                    ['everyone'].concat(dancerMenuForChooser('chooser_pair')));
+defineDancerChooser("chooser_pairc_or_everyone", // 1 pair or centers or everyone
+                    ['everyone', 
+                     'gentlespoons',
+                     'ladles',
+                     'centers',
+                     'ones',
+                     'twos'
+                     // intentionally omitting 'first corners' and 'second corners', because 'centers' is clearer
+                    ]);
+defineDancerChooser("chooser_pairz",    // 1-2 pairs of dancers
+                    ['gentlespoons',
+                     'ladles',
+                     'partners',
+                     'neighbors',
+                     'ones',
+                     'twos',
+                     'same roles',
+                     'first corners',
+                     'second corners'
+                    ].concat(outOfSetDancers));
+defineDancerChooser("chooser_pairs",     // 2 pairs of dancers
+                    ['partners', 'neighbors', 'same roles'].concat(outOfSetDancers));
+defineDancerChooser("chooser_pairs_or_ones_or_twos",
+                    ['partners', 'neighbors', 'same roles','ones','twos'].concat(outOfSetDancers));
+defineDancerChooser("chooser_pairs_or_everyone",
+                   ['everyone'].concat(dancerMenuForChooser('chooser_pairs')));
+defineDancerChooser("chooser_dancer",  // one dancer
+                    ['first gentlespoon',
+                     'first ladle',
+                     'second gentlespoon',
+                     'second ladle']);
+defineDancerChooser("chooser_role",      // ladles or gentlespoons
+                    ['gentlespoons', 'ladles']);
+defineDancerChooser("chooser_hetero",    // partners or neighbors or shadows but not same-role
+                    ['partners', 'neighbors'].concat(outOfSetDancers));
+
+var _dancersCategory = {
+  everyone: 'everyone',
+  gentlespoons: 'gentlespoons',
+  ladles: 'ladles',
+  partners: 'partners',
+  neighbors: 'neighbors',
+  ones: 'ones',
+  twos: 'twos',
+  'same roles': 'same roles',
+  'first corners': 'first corners',
+  'second corners': 'second corners',
+  'first gentlespoon': 'first gentlespoon',
+  'first ladle': 'first ladle',
+  'second gentlespoon': 'second gentlespoon',
+  'second ladle': 'second ladle',
+  shadows: 'shadows',
+  // '1st shadows': 'shadows', // not sure if this needs to be included or not - for now: no
+  '2nd shadows': 'shadows',
+  'prev neighbors': 'neighbors',
+  'next neighbors': 'neighbors',
+  // '2nd neighbors': 'neighbors', // not sure if this needs to be included or not - for now: no
+  '3rd neighbors': 'neighbors',
+  '4th neighbors': 'neighbors'
+};
+
+function dancersCategory(chooser) {
+  return _dancersCategory[chooser];
+}

@@ -395,6 +395,31 @@ describe 'Welcome page', js: true do
           expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","allemande","ladles","*","*","*"]')
         end
 
+        it "allemande has the right dancer chooser menu entries" do
+          dances
+
+          select('allemande')
+          click_button('...')
+          expect(page).to have_css("option[value='ladles']")
+          expect(page).to have_css("option[value='gentlespoons']")
+          expect(page).to have_css("option[value='neighbors']")
+          expect(page).to have_css("option[value='partners']")
+          expect(page).to have_css("option[value='same roles']")
+          expect(page).to have_css("option[value='shadows']")
+          expect(page).to have_css("option[value='ones']")
+          expect(page).to have_css("option[value='twos']")
+          expect(page).to have_css("option[value='first corners']")
+          expect(page).to have_css("option[value='second corners']")
+          expect(page).to have_css("option[value='shadows']")
+          expect(page).to_not have_css("option[value='prev neighbors']")
+          expect(page).to_not have_css("option[value='next neighbors']")
+          expect(page).to_not have_css("option[value='2nd neighbors']")
+          expect(page).to_not have_css("option[value='3rd neighbors']")
+          expect(page).to_not have_css("option[value='4th neighbors']")
+          expect(page).to_not have_css("option[value='1st shadows']")
+          expect(page).to_not have_css("option[value='2nd shadows']")
+        end
+
         it "allemande with allemande left finds only 'Just Allemande'" do
           dances
           allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)

@@ -48,4 +48,18 @@ describe 'Showing dances' do
       end
     end
   end
+
+  it "shows '1st shadow' and '2nd neighbor' when appropriate" do
+    dance = FactoryGirl.create(:dance_with_all_shadows_and_neighbors)
+    visit dance_path dance.id
+    expect(page).to have_content('prev neighbors')
+    expect(page).to have_content('2nd neighbors')
+    expect(page).to have_content('3rd neighbors')
+    expect(page).to have_content('4th neighbors')
+    expect(page).to have_content('1st shadows')
+    expect(page).to have_content('2nd shadows')
+    expect(page).to_not have_content('next neighbors')
+    expect(page).to_not have_content('B2 shadows swing')
+    expect(page).to have_content('B2 1st shadows swing')
+  end
 end

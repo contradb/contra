@@ -2,8 +2,8 @@
 
 module JSLibFigure
 
-  def self.html(figure_ruby_hash)
-    self.eval("figure_html_readonly(#{figure_ruby_hash.to_json})")
+  def self.figureToString(figure_ruby_hash, prefs)
+    self.eval("figureToString(#{figure_ruby_hash.to_json},#{prefs.to_json})")
   end
 
   def self.beats(figure_ruby_hash)
@@ -101,6 +101,23 @@ module JSLibFigure
 
   def self.parameter_uses_chooser(formal_parameter, chooser_name_string)
     formal_parameter['ui'] == chooser_name_string; # 'should' be compared with address-equals in javascript land, but this is faster
+  end
+
+  def self.stub_prefs
+    @stub_prefs ||= self.eval("stubPrefs;")
+  end
+
+  def self.prefs_for_figures(prefs, figures)
+    self.eval("prefsForFigures(#{prefs.to_json},#{figures.to_json})")
+  end
+
+  def self.dancers_category(dancers)
+    @dancers_category_hash ||= self.eval('_dancersCategory');
+    @dancers_category_hash[dancers]
+  end
+
+  def self.formal_param_is_dancers(formal_param)
+    self.eval("formalParamIsDancers(#{formal_param.to_json})")
   end
 
   JSLIBFIGURE_FILES = %w(polyfill.js util.js move.js chooser.js param.js define-figure.js figure.es6 after-figure.js dance.js)

@@ -28,11 +28,11 @@ function sumBeats(figures,optional_limit) {
   return acc;
 }
 
-function figure_html_readonly(f) {
+function figureToString(f,prefs) {
   var fig_def = defined_events[f.move];
   if (fig_def) {
-    var func = fig_def.props.view || figure_html_readonly_default;
-    var main = func(f.move, f.parameter_values);
+    var func = fig_def.props.stringify || figureGenericStringify;
+    var main = func(f.move, f.parameter_values, prefs);
     var note = f.note;
     return note ? words(main,note) : main;
   }
@@ -43,13 +43,12 @@ function figure_html_readonly(f) {
   }
 }
 
-
-// Called if they don't specify a view function in the figure definition:
-function figure_html_readonly_default(move, parameter_values) {
+// Called if they don't specify a Stringify function in the figure definition:
+function figureGenericStringify(move, parameter_values, prefs) {
   // todo: clean this up so it's not so obnoxiously ugly
   // it's thouroughly tested, so it will be safe to remove the fishing expeditions for who, balance and beats.
   var ps = parameters(move);
-  var pstrings = parameter_strings(move, parameter_values);
+  var pstrings = parameter_strings(move, parameter_values, prefs);
   var acc = "";
   var subject_index = find_parameter_index_by_name("who", ps);
   var balance_index = find_parameter_index_by_name("bal", ps);
@@ -81,21 +80,44 @@ var progressionString = "to new neighbors";
 
 // ================
 
-function parameter_strings(move, parameter_values) {
+function parameter_strings(move, parameter_values, prefs) {
+  if (!prefs) {throw_up('forgot prefs argument to parameter_strings');}
   // new! improved! catch null and undefined, and convert them to '____', without calling the individual parameter function
   var formal_parameters = parameters(move);
   var acc = [];
   for (var i=0; i<parameter_values.length; i++) {
     var pvi = parameter_values[i];
+    var term;
     if ((pvi === undefined) || (pvi === null)) {
-      acc.push('____');
+      term = '____';
     } else if (formal_parameters[i].string) {
-      acc.push(formal_parameters[i].string(pvi,move));
+      term = formal_parameters[i].string(pvi,move);
     } else {
-      acc.push(String(pvi));
+      term = String(pvi);
     }
+    acc.push(preferenceParameter(prefs,formal_parameters[i],term));
   }
   return acc;
+}
+
+// called when we don't know if the parameter is a dancer
+function preferenceParameter(prefs, formal_parameter, actual_parameter) {
+  var term = actual_parameter;
+  if (formalParamIsDancers(formal_parameter) && (term in prefs.dancers)) {
+    return prefs.dancers[term];
+  } else {
+    return term;
+  }
+}
+
+// called when we do know the parameter is a dancer
+function preferenceDancers(prefs, actual_parameter) {
+  var term = actual_parameter;
+  if (term in prefs.dancers) {
+    return prefs.dancers[term];
+  } else {
+    return term;
+  }
 }
 
 // === Teaching Names =============

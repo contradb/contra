@@ -106,7 +106,12 @@
               </span>
               <a ng-click="clickFigure(figureIdx);"
                  href="" class="figure-view" ng-attr-id="{{'figure-'+figureIdx}}">
-                {{figure_html_readonly(figures.arr[figureIdx])}}
+                {{figureToString(figures.arr[figureIdx], prefsForFigures(prefs, figures.arr))}}
+                <%# It is unfortunate that I can't figure out how to
+                store the value of prefsForFigures() somewhere. It
+                irks me that we have to compute it once per figure,
+                especially because each time it runs, it touches every
+                figures, so the figure editor is O(n^2) -dm 12-26-2017 %>
               </a>
             </td>
           </tr>

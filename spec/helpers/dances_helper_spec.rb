@@ -4,7 +4,7 @@ require 'rails_helper'
 RSpec.describe DancesHelper, type: :helper do
 
   figure_txt_for = -> move, *parameter_values {
-    JSLibFigure.html({'move' => move, 'parameter_values' => parameter_values})
+    JSLibFigure.figureToString({'move' => move, 'parameter_values' => parameter_values}, JSLibFigure.stub_prefs)
   }
 
   def whitespice(x) 
@@ -17,7 +17,8 @@ RSpec.describe DancesHelper, type: :helper do
     end
   end
 
-  [['____ allemande ____ once', 'allemande', nil, nil, 360, 8],
+  [['ravens allemande right 1½', 'allemande', 'ladles', true, 540, 8],
+   ['____ allemande ____ once', 'allemande', nil, nil, 360, 8],
    ['partners balance & swing', 'swing', 'partners',true, 16],
    ['neighbors balance & swing', 'swing', 'neighbors', true, 16],
    ['neighbors swing', 'swing', 'neighbors', false, 8],
@@ -155,6 +156,7 @@ RSpec.describe DancesHelper, type: :helper do
    ['neighbors do si do twice for 16', 'do si do', 'neighbors', true, 720, 16],
    ['* do si do * for *', 'do si do', '*', '*', '*', '*'],
    ['shadows gyre 1½', 'gyre', 'shadows', true, 540, 8],
+   ['ravens darcy 1½', 'gyre', 'ladles', true, 540, 8],
    ['ones gyre left shoulders 1½', 'gyre', 'ones', false, 540, 8],
    ['* gyre * for *', 'gyre', '*', '*', '*', '*'],
    ['gyre star clockwise 3 places with gentlespoons putting their left hands in and backing up for 10',

@@ -54,7 +54,7 @@
                   <% figures.each_with_index do |figure,figure_index| %>
                     <%= content_tag :tr, dance_index.odd? && {class: 'figure-table-striping'} do %><!-- can't simply use bootstrap table-striped because of weird rowspans -->
                       <%= content_tag(:td, (figures.length > 1) && {rowspan: figures.length}) do link_to(dance.title, dance) end if 0==figure_index %>
-                      <td><div class="show-figure"><%= truncate(JSLibFigure.html(figure), length: 70, separator: ' ') %></div></td>
+                      <td><div class="show-figure"><%= truncate(JSLibFigure.figureToString(figure, JSLibFigure.stub_prefs), length: 70, separator: ' ') %></div></td>
                     <% end %>
                   <% end %>
                 <% end %>

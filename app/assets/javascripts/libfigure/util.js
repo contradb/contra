@@ -38,3 +38,76 @@ function throw_up(str) {
 function comma_unless_blank(str) {
   return ((!str) || (str.trim() === '')) ? '' : ',';
 }
+
+var stubPrefs = {dancers: {ladles: 'ladles'}, moves: {gyre: 'darcy'}}; // todo: unstub
+
+
+// ________________________________________________________________
+
+
+
+function prefsForFigures(prefs, figures) {
+  var new_prefs = copyPrefs(prefs);
+  if (figuresUseDancers(figures, '3rd neighbors')) {
+    new_prefs.dancers['next neighbors'] = '2nd neighbors';
+  }
+  if (figuresUseDancers(figures, '2nd shadows')) {
+    new_prefs.dancers['shadows'] = '1st shadows';
+  }
+  return new_prefs;
+}
+
+function copyPrefs(prefs) {
+  return {dancers: copy(prefs.dancers),
+          moves: copy(prefs.moves)};
+}
+
+function copy(hash) {
+  var o = {};
+  Object.keys(hash).forEach(function(key) {
+    o[key] = hash[key];
+  });
+  return o;
+}
+
+function uniq(array) { // suboptimal O(n^2)
+  var output = [];
+  for (var i=0; i<array.length; i++) {
+    if (-1 === output.indexOf(array[i])) {
+      output.push(array[i]);
+    }
+  }
+  return output;
+}
+
+// // every element is ===
+// function array_equal(a1, a2) {
+//   var l = a1.length;
+//   if (l !== a2.length) {
+//     return false;
+//   }
+//   for (var i=0; i<l; i++) {
+//     if (a1[i] !== a2[i]) {
+//       return false;
+//     }
+//   }
+//   return true;
+// }
+
+// used to determine if a dance uses the term 'shadow' or '3rd neighbor'
+function figuresUseDancers(figures, dancers_term) {
+  for (var figi=0; figi<figures.length; figi++) {
+    var figure = figures[figi];
+    var formals = parameters(figure.move);
+    for (var i=0; i < formals.length; i++) {
+      var formal = formals[i];
+      var actual = figure.parameter_values[i];
+      if (formalParamIsDancers(formal) && (dancers_term === actual)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+// ________________________________________________________________
