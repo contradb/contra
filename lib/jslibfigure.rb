@@ -22,8 +22,12 @@ module JSLibFigure
     move.in?(moves)
   end
 
-  def self.moves
-    @moves ||= self.eval('moves()')
+  def self.moves(prefs=nil)
+    if prefs
+      self.eval("moves(#{prefs.to_json})")
+    else
+      @moves ||= self.eval('moves()')
+    end
   end
 
   def self.de_alias_move(move_str)

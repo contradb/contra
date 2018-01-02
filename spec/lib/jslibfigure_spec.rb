@@ -2,6 +2,10 @@ require 'jslibfigure'
 require 'rails_helper'
 
 RSpec.describe JSLibFigure do
+  def jseval(string)
+    JSLibFigure.send(:eval, string) # hacking in
+  end
+
   it 'an empty figure has 8 beats' do
     expect(JSLibFigure.beats(JSLibFigure.new)).to eql(8)
   end
@@ -65,6 +69,24 @@ RSpec.describe JSLibFigure do
 
     it "does not include 'gypsy'" do
       expect(JSLibFigure.moves).to_not include 'gypsy'
+    end
+  end
+
+  describe 'movesMenuOrdering' do
+    it "bumps 'swing' to the front of the line" do
+      ms = JSLibFigure.eval('movesMenuOrdering(stubPrefs)') # empty prefs
+      expect(ms.first['value']).to eq('swing')
+      expect(ms.first['label']).to eq('swing')
+      expect(ms.count {|m| m.value == 'swing'}).to eq(2)
+      expect(ms.count {|m| m.label == 'swing'}).to eq(2)
+    end
+
+    it "doesn't copy swing if it's already aliased to something in the first 5 elements" do
+      ms = JSLibFigure.eval("movesMenuOrdering({moves: {swing: 'america'}, dancers: {}})").dup
+      expect(ms.index {|m| (m['label'] == 'america') && (m['value'] == 'swing')}).to be < 5 # if this fails there are maybe more than 5 moves alphabetically lower than 'america'?
+      expect(ms.count {|m| m['label'] == 'america'}).to eq(1)
+      expect(ms.count {|m| m['value'] == 'swing'}).to eq(1)
+      expect(ms.count {|m| m['label'] == 'swing'}).to eq(0)
     end
   end
 
@@ -187,10 +209,6 @@ RSpec.describe JSLibFigure do
   end
 
   it 'formal_param_is_dancers works' do
-    def jseval(string)
-      JSLibFigure.send(:eval, string) # hacking in
-    end
-
     # representative samplings:
     nopes = %w(param_balance_false param_beats_8 param_spin_ccw param_left_shoulder_spin param_four_places param_star_grip)
     yerps = %w(param_subject param_subject_pairz param_object_pairs_or_ones_or_twos)

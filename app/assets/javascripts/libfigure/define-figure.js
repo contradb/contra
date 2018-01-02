@@ -197,20 +197,31 @@ function aliases(move) {
   return acc;
 }
 
-function moves() {
- return Object.keys(defined_events).sort(function(a,b) {
-   var aa = a.toLowerCase();
-   var bb = b.toLowerCase();
-   if (aa < bb) { return -1 ;}
-   else if (aa > bb) { return 1; }
-   else { return 0; }
-});
+function moves(optional_prefs) {
+  var ms = Object.keys(defined_events);
+  if (optional_prefs) {
+    ms = ms.map(function(move) { return preferredMove(move, optional_prefs); });
+  }
+  ms = ms.sort(function(a,b) {
+    var aa = a.toLowerCase();
+    var bb = b.toLowerCase();
+    if (aa < bb) { return -1 ;}
+    else if (aa > bb) { return 1; }
+    else { return 0; }
+  });
+  return ms;
 }
 
-function movesMenuOrdering() {
- var m = moves();
- m.unshift("swing");
- return m;
+function movesMenuOrdering(prefs) {
+  if (!prefs) {
+    throw_up('must specify prefs to movesMenuOrdering');
+  }
+  var m = moves(prefs);
+  var swing = preferredMove('swing', prefs);
+  if (-1 === m.slice(0,5).indexOf(swing)) { // swing not in first 5 entries
+    m.unshift(swing);                       // copy swing to front of the list
+  }
+  return m;
 }
 
 function isMove(string) {
