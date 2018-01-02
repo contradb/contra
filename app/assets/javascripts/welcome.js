@@ -522,7 +522,8 @@ jQuery(document).ready(function() {
             {"data": "formation"},
             {"data": "user_name"},
             {"data": "updated_at"},
-            {"data": "created_at"}
+            {"data": "created_at"},
+            {"data": "published"}
           ],
           "order": [[ 5, "desc" ]] // 5 should = index of 'updated_at' in the array above
         });

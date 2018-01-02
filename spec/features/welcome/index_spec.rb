@@ -34,6 +34,7 @@ describe 'Welcome page', js: true do
       expect(page).to have_link(dance.user.name, href: user_path(dance.user))
       expect(page).to have_text(dance.updated_at.strftime('%Y-%m-%d'))
       expect(page).to_not have_text(dance.created_at.strftime('%Y-%m-%d')) # column invisible by default, it's not hidden, it's simply not there
+      expect(page).to_not have_css('td', text: 'Published') # column invisible by default, it's not hidden, it's simply not there
     end
 
     it 'displays in descencing updated_at order by default' do
@@ -564,7 +565,7 @@ describe 'Welcome page', js: true do
           expect(page).to have_css('button.toggle-vis-active', text: col)
           expect(page).to_not have_css('button.toggle-vis-inactive', text: col)
         end
-        %w[Entered].each do |col|
+        %w[Entered Published].each do |col|
           expect(page).to_not have_css('#dances-table th', text: col)
           expect(page).to_not have_css('button.toggle-vis-active', text: col)
           expect(page).to  have_css('button.toggle-vis-inactive', text: col)
