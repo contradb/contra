@@ -12,7 +12,8 @@ class DanceDatatable < AjaxDatatablesRails::Base
       hook: { source: "Dance.hook", searchable: false},
       user_name: { source: "User.name" },
       created_at: { source: "Dance.created_at", searchable: false, orderable: true },
-      updated_at: { source: "Dance.updated_at", searchable: false, orderable: true }
+      updated_at: { source: "Dance.updated_at", searchable: false, orderable: true },
+      published: { source: "Dance.publish", searchable: false, orderable: true }
     }
   end
 
@@ -25,7 +26,8 @@ class DanceDatatable < AjaxDatatablesRails::Base
         hook: dance.hook,
         user_name: link_to(dance.user.name, user_path(dance.user)),
         created_at: dance.created_at.strftime('%Y-%m-%d'),
-        updated_at: dance.updated_at.strftime('%Y-%m-%d')
+        updated_at: dance.updated_at.strftime('%Y-%m-%d'),
+        published: dance.publish ? 'Published' : nil
       }
     end
   end
