@@ -1,5 +1,4 @@
 
-
 <% debug_figure_json = false %>
 
 <div class="dance-editor" ng-app="contra">
@@ -124,7 +123,7 @@
               <label class="figure-edit-label"><span class="figure-edit-label-text">move</span>
                 <div class='figure-value-setter-div'>
                   <select ng-model="figure.move"
-                          ng-options="m for m in movesMenuOrdering(prefs)"
+                          ng-options="m.value as m.label for m in movesMenuOrdering(prefs) track by m.value"
                           ng-change="userChangedMove(figure)"
                           ng-attr-id="{{'move-'+figureIdx}}"
                           class='form-control'>

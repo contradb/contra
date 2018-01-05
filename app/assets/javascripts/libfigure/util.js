@@ -48,6 +48,7 @@ var testPrefs = {moves: {gyre: 'darcy',
                  dancers: {ladles: 'ravens',
                            gentlespoons: 'larks'}};
 
+/*
 stubPrefs = {moves: {gyre: 'darcy',
                      'gyre meltdown': 'meltdown swing',
                      allemande: 'almond',
@@ -57,7 +58,7 @@ stubPrefs = {moves: {gyre: 'darcy',
              dancers: {ladles: 'ravens',
                        gentlespoons: 'larks',
                        shadows: 'demipartners'}};
-
+*/
 // ________________________________________________________________
 
 
