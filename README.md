@@ -18,7 +18,7 @@ Well, you'll need some proficiency in Ruby. Check the Gemfile.lock for
 the relevant versions. I use rvm to manage gems.
 
 Database configuration is pretty simple and should be handled by
-migrations. Creating a Postgres user is [handled in the wiki](https://github.com/dcmorse/contra/wiki/Setting-up-Postgres-for-Development-and-Testing).
+migrations. Creating a Postgres user is [handled in the wiki](https://github.com/contradb/contra/wiki/Setting-up-Postgres-for-Development-and-Testing).
 After the database is created and migrated, there are two manual
 things (which really should be in a script, even before tests, but I don't know how to do that):
 
@@ -28,7 +28,7 @@ powers, so go ahead and create her. I like the username 'admonsterator'.
 
 ## Deployment
 
-[Deployment instructions](https://github.com/dcmorse/contra/wiki/Installing-new-git-version-onto-production-server) are in the wiki.
+[Deployment instructions](https://github.com/contradb/contra/wiki/Installing-new-git-version-onto-production-server) are in the wiki.
 
 ## Testing
 
