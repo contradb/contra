@@ -10,7 +10,7 @@
     <span>Permission to publish dances: </span>
     <strong>
       <% if @choreographer.publish.present? %>
-        <%= link_to @choreographer.publish.titleize, "https://github.com/dcmorse/contra/wiki/Caller-Consent", target: "_blank" %>
+        <%= link_to @choreographer.publish.titleize, "https://github.com/contradb/contra/wiki/Caller-Consent", target: "_blank" %>
       <% else %>
         Unknown
       <% end %>
