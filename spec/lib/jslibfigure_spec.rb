@@ -220,5 +220,17 @@ RSpec.describe JSLibFigure do
     end
   end
 
+  it 'with_prefs works' do
+    expect(JSLibFigure.preferred_move('gyre', JSLibFigure.stub_prefs)).to eq('gyre')
+    JSLibFigure.with_prefs(JSLibFigure.test_prefs) do
+      expect(JSLibFigure.preferred_move('gyre', JSLibFigure.stub_prefs)).to eq('darcy')
+    end
+    expect(JSLibFigure.preferred_move('gyre', JSLibFigure.stub_prefs)).to eq('gyre')
+  end
+
+  it 'preferred_move works' do
+    expect(JSLibFigure.preferred_move('allemande', JSLibFigure.test_prefs)).to eq('almond')
+    expect(JSLibFigure.preferred_move("Rory O'Moore", JSLibFigure.test_prefs)).to eq("Rory O'Moore")  end
+
   pending 'test the whole libfigure library, ha ha'
 end

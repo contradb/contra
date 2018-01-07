@@ -107,16 +107,33 @@ module JSLibFigure
     formal_parameter['ui'] == chooser_name_string; # 'should' be compared with address-equals in javascript land, but this is faster
   end
 
-  def self.stub_prefs
-    @stub_prefs ||= self.eval("stubPrefs;")
-  end
-
   def self.test_prefs
     @test_prefs ||= self.eval("testPrefs;")
   end
 
+  def self.stub_prefs
+    @stub_prefs ||= self.eval("stubPrefs;")
+  end
+
+  def self.with_prefs(prefs, &body) # probably not the most thread-safe thing, so only call it at the top level of a spec
+    old_prefs = JSLibFigure.stub_prefs
+    @stub_prefs = nil
+    self.eval("stubPrefs = #{prefs.to_json}")
+    body.call
+  ensure
+    @stub_prefs = nil
+    self.eval("stubPrefs = #{old_prefs.to_json}")
+  end
+
   def self.prefs_for_figures(prefs, figures)
     self.eval("prefsForFigures(#{prefs.to_json},#{figures.to_json})")
+  end
+
+  def self.preferred_move(move_term, prefs)
+    # js implementation:
+    # self.eval("preferredMove(#{move_term.inspect}, #{prefs.to_json})")
+    # ruby implementation:
+    prefs.dig('moves', move_term) || move_term
   end
 
   def self.dancers_category(dancers)
