@@ -108,7 +108,7 @@ function filterOpChanged(e) {
   }
   ensureChildRemoveButtons(filter);
   updateAddButtonText(filter, op);
-  
+
   filter.children('.figure-filter').attr('data-op', op);
   updateQuery();
 }
@@ -216,7 +216,7 @@ function chooserSelect(chooser, options) {
 chooserWidgetType[chooser_revolutions] = 'select';
 chooserWidgetType[chooser_places] = 'select';
 
-chooserToFilterHtml[chooser_revolutions] = 
+chooserToFilterHtml[chooser_revolutions] =
 chooserToFilterHtml[chooser_places] = function(move) {
   var options = ['<option value="*">*</option>'].concat(
     anglesForMove(move).map(function(angle) {
@@ -269,6 +269,11 @@ chooserSelect(chooser_down_the_hall_ender,
                                 ['turn-alone', 'turn alone'],
                                 ['turn-couples', 'turn as couples'],
                                 ['circle', 'bend into a ring'],
+                                ['cozy', 'form a cozy line'],
+                                ['cloverleaf', 'bend into a cloverleaf'],
+                                ['thread-needle', 'thread the needle'],
+                                ['right-high', 'right hand high, left hand low'],
+                                ['sliding-doors', 'sliding doors'],
                                 ['', 'unspecified']]);
 
 chooserSelect(chooser_zig_zag_ender, ['*', ['', 'none'], ['ring', 'into a ring'], ['allemande', 'training two catch hands']]);
@@ -344,8 +349,8 @@ function buildFigureQuery(figure_filter) {
   if (op === 'figure') {
     var move = figure_filter.children('.figure-filter-move').val();
     var a = [op, move];
-    if (accordionIsHidden(figure_filter)) { 
-      return a; 
+    if (accordionIsHidden(figure_filter)) {
+      return a;
     }
     var formals = isMove(move) ? parameters(move) : [];
     formals.forEach(function(formal, i) {
@@ -458,13 +463,13 @@ jQuery(document).ready(function() {
   if (0 === $('#dances-table').length) {
     return;                     // don't do any of this stuff if we're not on a page with a query.
   }
-  
+
   updateQuery = function() {
     var fq = buildFigureQuery($('#figure-filter-root'));
     $('#figure-query-buffer').val(JSON.stringify(fq));
     $('.figure-query-sentence').text(buildFigureSentence(fq));
     if (dataTable) {
-      dataTable.draw(); 
+      dataTable.draw();
     }
   };
 
@@ -498,7 +503,7 @@ jQuery(document).ready(function() {
     }
   }
 
-  var dataTable = 
+  var dataTable =
         $('#dances-table').DataTable({
           "processing": true,
           "serverSide": true,

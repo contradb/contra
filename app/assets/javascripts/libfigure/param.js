@@ -1,4 +1,4 @@
-//     ____   _    ____      _    __  __ 
+//     ____   _    ____      _    __  __
 //    |  _ \ / \  |  _ \    / \  |  \/  |
 //    | |_) / _ \ | |_) |  / _ \ | |\/| |
 //    |  __/ ___ \|  _ <  / ___ \| |  | |
@@ -6,8 +6,8 @@
 //
 // Params have semantic value specific to each figure.
 // Though some patterns have emerged. Patterns like:
-// figures have a subject telling who's acted on by the figure. 
-// 
+// figures have a subject telling who's acted on by the figure.
+//
 
 function stringParamBalance (value) {
   if (value === '*') {
@@ -30,7 +30,7 @@ function stringParamHalfSashay (value) {
 var param_half_sashay_false = {name: "½sash", value: false, ui: chooser_boolean, string: stringParamHalfSashay};
 
 function stringParamBeatsNotN (n) {
-  return function (value) {return value && (value != n) ? "for "+value : "";}; 
+  return function (value) {return value && (value != n) ? "for "+value : "";};
 }
 var param_beats   = {name: "beats",           ui: chooser_beats, string: stringParamBeatsNotN(-100)}; // always display beats
 var param_beats_0 = {name: "beats", value: 0, ui: chooser_beats, string: stringParamBeatsNotN(0)};
@@ -59,7 +59,7 @@ var param_xshoulder_spin         = {name: "shoulder",               ui: chooser_
 var param_right_shoulder_spin    = {name: "shoulder", value: true,  ui: chooser_right_left_shoulder, string: stringParamShoulder};
 var param_left_shoulder_spin     = {name: "shoulder", value: false, ui: chooser_right_left_shoulder, string: stringParamShoulder};
 
-function stringParamDegrees (value,move) { 
+function stringParamDegrees (value,move) {
   // this second parameter should go away, it should be handled in figure.es6,
   // because that's the file that knows about figures and moves.
   if (moveCaresAboutRotations(move)) {
@@ -194,11 +194,16 @@ function stringParamSliceIncrement (value) {
 var param_slice_increment = {name: "slice increment", ui: chooser_slice_increment, value: 'couple', string: stringParamSliceIncrement};
 
 function stringParamDownTheHallEnder (value) {
-  if      ('' === value)             { return ''; }
-  else if ('turn-couples' === value) { return 'turn as couples'; }
-  else if ('turn-alone'   === value) { return 'turn alone'; }
-  else if ('circle'       === value) { return 'bend into a ring'; }
-  else if ('*'            === value) { return 'end however'; }
+  if      ('' === value)              { return ''; }
+  else if ('turn-couples'  === value) { return 'turn as couples'; }
+  else if ('turn-alone'    === value) { return 'turn alone'; }
+  else if ('circle'        === value) { return 'bend into a ring'; }
+  else if ('cozy'          === value) { return 'form a cozy line'; }
+  else if ('cloverleaf'    === value) { return 'bend into a cloverleaf';}
+  else if ('thread-needle' === value) { return 'thread the needle';}
+  else if ('right-high'    === value) { return 'right hand high, left hand low';}
+  else if ('sliding-doors' === value) { return 'go into a sliding doors movement';}
+  else if ('*'             === value) { return 'end however'; }
   else { throw_up('bad down the hall ender: '+value); }
 }
 
