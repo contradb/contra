@@ -202,7 +202,7 @@ function stringParamDownTheHallEnder (value) {
   else if ('cloverleaf'    === value) { return 'bend into a cloverleaf';}
   else if ('thread-needle' === value) { return 'thread the needle';}
   else if ('right-high'    === value) { return 'right hand high, left hand low';}
-  else if ('sliding-doors' === value) { return 'go into a sliding doors movement';}
+  else if ('sliding-doors' === value) { return 'slide doors';}
   else if ('*'             === value) { return 'end however'; }
   else { throw_up('bad down the hall ender: '+value); }
 }
