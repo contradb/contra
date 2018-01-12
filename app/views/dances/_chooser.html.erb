@@ -1,12 +1,12 @@
                 <div ng-if="p.ui == chooser_boolean">
-                  <input type="checkbox" class="balance_edit" 
+                  <input type="checkbox" class="balance_edit"
                          ng-model="figure.parameter_values[$index]"
                          ng-change="userChangedParameter(figure,$index)"
                          class='form-control'/>
                 </div>
                 <div ng-if="p.ui == chooser_beats">
                   <select
-                     ng-model="figure.parameter_values[$index]" 
+                     ng-model="figure.parameter_values[$index]"
                      ng-options="b for b in [8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]"
                      ng-change="userChangedParameter(figure,$index)"
                      class='form-control'>
@@ -16,7 +16,7 @@
                   <label class='radio-tweaks form-check-label'>clockwise <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="userChangedParameter(figure,$index)" class="form-check-inline"/></label>
                   <label class='radio-tweaks'>ccw <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="userChangedParameter(figure,$index)"/></label>
                 </div>
-                <div ng-if="p.ui == chooser_left_right_spin"> 
+                <div ng-if="p.ui == chooser_left_right_spin">
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="userChangedParameter(figure,$index)" />left</label>
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="userChangedParameter(figure,$index)" />right</label>
                 </div>
@@ -287,6 +287,11 @@
                     <option value='turn-couples'>turn as couples</option>
                     <option value='turn-alone'>turn alone</option>
                     <option value='circle'>bend into a ring</option>
+                    <option value='cozy'>cozy line</option>
+                    <option value='cloverleaf'>cloverleaf</option>
+                    <option value='thread-needle'>thread the needle</option>
+                    <option value='right-high'>right hand high, left hand low</option>
+                    <option value='sliding-doors'>sliding doors</option>
                   </select>
                 </div>
                 <div ng-if="p.ui == chooser_zig_zag_ender">
