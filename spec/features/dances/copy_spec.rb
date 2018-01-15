@@ -36,6 +36,15 @@ describe 'Copying dances', js: true do
       expect(dance2.choreographer.name).to eql dance1.choreographer.name
     end
   end
+
+  it 'applies prefs' do
+    with_login do |user|
+      dance = FactoryGirl.create(:box_the_gnat_contra, user: user)
+      allow_any_instance_of(User).to receive(:prefs).and_return(JSLibFigure.test_prefs)
+      visit new_dance_path copy_dance_id: dance.id
+      expect(page).to have_text('ravens almond right 1½')
+    end
+  end
 end
 
 

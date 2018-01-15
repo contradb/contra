@@ -115,15 +115,16 @@ module JSLibFigure
     @stub_prefs ||= self.eval("stubPrefs;")
   end
 
-  def self.with_prefs(prefs, &body) # probably not the most thread-safe thing, so only call it at the top level of a spec
-    old_prefs = JSLibFigure.stub_prefs
-    @stub_prefs = nil
-    self.eval("stubPrefs = #{prefs.to_json}")
-    body.call
-  ensure
-    @stub_prefs = nil
-    self.eval("stubPrefs = #{old_prefs.to_json}")
-  end
+  # Not used - better to just cram prefs through the controllers, for real.
+  # def self.with_prefs(prefs, &body) # probably not the most thread-safe thing, so only call it at the top level of a spec
+  #   old_prefs = JSLibFigure.stub_prefs
+  #   @stub_prefs = nil
+  #   self.eval("stubPrefs = #{prefs.to_json}")
+  #   body.call
+  # ensure
+  #   @stub_prefs = nil
+  #   self.eval("stubPrefs = #{old_prefs.to_json}")
+  # end
 
   def self.prefs_for_figures(prefs, figures)
     self.eval("prefsForFigures(#{prefs.to_json},#{figures.to_json})")

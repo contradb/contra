@@ -13,6 +13,7 @@ class ProgramsController < ApplicationController
   # GET /programs/1
   # GET /programs/1.json
   def show
+    @prefs = prefs
   end
 
   # GET /programs/new
@@ -93,6 +94,10 @@ class ProgramsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_program
       @program = Program.find(params[:id])
+    end
+
+    def prefs
+      current_user&.prefs || JSLibFigure.stub_prefs
     end
 
     def authenticate_program_ownership!

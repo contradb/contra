@@ -3,6 +3,7 @@ class DancesController < ApplicationController
   before_action :authenticate_user!, only: [:new, :edit, :update, :destroy]
   before_action :authenticate_dance_writable!, only: [:edit, :update, :destroy]
   before_action :authenticate_dance_readable!, only: [:show]
+  before_action :set_prefs_json, only: [:new, :create, :edit, :update]
 
   def index
     @dances = Dance.readable_by(current_user).alphabetical
@@ -15,6 +16,7 @@ class DancesController < ApplicationController
   end
 
   def show
+    @prefs = prefs
   end
 
   def new
@@ -72,6 +74,14 @@ class DancesController < ApplicationController
       @dance = Dance.find(params[:id])
     end
     
+    def set_prefs_json
+      @prefs_json = prefs.to_json
+    end
+
+    def prefs
+      current_user&.prefs || JSLibFigure.stub_prefs
+    end
+
     def authenticate_dance_writable!
       current_user&.admin? || authenticate_ownership!(@dance.user_id)
     end

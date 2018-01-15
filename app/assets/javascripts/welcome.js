@@ -1,4 +1,8 @@
-(function () { // skipped indenting inside this one element
+$(document).ready(function() { // skipped indenting inside this one element
+  if (0 === $('#dances-table').length) {
+    return;                     // don't do any of this stuff if we're not on a page with a query.
+  }
+
 
 function installEventHandlers(selector) {
   selector.find('.figure-filter-op').change(filterOpChanged);
@@ -12,6 +16,7 @@ var removeButtonHtml = "<button class='figure-filter-remove'><span class='glyphi
 
 if (!Array.prototype.forEach) { throw "I was expecting Array.forEach to be defined"; }
 if (!Array.prototype.map) { throw "I was expecting Array.map to be defined"; }
+  if (!stubPrefs) { throw "I can't believe I'm still getting errors about undefined stubPrefs!"; }
 
 var figureMoveHtml = "<select class='figure-filter-move form-control'><option value='*' selected=true>any figure</option>";
 movesMenuOrdering(stubPrefs).forEach(function(move) {
@@ -448,8 +453,8 @@ function toggleColumnVisForResolution(dataTable, width) {
 }
 
 ///////////////////// PAGE LOADED
+// indent +1 for historical reasons
 
-jQuery(document).ready(function() {
   if (0 === $('#dances-table').length) {
     return;                     // don't do any of this stuff if we're not on a page with a query.
   }
@@ -532,5 +537,5 @@ jQuery(document).ready(function() {
   };
   $(window).resize(resizeFn);
   resizeFn();
+
 });
-})();

@@ -7,15 +7,16 @@ require 'rails_helper'
 
 RSpec.describe "dances/show", type: :view do
   before(:each) do
-    @dance = assign(:dance, FactoryGirl.build_stubbed(:dance,
+    assign(:dance, FactoryGirl.build_stubbed(:dance,
       :title => "Clever Pun",
       :start_type => "Complicated Formation",
       :choreographer => FactoryGirl.build_stubbed(:choreographer, name: "Becky Hill"),
       :user => FactoryGirl.build_stubbed(:user),
       :preamble => "Some Premable Text www.slashdot.org mumble mumble _italic_ mumble",
-      :figures_json => '[{"parameter_values":["partners",true,16],"move":"swing", "note":"the quick brown fox <script>alert(\'no dialog pops up\');</script>"}]',
+      :figures_json => '[{"parameter_values":["partners",true,16],"move":"swing", "note":"the quick brown fox <script>alert(\'no dialog pops up\');</script>"}, {"parameter_values":["ladles",true,540,8],"move":"allemande"}]',
       :notes => "My Note Text www.yahoo.com blah blah **bold** blah"
-    ))
+                                            ))
+    assign(:prefs, JSLibFigure.stub_prefs)
   end
 
   # was false positive bugs because there were double-spaces in html
@@ -51,4 +52,10 @@ RSpec.describe "dances/show", type: :view do
     expect(rendered).to have_content("<script>alert('no dialog pops up');</script>")
   end
 
+  it 'renders prefs' do
+    assign(:prefs, JSLibFigure.test_prefs)
+    render
+    expect(rendered).to_not have_content('ladles allemande right 1½')
+    expect(rendered).to have_content('ravens almond right 1½')
+  end
 end

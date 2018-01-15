@@ -37,6 +37,16 @@ RSpec.describe ProgramsController, type: :controller do
       get :show, params: {:id => program.to_param}
       expect(assigns(:program)).to eq(program)
     end
+
+    describe 'prefs' do
+      login_user
+
+      it "assigns @prefs" do
+        program
+        get :show, params: {:id => program.to_param}
+        expect(assigns(:prefs)).to eq(subject.current_user.prefs)
+      end
+    end
   end
 
   describe "GET #new" do

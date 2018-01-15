@@ -77,8 +77,8 @@ RSpec.describe JSLibFigure do
       ms = JSLibFigure.eval('movesMenuOrdering(stubPrefs)') # empty prefs
       expect(ms.first['value']).to eq('swing')
       expect(ms.first['label']).to eq('swing')
-      expect(ms.count {|m| m.value == 'swing'}).to eq(2)
-      expect(ms.count {|m| m.label == 'swing'}).to eq(2)
+      expect(ms.count {|m| m['value'] == 'swing'}).to eq(2)
+      expect(ms.count {|m| m['label'] == 'swing'}).to eq(2)
     end
 
     it "doesn't copy swing if it's already aliased to something in the first 5 elements" do
@@ -220,13 +220,14 @@ RSpec.describe JSLibFigure do
     end
   end
 
-  it 'with_prefs works' do
-    expect(JSLibFigure.preferred_move('gyre', JSLibFigure.stub_prefs)).to eq('gyre')
-    JSLibFigure.with_prefs(JSLibFigure.test_prefs) do
-      expect(JSLibFigure.preferred_move('gyre', JSLibFigure.stub_prefs)).to eq('darcy')
-    end
-    expect(JSLibFigure.preferred_move('gyre', JSLibFigure.stub_prefs)).to eq('gyre')
-  end
+  # not used
+  # it 'with_prefs works' do
+  #   expect(JSLibFigure.preferred_move('gyre', JSLibFigure.stub_prefs)).to eq('gyre')
+  #   JSLibFigure.with_prefs(JSLibFigure.test_prefs) do
+  #     expect(JSLibFigure.preferred_move('gyre', JSLibFigure.stub_prefs)).to eq('darcy')
+  #   end
+  #   expect(JSLibFigure.preferred_move('gyre', JSLibFigure.stub_prefs)).to eq('gyre')
+  # end
 
   it 'preferred_move works' do
     expect(JSLibFigure.preferred_move('allemande', JSLibFigure.test_prefs)).to eq('almond')

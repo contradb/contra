@@ -44,6 +44,12 @@ RSpec.describe DancesController, type: :controller do
       get :new, params: {}
       expect(assigns(:dance)).to be_a_new(Dance)
     end
+
+    it "assigns @prefs_json" do
+      get :new, params: {}
+      expect(assigns(:prefs_json)).to be_a(String)
+      expect(assigns(:prefs_json)).to eq(subject.current_user.prefs.to_json)
+    end
   end
 
   describe "GET #edit" do
@@ -61,6 +67,13 @@ RSpec.describe DancesController, type: :controller do
         dance = FactoryGirl.create(:dance)
         get :edit, params: {:id => dance.to_param}
         expect(assigns(:dance)).to eq(dance)
+      end
+
+      it "assigns @prefs_json" do
+        dance = FactoryGirl.create(:dance, user: subject.current_user)
+        get :edit, params: {:id => dance.to_param}
+        expect(assigns(:prefs_json)).to be_a(String)
+        expect(assigns(:prefs_json)).to eq(subject.current_user.prefs.to_json)
       end
 
       it "does not render template if not owner" do
@@ -131,6 +144,12 @@ RSpec.describe DancesController, type: :controller do
         expect(assigns(:dance)).to be_a_new(Dance)
       end
 
+      it "assigns @prefs_json" do
+        post :create, params: {:dance => invalid_attributes}
+        expect(assigns(:prefs_json)).to be_a(String)
+        expect(assigns(:prefs_json)).to eq(subject.current_user.prefs.to_json)
+      end
+
       it "re-renders the 'new' template" do
         post :create, params: {:dance => invalid_attributes}
         expect(response).to render_template("new")
@@ -181,6 +200,13 @@ RSpec.describe DancesController, type: :controller do
       #   put :update, params: {:id => dance.to_param, :dance => invalid_attributes}
       #   expect(response).to render_template("edit")
       # end
+
+      it "assigns @prefs_json" do
+        dance = FactoryGirl.create(:dance, user: subject.current_user)
+        post :update, params: {id: dance.to_param, dance: invalid_attributes}
+        expect(assigns(:prefs_json)).to be_a(String)
+        expect(assigns(:prefs_json)).to eq(subject.current_user.prefs.to_json)
+      end
     end
   end
 

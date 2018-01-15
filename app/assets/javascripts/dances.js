@@ -128,7 +128,7 @@ function menuMoveLabel(from,to) {
     $scope.degreesToPlaces = degreesToPlaces;
     setChoosers($scope);
     $scope.wristGrips = wristGrips;
-    $scope.prefs = stubPrefs;
+    $scope.prefs = JSON.parse($('#prefs-json').text());
     $scope.figureToString = figureToString;
     $scope.prefsForFigures = prefsForFigures;
     $scope.set_if_unset = set_if_unset;
@@ -141,7 +141,7 @@ function menuMoveLabel(from,to) {
         $scope.edit_index_box.length = 0;
       } else {
         $scope.edit_index_box[0] = figureIdx;
-        var is_empty_figure = !$scope.figures.arr[figureIdx].move
+        var is_empty_figure = !$scope.figures.arr[figureIdx].move;
         if (is_empty_figure) {
           // focus the move select box:
           $timeout(function() { $('#move-'+figureIdx).focus(); });
