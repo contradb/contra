@@ -30,6 +30,10 @@ module JSLibFigure
     end
   end
 
+  def self.moves2(prefs)
+    self.eval("moves2(#{prefs.to_json})")
+  end
+
   def self.de_alias_move(move_str)
     self.eval("deAliasMove(#{move_str.inspect})")
   end

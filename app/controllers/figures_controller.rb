@@ -2,7 +2,8 @@ require 'move'
 
 class FiguresController < ApplicationController
   def index
-    @moves = JSLibFigure.moves(JSLibFigure.stub_prefs)
+    @prefs = prefs
+    @moves = JSLibFigure.moves2(@prefs)
     @mdtab = Move.mdtab(Dance.readable_by(current_user))
   end
 
@@ -22,5 +23,10 @@ class FiguresController < ApplicationController
     idx = moves.find_index(@move)
     @prev_figure = idx.zero? ? moves.last : moves[idx-1]
     @next_figure = @move == moves.last ? moves.first : moves[idx+1]
+  end
+
+  private
+  def prefs
+    current_user&.prefs || JSLibFigure.stub_prefs
   end
 end

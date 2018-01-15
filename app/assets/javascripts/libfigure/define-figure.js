@@ -216,15 +216,29 @@ function moves(optional_prefs) { // ditch optional_prefs and probably sorting to
   return ms;
 }
 
+// successor function to moves
+function moves2(prefs) {
+  if (!prefs) { throw_up('must specify prefs to moves2'); }
+  var terms = Object.keys(defined_events);
+  var ms = terms.map(function(term) { return {value: term, label: preferredMove(term, prefs)}; });
+  ms = ms.sort(function(a,b) {
+    var aa = a.label.toLowerCase();
+    var bb = b.label.toLowerCase();
+    if (aa < bb) { return -1 ;}
+    else if (aa > bb) { return 1; }
+    else { return 0; }
+  });
+  return ms;
+}
+
 function movesMenuOrdering(prefs) {
-  if (!prefs) {
-    throw_up('must specify prefs to movesMenuOrdering');
+  if (!prefs) { throw_up('must specify prefs to movesMenuOrdering'); }
+  var ms = moves2(prefs);
+  var swing_index = ms.findIndex(function (e) { return 'swing' === e.value;});
+  if (swing_index >= 5) {
+    ms.unshift(ms[swing_index]);                       // copy swing to front of the list
   }
-  var ms = moves();
-  if (-1 === ms.slice(0,5).indexOf('swing')) { // swing not in first 5 entries
-    ms.unshift('swing');                       // copy swing to front of the list
-  }
-  return ms.map(function (move) {return {value: move, label: preferredMove(move, prefs)};});
+  return ms;
 }
 
 function isMove(string) {

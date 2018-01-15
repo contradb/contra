@@ -1,7 +1,7 @@
 <div class="figures-link-cloud">
   <% @moves.each_with_index do |move,i| %>
-    <%= content_tag :h2, {style: "font-size: #{(13 + 2.7 * Math.sqrt(@mdtab[move]&.length || 0)).round}px"} do %>
-      <%= link_to move, sluggified_figure_path(move) %>
+    <%= content_tag :h2, {style: "font-size: #{(13 + 2.7 * Math.sqrt(@mdtab[move['value']]&.length || 0)).round}px"} do %>
+      <%= link_to move['label'], sluggified_figure_path(move['value']) %>
     <% end %>
   <% end %>
 </div>
