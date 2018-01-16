@@ -96,6 +96,7 @@ module GloboHelper
   end
 
   def sluggified_figure_path(move_name_containing_spaces_and_whatnot)
+    raise "wrong type for parameter #{move_name_containing_spaces_and_whatnot.class}" unless move_name_containing_spaces_and_whatnot.is_a?(String)
     figure_path(JSLibFigure.slugify_move(move_name_containing_spaces_and_whatnot))
   end
 
