@@ -3,30 +3,36 @@ require 'move'
 class FiguresController < ApplicationController
   def index
     @prefs = prefs
-    @moves = JSLibFigure.moves2(@prefs)
-    @mdtab = Move.mdtab(Dance.readable_by(current_user))
+    @move_prefs = JSLibFigure.moves2(@prefs)
+    @mdtab = Move.mdtab(Dance.readable_by(current_user), @prefs)
   end
 
   def show
-    @move = JSLibFigure.deslugify_move(params[:id])
-    raise "#{params[:id].inspect} is not a move" unless @move
-    @move_titleize = @move =~ /[A-Z]/ ? @move : @move.titleize # correctly passes "Rory O'Moore"
+    @term = JSLibFigure.deslugify_move(params[:id])
+    raise "#{params[:id].inspect} is not a move" unless @term
+    @prefs = prefs
+    @substitution = JSLibFigure.preferred_move(@term, @prefs)
+    @move_titleize = titleize_move(@substitution)
     @titlebar = @move_titleize
     all_dances = Dance.readable_by(current_user)
-    mdtab = Move.mdtab(all_dances)
-    @dances = mdtab[@move]&.sort_by(&:title) || []
+    mdtab = Move.mdtab(all_dances, @prefs)
+    @dances = mdtab[@term]&.sort_by(&:title)
     @dances_absent = (all_dances - @dances).sort_by(&:title)
-    @coappearing_mdtab = Move.coappearing_mdtab(all_dances,@move)
-    @preceeding_mdtab = Move.preceeding_mdtab(all_dances,@move)
-    @following_mdtab = Move.following_mdtab(all_dances,@move)
-    moves = JSLibFigure.moves(JSLibFigure.stub_prefs)
-    idx = moves.find_index(@move)
-    @prev_figure = idx.zero? ? moves.last : moves[idx-1]
-    @next_figure = @move == moves.last ? moves.first : moves[idx+1]
+    @coappearing_mdtab = Move.coappearing_mdtab(all_dances, @term, @prefs)
+    @preceeding_mdtab = Move.preceeding_mdtab(all_dances, @term, @prefs)
+    @following_mdtab = Move.following_mdtab(all_dances, @term, @prefs)
+    moves = JSLibFigure.moves2(@prefs)
+    idx = moves.find_index {|m| @term == m['value']}
+    @prev_move = moves[idx-1]['value']
+    @next_move = moves[idx+1 >= moves.length  ?  0  :  idx+1]['value']
   end
 
   private
   def prefs
     current_user&.prefs || JSLibFigure.stub_prefs
+  end
+
+  def titleize_move(string)
+    string =~ /[A-Z]/ ? string : string.titleize
   end
 end

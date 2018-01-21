@@ -91,7 +91,7 @@ module JSLibFigure
   end
 
   def self.slugify_move(move)
-    move.gsub('&','and').gsub(' ','-').downcase.gsub(/[^a-z0-9-]/,'')
+    move.gsub('&','and').gsub(' ','-').downcase.gsub(/[^a-z0-9-]/,'').html_safe
   end
 
   def self.deslugify_move(slug)
@@ -139,6 +139,13 @@ module JSLibFigure
     # self.eval("preferredMove(#{move_term.inspect}, #{prefs.to_json})")
     # ruby implementation:
     prefs.dig('moves', move_term) || move_term
+  end
+
+  # TODO: moves2 returns this format - now that we've given it a name,
+  # should use it there too.
+  def self.move_preference(move_term, prefs)
+    {'value' => move_term,
+     'label' => preferred_move(move_term, prefs)}
   end
 
   def self.dancers_category(dancers)
