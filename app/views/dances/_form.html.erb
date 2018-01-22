@@ -124,7 +124,7 @@
               <label class="figure-edit-label"><span class="figure-edit-label-text">move</span>
                 <div class='figure-value-setter-div'>
                   <select ng-model="figure.move"
-                          ng-options="m.value as m.label for m in movesMenuOrdering(prefs) track by m.value"
+                          ng-options="m.value as m.label for m in movePreferencesForSelectMenu(prefs) track by m.value"
                           ng-change="userChangedMove(figure)"
                           ng-attr-id="{{'move-'+figureIdx}}"
                           class='form-control'>

@@ -72,9 +72,9 @@ RSpec.describe JSLibFigure do
     end
   end
 
-  describe 'movesMenuOrdering' do
+  describe 'movePreferencesForSelectMenu' do
     it "bumps 'swing' to the front of the line" do
-      ms = JSLibFigure.eval('movesMenuOrdering(stubPrefs)') # empty prefs
+      ms = JSLibFigure.eval('movePreferencesForSelectMenu(stubPrefs)') # empty prefs
       expect(ms.first['value']).to eq('swing')
       expect(ms.first['label']).to eq('swing')
       expect(ms.count {|m| m['value'] == 'swing'}).to eq(2)
@@ -82,7 +82,7 @@ RSpec.describe JSLibFigure do
     end
 
     it "doesn't copy swing if it's already aliased to something in the first 5 elements" do
-      ms = JSLibFigure.eval("movesMenuOrdering({moves: {swing: 'america'}, dancers: {}})").dup
+      ms = JSLibFigure.eval("movePreferencesForSelectMenu({moves: {swing: 'america'}, dancers: {}})").dup
       expect(ms.index {|m| (m['label'] == 'america') && (m['value'] == 'swing')}).to be < 5 # if this fails there are maybe more than 5 moves alphabetically lower than 'america'?
       expect(ms.count {|m| m['label'] == 'america'}).to eq(1)
       expect(ms.count {|m| m['value'] == 'swing'}).to eq(1)

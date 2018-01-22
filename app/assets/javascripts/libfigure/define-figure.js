@@ -226,8 +226,8 @@ function movePreferences(prefs) {
   return ms;
 }
 
-function movesMenuOrdering(prefs) {
-  if (!prefs) { throw_up('must specify prefs to movesMenuOrdering'); }
+function movePreferencesForSelectMenu(prefs) {
+  if (!prefs) { throw_up('must specify prefs to movePreferencesForSelectMenu'); }
   var mps = movePreferences(prefs);
   var swing_index = mps.findIndex(function (e) { return 'swing' === e.value;});
   if (swing_index >= 5) {

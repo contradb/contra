@@ -19,7 +19,7 @@ if (!Array.prototype.map) { throw "I was expecting Array.map to be defined"; }
   if (!stubPrefs) { throw "I can't believe I'm still getting errors about undefined stubPrefs!"; }
 
 var figureMoveHtml = "<select class='figure-filter-move form-control'><option value='*' selected=true>any figure</option>";
-movesMenuOrdering(stubPrefs).forEach(function(move) {
+movePreferencesForSelectMenu(stubPrefs).forEach(function(move) {
   figureMoveHtml += '<option value="'+move.value+'">'+move.label+'</option>';
 });
 figureMoveHtml += "</select>";
