@@ -13,7 +13,7 @@ RSpec.describe FiguresController, type: :controller do
       dance
       get :index
       expect(assigns(:prefs)).to eq(subject.current_user.prefs)
-      expect(assigns(:moves).find {|m| m['value'] == 'swing'}).to be_present
+      expect(assigns(:move_preferences).find {|m| m['value'] == 'swing'}).to be_present
       expect(assigns(:mdtab)['swing']).to be_present
     end
   end

@@ -4,11 +4,11 @@ require 'rails_helper'
 require 'move'
 
 RSpec.describe "figures/index", type: :view do
-  it 'renders figures in alphabetical substitution order, with hrefs to ' do
+  it 'renders figures in alphabetical substitution order, with links to figures' do
     prefs = JSLibFigure.test_prefs
     assign(:prefs, prefs)
-    assign(:moves, JSLibFigure.moves2(prefs))
-    assign(:mdtab, Move.mdtab([]))
+    assign(:move_preferences, JSLibFigure.moves2(prefs))
+    assign(:mdtab, Move.mdtab([], prefs))
     render
     expect(rendered).to have_content('allemande orbit almond balance')
     expect(rendered).to have_content('custom darcy do si do')

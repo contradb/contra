@@ -3,7 +3,7 @@ require 'move'
 class FiguresController < ApplicationController
   def index
     @prefs = prefs
-    @move_prefs = JSLibFigure.moves2(@prefs)
+    @move_preferences = JSLibFigure.moves2(@prefs)
     @mdtab = Move.mdtab(Dance.readable_by(current_user), @prefs)
   end
 
@@ -16,7 +16,7 @@ class FiguresController < ApplicationController
     @titlebar = @move_titleize
     all_dances = Dance.readable_by(current_user)
     mdtab = Move.mdtab(all_dances, @prefs)
-    @dances = mdtab[@term]&.sort_by(&:title)
+    @dances = mdtab.fetch(@term, []).sort_by(&:title)
     @dances_absent = (all_dances - @dances).sort_by(&:title)
     @coappearing_mdtab = Move.coappearing_mdtab(all_dances, @term, @prefs)
     @preceeding_mdtab = Move.preceeding_mdtab(all_dances, @term, @prefs)

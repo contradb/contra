@@ -1,7 +1,7 @@
 <div class="figures-link-cloud">
-  <% @move_prefs.each do |move| %>
-    <%= content_tag :h2, {style: "font-size: #{(13 + 2.7 * Math.sqrt(@mdtab[move['value']]&.length || 0)).round}px"} do %>
-      <%= move_link(move['value'], @prefs) %>
+  <% @move_preferences.each do |move_preference| %>
+    <%= content_tag :h2, {style: "font-size: #{(13 + 2.7 * Math.sqrt(@mdtab[move_preference['value']]&.length || 0)).round}px"} do %>
+      <%= move_link(move_preference['value'], @prefs) %>
     <% end %>
   <% end %>
 </div>
