@@ -197,22 +197,17 @@ function aliases(move) {
   return acc;
 }
 
-// This (moves()) is basically no longer going to work.
-// we need to return an array of {term: 'gyre', substitution: 'darcy'}
-// and every consumer needs to be concious of the difference between move terms and move substitutions.
-// We can eventually add movesTerms() if there is a demand for just that. 
-function moves(optional_prefs) { // ditch optional_prefs and probably sorting too
+// List all the moves known to contradb.
+// See also: moves2
+function moves() {
   var ms = Object.keys(defined_events);
-  if (optional_prefs) {
-    ms = ms.map(function(move) { return preferredMove(move, optional_prefs); });
-  }
-  ms = ms.sort(function(a,b) {
-    var aa = a.toLowerCase();
-    var bb = b.toLowerCase();
-    if (aa < bb) { return -1 ;}
-    else if (aa > bb) { return 1; }
-    else { return 0; }
-  });
+  // ms = ms.sort(function(a,b) {
+  //   var aa = a.toLowerCase();
+  //   var bb = b.toLowerCase();
+  //   if (aa < bb) { return -1 ;}
+  //   else if (aa > bb) { return 1; }
+  //   else { return 0; }
+  // });
   return ms;
 }
 
