@@ -3,7 +3,7 @@ require 'move'
 class FiguresController < ApplicationController
   def index
     @prefs = prefs
-    @move_preferences = JSLibFigure.moves2(@prefs)
+    @move_preferences = JSLibFigure.move_preferences(@prefs)
     @mdtab = Move.mdtab(Dance.readable_by(current_user), @prefs)
   end
 
@@ -21,10 +21,10 @@ class FiguresController < ApplicationController
     @coappearing_mdtab = Move.coappearing_mdtab(all_dances, @term, @prefs)
     @preceeding_mdtab = Move.preceeding_mdtab(all_dances, @term, @prefs)
     @following_mdtab = Move.following_mdtab(all_dances, @term, @prefs)
-    moves = JSLibFigure.moves2(@prefs)
-    idx = moves.find_index {|m| @term == m['value']}
-    @prev_move = moves[idx-1]['value']
-    @next_move = moves[idx+1 >= moves.length  ?  0  :  idx+1]['value']
+    mps = JSLibFigure.move_preferences(@prefs)
+    idx = mps.find_index {|m| @term == m['value']}
+    @prev_move = mps[idx-1]['value']
+    @next_move = mps[idx+1 >= mps.length  ?  0  :  idx+1]['value']
   end
 
   private

@@ -26,8 +26,8 @@ module JSLibFigure
     @moves ||= self.eval('moves()')
   end
 
-  def self.moves2(prefs)
-    self.eval("moves2(#{prefs.to_json})")
+  def self.move_preferences(prefs)
+    self.eval("movePreferences(#{prefs.to_json})")
   end
 
   def self.de_alias_move(move_str)
@@ -137,8 +137,6 @@ module JSLibFigure
     prefs.dig('moves', move_term) || move_term
   end
 
-  # TODO: moves2 returns this format - now that we've given it a name,
-  # should use it there too.
   def self.move_preference(move_term, prefs)
     {'value' => move_term,
      'label' => preferred_move(move_term, prefs)}

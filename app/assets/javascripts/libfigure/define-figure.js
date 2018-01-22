@@ -198,7 +198,7 @@ function aliases(move) {
 }
 
 // List all the moves known to contradb.
-// See also: moves2
+// See also: movePreferences
 function moves() {
   var ms = Object.keys(defined_events);
   // ms = ms.sort(function(a,b) {
@@ -212,8 +212,8 @@ function moves() {
 }
 
 // successor function to moves
-function moves2(prefs) {
-  if (!prefs) { throw_up('must specify prefs to moves2'); }
+function movePreferences(prefs) {
+  if (!prefs) { throw_up('must specify prefs to movePreferences'); }
   var terms = Object.keys(defined_events);
   var ms = terms.map(function(term) { return {value: term, label: preferredMove(term, prefs)}; });
   ms = ms.sort(function(a,b) {
@@ -228,12 +228,12 @@ function moves2(prefs) {
 
 function movesMenuOrdering(prefs) {
   if (!prefs) { throw_up('must specify prefs to movesMenuOrdering'); }
-  var ms = moves2(prefs);
-  var swing_index = ms.findIndex(function (e) { return 'swing' === e.value;});
+  var mps = movePreferences(prefs);
+  var swing_index = mps.findIndex(function (e) { return 'swing' === e.value;});
   if (swing_index >= 5) {
-    ms.unshift(ms[swing_index]);                       // copy swing to front of the list
+    mps.unshift(mps[swing_index]);                       // copy swing to front of the list
   }
-  return ms;
+  return mps;
 }
 
 function isMove(string) {
