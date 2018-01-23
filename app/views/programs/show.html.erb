@@ -53,7 +53,7 @@
           moves_already_introduced.delete 'custom'
           # print new moves
           unless introduce_moves.empty? 
-            content_tag(:p, "introduces moves: " + introduce_moves.join(', '))
+            content_tag(:p, "introduces moves: ".html_safe + move_links(introduce_moves, @prefs))
           end
         end %>
 
@@ -64,5 +64,3 @@
     <% end %>
   <%= '</div>'.html_safe %>
 <% end %>
-
-
