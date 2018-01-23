@@ -133,6 +133,10 @@ label {
 .contra-markdown-block {
 }
 
+#prefs-json {
+  display: none;
+}
+
 /* fix ugly mozilla selects https://stackoverflow.com/a/38187626/5158597 */
 @-moz-document url-prefix() {
   select.form-control {

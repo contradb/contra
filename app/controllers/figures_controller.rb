@@ -28,10 +28,6 @@ class FiguresController < ApplicationController
   end
 
   private
-  def prefs
-    current_user&.prefs || JSLibFigure.stub_prefs
-  end
-
   def titleize_move(string)
     string =~ /[A-Z]/ ? string : string.titleize
   end

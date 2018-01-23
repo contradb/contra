@@ -78,10 +78,6 @@ class DancesController < ApplicationController
       @prefs_json = prefs.to_json
     end
 
-    def prefs
-      current_user&.prefs || JSLibFigure.stub_prefs
-    end
-
     def authenticate_dance_writable!
       current_user&.admin? || authenticate_ownership!(@dance.user_id)
     end

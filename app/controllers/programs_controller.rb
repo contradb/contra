@@ -96,10 +96,6 @@ class ProgramsController < ApplicationController
       @program = Program.find(params[:id])
     end
 
-    def prefs
-      current_user&.prefs || JSLibFigure.stub_prefs
-    end
-
     def authenticate_program_ownership!
       authenticate_ownership! @program.user_id
     end

@@ -112,7 +112,7 @@ describe 'Welcome page', js: true do
         expect(page).to have_content('The Rendevouz')
       end
 
-      it "changing figure changes values" do
+      it "changing move changes values" do
         select('circle')
 
         expect(page).to have_content('The Rendevouz')
@@ -249,6 +249,24 @@ describe 'Welcome page', js: true do
           expect(page).to have_content('dances with any figure')
         end
       end
+    end
+
+    it 'figure filter with prefs' do
+      expect_any_instance_of(WelcomeController).to receive(:prefs).and_return(JSLibFigure.test_prefs)
+      dances
+      visit '/'
+
+      expect(page).to_not have_css('option',                  text: exactly('allemande'))
+      expect(page).to     have_css('option[value=allemande]', text: exactly('almond'))
+
+      expect(page).to_not have_css('option',             text: exactly('gyre'))
+      expect(page).to     have_css('option[value=gyre]', text: exactly('darcy'))
+
+      select('almond')
+
+      expect(page).to have_content('Box the Gnat Contra')
+      expect(page).to_not have_content('The Rendevouz')
+      expect(page).to_not have_content('Call Me')
     end
 
     describe 'figure ... button' do
@@ -604,5 +622,10 @@ describe 'Welcome page', js: true do
         end
       end
     end
+  end
+
+  private
+  def exactly(string)
+    /\A#{string}\z/
   end
 end

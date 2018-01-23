@@ -3,6 +3,7 @@ $(document).ready(function() { // skipped indenting inside this one element
     return;                     // don't do any of this stuff if we're not on a page with a query.
   }
 
+  var prefs = JSON.parse($('#prefs-json').text());
 
 function installEventHandlers(selector) {
   selector.find('.figure-filter-op').change(filterOpChanged);
@@ -16,10 +17,9 @@ var removeButtonHtml = "<button class='figure-filter-remove'><span class='glyphi
 
 if (!Array.prototype.forEach) { throw "I was expecting Array.forEach to be defined"; }
 if (!Array.prototype.map) { throw "I was expecting Array.map to be defined"; }
-  if (!stubPrefs) { throw "I can't believe I'm still getting errors about undefined stubPrefs!"; }
 
 var figureMoveHtml = "<select class='figure-filter-move form-control'><option value='*' selected=true>any figure</option>";
-movePreferencesForSelectMenu(stubPrefs).forEach(function(move) {
+movePreferencesForSelectMenu(prefs).forEach(function(move) {
   figureMoveHtml += '<option value="'+move.value+'">'+move.label+'</option>';
 });
 figureMoveHtml += "</select>";
@@ -462,8 +462,7 @@ function toggleColumnVisForResolution(dataTable, width) {
   updateQuery = function() {
     var fq = buildFigureQuery($('#figure-filter-root'));
     $('#figure-query-buffer').val(JSON.stringify(fq));
-    if (!stubPrefs) { throw new Error('stubPrefs is not defined'); }
-    $('.figure-query-sentence').text(buildFigureSentence(fq, stubPrefs));
+    $('.figure-query-sentence').text(buildFigureSentence(fq, prefs));
     if (dataTable) {
       dataTable.draw(); 
     }
@@ -483,7 +482,7 @@ function toggleColumnVisForResolution(dataTable, width) {
     var root = buildDOMtoMatchQuery(fq);
     $('#figure-filter-root-container').append(root);
     root.attr('id', 'figure-filter-root');
-    $('.figure-query-sentence').text(buildFigureSentence(fq, stubPrefs));
+    $('.figure-query-sentence').text(buildFigureSentence(fq, prefs));
   }
 
   // oh, I can't use arrays in params? Fine, I'll create hashes with indexes as keys
