@@ -53,7 +53,6 @@ group :development, :test do
   gem 'pry'
   gem 'pry-doc'
   gem 'pry-stack_explorer'
-  gem 'sqlite3'
 end
 
 group :test do
