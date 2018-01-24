@@ -26,7 +26,7 @@ module JSLibFigure
     @moves ||= self.eval('moves()')
   end
 
-  def self.move_preferences(prefs)
+  def self.move_terms_and_substitutions(prefs)
     self.eval("moveTermsAndSubstitutions(#{prefs.to_json})")
   end
 

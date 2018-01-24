@@ -214,10 +214,10 @@ function moves() {
 function moveTermsAndSubstitutions(prefs) {
   if (!prefs) { throw_up('must specify prefs to moveTermsAndSubstitutions'); }
   var terms = Object.keys(defined_events);
-  var ms = terms.map(function(term) { return {value: term, label: preferredMove(term, prefs)}; });
+  var ms = terms.map(function(term) { return {term: term, substitution: preferredMove(term, prefs)}; });
   ms = ms.sort(function(a,b) {
-    var aa = a.label.toLowerCase();
-    var bb = b.label.toLowerCase();
+    var aa = a.substitution.toLowerCase();
+    var bb = b.substitution.toLowerCase();
     if (aa < bb) { return -1 ;}
     else if (aa > bb) { return 1; }
     else { return 0; }
@@ -228,7 +228,7 @@ function moveTermsAndSubstitutions(prefs) {
 function moveTermsAndSubstitutionsForSelectMenu(prefs) {
   if (!prefs) { throw_up('must specify prefs to moveTermsAndSubstitutionsForSelectMenu'); }
   var mtas = moveTermsAndSubstitutions(prefs);
-  var swing_index = mtas.findIndex(function (e) { return 'swing' === e.value;});
+  var swing_index = mtas.findIndex(function (e) { return 'swing' === e.term;});
   if (swing_index >= 5) {
     mtas.unshift(mtas[swing_index]);                       // copy swing to front of the list
   }

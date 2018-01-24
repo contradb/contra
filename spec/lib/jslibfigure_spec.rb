@@ -75,18 +75,18 @@ RSpec.describe JSLibFigure do
   describe 'moveTermsAndSubstitutionsForSelectMenu' do
     it "bumps 'swing' to the front of the line" do
       ms = JSLibFigure.eval('moveTermsAndSubstitutionsForSelectMenu(stubPrefs)') # empty prefs
-      expect(ms.first['value']).to eq('swing')
-      expect(ms.first['label']).to eq('swing')
-      expect(ms.count {|m| m['value'] == 'swing'}).to eq(2)
-      expect(ms.count {|m| m['label'] == 'swing'}).to eq(2)
+      expect(ms.first['term']).to eq('swing')
+      expect(ms.first['substitution']).to eq('swing')
+      expect(ms.count {|m| m['term'] == 'swing'}).to eq(2)
+      expect(ms.count {|m| m['substitution'] == 'swing'}).to eq(2)
     end
 
     it "doesn't copy swing if it's already aliased to something in the first 5 elements" do
       ms = JSLibFigure.eval("moveTermsAndSubstitutionsForSelectMenu({moves: {swing: 'america'}, dancers: {}})").dup
-      expect(ms.index {|m| (m['label'] == 'america') && (m['value'] == 'swing')}).to be < 5 # if this fails there are maybe more than 5 moves alphabetically lower than 'america'?
-      expect(ms.count {|m| m['label'] == 'america'}).to eq(1)
-      expect(ms.count {|m| m['value'] == 'swing'}).to eq(1)
-      expect(ms.count {|m| m['label'] == 'swing'}).to eq(0)
+      expect(ms.index {|m| (m['substitution'] == 'america') && (m['term'] == 'swing')}).to be < 5 # if this fails there are maybe more than 5 moves alphabetically lower than 'america'?
+      expect(ms.count {|m| m['substitution'] == 'america'}).to eq(1)
+      expect(ms.count {|m| m['term'] == 'swing'}).to eq(1)
+      expect(ms.count {|m| m['substitution'] == 'swing'}).to eq(0)
     end
   end
 
