@@ -128,8 +128,8 @@ function figuresUseDancers(figures, dancers_term) {
   return false;
 }
 
-function preferredMove(move, prefs) {
-  return prefs.moves[move] || move;
+function moveSubstitution(move_term, prefs) {
+  return prefs.moves[move_term] || move_term;
 }
 
 // ________________________________________________________________

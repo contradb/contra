@@ -55,7 +55,7 @@ function figureGenericStringify(move, parameter_values, prefs) {
   var beats_index   = find_parameter_index_by_name("beats",ps);
   if (subject_index >= 0) { acc += pstrings[subject_index] + ' '; }
   if (balance_index >= 0) { acc += pstrings[balance_index] + ' '; }
-  acc += preferredMove(move, prefs);
+  acc += moveSubstitution(move, prefs);
   ps.length == parameter_values.length || throw_up("parameter type mismatch. "+ps.length+" formals and "+parameter_values.length+" values");
   for (var i=0; i < parameter_values.length; i++) {
     if ((i != subject_index) && (i != balance_index) && (i != beats_index)) {
@@ -214,7 +214,7 @@ function moves() {
 function moveTermsAndSubstitutions(prefs) {
   if (!prefs) { throw_up('must specify prefs to moveTermsAndSubstitutions'); }
   var terms = Object.keys(defined_events);
-  var ms = terms.map(function(term) { return {term: term, substitution: preferredMove(term, prefs)}; });
+  var ms = terms.map(function(term) { return {term: term, substitution: moveSubstitution(term, prefs)}; });
   ms = ms.sort(function(a,b) {
     var aa = a.substitution.toLowerCase();
     var bb = b.substitution.toLowerCase();

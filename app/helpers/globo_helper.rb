@@ -105,7 +105,7 @@ module GloboHelper
   end
 
   def move_link(move, prefs)
-    label = html_escape(JSLibFigure.preferred_move(move, prefs))
+    label = html_escape(JSLibFigure.move_substitution(move, prefs))
     link_to(label, sluggified_figure_path(move))
   end
 end

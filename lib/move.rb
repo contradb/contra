@@ -60,7 +60,7 @@ module Move
   private 
   def self.sort_mdtab(mdtab, prefs)
     copy = {}
-    mdtab.keys.sort_by {|move| JSLibFigure.preferred_move(move, prefs).downcase}.each {|key| copy[key] = mdtab[key]}
+    mdtab.keys.sort_by {|move| JSLibFigure.move_substitution(move, prefs).downcase}.each {|key| copy[key] = mdtab[key]}
     copy
   end
 end
