@@ -122,7 +122,7 @@ function menuMoveLabel(from,to) {
     $scope.labelForBeats = labelForBeats;
     $scope.classesForFigureA1B2 = classesForFigureA1B2;
 
-    $scope.movePreferencesForSelectMenu = movePreferencesForSelectMenu;
+    $scope.moveTermsAndSubstitutionsForSelectMenu = moveTermsAndSubstitutionsForSelectMenu;
     $scope.parameters = parameters;
     $scope.degreesToRotations = degreesToRotations;
     $scope.degreesToPlaces = degreesToPlaces;

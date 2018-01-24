@@ -198,7 +198,7 @@ function aliases(move) {
 }
 
 // List all the moves known to contradb.
-// See also: movePreferences
+// See also: moveTermsAndSubstitutions
 function moves() {
   var ms = Object.keys(defined_events);
   // ms = ms.sort(function(a,b) {
@@ -211,9 +211,8 @@ function moves() {
   return ms;
 }
 
-// successor function to moves
-function movePreferences(prefs) {
-  if (!prefs) { throw_up('must specify prefs to movePreferences'); }
+function moveTermsAndSubstitutions(prefs) {
+  if (!prefs) { throw_up('must specify prefs to moveTermsAndSubstitutions'); }
   var terms = Object.keys(defined_events);
   var ms = terms.map(function(term) { return {value: term, label: preferredMove(term, prefs)}; });
   ms = ms.sort(function(a,b) {
@@ -226,14 +225,14 @@ function movePreferences(prefs) {
   return ms;
 }
 
-function movePreferencesForSelectMenu(prefs) {
-  if (!prefs) { throw_up('must specify prefs to movePreferencesForSelectMenu'); }
-  var mps = movePreferences(prefs);
-  var swing_index = mps.findIndex(function (e) { return 'swing' === e.value;});
+function moveTermsAndSubstitutionsForSelectMenu(prefs) {
+  if (!prefs) { throw_up('must specify prefs to moveTermsAndSubstitutionsForSelectMenu'); }
+  var mtas = moveTermsAndSubstitutions(prefs);
+  var swing_index = mtas.findIndex(function (e) { return 'swing' === e.value;});
   if (swing_index >= 5) {
-    mps.unshift(mps[swing_index]);                       // copy swing to front of the list
+    mtas.unshift(mtas[swing_index]);                       // copy swing to front of the list
   }
-  return mps;
+  return mtas;
 }
 
 function isMove(string) {
