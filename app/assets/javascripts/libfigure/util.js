@@ -76,11 +76,12 @@ function prefsForFigures(prefs, figures) {
 }
 
 function copyPrefs(prefs) {
-  return {dancers: copy(prefs.dancers),
-          moves: copy(prefs.moves)};
+  return {dancers: libfigureObjectCopy(prefs.dancers),
+          moves: libfigureObjectCopy(prefs.moves)};
 }
 
-function copy(hash) {
+// I just called this function 'copy', but then I got scared and changed it.
+function libfigureObjectCopy(hash) {
   var o = {};
   Object.keys(hash).forEach(function(key) {
     o[key] = hash[key];
@@ -88,7 +89,7 @@ function copy(hash) {
   return o;
 }
 
-function uniq(array) { // suboptimal O(n^2)
+function libfigureUniq(array) { // suboptimal O(n^2)
   var output = [];
   for (var i=0; i<array.length; i++) {
     if (-1 === output.indexOf(array[i])) {

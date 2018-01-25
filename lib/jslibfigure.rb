@@ -22,7 +22,7 @@ module JSLibFigure
     move.in?(moves)
   end
 
-  def self.moves()
+  def self.moves
     @moves ||= self.eval('moves()')
   end
 
@@ -115,17 +115,6 @@ module JSLibFigure
     @stub_prefs ||= self.eval("stubPrefs;")
   end
 
-  # Not used - better to just cram prefs through the controllers, for real.
-  # def self.with_prefs(prefs, &body) # probably not the most thread-safe thing, so only call it at the top level of a spec
-  #   old_prefs = JSLibFigure.stub_prefs
-  #   @stub_prefs = nil
-  #   self.eval("stubPrefs = #{prefs.to_json}")
-  #   body.call
-  # ensure
-  #   @stub_prefs = nil
-  #   self.eval("stubPrefs = #{old_prefs.to_json}")
-  # end
-
   def self.prefs_for_figures(prefs, figures)
     self.eval("prefsForFigures(#{prefs.to_json},#{figures.to_json})")
   end
@@ -137,17 +126,13 @@ module JSLibFigure
     prefs.dig('moves', move_term) || move_term
   end
 
-  def self.move_preference(move_term, prefs)
-    {'value' => move_term,
-     'label' => move_substitution(move_term, prefs)}
-  end
-
   def self.dancers_category(dancers)
-    @dancers_category_hash ||= self.eval('_dancersCategory');
-    @dancers_category_hash[dancers]
+    @dancers_category_hash ||= self.eval('dancersCategoryHash');
+    @dancers_category_hash[dancers] || dancers;
   end
 
   def self.formal_param_is_dancers(formal_param)
+    # there's a ruby-side implementation of this, if we need it for performance
     self.eval("formalParamIsDancers(#{formal_param.to_json})")
   end
 

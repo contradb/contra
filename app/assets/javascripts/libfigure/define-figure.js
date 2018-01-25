@@ -82,7 +82,6 @@ var progressionString = "to new neighbors";
 
 function parameter_strings(move, parameter_values, prefs) {
   if (!prefs) {throw_up('forgot prefs argument to parameter_strings');}
-  // new! improved! catch null and undefined, and convert them to '____', without calling the individual parameter function
   var formal_parameters = parameters(move);
   var acc = [];
   for (var i=0; i<parameter_values.length; i++) {
@@ -200,15 +199,7 @@ function aliases(move) {
 // List all the moves known to contradb.
 // See also: moveTermsAndSubstitutions
 function moves() {
-  var ms = Object.keys(defined_events);
-  // ms = ms.sort(function(a,b) {
-  //   var aa = a.toLowerCase();
-  //   var bb = b.toLowerCase();
-  //   if (aa < bb) { return -1 ;}
-  //   else if (aa > bb) { return 1; }
-  //   else { return 0; }
-  // });
-  return ms;
+  return Object.keys(defined_events);
 }
 
 function moveTermsAndSubstitutions(prefs) {

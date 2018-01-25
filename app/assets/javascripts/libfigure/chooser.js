@@ -65,7 +65,7 @@ function dancerMenuForChooser(chooser) {
 }
 
 function dancerCategoryMenuForChooser(chooser) {
-  return uniq(dancerMenuForChooser(chooser).map(dancersCategory));
+  return libfigureUniq(dancerMenuForChooser(chooser).map(dancersCategory));
 }
 
 function dancerChoosers() {
@@ -140,22 +140,8 @@ defineDancerChooser("chooser_role",      // ladles or gentlespoons
 defineDancerChooser("chooser_hetero",    // partners or neighbors or shadows but not same-role
                     ['partners', 'neighbors'].concat(outOfSetDancers));
 
-var _dancersCategory = {
-  everyone: 'everyone',
-  gentlespoons: 'gentlespoons',
-  ladles: 'ladles',
-  partners: 'partners',
-  neighbors: 'neighbors',
-  ones: 'ones',
-  twos: 'twos',
-  'same roles': 'same roles',
-  'first corners': 'first corners',
-  'second corners': 'second corners',
-  'first gentlespoon': 'first gentlespoon',
-  'first ladle': 'first ladle',
-  'second gentlespoon': 'second gentlespoon',
-  'second ladle': 'second ladle',
-  shadows: 'shadows',
+// nb: this hash is also accessed from ruby.
+var dancersCategoryHash = {
   // '1st shadows': 'shadows', // not sure if this needs to be included or not - for now: no
   '2nd shadows': 'shadows',
   'prev neighbors': 'neighbors',
@@ -166,5 +152,5 @@ var _dancersCategory = {
 };
 
 function dancersCategory(chooser) {
-  return _dancersCategory[chooser];
+  return dancersCategoryHash[chooser] || chooser;
 }

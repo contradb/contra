@@ -11,8 +11,8 @@ class FiguresController < ApplicationController
     @term = JSLibFigure.deslugify_move(params[:id])
     raise "#{params[:id].inspect} is not a move" unless @term
     @prefs = prefs
-    @substitution = JSLibFigure.move_substitution(@term, @prefs)
-    @move_titleize = titleize_move(@substitution)
+    substitution = JSLibFigure.move_substitution(@term, @prefs)
+    @move_titleize = titleize_move(substitution)
     @titlebar = @move_titleize
     all_dances = Dance.readable_by(current_user)
     mdtab = Move.mdtab(all_dances, @prefs)
