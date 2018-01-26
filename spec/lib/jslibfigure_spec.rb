@@ -220,18 +220,8 @@ RSpec.describe JSLibFigure do
     end
   end
 
-  # not used
-  # it 'with_prefs works' do
-  #   expect(JSLibFigure.move_substitution('gyre', JSLibFigure.stub_prefs)).to eq('gyre')
-  #   JSLibFigure.with_prefs(JSLibFigure.test_prefs) do
-  #     expect(JSLibFigure.move_substitution('gyre', JSLibFigure.stub_prefs)).to eq('darcy')
-  #   end
-  #   expect(JSLibFigure.move_substitution('gyre', JSLibFigure.stub_prefs)).to eq('gyre')
-  # end
-
   it 'move_substitution works' do
     expect(JSLibFigure.move_substitution('allemande', JSLibFigure.test_prefs)).to eq('almond')
-    expect(JSLibFigure.move_substitution("Rory O'Moore", JSLibFigure.test_prefs)).to eq("Rory O'Moore")  end
-
-  pending 'test the whole libfigure library, ha ha'
+    expect(JSLibFigure.move_substitution("Rory O'Moore", JSLibFigure.test_prefs)).to eq("Rory O'Moore")
+  end
 end

@@ -19,7 +19,6 @@ RSpec.describe FiguresController, type: :controller do
   end
 
   describe "GET #show" do
-    it 'assigns variables'
-    it 'uses prefs'
+    # see feature specs
   end
 end
