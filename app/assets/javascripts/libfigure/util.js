@@ -67,6 +67,7 @@ defaultPrefs = {moves: {gyre: 'darcy',
 function prefsForFigures(prefs, figures) {
   var new_prefs = copyPrefs(prefs);
   if (figuresUseDancers(figures, '3rd neighbors')) {
+    new_prefs.dancers['neighbors']      = '1st neighbors';
     new_prefs.dancers['next neighbors'] = '2nd neighbors';
   }
   if (figuresUseDancers(figures, '2nd shadows')) {

@@ -185,12 +185,17 @@ RSpec.describe JSLibFigure do
 
     it "rewrites 'next neighbors' to '2nd neighbors' when '3rd neighbors' are present" do
       figures = FactoryGirl.build(:dance_with_pair, pair: '3rd neighbors').figures
-      expect(JSLibFigure.prefs_for_figures(empty_prefs, figures)['dancers']).to eq({'next neighbors' => '2nd neighbors'})
+      expect(JSLibFigure.prefs_for_figures(empty_prefs, figures)['dancers']).to include({'next neighbors' => '2nd neighbors'})
+    end
+
+    it "rewrites 'neighbors' to '1st neighbors' when '3rd neighbors' are present" do
+      figures = FactoryGirl.build(:dance_with_pair, pair: '3rd neighbors').figures
+      expect(JSLibFigure.prefs_for_figures(empty_prefs, figures)['dancers']).to include({'neighbors' => '1st neighbors'})
     end
 
     it "rewrites 'shadows' to '1st shadows' when '2nd shadows' are present" do
       figures = FactoryGirl.build(:dance_with_pair, pair: '2nd shadows').figures
-      expect(JSLibFigure.prefs_for_figures(empty_prefs, figures)['dancers']).to eq({'shadows' => '1st shadows'})
+      expect(JSLibFigure.prefs_for_figures(empty_prefs, figures)['dancers']).to include({'shadows' => '1st shadows'})
     end
   end
 
