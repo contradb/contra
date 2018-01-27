@@ -270,6 +270,11 @@ $(document).ready(function() {
                  ['turn-alone', 'turn alone'],
                  ['turn-couples', 'turn as couples'],
                  ['circle', 'bend into a ring'],
+                 ['cozy', 'form a cozy line'],
+                 ['cloverleaf', 'bend into a cloverleaf'],
+                 ['thread-needle', 'thread the needle'],
+                 ['right-high', 'right hand high, left hand low'],
+                 ['sliding-doors', 'sliding doors'],
                  ['', 'unspecified']]);
 
   chooserSelect(chooser_zig_zag_ender, ['*', ['', 'none'], ['ring', 'into a ring'], ['allemande', 'training two catch hands']]);
