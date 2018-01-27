@@ -27,6 +27,6 @@ class ApplicationController < ActionController::Base
 
   private
   def prefs
-    current_user&.prefs || JSLibFigure.stub_prefs
+    current_user&.prefs || JSLibFigure.default_prefs
   end
 end

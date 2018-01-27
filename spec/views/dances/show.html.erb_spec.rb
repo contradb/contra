@@ -16,7 +16,7 @@ RSpec.describe "dances/show", type: :view do
       :figures_json => '[{"parameter_values":["partners",true,16],"move":"swing", "note":"the quick brown fox <script>alert(\'no dialog pops up\');</script>"}, {"parameter_values":["ladles",true,540,8],"move":"allemande"}]',
       :notes => "My Note Text www.yahoo.com blah blah **bold** blah"
                                             ))
-    assign(:prefs, JSLibFigure.stub_prefs)
+    assign(:prefs, JSLibFigure.default_prefs)
   end
 
   # was false positive bugs because there were double-spaces in html

@@ -2,7 +2,7 @@ require 'move'
 require 'rails_helper'
 
 RSpec.describe Move do
-  let (:prefs) { JSLibFigure.stub_prefs }
+  let (:prefs) { JSLibFigure.default_prefs }
 
   pending 'tests for coappearing_mdtab'
 

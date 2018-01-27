@@ -10,6 +10,6 @@ class User < ApplicationRecord
 
   def prefs
     # someday this will fetch from the db
-    JSLibFigure.stub_prefs
+    JSLibFigure.default_prefs
   end
 end

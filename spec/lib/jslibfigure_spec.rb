@@ -74,7 +74,7 @@ RSpec.describe JSLibFigure do
 
   describe 'moveTermsAndSubstitutionsForSelectMenu' do
     it "bumps 'swing' to the front of the line" do
-      ms = JSLibFigure.eval('moveTermsAndSubstitutionsForSelectMenu(stubPrefs)') # empty prefs
+      ms = JSLibFigure.eval('moveTermsAndSubstitutionsForSelectMenu(defaultPrefs)') # empty prefs
       expect(ms.first['term']).to eq('swing')
       expect(ms.first['substitution']).to eq('swing')
       expect(ms.count {|m| m['term'] == 'swing'}).to eq(2)
@@ -172,8 +172,8 @@ RSpec.describe JSLibFigure do
     expect(JSLibFigure.parameter_uses_chooser(formal_parameter, 'chooser_half_or_full')).to be(false)
   end
 
-  it 'stub_prefs' do
-    expect(JSLibFigure.stub_prefs).to eq({'dancers' => {}, 'moves' => {}})
+  it 'default_prefs' do
+    expect(JSLibFigure.default_prefs).to eq({'dancers' => {}, 'moves' => {}})
   end
 
   describe 'prefs_for_figures' do

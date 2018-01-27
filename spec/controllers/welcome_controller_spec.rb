@@ -24,7 +24,7 @@ RSpec.describe WelcomeController, type: :controller do
   describe "GET #index" do
     it "assigns user prefs as @prefs" do
       get :index, params: {}
-      expect(assigns(:prefs_json)).to eq(JSLibFigure.stub_prefs.to_json)
+      expect(assigns(:prefs_json)).to eq(JSLibFigure.default_prefs.to_json)
     end
   end
 end

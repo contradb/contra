@@ -202,7 +202,7 @@ RSpec.describe DancesHelper, type: :helper do
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}'" do
-      expect(figure_txt_for.call(move,*pvalues, JSLibFigure.stub_prefs)).to match(whitespice(render))
+      expect(figure_txt_for.call(move,*pvalues, JSLibFigure.default_prefs)).to match(whitespice(render))
     end
   end
 

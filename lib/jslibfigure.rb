@@ -111,8 +111,8 @@ module JSLibFigure
     @test_prefs ||= self.eval("testPrefs;")
   end
 
-  def self.stub_prefs
-    @stub_prefs ||= self.eval("stubPrefs;")
+  def self.default_prefs
+    @default_prefs ||= self.eval("defaultPrefs;")
   end
 
   def self.prefs_for_figures(prefs, figures)

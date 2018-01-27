@@ -39,7 +39,7 @@ function comma_unless_blank(str) {
   return ((!str) || (str.trim() === '')) ? '' : ',';
 }
 
-var stubPrefs = {moves: {},
+var defaultPrefs = {moves: {},
                  dancers: {}};
 
 var testPrefs = {moves: {gyre: 'darcy',
@@ -50,7 +50,7 @@ var testPrefs = {moves: {gyre: 'darcy',
                            gentlespoons: 'larks'}};
 
 /*
-stubPrefs = {moves: {gyre: 'darcy',
+defaultPrefs = {moves: {gyre: 'darcy',
                      'gyre meltdown': 'meltdown swing',
                      allemande: 'almond',
                      'see saw': 'do si do left shoulder',

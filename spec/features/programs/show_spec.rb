@@ -18,7 +18,7 @@ describe 'Showing programs' do
   it "renders stored values" do
     program.append_new_activity(dance: dance)
     program.append_new_activity(text: 'hambo')
-    figure_html = JSLibFigure.figureToString(dance.figures.first, JSLibFigure.stub_prefs)
+    figure_html = JSLibFigure.figureToString(dance.figures.first, JSLibFigure.default_prefs)
 
     visit program_path(program)
 
@@ -40,7 +40,7 @@ describe 'Showing programs' do
   # end
 
   describe 'privacy' do
-    let (:figure_html) {JSLibFigure.figureToString(dance_private.figures.first, JSLibFigure.stub_prefs)}
+    let (:figure_html) {JSLibFigure.figureToString(dance_private.figures.first, JSLibFigure.default_prefs)}
     before(:each) {program.append_new_activity(dance: dance_private)}
 
     it "does not display figures of a private dance" do
