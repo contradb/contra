@@ -172,7 +172,7 @@ function menuMoveLabel(from,to) {
     };
     $scope.defaultFigures = defaultFigures;
     $scope.dancerMenuForChooser = dancerMenuForChooser;
-    $scope.preferenceDancers = preferenceDancers;
+    $scope.dancerSubstitution = dancerSubstitution;
     // so not angular, but I'm trying anything at this point. 
     $('.update-dance').on('click', function(e) {
       $('#dance-figures-json').val(JSON.stringify($scope.figures.arr));

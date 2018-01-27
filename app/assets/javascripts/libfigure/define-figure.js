@@ -94,13 +94,13 @@ function parameter_strings(move, parameter_values, prefs) {
     } else {
       term = String(pvi);
     }
-    acc.push(preferenceParameter(prefs,formal_parameters[i],term));
+    acc.push(parameterSubstitution(prefs,formal_parameters[i],term));
   }
   return acc;
 }
 
 // called when we don't know if the parameter is a dancer
-function preferenceParameter(prefs, formal_parameter, actual_parameter) {
+function parameterSubstitution(prefs, formal_parameter, actual_parameter) {
   var term = actual_parameter;
   if (formalParamIsDancers(formal_parameter) && (term in prefs.dancers)) {
     return prefs.dancers[term];
@@ -110,7 +110,7 @@ function preferenceParameter(prefs, formal_parameter, actual_parameter) {
 }
 
 // called when we do know the parameter is a dancer
-function preferenceDancers(prefs, actual_parameter) {
+function dancerSubstitution(prefs, actual_parameter) {
   var term = actual_parameter;
   if (term in prefs.dancers) {
     return prefs.dancers[term];
