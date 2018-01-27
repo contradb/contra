@@ -55,6 +55,15 @@ FactoryGirl.define do
     figures_json {"[{\"parameter_values\":[#{pair.inspect},true,16],\"move\":\"swing\"}]"}
   end
 
+  factory :dance_with_all_shadows_and_neighbors, class: Dance do
+    sequence(:title) {|n| "All Shadows and Neighbors#{n}"}
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json {'[{"parameter_values":["neighbors",false,8],"move":"swing"}, {"parameter_values":["prev neighbors",false,8],"move":"swing"}, {"parameter_values":["neighbors",false,8],"move":"swing"}, {"parameter_values":["next neighbors",false,8],"move":"swing"}, {"parameter_values":["3rd neighbors",false,8],"move":"swing"}, {"parameter_values":["4th neighbors",false,8],"move":"swing"}, {"parameter_values":["shadows",false,8],"move":"swing"}, {"parameter_values":["2nd shadows",false,8],"move":"swing"}]'}
+  end
+
+
   factory :dance_with_a_rory_o_moore, class: Dance do
     title      'Just Rory'
     user { FactoryGirl.create(:user) }

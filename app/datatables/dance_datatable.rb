@@ -116,14 +116,12 @@ class DanceDatatable < AjaxDatatablesRails::Base
       keywords = param_filter.split(' ')
       keywords.any? {|keyword| dance_param.include?(keyword)}
     elsif JSLibFigure.parameter_uses_chooser(formal_param, 'chooser_half_or_full')
-      param_filter == '*' || param_filter.to_f == dance_param.to_f
-    elsif param_filter == 'neighbors' # any neighbors
-      dance_param.in?(['neighbors', 'prev neighbors', 'next neighbors', '3rd neighbors', '4th neighbors'])
-    elsif param_filter == 'shadows' # any shadows
-      dance_param == 'shadows' || dance_param == '2nd shadows'
+      param_filter === '*' || param_filter.to_f === dance_param.to_f
+    elsif JSLibFigure.formal_param_is_dancers(formal_param)
+      param_filter === '*' || JSLibFigure.dancers_category(dance_param) === param_filter
     else
       # asterisk always matches, or exact match
-      param_filter == '*' || param_filter.to_s == dance_param.to_s
+      param_filter === '*' || param_filter.to_s === dance_param.to_s
     end
   end
 

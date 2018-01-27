@@ -114,6 +114,8 @@ function menuMoveLabel(from,to) {
   var app = angular.module('contra', []);
   var scopeInit = function ($scope,$timeout) {
     var fctrl42 = this;
+    var prefs = JSON.parse($('#prefs-json').text());
+
     $scope.moveCaresAboutRotations = moveCaresAboutRotations;
     $scope.moveCaresAboutPlaces = moveCaresAboutPlaces;
     $scope.degreesToWords = degreesToWords;
@@ -122,13 +124,17 @@ function menuMoveLabel(from,to) {
     $scope.labelForBeats = labelForBeats;
     $scope.classesForFigureA1B2 = classesForFigureA1B2;
 
-    $scope.movesMenuOrdering = movesMenuOrdering;
+    // had to memoize moveTermsAndSubstitutionsForSelect because the move select menus were blanking after accordioning
+    // https://stackoverflow.com/questions/17116114/how-to-troubleshoot-angular-10-digest-iterations-reached-error/17116322#17116322
+    $scope.moveTermsAndSubstitutionsForSelect = moveTermsAndSubstitutionsForSelectMenu(prefs);
     $scope.parameters = parameters;
     $scope.degreesToRotations = degreesToRotations;
     $scope.degreesToPlaces = degreesToPlaces;
     setChoosers($scope);
     $scope.wristGrips = wristGrips;
-    $scope.figure_html_readonly = figure_html_readonly;
+    $scope.prefs = prefs;
+    $scope.figureToString = figureToString;
+    $scope.prefsForFigures = prefsForFigures;
     $scope.set_if_unset = set_if_unset;
     $scope.userChangedParameter = userChangedParameter;
     $scope.userChangedMove = userChangedMove;
@@ -139,7 +145,7 @@ function menuMoveLabel(from,to) {
         $scope.edit_index_box.length = 0;
       } else {
         $scope.edit_index_box[0] = figureIdx;
-        var is_empty_figure = !$scope.figures.arr[figureIdx].move
+        var is_empty_figure = !$scope.figures.arr[figureIdx].move;
         if (is_empty_figure) {
           // focus the move select box:
           $timeout(function() { $('#move-'+figureIdx).focus(); });
@@ -169,7 +175,8 @@ function menuMoveLabel(from,to) {
       $scope.edit_index_box.length=0;
     };
     $scope.defaultFigures = defaultFigures;
-
+    $scope.dancerMenuForChooser = dancerMenuForChooser;
+    $scope.dancerSubstitution = dancerSubstitution;
     // so not angular, but I'm trying anything at this point. 
     $('.update-dance').on('click', function(e) {
       $('#dance-figures-json').val(JSON.stringify($scope.figures.arr));
@@ -179,5 +186,6 @@ function menuMoveLabel(from,to) {
   app.controller('HookController', ['$scope', function ($scope) {
     var hook = $('#dance-hook-initializer').text();
     $scope.hook = hook;
+    // probably the wrong controller, buddy. You want the one above
   }]);
 })();

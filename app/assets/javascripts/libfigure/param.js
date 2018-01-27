@@ -96,21 +96,21 @@ var param_subject2_pairs             = {name: "who2",                       ui: 
 var param_subject_pairs_or_everyone  = {name: "who",                        ui: chooser_pairs_or_everyone};
 var param_subject_pairs_partners     = {name: "who", value: "partners",     ui: chooser_pairs};
 var param_subject_dancer             = {name: "who",                        ui: chooser_dancer};
-var param_subject_role               = {name: "who",                        ui: chooser_role};
+//  param_subject_role               = {name: "who",                        ui: chooser_role}; // not used
 var param_subject_role_ladles        = {name: "who", value: "ladles",       ui: chooser_role};
 var param_subject_role_gentlespoons  = {name: "who", value: "gentlespoons", ui: chooser_role};
-var param_subject_hetero             = {name: "who",                        ui: chooser_hetero};
-var param_subject_hetero_partners    = {name: "who", value: "partners",     ui: chooser_hetero};
-var param_subject_hetero_neighbors   = {name: "who", value: "neighbors",    ui: chooser_hetero};
-var param_subject_hetero_shadows     = {name: "who", value: "shadows",      ui: chooser_hetero};
-var param_subject_partners           = {name: "who", value: "partners",     ui: chooser_pairs}; // allows more options if they
-var param_subject_neighbors          = {name: "who", value: "neighbors",    ui: chooser_pairs}; // don't go with default
-var param_subject_shadows            = {name: "who", value: "shadows",      ui: chooser_pairs}; // than param_subject_hetero_*
-// param_object_hetero           = {name: "whom",                       ui: chooser_hetero} not used
+//  param_subject_partners           = {name: "who", value: "partners",     ui: chooser_pairs}; // not used
+//  param_subject_hetero_partners    = {name: "who", value: "partners",     ui: chooser_hetero}; // not used
 var param_object_hetero_partners     = {name: "whom", value: "partners",    ui: chooser_hetero};
 var param_object_pairs               = {name: "whom",                       ui: chooser_pairs};
 var param_object_pairs_or_ones_or_twos = {name: "whom",                     ui: chooser_pairs_or_ones_or_twos};
 var param_lead_dancer_l1             = {name: "lead", value: "first ladle", ui: chooser_dancer};
+
+function formalParamIsDancers(param) {
+  // harder to maintain implementation:
+  // return ['who', 'who2', 'whom', 'lead'].indexOf(param.name) >= 0;
+  return !!dancerMenuForChooser(param.ui)
+}
 
 // not used anymore
 // param_pass_on_left = {name: "pass", value: false, ui: chooser_right_left_shoulder};

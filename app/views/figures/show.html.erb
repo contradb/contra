@@ -1,9 +1,7 @@
-
-
 <div class="container">
-  <%= link_to(content_tag(:span, '', class: "glyphicon glyphicon-arrow-left", 'aria-label'=> 'previous'), sluggified_figure_path(@prev_figure)) %> &nbsp;
+  <%= link_to(content_tag(:span, '', class: "glyphicon glyphicon-arrow-left", 'aria-label'=> 'previous'), sluggified_figure_path(@prev_move)) %> &nbsp;
   <%= link_to(content_tag(:span, '', class: "glyphicon glyphicon-arrow-up", 'aria-label'=> 'next'), figures_path) %> &nbsp;
-  <%= link_to(content_tag(:span, '', class: "glyphicon glyphicon-arrow-right", 'aria-label'=> 'next'), sluggified_figure_path(@next_figure)) %>
+  <%= link_to(content_tag(:span, '', class: "glyphicon glyphicon-arrow-right", 'aria-label'=> 'next'), sluggified_figure_path(@next_move)) %>
 
   <h1><%= @move_titleize %></h1>
 
@@ -20,20 +18,20 @@
           <h2>Usage</h2>
           <h3>jargon</h3>
           <p>
-            <% if JSLibFigure.related_moves(@move).present? %>
-              related figures: <%= move_list_to_links(JSLibFigure.related_moves(@move)) %><br>
+            <% if JSLibFigure.related_moves(@term).present? %>
+              related figures: <%= move_links(JSLibFigure.related_moves(@term), @prefs) %><br>
             <% end %>
-            <% if JSLibFigure.aliases(@move).present? %>
-              superfigure of: <%= move_list_to_links(JSLibFigure.aliases(@move)) %></br>
+            <% if JSLibFigure.aliases(@term).present? %>
+              superfigure of: <%= move_links(JSLibFigure.aliases(@term), @prefs) %></br>
             <% end %>
-            <% if @move != JSLibFigure.de_alias_move(@move) %>
-              subfigure of <%= link_to(JSLibFigure.de_alias_move(@move),sluggified_figure_path(JSLibFigure.de_alias_move(@move))) %><br>
+            <% if @term != JSLibFigure.de_alias_move(@term) %>
+              subfigure of <%= move_link(JSLibFigure.de_alias_move(@term), @prefs) %><br>
             <% end %>
-            <% if JSLibFigure.de_alias_move(@move) != JSLibFigure.teaching_name(@move) %>
-              taught as <%= link_to(JSLibFigure.teaching_name(@move),sluggified_figure_path(JSLibFigure.teaching_name(@move))) %> in programs<br>
+            <% if JSLibFigure.de_alias_move(@term) != JSLibFigure.teaching_name(@term) %>
+              taught as <%= move_link(JSLibFigure.teaching_name(@term), @prefs) %> in programs<br>
             <% end %>
             formal parameters: 
-            <%= JSLibFigure.formal_parameters(@move).map {|param| param['name'] }.join(', ') %>
+            <%= JSLibFigure.formal_parameters(@term).map {|param| param['name'] }.join(', ') %>
           </p>
 
           <h3>examples</h3>
@@ -50,11 +48,11 @@
               </thead>
               <tbody>
                 <% @dances.each_with_index do |dance, dance_index| %>
-                  <% figures = dance.figures.select {|figure| JSLibFigure.move(figure) == @move} %>
+                  <% figures = dance.figures.select {|figure| JSLibFigure.move(figure) == @term} %>
                   <% figures.each_with_index do |figure,figure_index| %>
                     <%= content_tag :tr, dance_index.odd? && {class: 'figure-table-striping'} do %><!-- can't simply use bootstrap table-striped because of weird rowspans -->
                       <%= content_tag(:td, (figures.length > 1) && {rowspan: figures.length}) do link_to(dance.title, dance) end if 0==figure_index %>
-                      <td><div class="show-figure"><%= truncate(JSLibFigure.html(figure), length: 70, separator: ' ') %></div></td>
+                      <td><div class="show-figure"><%= truncate(JSLibFigure.figureToString(figure, @prefs), length: 70, separator: ' ') %></div></td>
                     <% end %>
                   <% end %>
                 <% end %>
@@ -81,7 +79,7 @@
       <div class="row">
         <div class="col-sm-12">
           <h2>Moves Sharing a Dance with <%= @move_titleize %></h2>
-          <%= render partial: 'mdtab', object: @coappearing_mdtab %>
+          <%= render partial: 'mdtab', object: @coappearing_mdtab, locals: {prefs: @prefs} %>
         </div>
       </div>
     </div>
@@ -89,11 +87,11 @@
       <div class="row">
         <div class="col-sm-6 col-md-4 col-lg-3" id="moves-preceding">
           <h2>Moves Preceding <%= @move_titleize %></h2>
-          <%= render partial: 'mdtab', object: @preceeding_mdtab %>
+          <%= render partial: 'mdtab', object: @preceeding_mdtab, locals: {prefs: @prefs} %>
         </div>
         <div class="col-sm-6 col-md-4 col-lg-3" id="moves-following">
           <h2>Moves Following <%= @move_titleize %></h2>
-          <%= render partial: 'mdtab', object: @following_mdtab %>
+          <%= render partial: 'mdtab', object: @following_mdtab, locals: {prefs: @prefs} %>
         </div>
       </div>
     </div>

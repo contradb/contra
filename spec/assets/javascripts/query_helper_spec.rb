@@ -26,8 +26,8 @@ RSpec.describe 'query-helper' do
      [['figure', '*'], 'a', 'any figure']
     ].each do |a|
       q, article, value = a
-      it "buildFigureSentenceHelper(#{q.to_s}, #{article.inspect}) => #{value.inspect}" do
-        expect(eval("buildFigureSentenceHelper(#{q.to_s}, #{article.inspect});")).to match(whitespice(value))
+      it "buildFigureSentenceHelper(#{q.to_s}, #{article.inspect}, defaultPrefs) => #{value.inspect}" do
+        expect(eval("buildFigureSentenceHelper(#{q.to_s}, #{article.inspect}, defaultPrefs);")).to match(whitespice(value))
       end
     end
   end

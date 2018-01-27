@@ -28,11 +28,11 @@ function sumBeats(figures,optional_limit) {
   return acc;
 }
 
-function figure_html_readonly(f) {
+function figureToString(f,prefs) {
   var fig_def = defined_events[f.move];
   if (fig_def) {
-    var func = fig_def.props.view || figure_html_readonly_default;
-    var main = func(f.move, f.parameter_values);
+    var func = fig_def.props.stringify || figureGenericStringify;
+    var main = func(f.move, f.parameter_values, prefs);
     var note = f.note;
     return note ? words(main,note) : main;
   }
@@ -43,20 +43,19 @@ function figure_html_readonly(f) {
   }
 }
 
-
-// Called if they don't specify a view function in the figure definition:
-function figure_html_readonly_default(move, parameter_values) {
+// Called if they don't specify a Stringify function in the figure definition:
+function figureGenericStringify(move, parameter_values, prefs) {
   // todo: clean this up so it's not so obnoxiously ugly
   // it's thouroughly tested, so it will be safe to remove the fishing expeditions for who, balance and beats.
   var ps = parameters(move);
-  var pstrings = parameter_strings(move, parameter_values);
+  var pstrings = parameter_strings(move, parameter_values, prefs);
   var acc = "";
   var subject_index = find_parameter_index_by_name("who", ps);
   var balance_index = find_parameter_index_by_name("bal", ps);
   var beats_index   = find_parameter_index_by_name("beats",ps);
   if (subject_index >= 0) { acc += pstrings[subject_index] + ' '; }
   if (balance_index >= 0) { acc += pstrings[balance_index] + ' '; }
-  acc += move;
+  acc += moveSubstitution(move, prefs);
   ps.length == parameter_values.length || throw_up("parameter type mismatch. "+ps.length+" formals and "+parameter_values.length+" values");
   for (var i=0; i < parameter_values.length; i++) {
     if ((i != subject_index) && (i != balance_index) && (i != beats_index)) {
@@ -81,21 +80,43 @@ var progressionString = "to new neighbors";
 
 // ================
 
-function parameter_strings(move, parameter_values) {
-  // new! improved! catch null and undefined, and convert them to '____', without calling the individual parameter function
+function parameter_strings(move, parameter_values, prefs) {
+  if (!prefs) {throw_up('forgot prefs argument to parameter_strings');}
   var formal_parameters = parameters(move);
   var acc = [];
   for (var i=0; i<parameter_values.length; i++) {
     var pvi = parameter_values[i];
+    var term;
     if ((pvi === undefined) || (pvi === null)) {
-      acc.push('____');
+      term = '____';
     } else if (formal_parameters[i].string) {
-      acc.push(formal_parameters[i].string(pvi,move));
+      term = formal_parameters[i].string(pvi,move);
     } else {
-      acc.push(String(pvi));
+      term = String(pvi);
     }
+    acc.push(parameterSubstitution(prefs,formal_parameters[i],term));
   }
   return acc;
+}
+
+// called when we don't know if the parameter is a dancer
+function parameterSubstitution(prefs, formal_parameter, actual_parameter) {
+  var term = actual_parameter;
+  if (formalParamIsDancers(formal_parameter) && (term in prefs.dancers)) {
+    return prefs.dancers[term];
+  } else {
+    return term;
+  }
+}
+
+// called when we do know the parameter is a dancer
+function dancerSubstitution(prefs, actual_parameter) {
+  var term = actual_parameter;
+  if (term in prefs.dancers) {
+    return prefs.dancers[term];
+  } else {
+    return term;
+  }
 }
 
 // === Teaching Names =============
@@ -175,20 +196,34 @@ function aliases(move) {
   return acc;
 }
 
+// List all the moves known to contradb.
+// See also: moveTermsAndSubstitutions
 function moves() {
- return Object.keys(defined_events).sort(function(a,b) {
-   var aa = a.toLowerCase();
-   var bb = b.toLowerCase();
-   if (aa < bb) { return -1 ;}
-   else if (aa > bb) { return 1; }
-   else { return 0; }
-});
+  return Object.keys(defined_events);
 }
 
-function movesMenuOrdering() {
- var m = moves();
- m.unshift("swing");
- return m;
+function moveTermsAndSubstitutions(prefs) {
+  if (!prefs) { throw_up('must specify prefs to moveTermsAndSubstitutions'); }
+  var terms = Object.keys(defined_events);
+  var ms = terms.map(function(term) { return {term: term, substitution: moveSubstitution(term, prefs)}; });
+  ms = ms.sort(function(a,b) {
+    var aa = a.substitution.toLowerCase();
+    var bb = b.substitution.toLowerCase();
+    if (aa < bb) { return -1 ;}
+    else if (aa > bb) { return 1; }
+    else { return 0; }
+  });
+  return ms;
+}
+
+function moveTermsAndSubstitutionsForSelectMenu(prefs) {
+  if (!prefs) { throw_up('must specify prefs to moveTermsAndSubstitutionsForSelectMenu'); }
+  var mtas = moveTermsAndSubstitutions(prefs);
+  var swing_index = mtas.findIndex(function (e) { return 'swing' === e.term;});
+  if (swing_index >= 5) {
+    mtas.unshift(mtas[swing_index]);                       // copy swing to front of the list
+  }
+  return mtas;
 }
 
 function isMove(string) {

@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'rails_helper'
 
 RSpec.describe "programs/show", type: :view do
@@ -5,6 +6,7 @@ RSpec.describe "programs/show", type: :view do
     @program = assign(:program, FactoryGirl.create(:program, title: "New Years Eve 2015"))
     @program.append_new_activity(text: "Dosido Agogo")
     @program.append_new_activity(text: "Bubble and Squeak")
+    assign(:prefs, JSLibFigure.default_prefs)
   end
 
   it "renders" do
@@ -75,7 +77,17 @@ https://www.youtube.com/watch?v=jbeDG5jmKvE
 
     render
 
-    expect(rendered).to match("introduces moves: box the gnat, swat the flea, allemande, right left through")
+    expect(rendered).to have_text("introduces moves: box the gnat, swat the flea, allemande, right left through")
+  end
+
+  it "translates newly introduced figures to preferences as they appear in the program" do
+    setup_rang_tang
+    setup_box_the_gnat
+    assign(:prefs, JSLibFigure.test_prefs)
+
+    render
+
+    expect(rendered).to have_text("introduces moves: box the gnat, swat the flea, almond, right left through")
   end
 
   it "never remembers custom moves have been previously introduced" do
@@ -85,7 +97,7 @@ https://www.youtube.com/watch?v=jbeDG5jmKvE
 
     render
 
-    expect(rendered).to match(/introduces moves: custom, do si do/)
+    expect(rendered).to have_text(/introduces moves: custom, do si do/)
   end
 
   it "has markdown support" do
@@ -95,6 +107,13 @@ https://www.youtube.com/watch?v=jbeDG5jmKvE
 
     expect(rendered).to match("featuring <strong>2 new moves</strong>!")
   end
+
+  it 'applies prefs to figures' do
+    setup_box_the_gnat
+    assign(:prefs, JSLibFigure.test_prefs)
+
+    render
+
+    expect(rendered).to match('ravens almond right 1½')
+  end
 end
-
-

@@ -2,6 +2,10 @@ require 'jslibfigure'
 require 'rails_helper'
 
 RSpec.describe JSLibFigure do
+  def jseval(string)
+    JSLibFigure.send(:eval, string) # hacking in
+  end
+
   it 'an empty figure has 8 beats' do
     expect(JSLibFigure.beats(JSLibFigure.new)).to eql(8)
   end
@@ -65,6 +69,24 @@ RSpec.describe JSLibFigure do
 
     it "does not include 'gypsy'" do
       expect(JSLibFigure.moves).to_not include 'gypsy'
+    end
+  end
+
+  describe 'moveTermsAndSubstitutionsForSelectMenu' do
+    it "bumps 'swing' to the front of the line" do
+      ms = JSLibFigure.eval('moveTermsAndSubstitutionsForSelectMenu(defaultPrefs)') # empty prefs
+      expect(ms.first['term']).to eq('swing')
+      expect(ms.first['substitution']).to eq('swing')
+      expect(ms.count {|m| m['term'] == 'swing'}).to eq(2)
+      expect(ms.count {|m| m['substitution'] == 'swing'}).to eq(2)
+    end
+
+    it "doesn't copy swing if it's already aliased to something in the first 5 elements" do
+      ms = JSLibFigure.eval("moveTermsAndSubstitutionsForSelectMenu({moves: {swing: 'america'}, dancers: {}})").dup
+      expect(ms.index {|m| (m['substitution'] == 'america') && (m['term'] == 'swing')}).to be < 5 # if this fails there are maybe more than 5 moves alphabetically lower than 'america'?
+      expect(ms.count {|m| m['substitution'] == 'america'}).to eq(1)
+      expect(ms.count {|m| m['term'] == 'swing'}).to eq(1)
+      expect(ms.count {|m| m['substitution'] == 'swing'}).to eq(0)
     end
   end
 
@@ -150,5 +172,61 @@ RSpec.describe JSLibFigure do
     expect(JSLibFigure.parameter_uses_chooser(formal_parameter, 'chooser_half_or_full')).to be(false)
   end
 
-  pending 'test the whole libfigure library, ha ha'
+  it 'default_prefs' do
+    expect(JSLibFigure.default_prefs).to eq({'dancers' => {}, 'moves' => {}})
+  end
+
+  describe 'prefs_for_figures' do
+    let (:empty_prefs) {{'dancers' => {}, 'moves' => {}}}
+
+    it 'does nothing to a dance that is all in-set' do
+      expect(JSLibFigure.prefs_for_figures(empty_prefs,FactoryGirl.build(:box_the_gnat_contra).figures)).to eq(empty_prefs)
+    end
+
+    it "rewrites 'next neighbors' to '2nd neighbors' when '3rd neighbors' are present" do
+      figures = FactoryGirl.build(:dance_with_pair, pair: '3rd neighbors').figures
+      expect(JSLibFigure.prefs_for_figures(empty_prefs, figures)['dancers']).to include({'next neighbors' => '2nd neighbors'})
+    end
+
+    it "rewrites 'neighbors' to '1st neighbors' when '3rd neighbors' are present" do
+      figures = FactoryGirl.build(:dance_with_pair, pair: '3rd neighbors').figures
+      expect(JSLibFigure.prefs_for_figures(empty_prefs, figures)['dancers']).to include({'neighbors' => '1st neighbors'})
+    end
+
+    it "rewrites 'shadows' to '1st shadows' when '2nd shadows' are present" do
+      figures = FactoryGirl.build(:dance_with_pair, pair: '2nd shadows').figures
+      expect(JSLibFigure.prefs_for_figures(empty_prefs, figures)['dancers']).to include({'shadows' => '1st shadows'})
+    end
+  end
+
+  describe 'dancers_category' do
+    it "returns 'shadows' for 'shadows'" do
+      expect(JSLibFigure.dancers_category('partners')).to eq('partners')
+    end
+
+    it "returns 'neighbors' for 'prev neighbors'" do
+      expect(JSLibFigure.dancers_category('prev neighbors')).to eq('neighbors')
+    end
+
+    it "returns 'shadows' for '2nd shadows'" do
+      expect(JSLibFigure.dancers_category('prev neighbors')).to eq('neighbors')
+    end
+  end
+
+  it 'formal_param_is_dancers works' do
+    # representative samplings:
+    nopes = %w(param_balance_false param_beats_8 param_spin_ccw param_left_shoulder_spin param_four_places param_star_grip)
+    yerps = %w(param_subject param_subject_pairz param_object_pairs_or_ones_or_twos)
+    nopes.each do |nope|
+      expect(JSLibFigure.formal_param_is_dancers(jseval(nope))).to be(false)
+    end
+    yerps.each do |yerp|
+      expect(JSLibFigure.formal_param_is_dancers(jseval(yerp))).to be(true)
+    end
+  end
+
+  it 'move_substitution works' do
+    expect(JSLibFigure.move_substitution('allemande', JSLibFigure.test_prefs)).to eq('almond')
+    expect(JSLibFigure.move_substitution("Rory O'Moore", JSLibFigure.test_prefs)).to eq("Rory O'Moore")
+  end
 end

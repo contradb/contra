@@ -2,8 +2,8 @@
 
 module JSLibFigure
 
-  def self.html(figure_ruby_hash)
-    self.eval("figure_html_readonly(#{figure_ruby_hash.to_json})")
+  def self.figureToString(figure_ruby_hash, prefs)
+    self.eval("figureToString(#{figure_ruby_hash.to_json},#{prefs.to_json})")
   end
 
   def self.beats(figure_ruby_hash)
@@ -24,6 +24,10 @@ module JSLibFigure
 
   def self.moves
     @moves ||= self.eval('moves()')
+  end
+
+  def self.move_terms_and_substitutions(prefs)
+    self.eval("moveTermsAndSubstitutions(#{prefs.to_json})")
   end
 
   def self.de_alias_move(move_str)
@@ -83,7 +87,7 @@ module JSLibFigure
   end
 
   def self.slugify_move(move)
-    move.gsub('&','and').gsub(' ','-').downcase.gsub(/[^a-z0-9-]/,'')
+    move.gsub('&','and').gsub(' ','-').downcase.gsub(/[^a-z0-9-]/,'').html_safe
   end
 
   def self.deslugify_move(slug)
@@ -101,6 +105,35 @@ module JSLibFigure
 
   def self.parameter_uses_chooser(formal_parameter, chooser_name_string)
     formal_parameter['ui'] == chooser_name_string; # 'should' be compared with address-equals in javascript land, but this is faster
+  end
+
+  def self.test_prefs
+    @test_prefs ||= self.eval("testPrefs;")
+  end
+
+  def self.default_prefs
+    @default_prefs ||= self.eval("defaultPrefs;")
+  end
+
+  def self.prefs_for_figures(prefs, figures)
+    self.eval("prefsForFigures(#{prefs.to_json},#{figures.to_json})")
+  end
+
+  def self.move_substitution(move_term, prefs)
+    # js implementation:
+    # self.eval("moveSubstitution(#{move_term.inspect}, #{prefs.to_json})")
+    # ruby implementation:
+    prefs.dig('moves', move_term) || move_term
+  end
+
+  def self.dancers_category(dancers)
+    @dancers_category_hash ||= self.eval('dancersCategoryHash');
+    @dancers_category_hash[dancers] || dancers;
+  end
+
+  def self.formal_param_is_dancers(formal_param)
+    # there's a ruby-side implementation of this, if we need it for performance
+    self.eval("formalParamIsDancers(#{formal_param.to_json})")
   end
 
   JSLIBFIGURE_FILES = %w(polyfill.js util.js move.js chooser.js param.js define-figure.js figure.es6 after-figure.js dance.js)

@@ -12,7 +12,7 @@
 <h2 class="dance-show-hook"><%= @dance.hook %></h2>
 
 <p class="dance-show-choreographer">by: <strong><%= link_to @dance.choreographer.name, @dance.choreographer %></strong></p>
-<%= render partial: 'bodyshow', locals: {dance: @dance} %>
+<%= render partial: 'bodyshow', locals: {dance: @dance, prefs: @prefs} %>
 
 <p class="dance-show-user">User: <%= link_to @dance.user.name, @dance.user %></p>
 <p class="dance-show-publish"><%= @dance.publish ? 'Published' : 'Private' %></p>

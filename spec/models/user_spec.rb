@@ -1,9 +1,7 @@
-require 'spec_helper'
+require 'rails_helper'
 
-RSpec.describe User, type: :model do
-  it "returns all users in case-insensitive alphabetical order" do
-    names = ["AAAA","BBBB","cccc","DDDD"]
-    names.each {|name| FactoryGirl.create :user, name: name }
-    expect(User.all.pluck(:name)).to eq ["AAAA","BBBB","cccc","DDDD"]
+describe User do
+  it '#prefs' do
+    expect(FactoryGirl.build(:user).prefs).to eq(JSLibFigure.default_prefs)
   end
 end

@@ -96,10 +96,16 @@ module GloboHelper
   end
 
   def sluggified_figure_path(move_name_containing_spaces_and_whatnot)
+    raise "wrong type for parameter #{move_name_containing_spaces_and_whatnot.class}" unless move_name_containing_spaces_and_whatnot.is_a?(String)
     figure_path(JSLibFigure.slugify_move(move_name_containing_spaces_and_whatnot))
   end
 
-  def move_list_to_links(moves_which_had_better_already_be_html_safe)
-    moves_which_had_better_already_be_html_safe.map {|move| link_to(move, sluggified_figure_path(move))}.join(', ').html_safe
+  def move_links(moves, prefs)
+    moves.map {|move| move_link(move, prefs)}.join(', ').html_safe
+  end
+
+  def move_link(move, prefs)
+    label = html_escape(JSLibFigure.move_substitution(move, prefs))
+    link_to(label, sluggified_figure_path(move))
   end
 end
