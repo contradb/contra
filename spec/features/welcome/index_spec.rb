@@ -252,24 +252,6 @@ describe 'Welcome page', js: true do
       end
     end
 
-    it 'figure filter with prefs' do
-      expect_any_instance_of(WelcomeController).to receive(:prefs).and_return(JSLibFigure.test_prefs)
-      dances
-      visit '/'
-
-      expect(page).to_not have_css('option',                  text: exactly('allemande'))
-      expect(page).to     have_css('option[value=allemande]', text: exactly('almond'))
-
-      expect(page).to_not have_css('option',             text: exactly('gyre'))
-      expect(page).to     have_css('option[value=gyre]', text: exactly('darcy'))
-
-      select('almond')
-
-      expect(page).to have_content('Box the Gnat Contra')
-      expect(page).to_not have_content('The Rendevouz')
-      expect(page).to_not have_content('Call Me')
-    end
-
     describe 'figure ... button' do
       before (:each) do
         visit '/'
@@ -553,6 +535,45 @@ describe 'Welcome page', js: true do
           expect(page).to have_content(hey.title)
           expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","hey","*","1","*","*"]')
         end
+      end
+    end
+
+    describe 'prefs' do
+      before (:each) do
+        expect_any_instance_of(WelcomeController).to receive(:prefs).and_return(JSLibFigure.test_prefs)
+        visit '/'
+      end
+
+      it 'figure filter move' do
+        dances
+
+        expect(page).to_not have_css('option',                  text: exactly('allemande'))
+        expect(page).to     have_css('option[value=allemande]', text: exactly('almond'))
+
+        expect(page).to_not have_css('option',             text: exactly('gyre'))
+        expect(page).to     have_css('option[value=gyre]', text: exactly('darcy'))
+
+        select('almond')
+
+        expect(page).to have_content('Box the Gnat Contra')
+        expect(page).to_not have_content('The Rendevouz')
+        expect(page).to_not have_content('Call Me')
+      end
+
+      it 'figure filter dancers' do
+        dances
+
+        allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
+
+        select('almond')
+        click_button('...')
+        select('ravens')
+
+        expect(page).to_not have_content('The Rendevouz')
+        expect(page).to have_content('Box the Gnat Contra')
+        expect(page).to_not have_content('Call Me')
+        expect(page).to_not have_content(allemande.title)
+        expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","allemande","ladles","*","*","*"]')
       end
     end
 

@@ -236,7 +236,8 @@ $(document).ready(function() {
   { // dancer chooser menus
     var dcs = dancerChoosers();
     for (var i=0; i < dcs.length; i++) {
-      chooserSelect(dcs[i], ['*'].concat(dancerCategoryMenuForChooser(dcs[i])));
+      var substituter = function(dancers) { return [dancers, dancerSubstitution(prefs, dancers)]; };
+      chooserSelect(dcs[i], ['*'].concat(dancerCategoryMenuForChooser(dcs[i]).map(substituter)));
     }
   }
 
