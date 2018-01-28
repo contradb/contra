@@ -1,0 +1,8 @@
+<section>
+  <h1>Contra Language Preferences</h1>
+  <%= form_for @preferences_form, url: preferences_path, method: :put do |f| %>
+    <%# TODO: make a preference form object in app/forms, ala https://revs.runtime-revolution.com/creating-form-objects-with-activemodel-346e6c2abbf3 %>
+    <%= f.text_field :name %>
+    <%= save_submit_button_html "Save Preferences" %>
+  <% end %>
+</section>
