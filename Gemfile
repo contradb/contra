@@ -50,18 +50,18 @@ group :development do
 end
 
 group :development, :test do
+  gem 'rspec-rails'             # we need it in develop for it's generators
+  gem 'factory_girl_rails'
   gem 'pry'
   gem 'pry-doc'
   gem 'pry-stack_explorer'
 end
 
 group :test do
-  gem 'rspec-rails'
   gem 'capybara'
   gem 'poltergeist'
   gem 'phantomjs', require: 'phantomjs/poltergeist'
   gem 'database_cleaner'
-  gem 'factory_girl_rails'
 end
 
 

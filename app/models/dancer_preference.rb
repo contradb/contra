@@ -1,0 +1,2 @@
+class DancerPreference < Preference
+end

@@ -1,0 +1,2 @@
+class MovePreference < Preference
+end
