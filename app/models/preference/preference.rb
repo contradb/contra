@@ -1,4 +1,4 @@
 # abstract preference superclass
-class Preference < ApplicationRecord
+class Preference::Preference < ApplicationRecord
   belongs_to :user
 end

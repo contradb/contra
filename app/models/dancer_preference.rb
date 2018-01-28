@@ -1,2 +1,0 @@
-class DancerPreference < Preference
-end

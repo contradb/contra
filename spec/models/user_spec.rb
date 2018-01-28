@@ -27,7 +27,8 @@ describe User do
         user = FactoryGirl.create(:user)
         preference = user.preferences.create(FactoryGirl.attributes_for(:move_preference))
         user.destroy!
-        expect(Preference.find_by(id: preference.id)).to eq(nil)
+        expect(Preference::Preference.find_by(id: preference.id)).to eq(nil)
+        expect(Preference::Move.find_by(id: preference.id)).to eq(nil)
       end
     end
   end

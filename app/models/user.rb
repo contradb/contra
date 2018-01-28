@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   has_many :dances, dependent: :destroy
   has_many :programs, -> { order "LOWER(title)" }, dependent: :destroy
-  has_many :preferences, dependent: :destroy
+  has_many :preferences, dependent: :destroy, class_name: 'Preference::Preference'
 
   validates :name, length: { in: 4..100 }  
 
@@ -18,8 +18,8 @@ class User < ApplicationRecord
   #             'gentlespoons' = >'larks'}}
   def prefs
     ps = preferences
-    {'moves'   => preferences_to_h(ps.select {|p| p.is_a?(MovePreference)}),
-     'dancers' => preferences_to_h(ps.select {|p| p.is_a?(DancerPreference)})
+    {'moves'   => preferences_to_h(ps.select {|p| p.is_a?(Preference::Move)}),
+     'dancers' => preferences_to_h(ps.select {|p| p.is_a?(Preference::Dancer)})
     }
   end
 
