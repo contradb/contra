@@ -3,16 +3,13 @@
   <%= form_for @preferences_form, url: preferences_path, method: :put do |f| %>
     <%# TODO: make a preference form object in app/forms, ala https://revs.runtime-revolution.com/creating-form-objects-with-activemodel-346e6c2abbf3 %>
     <%# TODO: Read and understand Nested Attributes Examples in http://api.rubyonrails.org/v5.1/classes/ActionView/Helpers/FormHelper.html#method-i-fields_for %>
-    <% @preferences_form.xs.each_with_index do |preference,i| %>
-      <%= f.fields_for :xs, preference, index: i do |preference_fields| %>
-        Substitution <%= preference_fields.index %>: <%= preference_fields.text_field :substitution %>
-      <% end %>
+    <%= f.fields_for :xs do |preference_fields| %>
+      <h2><%= preference_fields.index %></h2>
+      Term <%= preference_fields.text_field :term %>
+      Substitution <%= preference_fields.index %>: <%= preference_fields.text_field :substitution %>
+      Type <%= preference_fields.index %>: <%= preference_fields.text_field :type %>
+      <%= preference_fields.hidden_field :id %>
     <% end %>
-
-    <%= f.fields_for :preference, @preferences_form.p0 do |p0| %>
-      <%= p0.text_field :substitution %>
-    <% end %>
-    <%= f.text_field :name %>
     <%= save_submit_button_html "Save Preferences" %>
   <% end %>
 </section>

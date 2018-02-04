@@ -1,14 +1,16 @@
 require 'move'
 
 class PreferencesController < ApplicationController
+  before_action :authenticate_user!
+
   def edit
-    @preferences_form = PreferencesForm.new
+    @preferences_form = PreferencesForm.new(user: current_user)
   end
 
   def update
-    @preferences_form = PreferencesForm.new(preferences_form_params)
+    @preferences_form = PreferencesForm.new(preferences_form_params.merge(user: current_user))
     if @preferences_form.save
-      redirect_to(root_url, notice: "preferences updated #{preferences_form_params.dig(:grabonzo, :beans)}")
+      redirect_to(root_url, notice: 'preferences updated')
     else
       render :edit
     end
@@ -17,7 +19,6 @@ class PreferencesController < ApplicationController
   private
   # Never trust parameters from the scary internet, only allow the white list through.
   def preferences_form_params
-    binding.pry
-    params.require(:preferences_form).permit(:name, {grabonzo: :beans})
+    params.require(:preferences_form).permit(xs_attributes: [:id, :type, :term, :substitution])
   end
 end
