@@ -19,6 +19,6 @@ class PreferencesController < ApplicationController
   private
   # Never trust parameters from the scary internet, only allow the white list through.
   def preferences_form_params
-    params.require(:preferences_form).permit(xs_attributes: [:id, :type, :term, :substitution])
+    params.require(:preferences_form).permit(preferences_attributes: [:id, :type, :term, :substitution])
   end
 end
