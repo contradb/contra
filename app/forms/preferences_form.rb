@@ -1,15 +1,13 @@
 class PreferencesForm
   include ActiveModel::Model
   attr_accessor :user
+  attr_reader :preferences
 
   def initialize(params)
     # force @user initialization before preferences_attributes=, which is called by super
-    @user = params[:user] or raise('Missing user parameter')
+    user = params[:user] or raise('Missing user parameter')
+    @preferences = user.preferences
     super(params)
-  end
-
-  def preferences
-    @preferences ||= user.preferences
   end
 
   def preferences_attributes=(attr_hash)
