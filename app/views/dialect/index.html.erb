@@ -1,0 +1,9 @@
+<h1>Dialect</h1>
+
+<% if @idioms.blank? %>
+ <p>You may replace <i>gentlespoons</i> with <i>gentlemen</i>, or <i>gyre</i> with <i>gimble</i>, or <b>any term</b> with <b>any substitution</b>.</p>
+<% else %>
+  <% @idioms.each do |idiom| %>
+    <%= idiom.term %> <%= idiom.substitution %>
+  <% end %>
+<% end %>

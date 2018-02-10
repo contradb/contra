@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :figures, only: [:index, :show]
 
   get 'welcome/index'
+  get 'dialect' => 'dialect#index'
   get 'about' => 'about#index'
   root 'welcome#index'
 

@@ -1,0 +1,32 @@
+# coding: utf-8
+
+require 'rails_helper'
+require 'login_helper'
+
+describe 'Dialect page' do
+  it 'displays existings idioms' do
+    with_login do |user|
+      move_idiom = user.idioms.create(FactoryGirl.attributes_for(:move_idiom, term: 'allemande', substitution: 'almond'))
+      dancer_idiom = user.idioms.create(FactoryGirl.attributes_for(:dancer_idiom, term: 'gentlespoons', substitution: 'guys'))
+
+      visit '/dialect'
+      expect(page).to have_css('h1', text: "Dialect")
+      expect(page).to have_content("#{move_idiom.term} #{move_idiom.substitution}")
+      expect(page).to have_content("#{dancer_idiom.term} #{dancer_idiom.substitution}")
+    end
+  end
+
+  it 'with no idioms, displays help text' do
+    with_login do |user|
+      visit '/dialect'
+
+      expect(page).to have_content("You may replace gentlespoons with gentlemen, or gyre with gimble, or any term with any substitution.")
+    end
+  end
+
+  it 'loads help on logging in when accessed without login' do
+    visit '/dialect'
+    expect(current_path).to eq(new_user_session_path)
+  end
+
+end
