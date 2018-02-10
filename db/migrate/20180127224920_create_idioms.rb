@@ -1,6 +1,6 @@
-class CreatePreferences < ActiveRecord::Migration[5.0]
+class CreateIdioms < ActiveRecord::Migration[5.0]
   def change
-    create_table :preferences do |t|
+    create_table :idioms do |t|
       t.string :type, null: false
       t.string :term, null: false
       t.string :substitution, null: false

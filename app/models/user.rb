@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   has_many :dances, dependent: :destroy
   has_many :programs, -> { order "LOWER(title)" }, dependent: :destroy
-  has_many :preferences, dependent: :destroy, class_name: 'Preference::Preference'
+  has_many :idioms, dependent: :destroy, class_name: 'Idiom::Idiom'
 
   validates :name, length: { in: 4..100 }  
 
@@ -17,16 +17,16 @@ class User < ApplicationRecord
   #  'dancers' {'ladles' => 'ravens',
   #             'gentlespoons' = >'larks'}}
   def dialect
-    ps = preferences
-    {'moves'   => preferences_to_h(ps.select {|p| p.is_a?(Preference::Move)}),
-     'dancers' => preferences_to_h(ps.select {|p| p.is_a?(Preference::Dancer)})
+    is = idioms
+    {'moves'   => idioms_to_h(is.select {|i| i.is_a?(Idiom::Move)}),
+     'dancers' => idioms_to_h(is.select {|i| i.is_a?(Idiom::Dancer)})
     }
   end
 
   private
-  def preferences_to_h(preferences)
+  def idioms_to_h(idioms)
     h = {}
-    preferences.each {|p| h[p.term] = p.substitution}
+    idioms.each {|idiom| h[idiom.term] = idiom.substitution}
     h
   end
 end

@@ -3,10 +3,10 @@ require 'rails_helper'
 describe User do
   it '#dialect' do
     user = FactoryGirl.build(:user)
-    user.preferences.build(FactoryGirl.attributes_for(:move_preference, term: 'gyre', substitution: 'darcy'))
-    user.preferences.build(FactoryGirl.attributes_for(:move_preference, term: 'gyre meltdown', substitution: 'meltdown swing'))
-    user.preferences.build(FactoryGirl.attributes_for(:dancer_preference, term: 'ladles', substitution: 'ravens'))
-    user.preferences.build(FactoryGirl.attributes_for(:dancer_preference, term: 'gentlespoons', substitution: 'larks'))
+    user.idioms.build(FactoryGirl.attributes_for(:move_idiom, term: 'gyre', substitution: 'darcy'))
+    user.idioms.build(FactoryGirl.attributes_for(:move_idiom, term: 'gyre meltdown', substitution: 'meltdown swing'))
+    user.idioms.build(FactoryGirl.attributes_for(:dancer_idiom, term: 'ladles', substitution: 'ravens'))
+    user.idioms.build(FactoryGirl.attributes_for(:dancer_idiom, term: 'gentlespoons', substitution: 'larks'))
     dialect = user.dialect
     expect(dialect.length).to eq(2)
     expect(dialect['dancers'].length).to eq(2)
@@ -17,18 +17,18 @@ describe User do
     expect(dialect['moves']['gyre meltdown']).to eq('meltdown swing')
   end
 
-  describe 'preferences' do
+  describe 'idioms' do
     describe 'relationship' do
       it 'exists' do
-        expect(FactoryGirl.build(:user).preferences).to eq([])
+        expect(FactoryGirl.build(:user).idioms).to eq([])
       end
 
       it 'dependant destroy works' do
         user = FactoryGirl.create(:user)
-        preference = user.preferences.create(FactoryGirl.attributes_for(:move_preference))
+        idiom = user.idioms.create(FactoryGirl.attributes_for(:move_idiom))
         user.destroy!
-        expect(Preference::Preference.find_by(id: preference.id)).to eq(nil)
-        expect(Preference::Move.find_by(id: preference.id)).to eq(nil)
+        expect(Idiom::Idiom.find_by(id: idiom.id)).to eq(nil)
+        expect(Idiom::Move.find_by(id: idiom.id)).to eq(nil)
       end
     end
   end
