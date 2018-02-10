@@ -9,14 +9,14 @@ class User < ApplicationRecord
 
   validates :name, length: { in: 4..100 }  
 
-  # prefs translates cantanerous active record objects into a single
+  # dialect translates cantanerous active record objects into a single
   # nested hash, more suitible for javascript manipulation.
-  # example: user.prefs =>
+  # example: user.dialect =>
   # {'moves' => {'gyre' => 'darcy',
   #              'allemande' => 'almond'},
   #  'dancers' {'ladles' => 'ravens',
   #             'gentlespoons' = >'larks'}}
-  def prefs
+  def dialect
     ps = preferences
     {'moves'   => preferences_to_h(ps.select {|p| p.is_a?(Preference::Move)}),
      'dancers' => preferences_to_h(ps.select {|p| p.is_a?(Preference::Dancer)})

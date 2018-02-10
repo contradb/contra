@@ -6,7 +6,7 @@ RSpec.describe "programs/show", type: :view do
     @program = assign(:program, FactoryGirl.create(:program, title: "New Years Eve 2015"))
     @program.append_new_activity(text: "Dosido Agogo")
     @program.append_new_activity(text: "Bubble and Squeak")
-    assign(:prefs, JSLibFigure.default_prefs)
+    assign(:dialect, JSLibFigure.default_dialect)
   end
 
   it "renders" do
@@ -83,7 +83,7 @@ https://www.youtube.com/watch?v=jbeDG5jmKvE
   it "translates newly introduced figures to preferences as they appear in the program" do
     setup_rang_tang
     setup_box_the_gnat
-    assign(:prefs, JSLibFigure.test_prefs)
+    assign(:dialect, JSLibFigure.test_dialect)
 
     render
 
@@ -108,9 +108,9 @@ https://www.youtube.com/watch?v=jbeDG5jmKvE
     expect(rendered).to match("featuring <strong>2 new moves</strong>!")
   end
 
-  it 'applies prefs to figures' do
+  it 'applies dialect to figures' do
     setup_box_the_gnat
-    assign(:prefs, JSLibFigure.test_prefs)
+    assign(:dialect, JSLibFigure.test_dialect)
 
     render
 

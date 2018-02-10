@@ -9,10 +9,10 @@ RSpec.describe FiguresController, type: :controller do
   end
 
   describe "GET #index" do
-    it 'assigns @prefs, @moves, and @mdtab' do
+    it 'assigns @dialect, @moves, and @mdtab' do
       dance
       get :index
-      expect(assigns(:prefs)).to eq(subject.current_user.prefs)
+      expect(assigns(:dialect)).to eq(subject.current_user.dialect)
       expect(assigns(:move_terms_and_substitutions).find {|m| m['term'] == 'swing'}).to be_present
       expect(assigns(:mdtab)['swing']).to be_present
     end

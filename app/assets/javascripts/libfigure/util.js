@@ -39,10 +39,10 @@ function comma_unless_blank(str) {
   return ((!str) || (str.trim() === '')) ? '' : ',';
 }
 
-var defaultPrefs = {moves: {},
+var defaultDialect = {moves: {},
                  dancers: {}};
 
-var testPrefs = {moves: {gyre: 'darcy',
+var testDialect = {moves: {gyre: 'darcy',
                          allemande: 'almond',
                          'see saw': 'do si do left shoulder',
                          'ocean wave': 'mush into short wavy lines'},
@@ -50,7 +50,7 @@ var testPrefs = {moves: {gyre: 'darcy',
                            gentlespoons: 'larks'}};
 
 /*
-defaultPrefs = {moves: {gyre: 'darcy',
+defaultDialect = {moves: {gyre: 'darcy',
                      'gyre meltdown': 'meltdown swing',
                      allemande: 'almond',
                      'see saw': 'do si do left shoulder',
@@ -64,21 +64,21 @@ defaultPrefs = {moves: {gyre: 'darcy',
 
 
 
-function prefsForFigures(prefs, figures) {
-  var new_prefs = copyPrefs(prefs);
+function dialectForFigures(dialect, figures) {
+  var new_dialect = copyDialect(dialect);
   if (figuresUseDancers(figures, '3rd neighbors')) {
-    new_prefs.dancers['neighbors']      = '1st neighbors';
-    new_prefs.dancers['next neighbors'] = '2nd neighbors';
+    new_dialect.dancers['neighbors']      = '1st neighbors';
+    new_dialect.dancers['next neighbors'] = '2nd neighbors';
   }
   if (figuresUseDancers(figures, '2nd shadows')) {
-    new_prefs.dancers['shadows'] = '1st shadows';
+    new_dialect.dancers['shadows'] = '1st shadows';
   }
-  return new_prefs;
+  return new_dialect;
 }
 
-function copyPrefs(prefs) {
-  return {dancers: libfigureObjectCopy(prefs.dancers),
-          moves: libfigureObjectCopy(prefs.moves)};
+function copyDialect(dialect) {
+  return {dancers: libfigureObjectCopy(dialect.dancers),
+          moves: libfigureObjectCopy(dialect.moves)};
 }
 
 // I just called this function 'copy', but then I got scared and changed it.
@@ -130,8 +130,8 @@ function figuresUseDancers(figures, dancers_term) {
   return false;
 }
 
-function moveSubstitution(move_term, prefs) {
-  return prefs.moves[move_term] || move_term;
+function moveSubstitution(move_term, dialect) {
+  return dialect.moves[move_term] || move_term;
 }
 
 // ________________________________________________________________

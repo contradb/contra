@@ -3,7 +3,7 @@ class DancesController < ApplicationController
   before_action :authenticate_user!, only: [:new, :edit, :update, :destroy]
   before_action :authenticate_dance_writable!, only: [:edit, :update, :destroy]
   before_action :authenticate_dance_readable!, only: [:show]
-  before_action :set_prefs_json, only: [:new, :create, :edit, :update]
+  before_action :set_dialect_json, only: [:new, :create, :edit, :update]
 
   def index
     @dances = Dance.readable_by(current_user).alphabetical
@@ -16,7 +16,7 @@ class DancesController < ApplicationController
   end
 
   def show
-    @prefs = prefs
+    @dialect = dialect
   end
 
   def new
@@ -74,8 +74,8 @@ class DancesController < ApplicationController
       @dance = Dance.find(params[:id])
     end
     
-    def set_prefs_json
-      @prefs_json = prefs.to_json
+    def set_dialect_json
+      @dialect_json = dialect.to_json
     end
 
     def authenticate_dance_writable!

@@ -19,16 +19,16 @@
           <h3>jargon</h3>
           <p>
             <% if JSLibFigure.related_moves(@term).present? %>
-              related figures: <%= move_links(JSLibFigure.related_moves(@term), @prefs) %><br>
+              related figures: <%= move_links(JSLibFigure.related_moves(@term), @dialect) %><br>
             <% end %>
             <% if JSLibFigure.aliases(@term).present? %>
-              superfigure of: <%= move_links(JSLibFigure.aliases(@term), @prefs) %></br>
+              superfigure of: <%= move_links(JSLibFigure.aliases(@term), @dialect) %></br>
             <% end %>
             <% if @term != JSLibFigure.de_alias_move(@term) %>
-              subfigure of <%= move_link(JSLibFigure.de_alias_move(@term), @prefs) %><br>
+              subfigure of <%= move_link(JSLibFigure.de_alias_move(@term), @dialect) %><br>
             <% end %>
             <% if JSLibFigure.de_alias_move(@term) != JSLibFigure.teaching_name(@term) %>
-              taught as <%= move_link(JSLibFigure.teaching_name(@term), @prefs) %> in programs<br>
+              taught as <%= move_link(JSLibFigure.teaching_name(@term), @dialect) %> in programs<br>
             <% end %>
             formal parameters: 
             <%= JSLibFigure.formal_parameters(@term).map {|param| param['name'] }.join(', ') %>
@@ -52,7 +52,7 @@
                   <% figures.each_with_index do |figure,figure_index| %>
                     <%= content_tag :tr, dance_index.odd? && {class: 'figure-table-striping'} do %><!-- can't simply use bootstrap table-striped because of weird rowspans -->
                       <%= content_tag(:td, (figures.length > 1) && {rowspan: figures.length}) do link_to(dance.title, dance) end if 0==figure_index %>
-                      <td><div class="show-figure"><%= truncate(JSLibFigure.figureToString(figure, @prefs), length: 70, separator: ' ') %></div></td>
+                      <td><div class="show-figure"><%= truncate(JSLibFigure.figureToString(figure, @dialect), length: 70, separator: ' ') %></div></td>
                     <% end %>
                   <% end %>
                 <% end %>
@@ -79,7 +79,7 @@
       <div class="row">
         <div class="col-sm-12">
           <h2>Moves Sharing a Dance with <%= @move_titleize %></h2>
-          <%= render partial: 'mdtab', object: @coappearing_mdtab, locals: {prefs: @prefs} %>
+          <%= render partial: 'mdtab', object: @coappearing_mdtab, locals: {dialect: @dialect} %>
         </div>
       </div>
     </div>
@@ -87,11 +87,11 @@
       <div class="row">
         <div class="col-sm-6 col-md-4 col-lg-3" id="moves-preceding">
           <h2>Moves Preceding <%= @move_titleize %></h2>
-          <%= render partial: 'mdtab', object: @preceeding_mdtab, locals: {prefs: @prefs} %>
+          <%= render partial: 'mdtab', object: @preceeding_mdtab, locals: {dialect: @dialect} %>
         </div>
         <div class="col-sm-6 col-md-4 col-lg-3" id="moves-following">
           <h2>Moves Following <%= @move_titleize %></h2>
-          <%= render partial: 'mdtab', object: @following_mdtab, locals: {prefs: @prefs} %>
+          <%= render partial: 'mdtab', object: @following_mdtab, locals: {dialect: @dialect} %>
         </div>
       </div>
     </div>

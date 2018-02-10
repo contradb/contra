@@ -16,7 +16,7 @@ RSpec.describe "dances/show", type: :view do
       :figures_json => '[{"parameter_values":["partners",true,16],"move":"swing", "note":"the quick brown fox <script>alert(\'no dialog pops up\');</script>"}, {"parameter_values":["ladles",true,540,8],"move":"allemande"}]',
       :notes => "My Note Text www.yahoo.com blah blah **bold** blah"
                                             ))
-    assign(:prefs, JSLibFigure.default_prefs)
+    assign(:dialect, JSLibFigure.default_dialect)
   end
 
   # was false positive bugs because there were double-spaces in html
@@ -52,8 +52,8 @@ RSpec.describe "dances/show", type: :view do
     expect(rendered).to have_content("<script>alert('no dialog pops up');</script>")
   end
 
-  it 'renders prefs' do
-    assign(:prefs, JSLibFigure.test_prefs)
+  it 'renders dialect' do
+    assign(:dialect, JSLibFigure.test_dialect)
     render
     expect(rendered).to_not have_content('ladles allemande right 1½')
     expect(rendered).to have_content('ravens almond right 1½')

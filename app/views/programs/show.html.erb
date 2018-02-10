@@ -53,12 +53,12 @@
           moves_already_introduced.delete 'custom'
           # print new moves
           unless introduce_moves.empty? 
-            content_tag(:p, "introduces moves: ".html_safe + move_links(introduce_moves, @prefs))
+            content_tag(:p, "introduces moves: ".html_safe + move_links(introduce_moves, @dialect))
           end
         end %>
 
     <% if activity.dance&.readable?(current_user) %>
-      <%= render partial: 'dances/bodyshow', locals: {dance: activity.dance, prefs: @prefs} %>
+      <%= render partial: 'dances/bodyshow', locals: {dance: activity.dance, dialect: @dialect} %>
     <% elsif activity.dance %>
       <div class="warn-private-dance">This dance is not published.</div>
     <% end %>

@@ -28,11 +28,11 @@ function sumBeats(figures,optional_limit) {
   return acc;
 }
 
-function figureToString(f,prefs) {
+function figureToString(f,dialect) {
   var fig_def = defined_events[f.move];
   if (fig_def) {
     var func = fig_def.props.stringify || figureGenericStringify;
-    var main = func(f.move, f.parameter_values, prefs);
+    var main = func(f.move, f.parameter_values, dialect);
     var note = f.note;
     return note ? words(main,note) : main;
   }
@@ -44,18 +44,18 @@ function figureToString(f,prefs) {
 }
 
 // Called if they don't specify a Stringify function in the figure definition:
-function figureGenericStringify(move, parameter_values, prefs) {
+function figureGenericStringify(move, parameter_values, dialect) {
   // todo: clean this up so it's not so obnoxiously ugly
   // it's thouroughly tested, so it will be safe to remove the fishing expeditions for who, balance and beats.
   var ps = parameters(move);
-  var pstrings = parameter_strings(move, parameter_values, prefs);
+  var pstrings = parameter_strings(move, parameter_values, dialect);
   var acc = "";
   var subject_index = find_parameter_index_by_name("who", ps);
   var balance_index = find_parameter_index_by_name("bal", ps);
   var beats_index   = find_parameter_index_by_name("beats",ps);
   if (subject_index >= 0) { acc += pstrings[subject_index] + ' '; }
   if (balance_index >= 0) { acc += pstrings[balance_index] + ' '; }
-  acc += moveSubstitution(move, prefs);
+  acc += moveSubstitution(move, dialect);
   ps.length == parameter_values.length || throw_up("parameter type mismatch. "+ps.length+" formals and "+parameter_values.length+" values");
   for (var i=0; i < parameter_values.length; i++) {
     if ((i != subject_index) && (i != balance_index) && (i != beats_index)) {
@@ -80,8 +80,8 @@ var progressionString = "to new neighbors";
 
 // ================
 
-function parameter_strings(move, parameter_values, prefs) {
-  if (!prefs) {throw_up('forgot prefs argument to parameter_strings');}
+function parameter_strings(move, parameter_values, dialect) {
+  if (!dialect) {throw_up('forgot dialect argument to parameter_strings');}
   var formal_parameters = parameters(move);
   var acc = [];
   for (var i=0; i<parameter_values.length; i++) {
@@ -94,26 +94,26 @@ function parameter_strings(move, parameter_values, prefs) {
     } else {
       term = String(pvi);
     }
-    acc.push(parameterSubstitution(prefs,formal_parameters[i],term));
+    acc.push(parameterSubstitution(dialect,formal_parameters[i],term));
   }
   return acc;
 }
 
 // called when we don't know if the parameter is a dancer
-function parameterSubstitution(prefs, formal_parameter, actual_parameter) {
+function parameterSubstitution(dialect, formal_parameter, actual_parameter) {
   var term = actual_parameter;
-  if (formalParamIsDancers(formal_parameter) && (term in prefs.dancers)) {
-    return prefs.dancers[term];
+  if (formalParamIsDancers(formal_parameter) && (term in dialect.dancers)) {
+    return dialect.dancers[term];
   } else {
     return term;
   }
 }
 
 // called when we do know the parameter is a dancer
-function dancerSubstitution(prefs, actual_parameter) {
+function dancerSubstitution(dialect, actual_parameter) {
   var term = actual_parameter;
-  if (term in prefs.dancers) {
-    return prefs.dancers[term];
+  if (term in dialect.dancers) {
+    return dialect.dancers[term];
   } else {
     return term;
   }
@@ -202,10 +202,10 @@ function moves() {
   return Object.keys(defined_events);
 }
 
-function moveTermsAndSubstitutions(prefs) {
-  if (!prefs) { throw_up('must specify prefs to moveTermsAndSubstitutions'); }
+function moveTermsAndSubstitutions(dialect) {
+  if (!dialect) { throw_up('must specify dialect to moveTermsAndSubstitutions'); }
   var terms = Object.keys(defined_events);
-  var ms = terms.map(function(term) { return {term: term, substitution: moveSubstitution(term, prefs)}; });
+  var ms = terms.map(function(term) { return {term: term, substitution: moveSubstitution(term, dialect)}; });
   ms = ms.sort(function(a,b) {
     var aa = a.substitution.toLowerCase();
     var bb = b.substitution.toLowerCase();
@@ -216,9 +216,9 @@ function moveTermsAndSubstitutions(prefs) {
   return ms;
 }
 
-function moveTermsAndSubstitutionsForSelectMenu(prefs) {
-  if (!prefs) { throw_up('must specify prefs to moveTermsAndSubstitutionsForSelectMenu'); }
-  var mtas = moveTermsAndSubstitutions(prefs);
+function moveTermsAndSubstitutionsForSelectMenu(dialect) {
+  if (!dialect) { throw_up('must specify dialect to moveTermsAndSubstitutionsForSelectMenu'); }
+  var mtas = moveTermsAndSubstitutions(dialect);
   var swing_index = mtas.findIndex(function (e) { return 'swing' === e.term;});
   if (swing_index >= 5) {
     mtas.unshift(mtas[swing_index]);                       // copy swing to front of the list

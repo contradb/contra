@@ -74,7 +74,7 @@ RSpec.describe JSLibFigure do
 
   describe 'moveTermsAndSubstitutionsForSelectMenu' do
     it "bumps 'swing' to the front of the line" do
-      ms = JSLibFigure.eval('moveTermsAndSubstitutionsForSelectMenu(defaultPrefs)') # empty prefs
+      ms = JSLibFigure.eval('moveTermsAndSubstitutionsForSelectMenu(defaultDialect)') # empty dialect
       expect(ms.first['term']).to eq('swing')
       expect(ms.first['substitution']).to eq('swing')
       expect(ms.count {|m| m['term'] == 'swing'}).to eq(2)
@@ -172,30 +172,30 @@ RSpec.describe JSLibFigure do
     expect(JSLibFigure.parameter_uses_chooser(formal_parameter, 'chooser_half_or_full')).to be(false)
   end
 
-  it 'default_prefs' do
-    expect(JSLibFigure.default_prefs).to eq({'dancers' => {}, 'moves' => {}})
+  it 'default_dialect' do
+    expect(JSLibFigure.default_dialect).to eq({'dancers' => {}, 'moves' => {}})
   end
 
-  describe 'prefs_for_figures' do
-    let (:empty_prefs) {{'dancers' => {}, 'moves' => {}}}
+  describe 'dialect_for_figures' do
+    let (:empty_dialect) {{'dancers' => {}, 'moves' => {}}}
 
     it 'does nothing to a dance that is all in-set' do
-      expect(JSLibFigure.prefs_for_figures(empty_prefs,FactoryGirl.build(:box_the_gnat_contra).figures)).to eq(empty_prefs)
+      expect(JSLibFigure.dialect_for_figures(empty_dialect,FactoryGirl.build(:box_the_gnat_contra).figures)).to eq(empty_dialect)
     end
 
     it "rewrites 'next neighbors' to '2nd neighbors' when '3rd neighbors' are present" do
       figures = FactoryGirl.build(:dance_with_pair, pair: '3rd neighbors').figures
-      expect(JSLibFigure.prefs_for_figures(empty_prefs, figures)['dancers']).to include({'next neighbors' => '2nd neighbors'})
+      expect(JSLibFigure.dialect_for_figures(empty_dialect, figures)['dancers']).to include({'next neighbors' => '2nd neighbors'})
     end
 
     it "rewrites 'neighbors' to '1st neighbors' when '3rd neighbors' are present" do
       figures = FactoryGirl.build(:dance_with_pair, pair: '3rd neighbors').figures
-      expect(JSLibFigure.prefs_for_figures(empty_prefs, figures)['dancers']).to include({'neighbors' => '1st neighbors'})
+      expect(JSLibFigure.dialect_for_figures(empty_dialect, figures)['dancers']).to include({'neighbors' => '1st neighbors'})
     end
 
     it "rewrites 'shadows' to '1st shadows' when '2nd shadows' are present" do
       figures = FactoryGirl.build(:dance_with_pair, pair: '2nd shadows').figures
-      expect(JSLibFigure.prefs_for_figures(empty_prefs, figures)['dancers']).to include({'shadows' => '1st shadows'})
+      expect(JSLibFigure.dialect_for_figures(empty_dialect, figures)['dancers']).to include({'shadows' => '1st shadows'})
     end
   end
 
@@ -226,7 +226,7 @@ RSpec.describe JSLibFigure do
   end
 
   it 'move_substitution works' do
-    expect(JSLibFigure.move_substitution('allemande', JSLibFigure.test_prefs)).to eq('almond')
-    expect(JSLibFigure.move_substitution("Rory O'Moore", JSLibFigure.test_prefs)).to eq("Rory O'Moore")
+    expect(JSLibFigure.move_substitution('allemande', JSLibFigure.test_dialect)).to eq('almond')
+    expect(JSLibFigure.move_substitution("Rory O'Moore", JSLibFigure.test_dialect)).to eq("Rory O'Moore")
   end
 end

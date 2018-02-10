@@ -1,7 +1,7 @@
 <div class="figures-link-cloud">
   <% @move_terms_and_substitutions.each do |move_preference| %>
     <%= content_tag :h2, {style: "font-size: #{(13 + 2.7 * Math.sqrt(@mdtab[move_preference['term']]&.length || 0)).round}px"} do %>
-      <%= move_link(move_preference['term'], @prefs) %>
+      <%= move_link(move_preference['term'], @dialect) %>
     <% end %>
   <% end %>
 </div>

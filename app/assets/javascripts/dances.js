@@ -114,7 +114,7 @@ function menuMoveLabel(from,to) {
   var app = angular.module('contra', []);
   var scopeInit = function ($scope,$timeout) {
     var fctrl42 = this;
-    var prefs = JSON.parse($('#prefs-json').text());
+    var dialect = JSON.parse($('#dialect-json').text());
 
     $scope.moveCaresAboutRotations = moveCaresAboutRotations;
     $scope.moveCaresAboutPlaces = moveCaresAboutPlaces;
@@ -126,15 +126,15 @@ function menuMoveLabel(from,to) {
 
     // had to memoize moveTermsAndSubstitutionsForSelect because the move select menus were blanking after accordioning
     // https://stackoverflow.com/questions/17116114/how-to-troubleshoot-angular-10-digest-iterations-reached-error/17116322#17116322
-    $scope.moveTermsAndSubstitutionsForSelect = moveTermsAndSubstitutionsForSelectMenu(prefs);
+    $scope.moveTermsAndSubstitutionsForSelect = moveTermsAndSubstitutionsForSelectMenu(dialect);
     $scope.parameters = parameters;
     $scope.degreesToRotations = degreesToRotations;
     $scope.degreesToPlaces = degreesToPlaces;
     setChoosers($scope);
     $scope.wristGrips = wristGrips;
-    $scope.prefs = prefs;
+    $scope.dialect = dialect;
     $scope.figureToString = figureToString;
-    $scope.prefsForFigures = prefsForFigures;
+    $scope.dialectForFigures = dialectForFigures;
     $scope.set_if_unset = set_if_unset;
     $scope.userChangedParameter = userChangedParameter;
     $scope.userChangedMove = userChangedMove;

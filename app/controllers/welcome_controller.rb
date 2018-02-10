@@ -2,6 +2,6 @@ require 'move'
 
 class WelcomeController < ApplicationController
   def index
-    @prefs_json = prefs.to_json
+    @dialect_json = dialect.to_json
   end
 end

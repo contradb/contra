@@ -1,20 +1,20 @@
 require 'rails_helper'
 
 describe User do
-  it '#prefs' do
+  it '#dialect' do
     user = FactoryGirl.build(:user)
     user.preferences.build(FactoryGirl.attributes_for(:move_preference, term: 'gyre', substitution: 'darcy'))
     user.preferences.build(FactoryGirl.attributes_for(:move_preference, term: 'gyre meltdown', substitution: 'meltdown swing'))
     user.preferences.build(FactoryGirl.attributes_for(:dancer_preference, term: 'ladles', substitution: 'ravens'))
     user.preferences.build(FactoryGirl.attributes_for(:dancer_preference, term: 'gentlespoons', substitution: 'larks'))
-    prefs = user.prefs
-    expect(prefs.length).to eq(2)
-    expect(prefs['dancers'].length).to eq(2)
-    expect(prefs['dancers']['ladles']).to eq('ravens')
-    expect(prefs['dancers']['gentlespoons']).to eq('larks')
-    expect(prefs['moves'].length).to eq(2)
-    expect(prefs['moves']['gyre']).to eq('darcy')
-    expect(prefs['moves']['gyre meltdown']).to eq('meltdown swing')
+    dialect = user.dialect
+    expect(dialect.length).to eq(2)
+    expect(dialect['dancers'].length).to eq(2)
+    expect(dialect['dancers']['ladles']).to eq('ravens')
+    expect(dialect['dancers']['gentlespoons']).to eq('larks')
+    expect(dialect['moves'].length).to eq(2)
+    expect(dialect['moves']['gyre']).to eq('darcy')
+    expect(dialect['moves']['gyre meltdown']).to eq('meltdown swing')
   end
 
   describe 'preferences' do

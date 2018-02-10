@@ -3,8 +3,8 @@ require 'rails_helper'
 
 RSpec.describe DancesHelper, type: :helper do
 
-  figure_txt_for = -> move, *parameter_values, prefs {
-    JSLibFigure.figureToString({'move' => move, 'parameter_values' => parameter_values}, prefs)
+  figure_txt_for = -> move, *parameter_values, dialect {
+    JSLibFigure.figureToString({'move' => move, 'parameter_values' => parameter_values}, dialect)
   }
 
   def whitespice(x) 
@@ -202,7 +202,7 @@ RSpec.describe DancesHelper, type: :helper do
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}'" do
-      expect(figure_txt_for.call(move,*pvalues, JSLibFigure.default_prefs)).to match(whitespice(render))
+      expect(figure_txt_for.call(move,*pvalues, JSLibFigure.default_dialect)).to match(whitespice(render))
     end
   end
 
@@ -213,8 +213,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['mush into short wavy lines', 'ocean wave', 4]
   ].each do |arr|
     render, move, *pvalues = arr
-    it "renders #{move} as '#{render}' with prefs" do
-      expect(figure_txt_for.call(move,*pvalues, JSLibFigure.test_prefs)).to match(whitespice(render))
+    it "renders #{move} as '#{render}' with dialect" do
+      expect(figure_txt_for.call(move,*pvalues, JSLibFigure.test_dialect)).to match(whitespice(render))
     end
   end
 end
