@@ -105,9 +105,9 @@ RSpec.configure do |config|
 
   # include devise helpers as per 
   # http://stackoverflow.com/questions/4308094/all-ruby-tests-raising-undefined-method-authenticate-for-nilnilclass
-  config.include Devise::TestHelpers , type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :controller
   # and also as per http://stackoverflow.com/questions/13005444/testing-views-that-use-devise-with-rspec
-  config.include Devise::TestHelpers , type: :view
+  config.include Devise::Test::ControllerHelpers, type: :view
 
   config.extend ControllerMacros, :type => :controller
 

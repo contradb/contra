@@ -1,4 +1,4 @@
 class Activity < ApplicationRecord
-  belongs_to :program
-  belongs_to :dance
+  belongs_to :program, inverse_of: :activities
+  belongs_to :dance, optional: true
 end

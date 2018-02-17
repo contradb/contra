@@ -4,7 +4,7 @@
 class Program < ApplicationRecord
   belongs_to :user
   validates :title, length: { in: 4..100 }  
-  has_many :activities, dependent: :destroy
+  has_many :activities, dependent: :destroy, inverse_of: :program
   has_many :dances, through: :activities
   accepts_nested_attributes_for :activities
 
@@ -36,7 +36,7 @@ class Program < ApplicationRecord
   def append_new_activity(hash)
     Private.assert !hash[:program]
     Private.assert !hash[:index]
-    Activity.create!(hash.merge({program: self, index: activities_length}))
+    self.activities.create!(hash.merge({program: self, index: activities_length}))
     self.reload # reloads associations
     self
   end
