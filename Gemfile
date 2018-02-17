@@ -77,7 +77,7 @@ gem 'sprockets-es6'
 gem 'bootstrap-sass', '~> 3.3.5'
 gem 'sprockets-rails' # , '~> 2.3.2'
 
-gem 'devise', '~> 4.3.0'
+gem 'devise'
 
 gem 'redcarpet'
 
