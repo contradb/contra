@@ -7,3 +7,10 @@
     <%= idiom.term %> <%= idiom.substitution %>
   <% end %>
 <% end %>
+<div class='form-inline'>
+  <select id="new-idiom-term" class="form-control"><option value="">Choose term...</option></select>
+  <%= button_tag(content_tag(:span, new_icon_html() + ' Substitute'),
+      class: 'btn btn-default btn-md btn-success show-new-idiom-dialog',
+      disabled: true)
+     %>
+</div>

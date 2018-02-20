@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'login_helper'
 
-describe 'Dialect page' do
+describe 'Dialect page', js: true do
   it 'displays existings idioms' do
     with_login do |user|
       move_idiom = user.idioms.create(FactoryGirl.attributes_for(:move_idiom, term: 'allemande', substitution: 'almond'))
@@ -29,4 +29,13 @@ describe 'Dialect page' do
     expect(current_path).to eq(new_user_session_path)
   end
 
+  it 'adding an idiom saves to db and updates page' do
+    with_login do |user|
+      visit '/dialect'
+      expect(page).to have_css('option', text: 'swing')
+      select 'swing'
+      click_button('Substitute')
+      expect(page).to have_content('substitute swing')
+    end
+  end
 end
