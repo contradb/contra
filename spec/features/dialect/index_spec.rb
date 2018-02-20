@@ -32,10 +32,11 @@ describe 'Dialect page', js: true do
   it 'adding an idiom saves to db and updates page' do
     with_login do |user|
       visit '/dialect'
-      expect(page).to have_css('option', text: 'swing')
+      expect(page).to have_button('Substitute', disabled: true)
+      expect(page).to have_css('option', text: 'swing') # js wait
       select 'swing'
       click_button('Substitute')
-      expect(page).to have_content('substitute swing')
+      expect(page).to have_content("Substitute for “swing”")
     end
   end
 end
