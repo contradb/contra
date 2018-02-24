@@ -1,0 +1,15 @@
+<section>
+  <h1>Contra Language Preferences</h1>
+  <%= form_for @preferences_form, url: preferences_path, method: :put do |f| %>
+    <%# TODO: make a preference form object in app/forms, ala https://revs.runtime-revolution.com/creating-form-objects-with-activemodel-346e6c2abbf3 %>
+    <%# TODO: Read and understand Nested Attributes Examples in http://api.rubyonrails.org/v5.1/classes/ActionView/Helpers/FormHelper.html#method-i-fields_for %>
+    <%= f.fields_for :preferences do |preference_fields| %>
+      <h2><%= preference_fields.index %></h2>
+      Term <%= preference_fields.text_field :term %>
+      Substitution <%= preference_fields.index %>: <%= preference_fields.text_field :substitution %>
+      Type <%= preference_fields.index %>: <%= preference_fields.text_field :type %>
+      <%= preference_fields.hidden_field :id %>
+    <% end %>
+    <%= save_submit_button_html "Save Preferences" %>
+  <% end %>
+</section>

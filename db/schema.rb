@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171216025445) do
+ActiveRecord::Schema.define(version: 20180127224920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,16 @@ ActiveRecord::Schema.define(version: 20171216025445) do
     t.text     "hook",             default: "",   null: false
   end
 
+  create_table "preferences", force: :cascade do |t|
+    t.string   "type",         null: false
+    t.string   "term",         null: false
+    t.string   "substitution", null: false
+    t.integer  "user_id",      null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["user_id"], name: "index_preferences_on_user_id", using: :btree
+  end
+
   create_table "programs", force: :cascade do |t|
     t.string   "title",      limit: 100, null: false
     t.integer  "user_id",                null: false
@@ -78,5 +88,6 @@ ActiveRecord::Schema.define(version: 20171216025445) do
 
   add_foreign_key "activities", "dances"
   add_foreign_key "activities", "programs"
+  add_foreign_key "preferences", "users"
   add_foreign_key "programs", "users"
 end
