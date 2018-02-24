@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: "users/registrations" }
   resources :users, only: [:show, :index]
   resources :figures, only: [:index, :show]
+  resources :idioms
 
   get 'welcome/index'
   get 'dialect' => 'dialect#index'

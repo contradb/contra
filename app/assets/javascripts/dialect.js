@@ -20,7 +20,12 @@ $(document).ready(function() {
     newIdiomButton.prop('disabled', !$(this).val());
   });
 
+  var newIdiomTermMovesOptGroup = newIdiomTerm.children('optgroup[label=moves]');
   moves().forEach(function(move) {
-    newIdiomTerm.append($('<option value="'+move+'">'+move+'</option>'));
+    newIdiomTermMovesOptGroup.append($('<option value="'+move+'">'+move+'</option>'));
+  });
+  var newIdiomTermDancersOptGroup = newIdiomTerm.children('optgroup[label=dancers]');
+  dancerMenuForChooser(chooser_dancers).forEach(function(dancer) {
+    newIdiomTermDancersOptGroup.append($('<option value="'+dancer+'">'+dancer+'</option>'));
   });
 });

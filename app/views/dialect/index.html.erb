@@ -8,7 +8,11 @@
   <% end %>
 <% end %>
 <div class='form-inline'>
-  <select id="new-idiom-term" class="form-control"><option value="">Choose term...</option></select>
+  <select id="new-idiom-term" class="form-control">
+    <option value="">Choose term...</option>
+    <optgroup label="moves"></optgroup>
+    <optgroup label="dancers"></optgroup>
+  </select>
   <%= button_tag(content_tag(:span, new_icon_html() + ' Substitute'),
       class: 'btn btn-default btn-md btn-success show-new-idiom-dialog',
       disabled: true,
@@ -25,13 +29,16 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="new-idiom-label">Substitute for '(TBD)'</h4>
       </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+      <%= form_with(model: Idiom::Idiom.new, url: idioms_path) do |f| %>
+        <div class="modal-body">
+          <%= f.label(:substitution) %><br>
+          <%= f.text_field(:substitution, class: 'form-control') %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= f.submit('Save', class: 'btn btn-success') %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

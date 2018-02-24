@@ -1,0 +1,5 @@
+#+TITLE: dialect editor
+* TODO make controller
+** be rspec ./spec/features/dialect/index_spec.rb:32
+* TODO fix up idioms routes
+* TODO maybe get rid of dialect route

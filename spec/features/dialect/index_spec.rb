@@ -37,6 +37,8 @@ describe 'Dialect page', js: true do
       select 'swing'
       click_button('Substitute')
       expect(page).to have_content("Substitute for “swing”")
+      fill_in('idiom_idiom[substitution]', with: 'swong')
+      click_on('Save')
     end
   end
 end
