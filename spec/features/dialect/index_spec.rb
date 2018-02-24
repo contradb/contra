@@ -31,6 +31,7 @@ describe 'Dialect page', js: true do
 
   it 'adding an idiom saves to db and updates page' do
     with_login do |user|
+      old_idiom_count = Idiom::Idiom.count
       visit '/dialect'
       expect(page).to have_button('Substitute', disabled: true)
       expect(page).to have_css('option', text: 'swing') # js wait
@@ -39,6 +40,12 @@ describe 'Dialect page', js: true do
       expect(page).to have_content("Substitute for “swing”")
       fill_in('idiom_idiom[substitution]', with: 'swong')
       click_on('Save')
+      expect(page).to have_content("swing → swong")
+      expect(Idiom::Idiom.count).to be(1+old_idiom_count)
+      idiom = Idiom::Idiom.last
+      expect(idiom).to be_a(Idiom::Move)
+      expect(idiom.term).to eq('swing')
+      expect(idiom.substitution).to eq('swong')
     end
   end
 end

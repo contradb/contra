@@ -10,9 +10,10 @@ $(document).ready(function() {
   var newIdiomButton = $('.show-new-idiom-dialog');
 
   newIdiomButton.click(function () {
-    // this just sets the dialog title.
-    $('#new-idiom-modal .modal-title').text("Substitute for “" + newIdiomTerm.val() + "”");
-    // The actual heavy lifting of the dialog is done by the jquery dialog plugin and
+    var term = newIdiomTerm.val();
+    $('#new-idiom-modal .modal-title').text("Substitute for “" + term + "”");
+    $('#new-idiom-modal .modal-term').val(term);
+    // The actual posting of the dialog is done by the jquery dialog plugin and
     // data-attributes, which we fall through to by not preventing default here.
   });
 
