@@ -3,6 +3,7 @@
 ** TODO create idiom
 *** be rspec ./spec/features/dialect/index_spec.rb:32
 *** TODO assumes moves, which is wrong - it needs to react on moves or dancers
+** TODO delete-all idioms
 ** TODO edit idiom
 ** TODO delete idiom
 * TODO fix up idioms routes
@@ -10,3 +11,4 @@
 * TODO in idioms_controller#create, figure out what to do about all them funky formats like html and json
 * TODO fix margins on dialect page
 * TODO have two views folders, idiom/ and idioms/
+* TODO have singularized partial, _dancer.html.erb - shouldn't it be dancers?

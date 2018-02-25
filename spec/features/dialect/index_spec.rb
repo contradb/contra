@@ -6,13 +6,15 @@ require 'login_helper'
 describe 'Dialect page', js: true do
   it 'displays existings idioms' do
     with_login do |user|
-      move_idiom = user.idioms.create(FactoryGirl.attributes_for(:move_idiom, term: 'allemande', substitution: 'almond'))
-      dancer_idiom = user.idioms.create(FactoryGirl.attributes_for(:dancer_idiom, term: 'gentlespoons', substitution: 'guys'))
+      move_idiom = FactoryGirl.create(:move_idiom, user: user, term: 'allemande', substitution: 'almond')
+      dancer_idiom = FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'guys')
+      other_users_idiom = FactoryGirl.create(:dancer_idiom, user: FactoryGirl.create(:user), term: 'ladles', substitution: 'ladies')
 
       visit '/dialect'
       expect(page).to have_css('h1', text: "Dialect")
-      expect(page).to have_content("#{move_idiom.term} #{move_idiom.substitution}")
-      expect(page).to have_content("#{dancer_idiom.term} #{dancer_idiom.substitution}")
+      expect(page).to have_content(idiom_rendering(move_idiom))
+      expect(page).to have_content(idiom_rendering(dancer_idiom))
+      expect(page).to_not have_content(idiom_rendering(other_users_idiom))
     end
   end
 
@@ -40,12 +42,37 @@ describe 'Dialect page', js: true do
       expect(page).to have_content("Substitute for “swing”")
       fill_in('idiom_idiom[substitution]', with: 'swong')
       click_on('Save')
-      expect(page).to have_content("swing → swong")
+      expect(page).to have_content(idiom_attr_rendering('swing', 'swong'))
       expect(Idiom::Idiom.count).to be(1+old_idiom_count)
       idiom = Idiom::Idiom.last
       expect(idiom).to be_a(Idiom::Move)
       expect(idiom.term).to eq('swing')
       expect(idiom.substitution).to eq('swong')
     end
+  end
+
+  xit 'Restore Default Dialect button works' do # WIP
+    with_login do |user|
+      other_user = FactoryGirl.create(:user)
+      FactoryGirl.create(:dancer_idiom, user: other_user, term: 'ladles', substutution: 'pterodactyls')
+      FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'brontosauruses')
+      FactoryGirl.create(:move_idiom, user: user, term: 'allemande', substitution: 'almond')
+
+      visit '/dialect'
+
+      click_button('Restore Default Dialect')
+      # click confirm
+
+      expect(page).to_not have_content('pterodactyls')
+
+    end
+  end
+
+  def idiom_rendering(idiom)
+    idiom_attr_rendering(idiom.term, idiom.substitution)
+  end
+
+  def idiom_attr_rendering(term, substitution)
+    "#{term} → #{substitution}"
   end
 end
