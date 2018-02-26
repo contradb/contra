@@ -31,7 +31,7 @@ describe 'Dialect page', js: true do
     expect(current_path).to eq(new_user_session_path)
   end
 
-  it 'adding an idiom saves to db and updates page' do
+  it 'adding a move idiom saves to db and updates page' do
     with_login do |user|
       old_idiom_count = Idiom::Idiom.count
       visit '/dialect'
@@ -51,20 +51,42 @@ describe 'Dialect page', js: true do
     end
   end
 
-  xit 'Restore Default Dialect button works' do # WIP
+  it 'adding a dancer idiom saves to db and updates page' do
     with_login do |user|
-      other_user = FactoryGirl.create(:user)
-      FactoryGirl.create(:dancer_idiom, user: other_user, term: 'ladles', substutution: 'pterodactyls')
-      FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'brontosauruses')
-      FactoryGirl.create(:move_idiom, user: user, term: 'allemande', substitution: 'almond')
+      old_idiom_count = Idiom::Idiom.count
+      visit '/dialect'
+      expect(page).to have_button('Substitute', disabled: true)
+      expect(page).to have_css('option', text: 'ladles') # js wait
+      select 'ladles'
+      click_button('Substitute')
+      expect(page).to have_content("Substitute for “ladles”")
+      fill_in('idiom_idiom[substitution]', with: 'ravens')
+      click_on('Save')
+      expect(page).to have_content(idiom_attr_rendering('ladles', 'ravens'))
+      expect(Idiom::Idiom.count).to be(1+old_idiom_count)
+      idiom = Idiom::Idiom.last
+      expect(idiom).to be_a(Idiom::Dancer)
+      expect(idiom.term).to eq('ladles')
+      expect(idiom.substitution).to eq('ravens')
+    end
+  end
+
+  it 'Restore Default Dialect button works' do
+    with_login do |user|
+      dancer_idiom = FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'brontosauruses')
+      move_idiom = FactoryGirl.create(:move_idiom, user: user, term: 'allemande', substitution: 'almond')
+
+      expect(user.idioms).to be_present
 
       visit '/dialect'
 
       click_button('Restore Default Dialect')
-      # click confirm
+      # automatically clicks confirm!?
 
-      expect(page).to_not have_content('pterodactyls')
-
+      # argh! I can't get ujs events to fire, so I can't clear the view. TODO
+      expect(page).to_not have_content(idiom_rendering(dancer_idiom))
+      expect(page).to_not have_content(idiom_rendering(move_idiom))
+      expect(user.reload.idioms).to be_empty
     end
   end
 

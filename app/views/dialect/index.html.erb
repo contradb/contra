@@ -19,9 +19,9 @@
 </div>
 
 <div style='margin-top: 100px'>
-  <%= button_tag(content_tag(:span, delete_icon_html + ' Restore Default Dialect'),
-                 class: 'btn btn-default btn-md btn-danger restore-default-dialect')
-      %>
+  <%= button_to dialect_restore_defaults_path, class: 'btn btn-md btn-danger restore-default-dialect', data: { confirm: "You will delete your dialect. Are you sure?" } do %>
+    <%= content_tag(:span, delete_icon_html + ' Restore Default Dialect') %>
+  <% end %>
 </div>
 
 <!-- Modal -->

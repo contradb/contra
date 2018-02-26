@@ -4,13 +4,14 @@ class IdiomsController < ApplicationController
   def create
     @idiom = Idiom::Move.new(idiom_params)
     @idiom.user = current_user
+    @idiom.type = idiom_type_from_term(@idiom.term)
     respond_to do |format|
       if @idiom.save
         format.html { redirect_to dialect_path, notice: 'Idiom was successfully created.' }
         format.js
         format.json { render :show, status: :created, location: @idiom }
       else
-        binding.pry
+        # TODO worry about this branch
         format.html { render :new }
         format.json { render json: @idiom.errors, status: :unprocessable_entity }
       end
@@ -21,8 +22,14 @@ class IdiomsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def idiom_params
-    puts "params = #{params.inspect}"
-    params.require(:idiom_idiom).permit(:term,
-                                        :substitution)
+    params.require(:idiom_idiom).permit(:term, :substitution)
+  end
+
+  def idiom_type_from_term(term)
+    if term.in?(JSLibFigure.moves)
+      'Idiom::Move'
+    else
+      'Idiom::Dancer'           # need if term.in?(JSLibFigure.dancerMenuForChooser(chooser_dancers)) or something
+    end
   end
 end

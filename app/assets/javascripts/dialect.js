@@ -30,3 +30,34 @@ $(document).ready(function() {
     newIdiomTermDancersOptGroup.append($('<option value="'+dancer+'">'+dancer+'</option>'));
   });
 });
+
+// TODO delete this dross
+// $(document).ready(function() {
+//   console.log('sporks');
+//   $('*').on('ajax:beforeSend', function(event, xhr, status, error) {
+//     foobar = true;
+    
+//     alert('never see this');
+//   });
+//   console.log('knaves');
+//   $('button').on('ajax:success', function() {
+//     console.log('hola');
+//     alert('hola');
+//     return true;
+//   });
+//   $('button').on('ajax:error', function() {
+//     console.log('buuurp');
+//     alert('burrrp');
+//     return true;
+//   });
+//   $('form').on('ajax:success', function() {
+//     console.log('hola');
+//     alert('hola');
+//     return true;
+//   });
+//   $('form').on('ajax:error', function() {
+//     console.log('buuurp');
+//     alert('burrrp');
+//     return true;
+//   });
+// });

@@ -12,7 +12,10 @@ Rails.application.routes.draw do
   resources :idioms
 
   get 'welcome/index'
+
   get 'dialect' => 'dialect#index'
+  post 'dialect_restore_defaults' => 'dialect#restore_defaults'
+
   get 'about' => 'about#index'
   root 'welcome#index'
 
