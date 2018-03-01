@@ -25,6 +25,8 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
+    actionview-encoded_mail_to (1.0.9)
+      rails
     activejob (5.0.4)
       activesupport (= 5.0.4)
       globalid (>= 0.3.6)
@@ -248,6 +250,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  actionview-encoded_mail_to
   ajax-datatables-rails
   angularjs-rails (~> 1.4, >= 1.4.7)
   bootstrap-sass (~> 3.3.5)
@@ -281,4 +284,4 @@ DEPENDENCIES
   web-console
 
 BUNDLED WITH
-   1.16.0
+   1.16.1
