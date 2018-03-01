@@ -6,7 +6,7 @@
 
       <ul>
         <li><strong>Why are we here?</strong> &mdash; <%= link_to "the ‘About’ page", about_path %></li>
-        <li><strong>How do I enter a dance?</strong> &mdash; <a href="https://youtu.be/1NSr-_tx08s" target="_">video tutorial</a></li>
+        <li><strong>How do I enter a dance?</strong> &mdash; <a href="https://youtu.be/1NSr-_tx08s" target="_blank">video tutorial</a></li>
         <li><strong>How do I search for dances?</strong> &mdash; <a href="https://github.com/contradb/contra/wiki/Dance-Figure-Filters" target="_">wiki page</a></li>
         <li><strong>Can someone talk me through this?</strong> &mdash; <%= mail_to Rails.application.secrets.admin_help_email, Rails.application.secrets.admin_help_name, encode: 'hex' %> is happy to help you through using the site</li>
         <li><strong>A dance I wrote is mis-entered, my name is misspelled, or I would like my dance taken down.</strong> &mdash; <%= mail_to Rails.application.secrets.admin_help_email, Rails.application.secrets.admin_help_name, encode: 'hex' %> keeps our data clean and consensual. Contact her to add information to a choreographer page representing you.</li>
