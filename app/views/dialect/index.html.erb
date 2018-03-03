@@ -19,7 +19,12 @@
 </div>
 
 <div style='margin-top: 100px'>
-  <%= button_to dialect_restore_defaults_path, class: 'btn btn-md btn-danger restore-default-dialect', data: { confirm: "You will delete your dialect. Are you sure?" } do %>
+  <%= button_to(dialect_restore_defaults_path,
+                remote: true,
+                class: 'btn btn-md btn-danger',
+                form_class: 'restore-default-dialect-form',
+                data: { confirm: "You will delete your entire dialect, seeing dance terms in their unvarnished, spoon-themed glory. Are you sure?" }
+               ) do %>
     <%= content_tag(:span, delete_icon_html + ' Restore Default Dialect') %>
   <% end %>
 </div>

@@ -31,33 +31,11 @@ $(document).ready(function() {
   });
 });
 
-// TODO delete this dross
-// $(document).ready(function() {
-//   console.log('sporks');
-//   $('*').on('ajax:beforeSend', function(event, xhr, status, error) {
-//     foobar = true;
-    
-//     alert('never see this');
-//   });
-//   console.log('knaves');
-//   $('button').on('ajax:success', function() {
-//     console.log('hola');
-//     alert('hola');
-//     return true;
-//   });
-//   $('button').on('ajax:error', function() {
-//     console.log('buuurp');
-//     alert('burrrp');
-//     return true;
-//   });
-//   $('form').on('ajax:success', function() {
-//     console.log('hola');
-//     alert('hola');
-//     return true;
-//   });
-//   $('form').on('ajax:error', function() {
-//     console.log('buuurp');
-//     alert('burrrp');
-//     return true;
-//   });
-// });
+$(document).ready(function() {
+  $('.restore-default-dialect-form').on('ajax:error', function() {
+    $('.alert').html('Bummer! Error restoring default dialect.');
+  }).on('ajax:success', function() {
+    $('.idioms-list').empty();
+    $('.notice').html('Default dialect restored.');
+  });
+});
