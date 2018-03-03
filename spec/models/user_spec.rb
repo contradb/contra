@@ -4,7 +4,7 @@ describe User do
   it '#dialect' do
     user = FactoryGirl.build(:user)
     user.idioms.build(FactoryGirl.attributes_for(:move_idiom, term: 'gyre', substitution: 'darcy'))
-    user.idioms.build(FactoryGirl.attributes_for(:move_idiom, term: 'gyre meltdown', substitution: 'meltdown swing'))
+    user.idioms.build(FactoryGirl.attributes_for(:move_idiom, term: 'meltdown swing', substitution: 'gyre meltdown'))
     user.idioms.build(FactoryGirl.attributes_for(:dancer_idiom, term: 'ladles', substitution: 'ravens'))
     user.idioms.build(FactoryGirl.attributes_for(:dancer_idiom, term: 'gentlespoons', substitution: 'larks'))
     dialect = user.dialect
@@ -14,7 +14,7 @@ describe User do
     expect(dialect['dancers']['gentlespoons']).to eq('larks')
     expect(dialect['moves'].length).to eq(2)
     expect(dialect['moves']['gyre']).to eq('darcy')
-    expect(dialect['moves']['gyre meltdown']).to eq('meltdown swing')
+    expect(dialect['moves']['meltdown swing']).to eq('gyre meltdown')
   end
 
   describe 'idioms' do

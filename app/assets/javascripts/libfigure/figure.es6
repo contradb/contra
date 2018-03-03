@@ -369,6 +369,28 @@ defineFigure("give & take",
              {stringify: giveAndTakeStringify, change: giveAndTakeChange});
 
 ////////////////////////////////////////////////
+// FACING STAR (formerly gyre star)           //
+////////////////////////////////////////////////
+
+function facingStarStringify(move, pvs, dialect) {
+  var [ who,  turn,  places,  beats] = pvs;
+  var [swho, sturn, splaces, sbeats] = parameter_strings(move, pvs, dialect);
+  var shand = turn ? ('*'===turn ? '*': 'left') : 'right';
+  var smove = moveSubstitution(move, dialect);
+  return words(smove, sturn, splaces, 'with', swho, 'putting their', shand, 'hands in and backing up', sbeats);
+}
+
+defineFigure("facing star",
+             [param_subject_pair,
+              param_spin_clockwise,
+              param_places,
+              param_beats_8],
+             {stringify: facingStarStringify});
+
+defineRelatedMove2Way('facing star', 'gyre');
+defineRelatedMove2Way('facing star', 'star');
+
+////////////////////////////////////////////////
 // GYRE (aka circle by the eyes)              //
 ////////////////////////////////////////////////
 
@@ -385,37 +407,6 @@ defineFigure("gyre",
               param_once_around,
               param_beats_8],
              {stringify: gyreStringify});
-
-////////////////////////////////////////////////
-// GYRE MELTDOWN                              //
-////////////////////////////////////////////////
-
-defineFigure("gyre meltdown", [param_subject_pairz, param_beats_16]);
-
-defineRelatedMove2Way('gyre meltdown', 'gyre');
-defineRelatedMove2Way('gyre meltdown', 'swing');
-
-////////////////////////////////////////////////
-// GYRE STAR                                  //
-////////////////////////////////////////////////
-
-function gyreStarStringify(move, pvs, dialect) {
-  var [ who,  turn,  places,  beats] = pvs;
-  var [swho, sturn, splaces, sbeats] = parameter_strings(move, pvs, dialect);
-  var shand = turn ? ('*'===turn ? '*': 'left') : 'right';
-  var smove = moveSubstitution(move, dialect);
-  return words(smove, sturn, splaces, 'with', swho, 'putting their', shand, 'hands in and backing up', sbeats);
-}
-
-defineFigure("gyre star",
-             [param_subject_pair,
-              param_spin_clockwise,
-              param_places,
-              param_beats_8],
-             {stringify: gyreStarStringify});
-
-defineRelatedMove2Way('gyre star', 'gyre');
-defineRelatedMove2Way('gyre star', 'star');
 
 ////////////////////////////////////////////////
 // HEY                                        //
@@ -492,6 +483,16 @@ function madRobinStringify(move, pvs, dialect) {
 defineFigure("mad robin",
              [param_subject_pair, param_once_around, param_beats],
              {stringify: madRobinStringify});
+
+////////////////////////////////////////////////
+// MELTDOWN SWING (formerly gyre meltdown)    //
+////////////////////////////////////////////////
+
+defineFigure("meltdown swing", [param_subject_pairz, param_beats_16]);
+
+defineRelatedMove2Way('meltdown swing', 'gyre');
+defineRelatedMove2Way('meltdown swing', 'swing');
+
 
 ////////////////////////////////////////////////
 // OCEAN WAVE                                 //

@@ -51,7 +51,7 @@ var testDialect = {moves: {gyre: 'darcy',
 
 /*
 defaultDialect = {moves: {gyre: 'darcy',
-                     'gyre meltdown': 'meltdown swing',
+                     'meltdown swing': 'gyre meltdown',
                      allemande: 'almond',
                      'see saw': 'do si do left shoulder',
                      'ocean wave': 'mush into short wavy lines',
