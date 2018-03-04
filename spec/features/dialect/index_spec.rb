@@ -9,14 +9,23 @@ describe 'Dialect page', js: true do
       expect(user.idioms).to be_empty
       visit '/dialect'
       click_button('ladies & gents')
+
+      # test html
       expect(page).to have_content(idiom_attr_rendering('ladles', 'ladies'))
       expect(page).to have_content(idiom_attr_rendering('first ladle', 'first lady'))
       expect(page).to have_content(idiom_attr_rendering('second ladle', 'second lady'))
       expect(page).to have_content(idiom_attr_rendering('gentlespoons', 'gents'))
       expect(page).to have_content(idiom_attr_rendering('first gentlespoon', 'first gent'))
       expect(page).to have_content(idiom_attr_rendering('second gentlespoon', 'second gent'))
-      # also check db?
-      # also check status blinkenlights
+
+      # test db
+      dancers = user.reload.dialect['dancers']
+      expect(dancers['ladles']).to eq('ladies')
+      expect(dancers['first ladle']).to eq('first lady')
+      expect(dancers['second ladle']).to eq('second lady')
+      expect(dancers['gentlespoons']).to eq('gents')
+      expect(dancers['first gentlespoon']).to eq('first gent')
+      expect(dancers['second gentlespoon']).to eq('second gent')
     end
   end
 
@@ -38,6 +47,7 @@ describe 'Dialect page', js: true do
     it 'move'
     it 'clear all dancers'
     it 'clear all moves'
+    it 'selecting a term that is already present does nothing'
   end
 
 

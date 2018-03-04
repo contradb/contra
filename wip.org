@@ -1,9 +1,10 @@
 #+TITLE: dialect editor
+* TODO Make menu item
 * TODO make controller
 ** DONE create idiom
 *** be rspec ./spec/features/dialect/index_spec.rb:32
 *** DONE assumes moves, which is wrong - it needs to react on moves or dancers
-** TODO delete-all idioms
+** DONE delete-all idioms
 *** stuck on ujs ajax:success event not firing
 ** TODO edit idiom
 ** TODO delete idiom
@@ -14,3 +15,4 @@
 * TODO have two views folders, idiom/ and idioms/
 * TODO have singularized partial, _dancer.html.erb - shouldn't it be dancers?
 * TODO idiom_type_from_term needs tidying up - see comment in its source code
+* TODO blinkenlights
