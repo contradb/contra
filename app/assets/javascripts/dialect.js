@@ -21,6 +21,7 @@ $(document).ready(function() {
     newIdiomButton.prop('disabled', !$(this).val());
   });
 
+  // build menus
   var newIdiomTermMovesOptGroup = newIdiomTerm.children('optgroup[label=moves]');
   moves().forEach(function(move) {
     newIdiomTermMovesOptGroup.append($('<option value="'+move+'">'+move+'</option>'));
@@ -32,10 +33,22 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
+  if ($('.idioms-list').length <= 0) {return;} // this code is about maintaining .idioms-list
+
   $('.restore-default-dialect-form').on('ajax:error', function() {
     $('.alert').html('Bummer! Error restoring default dialect.');
   }).on('ajax:success', function() {
     $('.idioms-list').empty();
     $('.notice').html('Default dialect restored.');
+  });
+
+  $('.one-click-role-form').on('ajax:error', function() {
+    $('.alert').html('Bummer! Error setting role.');
+  }).on('ajax:success', function(e, idioms, status, xhr) {
+    var idiomsList = $('.idioms-list');
+    idiomsList.empty();
+    $.each(idioms, function(idx, idiom) {
+      idiomsList.append("<div>" + idiom.term + " → "+ idiom.substitution + "</div>");
+    });
   });
 });

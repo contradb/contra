@@ -4,6 +4,43 @@ require 'rails_helper'
 require 'login_helper'
 
 describe 'Dialect page', js: true do
+  it 'role buttons' do
+    with_login do |user|
+      expect(user.idioms).to be_empty
+      visit '/dialect'
+      click_button('ladies & gents')
+      expect(page).to have_content(idiom_attr_rendering('ladles', 'ladies'))
+      expect(page).to have_content(idiom_attr_rendering('first ladle', 'first lady'))
+      expect(page).to have_content(idiom_attr_rendering('second ladle', 'second lady'))
+      expect(page).to have_content(idiom_attr_rendering('gentlespoons', 'gents'))
+      expect(page).to have_content(idiom_attr_rendering('first gentlespoon', 'first gent'))
+      expect(page).to have_content(idiom_attr_rendering('second gentlespoon', 'second gent'))
+      # also check db?
+      # also check status blinkenlights
+    end
+  end
+
+  it 'role [x]'
+
+  describe 'gyre' do
+    it 'text field'
+    it '[x]'
+    it 'shoulder'
+  end
+
+  describe 'main list' do
+    it 'text field'
+    it '[x]'
+  end
+
+  describe 'idiom adder selects' do
+    it 'dancer'
+    it 'move'
+    it 'clear all dancers'
+    it 'clear all moves'
+  end
+
+
   it 'displays existings idioms' do
     with_login do |user|
       move_idiom = FactoryGirl.create(:move_idiom, user: user, term: 'allemande', substitution: 'almond')
@@ -15,14 +52,6 @@ describe 'Dialect page', js: true do
       expect(page).to have_content(idiom_rendering(move_idiom))
       expect(page).to have_content(idiom_rendering(dancer_idiom))
       expect(page).to_not have_content(idiom_rendering(other_users_idiom))
-    end
-  end
-
-  it 'with no idioms, displays help text' do
-    with_login do |user|
-      visit '/dialect'
-
-      expect(page).to have_content("You may replace gentlespoons with gentlemen, or gyre with gimble, or any term with any substitution.")
     end
   end
 
@@ -83,7 +112,6 @@ describe 'Dialect page', js: true do
       click_button('Restore Default Dialect')
       # automatically clicks confirm!?
 
-      # argh! I can't get ujs events to fire, so I can't clear the view. TODO
       expect(page).to_not have_content(idiom_rendering(dancer_idiom))
       expect(page).to_not have_content(idiom_rendering(move_idiom))
       expect(user.reload.idioms).to be_empty

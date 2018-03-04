@@ -1,4 +1,17 @@
-<h1>Dialect</h1>
+<h1>My Dialect</h1>
+
+<div class='role-setter'>
+
+  <h2>Roles</h2>
+  <div class='btn-toolbar'>
+    <% [{label: 'ladies & gents', params: {gentlespoon: 'gent', gentlespoons: 'gents', ladle: 'lady', ladles: 'ladies'}},
+        {label: 'larks & ravens', params: {gentlespoon: 'lark', gentlespoons: 'larks', ladle: 'raven', ladles: 'ravens'}},
+        {label: 'leads & follows', params: {gentlespoon: 'lead', gentlespoons: 'leads', ladle: 'follow', ladles: 'follows'}}
+       ].each do |h| %>
+      <%= button_to(h[:label], roles_dialect_path, remote: true, class: 'btn btn-md btn-default', form_class: 'one-click-role-form', params: h[:params]) %>
+    <% end %>
+  </div>
+</div>
 
 <div class='idioms-list'>
   <%= render @idioms %>
@@ -19,7 +32,7 @@
 </div>
 
 <div style='margin-top: 100px'>
-  <%= button_to(dialect_restore_defaults_path,
+  <%= button_to(restore_defaults_dialect_path,
                 remote: true,
                 class: 'btn btn-md btn-danger',
                 form_class: 'restore-default-dialect-form',

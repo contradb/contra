@@ -13,8 +13,11 @@ Rails.application.routes.draw do
 
   get 'welcome/index'
 
-  get 'dialect' => 'dialect#index'
-  post 'dialect_restore_defaults' => 'dialect#restore_defaults'
+  resource :dialect, only: [] do
+    get :index
+    post :roles
+    post :restore_defaults
+  end
 
   get 'about' => 'about#index'
   root 'welcome#index'
