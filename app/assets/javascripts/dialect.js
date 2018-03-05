@@ -50,5 +50,6 @@ $(document).ready(function() {
     $.each(idioms, function(idx, idiom) {
       idiomsList.append("<div>" + idiom.term + " → "+ idiom.substitution + "</div>");
     });
+    $(e.target).find('.btn').addClass('btn-primary').removeClass('btn-default');
   });
 });

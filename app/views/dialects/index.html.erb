@@ -4,11 +4,15 @@
 
   <h2>Roles</h2>
   <div class='btn-toolbar'>
-    <% [{label: 'ladies & gents', params: {gentlespoon: 'gent', gentlespoons: 'gents', ladle: 'lady', ladles: 'ladies'}},
-        {label: 'larks & ravens', params: {gentlespoon: 'lark', gentlespoons: 'larks', ladle: 'raven', ladles: 'ravens'}},
-        {label: 'leads & follows', params: {gentlespoon: 'lead', gentlespoons: 'leads', ladle: 'follow', ladles: 'follows'}}
+    <% [{label: 'ladies & gents', params: {gentlespoon: 'gent', gentlespoons: 'gents', ladle: 'lady', ladles: 'ladies'}, class: 'ladies-gents'},
+        {label: 'larks & ravens', params: {gentlespoon: 'lark', gentlespoons: 'larks', ladle: 'raven', ladles: 'ravens'}, class: 'larks-ravens'},
+        {label: 'leads & follows', params: {gentlespoon: 'lead', gentlespoons: 'leads', ladle: 'follow', ladles: 'follows'}, class: 'leads-follows'}
        ].each do |h| %>
-      <%= button_to(h[:label], roles_dialect_path, remote: true, class: 'btn btn-md btn-default', form_class: 'one-click-role-form', params: h[:params]) %>
+      <%= button_to(h[:label],
+                    roles_dialect_path, remote: true,
+                    class: "btn btn-md btn-default #{h[:class]}",
+                    form_class: 'one-click-role-form',
+                    params: h[:params]) %>
     <% end %>
   </div>
 </div>

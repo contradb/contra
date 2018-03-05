@@ -4,32 +4,63 @@ require 'rails_helper'
 require 'login_helper'
 
 describe 'Dialect page', js: true do
-  it 'role buttons' do
-    with_login do |user|
-      expect(user.idioms).to be_empty
-      visit '/dialect'
-      click_button('ladies & gents')
+  describe 'role button' do
+    it 'works' do
+      with_login do |user|
+        expect(user.idioms).to be_empty
+        visit '/dialect'
 
-      # test html
-      expect(page).to have_content(idiom_attr_rendering('ladles', 'ladies'))
-      expect(page).to have_content(idiom_attr_rendering('first ladle', 'first lady'))
-      expect(page).to have_content(idiom_attr_rendering('second ladle', 'second lady'))
-      expect(page).to have_content(idiom_attr_rendering('gentlespoons', 'gents'))
-      expect(page).to have_content(idiom_attr_rendering('first gentlespoon', 'first gent'))
-      expect(page).to have_content(idiom_attr_rendering('second gentlespoon', 'second gent'))
+        # pre-test html
+        expect(page).to_not have_content(idiom_attr_rendering('ladles', 'ladies'))
+        expect(page).to_not have_content(idiom_attr_rendering('first ladle', 'first lady'))
+        expect(page).to_not have_content(idiom_attr_rendering('second ladle', 'second lady'))
+        expect(page).to_not have_content(idiom_attr_rendering('gentlespoons', 'gents'))
+        expect(page).to_not have_content(idiom_attr_rendering('first gentlespoon', 'first gent'))
+        expect(page).to_not have_content(idiom_attr_rendering('second gentlespoon', 'second gent'))
+        expect(page).to_not have_css('.btn-primary')
 
-      # test db
-      dancers = user.reload.dialect['dancers']
-      expect(dancers['ladles']).to eq('ladies')
-      expect(dancers['first ladle']).to eq('first lady')
-      expect(dancers['second ladle']).to eq('second lady')
-      expect(dancers['gentlespoons']).to eq('gents')
-      expect(dancers['first gentlespoon']).to eq('first gent')
-      expect(dancers['second gentlespoon']).to eq('second gent')
+        click_button('ladies & gents')
+
+        # test html
+        expect(page).to have_content(idiom_attr_rendering('ladles', 'ladies'))
+        expect(page).to have_content(idiom_attr_rendering('first ladle', 'first lady'))
+        expect(page).to have_content(idiom_attr_rendering('second ladle', 'second lady'))
+        expect(page).to have_content(idiom_attr_rendering('gentlespoons', 'gents'))
+        expect(page).to have_content(idiom_attr_rendering('first gentlespoon', 'first gent'))
+        expect(page).to have_content(idiom_attr_rendering('second gentlespoon', 'second gent'))
+        expect(page).to have_css('.ladies-gents.btn-primary')
+
+        # test db
+        dancers = user.reload.dialect['dancers']
+        expect(dancers['ladles']).to eq('ladies')
+        expect(dancers['first ladle']).to eq('first lady')
+        expect(dancers['second ladle']).to eq('second lady')
+        expect(dancers['gentlespoons']).to eq('gents')
+        expect(dancers['first gentlespoon']).to eq('first gent')
+        expect(dancers['second gentlespoon']).to eq('second gent')
+
+        # toggle it off again
+        click_button('ladies & gents')
+
+        # retest html
+        expect(page).to_not have_content(idiom_attr_rendering('ladles', 'ladies'))
+        expect(page).to_not have_content(idiom_attr_rendering('first ladle', 'first lady'))
+        expect(page).to_not have_content(idiom_attr_rendering('second ladle', 'second lady'))
+        expect(page).to_not have_content(idiom_attr_rendering('gentlespoons', 'gents'))
+        expect(page).to_not have_content(idiom_attr_rendering('first gentlespoon', 'first gent'))
+        expect(page).to_not have_content(idiom_attr_rendering('second gentlespoon', 'second gent'))
+        expect(page).to_not have_css('.btn-primary')
+
+        # retest db
+        expect(user.reload.dialect['dancers']).to be_empty
+      end
     end
-  end
 
-  it 'role [x]'
+    it 'button.selected_role unlights & relights when other stuff shifts underneath its feet'
+    # * other button pressed
+    # * idiom changed
+    # * idiom deleted
+  end
 
   describe 'gyre' do
     it 'text field'
