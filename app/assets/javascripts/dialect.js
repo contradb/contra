@@ -60,7 +60,9 @@ function rebuildIdiomsList(idiom_json_array) {
 }
 
 function setButtonLight($form, bool) {
-  $form.addClass(bool ? 'btn-primary' : 'btn-default').removeClass(bool ? 'btn-default' : 'btn-primary');
+  $form.find('.btn').addClass(bool ? 'btn-primary' : 'btn-default').removeClass(bool ? 'btn-default' : 'btn-primary');
+  console.log('setButtonLight '+bool);
+  $form.find('input[name=lit]').val(!bool);
 }
 
 function idiomJsonMatchesButtonSubstitution(idioms, bsub) {

@@ -6,7 +6,11 @@ class DialectsController < ApplicationController
   end
 
   def roles
-    Idiom::Dancer.set_roles(current_user, *roles_param_l_ls_g_gs_array)
+    if roles_param_lit
+      Idiom::Dancer.set_roles(current_user, *roles_param_l_ls_g_gs_array)
+    else
+      Idiom::Dancer.clear_roles(current_user)
+    end
     render json: current_user.idioms
   end
 
@@ -14,8 +18,11 @@ class DialectsController < ApplicationController
     current_user.idioms.destroy_all
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def roles_param_l_ls_g_gs_array
     params.require([:ladle, :ladles, :gentlespoon, :gentlespoons])
+  end
+
+  def roles_param_lit
+    params.require(:lit).to_s == 'true'
   end
 end

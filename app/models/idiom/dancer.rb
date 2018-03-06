@@ -11,4 +11,13 @@ class Idiom::Dancer < Idiom::Idiom
       idiom.update!(substitution: substitution)
     end
   end
+
+  def self.clear_roles(user)
+    user.idioms.where(term: ['ladles',
+                             'first ladle',
+                             'second ladle',
+                             'gentlespoons',
+                             'first gentlespoon',
+                             'second gentlespoon']).destroy_all
+  end
 end

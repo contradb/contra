@@ -10,9 +10,9 @@
        ].each do |h| %>
       <%= button_to(h[:label],
                     roles_dialect_path, remote: true,
-                    class: "btn btn-md btn-default #{h[:class]}",
-                    form_class: 'one-click-role-form',
-                    params: h[:params]) %>
+                    class: 'btn btn-md btn-default',
+                    form_class: "one-click-role-form #{h[:class]}",
+                    params: h[:params].merge(lit: false)) %>
     <% end %>
   </div>
 </div>
