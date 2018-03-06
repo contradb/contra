@@ -28,7 +28,7 @@ describe 'Dialect page', js: true do
         expect(page).to have_content(idiom_attr_rendering('gentlespoons', 'gents'))
         expect(page).to have_content(idiom_attr_rendering('first gentlespoon', 'first gent'))
         expect(page).to have_content(idiom_attr_rendering('second gentlespoon', 'second gent'))
-        expect(page).to have_css('.ladies-gents.btn-primary')
+        expect(page).to have_css('.gents-ladies.btn-primary')
 
         # test db
         dancers = user.reload.dialect['dancers']
