@@ -1,30 +1,30 @@
 $(document).ready(function() {
-  var newIdiomTerm = $('#new-idiom-term');
+  // newIdiomButton.click(function () {
+  //   var term = newIdiomTerm.val();
+  //   $('#new-idiom-modal .modal-title').text("Substitute for “" + term + "”");
+  //   $('#new-idiom-modal .modal-term').val(term);
+  //   // The actual posting of the dialog is done by the jquery dialog plugin and
+  //   // data-attributes, which we fall through to by not preventing default here.
+  // });
 
-  if (0 === newIdiomTerm.length) {return;} // don't do any of this stuff if we're not on a page with a query.
-
-  var newIdiomButton = $('.show-new-idiom-dialog');
-
-  newIdiomButton.click(function () {
-    var term = newIdiomTerm.val();
-    $('#new-idiom-modal .modal-title').text("Substitute for “" + term + "”");
-    $('#new-idiom-modal .modal-term').val(term);
-    // The actual posting of the dialog is done by the jquery dialog plugin and
-    // data-attributes, which we fall through to by not preventing default here.
+  $('.new-dancers-idiom').change(function(e) {
+    console.log($(this).val());
   });
 
-  newIdiomTerm.change(function() {
-    newIdiomButton.prop('disabled', !$(this).val());
+  $('.new-move-idiom').change(function(e) {
+    var term = $(this).val();
+    $('.idioms-list').append('<div><label>' + term + ' → <input type=text></label></div>');
+    // blinkenlight <span class="glyphicon glyphicon-ok" aria-hidden="true"></span><span class=sr-only>saved</span>
+    // TODO add event handler for focus leave that saves the text field.
+    // see the old dialog box
   });
 
   // build menus
-  var newIdiomTermMovesOptGroup = newIdiomTerm.children('optgroup[label=moves]');
-  moves().forEach(function(move) {
-    newIdiomTermMovesOptGroup.append($('<option value="'+move+'">'+move+'</option>'));
-  });
-  var newIdiomTermDancersOptGroup = newIdiomTerm.children('optgroup[label=dancers]');
   dancerMenuForChooser(chooser_dancers).forEach(function(dancer) {
-    newIdiomTermDancersOptGroup.append($('<option value="'+dancer+'">'+dancer+'</option>'));
+    $('.new-dancers-idiom').append($('<option value="'+dancer+'">'+dancer+'</option>'));
+  });
+  moves().forEach(function(move) {
+    $('.new-move-idiom').append($('<option value="'+move+'">'+move+'</option>'));
   });
 });
 
@@ -85,7 +85,10 @@ function idiomJsonMatchesButtonSubstitution(idioms, bsub) {
 $(document).ready(function() {
   if ($('.idioms-list').length <= 0) {return;} // this code is about maintaining .idioms-list
 
-  rebuildIdiomsList(JSON.parse($('.idioms-init').text()));
+  if ($('#idioms-init').length === 0) {
+    throw new Error("Can't initialize page because can't find #idioms-init");
+  }
+  rebuildIdiomsList(JSON.parse($('#idioms-init').text()));
 
   // reset the whole dialect
   $('.restore-default-dialect-form').on('ajax:error', function() {

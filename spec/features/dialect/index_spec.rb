@@ -84,7 +84,15 @@ describe 'Dialect page', js: true do
   end
 
   describe 'main list' do
-    it 'text field'
+    it 'text field' do
+      with_login do |user|
+        visit '/dialect'
+        expect(page).to_not have_css('.glyphicon-ok')
+        select 'swing'
+        fill_in 'swing →', with: 'swong'
+        expect(page).to have_css('.glyphicon-ok')
+      end
+    end
     it '[x]'
   end
 

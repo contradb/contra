@@ -1,15 +1,14 @@
 <h1>My Dialect</h1>
 
 <div class='role-setter'>
-
-  <h2>Roles</h2>
   <div class='btn-toolbar'>
     <% [{label: 'ladies & gents', params: {gentlespoon: 'gent', gentlespoons: 'gents', ladle: 'lady', ladles: 'ladies'}, class: 'gents-ladies'},
         {label: 'larks & ravens', params: {gentlespoon: 'lark', gentlespoons: 'larks', ladle: 'raven', ladles: 'ravens'}, class: 'larks-ravens'},
         {label: 'leads & follows', params: {gentlespoon: 'lead', gentlespoons: 'leads', ladle: 'follow', ladles: 'follows'}, class: 'leads-follows'}
        ].each do |h| %>
       <%= button_to(h[:label],
-                    roles_dialect_path, remote: true,
+                    roles_dialect_path,
+                    remote: true,
                     class: 'btn btn-md btn-default',
                     form_class: "one-click-role-form #{h[:class]}",
                     params: h[:params].merge(lit: false)) %>
@@ -17,25 +16,24 @@
   </div>
 </div>
 
-<div class='idioms-init' style='display: none'>
+<div id='idioms-init' style='display: none'>
   <%= @idioms.to_json %>
 </div>
+
 <div class='idioms-list'>
   <%# js-created idiom html goes here %>
 </div>
-<div class='form-inline'>
-  <select id="new-idiom-term" class="form-control">
-    <option value="">Choose term...</option>
-    <optgroup label="moves"></optgroup>
-    <optgroup label="dancers"></optgroup>
-  </select>
-  <%= button_tag(content_tag(:span, new_icon_html + ' Substitute'),
-                 class: 'btn btn-default btn-md btn-success show-new-idiom-dialog',
-                 disabled: true,
-                 'data-toggle': 'modal',
-                 'data-target': '#new-idiom-modal')
-      %>
 
+<div class='form-inline'>
+  <select class="new-dancers-idiom form-control">
+    <option value="">Choose dancers...</option>
+  </select>
+</div>
+
+<div class='form-inline'>
+  <select class="new-move-idiom form-control">
+    <option value="">Choose move...</option>
+  </select>
 </div>
 
 <div style='margin-top: 100px'>
@@ -47,27 +45,4 @@
                ) do %>
     <%= content_tag(:span, delete_icon_html + ' Restore Default Dialect') %>
   <% end %>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="new-idiom-modal" tabindex="-1" role="dialog" aria-labelledby="new-idiom-label">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="new-idiom-label">Substitute for '(TBD)'</h4>
-      </div>
-      <%= form_with(model: Idiom::Idiom.new, url: idioms_path) do |f| %>
-        <div class="modal-body">
-          <%= f.label(:substitution) %><br>
-          <%= f.hidden_field(:term, class: 'modal-term') %>
-          <%= f.text_field(:substitution, class: 'modal-substitution form-control') %>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <%= f.submit('Save', class: 'btn btn-success') %>
-        </div>
-      <% end %>
-    </div>
-  </div>
 </div>
