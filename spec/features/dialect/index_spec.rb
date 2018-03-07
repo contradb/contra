@@ -8,16 +8,31 @@ describe 'Dialect page', js: true do
     it 'works' do
       with_login do |user|
         expect(user.idioms).to be_empty
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'larks')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'first gentlespoon', substitution: 'first lark')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'second gentlespoon', substitution: 'second lark')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'ladles', substitution: 'ravens')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'first ladle', substitution: 'first raven')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'second ladle', substitution: 'second raven')
+
         visit '/dialect'
 
-        # pre-test html
+        # loads with correct html
         expect(page).to_not have_content(idiom_attr_rendering('ladles', 'ladies'))
         expect(page).to_not have_content(idiom_attr_rendering('first ladle', 'first lady'))
         expect(page).to_not have_content(idiom_attr_rendering('second ladle', 'second lady'))
         expect(page).to_not have_content(idiom_attr_rendering('gentlespoons', 'gents'))
         expect(page).to_not have_content(idiom_attr_rendering('first gentlespoon', 'first gent'))
         expect(page).to_not have_content(idiom_attr_rendering('second gentlespoon', 'second gent'))
-        expect(page).to_not have_css('.btn-primary')
+        expect(page).to_not have_css('.gents-ladles .btn-primary')
+
+        expect(page).to have_content(idiom_attr_rendering('gentlespoons', 'larks'))
+        expect(page).to have_content(idiom_attr_rendering('first gentlespoon', 'first lark'))
+        expect(page).to have_content(idiom_attr_rendering('second gentlespoon', 'second lark'))
+        expect(page).to have_content(idiom_attr_rendering('ladles', 'ravens'))
+        expect(page).to have_content(idiom_attr_rendering('first ladle', 'first raven'))
+        expect(page).to have_content(idiom_attr_rendering('second ladle', 'second raven'))
+        expect(page).to have_css('.larks-ravens .btn-primary')
 
         click_button('ladies & gents')
 

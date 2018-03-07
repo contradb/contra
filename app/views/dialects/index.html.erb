@@ -17,8 +17,11 @@
   </div>
 </div>
 
+<div class='idioms-init' style='display: none'>
+  <%= @idioms.to_json %>
+</div>
 <div class='idioms-list'>
-  <%= render @idioms %>
+  <%# js-created idiom html goes here %>
 </div>
 <div class='form-inline'>
   <select id="new-idiom-term" class="form-control">

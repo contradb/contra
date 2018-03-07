@@ -3,8 +3,6 @@ $(document).ready(function() {
 
   if (0 === newIdiomTerm.length) {return;} // don't do any of this stuff if we're not on a page with a query.
 
-  var idioms = [];                // TODO: load from DOM
-
   var newIdiomButton = $('.show-new-idiom-dialog');
 
   newIdiomButton.click(function () {
@@ -61,7 +59,6 @@ function rebuildIdiomsList(idiom_json_array) {
 
 function setButtonLight($form, bool) {
   $form.find('.btn').addClass(bool ? 'btn-primary' : 'btn-default').removeClass(bool ? 'btn-default' : 'btn-primary');
-  console.log('setButtonLight '+bool);
   $form.find('input[name=lit]').val(!bool);
 }
 
@@ -87,6 +84,8 @@ function idiomJsonMatchesButtonSubstitution(idioms, bsub) {
 
 $(document).ready(function() {
   if ($('.idioms-list').length <= 0) {return;} // this code is about maintaining .idioms-list
+
+  rebuildIdiomsList(JSON.parse($('.idioms-init').text()));
 
   // reset the whole dialect
   $('.restore-default-dialect-form').on('ajax:error', function() {
