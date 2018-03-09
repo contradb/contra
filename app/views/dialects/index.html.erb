@@ -46,3 +46,12 @@
     <%= content_tag(:span, delete_icon_html + ' Restore Default Dialect') %>
   <% end %>
 </div>
+
+<div style='display: block' id='authenticity-token-incubator'>
+     <%= form_with(model: Idiom::Idiom.new, url: idioms_path) do |f| %>
+          <%= f.label(:substitution) %><br>
+          <%= f.text_field(:term, class: 'modal-term form-control') %>
+          <%= f.text_field(:substitution, class: 'modal-substitution form-control') %>
+          <%= f.submit('Save', class: 'btn btn-success') %>
+     <% end %>
+</div>

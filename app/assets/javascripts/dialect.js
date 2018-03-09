@@ -1,19 +1,28 @@
 $(document).ready(function() {
-  // newIdiomButton.click(function () {
-  //   var term = newIdiomTerm.val();
-  //   $('#new-idiom-modal .modal-title').text("Substitute for “" + term + "”");
-  //   $('#new-idiom-modal .modal-term').val(term);
-  //   // The actual posting of the dialog is done by the jquery dialog plugin and
-  //   // data-attributes, which we fall through to by not preventing default here.
-  // });
-
   $('.new-dancers-idiom').change(function(e) {
     console.log($(this).val());
   });
 
+  // Processing by IdiomsController#create as HTML
+  //   Parameters: {"utf8"=>"✓", "authenticity_token"=>"jFPa8/dB516ypB7SjFiiQyMJPkDiW3xIXiMjCvI0TVCr2H6yKkKRhb3f1dWKfWBDwat7nXCm1bpNc9DdpEBnbA==", "idiom_idiom"=>{"term"=>"gyre", "substitution"=>"foo"}, "commit"=>"Save"}
+
+
   $('.new-move-idiom').change(function(e) {
     var term = $(this).val();
-    $('.idioms-list').append('<div><label>' + term + ' → <input type=text></label></div>');
+    var authenticityToken = $('#authenticity-token-incubator input[name=authenticity_token]').val();
+    console.log('authenticityToken = '+authenticityToken);
+    var editor =
+          $('<form action="/idioms" accept-charset="UTF-8" method="post">' +
+            '  <input name="utf8" value="✓" type="hidden">' +
+            '  <input name="idiom_idiom[term]" value="' + term + '" type="hidden">' +
+            '  <input name="authenticity_token" value="' + authenticityToken +'" type="hidden">' +
+                 term +
+            ' → <input name="idiom_idiom[substitution]" type=text class="idiom-substitution"></label></form>');
+    $('.idioms-list').append(editor);
+    console.log(editor.find('.idiom-substitution').length);
+    editor.find('.idiom-substitution').blur(function () {
+      $.post('/idioms', editor.serialize());
+    });
     // blinkenlight <span class="glyphicon glyphicon-ok" aria-hidden="true"></span><span class=sr-only>saved</span>
     // TODO add event handler for focus leave that saves the text field.
     // see the old dialog box
