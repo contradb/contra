@@ -52,60 +52,60 @@ $(document).ready(function() {
     $('.new-move-idiom').append($('<option value="'+move+'">'+move+'</option>'));
   });
 
-var buttonSubstitutions = $.map([['gent', 'gents', 'lady', 'ladies'],
-                                 ['lark', 'larks', 'raven', 'ravens'],
-                                 ['lead', 'leads', 'follow', 'follows']
-                                ],
-                                function(roleArr) {
-                                  var gentlespoon = roleArr[0];
-                                  var gentlespoons = roleArr[1];
-                                  var ladle = roleArr[2];
-                                  var ladles = roleArr[3];
-                                  return {'gentlespoons': gentlespoons,
-                                          'first gentlespoon': 'first '+gentlespoon,
-                                          'second gentlespoon': 'second '+gentlespoon,
-                                          'ladles': ladles,
-                                          'first ladle': 'first '+ladle,
-                                          'second ladle': 'second '+ladle};
-                                });
+  var buttonSubstitutions = $.map([['gent', 'gents', 'lady', 'ladies'],
+                                   ['lark', 'larks', 'raven', 'ravens'],
+                                   ['lead', 'leads', 'follow', 'follows']
+                                  ],
+                                  function(roleArr) {
+                                    var gentlespoon = roleArr[0];
+                                    var gentlespoons = roleArr[1];
+                                    var ladle = roleArr[2];
+                                    var ladles = roleArr[3];
+                                    return {'gentlespoons': gentlespoons,
+                                            'first gentlespoon': 'first '+gentlespoon,
+                                            'second gentlespoon': 'second '+gentlespoon,
+                                            'ladles': ladles,
+                                            'first ladle': 'first '+ladle,
+                                            'second ladle': 'second '+ladle};
+                                  });
 
-function rebuildIdiomsList(idiom_json_array) {
-  var idiomsList = $('.idioms-list');
-  idiomsList.empty();
-  $.each(idiom_json_array, function(meh, idiom) {
-    // idiomsList.append("<div>" + idiom.term + " → "+ idiom.substitution + "</div>");
-    makeIdiomEditor(idiom.term, idiom.substitution, idiom.id);
-  });
-  $.each(buttonSubstitutions, function(meh, bsub) {
-    var $form = $('.'+bsub['gentlespoons']+'-'+bsub['ladles']);
-    setButtonLight($form, idiomJsonMatchesButtonSubstitution(idiom_json_array, bsub));
-  });
-}
+  function rebuildIdiomsList(idiom_json_array) {
+    var idiomsList = $('.idioms-list');
+    idiomsList.empty();
+    $.each(idiom_json_array, function(meh, idiom) {
+      // idiomsList.append("<div>" + idiom.term + " → "+ idiom.substitution + "</div>");
+      makeIdiomEditor(idiom.term, idiom.substitution, idiom.id);
+    });
+    $.each(buttonSubstitutions, function(meh, bsub) {
+      var $form = $('.'+bsub['gentlespoons']+'-'+bsub['ladles']);
+      setButtonLight($form, idiomJsonMatchesButtonSubstitution(idiom_json_array, bsub));
+    });
+  }
 
-function setButtonLight($form, bool) {
-  $form.find('.btn').addClass(bool ? 'btn-primary' : 'btn-default').removeClass(bool ? 'btn-default' : 'btn-primary');
-  $form.find('input[name=lit]').val(!bool);
-}
+  function setButtonLight($form, bool) {
+    $form.find('.btn').addClass(bool ? 'btn-primary' : 'btn-default').removeClass(bool ? 'btn-default' : 'btn-primary');
+    $form.find('input[name=lit]').val(!bool);
+  }
 
-function idiomJsonMatchesButtonSubstitution(idioms, bsub) {
-  var matches = 0;
-  var bsub_length = 0;
-  for (var term in bsub) {
-    bsub_length++;
-    for (var i=0; i<idioms.length; i++) {
-      var idiom = idioms[i];
-      if (idiom.term === term) {
-        if (idiom.substitution === bsub[term]) {
-          matches++;
-          break;
-        } else {
-          return false;
+  function idiomJsonMatchesButtonSubstitution(idioms, bsub) {
+    var matches = 0;
+    var bsub_length = 0;
+    for (var term in bsub) {
+      bsub_length++;
+      for (var i=0; i<idioms.length; i++) {
+        var idiom = idioms[i];
+        if (idiom.term === term) {
+          if (idiom.substitution === bsub[term]) {
+            matches++;
+            break;
+          } else {
+            return false;
+          }
         }
       }
     }
+    return matches===bsub_length;
   }
-  return matches===bsub_length;
-}
 
   if ($('#idioms-init').length === 0) {
     throw new Error("Can't initialize page because can't find #idioms-init");
@@ -125,5 +125,5 @@ function idiomJsonMatchesButtonSubstitution(idioms, bsub) {
     $('.alert').html('Bummer! Error setting role.');
   }).on('ajax:success', function(e, idioms, status, xhr) {
     rebuildIdiomsList(idioms);
-   });
+  });
 });
