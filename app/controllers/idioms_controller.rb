@@ -7,9 +7,7 @@ class IdiomsController < ApplicationController
     @idiom.type = idiom_type_from_term(@idiom.term)
     respond_to do |format|
       if @idiom.save
-        format.html { redirect_to dialect_path, notice: 'Idiom was successfully created.' }
-        format.js
-        format.json { render :show, status: :created, location: @idiom }
+        format.json { render json: @idiom, status: :ok }
       else
         # TODO worry about this branch
         format.html { render :new }

@@ -1,6 +1,5 @@
 #+TITLE: dialect editor
 * DONE Make menu item
-* TODO make controller
 ** DONE create idiom
 *** be rspec ./spec/features/dialect/index_spec.rb:32
 *** DONE assumes moves, which is wrong - it needs to react on moves or dancers
