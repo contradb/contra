@@ -33,12 +33,10 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= current_user.name %>
                 <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <% if user_signed_in? %><li><%= link_to 'contributions', current_user %></li> <% end %>
-                <li><%= link_to "settings", edit_user_registration_path, :class => 'navbar-link' %>
-
-                </li>
-                <li><%= link_to "logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
-                </li>
+                <li><%= link_to "account", edit_user_registration_path %></li>
+                <li><%= link_to "dialect", dialect_path %></li>
+                <li><%= link_to 'contributions', current_user %></li>
+                <li><%= link_to "logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %></li>
                 <!-- <li role="separator" class="divider"></li> -->
               </ul>
             </li>
