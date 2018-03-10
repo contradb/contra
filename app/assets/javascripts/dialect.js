@@ -10,22 +10,32 @@ $(document).ready(function() {
   $('.new-move-idiom').change(function(e) {
     var term = $(this).val();
     var authenticityToken = $('#authenticity-token-incubator input[name=authenticity_token]').val();
-    console.log('authenticityToken = '+authenticityToken);
+    var presumed_server_substitution = term;
     var editor =
           $('<form action="/idioms" accept-charset="UTF-8" method="post">' +
             '  <input name="utf8" value="✓" type="hidden">' +
             '  <input name="idiom_idiom[term]" value="' + term + '" type="hidden">' +
             '  <input name="authenticity_token" value="' + authenticityToken +'" type="hidden">' +
                  term +
-            ' → <input name="idiom_idiom[substitution]" type=text class="idiom-substitution"></label></form>');
+            ' → <input name="idiom_idiom[substitution]" type=text class="idiom-substitution"></label> <span class="idiom-ajax-progress"></span></form>');
     $('.idioms-list').append(editor);
-    console.log(editor.find('.idiom-substitution').length);
-    editor.find('.idiom-substitution').blur(function () {
-      $.post('/idioms', editor.serialize());
+    var progress = editor.find('.idiom-ajax-progress');
+    editor.find('.idiom-substitution').val(presumed_server_substitution);
+    editor.find('.idiom-substitution').on('input', function () {
+      if (editor.find('.idiom-substitution').val() !== presumed_server_substitution) {
+        progress.empty().append('<span class="glyphicon glyphicon-pencil" aria-label="changed"></span>');
+      } else {
+        progress.empty().append('<span class="glyphicon glyphicon-ok" aria-label="saved"></span>');
+      }
     });
-    // blinkenlight <span class="glyphicon glyphicon-ok" aria-hidden="true"></span><span class=sr-only>saved</span>
-    // TODO add event handler for focus leave that saves the text field.
-    // see the old dialog box
+    editor.submit(function(event) {
+      event.preventDefault();
+      presumed_server_substitution = editor.find('.idiom-substitution').val();
+      progress.empty().append('<span class="glyphicon glyphicon-arrow-up" aria-label="saving..."></span>');
+      $.post(editor.attr('action'), editor.serialize()).done(function() {
+        progress.empty().append('<span class="glyphicon glyphicon-ok" aria-label="saved"></span>');
+      });
+    });
   });
 
   // build menus

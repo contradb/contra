@@ -47,7 +47,7 @@
   <% end %>
 </div>
 
-<div style='display: block' id='authenticity-token-incubator'>
+<div style='display: none' id='authenticity-token-incubator'>
      <%= form_with(model: Idiom::Idiom.new, url: idioms_path) do |f| %>
           <%= f.label(:substitution) %><br>
           <%= f.text_field(:term, class: 'modal-term form-control') %>

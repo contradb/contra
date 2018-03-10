@@ -89,7 +89,8 @@ describe 'Dialect page', js: true do
         visit '/dialect'
         expect(page).to_not have_css('.glyphicon-ok')
         select 'swing'
-        fill_in 'swing →', with: 'swong'
+        fill_in 'idiom_idiom[substitution]', with: 'swong'
+        find('.idiom-substitution').native.send_keys(:return)
         expect(page).to have_css('.glyphicon-ok')
       end
     end
