@@ -1,11 +1,7 @@
 $(document).ready(function() {
   $('.new-dancers-idiom').change(function(e) {
-    console.log($(this).val());
+    console.log("TODO "+$(this).val());
   });
-
-  // Processing by IdiomsController#create as HTML
-  //   Parameters: {"utf8"=>"✓", "authenticity_token"=>"jFPa8/dB516ypB7SjFiiQyMJPkDiW3xIXiMjCvI0TVCr2H6yKkKRhb3f1dWKfWBDwat7nXCm1bpNc9DdpEBnbA==", "idiom_idiom"=>{"term"=>"gyre", "substitution"=>"foo"}, "commit"=>"Save"}
-
 
   $('.new-move-idiom').change(function(e) {
     var term = $(this).val();
