@@ -86,7 +86,7 @@ module JSLibFigure
     end
   end
 
-  def self.slugify_move(move)
+  def self.slugify_move(move)   # see also the very similar function slugifyTerm in javascript
     move.gsub('&','and').gsub(' ','-').downcase.gsub(/[^a-z0-9-]/,'').html_safe
   end
 

@@ -9,10 +9,13 @@
 ** TODO edit idiom
 ** TODO delete idiom
 * TODO fix up idioms routes
-* TODO maybe get rid of dialect route
+* DONE maybe get rid of dialect route
 * TODO in idioms_controller#create, figure out what to do about all them funky formats like html and json
 * TODO fix margins on dialect page
-* TODO have two views folders, idiom/ and idioms/
-* TODO have singularized partial, _dancer.html.erb - shouldn't it be dancers?
+* DONE have two views folders, idiom/ and idioms/
 * TODO idiom_type_from_term needs tidying up - see comment in its source code
-* TODO blinkenlights
+* DONE blinkenlights
+* TODO custom matcher
+** TODO move to a real home file
+** TODO fix js wait bug in custom matcher
+** TODO unify slugifyTerm and slugify_move, and add tests

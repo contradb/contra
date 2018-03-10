@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  if ($('.idioms-list').length <= 0) {return;} // this code is about maintaining .idioms-list
+  if ($('.idioms-list').length <= 0) {return;} // this code services the dialect editor page
 
   $('.new-dancers-idiom').change(function(e) {
     console.log("TODO "+$(this).val());
@@ -19,7 +19,7 @@ $(document).ready(function() {
             '  <input name="idiom_idiom[term]" value="' + term + '" type="hidden">' +
             '  <input name="authenticity_token" value="' + authenticityToken +'" type="hidden">' +
             term +
-            ' → <input name="idiom_idiom[substitution]" type=text class="idiom-substitution"></label> <span class="idiom-ajax-status"></span></form>');
+            ' → <input name="idiom_idiom[substitution]" type=text class="idiom-substitution" id="' + slugifyTerm(term) + '-substitution"></label> <span class="idiom-ajax-status"></span></form>');
     $('.idioms-list').append(editor);
     var status = editor.find('.idiom-ajax-status');
     editor.find('.idiom-substitution').val(presumed_server_substitution);
@@ -73,7 +73,6 @@ $(document).ready(function() {
     var idiomsList = $('.idioms-list');
     idiomsList.empty();
     $.each(idiom_json_array, function(meh, idiom) {
-      // idiomsList.append("<div>" + idiom.term + " → "+ idiom.substitution + "</div>");
       makeIdiomEditor(idiom.term, idiom.substitution, idiom.id);
     });
     $.each(buttonSubstitutions, function(meh, bsub) {

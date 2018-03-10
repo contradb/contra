@@ -1,7 +1,48 @@
 # coding: utf-8
 
+require 'rspec/expectations'
+
 require 'rails_helper'
 require 'login_helper'
+
+RSpec::Matchers.define :have_idiom do |idiom|
+  match do |page|
+    have_idiom_with(idiom.term, idiom.substitution).matches?(page)
+  end
+end
+
+# there's a bug in this where we don't wait on some submatchers
+# so sometimes we've got to js-wait manually
+# e.g. after removing a ladles -> ladies idiom:
+#      expect(page).to_not have_css("#ladles-substitution") # js wait
+#      expect(page).to_not have_idiom_with('ladles', 'ladies')
+
+RSpec::Matchers.define :have_idiom_with do |term, substitution|
+  match do |page|
+    # TODO: this isn't the right function to call, need to unify with slugifyTerm
+    subid = JSLibFigure.slugify_move(term) + '-substitution'
+    have_field(subid, with: substitution).matches?(page) && have_content(term).matches?(page)
+  end
+end
+
+# another approach, with some details here:
+# https://groups.google.com/forum/#!searchin/ruby-capybara/matcher%7Csort:date/ruby-capybara/uMaw_gdjCKM/p4CQoowkHAAJ
+# Capybara.add_selector(:idiom_with) do
+#  css { |term, substitution| puts 'ahoy' ; "input##{JSLibFigure.slugify_move(term)}-substitution" } # also needs to check term and value
+# end
+# 
+# module Capybara
+#   class Session
+#     def has_idiom_with?(term, substitution)
+#       input_with_value = "input##{JSLibFigure.slugify_move(term)}-substitution[value=\"#{substitution}\"]"
+#       puts "lhs = " + has_content?(term + ' →').to_s
+#       puts "rhs = " + has_selector?(input_with_value).to_s
+#       has_selector?(input_with_value) && has_content?(term + ' →')
+#     end
+#   end
+# end
+
+
 
 describe 'Dialect page', js: true do
   describe 'role button' do
@@ -18,31 +59,31 @@ describe 'Dialect page', js: true do
         visit '/dialect'
 
         # loads with correct html
-        expect(page).to_not have_content(idiom_attr_rendering('ladles', 'ladies'))
-        expect(page).to_not have_content(idiom_attr_rendering('first ladle', 'first lady'))
-        expect(page).to_not have_content(idiom_attr_rendering('second ladle', 'second lady'))
-        expect(page).to_not have_content(idiom_attr_rendering('gentlespoons', 'gents'))
-        expect(page).to_not have_content(idiom_attr_rendering('first gentlespoon', 'first gent'))
-        expect(page).to_not have_content(idiom_attr_rendering('second gentlespoon', 'second gent'))
+        expect(page).to_not have_idiom_with('ladles', 'ladies')
+        expect(page).to_not have_idiom_with('first ladle', 'first lady')
+        expect(page).to_not have_idiom_with('second ladle', 'second lady')
+        expect(page).to_not have_idiom_with('gentlespoons', 'gents')
+        expect(page).to_not have_idiom_with('first gentlespoon', 'first gent')
+        expect(page).to_not have_idiom_with('second gentlespoon', 'second gent')
         expect(page).to_not have_css('.gents-ladles .btn-primary')
 
-        expect(page).to have_content(idiom_attr_rendering('gentlespoons', 'larks'))
-        expect(page).to have_content(idiom_attr_rendering('first gentlespoon', 'first lark'))
-        expect(page).to have_content(idiom_attr_rendering('second gentlespoon', 'second lark'))
-        expect(page).to have_content(idiom_attr_rendering('ladles', 'ravens'))
-        expect(page).to have_content(idiom_attr_rendering('first ladle', 'first raven'))
-        expect(page).to have_content(idiom_attr_rendering('second ladle', 'second raven'))
+        expect(page).to have_idiom_with('gentlespoons', 'larks')
+        expect(page).to have_idiom_with('first gentlespoon', 'first lark')
+        expect(page).to have_idiom_with('second gentlespoon', 'second lark')
+        expect(page).to have_idiom_with('ladles', 'ravens')
+        expect(page).to have_idiom_with('first ladle', 'first raven')
+        expect(page).to have_idiom_with('second ladle', 'second raven')
         expect(page).to have_css('.larks-ravens .btn-primary')
 
         click_button('ladies & gents')
 
         # test html
-        expect(page).to have_content(idiom_attr_rendering('ladles', 'ladies'))
-        expect(page).to have_content(idiom_attr_rendering('first ladle', 'first lady'))
-        expect(page).to have_content(idiom_attr_rendering('second ladle', 'second lady'))
-        expect(page).to have_content(idiom_attr_rendering('gentlespoons', 'gents'))
-        expect(page).to have_content(idiom_attr_rendering('first gentlespoon', 'first gent'))
-        expect(page).to have_content(idiom_attr_rendering('second gentlespoon', 'second gent'))
+        expect(page).to have_idiom_with('ladles', 'ladies')
+        expect(page).to have_idiom_with('first ladle', 'first lady')
+        expect(page).to have_idiom_with('second ladle', 'second lady')
+        expect(page).to have_idiom_with('gentlespoons', 'gents')
+        expect(page).to have_idiom_with('first gentlespoon', 'first gent')
+        expect(page).to have_idiom_with('second gentlespoon', 'second gent')
         expect(page).to have_css('.gents-ladies .btn-primary')
 
         # test db
@@ -58,12 +99,13 @@ describe 'Dialect page', js: true do
         click_button('ladies & gents')
 
         # retest html
-        expect(page).to_not have_content(idiom_attr_rendering('ladles', 'ladies'))
-        expect(page).to_not have_content(idiom_attr_rendering('first ladle', 'first lady'))
-        expect(page).to_not have_content(idiom_attr_rendering('second ladle', 'second lady'))
-        expect(page).to_not have_content(idiom_attr_rendering('gentlespoons', 'gents'))
-        expect(page).to_not have_content(idiom_attr_rendering('first gentlespoon', 'first gent'))
-        expect(page).to_not have_content(idiom_attr_rendering('second gentlespoon', 'second gent'))
+        expect(page).to_not have_css("#ladles-substitution") # js wait to mask bug in have_idiom_with
+        expect(page).to_not have_idiom_with('ladles', 'ladies')
+        expect(page).to_not have_idiom_with('first ladle', 'first lady')
+        expect(page).to_not have_idiom_with('second ladle', 'second lady')
+        expect(page).to_not have_idiom_with('gentlespoons', 'gents')
+        expect(page).to_not have_idiom_with('first gentlespoon', 'first gent')
+        expect(page).to_not have_idiom_with('second gentlespoon', 'second gent')
         expect(page).to_not have_css('.btn-primary')
 
         # retest db
@@ -114,9 +156,9 @@ describe 'Dialect page', js: true do
 
       visit '/dialect'
       expect(page).to have_css('h1', text: "Dialect")
-      expect(page).to have_content(idiom_rendering(move_idiom))
-      expect(page).to have_content(idiom_rendering(dancer_idiom))
-      expect(page).to_not have_content(idiom_rendering(other_users_idiom))
+      expect(page).to have_idiom(move_idiom)
+      expect(page).to have_idiom(dancer_idiom)
+      expect(page).to_not have_idiom(other_users_idiom)
     end
   end
 
@@ -137,8 +179,8 @@ describe 'Dialect page', js: true do
       click_button('Restore Default Dialect')
       # automatically clicks confirm!?
 
-      expect(page).to_not have_content(idiom_rendering(dancer_idiom))
-      expect(page).to_not have_content(idiom_rendering(move_idiom))
+      expect(page).to_not have_idiom(dancer_idiom)
+      expect(page).to_not have_idiom(move_idiom)
       expect(user.reload.idioms).to be_empty
     end
   end
