@@ -1,38 +1,48 @@
 $(document).ready(function() {
+  if ($('.idioms-list').length <= 0) {return;} // this code is about maintaining .idioms-list
+
   $('.new-dancers-idiom').change(function(e) {
     console.log("TODO "+$(this).val());
   });
 
-  $('.new-move-idiom').change(function(e) {
+  $('.new-move-idiom').change(function() {
     var term = $(this).val();
+    makeIdiomEditor(term);
+  });
+
+  function makeIdiomEditor(term, opt_substitution, opt_id) {
     var authenticityToken = $('#authenticity-token-incubator input[name=authenticity_token]').val();
-    var presumed_server_substitution = term;
+    var presumed_server_substitution = opt_substitution || term;
     var editor =
           $('<form action="/idioms" accept-charset="UTF-8" method="post">' +
             '  <input name="utf8" value="✓" type="hidden">' +
             '  <input name="idiom_idiom[term]" value="' + term + '" type="hidden">' +
             '  <input name="authenticity_token" value="' + authenticityToken +'" type="hidden">' +
-                 term +
-            ' → <input name="idiom_idiom[substitution]" type=text class="idiom-substitution"></label> <span class="idiom-ajax-progress"></span></form>');
+            term +
+            ' → <input name="idiom_idiom[substitution]" type=text class="idiom-substitution"></label> <span class="idiom-ajax-status"></span></form>');
     $('.idioms-list').append(editor);
-    var progress = editor.find('.idiom-ajax-progress');
+    var status = editor.find('.idiom-ajax-status');
     editor.find('.idiom-substitution').val(presumed_server_substitution);
     editor.find('.idiom-substitution').on('input', function () {
       if (editor.find('.idiom-substitution').val() !== presumed_server_substitution) {
-        progress.empty().append('<span class="glyphicon glyphicon-pencil" aria-label="changed"></span>');
+        indicateStatus(status, 'glyphicon-pencil', 'unsaved');
       } else {
-        progress.empty().append('<span class="glyphicon glyphicon-ok" aria-label="saved"></span>');
+        indicateStatus(status, 'glyphicon-ok', 'saved');
       }
     });
     editor.submit(function(event) {
       event.preventDefault();
       presumed_server_substitution = editor.find('.idiom-substitution').val();
-      progress.empty().append('<span class="glyphicon glyphicon-arrow-up" aria-label="saving..."></span>');
+      indicateStatus(status, 'glyphicon-arrow-up', 'saving');
       $.post(editor.attr('action'), editor.serialize()).done(function() {
-        progress.empty().append('<span class="glyphicon glyphicon-ok" aria-label="saved"></span>');
+        indicateStatus(status, 'glyphicon-ok', 'saved');
       });
     });
-  });
+  }
+
+  function indicateStatus(status, glyphiconClassName, ariaLabel) {
+    status.empty().append('<span class="glyphicon ' + glyphiconClassName + '" aria-label="' + ariaLabel + '"></span>');
+  }
 
   // build menus
   dancerMenuForChooser(chooser_dancers).forEach(function(dancer) {
@@ -41,7 +51,6 @@ $(document).ready(function() {
   moves().forEach(function(move) {
     $('.new-move-idiom').append($('<option value="'+move+'">'+move+'</option>'));
   });
-});
 
 var buttonSubstitutions = $.map([['gent', 'gents', 'lady', 'ladies'],
                                  ['lark', 'larks', 'raven', 'ravens'],
@@ -64,7 +73,8 @@ function rebuildIdiomsList(idiom_json_array) {
   var idiomsList = $('.idioms-list');
   idiomsList.empty();
   $.each(idiom_json_array, function(meh, idiom) {
-    idiomsList.append("<div>" + idiom.term + " → "+ idiom.substitution + "</div>");
+    // idiomsList.append("<div>" + idiom.term + " → "+ idiom.substitution + "</div>");
+    makeIdiomEditor(idiom.term, idiom.substitution, idiom.id);
   });
   $.each(buttonSubstitutions, function(meh, bsub) {
     var $form = $('.'+bsub['gentlespoons']+'-'+bsub['ladles']);
@@ -96,9 +106,6 @@ function idiomJsonMatchesButtonSubstitution(idioms, bsub) {
   }
   return matches===bsub_length;
 }
-
-$(document).ready(function() {
-  if ($('.idioms-list').length <= 0) {return;} // this code is about maintaining .idioms-list
 
   if ($('#idioms-init').length === 0) {
     throw new Error("Can't initialize page because can't find #idioms-init");
