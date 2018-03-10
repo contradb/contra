@@ -1,5 +1,5 @@
 #+TITLE: dialect editor
-* TODO Make menu item
+* DONE Make menu item
 * TODO make controller
 ** DONE create idiom
 *** be rspec ./spec/features/dialect/index_spec.rb:32
@@ -15,7 +15,10 @@
 * DONE have two views folders, idiom/ and idioms/
 * TODO idiom_type_from_term needs tidying up - see comment in its source code
 * DONE blinkenlights
+** DONE light on create
 * TODO custom matcher
 ** TODO move to a real home file
 ** TODO fix js wait bug in custom matcher
 ** TODO unify slugifyTerm and slugify_move, and add tests
+* TODO edit existing idiom instead of creating new
+* TODO unselect role buttons when an individual idiom changes from the norm

@@ -19,9 +19,12 @@ $(document).ready(function() {
             '  <input name="idiom_idiom[term]" value="' + term + '" type="hidden">' +
             '  <input name="authenticity_token" value="' + authenticityToken +'" type="hidden">' +
             term +
-            ' → <input name="idiom_idiom[substitution]" type=text class="idiom-substitution" id="' + slugifyTerm(term) + '-substitution"></label> <span class="idiom-ajax-status"></span></form>');
-    $('.idioms-list').append(editor);
+            ' → <input name="idiom_idiom[substitution]" type=text class="idiom-substitution" id="' + slugifyTerm(term) + '-substitution"></label> ' +
+            '  <span class="idiom-ajax-status"></span>'+
+            '</form>');
     var status = editor.find('.idiom-ajax-status');
+    indicateStatus(status, 'glyphicon-ok', 'saved');
+    $('.idioms-list').append(editor);
     editor.find('.idiom-substitution').val(presumed_server_substitution);
     editor.find('.idiom-substitution').on('input', function () {
       if (editor.find('.idiom-substitution').val() !== presumed_server_substitution) {

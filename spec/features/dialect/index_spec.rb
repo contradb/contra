@@ -74,6 +74,7 @@ describe 'Dialect page', js: true do
         expect(page).to have_idiom_with('first ladle', 'first raven')
         expect(page).to have_idiom_with('second ladle', 'second raven')
         expect(page).to have_css('.larks-ravens .btn-primary')
+        expect(page).to have_css('.glyphicon-ok', count: 6) # load with correct blinkenlight
 
         click_button('ladies & gents')
 
