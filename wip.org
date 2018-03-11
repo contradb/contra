@@ -8,7 +8,7 @@
 ** DONE edit idiom
 ** DONE delete idiom
 ** DONE grid
-** TODO unselect role buttons when an individual idiom changes from the norm
+** DONE unselect role buttons when an individual idiom changes from the norm
 ** TODO make it for dancers too
 * TODO in idioms_controller#create, figure out what to do about all them funky formats like html and json
 * DONE fix margins on dialect page

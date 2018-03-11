@@ -85,6 +85,7 @@ describe 'Dialect page', js: true do
         expect(page).to have_idiom_with('gentlespoons', 'gents')
         expect(page).to have_idiom_with('first gentlespoon', 'first gent')
         expect(page).to have_idiom_with('second gentlespoon', 'second gent')
+        expect(page).to_not have_css('.larks-ravens .btn-primary')
         expect(page).to have_css('.gents-ladies .btn-primary')
 
         # test db
@@ -114,10 +115,29 @@ describe 'Dialect page', js: true do
       end
     end
 
-    it 'button.selected_role unlights & relights when other stuff shifts underneath its feet'
-    # * other button pressed
-    # * idiom changed
-    # * idiom deleted
+    it 'button.selected_role unlights & relights when other stuff shifts underneath its feet' do
+      with_login do |user|
+        expect(user.idioms).to be_empty
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'larks')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'first gentlespoon', substitution: 'first lark')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'second gentlespoon', substitution: 'second lark')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'ladles', substitution: 'ravens')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'first ladle', substitution: 'first raven')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'second ladle', substitution: 'second raven')
+
+        visit '/dialect'
+        expect(page).to have_css('.larks-ravens .btn-primary')
+
+        fill_in 'ladles-substitution', with: 'crows'
+        expect(page).to_not have_css('.larks-ravens .btn-primary')
+
+        fill_in 'ladles-substitution', with: 'ravens'
+        expect(page).to have_css('.larks-ravens .btn-primary')
+
+        click_on 'delete-ladles'
+        expect(page).to_not have_css('.larks-ravens .btn-primary')
+      end
+    end
   end
 
   describe 'gyre' do

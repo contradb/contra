@@ -20,7 +20,7 @@ $(document).ready(function() {
     var editor =
           $('<form accept-charset="UTF-8" class="form-inline idiom-form">' +
             '  <input name="utf8" value="✓" type="hidden">' +
-            '  <input name="idiom_idiom[term]" value="' + term + '" type="hidden">' +
+            '  <input name="idiom_idiom[term]" value="' + term + '" type="hidden" class="idiom-term">' +
             '  <input name="authenticity_token" value="' + authenticityToken +'" type="hidden">' +
             '  <div class="form-group has-feedback">' +
             '    <input name="idiom_idiom[substitution]" type=text class="idiom-substitution form-control" id="' + substitution_id + '">' +
@@ -63,6 +63,7 @@ $(document).ready(function() {
         success: function(idiomJson, textStatus, jqXHR) {
           indicateStatus(status, 'glyphicon-ok', 'saved');
           ensureEditorUpdateMode(editor, idiomJson.id);
+          setRoleButtonLights();
         }
       });
     });
@@ -82,7 +83,10 @@ $(document).ready(function() {
         indicateStatus(status, 'glyphicon-time', 'saving');
         $.ajax({url: '/idioms/' + idiom_id,
                 type: 'DELETE',
-                success: function() {container.remove();}});
+                success: function() {
+                  container.remove();
+                  setRoleButtonLights();
+                }});
       }
     });
     return form;
@@ -105,6 +109,15 @@ $(document).ready(function() {
     $('.new-move-idiom').append($('<option value="'+move+'">'+move+'</option>'));
   });
 
+  function rebuildIdiomsList(idiom_json_array) {
+    var idiomsList = $('.idioms-list');
+    idiomsList.empty();
+    $.each(idiom_json_array, function(meh, idiom) {
+      makeIdiomEditor(idiom.term, idiom.substitution, idiom.id);
+    });
+    setRoleButtonLights();
+  }
+
   var buttonSubstitutions = $.map([['gent', 'gents', 'lady', 'ladies'],
                                    ['lark', 'larks', 'raven', 'ravens'],
                                    ['lead', 'leads', 'follow', 'follows']
@@ -122,32 +135,29 @@ $(document).ready(function() {
                                             'second ladle': 'second '+ladle};
                                   });
 
-  function rebuildIdiomsList(idiom_json_array) {
-    var idiomsList = $('.idioms-list');
-    idiomsList.empty();
-    $.each(idiom_json_array, function(meh, idiom) {
-      makeIdiomEditor(idiom.term, idiom.substitution, idiom.id);
-    });
+  // Walk the DOM and set role button lightedness appropriately. Profiled to take <= 5ms
+  function setRoleButtonLights() {
     $.each(buttonSubstitutions, function(meh, bsub) {
       var $form = $('.'+bsub['gentlespoons']+'-'+bsub['ladles']);
-      setButtonLight($form, idiomJsonMatchesButtonSubstitution(idiom_json_array, bsub));
+      setRoleButtonLight($form, idiomEditorsMatcheButtonSubstitution(bsub));
     });
   }
 
-  function setButtonLight($form, bool) {
+  function setRoleButtonLight($form, bool) {
     $form.find('.btn').addClass(bool ? 'btn-primary' : 'btn-default').removeClass(bool ? 'btn-default' : 'btn-primary');
     $form.find('input[name=lit]').val(!bool);
   }
 
-  function idiomJsonMatchesButtonSubstitution(idioms, bsub) {
+  function idiomEditorsMatcheButtonSubstitution(bsub) {
     var matches = 0;
     var bsub_length = 0;
     for (var term in bsub) {
       bsub_length++;
-      for (var i=0; i<idioms.length; i++) {
-        var idiom = idioms[i];
-        if (idiom.term === term) {
-          if (idiom.substitution === bsub[term]) {
+      var idioms_list = $('.idioms-list tr');
+      for (var i=0; i < idioms_list.length; i++) { // can't iterate with .each() because I really want break and return
+        var tr = $(idioms_list[i]);
+        if (tr.find('.idiom-term').val() === term) {
+          if (tr.find('.idiom-substitution').val() === bsub[term]) {
             matches++;
             break;
           } else {
@@ -158,6 +168,7 @@ $(document).ready(function() {
     }
     return matches===bsub_length;
   }
+
 
   if ($('#idioms-init').length === 0) {
     throw new Error("Can't initialize page because can't find #idioms-init");
