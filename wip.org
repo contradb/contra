@@ -6,8 +6,9 @@
 ** DONE delete-all idioms
 *** stuck on ujs ajax:success event not firing
 ** DONE edit idiom
-** TODO delete idiom
+** DONE delete idiom
 ** DONE grid
+** TODO unselect role buttons when an individual idiom changes from the norm
 ** TODO make it for dancers too
 * TODO in idioms_controller#create, figure out what to do about all them funky formats like html and json
 * DONE fix margins on dialect page
@@ -19,7 +20,6 @@
 ** TODO move to a real home file
 ** TODO fix js wait bug in custom matcher
 ** TODO unify slugifyTerm and slugify_move, and add tests
-* TODO unselect role buttons when an individual idiom changes from the norm
 * TODO worry about all those ajax calls that have 'done' but no matching error handler
 * DONE put idiom editors in a table so they don't look like Austin Powers' teeth
 * TODO disregard whitespace in substitutions
@@ -31,3 +31,4 @@
 * TODO write test for escape-to-undo
 * TODO sort list by term type then term alphabetic
 * TODO reindent index.html.erb top div
+* TODO refactor that enormous js function

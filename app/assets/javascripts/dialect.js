@@ -18,7 +18,7 @@ $(document).ready(function() {
           $('<tr><td class="text-right form-inline"><label for="' + substitution_id + '" class=control-label>' +
             term + '</label></td><td class="idiom-editor-td"></td><td class="idiom-delete-td"></td></tr>');
     var editor =
-          $('<form action="/idioms" accept-charset="UTF-8" method="post" class="form-inline idiom-form">' +
+          $('<form accept-charset="UTF-8" class="form-inline idiom-form">' +
             '  <input name="utf8" value="✓" type="hidden">' +
             '  <input name="idiom_idiom[term]" value="' + term + '" type="hidden">' +
             '  <input name="authenticity_token" value="' + authenticityToken +'" type="hidden">' +
@@ -55,9 +55,10 @@ $(document).ready(function() {
       event.preventDefault();
       presumed_server_substitution = editor.find('.idiom-substitution').val();
       indicateStatus(status, 'glyphicon-time', 'saving');
+      var idiom_id = editor.attr('data-idiom-id');
       $.ajax({
-        url: editor.attr('action'),
-        type: editor.attr('method'),
+        url: '/idioms/' + (idiom_id || ''),
+        type: idiom_id ? 'PUT' : 'POST',
         data: editor.serialize(),
         success: function(idiomJson, textStatus, jqXHR) {
           indicateStatus(status, 'glyphicon-ok', 'saved');
@@ -89,7 +90,7 @@ $(document).ready(function() {
 
   function ensureEditorUpdateMode(editor, idiom_id) {
     if (!editor || !idiom_id) {throw new Error("missing required arg");}
-    editor.attr('action','/idioms/' + idiom_id).attr('method', 'put').attr('data-idiom-id', idiom_id);
+    editor.attr('data-idiom-id', idiom_id);
   }
 
   function indicateStatus(status, glyphiconClassName, ariaLabel) {
