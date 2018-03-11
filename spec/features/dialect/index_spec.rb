@@ -139,14 +139,23 @@ describe 'Dialect page', js: true do
       end
     end
 
-    it 'edit' do
+    it 'return works, [ok] works' do
       with_login do |user|
         FactoryGirl.create(:move_idiom, user: user, term: 'see saw', substitution: 'left shoulder do si do')
         visit '/dialect'
         fill_in 'see-saw-substitution', with: 'de ce de'
         find('.idiom-substitution').native.send_keys(:return)
         expect(page).to have_css('.glyphicon-ok') # js wait
+        user.reload
         expect(user.idioms.length).to eq(1)
+        expect(user.idioms.first.substitution).to eq('de ce de')
+        fill_in 'see-saw-substitution', with: 'dop de dop'
+        expect(page).to have_css('.glyphicon-pencil')
+        click_button 'ok'
+        expect(page).to have_css('.glyphicon-ok') # js wait
+        user.reload
+        expect(user.idioms.length).to eq(1)
+        expect(user.idioms.first.substitution).to eq('dop de dop')
       end
     end
 

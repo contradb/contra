@@ -13,19 +13,28 @@ $(document).ready(function() {
   function makeIdiomEditor(term, opt_substitution, opt_id) {
     var authenticityToken = $('#authenticity-token-incubator input[name=authenticity_token]').val();
     var presumed_server_substitution = opt_substitution || term;
+    var substitution_id = slugifyTerm(term) + '-substitution';
     var editor =
-          $('<form action="/idioms" accept-charset="UTF-8" method="post">' +
+          $('<form action="/idioms" accept-charset="UTF-8" method="post" class="form-inline">' +
             '  <input name="utf8" value="✓" type="hidden">' +
             '  <input name="idiom_idiom[term]" value="' + term + '" type="hidden">' +
             '  <input name="authenticity_token" value="' + authenticityToken +'" type="hidden">' +
-            term +
-            ' → <input name="idiom_idiom[substitution]" type=text class="idiom-substitution" id="' + slugifyTerm(term) + '-substitution"></label> ' +
-            '  <span class="idiom-ajax-status"></span>'+
+            '  <div class="form-group has-feedback">' +
+            '    <label for="' + substitution_id + '">' + term + ' → </label>' +
+            '    <input name="idiom_idiom[substitution]" type=text class="idiom-substitution form-control" id="' + substitution_id + '">' +
+            '    <span class="idiom-ajax-status form-control-feedback"></span>' +
+            '  </div>' +
+            '  <input type="submit" value="ok" class="btn btn-default">' +
+            '  <button type=button class="btn btn-default idiom-undo">undo</button>' +
             '</form>');
     var status = editor.find('.idiom-ajax-status');
     indicateStatus(status, 'glyphicon-ok', 'saved');
     if (opt_id) { ensureUpdateEditor(editor, opt_id); }
     $('.idioms-list').append(editor);
+    editor.find('.idiom-undo').click(function () {
+      editor.find('.idiom-substitution').val(presumed_server_substitution);
+      indicateStatus(status, 'glyphicon-ok', 'saved');
+    });
     editor.find('.idiom-substitution').val(presumed_server_substitution);
     editor.find('.idiom-substitution').on('input', function () {
       if (editor.find('.idiom-substitution').val() !== presumed_server_substitution) {
@@ -37,7 +46,7 @@ $(document).ready(function() {
     editor.submit(function(event) {
       event.preventDefault();
       presumed_server_substitution = editor.find('.idiom-substitution').val();
-      indicateStatus(status, 'glyphicon-arrow-up', 'saving');
+      indicateStatus(status, 'glyphicon-time', 'saving');
       $.ajax({
         url: editor.attr('action'),
         type: editor.attr('method'),
