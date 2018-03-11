@@ -1,3 +1,5 @@
-.idiom-editor-td {
-  white-space: nowrap;
+.idioms-list label::after {
+  content: '→';
+  margin-right: 0.8em;
+  margin-left: 0.8em;
 }

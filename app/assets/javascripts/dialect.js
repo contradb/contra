@@ -14,7 +14,7 @@ $(document).ready(function() {
     var authenticityToken = $('#authenticity-token-incubator input[name=authenticity_token]').val();
     var presumed_server_substitution = opt_substitution || term;
     var substitution_id = slugifyTerm(term) + '-substitution';
-    var row = $('<tr><td class="text-right"><label for="' + substitution_id + '">' + term + '</label></td><td class="idiom-editor-td"></td><td class="idiom-delete-td"></td></tr>');
+    var row = $('<tr><td class="text-right form-inline"><label for="' + substitution_id + '" class=control-label>' + term + '</label></td><td class="idiom-editor-td"></td><td class="idiom-delete-td"></td></tr>');
     var editor =
           $('<form action="/idioms" accept-charset="UTF-8" method="post" class="form-inline">' +
             '  <input name="utf8" value="✓" type="hidden">' +
