@@ -7,12 +7,10 @@
 *** stuck on ujs ajax:success event not firing
 ** DONE edit idiom
 ** TODO delete idiom
-** TODO grid
+** DONE grid
 ** TODO make it for dancers too
-* TODO fix up idioms routes
-* DONE maybe get rid of dialect route
 * TODO in idioms_controller#create, figure out what to do about all them funky formats like html and json
-* TODO fix margins on dialect page
+* DONE fix margins on dialect page
 * DONE have two views folders, idiom/ and idioms/
 * TODO idiom_type_from_term needs tidying up - see comment in its source code
 * DONE blinkenlights
@@ -21,10 +19,9 @@
 ** TODO move to a real home file
 ** TODO fix js wait bug in custom matcher
 ** TODO unify slugifyTerm and slugify_move, and add tests
-* TODO edit existing idiom instead of creating new
 * TODO unselect role buttons when an individual idiom changes from the norm
 * TODO worry about all those ajax calls that have 'done' but no matching error handler
-* TODO put idiom editors in a table so they don't look like Austin Powers' teeth
+* DONE put idiom editors in a table so they don't look like Austin Powers' teeth
 * TODO disregard whitespace in substitutions
 * TODO IdiomsController#create code is awkward, can't we create the right type from the get-go?
     @idiom = Idiom::Move.new(idiom_params)

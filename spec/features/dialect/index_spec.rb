@@ -152,9 +152,34 @@ describe 'Dialect page', js: true do
       end
     end
 
-    it '[x]'
-  end
+    describe '[x]' do
 
+      it 'works on new idiom' do
+        with_login do |user|
+          visit '/dialect'
+          select 'gate'
+          expect(page).to have_idiom_with('gate', 'gate')
+          click_on 'delete-gate'
+          expect(page).to_not have_idiom_with('gate', 'gate')
+          user.reload
+          expect(user.idioms.length).to eq(0)
+        end
+      end
+
+      it 'works on existing idiom' do
+        with_login do |user|
+          idiom = FactoryGirl.create(:move_idiom, user: user, term: 'gate', substitution: 'flip')
+          visit '/dialect'
+          expect(page).to have_idiom(idiom)
+          click_on 'delete-gate'
+          expect(page).to_not have_content('gate') # wanted expect(page).to have_css('.glyphicon-time') but it was flaky
+          expect(page).to_not have_idiom(idiom) # also flaky unless guarded
+          user.reload
+          expect(user.idioms.length).to eq(0)
+        end
+      end
+    end
+  end
   describe 'idiom adder selects' do
     it 'dancer'
     it 'move'
@@ -195,6 +220,7 @@ describe 'Dialect page', js: true do
       click_button('Restore Default Dialect')
       # automatically clicks confirm!?
 
+      expect(page).to_not have_content('gentlespoons')
       expect(page).to_not have_idiom(dancer_idiom)
       expect(page).to_not have_idiom(move_idiom)
       expect(user.reload.idioms).to be_empty

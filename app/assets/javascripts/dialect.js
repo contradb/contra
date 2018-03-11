@@ -14,9 +14,11 @@ $(document).ready(function() {
     var authenticityToken = $('#authenticity-token-incubator input[name=authenticity_token]').val();
     var presumed_server_substitution = opt_substitution || term;
     var substitution_id = slugifyTerm(term) + '-substitution';
-    var row = $('<tr><td class="text-right form-inline"><label for="' + substitution_id + '" class=control-label>' + term + '</label></td><td class="idiom-editor-td"></td><td class="idiom-delete-td"></td></tr>');
+    var row =
+          $('<tr><td class="text-right form-inline"><label for="' + substitution_id + '" class=control-label>' +
+            term + '</label></td><td class="idiom-editor-td"></td><td class="idiom-delete-td"></td></tr>');
     var editor =
-          $('<form action="/idioms" accept-charset="UTF-8" method="post" class="form-inline">' +
+          $('<form action="/idioms" accept-charset="UTF-8" method="post" class="form-inline idiom-form">' +
             '  <input name="utf8" value="✓" type="hidden">' +
             '  <input name="idiom_idiom[term]" value="' + term + '" type="hidden">' +
             '  <input name="authenticity_token" value="' + authenticityToken +'" type="hidden">' +
@@ -27,8 +29,9 @@ $(document).ready(function() {
             '</form>');
     var status = editor.find('.idiom-ajax-status');
     indicateStatus(status, 'glyphicon-ok', 'saved');
-    if (opt_id) { ensureUpdateEditor(editor, opt_id); }
+    if (opt_id) { ensureEditorUpdateMode(editor, opt_id); }
     row.find('.idiom-editor-td').append(editor);
+    row.find('.idiom-delete-td').append(makeIdiomDeleteButton(term));
     $('.idioms-list').append(row);
     editor.find('.idiom-substitution').val(presumed_server_substitution);
     editor.find('.idiom-substitution').blur(function () {
@@ -58,18 +61,35 @@ $(document).ready(function() {
         data: editor.serialize(),
         success: function(idiomJson, textStatus, jqXHR) {
           indicateStatus(status, 'glyphicon-ok', 'saved');
-          ensureUpdateEditor(editor, idiomJson.id);
+          ensureEditorUpdateMode(editor, idiomJson.id);
         }
       });
     });
   }
 
-  function ensureUpdateEditor(editor, idiom_id) {
+  function makeIdiomDeleteButton(term) {
+    var form = $('<form><button type=button id=delete-'+slugifyTerm(term)+' class="btn btn-default delete-idiom"><span class="glyphicon glyphicon-remove" aria-label="delete"></span></button></form>');
+    form.find('button').click(function () {
+      var container = form.closest('tr');
+      var editor = container.find('.idiom-form');
+      var idiom_id = editor.attr('data-idiom-id');
+      if (!idiom_id) {
+        container.remove();     // easy case - local only
+      } else {
+        // hard case - delete on server
+        var status = editor.find('.idiom-ajax-status');
+        indicateStatus(status, 'glyphicon-time', 'saving');
+        $.ajax({url: '/idioms/' + idiom_id,
+                type: 'DELETE',
+                success: function() {container.remove();}});
+      }
+    });
+    return form;
+  }
+
+  function ensureEditorUpdateMode(editor, idiom_id) {
     if (!editor || !idiom_id) {throw new Error("missing required arg");}
-    var is_create_editor = 0 === editor.find('.idiom-id').length;
-    if (is_create_editor) {
-      editor.attr('action','/idioms/' + idiom_id).attr('method', 'put');
-    }
+    editor.attr('action','/idioms/' + idiom_id).attr('method', 'put').attr('data-idiom-id', idiom_id);
   }
 
   function indicateStatus(status, glyphiconClassName, ariaLabel) {

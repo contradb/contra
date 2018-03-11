@@ -10,7 +10,6 @@ class IdiomsController < ApplicationController
         format.json { render json: @idiom, status: :ok }
       else
         # TODO worry about this branch
-        format.html { render :new }
         format.json { render json: @idiom.errors, status: :unprocessable_entity }
       end
     end
@@ -18,16 +17,26 @@ class IdiomsController < ApplicationController
 
   def update
     @idiom = Idiom::Idiom.find(params[:id])
-    @idiom or return head :unprocessable_entity
+    @idiom or return head :unauthorized
     @idiom.user_id == current_user.id or return head :unauthorized
     respond_to do |format|
       if @idiom.update(idiom_params)
         format.json { render json: @idiom, status: :ok }
       else
         # TODO worry about this branch
-        format.html { render :new }
         format.json { render json: @idiom.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def destroy
+    @idiom = Idiom::Idiom.find(params[:id])
+    @idiom or return head :unauthorized
+    @idiom.user_id == current_user.id or return head :unauthorized
+    if @idiom.destroy
+      head :no_content
+    else
+      render json: @idiom.errors, status: :unprocessable_entity # cancelled by hooks?! this code untested
     end
   end
 
