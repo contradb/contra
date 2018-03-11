@@ -7,6 +7,8 @@
 *** stuck on ujs ajax:success event not firing
 ** DONE edit idiom
 ** TODO delete idiom
+** TODO grid
+** TODO make it for dancers too
 * TODO fix up idioms routes
 * DONE maybe get rid of dialect route
 * TODO in idioms_controller#create, figure out what to do about all them funky formats like html and json
@@ -29,3 +31,6 @@
     @idiom.user = current_user
     @idiom.type = idiom_type_from_term(@idiom.term)
 * TODO spec: deleting user also deletes idioms
+* TODO write test for escape-to-undo
+* TODO sort list by term type then term alphabetic
+* TODO reindent index.html.erb top div

@@ -1,3 +1,4 @@
+<div class=container><%# TODO reindent %>
 <h1>My Dialect</h1>
 
 <div class='role-setter'>
@@ -20,9 +21,9 @@
   <%= @idioms.to_json %>
 </div>
 
-<div class='idioms-list'>
+<table class='idioms-list'>
   <%# js-created idiom html goes here %>
-</div>
+</table>
 
 <div class='form-inline'>
   <select class="new-dancers-idiom form-control">
@@ -54,4 +55,5 @@
           <%= f.text_field(:substitution, class: 'modal-substitution form-control') %>
           <%= f.submit('Save', class: 'btn btn-success') %>
      <% end %>
+</div>
 </div>
