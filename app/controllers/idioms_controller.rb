@@ -16,6 +16,21 @@ class IdiomsController < ApplicationController
     end
   end
 
+  def update
+    @idiom = Idiom::Idiom.find(params[:id])
+    @idiom or return head :unprocessable_entity
+    @idiom.user_id == current_user.id or return head :unauthorized
+    respond_to do |format|
+      if @idiom.update(idiom_params)
+        format.json { render json: @idiom, status: :ok }
+      else
+        # TODO worry about this branch
+        format.html { render :new }
+        format.json { render json: @idiom.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
 
   # Never trust parameters from the scary internet, only allow the white list through.

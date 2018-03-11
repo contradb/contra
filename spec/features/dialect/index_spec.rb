@@ -126,17 +126,30 @@ describe 'Dialect page', js: true do
     it 'shoulder'
   end
 
-  describe 'main list' do
-    it 'text field' do
+  describe 'idiom list' do
+
+    it 'create' do
       with_login do |user|
         visit '/dialect'
         expect(page).to_not have_css('.glyphicon-ok')
         select 'swing'
-        fill_in 'idiom_idiom[substitution]', with: 'swong'
+        fill_in 'swing-substitution', with: 'swong'
         find('.idiom-substitution').native.send_keys(:return)
         expect(page).to have_css('.glyphicon-ok')
       end
     end
+
+    it 'edit' do
+      with_login do |user|
+        FactoryGirl.create(:move_idiom, user: user, term: 'see saw', substitution: 'left shoulder do si do')
+        visit '/dialect'
+        fill_in 'see-saw-substitution', with: 'de ce de'
+        find('.idiom-substitution').native.send_keys(:return)
+        expect(page).to have_css('.glyphicon-ok') # js wait
+        expect(user.idioms.length).to eq(1)
+      end
+    end
+
     it '[x]'
   end
 

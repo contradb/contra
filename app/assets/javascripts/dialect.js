@@ -24,6 +24,7 @@ $(document).ready(function() {
             '</form>');
     var status = editor.find('.idiom-ajax-status');
     indicateStatus(status, 'glyphicon-ok', 'saved');
+    if (opt_id) { ensureUpdateEditor(editor, opt_id); }
     $('.idioms-list').append(editor);
     editor.find('.idiom-substitution').val(presumed_server_substitution);
     editor.find('.idiom-substitution').on('input', function () {
@@ -37,10 +38,24 @@ $(document).ready(function() {
       event.preventDefault();
       presumed_server_substitution = editor.find('.idiom-substitution').val();
       indicateStatus(status, 'glyphicon-arrow-up', 'saving');
-      $.post(editor.attr('action'), editor.serialize()).done(function() {
-        indicateStatus(status, 'glyphicon-ok', 'saved');
+      $.ajax({
+        url: editor.attr('action'),
+        type: editor.attr('method'),
+        data: editor.serialize(),
+        success: function(idiomJson, textStatus, jqXHR) {
+          indicateStatus(status, 'glyphicon-ok', 'saved');
+          ensureUpdateEditor(editor, idiomJson.id);
+        }
       });
     });
+  }
+
+  function ensureUpdateEditor(editor, idiom_id) {
+    if (!editor || !idiom_id) {throw new Error("missing required arg");}
+    var is_create_editor = 0 === editor.find('.idiom-id').length;
+    if (is_create_editor) {
+      editor.attr('action','/idioms/' + idiom_id).attr('method', 'put');
+    }
   }
 
   function indicateStatus(status, glyphiconClassName, ariaLabel) {

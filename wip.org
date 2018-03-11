@@ -5,7 +5,7 @@
 *** DONE assumes moves, which is wrong - it needs to react on moves or dancers
 ** DONE delete-all idioms
 *** stuck on ujs ajax:success event not firing
-** TODO edit idiom
+** DONE edit idiom
 ** TODO delete idiom
 * TODO fix up idioms routes
 * DONE maybe get rid of dialect route
@@ -21,3 +21,11 @@
 ** TODO unify slugifyTerm and slugify_move, and add tests
 * TODO edit existing idiom instead of creating new
 * TODO unselect role buttons when an individual idiom changes from the norm
+* TODO worry about all those ajax calls that have 'done' but no matching error handler
+* TODO put idiom editors in a table so they don't look like Austin Powers' teeth
+* TODO disregard whitespace in substitutions
+* TODO IdiomsController#create code is awkward, can't we create the right type from the get-go?
+    @idiom = Idiom::Move.new(idiom_params)
+    @idiom.user = current_user
+    @idiom.type = idiom_type_from_term(@idiom.term)
+* TODO spec: deleting user also deletes idioms
