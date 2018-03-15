@@ -1,8 +1,9 @@
 <div class=container><%# TODO reindent %>
 <h1>My Dialect</h1>
 
+<h2>The Express Lane</h2>
+
 <div class='role-setter'>
-  <div class='btn-toolbar'>
     <% [{label: 'ladies & gents', params: {gentlespoon: 'gent', gentlespoons: 'gents', ladle: 'lady', ladles: 'ladies'}, class: 'gents-ladies'},
         {label: 'larks & ravens', params: {gentlespoon: 'lark', gentlespoons: 'larks', ladle: 'raven', ladles: 'ravens'}, class: 'larks-ravens'},
         {label: 'leads & follows', params: {gentlespoon: 'lead', gentlespoons: 'leads', ladle: 'follow', ladles: 'follows'}, class: 'leads-follows'}
@@ -10,20 +11,21 @@
       <%= button_to(h[:label],
                     roles_dialect_path,
                     remote: true,
-                    class: 'btn btn-md btn-default',
+                    class: 'btn btn-default',
                     form_class: "one-click-role-form #{h[:class]}",
                     params: h[:params].merge(lit: false)) %>
     <% end %>
-  </div>
 </div>
 
-<div id='idioms-init' style='display: none'>
-  <%= @idioms.to_json %>
-</div>
 
-<table class='idioms-list'>
-  <%# js-created idiom html goes here %>
-</table>
+      <%= button_to('Turn by the right shoulder',
+                    roles_dialect_path,
+                    remote: true,
+                    class: 'btn btn-default',
+                    form_class: 'gyre-express-button') %>
+
+
+<h2>Under the Hood</h2>
 
 <div class='form-inline'>
   <select class="new-dancers-idiom form-control">
@@ -36,6 +38,14 @@
     <option value="">Choose move...</option>
   </select>
 </div>
+
+<div id='idioms-init' style='display: none'>
+  <%= @idioms.to_json %>
+</div>
+
+<table class='idioms-list'>
+  <%# js-created idiom html goes here %>
+</table>
 
 <div style='margin-top: 100px'>
   <%= button_to(restore_defaults_dialect_path,

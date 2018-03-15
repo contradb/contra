@@ -9,9 +9,14 @@
 ** DONE delete idiom
 ** DONE grid
 ** DONE unselect role buttons when an individual idiom changes from the norm
+** TODO Turn by the %s button
+** TODO rearrange elements on the page so they're not so upsetting
 ** TODO make it for dancers too
 * TODO in idioms_controller#create, figure out what to do about all them funky formats like html and json
 * DONE fix margins on dialect page
+* TODO fix form element alignment at tiny screen sizes
+** break out arrows into their own column
+** maybe vertically center text inputs, buttons, and maybe labels?
 * DONE have two views folders, idiom/ and idioms/
 * TODO idiom_type_from_term needs tidying up - see comment in its source code
 * DONE blinkenlights
