@@ -145,7 +145,7 @@ $(document).ready(function() {
 
   function setRoleButtonLight($form, bool) {
     $form.find('.btn').addClass(bool ? 'btn-primary' : 'btn-default').removeClass(bool ? 'btn-default' : 'btn-primary');
-    $form.find('input[name=lit]').val(!bool);
+    $form.find('input[name=button_lite]').val(!bool);
   }
 
   function idiomEditorsMatcheButtonSubstitution(bsub) {
@@ -184,8 +184,15 @@ $(document).ready(function() {
   });
 
   // change roles with the click of a button
-  $('.one-click-role-form').on('ajax:error', function() {
+  $('.dialect-express-role-form').on('ajax:error', function() {
     $('.alert').html('Bummer! Error setting role.');
+  }).on('ajax:success', function(e, idioms, status, xhr) {
+    rebuildIdiomsList(idioms);
+  });
+
+  // change gyre with the click of a button
+  $('.dialect-express-gyre-form').on('ajax:error', function() {
+    $('.alert').html('Bummer! Error setting gyre.');
   }).on('ajax:success', function(e, idioms, status, xhr) {
     rebuildIdiomsList(idioms);
   });

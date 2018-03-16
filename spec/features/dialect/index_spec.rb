@@ -143,7 +143,13 @@ describe 'Dialect page', js: true do
   describe 'gyre' do
     it 'text field'
     it '[x]'
-    it 'shoulder'
+    it 'shoulder button works' do
+      with_login do |user|
+        visit '/dialect'
+        click_button('turn by the right shoulder')
+        expect(page).to have_idiom_with('gyre', 'turn by the %S')
+      end
+    end
   end
 
   describe 'idiom list' do

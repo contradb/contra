@@ -1,7 +1,5 @@
 <div class=container><%# TODO reindent %>
-<h1>My Dialect</h1>
-
-<h2>The Express Lane</h2>
+<h2>Roles</h2>
 
 <div class='role-setter'>
     <% [{label: 'ladies & gents', params: {gentlespoon: 'gent', gentlespoons: 'gents', ladle: 'lady', ladles: 'ladies'}, class: 'gents-ladies'},
@@ -12,20 +10,22 @@
                     roles_dialect_path,
                     remote: true,
                     class: 'btn btn-default',
-                    form_class: "one-click-role-form #{h[:class]}",
-                    params: h[:params].merge(lit: false)) %>
+                    form_class: "dialect-express-role-form #{h[:class]}",
+                    params: h[:params].merge(button_lite: false)) %>
     <% end %>
 </div>
 
+<h2>That Turn</h2>
 
-      <%= button_to('Turn by the right shoulder',
-                    roles_dialect_path,
-                    remote: true,
-                    class: 'btn btn-default',
-                    form_class: 'gyre-express-button') %>
+<%= button_to('turn by the right shoulder',
+              gyre_dialect_path,
+              remote: true,
+              class: 'btn btn-default',
+              form_class: 'dialect-express-gyre-form',
+              params: {substitution: 'turn by the %S'}) %>
 
 
-<h2>Under the Hood</h2>
+<h2>Advanced</h2>
 
 <div class='form-inline'>
   <select class="new-dancers-idiom form-control">
