@@ -391,14 +391,14 @@ defineRelatedMove2Way('facing star', 'gyre');
 defineRelatedMove2Way('facing star', 'star');
 
 ////////////////////////////////////////////////
-// GYRE (aka circle by the eyes)              //
+// GYRE                                       //
 ////////////////////////////////////////////////
 
 function gyreStringify(move, pvs, dialect) {
   var [who,   shoulder,  rots,  beats] = pvs;
   var [swho, sshoulder, srots, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
-  return words(swho, smove, shoulder ? '' : sshoulder, srots, sbeats);
+  return words(swho, smove, sshoulder, srots, sbeats);
 }
 
 defineFigure("gyre",

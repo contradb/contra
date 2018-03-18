@@ -150,6 +150,16 @@ describe 'Dialect page', js: true do
         expect(page).to have_idiom_with('gyre', 'turn by the %S')
       end
     end
+
+    it "'choose word...' button and dialog work" do
+      with_login do |user|
+        visit '/dialect'
+        click_button('use another phrase...')
+        fill_in 'gyre-dialog-substitution', with: 'gazey'
+        click_button('Save')
+        expect(page).to have_idiom_with('gyre', 'gazey')
+      end
+    end
   end
 
   describe 'idiom list' do

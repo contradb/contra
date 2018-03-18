@@ -191,9 +191,18 @@ $(document).ready(function() {
   });
 
   // change gyre with the click of a button
-  $('.dialect-express-gyre-form').on('ajax:error', function() {
+  $('.dialect-express-gyre-button-form').on('ajax:error', function() {
     $('.alert').html('Bummer! Error setting gyre.');
   }).on('ajax:success', function(e, idioms, status, xhr) {
     rebuildIdiomsList(idioms);
   });
+
+  // change gyre with a dialog box
+  $('#gyre-modal-form').on('ajax:error', function() {
+    $('.alert').html('Bummer! Error setting gyre from modal.');
+  }).on('ajax:success', function(e, idioms, status, xhr) {
+    rebuildIdiomsList(idioms);
+  });
+
+  $("#gyre-modal-form").attr('data-remote', 'true'); // I can't get rails formbuilder helpers to do this for me -dm 03-18-2018
 });

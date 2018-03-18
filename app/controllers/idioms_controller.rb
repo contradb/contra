@@ -5,13 +5,11 @@ class IdiomsController < ApplicationController
     @idiom = Idiom::Move.new(idiom_params)
     @idiom.user = current_user
     @idiom.type = idiom_type_from_term(@idiom.term)
-    respond_to do |format|
-      if @idiom.save
-        format.json { render json: @idiom, status: :ok }
-      else
-        # TODO worry about this branch
-        format.json { render json: @idiom.errors, status: :unprocessable_entity }
-      end
+    if @idiom.save
+      render json: @idiom, status: :ok
+    else
+      # TODO worry about this branch
+      render json: @idiom.errors, status: :unprocessable_entity
     end
   end
 

@@ -21,8 +21,15 @@
               gyre_dialect_path,
               remote: true,
               class: 'btn btn-default',
-              form_class: 'dialect-express-gyre-form',
+              form_class: 'dialect-express-gyre-button-form',
               params: {substitution: 'turn by the %S'}) %>
+
+<%= button_tag(content_tag('i', 'use another phrase...'),
+    class: 'btn btn-default',
+    'data-toggle': 'modal',
+    'data-target': '#gyre-modal')
+   %>
+
 
 
 <h2>Advanced</h2>
@@ -59,11 +66,36 @@
 </div>
 
 <div style='display: none' id='authenticity-token-incubator'>
-     <%= form_with(model: Idiom::Idiom.new, url: idioms_path) do |f| %>
-          <%= f.label(:substitution) %><br>
-          <%= f.text_field(:term, class: 'modal-term form-control') %>
-          <%= f.text_field(:substitution, class: 'modal-substitution form-control') %>
-          <%= f.submit('Save', class: 'btn btn-success') %>
-     <% end %>
+  <%= form_with(model: Idiom::Idiom.new, url: idioms_path) do |f| %>
+    <%= f.label(:substitution) %><br>
+    <%= f.text_field(:term, class: 'form-control') %>
+    <%= f.text_field(:substitution) %>
+    <%= f.submit('Save', class: 'btn btn-success') %>
+  <% end %>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="gyre-modal" tabindex="-1" role="dialog" aria-labelledby="new-idiom-label">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <%# for reasons I don't understand, this form isn't ajax-submitting properly, so I set data-remote=true in js-land -dm 03-18-2018 %>
+      <%= form_with(url: gyre_dialect_path, id: 'gyre-modal-form', remote: true) do |f| %>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="new-idiom-label">Substitute for 'gyre'</h4>
+        </div>
+        <div class="modal-body">
+          <%= f.label(:substitution) %><br>
+          <%= f.hidden_field(:term, class: 'modal-term', value: 'gyre') %>
+          <%= f.text_field(:substitution, class: 'form-control', id: 'gyre-dialog-substitution') %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= f.submit('Save', class: 'btn btn-success') %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
 </div>
