@@ -156,8 +156,10 @@ describe 'Dialect page', js: true do
         visit '/dialect'
         click_button('use another phrase...')
         fill_in 'gyre-dialog-substitution', with: 'gazey'
+        expect(page).to have_text("Substitute for")
         click_button('Save')
         expect(page).to have_idiom_with('gyre', 'gazey')
+        expect(page).to_not have_text("Substitute for")
       end
     end
   end
@@ -232,7 +234,6 @@ describe 'Dialect page', js: true do
       other_users_idiom = FactoryGirl.create(:dancer_idiom, user: FactoryGirl.create(:user), term: 'ladles', substitution: 'ladies')
 
       visit '/dialect'
-      expect(page).to have_css('h1', text: "Dialect")
       expect(page).to have_idiom(move_idiom)
       expect(page).to have_idiom(dancer_idiom)
       expect(page).to_not have_idiom(other_users_idiom)

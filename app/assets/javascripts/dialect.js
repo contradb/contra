@@ -202,6 +202,8 @@ $(document).ready(function() {
     $('.alert').html('Bummer! Error setting gyre from modal.');
   }).on('ajax:success', function(e, idioms, status, xhr) {
     rebuildIdiomsList(idioms);
+  }).submit(function (e) {
+    $(this).closest('.modal').modal('toggle');
   });
 
   $("#gyre-modal-form").attr('data-remote', 'true'); // I can't get rails formbuilder helpers to do this for me -dm 03-18-2018
