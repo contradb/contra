@@ -1,14 +1,16 @@
 $(document).ready(function() {
   if ($('.idioms-list').length <= 0) {return;} // this code services the dialect editor page
 
-  $('.new-dancers-idiom').change(function(e) {
-    console.log("TODO "+$(this).val());
-  });
 
-  $('.new-move-idiom').change(function() {
-    var term = $(this).val();
+  function idiomSelect() {
+    var $this = $(this);
+    var term = $this.val();
+    $this.val('');
     makeIdiomEditor(term);
-  });
+  }
+
+  $('.new-dancers-idiom').change(idiomSelect);
+  $('.new-move-idiom').change(idiomSelect);
 
   function makeIdiomEditor(term, opt_substitution, opt_id) {
     var authenticityToken = $('#authenticity-token-incubator input[name=authenticity_token]').val();

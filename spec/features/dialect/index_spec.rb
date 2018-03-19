@@ -166,27 +166,28 @@ describe 'Dialect page', js: true do
 
   describe 'idiom list' do
 
-    it 'create' do
+    it 'create move' do
       with_login do |user|
         visit '/dialect'
         expect(page).to_not have_css('.glyphicon-ok')
         select 'swing'
-        fill_in 'swing-substitution', with: 'swong'
-        find('.idiom-substitution').native.send_keys(:return)
+        fill_in 'swing-substitution', with: 'swong' # js wait
+        expect(find('.new-move-idiom').value).to eq('')
         expect(page).to have_css('.glyphicon-ok')
       end
     end
 
-    it 'return works' do
+    it 'create dancer' do
       with_login do |user|
-        FactoryGirl.create(:move_idiom, user: user, term: 'see saw', substitution: 'left shoulder do si do')
         visit '/dialect'
-        fill_in 'see-saw-substitution', with: 'de ce de'
-        find('.idiom-substitution').native.send_keys(:return)
-        expect(page).to have_css('.glyphicon-ok') # js wait
-        user.reload
+        expect(page).to_not have_css('.glyphicon-ok')
+        select 'neighbors'
+        fill_in 'neighbors-substitution', with: 'buddies' # js wait
+        expect(find('.new-dancers-idiom').value).to eq('')
+        expect(page).to have_css('.glyphicon-ok')
         expect(user.idioms.length).to eq(1)
-        expect(user.idioms.first.substitution).to eq('de ce de')
+        expect(user.idioms.first.term).to eq('neighbors')
+        expect(user.idioms.first.substitution).to eq('buddies')
       end
     end
 
@@ -218,11 +219,9 @@ describe 'Dialect page', js: true do
       end
     end
   end
-  describe 'idiom adder selects' do
+
+  describe 'idiom adder select menus' do
     it 'dancer'
-    it 'move'
-    it 'clear all dancers'
-    it 'clear all moves'
     it 'selecting a term that is already present does nothing'
   end
 
