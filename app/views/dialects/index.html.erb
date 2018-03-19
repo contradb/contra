@@ -1,58 +1,58 @@
 <div class=container>
   <section>
-  <h2>Roles</h2>
+    <h2>Roles</h2>
 
-  <div class='role-setter'>
-      <% [{label: 'ladies & gents', params: {gentlespoon: 'gent', gentlespoons: 'gents', ladle: 'lady', ladles: 'ladies'}, class: 'gents-ladies'},
-          {label: 'larks & ravens', params: {gentlespoon: 'lark', gentlespoons: 'larks', ladle: 'raven', ladles: 'ravens'}, class: 'larks-ravens'},
-          {label: 'leads & follows', params: {gentlespoon: 'lead', gentlespoons: 'leads', ladle: 'follow', ladles: 'follows'}, class: 'leads-follows'}
-         ].each do |h| %>
-        <%= button_to(h[:label],
-                      roles_dialect_path,
-                      remote: true,
-                      class: 'btn btn-default',
-                      form_class: "dialect-express-role-form #{h[:class]}",
-                      params: h[:params].merge(button_lite: false)) %>
-      <% end %>
-  </div>
+    <div class='role-setter'>
+        <% [{label: 'ladies & gents', params: {gentlespoon: 'gent', gentlespoons: 'gents', ladle: 'lady', ladles: 'ladies'}, class: 'gents-ladies'},
+            {label: 'larks & ravens', params: {gentlespoon: 'lark', gentlespoons: 'larks', ladle: 'raven', ladles: 'ravens'}, class: 'larks-ravens'},
+            {label: 'leads & follows', params: {gentlespoon: 'lead', gentlespoons: 'leads', ladle: 'follow', ladles: 'follows'}, class: 'leads-follows'}
+           ].each do |h| %>
+          <%= button_to(h[:label],
+                        roles_dialect_path,
+                        remote: true,
+                        class: 'btn btn-default',
+                        form_class: "dialect-express-role-form #{h[:class]}",
+                        params: h[:params].merge(button_lite: false)) %>
+        <% end %>
+    </div>
   </section>
 
   <section>
-  <h2>Face to Face Turn for Two</h2>
+    <h2>Face to Face Turn for Two</h2>
 
-  <p>currently using: <span class='gyre-substitution-view'>gyre</span></p>
+    <p>currently using: <span class='gyre-substitution-view'>gyre</span></p>
 
-  <%= button_tag('substitute...', class: 'btn btn-default', 'data-toggle': 'modal', 'data-target': '#gyre-modal') %>
+    <%= button_tag('substitute...', class: 'btn btn-default', 'data-toggle': 'modal', 'data-target': '#gyre-modal') %>
   </section>
 
   <section>
-  <h2>Advanced</h2>
+    <h2>Advanced</h2>
 
-  <%= button_tag('show...', class: 'btn btn-default toggle-advanced-content-button') %>
+    <%= button_tag('show...', class: 'btn btn-default toggle-advanced-content-button') %>
 
-  <div class=advanced-content style='display: none'>
+    <div class=advanced-content style='display: none'>
 
-    <div class='form-inline'>
-      <select class="new-dancers-idiom form-control">
-        <option value="">Choose dancers...</option>
-      </select>
+      <div class='form-inline'>
+        <select class="new-dancers-idiom form-control">
+          <option value="">Choose dancers...</option>
+        </select>
+      </div>
+
+      <div class='form-inline'>
+        <select class="new-move-idiom form-control">
+          <option value="">Choose move...</option>
+        </select>
+      </div>
+
+      <div id='idioms-init' style='display: none'>
+        <%= @idioms.to_json %>
+      </div>
+
+      <table class='idioms-list'>
+        <%# js-created idiom html goes here %>
+      </table>
+
     </div>
-
-    <div class='form-inline'>
-      <select class="new-move-idiom form-control">
-        <option value="">Choose move...</option>
-      </select>
-    </div>
-
-    <div id='idioms-init' style='display: none'>
-      <%= @idioms.to_json %>
-    </div>
-
-    <table class='idioms-list'>
-      <%# js-created idiom html goes here %>
-    </table>
-
-  </div>
   <section>
 
   <div style='margin-top: 100px'>
