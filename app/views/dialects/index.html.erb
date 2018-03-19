@@ -15,37 +15,46 @@
     <% end %>
 </div>
 
-<h2>Gyre</h2>
+<h2>Facing Turn for Two</h2>
 
-<%= button_tag(content_tag('i', 'use another phrase...'),
+<p>currently using: <span class='gyre-substitution-view'>gyre</span></p>
+
+<%= button_tag(content_tag('i', 'substitute...'),
     class: 'btn btn-default',
     'data-toggle': 'modal',
     'data-target': '#gyre-modal')
    %>
 
-
-
 <h2>Advanced</h2>
 
-<div class='form-inline'>
-  <select class="new-dancers-idiom form-control">
-    <option value="">Choose dancers...</option>
-  </select>
-</div>
+<div class=advanced-content>
 
-<div class='form-inline'>
-  <select class="new-move-idiom form-control">
-    <option value="">Choose move...</option>
-  </select>
-</div>
+  <%= button_tag(content_tag('i', 'show...'),
+      class: 'btn btn-default toggle-advanced-content-button')
+      %>
 
-<div id='idioms-init' style='display: none'>
-  <%= @idioms.to_json %>
-</div>
 
-<table class='idioms-list'>
-  <%# js-created idiom html goes here %>
-</table>
+  <div class='form-inline'>
+    <select class="new-dancers-idiom form-control">
+      <option value="">Choose dancers...</option>
+    </select>
+  </div>
+
+  <div class='form-inline'>
+    <select class="new-move-idiom form-control">
+      <option value="">Choose move...</option>
+    </select>
+  </div>
+
+  <div id='idioms-init' style='display: none'>
+    <%= @idioms.to_json %>
+  </div>
+
+  <table class='idioms-list'>
+    <%# js-created idiom html goes here %>
+  </table>
+
+</div>
 
 <div style='margin-top: 100px'>
   <%= button_to(restore_defaults_dialect_path,

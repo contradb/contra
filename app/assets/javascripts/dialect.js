@@ -65,7 +65,7 @@ $(document).ready(function() {
         success: function(idiomJson, textStatus, jqXHR) {
           indicateStatus(status, 'glyphicon-ok', 'saved');
           ensureEditorUpdateMode(editor, idiomJson.id);
-          setRoleButtonLights();
+          recomputeIdiomStatuses();
         }
       });
     });
@@ -87,7 +87,7 @@ $(document).ready(function() {
                 type: 'DELETE',
                 success: function() {
                   container.remove();
-                  setRoleButtonLights();
+                  recomputeIdiomStatuses();
                 }});
       }
     });
@@ -117,8 +117,24 @@ $(document).ready(function() {
     $.each(idiom_json_array, function(meh, idiom) {
       makeIdiomEditor(idiom.term, idiom.substitution, idiom.id);
     });
-    setRoleButtonLights();
+    recomputeIdiomStatuses();
   }
+
+  function recomputeIdiomStatuses() {
+    setRoleButtonLights();
+    updateGyreSubstitutionViews();
+  }
+
+  function updateGyreSubstitutionViews() {
+    var gyreSubstitution = $('#gyre-substitution').val() || '';
+    var text = stringIsBlank(gyreSubstitution) ? 'gyre' : gyreSubstitution;
+    $('.gyre-substitution-view').text(text);
+  }
+
+  function stringIsBlank(s) {
+    return s.replace(/\s/g, '').length === 0;
+  }
+
 
   var buttonSubstitutions = $.map([['gent', 'gents', 'lady', 'ladies'],
                                    ['lark', 'larks', 'raven', 'ravens'],
