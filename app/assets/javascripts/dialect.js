@@ -225,4 +225,10 @@ $(document).ready(function() {
   });
 
   $("#gyre-modal-form").attr('data-remote', 'true'); // I can't get rails formbuilder helpers to do this for me -dm 03-18-2018
+
+
+  $('.toggle-advanced-content-button').click(function() {
+    $('.toggle-advanced-content-button').toggleClass('btn-primary');
+    $('.advanced-content').toggle();
+  });
 });

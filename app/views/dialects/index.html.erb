@@ -1,4 +1,5 @@
 <div class=container>
+  <section>
   <h2>Roles</h2>
 
   <div class='role-setter'>
@@ -14,25 +15,22 @@
                       params: h[:params].merge(button_lite: false)) %>
       <% end %>
   </div>
+  </section>
 
-  <h2>Facing Turn for Two</h2>
+  <section>
+  <h2>Face to Face Turn for Two</h2>
 
   <p>currently using: <span class='gyre-substitution-view'>gyre</span></p>
 
-  <%= button_tag(content_tag('i', 'substitute...'),
-      class: 'btn btn-default',
-      'data-toggle': 'modal',
-      'data-target': '#gyre-modal')
-     %>
+  <%= button_tag('substitute...', class: 'btn btn-default', 'data-toggle': 'modal', 'data-target': '#gyre-modal') %>
+  </section>
 
+  <section>
   <h2>Advanced</h2>
 
-  <div class=advanced-content>
+  <%= button_tag('show...', class: 'btn btn-default toggle-advanced-content-button') %>
 
-    <%= button_tag(content_tag('i', 'show...'),
-        class: 'btn btn-default toggle-advanced-content-button')
-        %>
-
+  <div class=advanced-content style='display: none'>
 
     <div class='form-inline'>
       <select class="new-dancers-idiom form-control">
@@ -55,6 +53,7 @@
     </table>
 
   </div>
+  <section>
 
   <div style='margin-top: 100px'>
     <%= button_to(restore_defaults_dialect_path,
@@ -84,7 +83,7 @@
       <%= form_with(url: gyre_dialect_path, id: 'gyre-modal-form', remote: true) do |f| %>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="new-idiom-label">Substitute for ‘gyre’</h4>
+          <h4 class="modal-title" id="new-idiom-label">Substitute for ‘<span class='gyre-substitution-view'>gyre</span>’</h4>
         </div>
         <div class="modal-body">
           <%= f.label(:substitution) %><br>

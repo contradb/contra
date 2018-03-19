@@ -57,6 +57,7 @@ describe 'Dialect page', js: true do
         FactoryGirl.create(:dancer_idiom, user: user, term: 'second ladle', substitution: 'second raven')
 
         visit '/dialect'
+        show_advanced_options
 
         # loads with correct html
         expect(page).to_not have_idiom_with('ladles', 'ladies')
@@ -108,7 +109,7 @@ describe 'Dialect page', js: true do
         expect(page).to_not have_idiom_with('gentlespoons', 'gents')
         expect(page).to_not have_idiom_with('first gentlespoon', 'first gent')
         expect(page).to_not have_idiom_with('second gentlespoon', 'second gent')
-        expect(page).to_not have_css('.btn-primary')
+        expect(page).to_not have_css('.dialect-express-role-form .btn-primary')
 
         # retest db
         expect(user.reload.dialect['dancers']).to be_empty
@@ -127,6 +128,7 @@ describe 'Dialect page', js: true do
 
         visit '/dialect'
         expect(page).to have_css('.larks-ravens .btn-primary')
+        show_advanced_options
 
         fill_in 'ladles-substitution', with: 'crows'
         expect(page).to_not have_css('.larks-ravens .btn-primary')
@@ -145,6 +147,7 @@ describe 'Dialect page', js: true do
     it "'substitute...' button and dialog work" do
       with_login do |user|
         visit '/dialect'
+        show_advanced_options
         expect(page).to have_text('currently using: gyre')
         click_button('substitute...')
         fill_in 'gyre-dialog-substitution', with: 'gazey'
@@ -162,6 +165,7 @@ describe 'Dialect page', js: true do
     it 'create move' do
       with_login do |user|
         visit '/dialect'
+        show_advanced_options
         expect(page).to_not have_css('.glyphicon-ok')
         select 'swing'
         fill_in 'swing-substitution', with: 'swong' # js wait
@@ -173,6 +177,7 @@ describe 'Dialect page', js: true do
     it 'create dancer' do
       with_login do |user|
         visit '/dialect'
+        show_advanced_options
         expect(page).to_not have_css('.glyphicon-ok')
         select 'neighbors'
         fill_in 'neighbors-substitution', with: 'buddies' # js wait
@@ -189,6 +194,7 @@ describe 'Dialect page', js: true do
       it 'works on new idiom' do
         with_login do |user|
           visit '/dialect'
+          show_advanced_options
           select 'gate'
           expect(page).to have_idiom_with('gate', 'gate')
           click_on 'delete-gate'
@@ -202,6 +208,7 @@ describe 'Dialect page', js: true do
         with_login do |user|
           idiom = FactoryGirl.create(:move_idiom, user: user, term: 'gate', substitution: 'flip')
           visit '/dialect'
+          show_advanced_options
           expect(page).to have_idiom(idiom)
           click_on 'delete-gate'
           expect(page).to_not have_content('gate') # wanted expect(page).to have_css('.glyphicon-time') but it was flaky
@@ -214,7 +221,6 @@ describe 'Dialect page', js: true do
   end
 
   describe 'idiom adder select menus' do
-    it 'dancer'
     it 'selecting a term that is already present does nothing'
   end
 
@@ -226,6 +232,8 @@ describe 'Dialect page', js: true do
       other_users_idiom = FactoryGirl.create(:dancer_idiom, user: FactoryGirl.create(:user), term: 'ladles', substitution: 'ladies')
 
       visit '/dialect'
+      show_advanced_options
+
       expect(page).to have_idiom(move_idiom)
       expect(page).to have_idiom(dancer_idiom)
       expect(page).to_not have_idiom(other_users_idiom)
@@ -256,11 +264,35 @@ describe 'Dialect page', js: true do
     end
   end
 
+  describe 'Advanced show button' do
+    it 'hides and shows idiom editors' do
+      with_login do |user|
+        idiom = FactoryGirl.create(:move_idiom, user: user, term: 'slice', substitution: 'yearn')
+        visit '/dialect'
+        expect(page).to_not have_idiom(idiom)
+        expect(page).to have_css('.toggle-advanced-content-button', count: 1)
+        expect(page).to_not have_css('.toggle-advanced-content-button.btn-primary')
+        expect(page).to_not have_css('.new-move-idiom')
+        expect(page).to_not have_css('.new-dancers-idiom')
+        click_button('show...')
+        expect(page).to have_css('.toggle-advanced-content-button.btn-primary')
+        expect(page).to have_css('.new-move-idiom')
+        expect(page).to have_css('.new-dancers-idiom')
+        expect(page).to have_idiom(idiom)
+      end
+    end
+  end
+
   def idiom_rendering(idiom)
     idiom_attr_rendering(idiom.term, idiom.substitution)
   end
 
   def idiom_attr_rendering(term, substitution)
     "#{term} → #{substitution}"
+  end
+
+  def show_advanced_options
+    click_button('show...')
+    expect(page).to have_css('.toggle-advanced-content-button.btn-primary') # js wait for completion
   end
 end
