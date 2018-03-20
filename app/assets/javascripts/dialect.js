@@ -1,7 +1,6 @@
 $(document).ready(function() {
   if ($('.idioms-list').length <= 0) {return;} // this code services the dialect editor page
 
-
   function idiomSelect() {
     var $this = $(this);
     var term = $this.val();
@@ -121,7 +120,7 @@ $(document).ready(function() {
   }
 
   function recomputeIdiomStatuses() {
-    setRoleButtonLights();
+    checkRoleRadioButtons();
     updateGyreSubstitutionViews();
   }
 
@@ -153,17 +152,20 @@ $(document).ready(function() {
                                             'second ladle': 'second '+ladle};
                                   });
 
-  // Walk the DOM and set role button lightedness appropriately. Profiled to take <= 5ms
-  function setRoleButtonLights() {
+  // Walk the DOM and set role button lightedness appropriately. Profiled to take <= 5ms in one incarnation
+  function checkRoleRadioButtons() {
+    var gentlespoonLadlesChecked = !($('#gentlespoons-substitution').length ||
+                                       $('#first-gentlespoon-substitution').length ||
+                                       $('#second-gentlespoon-substitution').length ||
+                                       $('#ladles-substitution').length ||
+                                       $('#first-ladle-substitution').length ||
+                                       $('#second-ladle-substitution').length);
+    $('#gentlespoons-ladles').prop('checked', gentlespoonLadlesChecked);
     $.each(buttonSubstitutions, function(meh, bsub) {
-      var $form = $('.'+bsub['gentlespoons']+'-'+bsub['ladles']);
-      setRoleButtonLight($form, idiomEditorsMatcheButtonSubstitution(bsub));
+      var $radio = $('#'+bsub['gentlespoons']+'-'+bsub['ladles']);
+      var checkIt = idiomEditorsMatcheButtonSubstitution(bsub);
+      $radio.prop('checked', checkIt);
     });
-  }
-
-  function setRoleButtonLight($form, bool) {
-    $form.find('.btn').addClass(bool ? 'btn-primary' : 'btn-default').removeClass(bool ? 'btn-default' : 'btn-primary');
-    $form.find('input[name=button_lite]').val(!bool);
   }
 
   function idiomEditorsMatcheButtonSubstitution(bsub) {
@@ -224,8 +226,13 @@ $(document).ready(function() {
     $(this).closest('.modal').modal('toggle');
   });
 
-  $("#gyre-modal-form").attr('data-remote', 'true'); // I can't get rails formbuilder helpers to do this for me -dm 03-18-2018
+  $('.dialect-express-role-radio').on('ajax:error', function() {
+    $('.alert').html('Bummer! Error setting role radio.');
+  }).on('ajax:success', function(e, idioms, status, xhr) {
+    rebuildIdiomsList(idioms);
+  });
 
+  $("#gyre-modal-form").attr('data-remote', 'true'); // I can't get rails formbuilder helpers to do this for me -dm 03-18-2018
 
   $('.toggle-advanced-content-button').click(function() {
     $('.toggle-advanced-content-button').toggleClass('btn-primary');

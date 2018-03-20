@@ -6,11 +6,12 @@ class DialectsController < ApplicationController
   end
 
   def roles
-    if param_button_lite
-      Idiom::Dancer.set_roles(current_user, *roles_param_l_ls_g_gs_array)
-    else
-      Idiom::Dancer.clear_roles(current_user)
-    end
+    Idiom::Dancer.set_roles(current_user, *roles_param_l_ls_g_gs_array)
+    render json: current_user.idioms
+  end
+
+  def roles_restore_defaults
+    Idiom::Dancer.clear_roles(current_user)
     render json: current_user.idioms
   end
 
@@ -26,10 +27,6 @@ class DialectsController < ApplicationController
 
   def roles_param_l_ls_g_gs_array
     params.require([:ladle, :ladles, :gentlespoon, :gentlespoons])
-  end
-
-  def param_button_lite
-    params.require(:button_lite).to_s == 'true'
   end
 
   def gyre_substitution_param

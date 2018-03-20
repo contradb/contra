@@ -3,16 +3,31 @@
     <h2>Roles</h2>
 
     <div class='role-setter'>
+          <label>
+            <%= tag.input(type: :radio, name: :roles, id: 'gentlespoons-ladles', 'data-remote': true, class: 'dialect-express-role-radio',
+                'data-url': roles_restore_defaults_dialect_path, 'data-method': :post) %>
+            ladles & gentlespoons
+          </label>
+          <br>
+
         <% [{label: 'ladies & gents', params: {gentlespoon: 'gent', gentlespoons: 'gents', ladle: 'lady', ladles: 'ladies'}, class: 'gents-ladies'},
             {label: 'larks & ravens', params: {gentlespoon: 'lark', gentlespoons: 'larks', ladle: 'raven', ladles: 'ravens'}, class: 'larks-ravens'},
             {label: 'leads & follows', params: {gentlespoon: 'lead', gentlespoons: 'leads', ladle: 'follow', ladles: 'follows'}, class: 'leads-follows'}
            ].each do |h| %>
-          <%= button_to(h[:label],
+          <label>
+            <!-- TODO: class used as id, whoops -->
+            <%= tag.input(type: :radio, name: :roles, id: h[:class], 'data-remote': true, class: 'dialect-express-role-radio',
+                'data-url': roles_dialect_path, 'data-params': h[:params].map {|k,v| "#{k}=#{v}"}.join('&'), 'data-method': :post) %>
+            <%= h[:label] %>
+          </label>
+
+          <%#= button_to(h[:label],
                         roles_dialect_path,
                         remote: true,
                         class: 'btn btn-default',
                         form_class: "dialect-express-role-form #{h[:class]}",
                         params: h[:params].merge(button_lite: false)) %>
+          <br>
         <% end %>
     </div>
   </section>

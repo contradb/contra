@@ -11,7 +11,13 @@
 ** DONE unselect role buttons when an individual idiom changes from the norm
 ** TODO Turn by the %s button
 ** TODO rearrange elements on the page so they're not so upsetting
-** TODO make it for dancers too
+** DONE make it for dancers too
+* TODO review specs - necessary and complete?
+* TODO class used as id, whoops
+* TODO remove all traces of the role buttons
+* TODO remove 'reset to default dialect' button
+* TODO rename poorly-thought-out classes and ids in css
+* TODO make advanced editor shrink to tiny phones right
 * TODO in idioms_controller#create, figure out what to do about all them funky formats like html and json
 * DONE fix margins on dialect page
 * TODO fix form element alignment at tiny screen sizes
@@ -37,3 +43,4 @@
 * TODO sort list by term type then term alphabetic
 * TODO reindent index.html.erb top div
 * TODO refactor that enormous js function
+* TODO grep for TODOs

@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resource :dialect, only: [] do
     get :index
     post :roles
+    post :roles_restore_defaults
     post :gyre
     post :restore_defaults
   end

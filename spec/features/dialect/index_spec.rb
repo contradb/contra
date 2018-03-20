@@ -45,6 +45,139 @@ end
 
 
 describe 'Dialect page', js: true do
+  describe 'role radio button' do
+    it 'works' do
+      with_login do |user|
+        expect(user.idioms).to be_empty
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'larks')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'first gentlespoon', substitution: 'first lark')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'second gentlespoon', substitution: 'second lark')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'ladles', substitution: 'ravens')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'first ladle', substitution: 'first raven')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'second ladle', substitution: 'second raven')
+
+        visit '/dialect'
+        show_advanced_options
+
+        # loads with correct html
+        expect(page).to_not have_idiom_with('ladles', 'ladies')
+        expect(page).to_not have_idiom_with('first ladle', 'first lady')
+        expect(page).to_not have_idiom_with('second ladle', 'second lady')
+        expect(page).to_not have_idiom_with('gentlespoons', 'gents')
+        expect(page).to_not have_idiom_with('first gentlespoon', 'first gent')
+        expect(page).to_not have_idiom_with('second gentlespoon', 'second gent')
+
+        expect(page).to have_idiom_with('gentlespoons', 'larks')
+        expect(page).to have_idiom_with('first gentlespoon', 'first lark')
+        expect(page).to have_idiom_with('second gentlespoon', 'second lark')
+        expect(page).to have_idiom_with('ladles', 'ravens')
+        expect(page).to have_idiom_with('first ladle', 'first raven')
+        expect(page).to have_idiom_with('second ladle', 'second raven')
+        expect(page).to have_css('.glyphicon-ok', count: 6) # load with correct blinkenlight
+        expect(find_field("larks-ravens")).to be_checked
+        expect(find_field("gents-ladies")).to_not be_checked
+
+        # File.open('/tmp/1.html', 'w') {|f| f.write(.inspect)}
+
+        choose('ladies & gents')
+
+        # test html
+        expect(page).to have_idiom_with('ladles', 'ladies')
+        expect(page).to have_idiom_with('first ladle', 'first lady')
+        expect(page).to have_idiom_with('second ladle', 'second lady')
+        expect(page).to have_idiom_with('gentlespoons', 'gents')
+        expect(page).to have_idiom_with('first gentlespoon', 'first gent')
+        expect(page).to have_idiom_with('second gentlespoon', 'second gent')
+        expect(page).to_not have_css('.larks-ravens .btn-primary')
+        expect(find_field("larks-ravens")).to_not be_checked
+        expect(find_field("gents-ladies")).to be_checked
+
+
+        # test db
+        dancers = user.reload.dialect['dancers']
+        expect(dancers['ladles']).to eq('ladies')
+        expect(dancers['first ladle']).to eq('first lady')
+        expect(dancers['second ladle']).to eq('second lady')
+        expect(dancers['gentlespoons']).to eq('gents')
+        expect(dancers['first gentlespoon']).to eq('first gent')
+        expect(dancers['second gentlespoon']).to eq('second gent')
+        expect(page).to have_css('.idiom-form')
+
+        # test delete
+        choose('ladles & gentlespoons')
+        expect(page).to_not have_css('.idiom-form')
+        expect(user.idioms.reload).to be_empty
+      end
+    end
+
+    it 'no radios are lit when user loads page with unusual dancer idioms' do
+      with_login do |user|
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'ladles', substitution: 'ladles chicken')
+        visit '/dialect'
+
+        expect(find_field("gentlespoons-ladles")).to_not be_checked
+        expect(find_field("gents-ladies")).to_not be_checked
+        expect(find_field("larks-ravens")).to_not be_checked
+        expect(find_field("leads-follows")).to_not be_checked
+      end
+    end
+
+
+    it 'ladles and gentlespoons unlights & relights when other stuff shifts underneath its feet' do
+      with_login do |user|
+        visit '/dialect'
+        show_advanced_options
+
+        expect(find_field("gentlespoons-ladles")).to be_checked
+        expect(find_field("gents-ladies")).to_not be_checked
+        expect(find_field("larks-ravens")).to_not be_checked
+        expect(find_field("leads-follows")).to_not be_checked
+
+        select 'ladles'
+        fill_in 'ladles-substitution', with: 'T-Rexes'
+
+        expect(page).to have_css('.glyphicon-ok') # js wait
+        expect(find_field("gentlespoons-ladles")).to_not be_checked
+        expect(find_field("gents-ladies")).to_not be_checked
+        expect(find_field("larks-ravens")).to_not be_checked
+        expect(find_field("leads-follows")).to_not be_checked
+
+        click_on 'delete-ladles'
+        expect(page).to_not have_css('#delete-ladles') # js wait
+        expect(find_field("gentlespoons-ladles")).to be_checked
+        expect(find_field("gents-ladies")).to_not be_checked
+        expect(find_field("larks-ravens")).to_not be_checked
+        expect(find_field("leads-follows")).to_not be_checked
+      end
+    end
+
+    it 'button.selected_role unlights & relights when other stuff shifts underneath its feet' do
+      with_login do |user|
+        expect(user.idioms).to be_empty
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'larks')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'first gentlespoon', substitution: 'first lark')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'second gentlespoon', substitution: 'second lark')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'ladles', substitution: 'ravens')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'first ladle', substitution: 'first raven')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'second ladle', substitution: 'second raven')
+
+        visit '/dialect'
+        expect(page).to have_css('.larks-ravens .btn-primary')
+        show_advanced_options
+
+        fill_in 'ladles-substitution', with: 'crows'
+        expect(page).to_not have_css('.larks-ravens .btn-primary')
+
+        fill_in 'ladles-substitution', with: 'ravens'
+        expect(page).to have_css('.larks-ravens .btn-primary')
+
+        click_on 'delete-ladles'
+        expect(page).to_not have_css('.larks-ravens .btn-primary')
+      end
+    end
+  end
+
+
   describe 'role button' do
     it 'works' do
       with_login do |user|
