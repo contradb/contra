@@ -354,7 +354,26 @@ describe 'Dialect page', js: true do
   end
 
   describe 'idiom adder select menus' do
-    it 'selecting a term that is already present does nothing'
+    it 'disable items that are already on the page' do
+      with_login do |user|
+        visit '/dialect'
+        show_advanced_options
+        select('gate')
+        expect(page).to have_css('option[value=gate][disabled]')
+      end
+    end
+
+    it 'reenable items that are deleted' do
+      with_login do |user|
+        FactoryGirl.create(:move_idiom, user: user, term: 'gate', substitution: 'flip')
+        visit '/dialect'
+        show_advanced_options
+        expect(page).to have_css('option[value=gate][disabled]') # because it's disabled
+        click_button('delete-gate')
+        expect(page).to have_css('option[value=gate]')
+        expect(page).to_not have_css('option[value=gate][disabled]')
+      end
+    end
   end
 
 

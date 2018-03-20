@@ -6,6 +6,7 @@ $(document).ready(function() {
     var term = $this.val();
     $this.val('');
     makeIdiomEditor(term);
+    $this.find('option[value="' + term + '"]').attr('disabled', true);
   }
 
   $('.new-dancers-idiom').change(idiomSelect);
@@ -122,6 +123,7 @@ $(document).ready(function() {
   function recomputeIdiomStatuses() {
     checkRoleRadioButtons();
     updateGyreSubstitutionViews();
+    updateSelectButtonOptionDisabled();
   }
 
   function updateGyreSubstitutionViews() {
@@ -134,6 +136,15 @@ $(document).ready(function() {
     return s.replace(/\s/g, '').length === 0;
   }
 
+  function updateSelectButtonOptionDisabled() {
+    // enable all
+    $('select.new-idiom option').attr('disabled', false);
+    // disable the ones that are in use by walking the advanced idiom editors
+    $('input.idiom-term').each(function() {
+      var term = $(this).val();
+      $('select.new-idiom option[value="' + term + '"]').attr('disabled', true);
+    });
+  }
 
   var buttonSubstitutions = $.map([['gent', 'gents', 'lady', 'ladies'],
                                    ['lark', 'larks', 'raven', 'ravens'],
