@@ -15,9 +15,8 @@
 * DONE review specs - necessary and complete?
 * DONE move 'restore default dialect' button into Advanced
 * DONE class used as id, whoops
-* TODO remove all traces of the role buttons
-* TODO remove 'reset to default dialect' button
-* TODO rename poorly-thought-out classes and ids in css
+* DONE remove all traces of the role buttons
+* DONE rename poorly-thought-out classes and ids in css
 * TODO make advanced editor shrink to tiny phones right
 * TODO in idioms_controller#create, figure out what to do about all them funky formats like html and json
 * DONE fix margins on dialect page

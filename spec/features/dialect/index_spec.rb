@@ -317,12 +317,12 @@ describe 'Dialect page', js: true do
         idiom = FactoryGirl.create(:move_idiom, user: user, term: 'slice', substitution: 'yearn')
         visit '/dialect'
         expect(page).to_not have_idiom(idiom)
-        expect(page).to have_css('.toggle-advanced-content-button')
-        expect(page).to_not have_css('.toggle-advanced-content-button.btn-primary')
+        expect(page).to have_css('.dialect-advanced-toggle-button')
+        expect(page).to_not have_css('.dialect-advanced-toggle-button.btn-primary')
         expect(page).to_not have_css('.new-move-idiom')
         expect(page).to_not have_css('.new-dancers-idiom')
         click_button('show...')
-        expect(page).to have_css('.toggle-advanced-content-button.btn-primary')
+        expect(page).to have_css('.dialect-advanced-toggle-button.btn-primary')
         expect(page).to have_css('.new-move-idiom')
         expect(page).to have_css('.new-dancers-idiom')
         expect(page).to have_idiom(idiom)
@@ -340,7 +340,7 @@ describe 'Dialect page', js: true do
 
   def show_advanced_options
     click_button('show...')
-    expect(page).to have_css('.toggle-advanced-content-button.btn-primary') # js wait for completion
+    expect(page).to have_css('.dialect-advanced-toggle-button.btn-primary') # js wait for completion
   end
 
   def expect_pressed_radios(gentlespoons_ladles: false,

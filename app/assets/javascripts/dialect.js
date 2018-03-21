@@ -13,7 +13,7 @@ $(document).ready(function() {
   $('.new-move-idiom').change(idiomSelect);
 
   function makeIdiomEditor(term, opt_substitution, opt_id) {
-    var authenticityToken = $('#authenticity-token-incubator input[name=authenticity_token]').val();
+    var authenticityToken = $('#dialect-authenticity-token-incubator input[name=authenticity_token]').val();
     var presumed_server_substitution = opt_substitution || term;
     var substitution_id = slugifyTerm(term) + '-substitution';
     var row =
@@ -201,10 +201,10 @@ $(document).ready(function() {
   }
 
 
-  if ($('#idioms-init').length === 0) {
-    throw new Error("Can't initialize page because can't find #idioms-init");
+  if ($('#dialect-idioms-init').length === 0) {
+    throw new Error("Can't initialize page because can't find #dialect-idioms-init");
   }
-  rebuildIdiomsList(JSON.parse($('#idioms-init').text()));
+  rebuildIdiomsList(JSON.parse($('#dialect-idioms-init').text()));
 
   // reset the whole dialect
   $('.restore-default-dialect-form').on('ajax:error', function() {
@@ -229,7 +229,7 @@ $(document).ready(function() {
   });
 
   // change gyre with a dialog box
-  $('#gyre-modal-form').on('ajax:error', function() {
+  $('#dialect-gyre-modal-form').on('ajax:error', function() {
     $('.alert').html('Bummer! Error setting gyre from modal.');
   }).on('ajax:success', function(e, idioms, status, xhr) {
     rebuildIdiomsList(idioms);
@@ -243,10 +243,10 @@ $(document).ready(function() {
     rebuildIdiomsList(idioms);
   });
 
-  $("#gyre-modal-form").attr('data-remote', 'true'); // I can't get rails formbuilder helpers to do this for me -dm 03-18-2018
+  $("#dialect-gyre-modal-form").attr('data-remote', 'true'); // I can't get rails formbuilder helpers to do this for me -dm 03-18-2018
 
-  $('.toggle-advanced-content-button').click(function() {
-    $('.toggle-advanced-content-button').toggleClass('btn-primary');
-    $('.advanced-content').toggle();
+  $('.dialect-advanced-toggle-button').click(function() {
+    $('.dialect-advanced-toggle-button').toggleClass('btn-primary');
+    $('.dialect-advanced-content').toggle();
   });
 });
