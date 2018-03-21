@@ -12,7 +12,8 @@
 ** TODO Turn by the %s button
 ** TODO rearrange elements on the page so they're not so upsetting
 ** DONE make it for dancers too
-* TODO review specs - necessary and complete?
+* DONE review specs - necessary and complete?
+* TODO move 'restore default dialect' button into Advanced
 * TODO class used as id, whoops
 * TODO remove all traces of the role buttons
 * TODO remove 'reset to default dialect' button

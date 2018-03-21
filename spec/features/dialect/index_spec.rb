@@ -46,7 +46,7 @@ end
 
 describe 'Dialect page', js: true do
   describe 'role radio button' do
-    it 'works' do
+    it 'is checked on page load and controls idioms' do
       with_login do |user|
         expect(user.idioms).to be_empty
         FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'larks')
@@ -77,8 +77,6 @@ describe 'Dialect page', js: true do
         expect(find_field("larks-ravens")).to be_checked
         expect(find_field("gents-ladies")).to_not be_checked
 
-        # File.open('/tmp/1.html', 'w') {|f| f.write(.inspect)}
-
         choose('ladies & gents')
 
         # test html
@@ -91,7 +89,6 @@ describe 'Dialect page', js: true do
         expect(page).to_not have_css('.larks-ravens .btn-primary')
         expect(find_field("larks-ravens")).to_not be_checked
         expect(find_field("gents-ladies")).to be_checked
-
 
         # test db
         dancers = user.reload.dialect['dancers']
@@ -125,6 +122,7 @@ describe 'Dialect page', js: true do
 
     it 'ladles and gentlespoons unlights & relights when other stuff shifts underneath its feet' do
       with_login do |user|
+        # ladles and gentlespoons has a different implementation path than the other express pickers
         visit '/dialect'
         show_advanced_options
 
@@ -136,14 +134,14 @@ describe 'Dialect page', js: true do
         select 'ladles'
         fill_in 'ladles-substitution', with: 'T-Rexes'
 
-        expect(page).to have_css('.glyphicon-ok') # js wait
+        expect(page).to have_css('.glyphicon-ok') # js wait (this was a flake elsewhere in this file, and I ended up doing a sleep there)
         expect(find_field("gentlespoons-ladles")).to_not be_checked
         expect(find_field("gents-ladies")).to_not be_checked
         expect(find_field("larks-ravens")).to_not be_checked
         expect(find_field("leads-follows")).to_not be_checked
 
         click_on 'delete-ladles'
-        expect(page).to_not have_css('#delete-ladles') # js wait
+        expect(page).to_not have_css('#delete-ladles') # js wait (this was a flake elsewhere in this file, and I ended up doing a sleep there)
         expect(find_field("gentlespoons-ladles")).to be_checked
         expect(find_field("gents-ladies")).to_not be_checked
         expect(find_field("larks-ravens")).to_not be_checked
@@ -151,7 +149,7 @@ describe 'Dialect page', js: true do
       end
     end
 
-    it 'button.selected_role unlights & relights when other stuff shifts underneath its feet' do
+    it 'role radios unlight & relight when other stuff shifts underneath their feet' do
       with_login do |user|
         expect(user.idioms).to be_empty
         FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'larks')
@@ -210,11 +208,13 @@ describe 'Dialect page', js: true do
       with_login do |user|
         visit '/dialect'
         show_advanced_options
-        expect(page).to_not have_css('.glyphicon-ok')
         select 'swing'
         fill_in 'swing-substitution', with: 'swong' # js wait
         expect(find('.new-move-idiom').value).to eq('')
         expect(page).to have_css('.glyphicon-ok')
+        expect(user.idioms.length).to eq(1)
+        expect(user.idioms.first.term).to eq('swing')
+        expect(user.idioms.first.substitution).to eq('swong')
       end
     end
 
@@ -222,7 +222,6 @@ describe 'Dialect page', js: true do
       with_login do |user|
         visit '/dialect'
         show_advanced_options
-        expect(page).to_not have_css('.glyphicon-ok')
         select 'neighbors'
         fill_in 'neighbors-substitution', with: 'buddies' # js wait
         expect(find('.new-dancers-idiom').value).to eq('')
@@ -279,27 +278,11 @@ describe 'Dialect page', js: true do
         FactoryGirl.create(:move_idiom, user: user, term: 'gate', substitution: 'flip')
         visit '/dialect'
         show_advanced_options
-        expect(page).to have_css('option[value=gate][disabled]') # because it's disabled
+        expect(page).to have_css('option[value=gate][disabled]')
         click_button('delete-gate')
         expect(page).to have_css('option[value=gate]')
         expect(page).to_not have_css('option[value=gate][disabled]')
       end
-    end
-  end
-
-
-  it 'displays existings idioms' do
-    with_login do |user|
-      move_idiom = FactoryGirl.create(:move_idiom, user: user, term: 'allemande', substitution: 'almond')
-      dancer_idiom = FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'guys')
-      other_users_idiom = FactoryGirl.create(:dancer_idiom, user: FactoryGirl.create(:user), term: 'ladles', substitution: 'ladies')
-
-      visit '/dialect'
-      show_advanced_options
-
-      expect(page).to have_idiom(move_idiom)
-      expect(page).to have_idiom(dancer_idiom)
-      expect(page).to_not have_idiom(other_users_idiom)
     end
   end
 
@@ -333,7 +316,7 @@ describe 'Dialect page', js: true do
         idiom = FactoryGirl.create(:move_idiom, user: user, term: 'slice', substitution: 'yearn')
         visit '/dialect'
         expect(page).to_not have_idiom(idiom)
-        expect(page).to have_css('.toggle-advanced-content-button', count: 1)
+        expect(page).to have_css('.toggle-advanced-content-button')
         expect(page).to_not have_css('.toggle-advanced-content-button.btn-primary')
         expect(page).to_not have_css('.new-move-idiom')
         expect(page).to_not have_css('.new-dancers-idiom')
