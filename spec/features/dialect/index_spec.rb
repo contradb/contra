@@ -30,7 +30,7 @@ end
 # Capybara.add_selector(:idiom_with) do
 #  css { |term, substitution| puts 'ahoy' ; "input##{JSLibFigure.slugify_move(term)}-substitution" } # also needs to check term and value
 # end
-# 
+#
 # module Capybara
 #   class Session
 #     def has_idiom_with?(term, substitution)
@@ -162,115 +162,26 @@ describe 'Dialect page', js: true do
         FactoryGirl.create(:dancer_idiom, user: user, term: 'second ladle', substitution: 'second raven')
 
         visit '/dialect'
-        expect(page).to have_css('.larks-ravens .btn-primary')
         show_advanced_options
+
+        # near as I can tell, there's no way to do a waiting-expect a radio button to be checked.
+        # I REALLY tried to find something like: expect(page).to have_css('#larks-ravens[checked]')
+        sleep(0.5)
+        expect_pressed_radios(larks_ravens: true)
 
         fill_in 'ladles-substitution', with: 'crows'
-        expect(page).to_not have_css('.larks-ravens .btn-primary')
+        sleep(0.5)
+        expect(page).to have_css('.glyphicon-ok') # js wait
+        expect_pressed_radios
 
         fill_in 'ladles-substitution', with: 'ravens'
-        expect(page).to have_css('.larks-ravens .btn-primary')
+        sleep(0.5)
+        expect(page).to have_css('.glyphicon-ok') # js wait
+        expect_pressed_radios(larks_ravens: true)
 
         click_on 'delete-ladles'
-        expect(page).to_not have_css('.larks-ravens .btn-primary')
-      end
-    end
-  end
-
-
-  describe 'role button' do
-    it 'works' do
-      with_login do |user|
-        expect(user.idioms).to be_empty
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'larks')
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'first gentlespoon', substitution: 'first lark')
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'second gentlespoon', substitution: 'second lark')
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'ladles', substitution: 'ravens')
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'first ladle', substitution: 'first raven')
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'second ladle', substitution: 'second raven')
-
-        visit '/dialect'
-        show_advanced_options
-
-        # loads with correct html
-        expect(page).to_not have_idiom_with('ladles', 'ladies')
-        expect(page).to_not have_idiom_with('first ladle', 'first lady')
-        expect(page).to_not have_idiom_with('second ladle', 'second lady')
-        expect(page).to_not have_idiom_with('gentlespoons', 'gents')
-        expect(page).to_not have_idiom_with('first gentlespoon', 'first gent')
-        expect(page).to_not have_idiom_with('second gentlespoon', 'second gent')
-        expect(page).to_not have_css('.gents-ladles .btn-primary')
-
-        expect(page).to have_idiom_with('gentlespoons', 'larks')
-        expect(page).to have_idiom_with('first gentlespoon', 'first lark')
-        expect(page).to have_idiom_with('second gentlespoon', 'second lark')
-        expect(page).to have_idiom_with('ladles', 'ravens')
-        expect(page).to have_idiom_with('first ladle', 'first raven')
-        expect(page).to have_idiom_with('second ladle', 'second raven')
-        expect(page).to have_css('.larks-ravens .btn-primary')
-        expect(page).to have_css('.glyphicon-ok', count: 6) # load with correct blinkenlight
-
-        click_button('ladies & gents')
-
-        # test html
-        expect(page).to have_idiom_with('ladles', 'ladies')
-        expect(page).to have_idiom_with('first ladle', 'first lady')
-        expect(page).to have_idiom_with('second ladle', 'second lady')
-        expect(page).to have_idiom_with('gentlespoons', 'gents')
-        expect(page).to have_idiom_with('first gentlespoon', 'first gent')
-        expect(page).to have_idiom_with('second gentlespoon', 'second gent')
-        expect(page).to_not have_css('.larks-ravens .btn-primary')
-        expect(page).to have_css('.gents-ladies .btn-primary')
-
-        # test db
-        dancers = user.reload.dialect['dancers']
-        expect(dancers['ladles']).to eq('ladies')
-        expect(dancers['first ladle']).to eq('first lady')
-        expect(dancers['second ladle']).to eq('second lady')
-        expect(dancers['gentlespoons']).to eq('gents')
-        expect(dancers['first gentlespoon']).to eq('first gent')
-        expect(dancers['second gentlespoon']).to eq('second gent')
-
-        # toggle it off again
-        click_button('ladies & gents')
-
-        # retest html
-        expect(page).to_not have_css("#ladles-substitution") # js wait to mask bug in have_idiom_with
-        expect(page).to_not have_idiom_with('ladles', 'ladies')
-        expect(page).to_not have_idiom_with('first ladle', 'first lady')
-        expect(page).to_not have_idiom_with('second ladle', 'second lady')
-        expect(page).to_not have_idiom_with('gentlespoons', 'gents')
-        expect(page).to_not have_idiom_with('first gentlespoon', 'first gent')
-        expect(page).to_not have_idiom_with('second gentlespoon', 'second gent')
-        expect(page).to_not have_css('.dialect-express-role-form .btn-primary')
-
-        # retest db
-        expect(user.reload.dialect['dancers']).to be_empty
-      end
-    end
-
-    it 'button.selected_role unlights & relights when other stuff shifts underneath its feet' do
-      with_login do |user|
-        expect(user.idioms).to be_empty
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'larks')
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'first gentlespoon', substitution: 'first lark')
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'second gentlespoon', substitution: 'second lark')
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'ladles', substitution: 'ravens')
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'first ladle', substitution: 'first raven')
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'second ladle', substitution: 'second raven')
-
-        visit '/dialect'
-        expect(page).to have_css('.larks-ravens .btn-primary')
-        show_advanced_options
-
-        fill_in 'ladles-substitution', with: 'crows'
-        expect(page).to_not have_css('.larks-ravens .btn-primary')
-
-        fill_in 'ladles-substitution', with: 'ravens'
-        expect(page).to have_css('.larks-ravens .btn-primary')
-
-        click_on 'delete-ladles'
-        expect(page).to_not have_css('.larks-ravens .btn-primary')
+        expect(page).to_not have_css('#delete-ladies') # js wait
+        expect_pressed_radios
       end
     end
   end
@@ -409,7 +320,7 @@ describe 'Dialect page', js: true do
       click_button('Restore Default Dialect')
       # automatically clicks confirm!?
 
-      expect(page).to_not have_content('gentlespoons')
+      expect(page).to_not have_css('#gentlespoons-substitution') # js wait
       expect(page).to_not have_idiom(dancer_idiom)
       expect(page).to_not have_idiom(move_idiom)
       expect(user.reload.idioms).to be_empty
@@ -446,5 +357,35 @@ describe 'Dialect page', js: true do
   def show_advanced_options
     click_button('show...')
     expect(page).to have_css('.toggle-advanced-content-button.btn-primary') # js wait for completion
+  end
+
+  def expect_pressed_radios(gentlespoons_ladles: false,
+                            gents_ladies: false,
+                            larks_ravens: false,
+                            leads_follows: false)
+
+    if gentlespoons_ladles
+      expect(find_field("gentlespoons-ladles")).to be_checked
+    else
+      expect(find_field("gentlespoons-ladles")).to_not be_checked
+    end
+
+    if gents_ladies
+      expect(find_field("gents-ladies")).to be_checked
+    else
+      expect(find_field("gents-ladies")).to_not be_checked
+    end
+
+    if larks_ravens
+      expect(find_field("larks-ravens")).to be_checked
+    else
+      expect(find_field("larks-ravens")).to_not be_checked
+    end
+
+    if leads_follows
+      expect(find_field("leads-follows")).to be_checked
+    else
+      expect(find_field("leads-follows")).to_not be_checked
+    end
   end
 end
