@@ -17,8 +17,11 @@ $(document).ready(function() {
     var presumed_server_substitution = opt_substitution || term;
     var substitution_id = slugifyTerm(term) + '-substitution';
     var row =
-          $('<tr><td class="text-right form-inline"><label for="' + substitution_id + '" class=control-label>' +
-            term + '</label></td><td class="idiom-editor-td"></td><td class="idiom-delete-td"></td></tr>');
+          $('<tr>'+
+            '  <td class="text-right form-inline"><label for="' + substitution_id + '" class=control-label>' + term + '</label></td>' +
+            '  <td class="idiom-editor-td"></td>' +
+            '  <td class="idiom-delete-td"></td>' +
+            '</tr>');
     var editor =
           $('<form accept-charset="UTF-8" class="form-inline idiom-form">' +
             '  <input name="utf8" value="✓" type="hidden">' +
@@ -174,12 +177,12 @@ $(document).ready(function() {
     $('#gentlespoons-ladles').prop('checked', gentlespoonLadlesChecked);
     $.each(buttonSubstitutions, function(meh, bsub) {
       var $radio = $('#'+bsub['gentlespoons']+'-'+bsub['ladles']);
-      var checkIt = idiomEditorsMatcheButtonSubstitution(bsub);
+      var checkIt = idiomEditorsMatchButtonSubstitution(bsub);
       $radio.prop('checked', checkIt);
     });
   }
 
-  function idiomEditorsMatcheButtonSubstitution(bsub) {
+  function idiomEditorsMatchButtonSubstitution(bsub) {
     var matches = 0;
     var bsub_length = 0;
     for (var term in bsub) {

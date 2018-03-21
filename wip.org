@@ -44,3 +44,6 @@
 * TODO reindent index.html.erb top div
 * TODO refactor that enormous js function
 * TODO grep for TODOs
+* TODO merge master
+* TODO delete this file
+* TODO final code review
