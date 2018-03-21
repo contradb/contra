@@ -59,27 +59,23 @@
         </select>
       </div>
 
-      <div id='idioms-init' style='display: none'>
-        <%= @idioms.to_json %>
-      </div>
-
       <table class='idioms-list'>
         <%# js-created idiom html goes here %>
       </table>
 
+      <div style='margin-top: 100px'>
+        <%= button_to(restore_defaults_dialect_path,
+                      remote: true,
+                      class: 'btn btn-md btn-danger',
+                      form_class: 'restore-default-dialect-form',
+                      data: { confirm: "You will delete your entire dialect, seeing dance terms in their unvarnished, spoon-themed glory. Are you sure?" }
+                     ) do %>
+          <%= content_tag(:span, delete_icon_html + ' Restore Default Dialect') %>
+        <% end %>
+      </div>
+
     </div>
   <section>
-
-  <div style='margin-top: 100px'>
-    <%= button_to(restore_defaults_dialect_path,
-                  remote: true,
-                  class: 'btn btn-md btn-danger',
-                  form_class: 'restore-default-dialect-form',
-                  data: { confirm: "You will delete your entire dialect, seeing dance terms in their unvarnished, spoon-themed glory. Are you sure?" }
-                 ) do %>
-      <%= content_tag(:span, delete_icon_html + ' Restore Default Dialect') %>
-    <% end %>
-  </div>
 </div>
 
 <div style='display: none' id='authenticity-token-incubator'>
@@ -112,4 +108,8 @@
       <% end %>
     </div>
   </div>
+</div>
+
+<div id='idioms-init' style='display: none'>
+  <%= @idioms.to_json %>
 </div>

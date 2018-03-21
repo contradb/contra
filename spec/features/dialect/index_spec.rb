@@ -299,6 +299,7 @@ describe 'Dialect page', js: true do
       expect(user.idioms).to be_present
 
       visit '/dialect'
+      show_advanced_options
 
       click_button('Restore Default Dialect')
       # automatically clicks confirm!?
