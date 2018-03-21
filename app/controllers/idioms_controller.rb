@@ -8,7 +8,6 @@ class IdiomsController < ApplicationController
     if @idiom.save
       render json: @idiom, status: :ok
     else
-      # TODO worry about this branch
       render json: @idiom.errors, status: :unprocessable_entity
     end
   end
@@ -21,7 +20,6 @@ class IdiomsController < ApplicationController
       if @idiom.update(idiom_params)
         format.json { render json: @idiom, status: :ok }
       else
-        # TODO worry about this branch
         format.json { render json: @idiom.errors, status: :unprocessable_entity }
       end
     end
@@ -48,8 +46,10 @@ class IdiomsController < ApplicationController
   def idiom_type_from_term(term)
     if term.in?(JSLibFigure.moves)
       'Idiom::Move'
+    elsif term.in?(JSLibFigure.dancers)
+      'Idiom::Dancer'
     else
-      'Idiom::Dancer'           # need if term.in?(JSLibFigure.dancerMenuForChooser(chooser_dancers)) or something
+      raise('can not guess idiom type from term ' + term.inspect)
     end
   end
 end

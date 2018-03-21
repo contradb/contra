@@ -154,3 +154,7 @@ var dancersCategoryHash = {
 function dancersCategory(chooser) {
   return dancersCategoryHash[chooser] || chooser;
 }
+
+function dancers() {
+  return dancerMenuForChooser(chooser_dancers);
+}

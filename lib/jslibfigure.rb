@@ -136,6 +136,11 @@ module JSLibFigure
     self.eval("formalParamIsDancers(#{formal_param.to_json})")
   end
 
+  def self.dancers
+    self.eval("dancers()")
+  end
+
+
   JSLIBFIGURE_FILES = %w(polyfill.js util.js move.js chooser.js param.js define-figure.js figure.es6 after-figure.js dance.js)
 
   private

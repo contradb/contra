@@ -229,4 +229,28 @@ RSpec.describe JSLibFigure do
     expect(JSLibFigure.move_substitution('allemande', JSLibFigure.test_dialect)).to eq('almond')
     expect(JSLibFigure.move_substitution("Rory O'Moore", JSLibFigure.test_dialect)).to eq("Rory O'Moore")
   end
+
+  it 'dancers works' do
+    expected = ['everyone',
+                'gentlespoons',
+                'ladles',
+                'partners',
+                'neighbors',
+                'ones',
+                'twos',
+                'same roles',
+                'first corners',
+                'second corners',
+                'first gentlespoon',
+                'first ladle',
+                'second gentlespoon',
+                'second ladle',
+                'shadows',
+                '2nd shadows',
+                'prev neighbors',
+                'next neighbors',
+                '3rd neighbors',
+                '4th neighbors']
+    expect(JSLibFigure.dancers.sort).to eq(expected.sort)
+  end
 end
