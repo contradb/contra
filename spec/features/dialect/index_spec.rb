@@ -11,47 +11,16 @@ RSpec::Matchers.define :have_idiom do |idiom|
   end
 end
 
-# there's a bug in this where we don't wait on some submatchers
-# so sometimes we've got to js-wait manually
-# e.g. after removing a ladles -> ladies idiom:
-#      expect(page).to_not have_css("#ladles-substitution") # js wait
-#      expect(page).to_not have_idiom_with('ladles', 'ladies')
-
-RSpec::Matchers.define_negated_matcher :not_have_field, :have_field
-RSpec::Matchers.define_negated_matcher :not_have_css, :have_css
-
+# this has a bug, somehow, see:
+#       expect(page).to_not have_field('gentlespoons-substitution', with: 'brontosauruses') # js wait, masking mysterious bug
+#       expect(page).to_not have_idiom(dancer_idiom)
 RSpec::Matchers.define :have_idiom_with do |term, substitution|
   match do |page|
     # TODO: this isn't the right function to call, need to unify with slugifyTerm
     subid = JSLibFigure.slugify_move(term) + '-substitution'
-    have_css('.idioms-list label', text: term).and(have_field(subid, with: substitution)).matches?(page)
-  end
-
-  match_when_negated do |page|
-    # TODO: this isn't the right function to call, need to unify with slugifyTerm
-    subid = JSLibFigure.slugify_move(term) + '-substitution'
-    not_have_field(subid, with: substitution).or(not_have_css('.idioms-list label', text: term)).matches?(page)
+    have_field(subid, with: substitution).matches?(page)
   end
 end
-
-# another approach, with some details here:
-# https://groups.google.com/forum/#!searchin/ruby-capybara/matcher%7Csort:date/ruby-capybara/uMaw_gdjCKM/p4CQoowkHAAJ
-# Capybara.add_selector(:idiom_with) do
-#  css { |term, substitution| puts 'ahoy' ; "input##{JSLibFigure.slugify_move(term)}-substitution" } # also needs to check term and value
-# end
-#
-# module Capybara
-#   class Session
-#     def has_idiom_with?(term, substitution)
-#       input_with_value = "input##{JSLibFigure.slugify_move(term)}-substitution[value=\"#{substitution}\"]"
-#       puts "lhs = " + has_content?(term + ' →').to_s
-#       puts "rhs = " + has_selector?(input_with_value).to_s
-#       has_selector?(input_with_value) && has_content?(term + ' →')
-#     end
-#   end
-# end
-
-
 
 describe 'Dialect page', js: true do
   describe 'role radio button' do
@@ -263,7 +232,6 @@ describe 'Dialect page', js: true do
           show_advanced_options
           expect(page).to have_idiom(idiom)
           click_on 'delete-gate'
-          # expect(page).to_not have_content('gate') # this line js-waited the next line with the have_idiom matcher, when that was buggier
           expect(page).to_not have_idiom(idiom)
           user.reload
           expect(user.idioms.length).to eq(0)
@@ -313,7 +281,7 @@ describe 'Dialect page', js: true do
       click_button('Restore Default Dialect')
       # automatically clicks confirm!?
 
-      expect(page).to_not have_css('#gentlespoons-substitution') # js wait
+      expect(page).to_not have_field('gentlespoons-substitution', with: 'brontosauruses') # js wait, masking mysterious bug
       expect(page).to_not have_idiom(dancer_idiom)
       expect(page).to_not have_idiom(move_idiom)
       expect(user.reload.idioms).to be_empty
