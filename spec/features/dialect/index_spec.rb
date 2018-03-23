@@ -17,11 +17,20 @@ end
 #      expect(page).to_not have_css("#ladles-substitution") # js wait
 #      expect(page).to_not have_idiom_with('ladles', 'ladies')
 
+RSpec::Matchers.define_negated_matcher :not_have_field, :have_field
+RSpec::Matchers.define_negated_matcher :not_have_css, :have_css
+
 RSpec::Matchers.define :have_idiom_with do |term, substitution|
   match do |page|
     # TODO: this isn't the right function to call, need to unify with slugifyTerm
     subid = JSLibFigure.slugify_move(term) + '-substitution'
-    have_field(subid, with: substitution).matches?(page) && have_content(term).matches?(page)
+    have_css('.idioms-list label', text: term).and(have_field(subid, with: substitution)).matches?(page)
+  end
+
+  match_when_negated do |page|
+    # TODO: this isn't the right function to call, need to unify with slugifyTerm
+    subid = JSLibFigure.slugify_move(term) + '-substitution'
+    not_have_field(subid, with: substitution).or(not_have_css('.idioms-list label', text: term)).matches?(page)
   end
 end
 
@@ -254,8 +263,8 @@ describe 'Dialect page', js: true do
           show_advanced_options
           expect(page).to have_idiom(idiom)
           click_on 'delete-gate'
-          expect(page).to_not have_content('gate') # wanted expect(page).to have_css('.glyphicon-time') but it was flaky
-          expect(page).to_not have_idiom(idiom) # also flaky unless guarded
+          # expect(page).to_not have_content('gate') # this line js-waited the next line with the have_idiom matcher, when that was buggier
+          expect(page).to_not have_idiom(idiom)
           user.reload
           expect(user.idioms.length).to eq(0)
         end
