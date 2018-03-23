@@ -1,26 +1,7 @@
 # coding: utf-8
 
-require 'rspec/expectations'
-
 require 'rails_helper'
 require 'login_helper'
-
-RSpec::Matchers.define :have_idiom do |idiom|
-  match do |page|
-    have_idiom_with(idiom.term, idiom.substitution).matches?(page)
-  end
-end
-
-# this has a bug, somehow, see:
-#       expect(page).to_not have_field('gentlespoons-substitution', with: 'brontosauruses') # js wait, masking mysterious bug
-#       expect(page).to_not have_idiom(dancer_idiom)
-RSpec::Matchers.define :have_idiom_with do |term, substitution|
-  match do |page|
-    # TODO: this isn't the right function to call, need to unify with slugifyTerm
-    subid = JSLibFigure.slugify_move(term) + '-substitution'
-    have_field(subid, with: substitution).matches?(page)
-  end
-end
 
 describe 'Dialect page', js: true do
   describe 'role radio button' do

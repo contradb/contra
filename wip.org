@@ -29,8 +29,8 @@
 * DONE blinkenlights
 ** DONE light on create
 * TODO custom matcher
-** TODO move to a real home file
-** TODO fix js wait bug in custom matcher
+** DONE move to a real home file
+** WONTFIX fix js wait bug in custom matcher
 ** TODO unify slugifyTerm and slugify_move, and add tests
 * TODO worry about all those ajax calls that have 'done' but no matching error handler
 * DONE put idiom editors in a table so they don't look like Austin Powers' teeth
@@ -48,3 +48,4 @@
 * TODO merge master
 * TODO delete this file
 * TODO final code review
+* TODO file bug reports for sleeps and custom matcher waits
