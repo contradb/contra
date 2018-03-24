@@ -6,7 +6,7 @@
       <label>
         <%= tag.input(type: :radio, name: :roles, id: 'gentlespoons-ladles', 'data-remote': true, class: 'dialect-express-role-radio',
             'data-url': roles_restore_defaults_dialect_path, 'data-method': :post) %>
-        ladles & gentlespoons
+        ladles &amp; gentlespoons
       </label>
       <br>
       <% [{label: 'ladies & gents', params: {gentlespoon: 'gent', gentlespoons: 'gents', ladle: 'lady', ladles: 'ladies'}, id: 'gents-ladies'},
@@ -69,20 +69,18 @@
   <section>
 </div>
 
-<div style='display: none' id='dialect-authenticity-token-incubator'>
+<div style='display: none' id='dialect-authenticity-token-seed'>
   <%= form_with(model: Idiom::Idiom.new, url: idioms_path) do |f| %>
-    <%= f.label(:substitution) %><br>
-    <%= f.text_field(:term, class: 'form-control') %>
+    <%= f.text_field(:term) %>
     <%= f.text_field(:substitution) %>
-    <%= f.submit('Save', class: 'btn btn-success') %>
+    <%= f.submit('Save') %>
   <% end %>
 </div>
 
 <div class="modal fade" id="dialect-gyre-modal" tabindex="-1" role="dialog" aria-labelledby="new-idiom-label">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <%# for reasons I don't understand, this form isn't ajax-submitting properly, so I set data-remote=true in js-land -dm 03-18-2018 %>
-      <%= form_with(url: gyre_dialect_path, id: 'dialect-gyre-modal-form', remote: true) do |f| %>
+      <%= form_with(url: gyre_dialect_path, id: 'dialect-gyre-modal-form') do |f| %>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="new-idiom-label">Substitute for ‘<span class='gyre-substitution-view'>gyre</span>’</h4>

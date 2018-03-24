@@ -8,12 +8,7 @@ describe 'Dialect page', js: true do
     it 'is checked on page load and controls idioms' do
       with_login do |user|
         expect(user.idioms).to be_empty
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'larks')
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'first gentlespoon', substitution: 'first lark')
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'second gentlespoon', substitution: 'second lark')
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'ladles', substitution: 'ravens')
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'first ladle', substitution: 'first raven')
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'second ladle', substitution: 'second raven')
+        make_larks_and_ravens_in_db(user)
 
         visit '/dialect'
         show_advanced_options
@@ -45,7 +40,6 @@ describe 'Dialect page', js: true do
         expect(page).to have_idiom_with('gentlespoons', 'gents')
         expect(page).to have_idiom_with('first gentlespoon', 'first gent')
         expect(page).to have_idiom_with('second gentlespoon', 'second gent')
-        expect(page).to_not have_css('.larks-ravens .btn-primary')
         expect(find_field("larks-ravens")).to_not be_checked
         expect(find_field("gents-ladies")).to be_checked
 
@@ -85,38 +79,24 @@ describe 'Dialect page', js: true do
         visit '/dialect'
         show_advanced_options
 
-        expect(find_field("gentlespoons-ladles")).to be_checked
-        expect(find_field("gents-ladies")).to_not be_checked
-        expect(find_field("larks-ravens")).to_not be_checked
-        expect(find_field("leads-follows")).to_not be_checked
+        expect_pressed_radios(gentlespoons_ladles: true)
 
         select 'ladles'
         fill_in 'ladles-substitution', with: 'T-Rexes'
 
         expect(page).to have_css('.glyphicon-ok') # js wait (this was a flake elsewhere in this file, and I ended up doing a sleep there)
-        expect(find_field("gentlespoons-ladles")).to_not be_checked
-        expect(find_field("gents-ladies")).to_not be_checked
-        expect(find_field("larks-ravens")).to_not be_checked
-        expect(find_field("leads-follows")).to_not be_checked
+        expect_pressed_radios
 
         click_on 'delete-ladles'
         expect(page).to_not have_css('#delete-ladles') # js wait (this was a flake elsewhere in this file, and I ended up doing a sleep there)
-        expect(find_field("gentlespoons-ladles")).to be_checked
-        expect(find_field("gents-ladies")).to_not be_checked
-        expect(find_field("larks-ravens")).to_not be_checked
-        expect(find_field("leads-follows")).to_not be_checked
+        expect_pressed_radios(gentlespoons_ladles: true)
       end
     end
 
     it 'role radios unlight & relight when other stuff shifts underneath their feet' do
       with_login do |user|
         expect(user.idioms).to be_empty
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'larks')
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'first gentlespoon', substitution: 'first lark')
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'second gentlespoon', substitution: 'second lark')
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'ladles', substitution: 'ravens')
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'first ladle', substitution: 'first raven')
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'second ladle', substitution: 'second raven')
+        make_larks_and_ravens_in_db(user)
 
         visit '/dialect'
         show_advanced_options
@@ -169,7 +149,7 @@ describe 'Dialect page', js: true do
         show_advanced_options
         select 'swing'
         fill_in 'swing-substitution', with: 'swong' # js wait
-        expect(find('.new-move-idiom').value).to eq('')
+        expect(find('.new-move-idiom').value).to eq('') # select box doesn't stick on 'swing'
         expect(page).to have_css('.glyphicon-ok')
         expect(user.idioms.length).to eq(1)
         expect(user.idioms.first.term).to eq('swing')
@@ -183,7 +163,7 @@ describe 'Dialect page', js: true do
         show_advanced_options
         select 'neighbors'
         fill_in 'neighbors-substitution', with: 'buddies' # js wait
-        expect(find('.new-dancers-idiom').value).to eq('')
+        expect(find('.new-dancers-idiom').value).to eq('') # select box doesn't stick on 'neighbors'
         expect(page).to have_css('.glyphicon-ok')
         expect(user.idioms.length).to eq(1)
         expect(user.idioms.first.term).to eq('neighbors')
@@ -288,14 +268,6 @@ describe 'Dialect page', js: true do
     end
   end
 
-  def idiom_rendering(idiom)
-    idiom_attr_rendering(idiom.term, idiom.substitution)
-  end
-
-  def idiom_attr_rendering(term, substitution)
-    "#{term} → #{substitution}"
-  end
-
   def show_advanced_options
     click_button('show...')
     expect(page).to have_css('.dialect-advanced-toggle-button.btn-primary') # js wait for completion
@@ -329,5 +301,14 @@ describe 'Dialect page', js: true do
     else
       expect(find_field("leads-follows")).to_not be_checked
     end
+  end
+
+  def make_larks_and_ravens_in_db(user)
+    FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'larks')
+    FactoryGirl.create(:dancer_idiom, user: user, term: 'first gentlespoon', substitution: 'first lark')
+    FactoryGirl.create(:dancer_idiom, user: user, term: 'second gentlespoon', substitution: 'second lark')
+    FactoryGirl.create(:dancer_idiom, user: user, term: 'ladles', substitution: 'ravens')
+    FactoryGirl.create(:dancer_idiom, user: user, term: 'first ladle', substitution: 'first raven')
+    FactoryGirl.create(:dancer_idiom, user: user, term: 'second ladle', substitution: 'second raven')
   end
 end

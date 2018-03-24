@@ -106,7 +106,7 @@ RSpec.describe JSLibFigure do
       end
     end
 
-    it 'all terms are uniqe' do
+    it 'all terms are unique' do
       h = {}
       (JSLibFigure.moves + JSLibFigure.dancers).each do |term|
         if h[term]
@@ -116,6 +116,15 @@ RSpec.describe JSLibFigure do
         end
       end
     end
+
+    it 'terms contain no forbidden characters' do
+      (JSLibFigure.moves + JSLibFigure.dancers).each do |term|
+        # Terms are used in html-attributes, and since Rory O'Moore has a single quote
+        # we have to always double quote them. So double-quote can't be used in terms.
+        expect(term).to_not match(/"/)
+      end
+    end
+
 
     it 'slugify_move and slugifyTerm agree for all moves' do
       JSLibFigure.moves.each do |move|

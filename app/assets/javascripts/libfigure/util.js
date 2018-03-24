@@ -39,27 +39,15 @@ function comma_unless_blank(str) {
   return ((!str) || (str.trim() === '')) ? '' : ',';
 }
 
-var defaultDialect = {moves: {},
-                 dancers: {}};
+var defaultDialect = {moves: {}, dancers: {}};
 
 var testDialect = {moves: {gyre: 'darcy',
-                         allemande: 'almond',
-                         'see saw': 'do si do left shoulder',
-                         'ocean wave': 'mush into short wavy lines'},
-                 dancers: {ladles: 'ravens',
-                           gentlespoons: 'larks'}};
+                           allemande: 'almond',
+                           'see saw': 'do si do left shoulder',
+                           'ocean wave': 'mush into short wavy lines'},
+                   dancers: {ladles: 'ravens',
+                             gentlespoons: 'larks'}};
 
-/*
-defaultDialect = {moves: {gyre: 'darcy',
-                     'meltdown swing': 'gyre meltdown',
-                     allemande: 'almond',
-                     'see saw': 'do si do left shoulder',
-                     'ocean wave': 'mush into short wavy lines',
-                     chain: 'cavort'},
-             dancers: {ladles: 'ravens',
-                       gentlespoons: 'larks',
-                       shadows: 'demipartners'}};
-*/
 // ________________________________________________________________
 
 

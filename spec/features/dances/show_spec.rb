@@ -18,7 +18,7 @@ describe 'Showing dances' do
   end
 
   it 'respects preferences' do
-    expect(JSLibFigure).to receive(:default_dialect).at_least(:once).and_return(JSLibFigure.test_dialect) # hotwire our preferences
+    expect(JSLibFigure).to receive(:default_dialect).at_least(:once).and_return(JSLibFigure.test_dialect)
     dance = FactoryGirl.create(:box_the_gnat_contra)
     visit dance_path dance.id
     expect(page).to have_text ('ravens almond right 1½')

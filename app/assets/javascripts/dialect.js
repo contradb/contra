@@ -13,7 +13,7 @@ $(document).ready(function() {
   $('.new-move-idiom').change(idiomSelect);
 
   function makeIdiomEditor(term, opt_substitution, opt_id) {
-    var authenticityToken = $('#dialect-authenticity-token-incubator input[name=authenticity_token]').val();
+    var authenticityToken = $('#dialect-authenticity-token-seed input[name=authenticity_token]').val();
     var presumed_server_substitution = opt_substitution || term;
     var substitution_id = slugifyTerm(term) + '-substitution';
     var row =
@@ -68,7 +68,7 @@ $(document).ready(function() {
         success: function(idiomJson, textStatus, jqXHR) {
           indicateStatus(status, 'glyphicon-ok', 'saved');
           ensureEditorUpdateMode(editor, idiomJson.id);
-          recomputeIdiomStatuses();
+          adjustForNewDialect();
         },
         error: function(jqXHRXHR, textStatus, errorThrown) {
           indicateStatus(status, 'glyphicon-exclamation-sign', 'error saving');
@@ -78,22 +78,26 @@ $(document).ready(function() {
   }
 
   function makeIdiomDeleteButton(term) {
-    var form = $('<form><button type=button id=delete-'+slugifyTerm(term)+' class="btn btn-default delete-idiom"><span class="glyphicon glyphicon-remove" aria-label="delete"></span></button></form>');
+    var form = $('<form>' +
+                 '  <button type=button id=delete-'+slugifyTerm(term)+' class="btn btn-default delete-idiom">' +
+                 '    <span class="glyphicon glyphicon-remove" aria-label="delete"></span>' +
+                 '  </button>' +
+                 '</form>');
     form.find('button').click(function () {
       var container = form.closest('tr');
       var editor = container.find('.idiom-form');
       var idiom_id = editor.attr('data-idiom-id');
       if (!idiom_id) {
-        container.remove();     // easy case - local only
+        container.remove();     // easy case - new record - local only
       } else {
-        // hard case - delete on server
+        // hard case - in the db
         var status = editor.find('.idiom-ajax-status');
         indicateStatus(status, 'glyphicon-time', 'saving');
         $.ajax({url: '/idioms/' + idiom_id,
                 type: 'DELETE',
                 success: function() {
                   container.remove();
-                  recomputeIdiomStatuses();
+                  adjustForNewDialect();
                 },
                 error: function(jqXHRXHR, textStatus, errorThrown) {
                   indicateStatus(status, 'glyphicon-exclamation-sign', 'error deleting');
@@ -127,10 +131,10 @@ $(document).ready(function() {
     $.each(idiom_json_array, function(meh, idiom) {
       makeIdiomEditor(idiom.term, idiom.substitution, idiom.id);
     });
-    recomputeIdiomStatuses();
+    adjustForNewDialect();
   }
 
-  function recomputeIdiomStatuses() {
+  function adjustForNewDialect() {
     checkRoleRadioButtons();
     updateGyreSubstitutionViews();
     updateSelectButtonOptionDisabled();
@@ -156,49 +160,49 @@ $(document).ready(function() {
     });
   }
 
-  var buttonSubstitutions = $.map([['gent', 'gents', 'lady', 'ladies'],
-                                   ['lark', 'larks', 'raven', 'ravens'],
-                                   ['lead', 'leads', 'follow', 'follows']
-                                  ],
-                                  function(roleArr) {
-                                    var gentlespoon = roleArr[0];
-                                    var gentlespoons = roleArr[1];
-                                    var ladle = roleArr[2];
-                                    var ladles = roleArr[3];
-                                    return {'gentlespoons': gentlespoons,
-                                            'first gentlespoon': 'first '+gentlespoon,
-                                            'second gentlespoon': 'second '+gentlespoon,
-                                            'ladles': ladles,
-                                            'first ladle': 'first '+ladle,
-                                            'second ladle': 'second '+ladle};
-                                  });
+  var checkboxSubstitutions = $.map([['gent', 'gents', 'lady', 'ladies'],
+                                     ['lark', 'larks', 'raven', 'ravens'],
+                                     ['lead', 'leads', 'follow', 'follows']
+                                    ],
+                                    function(roleArr) {
+                                      var gentlespoon = roleArr[0];
+                                      var gentlespoons = roleArr[1];
+                                      var ladle = roleArr[2];
+                                      var ladles = roleArr[3];
+                                      return {'gentlespoons': gentlespoons,
+                                              'first gentlespoon': 'first '+gentlespoon,
+                                              'second gentlespoon': 'second '+gentlespoon,
+                                              'ladles': ladles,
+                                              'first ladle': 'first '+ladle,
+                                              'second ladle': 'second '+ladle};
+                                    });
 
   // Walk the DOM and set role button lightedness appropriately. Profiled to take <= 5ms in one incarnation
   function checkRoleRadioButtons() {
+    // ladles & gentlespoons is the default, and so it's checked if there are zero substitutuions
     var gentlespoonLadlesChecked = !($('#gentlespoons-substitution').length ||
-                                       $('#first-gentlespoon-substitution').length ||
-                                       $('#second-gentlespoon-substitution').length ||
-                                       $('#ladles-substitution').length ||
-                                       $('#first-ladle-substitution').length ||
-                                       $('#second-ladle-substitution').length);
+                                     $('#first-gentlespoon-substitution').length ||
+                                     $('#second-gentlespoon-substitution').length ||
+                                     $('#ladles-substitution').length ||
+                                     $('#first-ladle-substitution').length ||
+                                     $('#second-ladle-substitution').length);
     $('#gentlespoons-ladles').prop('checked', gentlespoonLadlesChecked);
-    $.each(buttonSubstitutions, function(meh, bsub) {
-      var $radio = $('#'+bsub['gentlespoons']+'-'+bsub['ladles']);
-      var checkIt = idiomEditorsMatchButtonSubstitution(bsub);
+    // ladies & gentlemen, larks & ravens, etc are checked if substitutions match exactly
+    $.each(checkboxSubstitutions, function(meh, cbsub) {
+      var $radio = $('#'+cbsub['gentlespoons']+'-'+cbsub['ladles']);
+      var checkIt = idiomEditorsMatchButtonSubstitution(cbsub);
       $radio.prop('checked', checkIt);
     });
   }
 
-  function idiomEditorsMatchButtonSubstitution(bsub) {
+  function idiomEditorsMatchButtonSubstitution(cbsub) {
+    var idioms_list = $('.idioms-list tr');
     var matches = 0;
-    var bsub_length = 0;
-    for (var term in bsub) {
-      bsub_length++;
-      var idioms_list = $('.idioms-list tr');
-      for (var i=0; i < idioms_list.length; i++) { // can't iterate with .each() because I really want break and return
+    for (var term in cbsub) {
+      for (var i=0; i < idioms_list.length; i++) {
         var tr = $(idioms_list[i]);
         if (tr.find('.idiom-term').val() === term) {
-          if (tr.find('.idiom-substitution').val() === bsub[term]) {
+          if (tr.find('.idiom-substitution').val() === cbsub[term]) {
             matches++;
             break;
           } else {
@@ -207,7 +211,11 @@ $(document).ready(function() {
         }
       }
     }
-    return matches===bsub_length;
+    var cbsub_length = 0;
+    for (var term in cbsub) {
+      cbsub_length++;
+    }
+    return matches===cbsub_length;
   }
 
 
@@ -231,20 +239,13 @@ $(document).ready(function() {
     rebuildIdiomsList(idioms);
   });
 
-  // change gyre with the click of a button
-  $('.dialect-express-gyre-button-form').on('ajax:error', function() {
-    $('.alert').html('Bummer! Error setting gyre.');
-  }).on('ajax:success', function(e, idioms, status, xhr) {
-    rebuildIdiomsList(idioms);
-  });
-
   // change gyre with a dialog box
   $('#dialect-gyre-modal-form').on('ajax:error', function() {
     $('.alert').html('Bummer! Error setting gyre from modal.');
   }).on('ajax:success', function(e, idioms, status, xhr) {
     rebuildIdiomsList(idioms);
   }).submit(function (e) {
-    $(this).closest('.modal').modal('toggle');
+    $(this).closest('.modal').modal('toggle'); // hide dialog
   });
 
   $('.dialect-express-role-radio').on('ajax:error', function() {
@@ -252,8 +253,6 @@ $(document).ready(function() {
   }).on('ajax:success', function(e, idioms, status, xhr) {
     rebuildIdiomsList(idioms);
   });
-
-  $("#dialect-gyre-modal-form").attr('data-remote', 'true'); // I can't get rails formbuilder helpers to do this for me -dm 03-18-2018
 
   $('.dialect-advanced-toggle-button').click(function() {
     $('.dialect-advanced-toggle-button').toggleClass('btn-primary');
