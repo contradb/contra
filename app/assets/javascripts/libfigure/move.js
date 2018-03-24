@@ -24,7 +24,7 @@ function moveCaresAboutRotations (move) {
 var moveCaresAboutPlacesHash =
     {circle: true
     , star: true
-    , 'gyre star': true
+    , 'facing star': true
     , 'square through': true
     , 'box circulate': true
     };

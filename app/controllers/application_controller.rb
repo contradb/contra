@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
   end
 
   private
-  def prefs
-    current_user&.prefs || JSLibFigure.default_prefs
+  def dialect
+    current_user&.dialect || JSLibFigure.default_dialect
   end
 end

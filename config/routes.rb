@@ -9,8 +9,18 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: "users/registrations" }
   resources :users, only: [:show, :index]
   resources :figures, only: [:index, :show]
+  resources :idioms, only: [:create, :update, :destroy]
 
   get 'welcome/index'
+
+  resource :dialect, only: [] do
+    get :index
+    post :roles
+    post :roles_restore_defaults
+    post :gyre
+    post :restore_defaults
+  end
+
   get 'about' => 'about#index'
   get '/help' => 'help#index'
   root 'welcome#index'

@@ -2,7 +2,7 @@
   <p>This list is empty because this figure is not in any dances.</p>
 <% else %>
   <% mdtab.each do |move,dances| %>
-    <h3><%= move_link move, prefs %></h3>
+    <h3><%= move_link move, dialect %></h3>
     <ul>
       <% dances.to_a.sort_by(&:title).each do |dance| %>
         <li><%= link_to dance.title, dance %></li>

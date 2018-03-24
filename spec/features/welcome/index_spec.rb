@@ -538,9 +538,9 @@ describe 'Welcome page', js: true do
       end
     end
 
-    describe 'prefs' do
+    describe 'dialect' do
       before (:each) do
-        expect_any_instance_of(WelcomeController).to receive(:prefs).and_return(JSLibFigure.test_prefs)
+        expect_any_instance_of(WelcomeController).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         visit '/'
       end
 

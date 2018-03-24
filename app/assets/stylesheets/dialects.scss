@@ -1,0 +1,30 @@
+.dialect-express-role-form {
+  display: inline;
+}
+
+.idioms-list label::after {
+  content: '→';
+  margin-right: 0.8em;
+  margin-left: 0.8em;
+}
+
+.idioms-list td {
+  padding-top: 0.4em;
+  padding-bottom: 0.4em;
+}
+
+.idioms-list {
+  margin-bottom: 0.4em;
+  margin-top: 0.4em;
+  .delete-idiom {
+    margin-left: 0.8em;
+  }
+}
+
+.gyre-substitution-view {
+  font-weight: bold;
+}
+
+.dialects-index-content section {
+  margin-bottom: 3em;
+}

@@ -37,10 +37,10 @@ describe 'Copying dances', js: true do
     end
   end
 
-  it 'applies prefs' do
+  it 'applies dialect' do
     with_login do |user|
       dance = FactoryGirl.create(:box_the_gnat_contra, user: user)
-      allow_any_instance_of(User).to receive(:prefs).and_return(JSLibFigure.test_prefs)
+      allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
       visit new_dance_path copy_dance_id: dance.id
       expect(page).to have_text('ravens almond right 1½')
     end

@@ -28,7 +28,7 @@ end
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-# Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
@@ -39,53 +39,7 @@ RSpec.configure do |config|
   # config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
 
-  ### begin snip from https://github.com/DatabaseCleaner/database_cleaner
-  config.use_transactional_fixtures = false
-
-  config.before(:suite) do
-    if config.use_transactional_fixtures?
-      raise(<<-MSG)
-        Delete line `config.use_transactional_fixtures = true` from rails_helper.rb
-        (or set it to false) to prevent uncommitted transactions being used in
-        JavaScript-dependent specs.
-
-        During testing, the app-under-test that the browser driver connects to
-        uses a different database connection to the database connection used by
-        the spec. The app's database connection would not be able to access
-        uncommitted transaction data setup over the spec's database connection.
-      MSG
-    end
-    DatabaseCleaner.clean_with(:truncation)
-  end
-
-
-  config.before(:each) do
-    DatabaseCleaner.strategy = :transaction
-  end
-
-  config.before(:each, type: :feature) do
-    # :rack_test driver's Rack app under test shares database connection
-    # with the specs, so continue to use transaction strategy for speed.
-    driver_shares_db_connection_with_specs = Capybara.current_driver == :rack_test
-
-    if !driver_shares_db_connection_with_specs
-      # Driver is probably for an external browser with an app
-      # under test that does *not* share a database connection with the
-      # specs, so use truncation strategy.
-      DatabaseCleaner.strategy = :truncation
-    end
-  end
-
-  config.before(:each) do
-    DatabaseCleaner.start
-  end
-
-  config.append_after(:each) do
-    DatabaseCleaner.clean
-  end
-  ### end snip from https://github.com/DatabaseCleaner/database_cleaner
-
-
+  config.use_transactional_fixtures = true
 
 
   # RSpec Rails can automatically mix in different behaviours to your tests
@@ -105,9 +59,9 @@ RSpec.configure do |config|
 
   # include devise helpers as per 
   # http://stackoverflow.com/questions/4308094/all-ruby-tests-raising-undefined-method-authenticate-for-nilnilclass
-  config.include Devise::TestHelpers , type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :controller
   # and also as per http://stackoverflow.com/questions/13005444/testing-views-that-use-devise-with-rspec
-  config.include Devise::TestHelpers , type: :view
+  config.include Devise::Test::ControllerHelpers, type: :view
 
   config.extend ControllerMacros, :type => :controller
 

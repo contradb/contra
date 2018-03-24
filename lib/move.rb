@@ -4,7 +4,7 @@ module Move
   # {move => Set{dance1, dance2,..}...}
   # The hashes are sorted by key in alphabetical order to help with display
 
-  def self.mdtab(dances, prefs)
+  def self.mdtab(dances, dialect)
     mdtab = {}
     dances.each do |dance|
       dance.moves.compact.each do |move|
@@ -12,10 +12,10 @@ module Move
         mdtab[move] << dance
       end
     end
-    sort_mdtab(mdtab, prefs)
+    sort_mdtab(mdtab, dialect)
   end
 
-  def self.following_mdtab(dances, move, prefs)
+  def self.following_mdtab(dances, move, dialect)
     mdtab = {}
     dances.each do |dance|
       following_moves = dance.moves_that_follow_move(move)
@@ -25,10 +25,10 @@ module Move
         mdtab[following_move] << dance
       end
     end
-    sort_mdtab(mdtab, prefs)
+    sort_mdtab(mdtab, dialect)
   end
 
-  def self.preceeding_mdtab(dances, move, prefs)
+  def self.preceeding_mdtab(dances, move, dialect)
     mdtab = {}
     dances.each do |dance|
       preceding_moves = dance.moves_that_precede_move(move)
@@ -38,10 +38,10 @@ module Move
         mdtab[following_move] << dance
       end
     end
-    sort_mdtab(mdtab, prefs)
+    sort_mdtab(mdtab, dialect)
   end
 
-  def self.coappearing_mdtab(dances, move, prefs)
+  def self.coappearing_mdtab(dances, move, dialect)
     mdtab = {}
     dances.each do |dance|
       mvs = dance.moves.compact
@@ -54,13 +54,13 @@ module Move
         end
       end
     end
-    sort_mdtab(mdtab, prefs)
+    sort_mdtab(mdtab, dialect)
   end
 
   private 
-  def self.sort_mdtab(mdtab, prefs)
+  def self.sort_mdtab(mdtab, dialect)
     copy = {}
-    mdtab.keys.sort_by {|move| JSLibFigure.move_substitution(move, prefs).downcase}.each {|key| copy[key] = mdtab[key]}
+    mdtab.keys.sort_by {|move| JSLibFigure.move_substitution(move, dialect).downcase}.each {|key| copy[key] = mdtab[key]}
     copy
   end
 end

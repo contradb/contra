@@ -41,6 +41,7 @@ $contra-grey: #F0F0EA;
 @import "figures";
 @import "programs";
 @import "users";
+@import "dialects";
 @import "welcome";
 
 ///////////////// CSS GLOBALS
@@ -133,7 +134,7 @@ label {
 .contra-markdown-block {
 }
 
-#prefs-json {
+#dialect-json {
   display: none;
 }
 

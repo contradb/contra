@@ -38,13 +38,13 @@ RSpec.describe ProgramsController, type: :controller do
       expect(assigns(:program)).to eq(program)
     end
 
-    describe 'prefs' do
+    describe 'dialect' do
       login_user
 
-      it "assigns @prefs" do
+      it "assigns @dialect" do
         program
         get :show, params: {:id => program.to_param}
-        expect(assigns(:prefs)).to eq(subject.current_user.prefs)
+        expect(assigns(:dialect)).to eq(subject.current_user.dialect)
       end
     end
   end

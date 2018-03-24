@@ -2,8 +2,8 @@
 
 module JSLibFigure
 
-  def self.figureToString(figure_ruby_hash, prefs)
-    self.eval("figureToString(#{figure_ruby_hash.to_json},#{prefs.to_json})")
+  def self.figureToString(figure_ruby_hash, dialect)
+    self.eval("figureToString(#{figure_ruby_hash.to_json},#{dialect.to_json})")
   end
 
   def self.beats(figure_ruby_hash)
@@ -26,8 +26,8 @@ module JSLibFigure
     @moves ||= self.eval('moves()')
   end
 
-  def self.move_terms_and_substitutions(prefs)
-    self.eval("moveTermsAndSubstitutions(#{prefs.to_json})")
+  def self.move_terms_and_substitutions(dialect)
+    self.eval("moveTermsAndSubstitutions(#{dialect.to_json})")
   end
 
   def self.de_alias_move(move_str)
@@ -86,7 +86,7 @@ module JSLibFigure
     end
   end
 
-  def self.slugify_move(move)
+  def self.slugify_move(move)   # in JS there's also slugifyTerm which is guaranteed to return the same results
     move.gsub('&','and').gsub(' ','-').downcase.gsub(/[^a-z0-9-]/,'').html_safe
   end
 
@@ -107,23 +107,23 @@ module JSLibFigure
     formal_parameter['ui'] == chooser_name_string; # 'should' be compared with address-equals in javascript land, but this is faster
   end
 
-  def self.test_prefs
-    @test_prefs ||= self.eval("testPrefs;")
+  def self.test_dialect
+    @test_dialect ||= self.eval("testDialect;")
   end
 
-  def self.default_prefs
-    @default_prefs ||= self.eval("defaultPrefs;")
+  def self.default_dialect
+    @default_dialect ||= self.eval("defaultDialect;")
   end
 
-  def self.prefs_for_figures(prefs, figures)
-    self.eval("prefsForFigures(#{prefs.to_json},#{figures.to_json})")
+  def self.dialect_for_figures(dialect, figures)
+    self.eval("dialectForFigures(#{dialect.to_json},#{figures.to_json})")
   end
 
-  def self.move_substitution(move_term, prefs)
+  def self.move_substitution(move_term, dialect)
     # js implementation:
-    # self.eval("moveSubstitution(#{move_term.inspect}, #{prefs.to_json})")
+    # self.eval("moveSubstitution(#{move_term.inspect}, #{dialect.to_json})")
     # ruby implementation:
-    prefs.dig('moves', move_term) || move_term
+    dialect.dig('moves', move_term) || move_term
   end
 
   def self.dancers_category(dancers)
@@ -135,6 +135,11 @@ module JSLibFigure
     # there's a ruby-side implementation of this, if we need it for performance
     self.eval("formalParamIsDancers(#{formal_param.to_json})")
   end
+
+  def self.dancers
+    self.eval("dancers()")
+  end
+
 
   JSLIBFIGURE_FILES = %w(polyfill.js util.js move.js chooser.js param.js define-figure.js figure.es6 after-figure.js dance.js)
 

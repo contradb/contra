@@ -6,20 +6,20 @@ describe 'figures show' do
   let (:call) { FactoryGirl.create(:call_me) }
 
   describe 'usage tab' do
-    it 'without prefs' do
+    it 'without dialect' do
       box
       visit figure_path('swing')
       expect(page).to have_title("Swing | Figure | Contra")
       expect(page).to have_css("h1", text: 'Swing')
-      expect(page).to have_content('related figures: gyre meltdown')
+      expect(page).to have_content('related figures: meltdown swing')
       expect(page).to have_content('formal parameters: who, bal, beats')
       # 'examples' table should have two swings for Box the Gnat
       expect(page).to have_content("#{box.title} neighbors balance & swing partners swing")
     end
 
-    it 'with prefs' do
+    it 'with dialect' do
       with_login do |user|
-        allow_any_instance_of(User).to receive(:prefs).and_return(JSLibFigure.test_prefs)
+        allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         box
         visit figure_path('allemande')
         expect(page).to have_title("Almond | Figure | Contra")
@@ -28,9 +28,9 @@ describe 'figures show' do
       end
     end
 
-    it 'with prefs 2' do
+    it 'with dialect 2' do
       with_login do |user|
-        allow_any_instance_of(User).to receive(:prefs).and_return(JSLibFigure.test_prefs)
+        allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         box
         visit figure_path('see saw')
         expect(page).to have_title("Do Si Do Left Shoulder | Figure | Contra")
@@ -59,7 +59,7 @@ describe 'figures show' do
       expect(page).to_not have_css("#with-figure", text: box.title)
     end
 
-    it 'works with prefs'
+    it 'works with dialect'
   end
 
   describe 'beside-figure tab' do
@@ -74,6 +74,6 @@ describe 'figures show' do
       expect(page).to_not have_css("#moves-following", text: "swat the flea #{box.title}")
     end
 
-    it 'works with prefs'
+    it 'works with dialect'
   end
 end

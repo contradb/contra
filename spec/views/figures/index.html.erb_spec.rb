@@ -5,10 +5,10 @@ require 'move'
 
 RSpec.describe "figures/index", type: :view do
   it 'renders figures in alphabetical substitution order, with links to figures' do
-    prefs = JSLibFigure.test_prefs
-    assign(:prefs, prefs)
-    assign(:move_terms_and_substitutions, JSLibFigure.move_terms_and_substitutions(prefs))
-    assign(:mdtab, Move.mdtab([], prefs))
+    dialect = JSLibFigure.test_dialect
+    assign(:dialect, dialect)
+    assign(:move_terms_and_substitutions, JSLibFigure.move_terms_and_substitutions(dialect))
+    assign(:mdtab, Move.mdtab([], dialect))
     render
     expect(rendered).to have_content('allemande orbit almond balance')
     expect(rendered).to have_content('custom darcy do si do')

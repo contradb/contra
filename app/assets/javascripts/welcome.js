@@ -3,7 +3,7 @@ $(document).ready(function() {
     return;                     // don't do any of this stuff if we're not on a page with a query.
   }
 
-  var prefs = JSON.parse($('#prefs-json').text());
+  var dialect = JSON.parse($('#dialect-json').text());
 
   function installEventHandlers(selector) {
     selector.find('.figure-filter-op').change(filterOpChanged);
@@ -19,7 +19,7 @@ $(document).ready(function() {
   if (!Array.prototype.map) { throw "I was expecting Array.map to be defined"; }
 
   var figureMoveHtml = "<select class='figure-filter-move form-control'><option value='*' selected=true>any figure</option>";
-  moveTermsAndSubstitutionsForSelectMenu(prefs).forEach(function(move) {
+  moveTermsAndSubstitutionsForSelectMenu(dialect).forEach(function(move) {
     figureMoveHtml += '<option value="'+move.term+'">'+move.substitution+'</option>';
   });
   figureMoveHtml += "</select>";
@@ -236,7 +236,7 @@ $(document).ready(function() {
   { // dancer chooser menus
     var dcs = dancerChoosers();
     for (var i=0; i < dcs.length; i++) {
-      var substituter = function(dancers) { return [dancers, dancerSubstitution(prefs, dancers)]; };
+      var substituter = function(dancers) { return [dancers, dancerSubstitution(dialect, dancers)]; };
       chooserSelect(dcs[i], ['*'].concat(dancerCategoryMenuForChooser(dcs[i]).map(substituter)));
     }
   }
@@ -461,7 +461,7 @@ $(document).ready(function() {
   updateQuery = function() {
     var fq = buildFigureQuery($('#figure-filter-root'));
     $('#figure-query-buffer').val(JSON.stringify(fq));
-    $('.figure-query-sentence').text(buildFigureSentence(fq, prefs));
+    $('.figure-query-sentence').text(buildFigureSentence(fq, dialect));
     if (dataTable) {
       dataTable.draw(); 
     }
@@ -481,7 +481,7 @@ $(document).ready(function() {
     var root = buildDOMtoMatchQuery(fq);
     $('#figure-filter-root-container').append(root);
     root.attr('id', 'figure-filter-root');
-    $('.figure-query-sentence').text(buildFigureSentence(fq, prefs));
+    $('.figure-query-sentence').text(buildFigureSentence(fq, dialect));
   }
 
   // oh, I can't use arrays in params? Fine, I'll create hashes with indexes as keys

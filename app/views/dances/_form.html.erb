@@ -1,4 +1,4 @@
-<div id='prefs-json'><%= @prefs_json %></div>
+<div id='dialect-json'><%= @dialect_json %></div>
 
 <% debug_figure_json = false %>
 
@@ -106,9 +106,9 @@
               </span>
               <a ng-click="clickFigure(figureIdx);"
                  href="" class="figure-view" ng-attr-id="{{'figure-'+figureIdx}}">
-                {{figureToString(figures.arr[figureIdx], prefsForFigures(prefs, figures.arr))}}
+                {{figureToString(figures.arr[figureIdx], dialectForFigures(dialect, figures.arr))}}
                 <%# It is unfortunate that I can't figure out how to
-                store the value of prefsForFigures() somewhere. It
+                store the value of dialectForFigures() somewhere. It
                 irks me that we have to compute it once per figure,
                 especially because each time it runs, it touches every
                 figures, so the figure editor is O(n^2) -dm 12-26-2017 %>

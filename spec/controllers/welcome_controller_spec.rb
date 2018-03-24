@@ -22,9 +22,9 @@ RSpec.describe WelcomeController, type: :controller do
   let (:dances) {[FactoryGirl.create(:dance), FactoryGirl.create(:box_the_gnat_contra, publish: false)]}
 
   describe "GET #index" do
-    it "assigns user prefs as @prefs" do
+    it "assigns user dialect as @dialect" do
       get :index, params: {}
-      expect(assigns(:prefs_json)).to eq(JSLibFigure.default_prefs.to_json)
+      expect(assigns(:dialect_json)).to eq(JSLibFigure.default_dialect.to_json)
     end
   end
 end

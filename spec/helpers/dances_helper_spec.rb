@@ -3,8 +3,8 @@ require 'rails_helper'
 
 RSpec.describe DancesHelper, type: :helper do
 
-  figure_txt_for = -> move, *parameter_values, prefs {
-    JSLibFigure.figureToString({'move' => move, 'parameter_values' => parameter_values}, prefs)
+  figure_txt_for = -> move, *parameter_values, dialect {
+    JSLibFigure.figureToString({'move' => move, 'parameter_values' => parameter_values}, dialect)
   }
 
   def whitespice(x) 
@@ -139,9 +139,9 @@ RSpec.describe DancesHelper, type: :helper do
    ['ladles take neighbors', 'give & take', 'ladles', 'neighbors', false, 4],
    ['ladles take neighbors for 8', 'give & take', 'ladles', 'neighbors', false, 8],
    ['* give? & take * for *', 'give & take', '*', '*', '*', '*'],
-   ['partners gyre meltdown', 'gyre meltdown', 'partners', 16],
-   ['neighbors gyre meltdown for 12', 'gyre meltdown', 'neighbors', 12],
-   ['* gyre meltdown for *', 'gyre meltdown', '*', '*'],
+   ['partners meltdown swing', 'meltdown swing', 'partners', 16],
+   ['neighbors meltdown swing for 12', 'meltdown swing', 'neighbors', 12],
+   ['* meltdown swing for *', 'meltdown swing', '*', '*'],
    ['ones gate twos to face out of the set', 'gate', 'ones', 'twos', 'out', 8],
    ['* gate * to face any direction for *', 'gate', '*', '*', '*', '*'],
    ['gentlespoons see saw once', 'see saw', 'gentlespoons', false, 360, 8],
@@ -157,9 +157,9 @@ RSpec.describe DancesHelper, type: :helper do
    ['shadows gyre 1½', 'gyre', 'shadows', true, 540, 8],
    ['ones gyre left shoulders 1½', 'gyre', 'ones', false, 540, 8],
    ['* gyre * for *', 'gyre', '*', '*', '*', '*'],
-   ['gyre star clockwise 3 places with gentlespoons putting their left hands in and backing up for 10',
-   'gyre star', 'gentlespoons', true, 270, 10],
-   ['gyre star * * places with * putting their * hands in and backing up for *', 'gyre star', '*', '*', '*', '*'],
+   ['facing star clockwise 3 places with gentlespoons putting their left hands in and backing up for 10',
+   'facing star', 'gentlespoons', true, 270, 10],
+   ['facing star * * places with * putting their * hands in and backing up for *', 'facing star', '*', '*', '*', '*'],
    ['gentlespoons pass by right shoulders', 'pass by', 'gentlespoons', true, 2],
    ['neighbors pass by right shoulders', 'pass by', 'neighbors', true, 2],
    ['* pass by * shoulders for *', 'pass by', '*', '*', '*'],
@@ -202,20 +202,19 @@ RSpec.describe DancesHelper, type: :helper do
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}'" do
-      expect(figure_txt_for.call(move,*pvalues, JSLibFigure.default_prefs)).to match(whitespice(render))
+      expect(figure_txt_for.call(move,*pvalues, JSLibFigure.default_dialect)).to match(whitespice(render))
     end
   end
 
   [['ravens almond right 1½', 'allemande', 'ladles', true, 540, 8],
-   ['ravens darcy 1½', 'gyre', 'ladles', true, 540, 8],
+   ['ravens darcy right shoulders 1½', 'gyre', 'ladles', true, 540, 8],
    ['ravens swing', 'swing', 'ladles', false, 8],
    ['ravens do si do left shoulder once', 'see saw', 'ladles', false, 360, 8],
    ['mush into short wavy lines', 'ocean wave', 4]
   ].each do |arr|
     render, move, *pvalues = arr
-    it "renders #{move} as '#{render}' with prefs" do
-      expect(figure_txt_for.call(move,*pvalues, JSLibFigure.test_prefs)).to match(whitespice(render))
+    it "renders #{move} as '#{render}' with dialect" do
+      expect(figure_txt_for.call(move,*pvalues, JSLibFigure.test_dialect)).to match(whitespice(render))
     end
   end
 end
-

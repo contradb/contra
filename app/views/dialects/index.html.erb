@@ -1,0 +1,104 @@
+<div class=container>
+  <section>
+    <h2>Roles</h2>
+
+    <div>
+      <label>
+        <%= tag.input(type: :radio, name: :roles, id: 'gentlespoons-ladles', 'data-remote': true, class: 'dialect-express-role-radio',
+            'data-url': roles_restore_defaults_dialect_path, 'data-method': :post) %>
+        ladles &amp; gentlespoons
+      </label>
+      <br>
+      <% [{label: 'ladies & gents', params: {gentlespoon: 'gent', gentlespoons: 'gents', ladle: 'lady', ladles: 'ladies'}, id: 'gents-ladies'},
+          {label: 'larks & ravens', params: {gentlespoon: 'lark', gentlespoons: 'larks', ladle: 'raven', ladles: 'ravens'}, id: 'larks-ravens'},
+          {label: 'leads & follows', params: {gentlespoon: 'lead', gentlespoons: 'leads', ladle: 'follow', ladles: 'follows'}, id: 'leads-follows'}
+         ].each do |h| %>
+        <label>
+          <%= tag.input(type: :radio, name: :roles, id: h[:id], 'data-remote': true, class: 'dialect-express-role-radio',
+              'data-url': roles_dialect_path, 'data-params': h[:params].map {|k,v| "#{k}=#{v}"}.join('&'), 'data-method': :post) %>
+          <%= h[:label] %>
+        </label>
+        <br>
+      <% end %>
+    </div>
+  </section>
+
+  <section>
+    <h2>Face to Face Turn for Two</h2>
+
+    <p>currently using: <span class='gyre-substitution-view'>gyre</span></p>
+
+    <%= button_tag('substitute...', class: 'btn btn-default', 'data-toggle': 'modal', 'data-target': '#dialect-gyre-modal') %>
+  </section>
+
+  <section>
+    <h2>Advanced</h2>
+
+    <%= button_tag('show...', class: 'btn btn-default dialect-advanced-toggle-button', style: 'margin-bottom: 1em') %>
+
+    <div class=dialect-advanced-content style='display: none'>
+
+      <div class='form-inline'>
+        <select class="new-move-idiom new-idiom form-control" style='margin-bottom: 1em'>
+          <option value="">substitute for a move</option>
+        </select>
+      </div>
+
+      <div class='form-inline'>
+        <select class="new-dancers-idiom new-idiom form-control" style='margin-bottom: 1em'>
+          <option value="">substitute for some dancers</option>
+        </select>
+      </div>
+
+      <table class='idioms-list'>
+        <%# js-created idiom html goes here %>
+      </table>
+
+      <div style='margin-top: 3em'>
+        <%= button_to(restore_defaults_dialect_path,
+                      remote: true,
+                      class: 'btn btn-md btn-danger',
+                      form_class: 'restore-default-dialect-form',
+                      data: { confirm: "You will delete your entire dialect, seeing dance terms in their unvarnished, spoon-themed glory. Are you sure?" }
+                     ) do %>
+          <%= content_tag(:span, delete_icon_html + ' Restore Default Dialect') %>
+        <% end %>
+      </div>
+
+    </div>
+  <section>
+</div>
+
+<div style='display: none' id='dialect-authenticity-token-seed'>
+  <%= form_with(model: Idiom::Idiom.new, url: idioms_path) do |f| %>
+    <%= f.text_field(:term) %>
+    <%= f.text_field(:substitution) %>
+    <%= f.submit('Save') %>
+  <% end %>
+</div>
+
+<div class="modal fade" id="dialect-gyre-modal" tabindex="-1" role="dialog" aria-labelledby="new-idiom-label">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <%= form_with(url: gyre_dialect_path, id: 'dialect-gyre-modal-form') do |f| %>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="new-idiom-label">Substitute for ‘<span class='gyre-substitution-view'>gyre</span>’</h4>
+        </div>
+        <div class="modal-body">
+          <%= f.label(:substitution) %><br>
+          <%= f.hidden_field(:term, class: 'modal-term', value: 'gyre') %>
+          <%= f.text_field(:substitution, class: 'form-control', id: 'gyre-dialog-substitution') %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= f.submit('Save', class: 'btn btn-success') %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div id='dialect-idioms-init' style='display: none'>
+  <%= @idioms.to_json %>
+</div>
