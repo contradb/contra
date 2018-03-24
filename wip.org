@@ -17,10 +17,6 @@
 * DONE class used as id, whoops
 * DONE remove all traces of the role buttons
 * DONE rename poorly-thought-out classes and ids in css
-* TODO make advanced editor shrink to tiny phones right
-** I can't tell what's wrong
-** try setting a max-width on some elements, and converting to just spans, I guess. 
-** replace all 'tr' selectors in the code with more generic '.idiom-editor-row' classes
 * DONE in idioms_controller#create, figure out what to do about all them funky formats like html and json
 ** not actually worried
 * DONE fix margins on dialect page
@@ -34,18 +30,24 @@
 ** TODO unify slugifyTerm and slugify_move, and add tests
 * DONE worry about all those ajax calls that have 'done' but no matching error handler
 * DONE put idiom editors in a table so they don't look like Austin Powers' teeth
-* TODO disregard whitespace in substitutions
 * TODO IdiomsController#create code is awkward, can't we create the right type from the get-go?
     @idiom = Idiom::Move.new(idiom_params)
     @idiom.user = current_user
     @idiom.type = idiom_type_from_term(@idiom.term)
-* TODO spec: deleting user also deletes idioms
-* TODO write test for escape-to-undo
-* TODO sort list by term type then term alphabetic
-* TODO reindent index.html.erb top div
-* TODO refactor that enormous js function
+* DONE spec: deleting user also deletes idioms
+* WONTFIX write test for escape-to-undo
+* WONTFIX sort list by term type then term alphabetic
+* DONE reindent index.html.erb top div
+* WONTFIX refactor that enormous js function
 * TODO grep for TODOs
 * TODO merge master
 * TODO delete this file
 * TODO final code review
-* TODO file bug reports for sleeps and custom matcher waits
+* Make stories for outstanding issues
+** TODO sleeps in specs
+** TODO custom matcher guards
+** TODO disregard whitespace in substitutions
+** TODO [IMPORTANT] make advanced editor shrink to tiny phones right
+*** I can't tell what's wrong
+*** try setting a max-width on some elements, and converting to just spans, I guess.
+*** replace all 'tr' selectors in the code with more generic '.idiom-editor-row' classes
