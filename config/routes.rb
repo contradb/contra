@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   end
 
   get 'about' => 'about#index'
+  get '/help' => 'help#index'
   root 'welcome#index'
 
   # Example of regular route:

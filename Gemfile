@@ -82,3 +82,5 @@ gem 'rails-controller-testing'
 
 gem 'jquery-datatables-rails'
 gem 'ajax-datatables-rails'
+
+gem 'actionview-encoded_mail_to'
