@@ -5,7 +5,6 @@ require 'rspec/expectations'
 #       expect(page).to_not have_idiom(dancer_idiom)
 RSpec::Matchers.define :have_idiom_with do |term, substitution|
   match do |page|
-    # TODO: this isn't the right function to call, need to unify with slugifyTerm
     subid = JSLibFigure.slugify_move(term) + '-substitution'
     have_field(subid, with: substitution).matches?(page)
   end

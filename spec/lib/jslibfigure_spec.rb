@@ -91,15 +91,35 @@ RSpec.describe JSLibFigure do
   end
 
   describe 'slugify_move / deslugify_move' do
+
     it "slugify_move works for 'box the gnat'" do
       expect(JSLibFigure.slugify_move('box the gnat')).to eq('box-the-gnat')
     end
+
     it "deslugify_move works for 'box-the-gnat'" do
       expect(JSLibFigure.deslugify_move('box-the-gnat')).to eq('box the gnat')
     end
+
     JSLibFigure.moves.each do |move|
       it "#{move.inspect} >> slugify_move >> deslugify_move == #{move.inspect}" do
         expect(JSLibFigure.deslugify_move(JSLibFigure.slugify_move(move))).to eq(move)
+      end
+    end
+
+    it 'all terms are uniqe' do
+      h = {}
+      (JSLibFigure.moves + JSLibFigure.dancers).each do |term|
+        if h[term]
+          raise "saw #{term.inspect} more than once"
+        else
+          h[term] = true
+        end
+      end
+    end
+
+    it 'slugify_move and slugifyTerm agree for all moves' do
+      JSLibFigure.moves.each do |move|
+        expect(JSLibFigure.slugify_move(move)).to eq(jseval("slugifyTerm(#{move.inspect})"))
       end
     end
   end

@@ -135,9 +135,8 @@ function moveSubstitution(move_term, dialect) {
 }
 
 // see also the similar ruby-side function slugify_move 
-// TODO: unify the two, and enforce that the slug/deslug mapping is 1-1 in tests
 function slugifyTerm(term) {
-  return term.toLowerCase().replace('&', 'and').replace(' ', '-').replace(/[^a-z0-9-]/, '');
+  return term.toLowerCase().replace(/&/g, 'and').replace(/ /g, '-').replace(/[^a-z0-9-]/g, '');
 }
 
 // ________________________________________________________________
