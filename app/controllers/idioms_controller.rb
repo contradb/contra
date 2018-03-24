@@ -2,9 +2,9 @@ class IdiomsController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    @idiom = Idiom::Move.new(idiom_params)
-    @idiom.user = current_user
-    @idiom.type = idiom_type_from_term(@idiom.term)
+    ps = idiom_params
+    t = idiom_type_from_term(ps[:term])
+    @idiom = Idiom::Idiom.new(ps.merge(type: t, user: current_user))
     if @idiom.save
       render json: @idiom, status: :ok
     else

@@ -30,7 +30,7 @@
 ** TODO unify slugifyTerm and slugify_move, and add tests
 * DONE worry about all those ajax calls that have 'done' but no matching error handler
 * DONE put idiom editors in a table so they don't look like Austin Powers' teeth
-* TODO IdiomsController#create code is awkward, can't we create the right type from the get-go?
+* DONE IdiomsController#create code is awkward, can't we create the right type from the get-go?
     @idiom = Idiom::Move.new(idiom_params)
     @idiom.user = current_user
     @idiom.type = idiom_type_from_term(@idiom.term)
