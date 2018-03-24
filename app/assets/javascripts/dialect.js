@@ -69,6 +69,9 @@ $(document).ready(function() {
           indicateStatus(status, 'glyphicon-ok', 'saved');
           ensureEditorUpdateMode(editor, idiomJson.id);
           recomputeIdiomStatuses();
+        },
+        error: function(jqXHRXHR, textStatus, errorThrown) {
+          indicateStatus(status, 'glyphicon-exclamation-sign', 'error saving');
         }
       });
     });
@@ -91,7 +94,11 @@ $(document).ready(function() {
                 success: function() {
                   container.remove();
                   recomputeIdiomStatuses();
-                }});
+                },
+                error: function(jqXHRXHR, textStatus, errorThrown) {
+                  indicateStatus(status, 'glyphicon-exclamation-sign', 'error deleting');
+                }
+               });
       }
     });
     return form;
@@ -107,7 +114,7 @@ $(document).ready(function() {
   }
 
   // build menus
-  dancerMenuForChooser(chooser_dancers).forEach(function(dancer) {
+  dancers().forEach(function(dancer) {
     $('.new-dancers-idiom').append($('<option value="'+dancer+'">'+dancer+'</option>'));
   });
   moves().forEach(function(move) {

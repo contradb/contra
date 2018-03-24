@@ -32,7 +32,7 @@
 ** DONE move to a real home file
 ** WONTFIX fix js wait bug in custom matcher
 ** TODO unify slugifyTerm and slugify_move, and add tests
-* TODO worry about all those ajax calls that have 'done' but no matching error handler
+* DONE worry about all those ajax calls that have 'done' but no matching error handler
 * DONE put idiom editors in a table so they don't look like Austin Powers' teeth
 * TODO disregard whitespace in substitutions
 * TODO IdiomsController#create code is awkward, can't we create the right type from the get-go?
