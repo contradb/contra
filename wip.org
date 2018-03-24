@@ -39,6 +39,7 @@
 * WONTFIX sort list by term type then term alphabetic
 * DONE reindent index.html.erb top div
 * WONTFIX refactor that enormous js function
+* DONE fix gyre specs
 * TODO grep for TODOs
 * TODO merge master
 * TODO delete this file

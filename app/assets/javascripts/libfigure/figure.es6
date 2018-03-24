@@ -394,11 +394,19 @@ defineRelatedMove2Way('facing star', 'star');
 // GYRE                                       //
 ////////////////////////////////////////////////
 
+function gyreSubstitutionPrintsRightShoulder(smove) {
+  // print the right shoulder unless it's a single word starting with 'g', or it starts and ends with 'face'.
+  // \S = non-whitespace
+  return ! (smove.match(/^g\S+$/i) || smove.match(/^face.*face$/i));
+}
+
 function gyreStringify(move, pvs, dialect) {
   var [who,   shoulder,  rots,  beats] = pvs;
   var [swho, sshoulder, srots, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
-  return words(swho, smove, sshoulder, srots, sbeats);
+  var leftShoulder = !shoulder;
+  var printShoulder = leftShoulder || gyreSubstitutionPrintsRightShoulder(smove);
+  return words(swho, smove, printShoulder ? sshoulder : '', srots, sbeats);
 }
 
 defineFigure("gyre",
