@@ -505,13 +505,13 @@ describe 'Welcome page', js: true do
 
         it "down the hall ender filter works" do
           ta = FactoryGirl.create(:dance_with_a_down_the_hall, down_the_hall_ender: 'turn-alone', title: 'dth_alone')
-          tc = FactoryGirl.create(:dance_with_a_down_the_hall, down_the_hall_ender: 'turn-couples', title: 'dth_couples')
+          tc = FactoryGirl.create(:dance_with_a_down_the_hall, down_the_hall_ender: 'turn-couple', title: 'dth_couples')
           circle = FactoryGirl.create(:dance_with_a_down_the_hall, down_the_hall_ender: 'circle', title: 'dth_circle')
           unspec = FactoryGirl.create(:dance_with_a_down_the_hall, down_the_hall_ender: '', title: 'dth_unspec')
 
           select('down the hall')
           click_button('...')
-          select('turn as couples')
+          select('turn as a couple')
           # select('turn alone') # hard because multiple
           select('bend into a ring')
  

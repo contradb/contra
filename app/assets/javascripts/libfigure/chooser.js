@@ -47,6 +47,7 @@ defineChooser("chooser_gate_direction");
 defineChooser("chooser_slice_return");
 defineChooser("chooser_slice_increment");
 defineChooser("chooser_down_the_hall_ender");
+defineChooser("chooser_all_or_center_or_outsides");
 defineChooser("chooser_zig_zag_ender");
 defineChooser("chooser_go_back");
 defineChooser("chooser_give");
