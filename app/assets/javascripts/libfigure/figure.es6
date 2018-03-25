@@ -25,7 +25,7 @@ function allemandeOrbitStringify(move, pvs, dialect) {
   var sopposite_dir = dir ? (dir === '*' ? '*' : "counter clockwise") : "clockwise";
   return words(swho, 'allemande', sdir,
                sinner_angle, "around",
-               "while the", who ? invertPair(who) : "others", "orbit",
+               "while the", invertPair(who, dialect), "orbit",
                sopposite_dir,
                souter_angle, "around", sbeats);
 }
@@ -42,6 +42,23 @@ defineFigure("allemande orbit",
              });
 
 defineRelatedMove2Way('allemande orbit', 'allemande');
+
+////////////////////////////////////////////////
+// ARCH AND DIVE                              //
+////////////////////////////////////////////////
+
+function archAndDiveStringify(move, pvs, dialect) {
+  var [who,   beats] = pvs;
+  var [swho,  sbeats] = parameter_strings(move, pvs, dialect);
+  // var smove = moveSubstitution(move, dialect);
+  var twho = invertPair(who, dialect);
+  return words(swho, 'arch', twho, 'dive', sbeats);
+}
+
+defineFigure("arch & dive",
+             [param_subject_pair,
+              param_beats_4],
+             {stringify: archAndDiveStringify});
 
 ////////////////////////////////////////////////
 // BALANCE                                    //
@@ -88,7 +105,7 @@ function boxCirculateStringify(move, pvs, dialect) {
   var smove = moveSubstitution(move, dialect);
   var expected_beats = bal ? 8 : 4;
   var tbeats = (beats === expected_beats) ? false : ('for '+ beats);
-  var second_ssubject = subject ? invertPair(subject) : "others";
+  var second_ssubject = invertPair(subject, dialect);
   var details = words(ssubject, 'cross while', second_ssubject, 'loop', sspin);
   return words(sbal, smove, '-', details, tbeats);
 }

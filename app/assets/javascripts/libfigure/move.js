@@ -97,4 +97,3 @@ function anglesForMove (move) {
     return anglesForMoveArr;
   }
 }
-

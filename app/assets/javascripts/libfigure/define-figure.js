@@ -94,29 +94,24 @@ function parameter_strings(move, parameter_values, dialect) {
     } else {
       term = String(pvi);
     }
-    acc.push(parameterSubstitution(dialect,formal_parameters[i],term));
+    acc.push(parameterSubstitution(formal_parameters[i], term, dialect));
   }
   return acc;
 }
 
 // called when we don't know if the parameter is a dancer
-function parameterSubstitution(dialect, formal_parameter, actual_parameter) {
+function parameterSubstitution(formal_parameter, actual_parameter, dialect) {
   var term = actual_parameter;
-  if (formalParamIsDancers(formal_parameter) && (term in dialect.dancers)) {
-    return dialect.dancers[term];
-  } else {
-    return term;
-  }
+  return (formalParamIsDancers(formal_parameter) && dialect.dancers[term]) || actual_parameter;
 }
 
 // called when we do know the parameter is a dancer
-function dancerSubstitution(dialect, actual_parameter) {
-  var term = actual_parameter;
-  if (term in dialect.dancers) {
-    return dialect.dancers[term];
-  } else {
-    return term;
-  }
+function dancerSubstitution(dancer_term, dialect) {
+  return dialect.dancers[dancer_term] || dancer_term;
+}
+
+function moveSubstitution(move_term, dialect) {
+  return dialect.moves[move_term] || move_term;
 }
 
 // === Teaching Names =============
