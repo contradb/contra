@@ -118,10 +118,6 @@ function figuresUseDancers(figures, dancers_term) {
   return false;
 }
 
-function moveSubstitution(move_term, dialect) {
-  return dialect.moves[move_term] || move_term;
-}
-
 // see also the similar ruby-side function slugify_move 
 function slugifyTerm(term) {
   return term.toLowerCase().replace(/&/g, 'and').replace(/ /g, '-').replace(/[^a-z0-9-]/g, '');

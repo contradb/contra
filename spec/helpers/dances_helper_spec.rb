@@ -199,6 +199,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['ladles turn alone to a new partner', 'turn alone', 'ladles', 'to a new partner', 4],
    ['ladles turn alone face out for 2', 'turn alone', 'ladles', 'face out', 2],
    ['* turn alone for *', 'turn alone', '*', '', '*'],
+   ['ones arch twos dive', 'arch & dive','ones',4],
+   ['* arch * dive for *', 'arch & dive','*','*'],
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}'" do
@@ -210,7 +212,10 @@ RSpec.describe DancesHelper, type: :helper do
    ['ravens darcy right shoulders 1½', 'gyre', 'ladles', true, 540, 8],
    ['ravens swing', 'swing', 'ladles', false, 8],
    ['ravens do si do left shoulder once', 'see saw', 'ladles', false, 360, 8],
-   ['mush into short wavy lines', 'ocean wave', 4]
+   ['mush into short wavy lines', 'ocean wave', 4],
+   ['ravens allemande left 1½ around while the larks orbit clockwise ½ around', 'allemande orbit','ladles',false,540,180,8],
+   ['larks arch ravens dive', 'arch & dive','gentlespoons',4],
+   ['____ arch others dive', 'arch & dive',nil,4],
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}' with dialect" do

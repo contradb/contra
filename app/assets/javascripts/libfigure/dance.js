@@ -1,4 +1,3 @@
-
 var invertPairHash =
       {"ladles": "gentlespoons"
        ,"gentlespoons": "ladles"
@@ -9,12 +8,15 @@ var invertPairHash =
        ,"*": "*"
       };
 // If this names 2 dancers, this returns the names for the other 2 dancers
-// it's sketchy, because it assumes 4 dancers, so only use it in contra moves
-function invertPair(whostr, falsey_ok) {
-  if (falsey_ok && !whostr) {
-    return whostr;
+// it's sketchy, because it assumes 4 dancers, so only use it in contra moves.
+// Formerly known as dancers complement.
+function invertPair(whostr, dialect) {
+  if (!whostr) {return 'others';} // undefined is ok
+  var dancers = invertPairHash[whostr];
+  if (dancers) {
+    return dancerSubstitution(dancers, dialect);
   } else {
-    return invertPairHash[whostr] || (throw_up("bogus parameter to invertPairHash: "+ whostr));
+    throw_up("bogus parameter to invertPairHash: "+ whostr);
   }
 }
 
@@ -32,4 +34,3 @@ function labelForBeats(beats) {
     }
   return "";
 }
-
