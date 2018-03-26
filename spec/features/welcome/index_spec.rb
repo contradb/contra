@@ -80,6 +80,13 @@ describe 'Welcome page', js: true do
       expect(rory.title).to eq("Just Rory")
     end
 
+    it "subfigures match" do
+      visit '/'                 # don't show the see_saw dance initially
+      see_saw = FactoryGirl.create(:dance_with_a_see_saw)
+      select 'do si do'
+      expect(page).to have_content(see_saw.title)
+    end
+
     it "'anything but' works" do
       dance
       only_a_swing = FactoryGirl.create(:dance_with_a_swing)

@@ -127,5 +127,12 @@ FactoryGirl.define do
     start_type 'improper'
     figures_json {'[{"parameter_values":["gentlespoons",1.0,"across",8],"move":"hey"}]'}
   end
-end
 
+  factory :dance_with_a_see_saw, class: Dance do
+    sequence(:title) {|n| "SeeSawDance#{n}"}
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json {'[{"parameter_values":["ladles",false,540,8],"move":"see saw"}]'}
+  end
+end

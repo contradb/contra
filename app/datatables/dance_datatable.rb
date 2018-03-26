@@ -94,15 +94,16 @@ class DanceDatatable < AjaxDatatablesRails::Base
   end
 
   def self.matching_figures_for_figure(filter, dance)
-    move = filter[1]
-    if '*' == move              # wildcard
+    filter_move = filter[1]
+    if '*' == filter_move              # wildcard
       all_figure_indicies(dance)
     else
-      formals = JSLibFigure.is_move?(move) ? JSLibFigure.formal_parameters(move) : []
+      formals = JSLibFigure.is_move?(filter_move) ? JSLibFigure.formal_parameters(filter_move) : []
       indicies = dance.figures.each_with_index.map do |figure, figure_index|
         actuals = figure['parameter_values']
         param_filters = filter.drop(2)
-        matches = figure['move'] == move &&
+        figure_move = JSLibFigure.move(figure)
+        matches = (figure_move == filter_move || JSLibFigure.de_alias_move(figure_move) == filter_move) &&
                   param_filters.each_with_index.all? {|param_filter, i| param_passes_filter?(formals[i], actuals[i], param_filter)}
         matches ? figure_index : nil
       end
