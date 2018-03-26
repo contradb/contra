@@ -336,6 +336,15 @@ describe 'Welcome page', js: true do
           expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","circle","*","*","*"]') # second query
         end
 
+        it "do si do has a radio allowing us to include/exclude subfigures" do
+          see_saw = FactoryGirl.create(:dance_with_a_see_saw)
+          select('do si do')
+          click_button('...')
+          expect(page).to have_content(see_saw.title)
+          choose('exclude')
+          expect(page).to_not have_content(see_saw.title)
+        end
+
         it 'circle has an angle select box with the right options' do
           select('circle')
           click_button('...')

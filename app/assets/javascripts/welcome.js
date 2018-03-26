@@ -305,6 +305,7 @@ $(document).ready(function() {
     formals.forEach(function(formal, index) {
       var html_fn = chooserToFilterHtml[formal.ui] || function() {return '<div>'+formal.name+'</div>';};
       var chooser = $(html_fn(move));
+      // reinitialize the chooser - perhaps because we're here via the back button? -dm 03-25-2018
       if (index < optionalParameterValues.length) {
         var v = optionalParameterValues[index];
         if (chooserWidgetType[formal.ui] === 'radio') {
@@ -318,6 +319,16 @@ $(document).ready(function() {
       chooser_td.append(chooser);
       var label = $('<tr class="chooser-row"><td class="chooser-label-text">'+ parameterLabel(move, index) +'</td></tr>');
       label.append(chooser_td);
+      accordion.append(label);
+    });
+    populateAccordionForSubmoves(accordion, move);
+  }
+
+  function populateAccordionForSubmoves(accordion, move) {
+    aliases(move).forEach(function(submove) {
+      var name = generateUniqueNameForRadio();
+      var label = $('<tr class=submove-row><td class="chooser-label-text">'+submove+'</td><td><label class=radio-inline><input type=radio name='+name+' class=radio-inline checked />include</label><label class=radio-inline><input type=radio name='+name+' class=submove-exclude />exclude</label></td></tr>');
+      label.find('input').change(updateQuery);
       accordion.append(label);
     });
   }
@@ -353,7 +364,8 @@ $(document).ready(function() {
       if (accordionIsHidden(figure_filter)) {
         return a; 
       }
-      var formals = isMove(move) ? parameters(move) : [];
+      var is_move = isMove(move);
+      var formals = is_move ? parameters(move) : [];
       formals.forEach(function(formal, i) {
         var chooser = $(figure_filter.children('.figure-filter-accordion').find('.chooser-row')[i]).find('.chooser-argument');
         if (doesChooserFilterUseSelect(formal.ui)) {
@@ -368,6 +380,11 @@ $(document).ready(function() {
         } else { // add complicated choosers here
           a.push('*');
         }
+      });
+      var move_aliases = is_move ? aliases(move) : [];
+      move_aliases.forEach(function(alias, i) {
+        var submove_excluded = $(figure_filter.find('.figure-filter-accordion .submove-row')[i]).find('.submove-exclude:checked').length > 0;
+        a.push(submove_excluded ? alias : null);
       });
       return a;
     } else {

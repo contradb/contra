@@ -179,6 +179,7 @@ function deAliasMove(move) {
 }
 
 // does not include itself
+// returns in alphabetic order
 function aliases(move) {
   // loop through defined_events, returning all keys where value.name == move
   var acc = [];
@@ -188,7 +189,7 @@ function aliases(move) {
       acc.push(key);
     }
   });
-  return acc;
+  return acc.sort();
 }
 
 // List all the moves known to contradb.

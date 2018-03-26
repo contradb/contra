@@ -100,11 +100,14 @@ class DanceDatatable < AjaxDatatablesRails::Base
     else
       formals = JSLibFigure.is_move?(filter_move) ? JSLibFigure.formal_parameters(filter_move) : []
       indicies = dance.figures.each_with_index.map do |figure, figure_index|
-        actuals = figure['parameter_values']
-        param_filters = filter.drop(2)
         figure_move = JSLibFigure.move(figure)
-        matches = (figure_move == filter_move || JSLibFigure.de_alias_move(figure_move) == filter_move) &&
-                  param_filters.each_with_index.all? {|param_filter, i| param_passes_filter?(formals[i], actuals[i], param_filter)}
+        figure_params_length = JSLibFigure.formal_parameters(figure_move).length
+        actuals = figure['parameter_values']
+        param_filters = filter[2, figure_params_length]
+        submove_exclusions = filter.drop(2 + figure_params_length)
+        matches = figure_move == filter_move
+        matches ||= JSLibFigure.de_alias_move(figure_move) == filter_move && !figure_move.in?(submove_exclusions)
+        matches &&= param_filters.each_with_index.all? {|param_filter, i| param_passes_filter?(formals[i], actuals[i], param_filter)}
         matches ? figure_index : nil
       end
       indicies.any? ? indicies.compact : nil
