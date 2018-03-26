@@ -956,14 +956,15 @@ defineFigure("turn alone",
 ////////////////////////////////////////////////
 
 function zigZagStringify(move, pvs, dialect) {
-  var [ spin,  ender,  beats] = pvs;
-  var [sspin, sender, sbeats] = parameter_strings(move, pvs, dialect);
-  var smove = moveSubstitution(move, dialect);
+  var [ who,  spin,  ender,  beats] = pvs;
+  var [swho, sspin, sender, sbeats] = parameter_strings(move, pvs, dialect);
+  // var smove = moveSubstitution(move, dialect);
   var comma_maybe = (ender === 'allemande') && comma;
   var return_sspin = spin ? ('*'===spin ? '*' : 'right') : 'left';
-  return words(smove, sspin, 'then', return_sspin, comma_maybe, sender, (sbeats !== '') && comma_maybe, sbeats);
+  var twho = who === 'partners' ? '' : swho;
+  return words(twho, 'zig', sspin, 'zag', return_sspin, comma_maybe, sender, (sbeats !== '') && comma_maybe, sbeats);
 }
 
 defineFigure("zig zag",
-             [param_spin_left, param_zig_zag_ender, param_beats_6],
+             [param_subject_pairs_partners, param_spin_left, param_zig_zag_ender, param_beats_6],
              {stringify: zigZagStringify, progression: true});
