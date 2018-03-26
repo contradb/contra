@@ -111,7 +111,7 @@ FactoryGirl.define do
   factory :dance_with_a_down_the_hall, class: Dance do
     transient do
       march_facing {'forward'}
-      down_the_hall_ender {'turn-couples'}
+      down_the_hall_ender {'turn-couple'}
     end
     sequence(:title) {|n| "DownTheHallDance#{n}"}
     user { FactoryGirl.create(:user) }
