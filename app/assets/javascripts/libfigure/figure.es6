@@ -273,23 +273,55 @@ defineTeachingName("see saw");
 // DOWN THE HALL  &  UP THE HALL              //
 ////////////////////////////////////////////////
 
+function upOrDownTheHallChange(figure,index) {
+  // tood
+  var pvs = figure.parameter_values;
+  const who_index = 0;
+  const moving_index = 1;
+  if (index === who_index) {
+    if (pvs[who_index] === 'everyone') {
+      pvs[moving_index] = 'all';
+    } else if (pvs[moving_index] === 'all') {
+      pvs[moving_index] = 'center';
+    }
+  } else if (index === moving_index) {
+    if (pvs[moving_index] === 'all') {
+      pvs[who_index] = 'everyone';
+    } else if (pvs[who_index] === 'everyone') {
+      pvs[who_index] = 'ones';
+    }
+  }
+}
+
 function upOrDownTheHallStringify(move, pvs, dialect) {
-  var [ facing,  ender, beats] = pvs;
-  var [sfacing, sender, sbeats] = parameter_strings(move, pvs, dialect);
+  var [ who,  moving, facing,  ender, beats] = pvs;
+  var [swho, smoving, sfacing, sender, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
-  if (ender === '') {
-    return words(smove, sfacing, sbeats);
+  var twho = who === 'everyone' ? '' : swho;
+  var tmove;
+  if (moving === 'all') {
+    tmove = smove; // down-the-hall
+  } else if (move === 'down the hall') {
+    tmove = 'down the ' + smoving;
+  } else if (move === 'up the hall') {
+    tmove = 'up the ' + smoving;
   } else {
-    return words(smove, sfacing, 'and', sender, sbeats);
+    throw_up('what move is this even anyway?');
+  }
+
+  if (ender === '') {
+    return words(twho, tmove, sfacing, sbeats);
+  } else {
+    return words(twho, tmove, sfacing, 'and', sender, sbeats);
   }
 }
 
 defineFigure("down the hall",
-             [param_march_forward, param_down_the_hall_ender_turn_couples, param_beats_8],
-             {stringify: upOrDownTheHallStringify});
+             [param_subject_pair_or_everyone, param_all_or_center_or_outsides, param_march_forward, param_down_the_hall_ender_turn_couples, param_beats_8],
+             {change: upOrDownTheHallChange, stringify: upOrDownTheHallStringify});
 defineFigure("up the hall",
-             [param_march_forward, param_down_the_hall_ender_circle,       param_beats_8],
-             {stringify: upOrDownTheHallStringify});
+             [param_subject_pair_or_everyone, param_all_or_center_or_outsides, param_march_forward, param_down_the_hall_ender_circle,       param_beats_8],
+             {change: upOrDownTheHallChange, stringify: upOrDownTheHallStringify});
 
 defineRelatedMove2Way('down the hall', 'up the hall');
 

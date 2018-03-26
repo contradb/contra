@@ -193,9 +193,12 @@ function stringParamSliceIncrement (value) {
 
 var param_slice_increment = {name: "slice increment", ui: chooser_slice_increment, value: 'couple', string: stringParamSliceIncrement};
 
+var param_all_or_center_or_outsides = {name: "moving", ui: chooser_all_or_center_or_outsides, value: 'all'};
+
+
 function stringParamDownTheHallEnder (value) {
   if      ('' === value)              { return ''; }
-  else if ('turn-couples'  === value) { return 'turn as couples'; }
+  else if ('turn-couple'   === value) { return 'turn as a couple'; }
   else if ('turn-alone'    === value) { return 'turn alone'; }
   else if ('circle'        === value) { return 'bend into a ring'; }
   else if ('cozy'          === value) { return 'form a cozy line'; }
@@ -209,7 +212,7 @@ function stringParamDownTheHallEnder (value) {
 
 var param_down_the_hall_ender              = {name: "ender", ui: chooser_down_the_hall_ender, value: '',       string: stringParamDownTheHallEnder};
 var param_down_the_hall_ender_circle       = {name: "ender", ui: chooser_down_the_hall_ender, value: 'circle', string: stringParamDownTheHallEnder};
-var param_down_the_hall_ender_turn_couples = {name: "ender", ui: chooser_down_the_hall_ender, value: 'turn-couples', string: stringParamDownTheHallEnder};
+var param_down_the_hall_ender_turn_couples = {name: "ender", ui: chooser_down_the_hall_ender, value: 'turn-couple', string: stringParamDownTheHallEnder};
 
 function stringParamZigZagEnder (value) {
   if ('' === value) {
