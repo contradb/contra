@@ -265,10 +265,12 @@ $(document).ready(function() {
   chooserSelect(chooser_slice_return, ['*', ['straight', 'straight back'], ['diagonal', 'diagonal back'], 'none']);
   chooserRadioButtons(chooser_slice_increment, ['*', 'couple', 'dancer']);
 
+  chooserSelect(chooser_all_or_center_or_outsides, ['*', 'all', 'center', 'outsides']);
+
   chooserSelect(chooser_down_the_hall_ender,
                 ['*',
                  ['turn-alone', 'turn alone'],
-                 ['turn-couples', 'turn as couples'],
+                 ['turn-couple', 'turn as a couple'],
                  ['circle', 'bend into a ring'],
                  ['cozy', 'form a cozy line'],
                  ['cloverleaf', 'bend into a cloverleaf'],
