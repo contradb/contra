@@ -94,16 +94,21 @@ class DanceDatatable < AjaxDatatablesRails::Base
   end
 
   def self.matching_figures_for_figure(filter, dance)
-    move = filter[1]
-    if '*' == move              # wildcard
+    filter_move = filter[1]
+    if '*' == filter_move              # wildcard
       all_figure_indicies(dance)
     else
-      formals = JSLibFigure.is_move?(move) ? JSLibFigure.formal_parameters(move) : []
+      formals = JSLibFigure.is_move?(filter_move) ? JSLibFigure.formal_parameters(filter_move) : []
       indicies = dance.figures.each_with_index.map do |figure, figure_index|
+        figure_move = JSLibFigure.move(figure)
         actuals = figure['parameter_values']
-        param_filters = filter.drop(2)
-        matches = figure['move'] == move &&
-                  param_filters.each_with_index.all? {|param_filter, i| param_passes_filter?(formals[i], actuals[i], param_filter)}
+        param_filters = filter[2, formals.length]
+        submove_exclusions = filter.drop(2 + formals.length)
+        figure_alias = figure_move && JSLibFigure.de_alias_move(figure_move)
+        matches = figure_move == filter_move
+        matches ||= figure_alias == filter_move && !figure_move.in?(submove_exclusions)
+        matches &&= param_filters.each_with_index.all? {|param_filter, i| param_passes_filter?(formals[i], actuals[i], param_filter)}
+        # matches and puts "#{dance.title.inspect} matches at #{figure_index} because of filter #{filter.inspect} and figure #{figure.inspect}"
         matches ? figure_index : nil
       end
       indicies.any? ? indicies.compact : nil

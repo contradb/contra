@@ -300,13 +300,18 @@ $(document).ready(function() {
     return 'uniqueNameForRadio' + _uniqueNameForRadioCounter++;
   }
 
-  function populateAccordionForMove(accordion, move, optionalParameterValues) {
-    optionalParameterValues = optionalParameterValues || [];
-    accordion.children().remove();
+  function populateAccordionForMove(accordion, move, optionalParameterValuesAndExcludes) {
     var formals = isMove(move) ? parameters(move) : [];
+    // Note: relying on slicing above the size of some arrays and getting [] back
+    var optionalParameterValues = (optionalParameterValuesAndExcludes || []).slice(0,formals.length);
+    // optionalExcludes is of the form ['see saw', nil], where it's a string if it's excluded and nil if it's allowed
+    // and has overall length of the number of aliases, and the first alias is first, etc.
+    var optionalExcludes = (optionalParameterValuesAndExcludes || []).slice(formals.length);
+    accordion.children().remove();
     formals.forEach(function(formal, index) {
       var html_fn = chooserToFilterHtml[formal.ui] || function() {return '<div>'+formal.name+'</div>';};
       var chooser = $(html_fn(move));
+      // reinitialize the chooser - typically because we're here via the back button -dm 03-25-2018
       if (index < optionalParameterValues.length) {
         var v = optionalParameterValues[index];
         if (chooserWidgetType[formal.ui] === 'radio') {
@@ -320,6 +325,29 @@ $(document).ready(function() {
       chooser_td.append(chooser);
       var label = $('<tr class="chooser-row"><td class="chooser-label-text">'+ parameterLabel(move, index) +'</td></tr>');
       label.append(chooser_td);
+      accordion.append(label);
+    });
+    populateAccordionForSubmoves(accordion, move, optionalExcludes);
+  }
+
+  function populateAccordionForSubmoves(accordion, move, excludes) {
+    aliases(move).forEach(function(submove, i) {
+      var name = generateUniqueNameForRadio();
+      var included = !excludes[i]; // excludes is often [] - that's by design
+      var include_checked = included ? 'checked' : '';
+      var exclude_checked = included ? '' : 'checked';
+      var label = $('<tr class=submove-row>' +
+                    '  <td class="chooser-label-text">'+submove+'</td>' +
+                    '  <td>' +
+                    '    <label class=radio-inline>' +
+                    '      <input type=radio name=' + name + ' ' + include_checked + '/>include' +
+                    '    </label>' +
+                    '    <label class=radio-inline>' +
+                    '      <input type=radio name=' + name + ' ' + exclude_checked + ' class=submove-exclude />exclude' +
+                    '    </label>' +
+                    '  </td>' +
+                    '</tr>');
+      label.find('input').change(updateQuery);
       accordion.append(label);
     });
   }
@@ -355,7 +383,8 @@ $(document).ready(function() {
       if (accordionIsHidden(figure_filter)) {
         return a; 
       }
-      var formals = isMove(move) ? parameters(move) : [];
+      var is_move = isMove(move);
+      var formals = is_move ? parameters(move) : [];
       formals.forEach(function(formal, i) {
         var chooser = $(figure_filter.children('.figure-filter-accordion').find('.chooser-row')[i]).find('.chooser-argument');
         if (doesChooserFilterUseSelect(formal.ui)) {
@@ -370,6 +399,11 @@ $(document).ready(function() {
         } else { // add complicated choosers here
           a.push('*');
         }
+      });
+      var move_aliases = is_move ? aliases(move) : [];
+      move_aliases.forEach(function(alias, i) {
+        var submove_excluded = $(figure_filter.find('.figure-filter-accordion .submove-row')[i]).find('.submove-exclude:checked').length > 0;
+        a.push(submove_excluded ? alias : null);
       });
       return a;
     } else {
