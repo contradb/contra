@@ -300,13 +300,16 @@ $(document).ready(function() {
 
   function populateAccordionForMove(accordion, move, optionalParameterValuesAndExcludes) {
     var formals = isMove(move) ? parameters(move) : [];
+    // Note: relying on slicing above the size of some arrays and getting [] back
     var optionalParameterValues = (optionalParameterValuesAndExcludes || []).slice(0,formals.length);
+    // optionalExcludes is of the form ['see saw', nil], where it's a string if it's excluded and nil if it's allowed
+    // and has overall length of the number of aliases, and the first alias is first, etc.
     var optionalExcludes = (optionalParameterValuesAndExcludes || []).slice(formals.length);
     accordion.children().remove();
     formals.forEach(function(formal, index) {
       var html_fn = chooserToFilterHtml[formal.ui] || function() {return '<div>'+formal.name+'</div>';};
       var chooser = $(html_fn(move));
-      // reinitialize the chooser - perhaps because we're here via the back button? -dm 03-25-2018
+      // reinitialize the chooser - typically because we're here via the back button -dm 03-25-2018
       if (index < optionalParameterValues.length) {
         var v = optionalParameterValues[index];
         if (chooserWidgetType[formal.ui] === 'radio') {
@@ -328,7 +331,7 @@ $(document).ready(function() {
   function populateAccordionForSubmoves(accordion, move, excludes) {
     aliases(move).forEach(function(submove, i) {
       var name = generateUniqueNameForRadio();
-      var included = !excludes[i];
+      var included = !excludes[i]; // excludes is often [] - that's by design
       var include_checked = included ? 'checked' : '';
       var exclude_checked = included ? '' : 'checked';
       var label = $('<tr class=submove-row>' +
