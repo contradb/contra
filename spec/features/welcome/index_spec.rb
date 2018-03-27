@@ -594,7 +594,7 @@ describe 'Welcome page', js: true do
     end
 
     describe 'back button' do
-      it 'works' do
+      it 'works with a complex tree' do
         dances
         visit '/'
         select('and')
@@ -625,6 +625,27 @@ describe 'Welcome page', js: true do
         expect(page).to_not have_content('The Rendevouz')
         expect(page).to_not have_content('Call Me')
         expect(page).to have_content('Showing dances with a swing and a ladles allemande right 1½ for *.')
+      end
+
+      it "remembers an excluded subfigure" do
+        visit '/'
+        select('do si do')
+        click_button('...')
+
+        see_saw = FactoryGirl.create(:dance_with_a_see_saw)
+        do_si_do = FactoryGirl.create(:dance_with_a_do_si_do)
+        dances
+
+        choose('exclude')
+        expect(page).to have_content(do_si_do.title)
+        expect(page).to have_content('The Rendevouz')
+        expect(page).to_not have_content(see_saw.title)
+        click_link('The Rendevouz')
+        expect(page).to_not have_content(do_si_do.title) # wait for page to load
+        page.go_back
+        select('once')                               # force recompute
+        expect(page).to     have_content(do_si_do.title) # wait for page to load
+        expect(page).to_not have_content(see_saw.title)
       end
     end
 

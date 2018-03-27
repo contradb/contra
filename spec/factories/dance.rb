@@ -133,6 +133,14 @@ FactoryGirl.define do
     user { FactoryGirl.create(:user) }
     choreographer { FactoryGirl.create(:choreographer) }
     start_type 'improper'
-    figures_json {'[{"parameter_values":["ladles",false,540,8],"move":"see saw"}]'}
+    figures_json {'[{"parameter_values":["ladles",false,360,8],"move":"see saw"}]'}
+  end
+
+  factory :dance_with_a_do_si_do, class: Dance do
+    sequence(:title) {|n| "DoSiDoDance#{n}"}
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json {'[{"parameter_values":["ladles",true,360,8],"move":"do si do"}]'}
   end
 end

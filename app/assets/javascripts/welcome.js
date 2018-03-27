@@ -298,10 +298,11 @@ $(document).ready(function() {
     return 'uniqueNameForRadio' + _uniqueNameForRadioCounter++;
   }
 
-  function populateAccordionForMove(accordion, move, optionalParameterValues) {
-    optionalParameterValues = optionalParameterValues || [];
-    accordion.children().remove();
+  function populateAccordionForMove(accordion, move, optionalParameterValuesAndExcludes) {
     var formals = isMove(move) ? parameters(move) : [];
+    var optionalParameterValues = (optionalParameterValuesAndExcludes || []).slice(0,formals.length);
+    var optionalExcludes = (optionalParameterValuesAndExcludes || []).slice(formals.length);
+    accordion.children().remove();
     formals.forEach(function(formal, index) {
       var html_fn = chooserToFilterHtml[formal.ui] || function() {return '<div>'+formal.name+'</div>';};
       var chooser = $(html_fn(move));
@@ -321,13 +322,26 @@ $(document).ready(function() {
       label.append(chooser_td);
       accordion.append(label);
     });
-    populateAccordionForSubmoves(accordion, move);
+    populateAccordionForSubmoves(accordion, move, optionalExcludes);
   }
 
-  function populateAccordionForSubmoves(accordion, move) {
-    aliases(move).forEach(function(submove) {
+  function populateAccordionForSubmoves(accordion, move, excludes) {
+    aliases(move).forEach(function(submove, i) {
       var name = generateUniqueNameForRadio();
-      var label = $('<tr class=submove-row><td class="chooser-label-text">'+submove+'</td><td><label class=radio-inline><input type=radio name='+name+' class=radio-inline checked />include</label><label class=radio-inline><input type=radio name='+name+' class=submove-exclude />exclude</label></td></tr>');
+      var included = !excludes[i];
+      var include_checked = included ? 'checked' : '';
+      var exclude_checked = included ? '' : 'checked';
+      var label = $('<tr class=submove-row>' +
+                    '  <td class="chooser-label-text">'+submove+'</td>' +
+                    '  <td>' +
+                    '    <label class=radio-inline>' +
+                    '      <input type=radio name=' + name + ' ' + include_checked + '/>include' +
+                    '    </label>' +
+                    '    <label class=radio-inline>' +
+                    '      <input type=radio name=' + name + ' ' + exclude_checked + ' class=submove-exclude />exclude' +
+                    '    </label>' +
+                    '  </td>' +
+                    '</tr>');
       label.find('input').change(updateQuery);
       accordion.append(label);
     });
