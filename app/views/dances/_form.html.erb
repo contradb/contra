@@ -126,6 +126,7 @@
                   <select ng-model="figure.move"
                           ng-options="m.term as m.substitution for m in moveTermsAndSubstitutionsForSelect"
                           ng-change="userChangedMove(figure)"
+                          ng-blur="userCommittedToMoveChange(figure)"
                           ng-attr-id="{{'move-'+figureIdx}}"
                           class='form-control'>
                   </select>
