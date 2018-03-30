@@ -24,6 +24,24 @@ RSpec.describe JSLibFigure do
     end
   end
 
+  describe 'alias' do
+    let (:do_si_do) {{"parameter_values" => ["ladles",true,360,8], "move" => "do si do"}}
+    let (:see_saw) {{"parameter_values" => ["ladles",false,360,8], "move" => "do si do"}}
+    let (:see_saw_2017_encoding) {{"parameter_values" => ["ladles",false,360,8], "move" => "see saw"}}
+
+    it "knows a see saw when it sees one" do
+      expect(JSLibFigure.alias(see_saw)).to eq('see saw')
+    end
+
+    it 'is cool with 2017 alias encoding scheme too' do
+      expect(JSLibFigure.alias(see_saw_2017_encoding)).to eq('see saw')
+    end
+
+    it "passes 'do si do' intact" do
+      expect(JSLibFigure.alias(do_si_do)).to eq('do si do')
+    end
+  end
+
   describe 'aliases' do
     it 'do si do => [see saw]' do
       expect(JSLibFigure.aliases('do si do')).to eql(['see saw'])

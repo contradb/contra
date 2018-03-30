@@ -34,6 +34,10 @@ module JSLibFigure
     self.eval("deAliasMove(#{move_str.inspect})")
   end
 
+  def self.alias(figure)
+    self.eval("alias(#{figure.to_json})")
+  end
+
   def self.aliases(move_str)
     self.eval("aliases(#{move_str.inspect})")
   end
