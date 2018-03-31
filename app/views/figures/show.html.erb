@@ -36,7 +36,7 @@
           <% if @dances.blank? %>
             <p>There are no examples because this figure is not in any dances.</p>
           <% else %>
-            <table class="table table-bordered table-condensed contra-table-nonfluid">
+            <table class="table table-bordered table-condensed contra-table-nonfluid" id='with-examples'>
               <thead>
                 <tr>
                   <th>Dance</th>
@@ -45,7 +45,7 @@
               </thead>
               <tbody>
                 <% @dances.each_with_index do |dance, dance_index| %>
-                  <% figures = dance.figures.select {|figure| JSLibFigure.move(figure) == @term} %>
+                  <% figures = dance.figures.select {|figure| JSLibFigure.alias(figure) == @term} %>
                   <% figures.each_with_index do |figure,figure_index| %>
                     <%= content_tag :tr, dance_index.odd? && {class: 'figure-table-striping'} do %><!-- can't simply use bootstrap table-striped because of weird rowspans -->
                       <%= content_tag(:td, (figures.length > 1) && {rowspan: figures.length}) do link_to(dance.title, dance) end if 0==figure_index %>

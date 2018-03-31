@@ -38,6 +38,13 @@ describe 'figures show' do
       end
     end
 
+    it 'aliases' do
+      see_saw = FactoryGirl.create(:dance_with_a_see_saw)
+      do_si_do = FactoryGirl.create(:dance_with_a_do_si_do)
+      visit figure_path('see-saw')
+      expect(page).to have_css("#with-examples a", text: see_saw.title)
+      expect(page).to_not have_css("#with-examples a", text: do_si_do.title)
+    end
   end
   it 'without tab' do
     box
