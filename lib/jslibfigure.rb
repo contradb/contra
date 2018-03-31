@@ -50,10 +50,6 @@ module JSLibFigure
     self.eval("relatedMoves(#{move_str.inspect})")
   end
 
-  def self.teaching_name(move_string)
-    move_string ? self.eval("teachingName(#{move_string.inspect})") : "empty figure"
-  end
-
   def self.angles_for_move(move_string)
     self.eval("anglesForMove(#{move_string.inspect})")
   end

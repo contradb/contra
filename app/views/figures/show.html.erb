@@ -27,9 +27,6 @@
             <% if @term != JSLibFigure.de_alias_move(@term) %>
               subfigure of <%= move_link(JSLibFigure.de_alias_move(@term), @dialect) %><br>
             <% end %>
-            <% if JSLibFigure.de_alias_move(@term) != JSLibFigure.teaching_name(@term) %>
-              taught as <%= move_link(JSLibFigure.teaching_name(@term), @dialect) %> in programs<br>
-            <% end %>
             formal parameters: 
             <%= JSLibFigure.formal_parameters(@term).map {|param| param['name'] }.join(', ') %>
           </p>

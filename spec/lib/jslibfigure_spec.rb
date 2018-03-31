@@ -58,24 +58,6 @@ RSpec.describe JSLibFigure do
     end
   end
 
-  describe 'teaching_name' do
-    it 'swing => swing' do
-      expect(JSLibFigure.teaching_name('swing')).to eql('swing')
-    end
-
-    it 'allemande => allemande' do
-      expect(JSLibFigure.teaching_name('allemande')).to eql('allemande')
-    end
-
-    it 'swat the flea => swat the flea' do
-      expect(JSLibFigure.teaching_name('swat the flea')).to eql('swat the flea')
-    end
-
-    it '[empty figure] => "empty figure"' do
-      expect(JSLibFigure.teaching_name(nil)).to eql('empty figure')
-    end
-  end
-
   describe 'moves' do
     it 'returns a list of length 20+' do
       expect(JSLibFigure.moves.length).to be > 20

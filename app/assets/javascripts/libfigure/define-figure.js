@@ -114,19 +114,6 @@ function moveSubstitution(move_term, dialect) {
   return dialect.moves[move_term] || move_term;
 }
 
-// === Teaching Names =============
-
-function teachingName(move) {
-  return teachingNames[move] || deAliasMove(move);
-}
-
-// teach this figure under its own name, not the name of it's root figure
-function defineTeachingName(alias_move) {
-  teachingNames[alias_move] = alias_move;
-}
-
-var teachingNames = {};
-
 // === Related Moves =============
 // Note that a lot of these are 'is composed of' relationships, and as such they
 // might be moved to another representation later.

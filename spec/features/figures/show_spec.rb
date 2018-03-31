@@ -35,7 +35,6 @@ describe 'figures show' do
         visit figure_path('see saw')
         expect(page).to have_title("Do Si Do Left Shoulder | Figure | Contra")
         expect(page).to have_css("h1", text: 'Do Si Do Left Shoulder')
-        expect(page).to have_content('taught as do si do left shoulder in programs')
       end
     end
 

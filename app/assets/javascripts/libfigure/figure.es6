@@ -152,7 +152,6 @@ defineFigure("box the gnat",
              {change: boxTheGnatChange, stringify: boxTheGnatStringify, alias: boxTheGnatAlias});
 defineFigureAlias( "swat the flea", "box the gnat",
                    [null, null, param_left_hand_spin, null]);
-defineTeachingName("swat the flea");
 
 ////////////////////////////////////////////////
 // BUTTERFLY WHIRL                            //
@@ -269,8 +268,6 @@ defineFigure("do si do",
              {stringify: doSiDoStringify, alias: doSiDoAlias});
 
 defineFigureAlias("see saw", "do si do", [null, param_left_shoulder_spin, null, null]);
-
-defineTeachingName("see saw");
 
 ////////////////////////////////////////////////
 // DOWN THE HALL  &  UP THE HALL              //
