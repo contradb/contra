@@ -24,7 +24,7 @@ class Dance < ApplicationRecord
 
   # beware of nils in the array for empty moves
   # includes aliases, not canonical moves
-  def moves
+  def aliases
     figures.map {|f| JSLibFigure.move(f) && JSLibFigure.alias(f)}
   end
 
@@ -49,7 +49,7 @@ class Dance < ApplicationRecord
 
   def moves_that_follow_move(move)
     followers = Set.new
-    mvs = moves.compact
+    mvs = aliases.compact
     mvs.each_with_index do |m,index|
       previous_move_matches = move == mvs[index-1] # yes, index-1 is occassionaly -1, that's great!
       followers << m if previous_move_matches
@@ -59,7 +59,7 @@ class Dance < ApplicationRecord
 
   def moves_that_precede_move(move)
     preceders = Set.new
-    mvs = moves.compact
+    mvs = aliases.compact
     mvs.each_with_index do |m,index|
       move_matches = move == m
       preceders << mvs[index-1] if move_matches # index-1 is occassionally -1, that's great!

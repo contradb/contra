@@ -42,7 +42,7 @@
     <%= if activity.dance&.readable?(current_user)
           introduce_moves = []
           activity.dance.figures.each do |figure|
-            move = JSLibFigure.teaching_name(JSLibFigure.move(figure))
+            move = JSLibFigure.alias(figure)
             unless moves_already_introduced[move]
               moves_already_introduced[move] = true
               introduce_moves.push move
@@ -50,7 +50,7 @@
           end
           # every custom move is different, so print 'custom' in every 
           # dance it's present in, by forgetting we've seen 'custom':
-          moves_already_introduced.delete 'custom'
+          moves_already_introduced.delete('custom')
           # print new moves
           unless introduce_moves.empty? 
             content_tag(:p, "introduces moves: ".html_safe + move_links(introduce_moves, @dialect))

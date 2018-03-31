@@ -53,7 +53,7 @@ describe 'figures show' do
       box
       call
       visit figure_path('star')
-      call.moves.each do |move|
+      call.aliases.each do |move|
         expect(page).to have_css("#with-figure", text: "#{move} #{call.title}") unless 'star' == move
       end
       expect(page).to_not have_css("#with-figure", text: box.title)
