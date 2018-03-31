@@ -268,7 +268,7 @@ defineFigure("do si do",
              [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8],
              {stringify: doSiDoStringify, alias: doSiDoAlias});
 
-defineFigureAlias("see saw", "do si do", [null, param_left_shoulder_spin]);
+defineFigureAlias("see saw", "do si do", [null, param_left_shoulder_spin, null, null]);
 
 defineTeachingName("see saw");
 

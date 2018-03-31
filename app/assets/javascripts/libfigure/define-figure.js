@@ -163,19 +163,23 @@ function defineFigureAlias(alias_name, canonical_name, parameter_defaults) {
   Array.isArray(parameter_defaults) || throw_up("third argument isn't an array aliasing "+alias_name);
   var target = defined_events[canonical_name] ||
         throw_up("undefined figure alias '"+alias_name +"' to '"+canonical_name+"'");
-  if (target.parameters.length < parameter_defaults.length) {
-    throw_up("oversupply of parameters to "+alias_name);
+  if (target.parameters.length !== parameter_defaults.length) {
+    throw_up("wrong number of parameters to "+alias_name);
   }
   // defensively copy parameter_defaults[...]{...} into params
   var params = new Array(target.parameters.length);
   for (var i=0; i<target.parameters.length; i++) {
     params[i] = parameter_defaults[i] || target.parameters[i];
   }
-  defined_events[alias_name] = {name: canonical_name, parameters: params, props: target.props};
+  defined_events[alias_name] = {name: canonical_name, parameters: params, alias_parameters: parameter_defaults,  props: target.props};
 }
 
 function deAliasMove(move) {
     return defined_events[move].name;
+}
+
+function isAlias(move_string) {
+  return defined_events[move_string].name !== move_string;
 }
 
 function alias(figure) {
@@ -194,6 +198,15 @@ function aliases(move) {
     }
   });
   return acc;
+}
+
+function aliasFilter(move_alias_string) {
+  if (move_alias_string === deAliasMove(move_alias_string)) {
+    throw_up("aliasFilter(someDeAliasedMove) would produce weirdly overly specific filters if we weren't raising this error - it's only defined for move aliases");
+  }
+  return aliasParameters(move_alias_string).map(function(param) {
+    return param ? param.value : '*';
+  });
 }
 
 // List all the moves known to contradb.
@@ -243,6 +256,15 @@ function parameters(move){
     throw_up("could not find a figure definition for '"+move+"'. ");
   }
   return [];
+}
+
+function aliasParameters(move){
+  var fig = defined_events[move];
+  if (fig && fig.alias_parameters) {
+    return fig.alias_parameters;
+  } else {
+    throw_up("call to aliasParameters('"+move+"') on a thing that doesn't seem to be an alias");
+  }
 }
 
 function is_progression(move) {

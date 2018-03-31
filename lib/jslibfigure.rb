@@ -42,6 +42,10 @@ module JSLibFigure
     self.eval("aliases(#{move_str.inspect})")
   end
 
+  def self.alias_filter(move_str)
+    self.eval("aliasFilter(#{move_str.inspect})")
+  end
+
   def self.related_moves(move_str)
     self.eval("relatedMoves(#{move_str.inspect})")
   end
@@ -66,6 +70,12 @@ module JSLibFigure
     @formal_parameters ||= {}
     @formal_parameters[move_string] ||= self.eval("parameters(#{move_string.inspect})")
   end
+
+  # not used
+  # def self.formal_alias_parameters(alias_move_string)
+  #   @formal_alias_parameters ||= {}
+  #   @formal_alias_parameters[alias_move_string] ||= self.eval("alias_parameters(#{alias_move_string.inspect})")
+  # end
 
   def self.sanitize_json(figures_json_string)
     # some crap is silently stripped (because angular adds crap)

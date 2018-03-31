@@ -162,8 +162,10 @@ $(document).ready(function() {
   function makeFigureFilterMoveSelect(filter) {
     return $(figureMoveHtml).change(function () {
       var $move = $(this);
+      var move = $move.val();
       var $accordion = $move.siblings('.figure-filter-accordion');
-      populateAccordionForMove($accordion, $move.val());
+      var defaultParameterValues = isAlias(move) ? aliasFilter(move) : null;
+      populateAccordionForMove($accordion, move, defaultParameterValues);
       updateQuery();
     });
   }
