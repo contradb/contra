@@ -22,8 +22,10 @@ class Dance < ApplicationRecord
     publish || user_id == user&.id || user&.admin? || false
   end
 
-  def moves # beware of nils in the array for empty moves
-    figures.map {|f| JSLibFigure.move f}
+  # beware of nils in the array for empty moves
+  # includes aliases, not canonical moves
+  def moves
+    figures.map {|f| JSLibFigure.move(f) && JSLibFigure.alias(f)}
   end
 
   def figures
