@@ -7,7 +7,7 @@ module Move
   def self.mdtab(dances, dialect)
     mdtab = {}
     dances.each do |dance|
-      dance.aliases.compact.each do |move|
+      dance.moves.compact.each do |move|
         mdtab[move] ||= Set.new
         mdtab[move] << dance
       end
@@ -44,7 +44,7 @@ module Move
   def self.coappearing_mdtab(dances, move, dialect)
     mdtab = {}
     dances.each do |dance|
-      mvs = dance.aliases.compact
+      mvs = dance.moves.compact
       if move.in?(mvs)
         mvs.each do |related_move|
           unless related_move == move
