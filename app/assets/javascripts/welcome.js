@@ -317,13 +317,23 @@ $(document).ready(function() {
           chooser.val(v);
         }
       }
-      chooser.change(updateQuery);
+      chooser.change(updateAlias).change(updateQuery); // note the order
       var chooser_td = $('<td></td>');
       chooser_td.append(chooser);
       var label = $('<tr class="chooser-row"><td class="chooser-label-text">'+ parameterLabel(move, index) +'</td></tr>');
       label.append(chooser_td);
       accordion.append(label);
     });
+  }
+
+  function updateAlias() {
+    var figure_filter = $(this).closest('.figure-filter');
+    var figure = figureFilterToFigure(figure_filter);
+    var corrected_alias = figure.move;
+    var move_select = figure_filter.children('.figure-filter-move');
+    if (corrected_alias != move_select.val()) {
+      move_select.val(corrected_alias);
+    }
   }
 
   function clickFilterAddSubfilter(e) {
@@ -347,6 +357,15 @@ $(document).ready(function() {
   }
 
   var updateQuery;              // defined below...
+
+  function figureFilterToFigure(figure_filter) {
+    var query = buildFigureQuery(figure_filter);
+    var move = query[1]; // preliminary!
+    var parameter_values= query.slice(2).map(destringifyFigureFilterParam);
+    var figure = {move: move, parameter_values: parameter_values};
+    figure.move = alias(figure); // final!
+    return figure;
+  }
 
   function buildFigureQuery(figure_filter) {
     figure_filter = $(figure_filter);

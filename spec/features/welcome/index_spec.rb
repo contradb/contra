@@ -535,6 +535,25 @@ describe 'Welcome page', js: true do
           expect(page).to have_content(hey.title)
           expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","hey","*","1","*","*"]')
         end
+
+        it 'aliases are subsets' do
+          do_si_do = FactoryGirl.create(:dance_with_a_do_si_do)
+          see_saw = FactoryGirl.create(:dance_with_a_see_saw)
+          select('see saw')
+          expect(page).to have_content(see_saw.title)
+          expect(page).to_not have_content(do_si_do.title)
+          click_button('...')
+          choose('*')
+          expect(page).to have_content(do_si_do.title)
+          expect(page).to have_content(see_saw.title)
+          expect(page).to have_content("Showing dances with a * do si do * for *")
+          expect(find(".figure-filter-move").value).to eq('do si do')
+          choose('left')
+          expect(page).to have_content(see_saw.title)
+          expect(page).to_not have_content(do_si_do.title)
+          expect(find(".figure-filter-move").value).to eq('see saw')
+          expect(page).to have_content("Showing dances with a * see saw * for *")
+        end
       end
     end
 
