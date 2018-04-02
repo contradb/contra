@@ -126,11 +126,12 @@ function boxTheGnatAlias(figure) {
 function boxTheGnatChange(figure,index) {
   var pvs = figure.parameter_values;
   var [who, balance, right_hand, beats] = pvs;
+  var balance_idx = 1;
   var beats_idx = 3;
   // modify beats to match whether balance checkbox is checked
-  if (balance && beats === 4 && index !== beats_idx) {
+  if (balance && beats === 4 && index === balance_idx) {
     pvs[beats_idx] = 8;
-  } else if (!balance && beats == 8 && index !== beats_idx) {
+  } else if (!balance && beats == 8 && index === balance_idx) {
     pvs[beats_idx] = 4;
   }
 }
@@ -394,10 +395,12 @@ defineFigure("gate",
 function giveAndTakeChange(figure,index) {
   var pvs = figure.parameter_values;
   var [who,   whom,  give,  beats] = pvs;
-  if (give && beats === 4 && index !== 3) {
-    pvs[3] = 8;
-  } else if (!give && beats === 8 && index !== 3) {
-    pvs[3] = 4;
+  var give_idx = 2;
+  var beats_idx = 3;
+  if (give && beats === 4 && index === give_idx) {
+    pvs[beats_idx] = 8;
+  } else if (!give && beats === 8 && index === give_idx) {
+    pvs[beats_idx] = 4;
   }
 }
 
@@ -914,8 +917,10 @@ defineRelatedMove2Way('star promenade', 'butterfly whirl');
 function swingChange(figure,index) {
   var pvs = figure.parameter_values;
   var [who,balance,beats] = pvs;
-  if (balance && index === 1 && beats <= 8) {
-    beats = figure.parameter_values[2] = 16;
+  const balance_idx = 1;
+  const beats_idx = 2;
+  if (balance && index === balance_idx && beats <= 8) {
+    beats = figure.parameter_values[beats_idx] = 16;
   }
 }
 

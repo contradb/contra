@@ -14,6 +14,10 @@ module JSLibFigure
     self.eval('newFigure()')
   end
 
+  def self.parameter_values(figure_ruby_hash)
+    figure_ruby_hash['parameter_values']
+  end
+
   def self.move(figure_ruby_hash)
     figure_ruby_hash['move']
   end
@@ -66,12 +70,6 @@ module JSLibFigure
     @formal_parameters ||= {}
     @formal_parameters[move_string] ||= self.eval("parameters(#{move_string.inspect})")
   end
-
-  # not used
-  # def self.formal_alias_parameters(alias_move_string)
-  #   @formal_alias_parameters ||= {}
-  #   @formal_alias_parameters[alias_move_string] ||= self.eval("alias_parameters(#{alias_move_string.inspect})")
-  # end
 
   def self.sanitize_json(figures_json_string)
     # some crap is silently stripped (because angular adds crap)

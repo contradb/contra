@@ -151,6 +151,11 @@ RSpec.describe JSLibFigure do
     end
   end
 
+  describe 'figure accessors' do
+    it 'move'
+    it 'parameter_values'
+  end
+
   describe 'angles_for_move' do
     it "'circle' => [90,180,270,360,450,540,630,720,810,900]" do
       expect(JSLibFigure.angles_for_move('circle')).to eq([90,180,270,360,450,540,630,720,810,900])

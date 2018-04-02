@@ -19,6 +19,11 @@ var figureSentenceDispatchTable = {
 };
 
 function destringifyFigureFilterParam(param) {
+  // We store values in inputs, and we don't have rails or angular to parse them.
+  // Then we mash the values through figure stringifying functions with mixed results.
+  // This is a hack to make the worst offenders work.
+  // This is a type-unsafe nightmare, and could use improvement.
+  // For example: integers for angles? Floats other than "1.0" and "0.5"?
   if ('0.5' === param) {
     return 0.5;
   } else if ('1.0' === param || '1' === param) {

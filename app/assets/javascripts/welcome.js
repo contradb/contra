@@ -329,7 +329,7 @@ $(document).ready(function() {
   function updateAlias() {
     var figure_filter = $(this).closest('.figure-filter');
     var figure = figureFilterToFigure(figure_filter);
-    var corrected_alias = figure.move;
+    var corrected_alias = alias(figure);
     var move_select = figure_filter.children('.figure-filter-move');
     if (corrected_alias != move_select.val()) {
       move_select.val(corrected_alias);
@@ -360,10 +360,9 @@ $(document).ready(function() {
 
   function figureFilterToFigure(figure_filter) {
     var query = buildFigureQuery(figure_filter);
-    var move = query[1]; // preliminary!
+    var move = deAliasMove(query[1]);
     var parameter_values= query.slice(2).map(destringifyFigureFilterParam);
     var figure = {move: move, parameter_values: parameter_values};
-    figure.move = alias(figure); // final!
     return figure;
   }
 
