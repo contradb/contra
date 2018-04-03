@@ -22,7 +22,7 @@
               related figures: <%= move_links(JSLibFigure.related_moves(@term), @dialect) %><br>
             <% end %>
             <% if JSLibFigure.aliases(@term).present? %>
-              includes aliases: <%= move_links(JSLibFigure.aliases(@term), @dialect) %></br>
+              has aliases: <%= move_links(JSLibFigure.aliases(@term), @dialect) %></br>
             <% end %>
             <% if @term != JSLibFigure.de_alias_move(@term) %>
               aliases some types of <%= move_link(JSLibFigure.de_alias_move(@term), @dialect) %><br>

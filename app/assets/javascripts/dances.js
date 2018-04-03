@@ -80,10 +80,7 @@ function userChangedParameter (figure, index) {
     fig_def.props.change(figure, index);
   }
   if (fig_def.props.alias) {
-    var new_alias = fig_def.props.alias(figure);
-    if (figure.alias !== new_alias) {
-      figure.alias = new_alias;
-    }
+    figure.alias = fig_def.props.alias(figure);
   }
 }
 

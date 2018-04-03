@@ -38,12 +38,22 @@ describe 'figures show' do
       end
     end
 
-    it 'aliases' do
-      see_saw = FactoryGirl.create(:dance_with_a_see_saw)
-      do_si_do = FactoryGirl.create(:dance_with_a_do_si_do)
-      visit figure_path('see-saw')
-      expect(page).to have_css("#with-examples a", text: see_saw.title)
-      expect(page).to_not have_css("#with-examples a", text: do_si_do.title)
+    describe 'aliases' do
+      it 'aliases do not include canonical' do
+        see_saw = FactoryGirl.create(:dance_with_a_see_saw)
+        do_si_do = FactoryGirl.create(:dance_with_a_do_si_do)
+        visit figure_path('see-saw')
+        expect(page).to have_css("#with-examples a", text: see_saw.title)
+        expect(page).to_not have_css("#with-examples a", text: do_si_do.title)
+      end
+
+      it 'canonical does not include aliases' do
+        see_saw = FactoryGirl.create(:dance_with_a_see_saw)
+        do_si_do = FactoryGirl.create(:dance_with_a_do_si_do)
+        visit figure_path('do-si-do')
+        expect(page).to have_css("#with-examples a", text: do_si_do.title)
+        expect(page).to_not have_css("#with-examples a", text: see_saw.title)
+      end
     end
   end
   it 'without tab' do
@@ -59,7 +69,7 @@ describe 'figures show' do
       box
       call
       visit figure_path('star')
-      call.moves.each do |move|
+      call.aliases.each do |move|
         expect(page).to have_css("#with-figure", text: "#{move} #{call.title}") unless 'star' == move
       end
       expect(page).to_not have_css("#with-figure", text: box.title)
