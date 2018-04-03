@@ -123,7 +123,7 @@
 
               <label class="figure-edit-label"><span class="figure-edit-label-text">move</span>
                 <div class='figure-value-setter-div'>
-                  <select ng-model="figure.move"
+                  <select ng-model="figure.alias"
                           ng-options="m.term as m.substitution for m in moveTermsAndSubstitutionsForSelect"
                           ng-change="userChangedMove(figure)"
                           ng-attr-id="{{'move-'+figureIdx}}"

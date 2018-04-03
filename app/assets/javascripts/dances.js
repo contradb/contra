@@ -75,13 +75,18 @@ function deleteFigure(figures_arr, edit_index_box) {
 
 function userChangedParameter (figure, index) {
   var fig_def = defined_events[figure.move];
-  if (fig_def && fig_def.props.change) {
+  if (!fig_def || !fig_def.props) {return;}
+  if (fig_def.props.change) {
     fig_def.props.change(figure, index);
+  }
+  if (fig_def.props.alias) {
+    figure.alias = fig_def.props.alias(figure);
   }
 }
 
 function userChangedMove (figure) {
-  var params = parameters(figure.move);
+  figure.move = deAliasMove(figure.alias);
+  var params = parameters(figure.alias);
   figure.parameter_values = [];
   for (var i=0; i<params.length; i++) {
     figure.parameter_values[i] = params[i].value;

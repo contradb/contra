@@ -14,6 +14,10 @@ module JSLibFigure
     self.eval('newFigure()')
   end
 
+  def self.parameter_values(figure_ruby_hash)
+    figure_ruby_hash['parameter_values']
+  end
+
   def self.move(figure_ruby_hash)
     figure_ruby_hash['move']
   end
@@ -34,16 +38,20 @@ module JSLibFigure
     self.eval("deAliasMove(#{move_str.inspect})")
   end
 
+  def self.alias(figure)
+    self.eval("alias(#{figure.to_json})")
+  end
+
   def self.aliases(move_str)
     self.eval("aliases(#{move_str.inspect})")
   end
 
-  def self.related_moves(move_str)
-    self.eval("relatedMoves(#{move_str.inspect})")
+  def self.alias_filter(move_str)
+    self.eval("aliasFilter(#{move_str.inspect})")
   end
 
-  def self.teaching_name(move_string)
-    move_string ? self.eval("teachingName(#{move_string.inspect})") : "empty figure"
+  def self.related_moves(move_str)
+    self.eval("relatedMoves(#{move_str.inspect})")
   end
 
   def self.angles_for_move(move_string)

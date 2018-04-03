@@ -24,6 +24,24 @@ RSpec.describe JSLibFigure do
     end
   end
 
+  describe 'alias' do
+    let (:do_si_do) {{"parameter_values" => ["ladles",true,360,8], "move" => "do si do"}}
+    let (:see_saw) {{"parameter_values" => ["ladles",false,360,8], "move" => "do si do"}}
+    let (:see_saw_2017_encoding) {{"parameter_values" => ["ladles",false,360,8], "move" => "see saw"}}
+
+    it "knows a see saw when it sees one" do
+      expect(JSLibFigure.alias(see_saw)).to eq('see saw')
+    end
+
+    it 'is cool with 2017 alias encoding scheme too' do
+      expect(JSLibFigure.alias(see_saw_2017_encoding)).to eq('see saw')
+    end
+
+    it "passes 'do si do' intact" do
+      expect(JSLibFigure.alias(do_si_do)).to eq('do si do')
+    end
+  end
+
   describe 'aliases' do
     it 'do si do => [see saw]' do
       expect(JSLibFigure.aliases('do si do')).to eql(['see saw'])
@@ -37,24 +55,6 @@ RSpec.describe JSLibFigure do
   describe 'related_moves' do
     it 'long lines forward only => long lines' do
       expect(JSLibFigure.related_moves('allemande')).to include('allemande orbit')
-    end
-  end
-
-  describe 'teaching_name' do
-    it 'swing => swing' do
-      expect(JSLibFigure.teaching_name('swing')).to eql('swing')
-    end
-
-    it 'allemande => allemande' do
-      expect(JSLibFigure.teaching_name('allemande')).to eql('allemande')
-    end
-
-    it 'swat the flea => swat the flea' do
-      expect(JSLibFigure.teaching_name('swat the flea')).to eql('swat the flea')
-    end
-
-    it '[empty figure] => "empty figure"' do
-      expect(JSLibFigure.teaching_name(nil)).to eql('empty figure')
     end
   end
 
@@ -149,6 +149,11 @@ RSpec.describe JSLibFigure do
     it "'flibbergibit' => false" do
       expect(JSLibFigure.is_move?('flibbergibit')).to be(false)
     end
+  end
+
+  describe 'figure accessors' do
+    it 'move'
+    it 'parameter_values'
   end
 
   describe 'angles_for_move' do

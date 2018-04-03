@@ -1,5 +1,3 @@
-
-
 function buildFigureSentence(query, dialect) {
   return 'Showing dances with ' + buildFigureSentenceHelper(query, 'a', dialect) + '.';
 }
@@ -20,12 +18,20 @@ var figureSentenceDispatchTable = {
   'anything but': sentenceForAnythingBut
 };
 
-function destringifyFigureParam(param) {
-  // good enough for now, lol. Maybe want to take arbitrary numbers or bools or something.
+function destringifyFigureFilterParam(param) {
+  // We store values in inputs, and we don't have rails or angular to parse them.
+  // Then we mash the values through figure stringifying functions with mixed results.
+  // This is a hack to make the worst offenders work.
+  // This is a type-unsafe nightmare, and could use improvement.
+  // For example: integers for angles? Floats other than "1.0" and "0.5"?
   if ('0.5' === param) {
     return 0.5;
   } else if ('1.0' === param || '1' === param) {
     return 1.0;
+  } else if ('false' === param) {
+    return false;
+  } else if ('true' === param) {
+    return true;
   } else {
     return param;
   }
@@ -36,7 +42,7 @@ function sentenceForFigure(query, article, dialect) {
   if (move === '*') {
     return (article === 'a') ? 'any figure' : (article +' figure');
   } else {
-    var params = query.slice(2).map(destringifyFigureParam);
+    var params = query.slice(2).map(destringifyFigureFilterParam);
     var fig = {move: move, parameter_values: params};
     var fig_text = parameters(move).length === params.length ? figureToString(fig, dialect) : move;
     if (article === 'a') {

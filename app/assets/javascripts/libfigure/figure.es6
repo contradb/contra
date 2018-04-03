@@ -118,15 +118,21 @@ defineFigure("box circulate",
 // BOX THE GNAT                               //
 ////////////////////////////////////////////////
 
+function boxTheGnatAlias(figure) {
+  var [who, balance, right_hand, beats] = figure.parameter_values;
+  return right_hand ? 'box the gnat' : 'swat the flea';
+}
+
 function boxTheGnatChange(figure,index) {
   var pvs = figure.parameter_values;
   var [who, balance, right_hand, beats] = pvs;
-  figure.move = right_hand ? 'box the gnat' : 'swat the flea';
-  // jankily modify beats to match whether balance checkbox is checked
-  if (balance && beats === 4 && index !== 3) {
-    pvs[3] = 8;
-  } else if (!balance && beats == 8 && index !== 3) {
-    pvs[3] = 4;
+  var balance_idx = 1;
+  var beats_idx = 3;
+  // modify beats to match whether balance checkbox is checked
+  if (balance && beats === 4 && index === balance_idx) {
+    pvs[beats_idx] = 8;
+  } else if (!balance && beats == 8 && index === balance_idx) {
+    pvs[beats_idx] = 4;
   }
 }
 
@@ -144,11 +150,9 @@ function boxTheGnatStringify(move, pvs, dialect) {
 
 defineFigure("box the gnat",
              [param_subject_pairz, param_balance_false, param_right_hand_spin, param_beats_4],
-             {change: boxTheGnatChange, stringify: boxTheGnatStringify});
+             {change: boxTheGnatChange, stringify: boxTheGnatStringify, alias: boxTheGnatAlias});
 defineFigureAlias( "swat the flea", "box the gnat",
-                   [null, null, param_left_hand_spin, null],
-                   {change: boxTheGnatChange, stringify: boxTheGnatStringify});
-defineTeachingName("swat the flea");
+                   [null, null, param_left_hand_spin, null]);
 
 ////////////////////////////////////////////////
 // BUTTERFLY WHIRL                            //
@@ -248,10 +252,9 @@ defineFigure("custom", [param_custom_figure, param_beats_8], {stringify: customS
 // DO SI DO (and see saw)                     //
 ////////////////////////////////////////////////
 
-function doSiDoChange(figure,index) {
-  var pvs = figure.parameter_values;
-  var shoulder = pvs[1];
-  figure.move = shoulder ? "do si do" : "see saw";
+function doSiDoAlias(figure) {
+  var right_shoulder = figure.parameter_values[1];
+  return right_shoulder ? "do si do" : "see saw";
 }
 
 function doSiDoStringify(move, pvs, dialect) {
@@ -263,11 +266,9 @@ function doSiDoStringify(move, pvs, dialect) {
 
 defineFigure("do si do",
              [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8],
-             {change: doSiDoChange, stringify: doSiDoStringify});
+             {stringify: doSiDoStringify, alias: doSiDoAlias});
 
-defineFigureAlias("see saw", "do si do", [null, param_left_shoulder_spin]);
-
-defineTeachingName("see saw");
+defineFigureAlias("see saw", "do si do", [null, param_left_shoulder_spin, null, null]);
 
 ////////////////////////////////////////////////
 // DOWN THE HALL  &  UP THE HALL              //
@@ -394,10 +395,12 @@ defineFigure("gate",
 function giveAndTakeChange(figure,index) {
   var pvs = figure.parameter_values;
   var [who,   whom,  give,  beats] = pvs;
-  if (give && beats === 4 && index !== 3) {
-    pvs[3] = 8;
-  } else if (!give && beats === 8 && index !== 3) {
-    pvs[3] = 4;
+  var give_idx = 2;
+  var beats_idx = 3;
+  if (give && beats === 4 && index === give_idx) {
+    pvs[beats_idx] = 8;
+  } else if (!give && beats === 8 && index === give_idx) {
+    pvs[beats_idx] = 4;
   }
 }
 
@@ -914,8 +917,10 @@ defineRelatedMove2Way('star promenade', 'butterfly whirl');
 function swingChange(figure,index) {
   var pvs = figure.parameter_values;
   var [who,balance,beats] = pvs;
-  if (balance && index === 1 && beats <= 8) {
-    beats = figure.parameter_values[2] = 16;
+  const balance_idx = 1;
+  const beats_idx = 2;
+  if (balance && index === balance_idx && beats <= 8) {
+    beats = figure.parameter_values[beats_idx] = 16;
   }
 }
 

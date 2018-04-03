@@ -32,7 +32,7 @@ function figureToString(f,dialect) {
   var fig_def = defined_events[f.move];
   if (fig_def) {
     var func = fig_def.props.stringify || figureGenericStringify;
-    var main = func(f.move, f.parameter_values, dialect);
+    var main = func(alias(f), f.parameter_values, dialect);
     var note = f.note;
     return note ? words(main,note) : main;
   }
@@ -114,19 +114,6 @@ function moveSubstitution(move_term, dialect) {
   return dialect.moves[move_term] || move_term;
 }
 
-// === Teaching Names =============
-
-function teachingName(move) {
-  return teachingNames[move] || deAliasMove(move);
-}
-
-// teach this figure under its own name, not the name of it's root figure
-function defineTeachingName(alias_move) {
-  teachingNames[alias_move] = alias_move;
-}
-
-var teachingNames = {};
-
 // === Related Moves =============
 // Note that a lot of these are 'is composed of' relationships, and as such they
 // might be moved to another representation later.
@@ -157,25 +144,34 @@ function defineFigure(name, parameters, props) {
   defined_events[name] = {name: name, parameters: parameters, props: (props || {})};
 }
 
-function defineFigureAlias(newName, targetName, parameter_defaults) {
-  "string" == typeof newName || throw_up("first argument isn't a string");
-  "string" == typeof targetName || throw_up("second argument isn't a string");
-  Array.isArray(parameter_defaults) || throw_up("third argument isn't an array aliasing "+newName);
-  var target = defined_events[targetName] || 
-        throw_up("undefined figure alias '"+newName +"' to '"+targetName+"'");
-  if (target.parameters.length < parameter_defaults.length) {
-    throw_up("oversupply of parameters to "+newName);
+function defineFigureAlias(alias_name, canonical_name, parameter_defaults) {
+  "string" == typeof alias_name || throw_up("first argument isn't a string");
+  "string" == typeof canonical_name || throw_up("second argument isn't a string");
+  Array.isArray(parameter_defaults) || throw_up("third argument isn't an array aliasing "+alias_name);
+  var target = defined_events[canonical_name] ||
+        throw_up("undefined figure alias '"+alias_name +"' to '"+canonical_name+"'");
+  if (target.parameters.length !== parameter_defaults.length) {
+    throw_up("wrong number of parameters to "+alias_name);
   }
   // defensively copy parameter_defaults[...]{...} into params
   var params = new Array(target.parameters.length);
   for (var i=0; i<target.parameters.length; i++) {
     params[i] = parameter_defaults[i] || target.parameters[i];
   }
-  defined_events[newName] = {name: targetName, parameters: params, props: target.props};
+  defined_events[alias_name] = {name: canonical_name, parameters: params, alias_parameters: parameter_defaults,  props: target.props};
 }
 
 function deAliasMove(move) {
     return defined_events[move].name;
+}
+
+function isAlias(move_string) {
+  return defined_events[move_string].name !== move_string;
+}
+
+function alias(figure) {
+  var alias_fn = defined_events[figure.move].props.alias;
+  return alias_fn ? alias_fn(figure) : figure.move;
 }
 
 // does not include itself
@@ -189,6 +185,15 @@ function aliases(move) {
     }
   });
   return acc;
+}
+
+function aliasFilter(move_alias_string) {
+  if (move_alias_string === deAliasMove(move_alias_string)) {
+    throw_up("aliasFilter(someDeAliasedMove) would produce weirdly overly specific filters if we weren't raising this error - it's only defined for move aliases");
+  }
+  return aliasParameters(move_alias_string).map(function(param) {
+    return param ? param.value : '*';
+  });
 }
 
 // List all the moves known to contradb.
@@ -238,6 +243,15 @@ function parameters(move){
     throw_up("could not find a figure definition for '"+move+"'. ");
   }
   return [];
+}
+
+function aliasParameters(move){
+  var fig = defined_events[move];
+  if (fig && fig.alias_parameters) {
+    return fig.alias_parameters;
+  } else {
+    throw_up("call to aliasParameters('"+move+"') on a thing that doesn't seem to be an alias");
+  }
 }
 
 function is_progression(move) {

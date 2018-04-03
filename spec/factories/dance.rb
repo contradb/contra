@@ -16,7 +16,7 @@ FactoryGirl.define do
     start_type 'improper'
     hook 'stompy fun'
     preamble 'blah blah blah'
-    figures_json '[{"parameter_values":["neighbors",true,true,8],"move":"box the gnat"},{"parameter_values":["partners",true,false,8],"move":"swat the flea"},{"parameter_values":["neighbors",true,16],"move":"swing"},{"parameter_values":["ladles",true,540,8],"move":"allemande"},{"parameter_values":["partners",false,8],"move":"swing"},{"parameter_values":["across",8],"move":"right left through"},{"parameter_values":["ladles","across",8],"move":"chain"}]'
+    figures_json '[{"parameter_values":["neighbors",true,true,8],"move":"box the gnat"},{"parameter_values":["partners",true,false,8],"move":"box the gnat"},{"parameter_values":["neighbors",true,16],"move":"swing"},{"parameter_values":["ladles",true,540,8],"move":"allemande"},{"parameter_values":["partners",false,8],"move":"swing"},{"parameter_values":["across",8],"move":"right left through"},{"parameter_values":["ladles","across",8],"move":"chain"}]'
     notes 'swat the flea variation'
   end
 
@@ -127,5 +127,20 @@ FactoryGirl.define do
     start_type 'improper'
     figures_json {'[{"parameter_values":["gentlespoons",1.0,"across",8],"move":"hey"}]'}
   end
-end
 
+  factory :dance_with_a_see_saw, class: Dance do
+    sequence(:title) {|n| "SeeSawDance#{n}"}
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json {'[{"parameter_values":["ladles",false,360,8],"move":"do si do"}]'}
+  end
+
+  factory :dance_with_a_do_si_do, class: Dance do
+    sequence(:title) {|n| "DoSiDoDance#{n}"}
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json {'[{"parameter_values":["ladles",true,360,8],"move":"do si do"}]'}
+  end
+end

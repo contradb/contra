@@ -78,19 +78,19 @@ RSpec.describe Dance, type: :model do
     end
   end
 
-  describe '#moves' do
+  describe '#aliases' do
     it 'works' do
-      expect(FactoryGirl.build(:box_the_gnat_contra).moves).to eq(['box the gnat',
-                                                                   'swat the flea',
-                                                                   'swing',
-                                                                   'allemande',
-                                                                   'swing',
-                                                                   'right left through',
-                                                                   'chain'])
+      expect(FactoryGirl.build(:box_the_gnat_contra).aliases).to eq(['box the gnat',
+                                                                     'swat the flea',
+                                                                     'swing',
+                                                                     'allemande',
+                                                                     'swing',
+                                                                     'right left through',
+                                                                     'chain'])
     end
 
     it "passes 'empty figure' through as nil" do
-      expect(FactoryGirl.build(:dance_with_empty_figure).moves).to eq(['swing', nil])
+      expect(FactoryGirl.build(:dance_with_empty_figure).aliases).to eq(['swing', nil])
     end
   end
 
