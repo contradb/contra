@@ -359,26 +359,26 @@ describe 'Welcome page', js: true do
           dances
           select('swing', match: :first)
           click_button('...')
-          choose('no')
+          choose('none')
 
           expect(page).to_not have_content('The Rendevouz') # has circle left 3 & 4 places
           expect(page).to have_content('Box the Gnat Contra') # no circles
           expect(page).to have_content('Call Me') # has circle left 3 places
-          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","swing","*","false","*"]')
+          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","swing","*","none","*"]')
         end
 
         it 'labels appear on chooser elements' do
           click_button('...')
           select('swing', match: :first)             # swing uses simple label system
-          expect(page).to have_content('bal')
-          expect(page).to have_content('who')
-          expect(page).to have_content('beats')
+          expect(page).to have_css('.chooser-label-text', text: 'who')
+          expect(page).to have_css('.chooser-label-text', text: 'prefix')
+          expect(page).to have_css('.chooser-label-text', text: 'beats')
           select('allemande orbit')                  # allemande orbit uses fancier label system
-          expect(page).to have_content('who')
-          expect(page).to have_content('allemande')
-          expect(page).to have_content('inner')
-          expect(page).to have_content('outer')
-          expect(page).to have_content('for')
+          expect(page).to have_css('.chooser-label-text', text: 'who')
+          expect(page).to have_css('.chooser-label-text', text: 'allemande')
+          expect(page).to have_css('.chooser-label-text', text: 'inner')
+          expect(page).to have_css('.chooser-label-text', text: 'outer')
+          expect(page).to have_css('.chooser-label-text', text: 'for')
         end
 
         it "allemande with ladles finds only 'Box the Gnat'" do
