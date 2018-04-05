@@ -13,7 +13,7 @@ RSpec.describe "dances/show", type: :view do
       :choreographer => FactoryGirl.build_stubbed(:choreographer, name: "Becky Hill"),
       :user => FactoryGirl.build_stubbed(:user),
       :preamble => "Some Premable Text www.slashdot.org mumble mumble _italic_ mumble",
-      :figures_json => '[{"parameter_values":["partners",true,16],"move":"swing", "note":"the quick brown fox <script>alert(\'no dialog pops up\');</script>"}, {"parameter_values":["ladles",true,540,8],"move":"allemande"}]',
+      :figures_json => '[{"parameter_values":["partners","balance",16],"move":"swing", "note":"the quick brown fox <script>alert(\'no dialog pops up\');</script>"}, {"parameter_values":["ladles",true,540,8],"move":"allemande"}]',
       :notes => "My Note Text www.yahoo.com blah blah **bold** blah"
                                             ))
     assign(:dialect, JSLibFigure.default_dialect)

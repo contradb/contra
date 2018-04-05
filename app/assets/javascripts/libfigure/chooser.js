@@ -52,6 +52,7 @@ defineChooser("chooser_zig_zag_ender");
 defineChooser("chooser_go_back");
 defineChooser("chooser_give");
 defineChooser("chooser_half_or_full");
+defineChooser("chooser_swing_prefix");
 
 
 var _dancerMenuForChooser = {};

@@ -19,6 +19,9 @@ function stringParamBalance (value) {
 var param_balance_true  = {name: "bal", value: true,  ui: chooser_boolean, string: stringParamBalance};
 var param_balance_false = {name: "bal", value: false, ui: chooser_boolean, string: stringParamBalance};
 
+var param_swing_prefix_none     = {name: "prefix", value: "none",      ui: chooser_swing_prefix};
+var param_swing_prefix_meltdown = {name: "prefix", value: "meltdown",  ui: chooser_swing_prefix};
+
 function stringParamHalfSashay (value) {
   if (value === '*') {
     return 'maybe with a half sashay';

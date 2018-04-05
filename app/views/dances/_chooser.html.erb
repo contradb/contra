@@ -227,3 +227,8 @@
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="0.5" ng-change="userChangedParameter(figure,$index)"/> half</label>
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="1.0" ng-change="userChangedParameter(figure,$index)"/> full</label>
                 </div>
+                <div ng-if="p.ui == chooser_balance_prefix">
+                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="none" ng-change="userChangedParameter(figure,$index)"/> none</label>
+                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="balance" ng-change="userChangedParameter(figure,$index)"/> balance</label>
+                  <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="meltdown" ng-change="userChangedParameter(figure,$index)"/> meltdown</label>
+                </div>

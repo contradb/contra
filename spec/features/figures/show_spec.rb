@@ -11,8 +11,7 @@ describe 'figures show' do
       visit figure_path('swing')
       expect(page).to have_title("Swing | Figure | Contra")
       expect(page).to have_css("h1", text: 'Swing')
-      expect(page).to have_content('related figures: meltdown swing')
-      expect(page).to have_content('formal parameters: who, bal, beats')
+      expect(page).to have_content('formal parameters: who, prefix, beats')
       # 'examples' table should have two swings for Box the Gnat
       expect(page).to have_content("#{box.title} neighbors balance & swing partners swing")
     end

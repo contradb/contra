@@ -187,12 +187,12 @@ $(document).ready(function() {
     };
   }
 
-  function chooserRadioButtons(chooser, options) {
+  function chooserRadioButtons(chooser, options, opt_inline) {
+    if (opt_inline === undefined) {opt_inline = options.length <= 3;}
     chooserWidgetType[chooser] = 'radio';
-    var inlin = options.length <= 3;
-    var div_start   = "<div class='"+ inlin ? '' : 'radio' + "'>";
-    var div_end = inlin ? '' : '</div>';
-    var label_class = inlin ? 'radio-inline' : '';
+    var div_start = opt_inline ? "" : "<div class=radio>";
+    var div_end = opt_inline ? "" : '</div>';
+    var label_class = opt_inline ? 'radio-inline' : '';
     chooserToFilterHtml[chooser] = function(move) {
       var name = generateUniqueNameForRadio();
       var first_time = true;
@@ -201,7 +201,7 @@ $(document).ready(function() {
         var label = Array.isArray(dancer) ? dancer[1] : dancer;
         var checked = first_time ? 'checked=checked' : '';
         first_time=false;
-        return div_start+"<label class='"+label_class+"'><input type='radio' name='"+name+"' value='"+value+"' "+checked+" />"+label+"</label>"+div_end;
+        return div_start+"<label class="+label_class+"><input type='radio' name='"+name+"' value='"+value+"' "+checked+" />"+label+"</label>"+div_end;
       });
       return "<div class='chooser-argument'>"+radios.join('')+"</div>";
     };
@@ -287,6 +287,11 @@ $(document).ready(function() {
   chooserRadioButtons(chooser_give, ['*', [true,'give &amp; take'], [false,'take']]);
   chooserRadioButtons(chooser_half_or_full, ['*', [0.5,'half'], [1.0,'full']]);
   // additional choosers go here -dm 11-24-2017
+  if ($(window).width() < 768) {
+    chooserSelect(chooser_swing_prefix, ['*', 'none', 'balance', 'meltdown']);
+  } else {
+    chooserRadioButtons(chooser_swing_prefix, ['*', 'none', 'balance', 'meltdown'], 'inline');
+  }
 
 
   function doesChooserFilterUseSelect(chooser) {

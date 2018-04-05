@@ -545,16 +545,6 @@ defineFigure("mad robin",
              {stringify: madRobinStringify});
 
 ////////////////////////////////////////////////
-// MELTDOWN SWING (formerly gyre meltdown)    //
-////////////////////////////////////////////////
-
-defineFigure("meltdown swing", [param_subject_pairz, param_beats_16]);
-
-defineRelatedMove2Way('meltdown swing', 'gyre');
-defineRelatedMove2Way('meltdown swing', 'swing');
-
-
-////////////////////////////////////////////////
 // OCEAN WAVE                                 //
 ////////////////////////////////////////////////
 
@@ -914,32 +904,42 @@ defineRelatedMove2Way('star promenade', 'butterfly whirl');
 // SWING                                      //
 ////////////////////////////////////////////////
 
+function swingAlias(figure) {
+  var [who, prefix, beats] = figure.parameter_values;
+  return prefix === 'meltdown' ? 'meltdown swing' : 'swing';
+}
+
 function swingChange(figure,index) {
   var pvs = figure.parameter_values;
-  var [who,balance,beats] = pvs;
-  const balance_idx = 1;
+  var [who,prefix,beats] = pvs;
+  const prefix_idx = 1;
   const beats_idx = 2;
-  if (balance && index === balance_idx && beats <= 8) {
+  if (prefix !== 'none' && index === prefix_idx && beats <= 8) {
     beats = figure.parameter_values[beats_idx] = 16;
   }
 }
 
 function swingStringify(move, pvs, dialect) {
-  var [who,balance,beats] = pvs;
-  var [swho,sbalance,sbeats] = parameter_strings(move, pvs, dialect);
+  var [who,prefix,beats] = pvs;
+  var [swho,sprefix,sbeats] = parameter_strings(move, pvs, dialect);
+  var no_prefix = prefix === 'none';
+  var bprefix = prefix === 'balance' ? 'balance &' : (prefix === '*' ? '*' : '');
   var smove = moveSubstitution(move, dialect);
-  var standard_beats = beats === 16 || (beats === 8 && !balance);
-  var slong = ((beats === 16) && !balance) ? 'long' : '';
+  var standard_beats = beats === 16 || (beats === 8 && no_prefix);
+  var slong = ((beats === 16) && no_prefix) ? 'long' : '';
   if (standard_beats) {
-    return words(swho, sbalance, slong, smove);
+    return words(swho, bprefix, slong, smove);
   } else {
-    return words(swho, sbalance, slong, smove, 'for', beats);
+    return words(swho, bprefix, slong, smove, 'for', beats);
   }
 }
 
 defineFigure("swing",
-             [param_subject_pairz_partners, param_balance_false, param_beats_8],
-             {change: swingChange, stringify: swingStringify});
+             [param_subject_pairz_partners, param_swing_prefix_none, param_beats_8],
+             {change: swingChange, stringify: swingStringify, alias: swingAlias});
+
+defineFigureAlias("meltdown swing", "swing",
+                  [null, param_swing_prefix_meltdown, null]);
 
 ///////////////////////////////////////////////
 // TURN ALONE                                //
