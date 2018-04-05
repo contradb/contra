@@ -170,8 +170,10 @@ function isAlias(move_string) {
 }
 
 function alias(figure) {
-  var alias_fn = defined_events[figure.move].props.alias;
-  return alias_fn ? alias_fn(figure) : figure.move;
+  var move = figure.move;
+  if (!move) { return null; }    // empty figure
+  var alias_fn = defined_events[move].props.alias;
+  return alias_fn ? alias_fn(figure) : move;
 }
 
 // does not include itself
