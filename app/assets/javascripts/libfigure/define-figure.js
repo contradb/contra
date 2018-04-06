@@ -34,7 +34,7 @@ function figureToString(f,dialect) {
     var func = fig_def.props.stringify || figureGenericStringify;
     var main = func(alias(f), f.parameter_values, dialect);
     var note = f.note;
-    return note ? words(main,note) : main;
+    return note ? words(main,stringInDialect(note, dialect)) : main;
   }
   else if (f.move) {
     return "rogue figure '"+f.move+"'!";
@@ -261,3 +261,30 @@ function is_progression(move) {
   return fig_def && fig_def.props && fig_def.props.progression || false;
 }
 
+function stringInDialect(str, dialect) {
+  return str.replace(dialectRegExp(dialect), function (match) {
+    return dialect.moves[match] || dialect.dancers[match];
+  });
+}
+
+// var lastDialectRegExp = null;
+// var lastDialectRegExpDialect = null;
+
+function dialectRegExp(dialect) {
+  // if (dialect === lastDialectRegExpDialect) {
+  //   return lastDialectRegExp;
+  // }
+  // console.log('rebuilding dialectRegExp cache');
+  var move_strings = Object.keys(dialect.moves).map(regExpEscape);
+  var dance_strings = Object.keys(dialect.dancers).map(regExpEscape);
+  var unmatchable_re_string = '^[]'; // https://stackoverflow.com/a/25315586/5158597
+  var big_re_string = move_strings.concat(dance_strings).map(parenthesize).join('|') || unmatchable_re_string;
+  var big_re = new RegExp(big_re_string, 'g');
+  // lastDialectRegExp = re;
+  // lastDialectRegExpDialect = dialect;
+  return big_re;
+}
+
+function parenthesize(term) {
+  return '('+term+')';
+}

@@ -287,4 +287,8 @@ RSpec.describe JSLibFigure do
                 '4th neighbors']
     expect(JSLibFigure.dancers.sort).to eq(expected.sort)
   end
+
+  it 'string_in_dialect' do
+    expect(JSLibFigure.string_in_dialect("gentlespoons spoon gyre", JSLibFigure.test_dialect)).to eq("larks spoon darcy")
+  end
 end

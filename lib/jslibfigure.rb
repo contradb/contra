@@ -148,6 +148,9 @@ module JSLibFigure
     self.eval("dancers()")
   end
 
+  def self.string_in_dialect(s, dialect)
+    self.eval("stringInDialect(#{s.inspect},#{dialect.to_json})")
+  end
 
   JSLIBFIGURE_FILES = %w(polyfill.js util.js move.js chooser.js param.js define-figure.js figure.es6 after-figure.js dance.js)
 
