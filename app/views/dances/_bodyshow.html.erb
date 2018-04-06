@@ -1,6 +1,6 @@
 <p class="dance-show-formation">formation: <%= dance.start_type %> </p>
 
-<div class="dance-show-hook"><%= ApplicationHelper::renderMarkdown(dance.preamble) %></div>
+<div class="dance-show-hook"><%= ApplicationHelper::renderMarkdown(JSLibFigure.string_in_dialect(dance.preamble, dialect)) %></div>
 
 <table class="table table-bordered table-condensed contra-table-nonfluid">
   <% begin
@@ -19,4 +19,4 @@
      end %>
 </table>
 
-<div class="dance-show-notes"><%= ApplicationHelper::renderMarkdown(dance.notes) %></div>
+<div class="dance-show-notes"><%= ApplicationHelper::renderMarkdown(JSLibFigure.string_in_dialect(dance.notes, dialect)) %></div>

@@ -9,10 +9,10 @@ RSpec.describe "dances/show", type: :view do
                       :start_type => "Complicated Formation",
                       :choreographer => FactoryGirl.build_stubbed(:choreographer, name: "Becky Hill"),
                       :user => FactoryGirl.build_stubbed(:user),
-                      :preamble => "Some Premable Text www.slashdot.org mumble mumble _italic_ mumble",
+                      :preamble => "Some Premable Text www.slashdot.org mumble mumble _italic_ mumble preamble gyre ladles preamble",
                       :figures_json => '[{"parameter_values":["partners","balance",16],"move":"swing", "note":"the quick brown fox <script>alert(\'no dialog pops up\');</script>"}, {"parameter_values":["ladles",true,540,8],"move":"allemande","note":"figure note gyre gentlespoons allemande figure note"}]',
 
-                      :notes => "My Note Text www.yahoo.com blah blah **bold** blah",
+                      :notes => "My Note Text www.yahoo.com blah blah **bold** blah notes gyre ladles notes",
                       :hook => 'hook allemande do si do hook'
                      )}
   before(:each) do
@@ -66,7 +66,7 @@ RSpec.describe "dances/show", type: :view do
       expect(rendered).to have_content('ravens almond right 1½')
     end
 
-    it 'notes' do
+    it 'figure notes' do
       note = dance.figures[1]['note']
       expect(note).to eq('figure note gyre gentlespoons allemande figure note')
       expect(rendered).to have_content('figure note darcy larks almond figure note')
@@ -79,7 +79,19 @@ RSpec.describe "dances/show", type: :view do
       expect(rendered).to_not have_content(dance.hook)
     end
 
-    it 'preamble'
-    it 'dance notes'
+    it 'preamble' do
+      preamble = 'preamble gyre ladles preamble'
+      expect(dance.preamble).to include(preamble)
+      expect(rendered).to have_content('preamble darcy ravens preamble')
+      expect(rendered).to_not have_content(preamble)
+    end
+
+
+    it 'dance notes' do
+      note = 'notes gyre ladles notes'
+      expect(dance.notes).to include(note)
+      expect(rendered).to have_content('notes darcy ravens notes')
+      expect(rendered).to_not have_content(note)
+    end
   end
 end
