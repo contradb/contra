@@ -90,7 +90,7 @@ function parameter_strings(move, parameter_values, dialect) {
     if ((pvi === undefined) || (pvi === null)) {
       term = '____';
     } else if (formal_parameters[i].string) {
-      term = formal_parameters[i].string(pvi,move);
+      term = formal_parameters[i].string(pvi, move, dialect);
     } else {
       term = String(pvi);
     }

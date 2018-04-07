@@ -46,7 +46,11 @@ var testDialect = {moves: {gyre: 'darcy',
                            'see saw': 'do si do left shoulder',
                            'ocean wave': 'mush into short wavy lines'},
                    dancers: {ladles: 'ravens',
-                             gentlespoons: 'larks'}};
+                             gentlespoons: 'larks',
+                             'first ladle': 'first raven',
+                             'second ladle': 'second raven',
+                             'first gentlespoon': 'first lark',
+                             'second gentlespoon': 'second lark'}};
 
 // ________________________________________________________________
 

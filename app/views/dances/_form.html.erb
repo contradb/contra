@@ -47,7 +47,7 @@
           {placeholder:
           "Instruct dancers on how to get into formations such as wavy lines. Instruct dancers to identify out-of-set dancers like shadows.",
           class: 'form-control', rows: 2}.merge(copy_dance ? {value: copy_dance.preamble} : {}) %>
-      <%= render 'markdown_advertisement' %>
+      <%= render 'markdown_dialect_advertisement' %>
     </section>
 
 
@@ -188,7 +188,7 @@
       <div class="field" id="dance-notes">
         <%= f.label :notes %>
         <%= f.text_area :notes, {rows: 3, class: 'form-control', placeholder: "include nuanced teaching notes, history, and links to other representations of the dance"}.merge(copy_dance ? {value: copy_dance.notes} : {}) %>
-        <%= render 'markdown_advertisement' %>
+        <%= render 'markdown_dialect_advertisement' %>
       </div>
     </section>
 
@@ -198,7 +198,7 @@
       <%= f.text_field :hook,
           {'ng-model': 'hook', 'maxlength': Dance::HOOK_MAX_LENGTH, class: 'form-control', placeholder: "catches out of Rory O'Moore spins"} %>
       <div class="fiddly-explanation">
-        briefly: what niche does ths dance fill? &nbsp; &nbsp; {{<%= Dance::HOOK_MAX_LENGTH %> - hook.length}} characters remaining
+        briefly: what niche does ths dance fill? <span class="hide-at-low-res">&mdash; translated into dialect</span> &mdash; {{<%= Dance::HOOK_MAX_LENGTH %> - hook.length}} characters remaining
       </div>
     </section>
 
