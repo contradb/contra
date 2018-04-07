@@ -262,27 +262,18 @@ function is_progression(move) {
 }
 
 function stringInDialect(str, dialect) {
+  // Since this is called a lot, performance might be helped by memoizing dialectRegExp(dialect)
   return str.replace(dialectRegExp(dialect), function (match) {
     return dialect.moves[match] || dialect.dancers[match];
   });
 }
 
-// var lastDialectRegExp = null;
-// var lastDialectRegExpDialect = null;
-
 function dialectRegExp(dialect) {
-  // if (dialect === lastDialectRegExpDialect) {
-  //   return lastDialectRegExp;
-  // }
-  // console.log('rebuilding dialectRegExp cache');
   var move_strings = Object.keys(dialect.moves).map(regExpEscape);
   var dance_strings = Object.keys(dialect.dancers).map(regExpEscape);
   var unmatchable_re_string = '^[]'; // https://stackoverflow.com/a/25315586/5158597
   var big_re_string = move_strings.concat(dance_strings).map(parenthesize).join('|') || unmatchable_re_string;
-  var big_re = new RegExp(big_re_string, 'g');
-  // lastDialectRegExp = re;
-  // lastDialectRegExpDialect = dialect;
-  return big_re;
+  return new RegExp(big_re_string, 'g');
 }
 
 function parenthesize(term) {
