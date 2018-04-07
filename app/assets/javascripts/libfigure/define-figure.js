@@ -34,7 +34,7 @@ function figureToString(f,dialect) {
     var func = fig_def.props.stringify || figureGenericStringify;
     var main = func(alias(f), f.parameter_values, dialect);
     var note = f.note;
-    return note ? words(main,note) : main;
+    return note ? words(main,stringInDialect(note, dialect)) : main;
   }
   else if (f.move) {
     return "rogue figure '"+f.move+"'!";
@@ -90,7 +90,7 @@ function parameter_strings(move, parameter_values, dialect) {
     if ((pvi === undefined) || (pvi === null)) {
       term = '____';
     } else if (formal_parameters[i].string) {
-      term = formal_parameters[i].string(pvi,move);
+      term = formal_parameters[i].string(pvi, move, dialect);
     } else {
       term = String(pvi);
     }
@@ -261,3 +261,21 @@ function is_progression(move) {
   return fig_def && fig_def.props && fig_def.props.progression || false;
 }
 
+function stringInDialect(str, dialect) {
+  // Since this is called a lot, performance might be helped by memoizing dialectRegExp(dialect)
+  return str.replace(dialectRegExp(dialect), function (match) {
+    return dialect.moves[match] || dialect.dancers[match];
+  });
+}
+
+function dialectRegExp(dialect) {
+  var move_strings = Object.keys(dialect.moves).map(regExpEscape);
+  var dance_strings = Object.keys(dialect.dancers).map(regExpEscape);
+  var unmatchable_re_string = '^[]'; // https://stackoverflow.com/a/25315586/5158597
+  var big_re_string = move_strings.concat(dance_strings).map(parenthesize).join('|') || unmatchable_re_string;
+  return new RegExp(big_re_string, 'g');
+}
+
+function parenthesize(term) {
+  return '('+term+')';
+}

@@ -46,7 +46,11 @@ var testDialect = {moves: {gyre: 'darcy',
                            'see saw': 'do si do left shoulder',
                            'ocean wave': 'mush into short wavy lines'},
                    dancers: {ladles: 'ravens',
-                             gentlespoons: 'larks'}};
+                             gentlespoons: 'larks',
+                             'first ladle': 'first raven',
+                             'second ladle': 'second raven',
+                             'first gentlespoon': 'first lark',
+                             'second gentlespoon': 'second lark'}};
 
 // ________________________________________________________________
 
@@ -124,3 +128,9 @@ function slugifyTerm(term) {
 }
 
 // ________________________________________________________________
+
+var regExpEscape_regexp = /[-\/\\^$*+?.()|[\]{}]/g;
+function regExpEscape(s) {
+  return s.replace(regExpEscape_regexp, '\\$&');
+};
+// source https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript/3561711#3561711
