@@ -23,7 +23,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
         title: link_to(dance.title, dance_path(dance)),
         choreographer_name: link_to(dance.choreographer.name, choreographer_path(dance.choreographer)),
         formation: dance.start_type,
-        hook: dance.hook,
+        hook: JSLibFigure.string_in_dialect(dance.hook, dialect),
         user_name: link_to(dance.user.name, user_path(dance.user)),
         created_at: dance.created_at.strftime('%Y-%m-%d'),
         updated_at: dance.updated_at.strftime('%Y-%m-%d'),
@@ -47,6 +47,10 @@ class DanceDatatable < AjaxDatatablesRails::Base
 
   def figure_query
     @figure_query ||= options[:figure_query]
+  end
+
+  def dialect
+    @dialect ||= options[:dialect]
   end
 
   # ==== These methods represent the basic operations to perform on records
