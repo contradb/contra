@@ -35,10 +35,16 @@ function indexEndsDanceSquarely(figures, index) {
 // =====================================================================================
 
 function defaultFigures (figures) {
-    if (figures.length == 0)
-        return [newFigure(), newFigure(), newFigure(), newFigure(),
-                newFigure(), newFigure(), newFigure(), newFigure()]
-    else return figures;
+  if (figures.length == 0) {
+    return [newFigure(), newFigure(), newFigure(), newFigure(),
+            newFigure(), newFigure(), newFigure(), newFigure()];
+  } else {
+    return figures.map(function(figure) {
+      var f2 = libfigureObjectCopy(figure);
+      f2.alias = alias(f2);
+      return f2;
+    });
+  }
 }
 
 // lots of side effects
