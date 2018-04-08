@@ -25,7 +25,7 @@ describe 'Creating dances', js: true do
     end
   end
 
-  it 'has working A1/B2 labels' do
+  it 'has working A1/B2 labels and beat labels' do
     with_login do
       visit '/dances/new'
       expect(page).to have_current_path(new_dance_path)
@@ -40,7 +40,7 @@ describe 'Creating dances', js: true do
       click_button 'Save Dance'
 
       expect(page).to have_css('h1', text: 'Call Me')
-      expect(page).to have_content('A1')
+      expect(page).to have_content('A1 8')
       expect(page).to_not have_content('A2')
       expect(page).to_not have_content('B1')
       expect(page).to_not have_content('B2')
@@ -51,8 +51,8 @@ describe 'Creating dances', js: true do
 
       click_button 'Save Dance'
 
-      expect(page).to have_content('A1')
-      expect(page).to have_content('A2')
+      expect(page).to have_content('A1 8')
+      expect(page).to have_content('A2 8')
       expect(page).to_not have_content('B1')
       expect(page).to_not have_content('B2')
     end
