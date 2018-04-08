@@ -558,12 +558,9 @@ describe 'Welcome page', js: true do
     end
 
     describe 'dialect' do
-      before (:each) do
+      it 'figure filter move' do
         expect_any_instance_of(WelcomeController).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         visit '/'
-      end
-
-      it 'figure filter move' do
         dances
 
         expect(page).to_not have_css('option',                  text: exactly('allemande'))
@@ -580,6 +577,8 @@ describe 'Welcome page', js: true do
       end
 
       it 'figure filter dancers' do
+        expect_any_instance_of(WelcomeController).to receive(:dialect).and_return(JSLibFigure.test_dialect)
+        visit '/'
         dances
 
         allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
@@ -593,6 +592,14 @@ describe 'Welcome page', js: true do
         expect(page).to_not have_content('Call Me')
         expect(page).to_not have_content(allemande.title)
         expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","allemande","ladles","*","*","*"]')
+      end
+
+      it "displays dialect-transformed hooks" do
+        expect_any_instance_of(DancesController).to receive(:dialect).and_return(JSLibFigure.test_dialect)
+        dance2 = FactoryGirl.create(:dance, hook: 'hook allemande ladles hook')
+        visit '/'
+        expect(page).to have_content('hook almond ravens hook')
+        expect(page).to_not have_content(dance2.hook)
       end
     end
 

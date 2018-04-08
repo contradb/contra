@@ -10,7 +10,7 @@ class DancesController < ApplicationController
     respond_to do |format|
       format.html
       format.json do
-        render(json: DanceDatatable.new(view_context, user: current_user, figure_query: figure_query_param))
+        render(json: DanceDatatable.new(view_context, user: current_user, figure_query: figure_query_param, dialect: dialect))
       end
     end
   end
