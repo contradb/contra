@@ -59,6 +59,57 @@ describe 'Editing dances', js: true do
     end
   end
 
+  it 'figure inputs prefill' do
+    with_login do |user|
+      dance = FactoryGirl.create(:box_the_gnat_contra, user: user)
+
+      # give the swing a note
+      figures = dance.figures
+      figures[2]['note'] = 'this is a swing'
+      dance.update!(figures: figures)
+
+      visit edit_dance_path dance.id
+      click_on('figure-2')
+
+      # why 'swing:string' and not 'swing'? Must be some angular thing
+      expect(find('#move-2').value).to eq('string:swing')
+
+      figure_value_setters = find_all('.figure-value-setter-div')
+      expect(figure_value_setters.length).to eq(5)
+
+      _move, who, prefix, beats, note = figure_value_setters.to_a
+      expect(who.find('select').value).to eq('string:neighbors')
+      expect(prefix.find("input[value=none]")).to_not be_checked
+      expect(prefix.find("input[value=balance]")).to be_checked
+      expect(prefix.find("input[value=meltdown]")).to_not be_checked
+      expect(beats.find('select').value).to eq('number:16')
+      expect(note.find('input').value).to eq('this is a swing')
+    end
+  end
+
+  it 'figure inputs save' do
+    with_login do |user|
+      dance = FactoryGirl.create(:box_the_gnat_contra, user: user)
+
+      visit edit_dance_path dance.id
+      click_on('figure-6')
+
+      select 'swing', match: :first
+      select 'neighbors'
+      choose 'meltdown'
+      fill_in 'note', with: 'with gusto!'
+
+      click_button 'Save Dance'
+
+      dance.reload
+
+      copy = FactoryGirl.build(:box_the_gnat_contra)
+      expect(dance.figures.length).to eq(copy.figures.length)
+      expect(dance.figures[0,6]).to eq(copy.figures[0,6])
+      expect(dance.figures[6]).to eq({'move' => 'swing', 'parameter_values' => ['neighbors', 'meltdown', 16], 'note' => 'with gusto!'})
+    end
+  end
+
   describe 'dynamic shadow/1st shadow and next neighbor/2nd neighbor behavior' do
     it 'rewrites figure texts' do
       with_login do |user|
@@ -100,7 +151,7 @@ describe 'Editing dances', js: true do
     end
   end
 
-  it 'custom moves and move notes update dynamically' do
+  it 'custom moves and move notes update dynamically for dialect' do
     with_login do |user|
       custom_text = 'custom allemande gentlespoons custom'
       custom_text_in_dialect = 'custom almond larks custom'
