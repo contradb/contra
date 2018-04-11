@@ -548,17 +548,30 @@ defineFigure("mad robin",
 // OCEAN WAVE                                 //
 ////////////////////////////////////////////////
 
-function oceanWaveStringify(move, pvs, dialect) {
-  var [sbeats] = parameter_strings(move, pvs, dialect);
-  var smove = moveSubstitution(move, dialect);
-  if (smove === move) {
-    return words('to', smove, sbeats);
-  } else {
-    return words(smove, sbeats);
+function oceanWaveChange(figure, index) {
+  var pvs = figure.parameter_values;
+  const bal_index = 0;
+  const beats_index = 1;
+  if (index === bal_index) {
+    pvs[beats_index] = pvs[bal_index] ? 8 : 4;
   }
 }
 
-defineFigure("ocean wave",  [param_beats_4], {stringify: oceanWaveStringify});
+function oceanWaveStringify(move, pvs, dialect) {
+  var [ bal,  beats] = pvs;
+  var [sbal, sbeats] = parameter_strings(move, pvs, dialect);
+  var smove = moveSubstitution(move, dialect);
+  var tmove = (smove === move) ? 'to '+smove : smove;
+  var tbal = bal ? ('*' === bal ? '& maybe balance the wave' : '& balance the wave') : '';
+  var balance_beats = 4 * (bal === true);
+  if (balance_beats + 4 == beats) {
+    return words(tmove, tbal);
+  } else {
+    return words(tmove, tbal, 'for', beats);
+  }
+}
+
+defineFigure("ocean wave", [param_balance_false, param_beats_4], {stringify: oceanWaveStringify, change: oceanWaveChange});
 
 ////////////////////////////////////////////////
 // PASS BY                                    //
