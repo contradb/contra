@@ -949,7 +949,7 @@ function turnAloneStringify(move, pvs, dialect) {
   var [who,custom,beats] = pvs;
   var [swho,scustom,sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
-  return words(('everyone' !== who) && who, smove, scustom, sbeats);
+  return words(('everyone' !== who) && swho, smove, scustom, sbeats);
 }
 
 defineFigure("turn alone",
