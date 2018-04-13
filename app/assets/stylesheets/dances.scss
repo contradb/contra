@@ -126,40 +126,39 @@ input.dance-title-edit,
 .a1b2 {
   box-sizing: border-box;
   width: 1.4em;
-  border-left: 1px solid rgba(0,0,0,0.15);
+  border-left: 1px solid #CCC;
 }
 .beats-column {
   box-sizing: border-box;
   width: 1.4em;
-  border-left: 1px solid rgba(0,0,0,0.15);
-  border-right: 1px solid rgba(0,0,0,0.15);
+  border-left: 1px solid #CCC;
+  border-right: 1px solid #CCC;
   &.beats-column-top {
-    border-top: 1px solid rgba(0,0,0,0.15);
+    border-top: 1px solid #CCC;
     &.selected-figure {
-      border-top: 1px solid rgba(0,0,0,0.72);
+      border-top: 1px solid #888;
     }
   }
   &.beats-column-bottom {
-    border-bottom: 1px solid rgba(0,0,0,0.15);
+    border-bottom: 1px solid #CCC;
     &.selected-figure {
-      border-bottom: 1px solid rgba(0,0,0,0.72);
+      border-bottom: 1px solid #888;
     }
   }
   text-align: right;
   padding-right: 0.14em;
   &.selected-figure {
     background-color: white;
-    color: #222;
-    font-weight: bold;
-    border-left: 1px solid rgba(0,0,0,0.72);
-    border-right: 1px solid rgba(0,0,0,0.72);
+    color: #333;
+    border-left: 1px solid #888;
+    border-right: 1px solid #888;
   }
 }
 .new-a1b2 {
-  border-top: 1px solid rgba(0,0,0,0.15);
+  border-top: 1px solid #CCC;
 }
 .last-a1b2 {
-  border-bottom: 1px solid rgba(0,0,0,0.15);
+  border-bottom: 1px solid #CCC;
 }
 
 .figure-edit-text-and-menu-dots {
