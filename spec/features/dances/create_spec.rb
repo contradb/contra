@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'rails_helper'
 require 'login_helper'
 require 'support/scrutinize_layout'
@@ -253,6 +254,30 @@ describe 'Creating dances', js: true do
         click_button('Rotate')
         expect(page).to have_content('A1 custom empty figure A2 empty figure Notes')
       end
+    end
+  end
+
+  it 'UI interaction on some figures saves to the database' do
+    with_login do
+      visit '/dances/new'
+      click_on 'figure-0'
+      6.times { click_button('Remove') }
+      select 'swing', match: :first
+      select 'neighbors'
+      choose 'balance'
+      fill_in 'note', with: 'with gusto!'
+      click_on 'figure-1'
+      select 'allemande'
+      select 'partners'
+      choose 'left'
+      select '1½'
+      select '12'
+      fill_in 'dance[choreographer_name]', with: 'Cary Ravitz'
+      fill_in 'dance[start_type]', with: 'improper'
+      click_button 'Save Dance'
+      dance = Dance.last
+      expect(dance.figures).to eq([{'move' => 'swing', 'parameter_values' => ['neighbors', 'balance', 16], 'note' => 'with gusto!'},
+                                   {'move' => 'allemande', 'parameter_values' => ['partners', false, 540, 12]}])
     end
   end
 end

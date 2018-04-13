@@ -45,7 +45,57 @@ describe 'Copying dances', js: true do
       expect(page).to have_text('ravens almond right 1½')
     end
   end
+
+  it 'figure inputs prefill' do
+    with_login do |user|
+      dance = FactoryGirl.create(:box_the_gnat_contra, user: user)
+
+      # give the swing a note
+      figures = dance.figures
+      figures[2]['note'] = 'this is a swing'
+      dance.update!(figures: figures)
+
+      visit new_dance_path copy_dance_id: dance.id
+      click_on('figure-2')
+
+      # why 'swing:string' and not 'swing'? Must be some angular thing
+      expect(find('#move-2').value).to eq('string:swing')
+
+      figure_value_setters = find_all('.figure-value-setter-div')
+      expect(figure_value_setters.length).to eq(5)
+
+      _move, who, prefix, beats, note = figure_value_setters.to_a
+      expect(who.find('select').value).to eq('string:neighbors')
+      expect(prefix.find("input[value=none]")).to_not be_checked
+      expect(prefix.find("input[value=balance]")).to be_checked
+      expect(prefix.find("input[value=meltdown]")).to_not be_checked
+      expect(beats.find('select').value).to eq('number:16')
+      expect(note.find('input').value).to eq('this is a swing')
+    end
+  end
+
+  it 'figure inputs save' do
+    with_login do |user|
+      original = FactoryGirl.create(:box_the_gnat_contra, user: user)
+      old_dance_count = Dance.all.length
+
+      visit new_dance_path copy_dance_id: original.id
+      click_on('figure-6')
+
+      select 'swing', match: :first
+      select 'neighbors'
+      choose 'meltdown'
+      fill_in 'note', with: 'with gusto!'
+
+      click_button 'Save Dance'
+
+      expect(Dance.all.length).to eq(old_dance_count+1)
+
+      dance = Dance.last
+
+      expect(dance.figures.length).to eq(original.figures.length)
+      expect(dance.figures[0,6]).to eq(original.figures[0,6])
+      expect(dance.figures[6]).to eq({'move' => 'swing', 'parameter_values' => ['neighbors', 'meltdown', 16], 'note' => 'with gusto!'})
+    end
+  end
 end
-
-
-
