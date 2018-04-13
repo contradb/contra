@@ -91,7 +91,7 @@
             <td ng-class="classesForFigureA1B2(figures.arr, figureIdx, edit_index_box, true)" class="a1b2">
               {{labelForBeats(sumBeats(figures.arr,figureIdx))}}&nbsp;
             </td>
-            <td class=beats-column>
+            <td ng-class="classesForFigureBeats(figures.arr, figureIdx, edit_index_box, true)" class=beats-column>
               {{figureBeats(figure)}}
             </td>
             <td class="figure-edit-text-and-menu-dots">
@@ -122,7 +122,7 @@
             <td class="a1b2" ng-class="classesForFigureA1B2(figures.arr, figureIdx, edit_index_box, false)">
               &nbsp;
             </td>
-            <td class=beats-column></td>
+            <td ng-class="classesForFigureBeats(figures.arr, figureIdx, edit_index_box, false)" class=beats-column></td>
             <td>
 
               <label class="figure-edit-label"><span class="figure-edit-label-text">move</span>

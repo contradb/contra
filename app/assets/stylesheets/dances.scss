@@ -124,24 +124,42 @@ input.dance-title-edit,
   width: 1.4em;
 }
 .a1b2 {
+  box-sizing: border-box;
   width: 1.4em;
-  border-left: thin solid #bbb;
-  border-right: thin solid #bbb;
-  &.selected-figure {
-    background-image: linear-gradient(to right, #E0E0FF, #FFFFFF);
-  }
+  border-left: 1px solid rgba(0,0,0,0.15);
 }
 .beats-column {
+  box-sizing: border-box;
   width: 1.4em;
-  border: thin solid #bbb;
+  border-left: 1px solid rgba(0,0,0,0.15);
+  border-right: 1px solid rgba(0,0,0,0.15);
+  &.beats-column-top {
+    border-top: 1px solid rgba(0,0,0,0.15);
+    &.selected-figure {
+      border-top: 1px solid rgba(0,0,0,0.72);
+    }
+  }
+  &.beats-column-bottom {
+    border-bottom: 1px solid rgba(0,0,0,0.15);
+    &.selected-figure {
+      border-bottom: 1px solid rgba(0,0,0,0.72);
+    }
+  }
   text-align: right;
   padding-right: 0.14em;
+  &.selected-figure {
+    background-color: white;
+    color: #222;
+    font-weight: bold;
+    border-left: 1px solid rgba(0,0,0,0.72);
+    border-right: 1px solid rgba(0,0,0,0.72);
+  }
 }
 .new-a1b2 {
-  border-top: thin solid #bbb;
+  border-top: 1px solid rgba(0,0,0,0.15);
 }
 .last-a1b2 {
-  border-bottom: thin solid #bbb;
+  border-bottom: 1px solid rgba(0,0,0,0.15);
 }
 
 .figure-edit-text-and-menu-dots {
