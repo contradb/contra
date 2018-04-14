@@ -9,14 +9,16 @@
        label_printed = false
        dialect_for_figures = JSLibFigure.dialect_for_figures(dialect, figures)
        figures.each_with_index do |figure,index| %>
-         <tr class="<%= if (beats_acc % 32) < 16 then 'a1b1' else 'a2b2' end %>">
+         <%= content_tag :tr, class: "#{(beats_acc % 32) < 16 ? 'a1b1' : 'a2b2'} #{JSLibFigure.beats(figure) >= 16 ? 'dance-show-long-figure' : ''}" do %>
              <td><%= unless label_printed then label_printed = true; {0=>'A1', 16=>'A2', 32=>'B1', 48=>'B2' }[beats_acc] end %></td>
+             <td><%= JSLibFigure.beats(figure) %></td>
              <td><%= beats = JSLibFigure.beats(figure)
                      beats_acc += beats
                      label_printed = false if beats > 0
                      render partial: "dances/figure", object: figure, locals: {dialect: dialect_for_figures} %></td></tr>
-  <%   end
-     end %>
+        <% end %>
+      <% end %>
+  <% end %>
 </table>
 
 <div class="dance-show-notes"><%= ApplicationHelper::renderMarkdown(JSLibFigure.string_in_dialect(dance.notes, dialect)) %></div>

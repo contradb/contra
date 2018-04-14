@@ -114,8 +114,7 @@ input.dance-title-edit,
   display: none;
 }
 
-/////////////////////////////////////////////////////////////////////////
-// below here predates new figure editor-dm 10-01-2016
+/* used in dance show */
 .a1b1 {
   background-color: #F3F3F3;
   width: 1.4em;
@@ -123,6 +122,17 @@ input.dance-title-edit,
 .a2b2 {
   width: 1.4em;
 }
+.dance-show-beats {
+
+}
+tr.dance-show-long-figure td:first-child::after {
+   content: "";
+   display: inline-block;
+   vertical-align: top;
+   min-height: 3.523em;
+}
+
+/* used in figure editor */
 .a1b2 {
   box-sizing: border-box;
   width: 1.4em;

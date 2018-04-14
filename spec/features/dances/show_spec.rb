@@ -17,6 +17,15 @@ describe 'Showing dances' do
     expect(page.body).to include dance.notes
   end
 
+  it 'shows appropriate A1B2 and beat labels' do
+    dance = FactoryGirl.create(:box_the_gnat_contra)
+    visit dance_path dance.id
+    expect(page).to have_content('A1 8 neighbors balance & box the gnat 8 partners balance & swat the flea')
+    expect(page).to have_content('A2 16 neighbors balance & swing')
+    expect(page).to have_content('B1 8 ladles allemande right 1½ 8 partners swing')
+    expect(page).to have_content('B2 8 right left through 8 ladles chain')
+  end
+
   it 'respects preferences' do
     expect(JSLibFigure).to receive(:default_dialect).at_least(:once).and_return(JSLibFigure.test_dialect)
     dance = FactoryGirl.create(:box_the_gnat_contra)
@@ -69,7 +78,7 @@ describe 'Showing dances' do
     expect(page).to have_content('1st shadows')
     expect(page).to have_content('2nd shadows')
     expect(page).to_not have_content('next neighbors')
-    expect(page).to_not have_content('B2 shadows swing')
-    expect(page).to have_content('B2 1st shadows swing')
+    expect(page).to_not have_content('B2 8 shadows swing')
+    expect(page).to have_content('B2 8 1st shadows swing')
   end
 end
