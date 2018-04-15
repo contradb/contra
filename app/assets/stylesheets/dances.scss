@@ -163,6 +163,11 @@ tr.dance-show-long-figure td:first-child::after {
     border-left: 1px solid #888;
     border-right: 1px solid #888;
   }
+  &.beats-column-danger {
+    color: #E11;
+    font-weight: bold;
+    font-style: italic;
+  }
 }
 .new-a1b2 {
   border-top: 1px solid #CCC;
