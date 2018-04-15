@@ -279,3 +279,9 @@ function dialectRegExp(dialect) {
 function parenthesize(term) {
   return '('+term+')';
 }
+
+////
+
+function hasGoodBeats(figure) {
+  return 8 === figureBeats(figure);
+}
