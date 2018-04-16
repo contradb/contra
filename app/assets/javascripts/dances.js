@@ -29,7 +29,7 @@ function classesForFigureBeats(figures, index, open_indicies, is_top) {
     top_bottom_classes = ['beats-column-bottom'];
   }
   var selected_classes = is_open ? ['selected-figure'] : [];
-  var dangerous_beats_classes = hasGoodBeats(figures[index]) ?  [] : ['beats-column-danger'];
+  var dangerous_beats_classes = goodBeatsWithContext(figures, index) ?  [] : ['beats-column-danger'];
   return selected_classes.concat(top_bottom_classes, dangerous_beats_classes).join(' ');
 }
 

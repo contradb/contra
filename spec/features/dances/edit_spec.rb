@@ -124,6 +124,27 @@ describe 'Editing dances', js: true do
     end
   end
 
+  describe "swing alignment to beats" do
+    it "likes aligned swings" do
+      with_login do |user|
+        dance = FactoryGirl.create(:dance_with_a_swing, user: user)
+        visit edit_dance_path dance.id
+        expect(page).to have_css('.beats-column', text: 16)
+        expect(page).to_not have_css('.beats-column-danger')
+      end
+    end
+
+    it "warns about non-aligned swings" do
+      with_login do |user|
+        dance = FactoryGirl.create(:dance_with_a_swing, user: user)
+        dance.figures.first['parameter_values'][-1] = 8; # change beats to 8
+        dance.update(figures: dance.figures)
+        visit edit_dance_path dance.id
+        expect(page).to have_css('.beats-column.beats-column-danger', text: 8)
+      end
+    end
+  end
+
   describe 'dynamic shadow/1st shadow and next neighbor/2nd neighbor behavior' do
     it 'rewrites figure texts' do
       with_login do |user|

@@ -35,8 +35,7 @@ function figureToString(f,dialect) {
     var main = func(alias(f), f.parameter_values, dialect);
     var note = f.note;
     return note ? words(main,stringInDialect(note, dialect)) : main;
-  }
-  else if (f.move) {
+  } else if (f.move) {
     return "rogue figure '"+f.move+"'!";
   } else {
     return "empty figure";
@@ -256,6 +255,16 @@ function aliasParameters(move){
   }
 }
 
+// TODO: call this more places
+function moveProp(move_or_nil, property_name, default_value) {
+  if (move_or_nil) {
+    var fig_def = defined_events[move_or_nil];
+    return fig_def && fig_def.props[property_name] || default_value;
+  } else {
+    return default_value;
+  }
+}
+
 function is_progression(move) {
   var fig_def = defined_events[move];
   return fig_def && fig_def.props && fig_def.props.progression || false;
@@ -282,6 +291,25 @@ function parenthesize(term) {
 
 ////
 
-function hasGoodBeats(figure) {
+function goodBeatsWithContext(figures, index) {
+  var figure = figures[index];
+  if (0 !== sumBeats(figures,index+1) % moveProp(figure.move, 'alignBeatsEnd', 1)) {
+    return false;
+  } else {
+    return goodBeats(figure);
+  }
+}
+
+function goodBeats(figure) {
+  var fn = moveProp(figure.move, 'goodBeats', defaultGoodBeats);
+  return fn(figure);
+}
+
+function defaultGoodBeats(figure) {
   return 8 === figureBeats(figure);
+}
+
+function goodBeats8to16(figure) {
+  var beats = figureBeats(figure);
+  return (8 <= beats) && (beats <= 16);
 }

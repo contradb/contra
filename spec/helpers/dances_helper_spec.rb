@@ -221,8 +221,8 @@ RSpec.describe DancesHelper, type: :helper do
     figure_text = figure_txt_for.call(move,*pvalues, JSLibFigure.default_dialect)
     unless nil == good_beats
       it "thinks #{figure_text} has #{good_beats ? 'good' : 'questionable'} beats" do
-        figures = {'move' => move, 'parameter_values' => pvalues}
-        expect(JSLibFigure.has_good_beats?(figures)).to eq(good_beats)
+        figure = {'move' => move, 'parameter_values' => pvalues}
+        expect(JSLibFigure.good_beats?(figure)).to eq(good_beats)
       end
     end
   end

@@ -949,7 +949,7 @@ function swingStringify(move, pvs, dialect) {
 
 defineFigure("swing",
              [param_subject_pairz_partners, param_swing_prefix_none, param_beats_8],
-             {change: swingChange, stringify: swingStringify, alias: swingAlias});
+             {change: swingChange, stringify: swingStringify, alias: swingAlias, goodBeats: goodBeats8to16, alignBeatsEnd: 16});
 
 defineFigureAlias("meltdown swing", "swing",
                   [null, param_swing_prefix_meltdown, null]);
