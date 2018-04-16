@@ -305,11 +305,17 @@ function goodBeats(figure) {
   return fn(figure);
 }
 
-function defaultGoodBeats(figure) {
-  return 8 === figureBeats(figure);
+function goodbeatsMinMaxFn(min, max) {
+  return function(figure) {
+    var beats = figureBeats(figure);
+    return (min <= beats) && (max <= 16);
+  };
 }
 
-function goodBeats8to16(figure) {
-  var beats = figureBeats(figure);
-  return (8 <= beats) && (beats <= 16);
+function goodBeatsEqualFn(beats) {
+  return function(figure) {
+    return beats === figureBeats(figure);
+  };
 }
+
+var defaultGoodBeats = goodBeatsEqualFn(8);

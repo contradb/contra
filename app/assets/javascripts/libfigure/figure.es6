@@ -10,10 +10,17 @@
 // ALLEMANDE                                  //
 ////////////////////////////////////////////////
 
+function allemandeGoodBeats(figure) {
+  var [who,dir,angle,beats] = figure.parameter_values;
+  var angle_over_beats = angle/beats;
+  return (beats > 0) && (360/8 <= angle_over_beats) && (angle_over_beats <= 540/8);
+}
+
 defineFigure("allemande", [param_subject_pairz, 
                            param_xhand_spin, 
                            param_once_around, 
-                           param_beats_8]);
+                           param_beats_8],
+             {goodBeats: allemandeGoodBeats});
 
 ////////////////////////////////////////////////
 // ALLEMANDE ORBIT                            //
@@ -73,7 +80,7 @@ function balanceStringify(move, pvs, dialect) {
 
 defineFigure("balance",
              [param_subject_pairs_or_everyone, param_beats_4],
-             {stringify: balanceStringify});
+             {stringify: balanceStringify, goodBeats: goodBeatsEqualFn(4)});
 
 // Note: at time of writing, auto-generation of related moves happens
 // to any move with a balance - see the end of this file
