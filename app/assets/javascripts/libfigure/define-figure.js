@@ -140,7 +140,15 @@ var defined_events = {};
 ////////////////////////////////////////////////
 
 function defineFigure(name, parameters, props) {
-  defined_events[name] = {name: name, parameters: parameters, props: (props || {})};
+  var props2 = libfigureObjectCopy(props || {});
+  if (!props2.goodBeats) {
+    var beats_index = find_parameter_index_by_name("beats",parameters);
+    var beats_default = parameters[beats_index].value;
+    if (beats_default !== undefined) {
+      props2.goodBeats = goodBeatsEqualFn(beats_default);
+    }
+  }
+  defined_events[name] = {name: name, parameters: parameters, props: props2};
 }
 
 function defineFigureAlias(alias_name, canonical_name, parameter_defaults) {

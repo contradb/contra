@@ -253,7 +253,7 @@ function customStringify(move, pvs, dialect) {
   return words(tcustom,sbeats);
 }
 
-defineFigure("custom", [param_custom_figure, param_beats_8], {stringify: customStringify});
+defineFigure("custom", [param_custom_figure, param_beats_8], {stringify: customStringify, goodBeats: function(meh) {return true;}});
 
 ////////////////////////////////////////////////
 // DO SI DO (and see saw)                     //
@@ -490,6 +490,11 @@ function heyChange(figure,index) {
   }
 }
 
+function heyGoodBeats(figure) {
+  var [who, half, dir, beats] = figure.parameter_values;
+  return beats / half === 16;
+}
+
 function heyStringify(move, pvs, dialect) {
   var [  who,   half,  dir,  beats] = pvs;
   var [leader, shalf, sdir, sbeats] = parameter_strings(move, pvs, dialect);
@@ -505,8 +510,7 @@ defineFigure("hey",
               param_half_or_full_half_chatty_half,
               param_set_direction_across,
               param_beats_8],
-             {stringify: heyStringify, change: heyChange});
-
+             {stringify: heyStringify, change: heyChange, goodBeats: heyGoodBeats});
 
 ////////////////////////////////////////////////
 // LONG LINES                                 //
@@ -521,6 +525,11 @@ function longLinesChange(figure,index) {
   }
 }
 
+function longLinesGoodBeats(figure) {
+  var [back, beats] = figure.parameter_values;
+  return beats === (back ? 8 : 4);
+}
+
 function longLinesStringify(move, pvs, dialect) {
   var [ back,  beats] = pvs;
   var [sback, sbeats] = parameter_strings(move, pvs, dialect);
@@ -533,7 +542,7 @@ function longLinesStringify(move, pvs, dialect) {
 
 defineFigure("long lines",
              [param_go_back, param_beats_8],
-             {stringify: longLinesStringify, change: longLinesChange});
+             {stringify: longLinesStringify, change: longLinesChange, goodBeats: longLinesGoodBeats});
 
 ////////////////////////////////////////////////
 // MAD ROBIN                                  //
