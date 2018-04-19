@@ -195,8 +195,16 @@ defineFigure("chain",
 // CIRCLE                                     //
 ////////////////////////////////////////////////
 
+function circleGoodBeats(figure) {
+  var [dir, angle, beats] = figure.parameter_values;
+  var three_places_in_eight_beats = angle === 270 && beats === 8;
+  var one_place_per_two_beats = angle / beats === 45;
+  return three_places_in_eight_beats || one_place_per_two_beats;
+}
+
 defineFigure("circle",
-             [param_spin_left,  param_four_places, param_beats_8]);
+             [param_spin_left,  param_four_places, param_beats_8],
+             {goodBeats: circleGoodBeats});
 
 ////////////////////////////////////////////////
 // CONTRA CORNERS                             //
@@ -558,7 +566,7 @@ function madRobinStringify(move, pvs, dialect) {
 
 defineFigure("mad robin",
              [param_subject_pair, param_once_around, param_beats],
-             {stringify: madRobinStringify});
+             {stringify: madRobinStringify, goodBeats: goodBeatsMinMaxFn(6, 8)});
 
 ////////////////////////////////////////////////
 // OCEAN WAVE                                 //
@@ -710,6 +718,11 @@ defineFigure("pull by dancers",
 // PULL BY DIRECTION                          //
 ////////////////////////////////////////////////
 
+function pullByDirectionGoodBeats(figure) {
+  var [bal, dir, spin, beats] = figure.parameter_values;
+  return ((beats == 8) && bal) || ((beats == 2) && !bal);
+}
+
 function pullByDirectionStringify(move, pvs, dialect) {
   var [ bal,  dir,  spin,  beats] = pvs;
   var [sbal, sdir, sspin, sbeats] = parameter_strings(move, pvs, dialect);
@@ -730,7 +743,7 @@ function pullByDirectionStringify(move, pvs, dialect) {
 
 defineFigure("pull by direction",
              [param_balance_false, param_set_direction_along, param_right_hand_spin, param_beats_2],
-             {stringify: pullByDirectionStringify});
+             {stringify: pullByDirectionStringify, goodBeats: pullByDirectionGoodBeats});
 
 defineRelatedMove2Way('pull by dancers', 'pull by direction');
 
@@ -895,6 +908,13 @@ defineFigure("square through",
 // STAR                                       //
 ////////////////////////////////////////////////
 
+function starGoodBeats(figure) {
+  var [ right_hand,  angle,  wrist_grip,  beats] = figure.parameter_values;
+  var three_places_in_eight_beats = angle === 270 && beats === 8;
+  var one_place_per_two_beats = angle / beats === 45;
+  return three_places_in_eight_beats || one_place_per_two_beats;
+}
+
 function starStringify(move, pvs, dialect) {
   var [ right_hand,  places,  wrist_grip,  beats] = pvs;
   var [sright_hand, splaces, swrist_grip, sbeats] = parameter_strings(move, pvs, dialect);
@@ -908,7 +928,7 @@ function starStringify(move, pvs, dialect) {
 
 defineFigure("star",
              [param_xhand_spin, param_four_places, param_star_grip, param_beats_8],
-             {stringify: starStringify});
+             {stringify: starStringify, goodBeats: starGoodBeats});
 
 ////////////////////////////////////////////////
 // STAR PROMENADE                             //
