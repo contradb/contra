@@ -104,7 +104,8 @@ RSpec.describe DancesHelper, type: :helper do
     ['slide left along set to new neighbors', true, 'slide along set', true, 2],
     ['slide * along set for * to new neighbors', nil, 'slide along set', '*', '*'],
     ['star promenade left ½', true, 'star promenade', 'gentlespoons', false, 180, 4], # prefer: "scoop up partners for star promenade"
-    ['ladles star promenade right ½', true, 'star promenade', 'ladles', true, 180, 4],
+    ['star promenade left ¾ for 6', true, 'star promenade', 'gentlespoons', false, 270, 6],
+    ['ladles star promenade right ½ for 8', false, 'star promenade', 'ladles', true, 180, 8],
     ['* star promenade * hand * for *', nil, 'star promenade', '*', '*', '*', '*'],
     ['butterfly whirl', true, 'butterfly whirl', 4],
     ['butterfly whirl for 8', false, 'butterfly whirl', 8],
@@ -216,7 +217,7 @@ RSpec.describe DancesHelper, type: :helper do
     ['turn alone', true, 'turn alone', 'everyone', '', 4],
     ['ladles turn alone over the right shoulder', true, 'turn alone', 'ladles', 'over the right shoulder', 4],
     ['ladles turn alone to a new partner', true, 'turn alone', 'ladles', 'to a new partner', 4],
-    ['ladles turn alone face out for 2', false, 'turn alone', 'ladles', 'face out', 2],
+    ['ladles turn alone face out for 2', true, 'turn alone', 'ladles', 'face out', 2],
     ['* turn alone for *', nil, 'turn alone', '*', '', '*'],
     ['ones arch twos dive', true, 'arch & dive','ones',4],
     ['* arch * dive for *', nil, 'arch & dive','*','*'],

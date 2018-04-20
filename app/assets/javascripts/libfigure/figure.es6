@@ -1029,6 +1029,11 @@ defineFigure("star",
 // STAR PROMENADE                             //
 ////////////////////////////////////////////////
 
+function starPromenadeGoodBeats(figure) {
+  var [who, dir, angle, beats] = figure.parameter_values;
+  return 180/4 === angle/beats;
+}
+
 function starPromenadeStringify(move, pvs, dialect) {
   var [ who,  dir,  angle,  beats] = pvs;
   var [swho, sdir, sangle, sbeats] = parameter_strings(move, pvs, dialect);
@@ -1038,7 +1043,7 @@ function starPromenadeStringify(move, pvs, dialect) {
 
 defineFigure("star promenade",
              [param_subject_pair_gentlespoons, param_xhand_spin, param_half_around, param_beats_4],
-             {stringify: starPromenadeStringify});
+             {stringify: starPromenadeStringify, goodBeats: starPromenadeGoodBeats});
 
 defineRelatedMove2Way('star promenade', 'allemande');
 defineRelatedMove2Way('star promenade', 'promenade');
@@ -1108,7 +1113,7 @@ function turnAloneStringify(move, pvs, dialect) {
 
 defineFigure("turn alone",
              [param_subject_pair_or_everyone, param_custom_figure, param_beats_4],
-             {stringify: turnAloneStringify});
+             {stringify: turnAloneStringify, goodBeats: goodBeatsMinMaxFn(0, 4)});
 
 ///////////////////////////////////////////////
 // ZIG ZAG                                    //
