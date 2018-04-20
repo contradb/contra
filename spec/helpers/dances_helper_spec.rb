@@ -74,7 +74,7 @@ RSpec.describe DancesHelper, type: :helper do
     ['progress to new neighbors', true, 'progress', 0],
     ['progress to new neighbors for *', nil, 'progress', '*'],
     ['pull by right', true, 'pull by direction', false, 'along', true, 2],
-    ['pull by left', true, 'pull by direction', false, 'along', false, 2],
+    ['pull by left for 4', false, 'pull by direction', false, 'along', false, 4],
     ['pull by right across the set', true, 'pull by direction', false, 'across', true, 2],
     ['pull by left across the set', true, 'pull by direction', false, 'across', false, 2],
     ['balance & pull by right', true, 'pull by direction', true, 'along', true, 8],
@@ -89,8 +89,9 @@ RSpec.describe DancesHelper, type: :helper do
     ['pull by left hand right diagonal for 4', false, 'pull by direction', false, 'right diagonal', false, 4],
     ['optional balance & pull by * hand * for *', nil, 'pull by direction', '*', '*', '*', '*'],
     ['gentlespoons pull by right', true, 'pull by dancers', 'gentlespoons', false, true, 2],
-    ['ladles pull by left', true, 'pull by dancers', 'ladles', false, false, 2],
+    ['ladles pull by left for 4', false, 'pull by dancers', 'ladles', false, false, 4],
     ['ones balance & pull by left for 6', false, 'pull by dancers', 'ones', true, false, 6],
+    ['neighbors balance & pull by left', true, 'pull by dancers', 'neighbors', true, false, 8],
     ['* optional balance & pull by * hand for *', nil, 'pull by dancers', '*', '*', '*', '*'],
     ['neighbors promenade left diagonal on the left', true, 'promenade', 'neighbors', 'left diagonal', true, 8],
     ['neighbors promenade', true, 'promenade', 'neighbors', 'across', false, 8],
@@ -134,11 +135,12 @@ RSpec.describe DancesHelper, type: :helper do
     ['to ocean wave for 8', false, 'ocean wave', false, 8],
     ['to ocean wave & maybe balance the wave for *', nil, 'ocean wave', '*', '*'],
     ['gentlespoons roll away neighbors with a half sashay', true, 'roll away', 'gentlespoons', 'neighbors', true, 4],
-    ['ladles roll away partners for 2', true, 'roll away', 'ladles', 'partners', false, 2], # mabye true, maybe false?
+    ['ladles roll away partners for 2', false, 'roll away', 'ladles', 'partners', false, 2], # mabye true, maybe false?
     ['* roll away * maybe with a half sashay for *', nil, 'roll away', '*', '*', '*', '*'],
     ["balance & Rory O'Moore right", true, "Rory O'Moore", 'everyone', true, false, 8],
     ["balance & centers Rory O'Moore left", true, "Rory O'Moore", 'centers', true, true, 8],
-    ["centers Rory O'Moore left", false, "Rory O'Moore", 'centers', false, true, 4],
+    ["centers Rory O'Moore left", true, "Rory O'Moore", 'centers', false, true, 4],
+    ["centers Rory O'Moore left for 8", false, "Rory O'Moore", 'centers', false, true, 8],
     ["optional balance & * Rory O'Moore * for *", nil, "Rory O'Moore", '*', '*', '*', '*'],
     ['pass through for 4', false, 'pass through', 'along', true, 4],
     ['pass through', true, 'pass through', 'along', true, 2],
@@ -162,13 +164,17 @@ RSpec.describe DancesHelper, type: :helper do
     ['partners balance & box the gnat',  true, 'box the gnat',  'partners',  true,  true,  8],
     ['* optional balance & box the gnat for *', nil, 'box the gnat',  '*',  '*',  '*',  '*'],
     ['ladles do si do once', true, 'do si do', 'ladles', true, 360, 8],
-    ['neighbors do si do twice for 16', false, 'do si do', 'neighbors', true, 720, 16],
+    ['ladles do si do twice', false, 'do si do', 'ladles', true, 720, 8],
+    ['neighbors do si do twice for 16', true, 'do si do', 'neighbors', true, 720, 16],
     ['* do si do * for *', nil, 'do si do', '*', '*', '*', '*'],
     ['shadows gyre 1½', true, 'gyre', 'shadows', true, 540, 8],
+    ['neighbors gyre ¾', false, 'gyre', 'neighbors', true, 270, 8],
     ['ones gyre left shoulders 1½', true, 'gyre', 'ones', false, 540, 8],
     ['* gyre * for *', nil, 'gyre', '*', '*', '*', '*'],
     ['facing star clockwise 3 places with gentlespoons putting their left hands in and backing up for 10',
     false, 'facing star', 'gentlespoons', true, 270, 10],
+    ['facing star clockwise 4 places with ladles putting their left hands in and backing up', false, 'facing star', 'ladles', true, 360, 8],
+    ['facing star counter-clockwise 3 places with ladles putting their right hands in and backing up', true, 'facing star', 'ladles', false, 270, 8],
     ['facing star * * places with * putting their * hands in and backing up for *', nil, 'facing star', '*', '*', '*', '*'],
     ['gentlespoons pass by right shoulders', true, 'pass by', 'gentlespoons', true, 2],
     ['neighbors pass by right shoulders', true, 'pass by', 'neighbors', true, 2],
@@ -182,18 +188,20 @@ RSpec.describe DancesHelper, type: :helper do
     ['zig left zag right, trailing two catching hands', true, 'zig zag', 'partners', true, 'allemande', 6],
     ['zig right zag left, trailing two catching hands, for 8', false, 'zig zag', 'partners', false, 'allemande', 8],
     ['* zig * zag * ending however for *', nil, 'zig zag', '*', '*', '*', '*'],
-    ['half poussette - ladles pull neighbors back then left for 8', false, 'poussette', 0.5, 'ladles', 'neighbors', true, 8], # all poussetts bad?!
-    ['half poussette - twos pull ones back then right for 6', false, 'poussette', 0.5, 'twos', 'ones', false, 6],
-    ['full poussette - twos pull ones back then right for 12', false, 'poussette', 1.0, 'twos', 'ones', false, 12],
-    ['full poussette - twos pull ones back then right for 16', false, 'poussette', 1.0, 'twos', 'ones', false, 16],
+    ['half poussette - ladles pull neighbors back then left for 8', true, 'poussette', 0.5, 'ladles', 'neighbors', true, 8],
+    ['half poussette - twos pull ones back then right for 6', true, 'poussette', 0.5, 'twos', 'ones', false, 6],
+    ['full poussette - twos pull ones back then right for 12', true, 'poussette', 1.0, 'twos', 'ones', false, 12],
+    ['full poussette - twos pull ones back then right for 16', true, 'poussette', 1.0, 'twos', 'ones', false, 16],
     ['* poussette - * pull * back then * for *', nil, 'poussette', '*', '*', '*', '*', '*'],
     ['square through two - partners balance & pull by right, then neighbors pull by left', true, 'square through', 'partners', 'neighbors', true, true, 180, 8],
-    ['square through three for 6 - same roles pull by right, then partners pull by left, then same roles pull by right', false, 'square through', 'same roles', 'partners', false, true, 270, 6],
+    ['square through three for 6 - same roles pull by right, then partners pull by left, then same roles pull by right', true, 'square through', 'same roles', 'partners', false, true, 270, 6],
     ['square through three for 8 - same roles pull by right, then partners pull by left, then same roles pull by right', false, 'square through', 'same roles', 'partners', false, true, 270, 8],
     ['square through four - shadows balance & pull by right, then neighbors pull by left, then repeat', true, 'square through', 'shadows', 'neighbors', true, true, 360, 16],
     ['square through * for * - * optional balance & pull by * hand, then * pull by *, yadda yadda yadda', nil, 'square through', '*', '*', '*', '*', '*', '*'],
     ['balance & box circulate - gentlespoons cross while ladles loop right', true, 'box circulate', 'gentlespoons', true, true, 8],
+    ['balance & box circulate - gentlespoons cross while ladles loop right for 4', false, 'box circulate', 'gentlespoons', true, true, 4],
     ['box circulate - ones cross while twos loop left for 2', false, 'box circulate', 'ones', false, false, 2],
+    ['box circulate - ones cross while twos loop left', true, 'box circulate', 'ones', false, false, 4],
     ['optional balance & box circulate - * cross while * loop * hand for *', nil, 'box circulate', '*', '*', '*', '*'],
     ['partners California twirl', true, 'California twirl', 'partners', 4],
     ['neighbors California twirl for 2', false, 'California twirl', 'neighbors', 2],
@@ -202,6 +210,7 @@ RSpec.describe DancesHelper, type: :helper do
     ['twos contra corners left hands for 10', false, 'contra corners', 'twos', 'left hands', 10],
     ['* contra corners * for *', nil, 'contra corners', '*', '*', '*'],
     ['slice left and straight back', true, 'slice', true, 'couple', 'straight', 8],
+    ['slice left for 4', true, 'slice', true, 'couple', 'none', 4], # don't love the 'for 4' here, but it's going away soon enough.
     ['slice right one dancer and diagonal back for 10', false, 'slice', false, 'dancer', 'diagonal', 10],
     ['slice * one * and * for *', nil, 'slice', '*', '*', '*', '*'],
     ['turn alone', true, 'turn alone', 'everyone', '', 4],
@@ -224,7 +233,7 @@ RSpec.describe DancesHelper, type: :helper do
     _render, good_beats, move, *pvalues = arr
     figure_text = figure_txt_for.call(move,*pvalues, JSLibFigure.default_dialect)
     unless nil == good_beats
-      it "thinks #{figure_text} #{pvalues.inspect} has #{good_beats ? 'good' : 'questionable'} beats" do
+      it "#{figure_text} #{pvalues.inspect} should have #{good_beats ? 'good' : 'questionable'} beats" do
         figure = {'move' => move, 'parameter_values' => pvalues}
         expect(JSLibFigure.good_beats?(figure)).to eq(good_beats)
       end
