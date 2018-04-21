@@ -780,7 +780,7 @@ function pullByDancersStringify(move, pvs, dialect) {
   }
 }
 
-function pullDancersChange(figure,index){
+function pullByDancersChange(figure,index){
   var pvs = figure.parameter_values;
   var [who, bal,  spin,  beats] = pvs;
   var balance_idx = 1;
@@ -795,7 +795,7 @@ function pullDancersChange(figure,index){
 
 defineFigure("pull by dancers",
              [param_subject_pairz, param_balance_false, param_right_hand_spin, param_beats_2],
-             {change: pullDancersChange, goodBeats: pullByDancersGoodBeats, stringify: pullDancersStringify});
+             {change: pullByDancersChange, goodBeats: pullByDancersGoodBeats, stringify: pullByDancersStringify});
 
 ////////////////////////////////////////////////
 // PULL BY DIRECTION                          //
