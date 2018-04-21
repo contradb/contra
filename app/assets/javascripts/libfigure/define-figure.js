@@ -176,11 +176,14 @@ function isAlias(move_string) {
   return defined_events[move_string].name !== move_string;
 }
 
+// you can also use 'figure.move' in js - this is a late addition because we need a function -dm 04-20-2018
+function move(figure) {
+  return figure.move;
+};
+
 function alias(figure) {
-  var move = figure.move;
-  if (!move) { return null; }    // empty figure
-  var alias_fn = defined_events[move].props.alias;
-  return alias_fn ? alias_fn(figure) : move;
+  var fn = moveProp(figure.move, 'alias', move);
+  return fn(figure);
 }
 
 // does not include itself
@@ -263,7 +266,6 @@ function aliasParameters(move){
   }
 }
 
-// TODO: call this more places
 function moveProp(move_or_nil, property_name, default_value) {
   if (move_or_nil) {
     var fig_def = defined_events[move_or_nil];
@@ -274,8 +276,9 @@ function moveProp(move_or_nil, property_name, default_value) {
 }
 
 function is_progression(move) {
-  var fig_def = defined_events[move];
-  return fig_def && fig_def.props && fig_def.props.progression || false;
+  // var fig_def = defined_events[move];
+  // return fig_def && fig_def.props && fig_def.props.progression || false;
+  return moveProp(move, 'progression', false);
 }
 
 function stringInDialect(str, dialect) {
