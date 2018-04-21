@@ -118,9 +118,11 @@ describe 'Editing dances', js: true do
       expect(page).to have_content('A2 16 neighbors balance & swing')
       expect(page).to have_content('B1 8 ladles allemande right 1½ 8 partners swing')
       expect(page).to have_content('B2 8 right left through 8 ladles chain')
+      expect(page).to_not have_css('.beats-column-danger')
       click_on('neighbors balance & box the gnat')
       select('10')
       expect(page).to have_content('A1 10 neighbors balance & box the gnat for 10')
+      expect(page).to have_css('.beats-column-danger', text: '10')
     end
   end
 
