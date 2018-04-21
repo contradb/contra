@@ -1012,9 +1012,9 @@ defineFigure("square through",
 
 function starGoodBeats(figure) {
   var [ right_hand,  angle,  wrist_grip,  beats] = figure.parameter_values;
-  var three_places_in_eight_beats = angle === 270 && beats === 8;
+  var three_places_in_about_eight_beats = angle === 270 && 6 <= beats && beats <= 8;
   var one_place_per_two_beats = angle / beats === 45;
-  return three_places_in_eight_beats || one_place_per_two_beats;
+  return three_places_in_about_eight_beats || one_place_per_two_beats;
 }
 
 function starStringify(move, pvs, dialect) {

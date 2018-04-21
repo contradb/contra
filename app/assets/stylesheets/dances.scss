@@ -129,30 +129,33 @@ tr.dance-show-long-figure td:first-child::after {
    content: "";
    display: inline-block;
    vertical-align: top;
-   min-height: 3.523em;
+   min-height: 3.523em;         /* double hight, approximately */
 }
+
+$a1b2beats-passive-border-color: #CCC;
+$a1b2beats-selected-border-color: #888;
 
 /* used in figure editor */
 .a1b2 {
   box-sizing: border-box;
   width: 1.4em;
-  border-left: 1px solid #CCC;
+  border-left: 1px solid $a1b2beats-passive-border-color;
 }
 .beats-column {
   box-sizing: border-box;
   width: 1.4em;
-  border-left: 1px solid #CCC;
-  border-right: 1px solid #CCC;
+  border-left: 1px solid $a1b2beats-passive-border-color;
+  border-right: 1px solid $a1b2beats-passive-border-color;
   &.beats-column-top {
-    border-top: 1px solid #CCC;
+    border-top: 1px solid $a1b2beats-passive-border-color;
     &.selected-figure {
-      border-top: 1px solid #888;
+      border-top: 1px solid $a1b2beats-selected-border-color;
     }
   }
   &.beats-column-bottom {
-    border-bottom: 1px solid #CCC;
+    border-bottom: 1px solid $a1b2beats-passive-border-color;
     &.selected-figure {
-      border-bottom: 1px solid #888;
+      border-bottom: 1px solid $a1b2beats-selected-border-color;
     }
   }
   text-align: right;
@@ -160,20 +163,20 @@ tr.dance-show-long-figure td:first-child::after {
   &.selected-figure {
     background-color: white;
     color: #333;
-    border-left: 1px solid #888;
-    border-right: 1px solid #888;
+    border-left: 1px solid $a1b2beats-selected-border-color;
+    border-right: 1px solid $a1b2beats-selected-border-color;
   }
   &.beats-column-danger {
-    color: #E11;
+    color: #F47;                /* red */
     font-weight: bold;
-    font-style: italic;
+    text-decoration: underline;
   }
 }
 .new-a1b2 {
-  border-top: 1px solid #CCC;
+  border-top: 1px solid $a1b2beats-passive-border-color;
 }
 .last-a1b2 {
-  border-bottom: 1px solid #CCC;
+  border-bottom: 1px solid $a1b2beats-passive-border-color;
 }
 
 .figure-edit-text-and-menu-dots {
