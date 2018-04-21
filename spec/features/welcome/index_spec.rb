@@ -546,13 +546,13 @@ describe 'Welcome page', js: true do
           choose('*')
           expect(page).to have_content(do_si_do.title)
           expect(page).to have_content(see_saw.title)
-          expect(page).to have_content("Showing dances with a * do si do * for *")
+          expect(page).to have_content("Showing dances with a * do si do *")
           expect(find(".figure-filter-move").value).to eq('do si do')
           choose('left')
           expect(page).to have_content(see_saw.title)
           expect(page).to_not have_content(do_si_do.title)
           expect(find(".figure-filter-move").value).to eq('see saw')
-          expect(page).to have_content("Showing dances with a * see saw * for *")
+          expect(page).to have_content("Showing dances with a * see saw *")
         end
       end
     end
@@ -634,7 +634,7 @@ describe 'Welcome page', js: true do
         expect(page).to have_content('Box the Gnat Contra')
         expect(page).to_not have_content('The Rendevouz')
         expect(page).to_not have_content('Call Me')
-        expect(page).to have_content('Showing dances with a swing and a ladles allemande right 1½ for *.')
+        expect(page).to have_content('Showing dances with a swing and a ladles allemande right 1½.')
       end
     end
 

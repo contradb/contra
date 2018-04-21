@@ -33,7 +33,7 @@ function stringParamHalfSashay (value) {
 var param_half_sashay_false = {name: "½sash", value: false, ui: chooser_boolean, string: stringParamHalfSashay};
 
 function stringParamBeatsNotN (n) {
-  return function (value) {return value && (value != n) ? "for "+value : "";};
+  return function (value) {return value.toString();};
 }
 var param_beats   = {name: "beats",           ui: chooser_beats, string: stringParamBeatsNotN(-100)}; // always display beats
 var param_beats_0 = {name: "beats", value: 0, ui: chooser_beats, string: stringParamBeatsNotN(0)};
