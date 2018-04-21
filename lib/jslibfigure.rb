@@ -152,6 +152,10 @@ module JSLibFigure
     self.eval("stringInDialect(#{s.inspect},#{dialect.to_json})")
   end
 
+  def self.good_beats?(figure)
+    self.eval("goodBeats(#{figure.to_json})")
+  end
+
   JSLIBFIGURE_FILES = %w(polyfill.js util.js move.js chooser.js param.js define-figure.js figure.es6 after-figure.js dance.js)
 
   private

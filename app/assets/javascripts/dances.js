@@ -15,8 +15,22 @@ function classesForFigureA1B2(figures, index, open_indicies, is_top) {
   var is_open = open_indicies.indexOf(index) >= 0;
   var start_classes = is_top && indexStartsNewA1B2(figures,index) ? ['new-a1b2'] : [];
   var end_classes = indexEndsDanceSquarely(figures, index) && !(is_open && is_top) ? ['last-a1b2'] : [];
-  var selected_classes = is_open ? ['selected-figure'] : []
-  return start_classes.concat(end_classes).concat(selected_classes).join(' ');
+  return start_classes.concat(end_classes).join(' ');
+}
+
+function classesForFigureBeats(figures, index, open_indicies, is_top) {
+  var is_open = open_indicies.indexOf(index) >= 0;
+  var next_is_open = open_indicies.indexOf(index+1) >= 0;
+  var top_bottom_classes;
+  if (is_top) {
+    top_bottom_classes = is_open || next_is_open ? ['beats-column-top'] : ['beats-column-top', 'beats-column-bottom'];
+  } else {
+    // is_bottom and presumably is_open
+    top_bottom_classes = ['beats-column-bottom'];
+  }
+  var selected_classes = is_open ? ['selected-figure'] : [];
+  var dangerous_beats_classes = goodBeatsWithContext(figures, index) ?  [] : ['beats-column-danger'];
+  return selected_classes.concat(top_bottom_classes, dangerous_beats_classes).join(' ');
 }
 
 function indexStartsNewA1B2(figures, index) {
@@ -134,6 +148,8 @@ function menuMoveLabel(from,to) {
     $scope.sumBeats = sumBeats;
     $scope.labelForBeats = labelForBeats;
     $scope.classesForFigureA1B2 = classesForFigureA1B2;
+    $scope.classesForFigureBeats = classesForFigureBeats;
+    $scope.figureBeats = figureBeats;
 
     // had to memoize moveTermsAndSubstitutionsForSelect because the move select menus were blanking after accordioning
     // https://stackoverflow.com/questions/17116114/how-to-troubleshoot-angular-10-digest-iterations-reached-error/17116322#17116322

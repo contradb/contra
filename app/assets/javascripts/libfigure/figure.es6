@@ -10,10 +10,18 @@
 // ALLEMANDE                                  //
 ////////////////////////////////////////////////
 
-defineFigure("allemande", [param_subject_pairz,
-                           param_xhand_spin,
-                           param_once_around,
-                           param_beats_8]);
+
+function allemandeGoodBeats(figure) {
+  var [who,dir,angle,beats] = figure.parameter_values;
+  var angle_over_beats = angle/beats;
+  return (beats > 0) && (360/8 <= angle_over_beats) && (angle_over_beats <= 540/8);
+}
+
+defineFigure("allemande", [param_subject_pairz, 
+                           param_xhand_spin, 
+                           param_once_around, 
+                           param_beats_8],
+             {goodBeats: allemandeGoodBeats});
 
 ////////////////////////////////////////////////
 // ALLEMANDE ORBIT                            //
@@ -99,6 +107,11 @@ function boxCirculateChange(figure,index) {
   }
 }
 
+function boxCirculateGoodBeats(figure) {
+  var [subject, bal, spin, beats] = figure.parameter_values;
+  return beats === (bal ? 8 : 4);
+}
+
 function boxCirculateStringify(move, pvs, dialect) {
   var [subject, bal, spin, beats] = pvs;
   var [ssubject, sbal, sspin, sbeats] = parameter_strings(move, pvs, dialect);
@@ -112,7 +125,7 @@ function boxCirculateStringify(move, pvs, dialect) {
 
 defineFigure("box circulate",
              [param_subject_pair, param_balance_true, param_right_hand_spin, param_beats_8],
-             {change: boxCirculateChange, stringify: boxCirculateStringify});
+             {change: boxCirculateChange, stringify: boxCirculateStringify, goodBeats: boxCirculateGoodBeats});
 
 ////////////////////////////////////////////////
 // BOX THE GNAT                               //
@@ -136,6 +149,11 @@ function boxTheGnatChange(figure,index) {
   }
 }
 
+function boxTheGnatGoodBeats(figure) {
+  var [who, balance, right_hand, beats] = figure.parameter_values;
+  return beats === (balance ? 8 : 4);
+}
+
 function boxTheGnatStringify(move, pvs, dialect) {
   var [who,balance,hand,beats] = pvs;
   var [swho,sbalance,shand,sbeats] = parameter_strings(move, pvs, dialect);
@@ -150,7 +168,7 @@ function boxTheGnatStringify(move, pvs, dialect) {
 
 defineFigure("box the gnat",
              [param_subject_pairz, param_balance_false, param_right_hand_spin, param_beats_4],
-             {change: boxTheGnatChange, stringify: boxTheGnatStringify, alias: boxTheGnatAlias});
+             {change: boxTheGnatChange, stringify: boxTheGnatStringify, alias: boxTheGnatAlias, goodBeats: boxTheGnatGoodBeats});
 defineFigureAlias( "swat the flea", "box the gnat",
                    [null, null, param_left_hand_spin, null]);
 
@@ -188,8 +206,16 @@ defineFigure("chain",
 // CIRCLE                                     //
 ////////////////////////////////////////////////
 
+function circleGoodBeats(figure) {
+  var [dir, angle, beats] = figure.parameter_values;
+  var three_places_in_about_eight_beats = angle === 270 && 6 <= beats && beats <= 8;
+  var one_place_per_two_beats = angle / beats === 45;
+  return three_places_in_about_eight_beats || one_place_per_two_beats;
+}
+
 defineFigure("circle",
-             [param_spin_left,  param_four_places, param_beats_8]);
+             [param_spin_left,  param_four_places, param_beats_8],
+             {goodBeats: circleGoodBeats});
 
 ////////////////////////////////////////////////
 // CONTRA CORNERS                             //
@@ -246,7 +272,7 @@ function customStringify(move, pvs, dialect) {
   return words(tcustom,sbeats);
 }
 
-defineFigure("custom", [param_custom_figure, param_beats_8], {stringify: customStringify});
+defineFigure("custom", [param_custom_figure, param_beats_8], {stringify: customStringify, goodBeats: function(meh) {return true;}});
 
 ////////////////////////////////////////////////
 // DO SI DO (and see saw)                     //
@@ -255,6 +281,12 @@ defineFigure("custom", [param_custom_figure, param_beats_8], {stringify: customS
 function doSiDoAlias(figure) {
   var right_shoulder = figure.parameter_values[1];
   return right_shoulder ? "do si do" : "see saw";
+}
+
+function doSiDoGoodBeats(figure) {
+  var [who, shoulder, angle, beats] = figure.parameter_values;
+  var angle_over_beats = angle/beats;
+  return (beats > 0) && (360/8 <= angle_over_beats) && (angle_over_beats <= 540/8);
 }
 
 function doSiDoStringify(move, pvs, dialect) {
@@ -266,7 +298,7 @@ function doSiDoStringify(move, pvs, dialect) {
 
 defineFigure("do si do",
              [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8],
-             {stringify: doSiDoStringify, alias: doSiDoAlias});
+             {stringify: doSiDoStringify, alias: doSiDoAlias, goodBeats: doSiDoGoodBeats});
 
 defineFigureAlias("see saw", "do si do", [null, param_left_shoulder_spin, null, null]);
 
@@ -351,6 +383,11 @@ function figure8Change(figure,index) {
   }
 }
 
+function figure8GoodBeats(figure) {
+  var [subject, lead, half_or_full, beats] = figure.parameter_values;
+  return beats === half_or_full * 16;
+}
+
 function figure8Stringify(move, pvs, dialect) {
   var [ subject,  lead, half_or_full, beats] = pvs;
   var [ssubject, slead, shalf_or_full, sbeats] = parameter_strings(move, pvs, dialect);
@@ -366,7 +403,7 @@ function figure8Stringify(move, pvs, dialect) {
 
 defineFigure("figure 8",
              [param_subject_pair_ones, param_lead_dancer_l1, param_half_or_full_half, param_beats_8],
-             {stringify: figure8Stringify, change: figure8Change});
+             {stringify: figure8Stringify, change: figure8Change, goodBeats: figure8GoodBeats});
 
 ////////////////////////////////////////////////
 // GATE                                       //
@@ -404,6 +441,11 @@ function giveAndTakeChange(figure,index) {
   }
 }
 
+function giveAndTakeGoodBeats(figure) {
+  var [who, whom, give, beats] = figure.parameter_values;
+  return beats === (give ? 8 : 4);
+}
+
 function giveAndTakeStringify(move, pvs, dialect) {
   var [who,   whom,  give,  beats] = pvs;
   var [swho,  swhom, sgive, sbeats] = parameter_strings(move, pvs, dialect);
@@ -418,11 +460,16 @@ defineFigure("give & take",
               param_object_hetero_partners,
               param_give,
               param_beats_8],
-             {stringify: giveAndTakeStringify, change: giveAndTakeChange});
+             {stringify: giveAndTakeStringify, change: giveAndTakeChange, goodBeats: giveAndTakeGoodBeats});
 
 ////////////////////////////////////////////////
 // FACING STAR (formerly gyre star)           //
 ////////////////////////////////////////////////
+
+function facingStarGoodBeats(figure) {
+  var [who, turn, places, beats] = figure.parameter_values;
+  return 270/8 === places/beats; // floating point division equality should be okay because it's power-of-2.
+}
 
 function facingStarStringify(move, pvs, dialect) {
   var [ who,  turn,  places,  beats] = pvs;
@@ -437,7 +484,7 @@ defineFigure("facing star",
               param_spin_clockwise,
               param_places,
               param_beats_8],
-             {stringify: facingStarStringify});
+             {stringify: facingStarStringify, goodBeats: facingStarGoodBeats});
 
 defineRelatedMove2Way('facing star', 'gyre');
 defineRelatedMove2Way('facing star', 'star');
@@ -450,6 +497,12 @@ function gyreSubstitutionPrintsRightShoulder(smove) {
   // print the right shoulder unless it's a single word starting with 'g', or it starts and ends with 'face'.
   // \S = non-whitespace
   return ! (smove.match(/^g\S+$/i) || smove.match(/^face.*face$/i));
+}
+
+function gyreGoodBeats(figure) {
+  var [who, shoulder, rots, beats] = figure.parameter_values;
+  var angle_over_beats = rots/beats;
+  return (beats > 0) && (360/8 <= angle_over_beats) && (angle_over_beats <= 540/8);
 }
 
 function gyreStringify(move, pvs, dialect) {
@@ -466,7 +519,7 @@ defineFigure("gyre",
               param_right_shoulder_spin,
               param_once_around,
               param_beats_8],
-             {stringify: gyreStringify});
+             {stringify: gyreStringify, goodBeats: gyreGoodBeats});
 
 ////////////////////////////////////////////////
 // HEY                                        //
@@ -481,6 +534,11 @@ function heyChange(figure,index) {
   if (half_or_full_idx === index && (half_or_full * beats === 8)) {
     pvs[beats_idx] = half_or_full * 16;
   }
+}
+
+function heyGoodBeats(figure) {
+  var [who, half, dir, beats] = figure.parameter_values;
+  return beats === half * 16;
 }
 
 function heyStringify(move, pvs, dialect) {
@@ -498,8 +556,7 @@ defineFigure("hey",
               param_half_or_full_half_chatty_half,
               param_set_direction_across,
               param_beats_8],
-             {stringify: heyStringify, change: heyChange});
-
+             {stringify: heyStringify, change: heyChange, goodBeats: heyGoodBeats});
 
 ////////////////////////////////////////////////
 // LONG LINES                                 //
@@ -514,6 +571,11 @@ function longLinesChange(figure,index) {
   }
 }
 
+function longLinesGoodBeats(figure) {
+  var [back, beats] = figure.parameter_values;
+  return beats === (back ? 8 : 4);
+}
+
 function longLinesStringify(move, pvs, dialect) {
   var [ back,  beats] = pvs;
   var [sback, sbeats] = parameter_strings(move, pvs, dialect);
@@ -526,11 +588,18 @@ function longLinesStringify(move, pvs, dialect) {
 
 defineFigure("long lines",
              [param_go_back, param_beats_8],
-             {stringify: longLinesStringify, change: longLinesChange});
+             {stringify: longLinesStringify, change: longLinesChange, goodBeats: longLinesGoodBeats});
 
 ////////////////////////////////////////////////
 // MAD ROBIN                                  //
 ////////////////////////////////////////////////
+
+function madRobinGoodBeats(figure) {
+  var [role, angle, beats] = figure.parameter_values;
+  if (0 === beats) {return false;}
+  var angle_per_beat = angle / beats;
+  return (360/8 <= angle_per_beat) && (angle_per_beat <= 360/6);
+}
 
 function madRobinStringify(move, pvs, dialect) {
   var [ role,  angle,  beats] = pvs;
@@ -542,7 +611,7 @@ function madRobinStringify(move, pvs, dialect) {
 
 defineFigure("mad robin",
              [param_subject_pair, param_once_around, param_beats],
-             {stringify: madRobinStringify});
+             {stringify: madRobinStringify, goodBeats: madRobinGoodBeats});
 
 ////////////////////////////////////////////////
 // OCEAN WAVE                                 //
@@ -555,6 +624,11 @@ function oceanWaveChange(figure, index) {
   if (index === bal_index) {
     pvs[beats_index] = pvs[bal_index] ? 8 : 4;
   }
+}
+
+function oceanWaveGoodBeats(figure) {
+  var [bal, beats] = figure.parameter_values;
+  return beats === (bal ? 8 : 4);
 }
 
 function oceanWaveStringify(move, pvs, dialect) {
@@ -571,7 +645,9 @@ function oceanWaveStringify(move, pvs, dialect) {
   }
 }
 
-defineFigure("ocean wave", [param_balance_false, param_beats_4], {stringify: oceanWaveStringify, change: oceanWaveChange});
+defineFigure("ocean wave",
+             [param_balance_false, param_beats_4],
+             {stringify: oceanWaveStringify, change: oceanWaveChange, goodBeats: oceanWaveGoodBeats});
 
 ////////////////////////////////////////////////
 // PASS BY                                    //
@@ -604,6 +680,11 @@ defineRelatedMove2Way('pass by', 'pass through');
 // PETRONELLA                                 //
 ////////////////////////////////////////////////
 
+function petronellaGoodBeats(figure) {
+  var [balance, beats] = figure.parameter_values;
+  return beats === (balance ? 8 : 4);
+}
+
 function petronellaStringify(move, pvs, dialect) {
   var [balance, beats] = pvs;
   var [sbalance, sbeats] = parameter_strings(move, pvs, dialect);
@@ -616,12 +697,19 @@ function petronellaStringify(move, pvs, dialect) {
   }
 }
 
-defineFigure("petronella", [param_balance_true, param_beats_8], {stringify: petronellaStringify});
-// supported on request: turning to the left
+defineFigure("petronella",
+             [param_balance_true, param_beats_8],
+             {stringify: petronellaStringify, goodBeats: petronellaGoodBeats});
 
 ////////////////////////////////////////////////
 // POUSSETTE                                  //
 ////////////////////////////////////////////////
+
+function poussetteGoodBeats(figure) {
+  var [half_or_full, who, whom, turn, beats] = figure.parameter_values;
+  var beats_per_half_poussette = beats / (2 * half_or_full);
+  return (6 <= beats_per_half_poussette) && (beats_per_half_poussette <= 8);
+}
 
 function poussetteStringify(move, pvs, dialect) {
   var [ half_or_full,  who,  whom,  turn, beats] = pvs;
@@ -645,7 +733,8 @@ defineFigure("poussette",
               param_subject_pair,
               param_object_pairs_or_ones_or_twos,
               param_spin, param_beats],
-             {stringify: poussetteStringify});
+             {stringify: poussetteStringify,
+              goodBeats: poussetteGoodBeats});
 
 ////////////////////////////////////////////////
 // PROMENADE                                  //
@@ -673,7 +762,12 @@ defineFigure("progress", [param_beats_0], {progression: true});
 // PULL BY DANCERS                            //
 ////////////////////////////////////////////////
 
-function pullDancersStringify(move, pvs, dialect) {
+function pullByDancersGoodBeats(figure) {
+  var [who, bal, spin, beats] = figure.parameter_values;
+  return beats === (bal ? 8 : 2);
+}
+
+function pullByDancersStringify(move, pvs, dialect) {
   var [ who,  bal,  spin,  beats] = pvs;
   var [swho, sbal, sspin, sbeats] = parameter_strings(move, pvs, dialect);
   var pmove = moveSubstitution(move, dialect);
@@ -686,7 +780,7 @@ function pullDancersStringify(move, pvs, dialect) {
   }
 }
 
-function pullDancersChange(figure,index){
+function pullByDancersChange(figure,index){
   var pvs = figure.parameter_values;
   var [who, bal,  spin,  beats] = pvs;
   var balance_idx = 1;
@@ -701,11 +795,16 @@ function pullDancersChange(figure,index){
 
 defineFigure("pull by dancers",
              [param_subject_pairz, param_balance_false, param_right_hand_spin, param_beats_2],
-             {change: pullDancersChange, stringify: pullDancersStringify});
+             {change: pullByDancersChange, goodBeats: pullByDancersGoodBeats, stringify: pullByDancersStringify});
 
 ////////////////////////////////////////////////
 // PULL BY DIRECTION                          //
 ////////////////////////////////////////////////
+
+function pullByDirectionGoodBeats(figure) {
+  var [bal, dir, spin, beats] = figure.parameter_values;
+  return beats === (bal ? 8 : 2);
+}
 
 function pullByDirectionStringify(move, pvs, dialect) {
   var [ bal,  dir,  spin,  beats] = pvs;
@@ -740,7 +839,7 @@ function pullByDirectionChange(figure,index){
 
 defineFigure("pull by direction",
              [param_balance_false, param_set_direction_along, param_right_hand_spin, param_beats_2],
-             {change: pullByDirectionChange, stringify: pullByDirectionStringify});
+             {change: pullByDirectionChange, goodBeats: pullByDirectionGoodBeats, stringify: pullByDirectionStringify});
 
 defineRelatedMove2Way('pull by dancers', 'pull by direction');
 
@@ -782,6 +881,11 @@ function roryOMooreChange(figure,index) {
   }
 }
 
+function roryOMooreGoodBeats(figure) {
+  var [who, balance, dir, beats] = figure.parameter_values;
+  return beats === (balance ? 8 : 4);
+}
+
 function roryOMooreStringify(move, pvs, dialect) {
   var [ who,  balance,  dir,  beats] = pvs;
   var [swho, sbalance, sdir, sbeats] = parameter_strings(move, pvs, dialect);
@@ -797,15 +901,36 @@ function roryOMooreStringify(move, pvs, dialect) {
 
 defineFigure("Rory O'Moore",
              [param_subject_pairc_or_everyone, param_balance_true, param_slide_right, param_beats_8],
-             {stringify: roryOMooreStringify, change: roryOMooreChange});
+             {stringify: roryOMooreStringify, change: roryOMooreChange, goodBeats: roryOMooreGoodBeats});
 
 ////////////////////////////////////////////////
 // SLICE                                      //
 ////////////////////////////////////////////////
 
+function sliceChange(figure, index) {
+  var pvs = figure.parameter_values;
+  var [dir, increment, rtrn, beats] = pvs;
+  const rtrn_index = 2;
+  const beats_index = 3;
+  if (index === rtrn_index) {
+    var none = rtrn === 'none';
+    if (none && beats === 8)  {
+      pvs[beats_index] = 4;
+    } else if (!none && beats === 4) {
+      pvs[beats_index] = 8;
+    }
+  }
+}
+
+function sliceGoodBeats(figure) {
+  var [dir, increment, rtrn, beats] = figure.parameter_values;
+  var no_return = rtrn === 'none';
+  return beats === (no_return ? 4 : 8);
+}
+
 defineFigure("slice",
              [param_slide_left, param_slice_increment, param_slice_return, param_beats_8],
-             {labels: ["slice","by","return"]});
+             {labels: ["slice","by","return"], change: sliceChange, goodBeats: sliceGoodBeats});
 
 ////////////////////////////////////////////////
 // SLIDE ALONG SET -- progression, couples    //
@@ -814,7 +939,7 @@ defineFigure("slice",
 function slideAlongSetStringify(move, pvs, dialect) {
   var [ dir,  beats] = pvs;
   var [sdir, sbeats] = parameter_strings(move, pvs, dialect);
-  return words('slide', sdir, 'along set', sbeats, 'to new neighbors');
+  return words('slide', sdir, 'along set', sbeats, 'to new neighbors'); // TODO: use dialect for "new neighbors"
 }
 
 defineFigure("slide along set",
@@ -852,6 +977,12 @@ function squareThroughChangeBeats(figure, index) {
   if (changed_balance_or_places) {
     pvs[beats_idx] = squareThroughExpectedBeats(pvs);
   }
+}
+
+function squareThroughGoodBeats(figure) {
+  var pvs = figure.parameter_values;
+  var beats = pvs[5];
+  return squareThroughExpectedBeats(pvs) === beats;
 }
 
 function squareThroughExpectedBeats(pvs) {
@@ -898,12 +1029,20 @@ defineFigure("square through",
               param_beats_16],
              {stringify: squareThroughStringify,
               change: squareThroughChange,
-              labels: [,,'odd bal']
+              labels: [,,'odd bal'],
+              goodBeats: squareThroughGoodBeats
              });
 
 ////////////////////////////////////////////////
 // STAR                                       //
 ////////////////////////////////////////////////
+
+function starGoodBeats(figure) {
+  var [ right_hand,  angle,  wrist_grip,  beats] = figure.parameter_values;
+  var three_places_in_about_eight_beats = angle === 270 && 6 <= beats && beats <= 8;
+  var one_place_per_two_beats = angle / beats === 45;
+  return three_places_in_about_eight_beats || one_place_per_two_beats;
+}
 
 function starStringify(move, pvs, dialect) {
   var [ right_hand,  places,  wrist_grip,  beats] = pvs;
@@ -918,11 +1057,16 @@ function starStringify(move, pvs, dialect) {
 
 defineFigure("star",
              [param_xhand_spin, param_four_places, param_star_grip, param_beats_8],
-             {stringify: starStringify});
+             {stringify: starStringify, goodBeats: starGoodBeats});
 
 ////////////////////////////////////////////////
 // STAR PROMENADE                             //
 ////////////////////////////////////////////////
+
+function starPromenadeGoodBeats(figure) {
+  var [who, dir, angle, beats] = figure.parameter_values;
+  return 180/4 === angle/beats;
+}
 
 function starPromenadeStringify(move, pvs, dialect) {
   var [ who,  dir,  angle,  beats] = pvs;
@@ -933,7 +1077,7 @@ function starPromenadeStringify(move, pvs, dialect) {
 
 defineFigure("star promenade",
              [param_subject_pair_gentlespoons, param_xhand_spin, param_half_around, param_beats_4],
-             {stringify: starPromenadeStringify});
+             {stringify: starPromenadeStringify, goodBeats: starPromenadeGoodBeats});
 
 defineRelatedMove2Way('star promenade', 'allemande');
 defineRelatedMove2Way('star promenade', 'promenade');
@@ -958,6 +1102,16 @@ function swingChange(figure,index) {
   }
 }
 
+function swingGoodBeats(figure) {
+  var pvs = figure.parameter_values;
+  var [who,prefix,beats] = pvs;
+  if ('none' === prefix) {
+    return (8 <= beats) && (beats <= 16);
+  } else {
+    return (14 <= beats) && (beats <= 16);
+  }
+}
+
 function swingStringify(move, pvs, dialect) {
   var [who,prefix,beats] = pvs;
   var [swho,sprefix,sbeats] = parameter_strings(move, pvs, dialect);
@@ -975,7 +1129,7 @@ function swingStringify(move, pvs, dialect) {
 
 defineFigure("swing",
              [param_subject_pairz_partners, param_swing_prefix_none, param_beats_8],
-             {change: swingChange, stringify: swingStringify, alias: swingAlias});
+             {change: swingChange, stringify: swingStringify, alias: swingAlias, goodBeats: swingGoodBeats, alignBeatsEnd: 16});
 
 defineFigureAlias("meltdown swing", "swing",
                   [null, param_swing_prefix_meltdown, null]);
@@ -993,7 +1147,7 @@ function turnAloneStringify(move, pvs, dialect) {
 
 defineFigure("turn alone",
              [param_subject_pair_or_everyone, param_custom_figure, param_beats_4],
-             {stringify: turnAloneStringify});
+             {stringify: turnAloneStringify, goodBeats: goodBeatsMinMaxFn(0, 4)});
 
 ///////////////////////////////////////////////
 // ZIG ZAG                                    //

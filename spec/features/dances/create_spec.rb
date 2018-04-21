@@ -26,39 +26,6 @@ describe 'Creating dances', js: true do
     end
   end
 
-  it 'has working A1/B2 labels' do
-    with_login do
-      visit '/dances/new'
-      expect(page).to have_current_path(new_dance_path)
-      fill_in 'dance_title', with: 'Call Me'
-      fill_in 'dance[choreographer_name]', with: 'Cary Ravitz'
-      fill_in 'dance[start_type]', with: 'improper'
-      
-      expect(page).to have_css('#figure-0')
-      find('#figure-0').click
-      7.times { click_button 'Remove' }
-
-      click_button 'Save Dance'
-
-      expect(page).to have_css('h1', text: 'Call Me')
-      expect(page).to have_content('A1')
-      expect(page).to_not have_content('A2')
-      expect(page).to_not have_content('B1')
-      expect(page).to_not have_content('B2')
-
-      click_on 'Edit'
-
-      2.times { click_button 'Add' }
-
-      click_button 'Save Dance'
-
-      expect(page).to have_content('A1')
-      expect(page).to have_content('A2')
-      expect(page).to_not have_content('B1')
-      expect(page).to_not have_content('B2')
-    end
-  end
-
   pending 'tests choreographer auto-complete'
 
   it 'records figures' do
@@ -128,17 +95,17 @@ describe 'Creating dances', js: true do
         find('#figure-menu-4').click # 'circle to the left 5 places'
         click_on 'Up 2'
         expect(page).to have_text ['A1',
-                                   'circle left 1 place',
-                                   'circle left 2 places',
+                                   '8 circle left 1 place',
+                                   '8 circle left 2 places',
                                    'A2',
-                                   'circle left 5 places',
-                                   'circle left 3 places',
+                                   '8 circle left 5 places',
+                                   '8 circle left 3 places',
                                    'B1',
-                                   'circle left 4 places',
-                                   'circle left 6 places',
+                                   '8 circle left 4 places',
+                                   '8 circle left 6 places',
                                    'B2',
-                                   'circle left 7 places',
-                                   'circle left 8 places'].join(' ')
+                                   '8 circle left 7 places',
+                                   '8 circle left 8 places'].join(' ')
       end
     end
 
@@ -161,9 +128,9 @@ describe 'Creating dances', js: true do
         find('#figure-0').click
         select('chain')
         click_button('Add')
-        expect(page).to have_content("A1 ladles chain empty figure move note")
+        expect(page).to have_content("A1 8 ladles chain 8 empty figure move note")
         click_button('Add')
-        expect(page).to have_content("A1 ladles chain empty figure A2 empty figure move note")
+        expect(page).to have_content("A1 8 ladles chain 8 empty figure A2 8 empty figure move note")
       end
     end
 
@@ -174,7 +141,7 @@ describe 'Creating dances', js: true do
         select('chain')
         click_link('ladles chain')
         click_button('Add')
-        expect(page).to have_content("A1 empty figure move note ladles chain")
+        expect(page).to have_content("A1 8 empty figure move note 8 ladles chain")
       end
     end
   end
@@ -199,10 +166,10 @@ describe 'Creating dances', js: true do
         select('do si do')
         find('#figure-0').click
         select('chain')
-        expect(page).to have_content('A1 ladles chain')
+        expect(page).to have_content('A1 8 ladles chain')
         click_button('Remove')
         expect(page).to_not have_content('ladies chain')
-        expect(page).to have_content('A1 ____ do si do once move who')
+        expect(page).to have_content('A1 8 ____ do si do once move who')
       end
     end
 
@@ -212,10 +179,10 @@ describe 'Creating dances', js: true do
         expect(page).to have_css('#figure-7')
         find('#figure-7').click
         select('do si do')
-        expect(page).to have_content('B2 empty figure ____ do si do')
+        expect(page).to have_content('B2 8 empty figure 8 ____ do si do')
         click_button('Remove')
         expect(page).to_not have_content('do si do')
-        expect(page).to have_content('B2 empty figure move')
+        expect(page).to have_content('B2 8 empty figure move')
       end
     end
 
@@ -246,13 +213,13 @@ describe 'Creating dances', js: true do
         end
         select('custom')
         click_link('custom')
-        expect(page).to have_content('A1 custom empty figure A2 empty figure Notes')
+        expect(page).to have_content('A1 8 custom 8 empty figure A2 8 empty figure Notes')
         click_button('Rotate')
-        expect(page).to have_content('A1 empty figure custom A2 empty figure Notes')
+        expect(page).to have_content('A1 8 empty figure 8 custom A2 8 empty figure Notes')
         click_button('Rotate')
-        expect(page).to have_content('A1 empty figure empty figure A2 custom Notes')
+        expect(page).to have_content('A1 8 empty figure 8 empty figure A2 8 custom Notes')
         click_button('Rotate')
-        expect(page).to have_content('A1 custom empty figure A2 empty figure Notes')
+        expect(page).to have_content('A1 8 custom 8 empty figure A2 8 empty figure Notes')
       end
     end
   end

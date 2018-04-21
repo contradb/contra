@@ -1,4 +1,3 @@
-
 @media only screen {
   .dance-editor .figures-edit {
     width: 100%;
@@ -83,7 +82,7 @@ input.dance-title-edit,
 
 .figure-value-setter-div {
   display: inline-block;
- font-weight: normal;
+  font-weight: normal;
 
   .radio-tweaks {
     margin-right: 1em;
@@ -115,8 +114,7 @@ input.dance-title-edit,
   display: none;
 }
 
-/////////////////////////////////////////////////////////////////////////
-// below here predates new figure editor-dm 10-01-2016
+/* used in dance show */
 .a1b1 {
   background-color: #F3F3F3;
   width: 1.4em;
@@ -124,19 +122,61 @@ input.dance-title-edit,
 .a2b2 {
   width: 1.4em;
 }
+.dance-show-beats {
+  text-align: right;
+}
+tr.dance-show-long-figure td:first-child::after {
+   content: "";
+   display: inline-block;
+   vertical-align: top;
+   min-height: 3.523em;         /* double hight, approximately */
+}
+
+$a1b2beats-passive-border-color: #CCC;
+$a1b2beats-selected-border-color: #888;
+
+/* used in figure editor */
 .a1b2 {
+  box-sizing: border-box;
   width: 1.4em;
-  border-left: thin solid #bbb;
-  border-right: thin solid #bbb;
+  border-left: 1px solid $a1b2beats-passive-border-color;
+}
+.beats-column {
+  box-sizing: border-box;
+  width: 1.4em;
+  border-left: 1px solid $a1b2beats-passive-border-color;
+  border-right: 1px solid $a1b2beats-passive-border-color;
+  &.beats-column-top {
+    border-top: 1px solid $a1b2beats-passive-border-color;
+    &.selected-figure {
+      border-top: 1px solid $a1b2beats-selected-border-color;
+    }
+  }
+  &.beats-column-bottom {
+    border-bottom: 1px solid $a1b2beats-passive-border-color;
+    &.selected-figure {
+      border-bottom: 1px solid $a1b2beats-selected-border-color;
+    }
+  }
+  text-align: right;
+  padding-right: 0.14em;
   &.selected-figure {
-    background-image: linear-gradient(to right, #E0E0FF, #FFFFFF);
+    background-color: white;
+    color: #333;
+    border-left: 1px solid $a1b2beats-selected-border-color;
+    border-right: 1px solid $a1b2beats-selected-border-color;
+  }
+  &.beats-column-danger {
+    color: #F47;                /* red */
+    font-weight: bold;
+    text-decoration: underline;
   }
 }
 .new-a1b2 {
-  border-top: thin solid #bbb;
+  border-top: 1px solid $a1b2beats-passive-border-color;
 }
 .last-a1b2 {
-  border-bottom: thin solid #bbb;
+  border-bottom: 1px solid $a1b2beats-passive-border-color;
 }
 
 .figure-edit-text-and-menu-dots {

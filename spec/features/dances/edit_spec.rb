@@ -110,6 +110,43 @@ describe 'Editing dances', js: true do
     end
   end
 
+  it "has working A1B2 and beat labels" do
+    with_login do |user|
+      dance = FactoryGirl.create(:box_the_gnat_contra, user: user)
+      visit edit_dance_path dance.id
+      expect(page).to have_content('A1 8 neighbors balance & box the gnat 8 partners balance & swat the flea')
+      expect(page).to have_content('A2 16 neighbors balance & swing')
+      expect(page).to have_content('B1 8 ladles allemande right 1½ 8 partners swing')
+      expect(page).to have_content('B2 8 right left through 8 ladles chain')
+      expect(page).to_not have_css('.beats-column-danger')
+      click_on('neighbors balance & box the gnat')
+      select('10')
+      expect(page).to have_content('A1 10 neighbors balance & box the gnat for 10')
+      expect(page).to have_css('.beats-column-danger', text: '10')
+    end
+  end
+
+  describe "swing alignment to beats" do
+    it "likes aligned swings" do
+      with_login do |user|
+        dance = FactoryGirl.create(:dance_with_a_swing, user: user)
+        visit edit_dance_path dance.id
+        expect(page).to have_css('.beats-column', text: 16)
+        expect(page).to_not have_css('.beats-column-danger')
+      end
+    end
+
+    it "warns about non-aligned swings" do
+      with_login do |user|
+        dance = FactoryGirl.create(:dance_with_a_swing, user: user)
+        dance.figures.first['parameter_values'][-1] = 8; # change beats to 8
+        dance.update(figures: dance.figures)
+        visit edit_dance_path dance.id
+        expect(page).to have_css('.beats-column.beats-column-danger', text: 8)
+      end
+    end
+  end
+
   describe 'dynamic shadow/1st shadow and next neighbor/2nd neighbor behavior' do
     it 'rewrites figure texts' do
       with_login do |user|
@@ -117,17 +154,17 @@ describe 'Editing dances', js: true do
         visit edit_dance_path dance.id
         expect(page).to_not have_content('next neighbors')
         expect(page).to have_content('2nd neighbors')
-        expect(page).to have_content('B2 1st shadows swing')
+        expect(page).to have_content('B2 8 1st shadows swing')
         click_link('3rd neighbors swing')
         select('partners')
         expect(page).to have_content('next neighbors')
         expect(page).to_not have_content('2nd neighbors')
         click_link('2nd shadows swing')
         select('partners')
-        expect(page).to_not have_content('B2 1st shadows swing')
-        expect(page).to have_content('B2 shadows swing')
+        expect(page).to_not have_content('B2 8 1st shadows swing')
+        expect(page).to have_content('B2 8 shadows swing')
         select('2nd shadows')
-        expect(page).to have_content('B2 1st shadows swing')
+        expect(page).to have_content('B2 8 1st shadows swing')
       end
     end
 

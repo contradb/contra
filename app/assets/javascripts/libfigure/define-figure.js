@@ -35,8 +35,7 @@ function figureToString(f,dialect) {
     var main = func(alias(f), f.parameter_values, dialect);
     var note = f.note;
     return note ? words(main,stringInDialect(note, dialect)) : main;
-  }
-  else if (f.move) {
+  } else if (f.move) {
     return "rogue figure '"+f.move+"'!";
   } else {
     return "empty figure";
@@ -141,7 +140,15 @@ var defined_events = {};
 ////////////////////////////////////////////////
 
 function defineFigure(name, parameters, props) {
-  defined_events[name] = {name: name, parameters: parameters, props: (props || {})};
+  var props2 = libfigureObjectCopy(props || {});
+  if (!props2.goodBeats) {
+    var beats_index = find_parameter_index_by_name("beats",parameters);
+    var beats_default = parameters[beats_index].value;
+    if (beats_default !== undefined) {
+      props2.goodBeats = goodBeatsEqualFn(beats_default);
+    }
+  }
+  defined_events[name] = {name: name, parameters: parameters, props: props2};
 }
 
 function defineFigureAlias(alias_name, canonical_name, parameter_defaults) {
@@ -169,11 +176,14 @@ function isAlias(move_string) {
   return defined_events[move_string].name !== move_string;
 }
 
+// you can also use 'figure.move' in js - this is a late addition because we need a function -dm 04-20-2018
+function move(figure) {
+  return figure.move;
+};
+
 function alias(figure) {
-  var move = figure.move;
-  if (!move) { return null; }    // empty figure
-  var alias_fn = defined_events[move].props.alias;
-  return alias_fn ? alias_fn(figure) : move;
+  var fn = moveProp(figure.move, 'alias', move);
+  return fn(figure);
 }
 
 // does not include itself
@@ -256,9 +266,19 @@ function aliasParameters(move){
   }
 }
 
+function moveProp(move_or_nil, property_name, default_value) {
+  if (move_or_nil) {
+    var fig_def = defined_events[move_or_nil];
+    return fig_def && fig_def.props[property_name] || default_value;
+  } else {
+    return default_value;
+  }
+}
+
 function is_progression(move) {
-  var fig_def = defined_events[move];
-  return fig_def && fig_def.props && fig_def.props.progression || false;
+  // var fig_def = defined_events[move];
+  // return fig_def && fig_def.props && fig_def.props.progression || false;
+  return moveProp(move, 'progression', false);
 }
 
 function stringInDialect(str, dialect) {
@@ -279,3 +299,34 @@ function dialectRegExp(dialect) {
 function parenthesize(term) {
   return '('+term+')';
 }
+
+////
+
+function goodBeatsWithContext(figures, index) {
+  var figure = figures[index];
+  if (0 !== sumBeats(figures,index+1) % moveProp(figure.move, 'alignBeatsEnd', 1)) {
+    return false;
+  } else {
+    return goodBeats(figure);
+  }
+}
+
+function goodBeats(figure) {
+  var fn = moveProp(figure.move, 'goodBeats', defaultGoodBeats);
+  return fn(figure);
+}
+
+function goodBeatsMinMaxFn(min, max) {
+  return function(figure) {
+    var beats = figureBeats(figure);
+    return (min <= beats) && (beats <= max);
+  };
+}
+
+function goodBeatsEqualFn(beats) {
+  return function(figure) {
+    return beats === figureBeats(figure);
+  };
+}
+
+var defaultGoodBeats = goodBeatsEqualFn(8);
