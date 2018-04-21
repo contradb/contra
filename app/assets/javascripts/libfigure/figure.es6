@@ -207,9 +207,9 @@ defineFigure("chain",
 
 function circleGoodBeats(figure) {
   var [dir, angle, beats] = figure.parameter_values;
-  var three_places_in_eight_beats = angle === 270 && beats === 8;
+  var three_places_in_about_eight_beats = angle === 270 && 6 <= beats && beats <= 8;
   var one_place_per_two_beats = angle / beats === 45;
-  return three_places_in_eight_beats || one_place_per_two_beats;
+  return three_places_in_about_eight_beats || one_place_per_two_beats;
 }
 
 defineFigure("circle",
@@ -537,7 +537,7 @@ function heyChange(figure,index) {
 
 function heyGoodBeats(figure) {
   var [who, half, dir, beats] = figure.parameter_values;
-  return beats / half === 16;
+  return beats === half * 16;
 }
 
 function heyStringify(move, pvs, dialect) {
@@ -593,6 +593,13 @@ defineFigure("long lines",
 // MAD ROBIN                                  //
 ////////////////////////////////////////////////
 
+function madRobinGoodBeats(figure) {
+  var [role, angle, beats] = figure.parameter_values;
+  if (0 === beats) {return false;}
+  var angle_per_beat = angle / beats;
+  return (360/8 <= angle_per_beat) && (angle_per_beat <= 360/6);
+}
+
 function madRobinStringify(move, pvs, dialect) {
   var [ role,  angle,  beats] = pvs;
   var [srole, sangle, sbeats] = parameter_strings(move, pvs, dialect);
@@ -603,7 +610,7 @@ function madRobinStringify(move, pvs, dialect) {
 
 defineFigure("mad robin",
              [param_subject_pair, param_once_around, param_beats],
-             {stringify: madRobinStringify, goodBeats: goodBeatsMinMaxFn(6, 8)});
+             {stringify: madRobinStringify, goodBeats: madRobinGoodBeats});
 
 ////////////////////////////////////////////////
 // OCEAN WAVE                                 //
@@ -782,7 +789,7 @@ defineFigure("pull by dancers",
 
 function pullByDirectionGoodBeats(figure) {
   var [bal, dir, spin, beats] = figure.parameter_values;
-  return ((beats == 8) && bal) || ((beats == 2) && !bal);
+  return beats === (bal ? 8 : 2);
 }
 
 function pullByDirectionStringify(move, pvs, dialect) {

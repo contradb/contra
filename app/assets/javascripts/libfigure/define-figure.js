@@ -319,7 +319,7 @@ function goodBeats(figure) {
 function goodBeatsMinMaxFn(min, max) {
   return function(figure) {
     var beats = figureBeats(figure);
-    return (min <= beats) && (max <= 16);
+    return (min <= beats) && (beats <= max);
   };
 }
 
