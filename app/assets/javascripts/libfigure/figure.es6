@@ -1,7 +1,7 @@
-//  _____ ___ ____ _   _ ____  _____ 
+//  _____ ___ ____ _   _ ____  _____
 // |  ___|_ _/ ___| | | |  _ \| ____|
-// | |_   | | |  _| | | | |_) |  _|  
-// |  _|  | | |_| | |_| |  _ <| |___ 
+// | |_   | | |  _| | | | |_) |  _|
+// |  _|  | | |_| | |_| |  _ <| |___
 // |_|   |___\____|\___/|_| \_\_____|
 //
 // keep it sorted alphabetically
@@ -10,9 +10,9 @@
 // ALLEMANDE                                  //
 ////////////////////////////////////////////////
 
-defineFigure("allemande", [param_subject_pairz, 
-                           param_xhand_spin, 
-                           param_once_around, 
+defineFigure("allemande", [param_subject_pairz,
+                           param_xhand_spin,
+                           param_once_around,
                            param_beats_8]);
 
 ////////////////////////////////////////////////
@@ -358,7 +358,7 @@ function figure8Stringify(move, pvs, dialect) {
                      'second gentlespoon': 'gentlespoon',
                      'first ladle': false,
                      'second ladle': false};
-  var tlead = (subject === 'ones' || subject === 'twos') ? dancer_role[lead] : slead; 
+  var tlead = (subject === 'ones' || subject === 'twos') ? dancer_role[lead] : slead;
   var the_rest = words(tlead, tlead && ('leading' + comma_unless_blank(sbeats)), sbeats);
   var smove = moveSubstitution(move, dialect);
   return words(ssubject, shalf_or_full, smove+comma_unless_blank(the_rest), the_rest);
@@ -686,9 +686,22 @@ function pullDancersStringify(move, pvs, dialect) {
   }
 }
 
+function pullDancersChange(figure,index){
+  var pvs = figure.parameter_values;
+  var [who, bal,  spin,  beats] = pvs;
+  var balance_idx = 1;
+  var beats_idx = 3;
+  //modify beats to match whether balance checkbox is checked
+  if (bal && beats === 2 && index === balance_idx) {
+    pvs[beats_idx] = 8;
+  } else if (!bal && index === balance_idx) {
+    pvs[beats_idx] = 2;
+  }
+}
+
 defineFigure("pull by dancers",
              [param_subject_pairz, param_balance_false, param_right_hand_spin, param_beats_2],
-             {stringify: pullDancersStringify});
+             {change: pullDancersChange, stringify: pullDancersStringify});
 
 ////////////////////////////////////////////////
 // PULL BY DIRECTION                          //
@@ -712,9 +725,22 @@ function pullByDirectionStringify(move, pvs, dialect) {
   return standard_beats ? w : words(w, 'for', beats);
 }
 
+function pullByDirectionChange(figure,index){
+  var pvs = figure.parameter_values;
+  var [bal,  dir,  spin,  beats] = pvs;
+  var balance_idx = 0;
+  var beats_idx = 3;
+  //modify beats to match whether balance checkbox is checked
+  if (bal && beats === 2 && index === balance_idx) {
+    pvs[beats_idx] = 8;
+  } else if (!bal && index === balance_idx) {
+    pvs[beats_idx] = 2;
+  }
+}
+
 defineFigure("pull by direction",
              [param_balance_false, param_set_direction_along, param_right_hand_spin, param_beats_2],
-             {stringify: pullByDirectionStringify});
+             {change: pullByDirectionChange, stringify: pullByDirectionStringify});
 
 defineRelatedMove2Way('pull by dancers', 'pull by direction');
 
@@ -823,7 +849,7 @@ function squareThroughChangeBeats(figure, index) {
   const balance_idx = 2;
   const angle_idx = 4;
   const changed_balance_or_places = (index === balance_idx) || (index === angle_idx);
-  if (changed_balance_or_places) { 
+  if (changed_balance_or_places) {
     pvs[beats_idx] = squareThroughExpectedBeats(pvs);
   }
 }
