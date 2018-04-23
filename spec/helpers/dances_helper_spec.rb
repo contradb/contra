@@ -177,9 +177,9 @@ RSpec.describe DancesHelper, type: :helper do
     ['gentlespoons pass by right shoulders', true, 'pass by', 'gentlespoons', true, 2],
     ['neighbors pass by right shoulders', true, 'pass by', 'neighbors', true, 2],
     ['* pass by * shoulders', nil, 'pass by', '*', '*', '*'],
-    ['ones figure 8', true, 'figure 8', 'ones', 'first ladle', 0.5, 8],
+    ['ones half figure 8', true, 'figure 8', 'ones', 'first ladle', 0.5, 8],
     ['gentlespoons full figure 8, first gentlespoon leading', true, 'figure 8', 'gentlespoons', 'first gentlespoon', 1.0, 16], # change
-    ['twos figure 8, gentlespoon leading', true, 'figure 8', 'twos', 'second gentlespoon', 0.5, 8],
+    ['twos half figure 8, gentlespoon leading', true, 'figure 8', 'twos', 'second gentlespoon', 0.5, 8],
     ['* * figure 8, * leading', nil, 'figure 8', '*', '*', '*', '*'],
     ['zig left zag right into a ring', true, 'zig zag', 'partners', true, 'ring', 6],
     ['neighbors zig left zag right into a ring', false, 'zig zag', 'neighbors', true, 'ring', 8],

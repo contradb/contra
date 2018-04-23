@@ -396,7 +396,7 @@ function figure8Stringify(move, pvs, dialect) {
 }
 
 defineFigure("figure 8",
-             [param_subject_pair_ones, param_lead_dancer_l1, param_half_or_full_half, param_beats_8],
+             [param_subject_pair_ones, param_lead_dancer_l1, param_half_or_full_half_chatty_max, param_beats_8],
              {stringify: figure8Stringify, change: figure8Change, goodBeats: figure8GoodBeats});
 
 ////////////////////////////////////////////////
