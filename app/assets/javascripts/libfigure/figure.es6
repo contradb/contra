@@ -385,11 +385,11 @@ function figure8GoodBeats(figure) {
 function figure8Stringify(move, pvs, dialect) {
   var [ subject,  lead, half_or_full, beats] = pvs;
   var [ssubject, slead, shalf_or_full, sbeats] = parameter_strings(move, pvs, dialect);
-  var dancer_role = {'first gentlespoon': 'gentlespoon',
-                     'second gentlespoon': 'gentlespoon',
+  var dancer_role = {'first gentlespoon': 'first gentlespoon', // wanted: => 'gentlespoon', see #348
+                     'second gentlespoon': 'second gentlespoon', // wanted: => 'gentlespoon', see #348
                      'first ladle': false,
                      'second ladle': false};
-  var tlead = (subject === 'ones' || subject === 'twos') ? dancer_role[lead] : slead;
+  var tlead = (subject === 'ones' || subject === 'twos') ? dancerSubstitution(dancer_role[lead], dialect) : slead;
   var the_rest = words(tlead, tlead && 'leading');
   var smove = moveSubstitution(move, dialect);
   return words(ssubject, shalf_or_full, smove+comma_unless_blank(the_rest), the_rest);

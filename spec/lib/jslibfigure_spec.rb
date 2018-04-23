@@ -288,7 +288,22 @@ RSpec.describe JSLibFigure do
     expect(JSLibFigure.dancers.sort).to eq(expected.sort)
   end
 
-  it 'string_in_dialect' do
-    expect(JSLibFigure.string_in_dialect("gentlespoons spoon gyre", JSLibFigure.test_dialect)).to eq("larks spoon darcy")
+  describe 'string_in_dialect' do
+    let (:input) {"first ladles first ladle ladles ladle"}
+    let (:output) {"W1s W1 women woman"}
+
+    it 'basically works' do
+      expect(JSLibFigure.string_in_dialect("gentlespoons spoon gyre", JSLibFigure.test_dialect)).to eq("larks spoon darcy")
+    end
+
+    it 'picks longest match on ascending substitution length' do
+      dialect = {"moves" => {}, "dancers" => {"ladle" => "woman", "ladles" => "women", "first ladle" => "W1"}}
+      expect(JSLibFigure.string_in_dialect(input, dialect)).to eq(output)
+    end
+
+    it 'picks longest match on descending substitution length' do
+      dialect = {"moves" => {}, "dancers" => {"first ladle" => "W1", "ladles" => "women", "ladle" => "woman"}}
+      expect(JSLibFigure.string_in_dialect(input, dialect)).to eq(output)
+    end
   end
 end
