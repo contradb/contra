@@ -1014,7 +1014,7 @@ function starStringify(move, pvs, dialect) {
   if ('' === wrist_grip) {
     return words(smove, sright_hand, splaces);
   } else {
-    return words(smove, sright_hand, splaces, comma, swrist_grip);
+    return words(smove, sright_hand, '-', swrist_grip, '-', splaces);
   }
 }
 
