@@ -64,9 +64,6 @@ function figureGenericStringify(move, parameter_values, dialect) {
   if (is_progression(move)) {
     acc += ' ' + progressionString;
   }
-  if ((beats_index >= 0) && (parameter_values[beats_index].value != ps[beats_index].value)) {
-    acc +=  ' ' + pstrings[beats_index];
-  }
   return acc;
 }
 

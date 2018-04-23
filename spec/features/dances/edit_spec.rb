@@ -121,7 +121,7 @@ describe 'Editing dances', js: true do
       expect(page).to_not have_css('.beats-column-danger')
       click_on('neighbors balance & box the gnat')
       select('10')
-      expect(page).to have_content('A1 10 neighbors balance & box the gnat for 10')
+      expect(page).to have_content('A1 10 neighbors balance & box the gnat')
       expect(page).to have_css('.beats-column-danger', text: '10')
     end
   end

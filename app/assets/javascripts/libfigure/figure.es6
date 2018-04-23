@@ -35,7 +35,7 @@ function allemandeOrbitStringify(move, pvs, dialect) {
                sinner_angle, "around",
                "while the", invertPair(who, dialect), "orbit",
                sopposite_dir,
-               souter_angle, "around", sbeats);
+               souter_angle, "around");
 }
 
 defineFigure("allemande orbit",
@@ -60,7 +60,7 @@ function archAndDiveStringify(move, pvs, dialect) {
   var [swho,  sbeats] = parameter_strings(move, pvs, dialect);
   // var smove = moveSubstitution(move, dialect);
   var twho = invertPair(who, dialect);
-  return words(swho, 'arch', twho, 'dive', sbeats);
+  return words(swho, 'arch', twho, 'dive');
 }
 
 defineFigure("arch & dive",
@@ -76,7 +76,7 @@ function balanceStringify(move, pvs, dialect) {
   var [who,beats] = pvs;
   var [swho,sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
-  return words(('everyone' == who) ? '' : swho, smove, sbeats);
+  return words(('everyone' == who) ? '' : swho, smove);
 }
 
 defineFigure("balance",
@@ -116,11 +116,9 @@ function boxCirculateStringify(move, pvs, dialect) {
   var [subject, bal, spin, beats] = pvs;
   var [ssubject, sbal, sspin, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
-  var expected_beats = bal ? 8 : 4;
-  var tbeats = (beats === expected_beats) ? false : ('for '+ beats);
   var second_ssubject = invertPair(subject, dialect);
   var details = words(ssubject, 'cross while', second_ssubject, 'loop', sspin);
-  return words(sbal, smove, '-', details, tbeats);
+  return words(sbal, smove, '-', details);
 }
 
 defineFigure("box circulate",
@@ -157,13 +155,8 @@ function boxTheGnatGoodBeats(figure) {
 function boxTheGnatStringify(move, pvs, dialect) {
   var [who,balance,hand,beats] = pvs;
   var [swho,sbalance,shand,sbeats] = parameter_strings(move, pvs, dialect);
-  var standard_beats = ((beats == 8) && balance) || ((beats == 4) && !balance);
   var smove = moveSubstitution(move, dialect);
-  if (standard_beats) {
-    return words(swho, sbalance, smove);
-  } else {
-    return words(swho, sbalance, smove, 'for', beats);
-  }
+  return words(swho, sbalance, smove);
 }
 
 defineFigure("box the gnat",
@@ -195,7 +188,7 @@ function chainStringify(move, pvs, dialect) {
   var [ who,  diag,  beats] = pvs;
   var [swho, sdiag, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
-  return words(sdiag, swho, smove, sbeats);
+  return words(sdiag, swho, smove);
 }
 
 defineFigure("chain",
@@ -248,9 +241,9 @@ function crossTrailsStringify(move, pvs, dialect) {
   var sfirst_dir = first_dir ? (first_dir + ' the set') :  '____';
   var ssecond_dir = {across: 'along the set', along: 'across the set', '*':'* the set'}[first_dir] || '____';
   var second_shoulder = '*'===first_shoulder ? '*' : !first_shoulder;
-  var ssecond_shoulder = stringParamShoulder(second_shoulder) + (sbeats.length ? ',' : '');
+  var ssecond_shoulder = stringParamShoulder(second_shoulder);
   var smove = moveSubstitution(move, dialect);
-  return words(smove, '-',  sfirst_who, sfirst_dir, sfirst_shoulder+',', ssecond_who, ssecond_dir, ssecond_shoulder, sbeats);
+  return words(smove, '-',  sfirst_who, sfirst_dir, sfirst_shoulder+',', ssecond_who, ssecond_dir, ssecond_shoulder);
 }
 
 defineFigure("cross trails",
@@ -269,7 +262,7 @@ function customStringify(move, pvs, dialect) {
   // remove the word 'custom'
   var [scustom,sbeats] = parameter_strings(move, pvs, dialect);
   var tcustom = (scustom.trim()==='' || scustom==='*') ? moveSubstitution(move, dialect) : scustom;
-  return words(tcustom,sbeats);
+  return words(tcustom);
 }
 
 defineFigure("custom", [param_custom_figure, param_beats_8], {stringify: customStringify, goodBeats: function(meh) {return true;}});
@@ -290,10 +283,11 @@ function doSiDoGoodBeats(figure) {
 }
 
 function doSiDoStringify(move, pvs, dialect) {
-  var [who,   _shoulder,  rots,  beats] = pvs;
-  var [swho, _sshoulder, srots, sbeats] = parameter_strings(move, pvs, dialect);
+  var [who,   _shoulder,  rots,  _beats] = pvs;
+  var [swho, _sshoulder, srots, _sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
-  return words(swho, smove, srots, sbeats);
+  // don't say the shoulder
+  return words(swho, smove, srots);
 }
 
 defineFigure("do si do",
@@ -343,9 +337,9 @@ function upOrDownTheHallStringify(move, pvs, dialect) {
   }
 
   if (ender === '') {
-    return words(twho, tmove, sfacing, sbeats);
+    return words(twho, tmove, sfacing);
   } else {
-    return words(twho, tmove, sfacing, 'and', sender, sbeats);
+    return words(twho, tmove, sfacing, 'and', sender);
   }
 }
 
@@ -391,12 +385,12 @@ function figure8GoodBeats(figure) {
 function figure8Stringify(move, pvs, dialect) {
   var [ subject,  lead, half_or_full, beats] = pvs;
   var [ssubject, slead, shalf_or_full, sbeats] = parameter_strings(move, pvs, dialect);
-  var dancer_role = {'first gentlespoon': 'gentlespoon',
-                     'second gentlespoon': 'gentlespoon',
+  var dancer_role = {'first gentlespoon': 'first gentlespoon', // wanted: => 'gentlespoon', see #348
+                     'second gentlespoon': 'second gentlespoon', // wanted: => 'gentlespoon', see #348
                      'first ladle': false,
                      'second ladle': false};
-  var tlead = (subject === 'ones' || subject === 'twos') ? dancer_role[lead] : slead;
-  var the_rest = words(tlead, tlead && ('leading' + comma_unless_blank(sbeats)), sbeats);
+  var tlead = (subject === 'ones' || subject === 'twos') ? dancerSubstitution(dancer_role[lead], dialect) : slead;
+  var the_rest = words(tlead, tlead && 'leading');
   var smove = moveSubstitution(move, dialect);
   return words(ssubject, shalf_or_full, smove+comma_unless_blank(the_rest), the_rest);
 }
@@ -413,7 +407,7 @@ function gateStringify(move, pvs, dialect) {
   var [ subject,  object,  gate_face,  beats] = pvs;
   var [ssubject, sobject, sgate_face, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
-  return words(ssubject, smove, sobject, 'to face', sgate_face, sbeats);
+  return words(ssubject, smove, sobject, 'to face', sgate_face);
 }
 
 // 'ones gate twos' means: ones, extend a hand to twos - twos walk
@@ -449,10 +443,8 @@ function giveAndTakeGoodBeats(figure) {
 function giveAndTakeStringify(move, pvs, dialect) {
   var [who,   whom,  give,  beats] = pvs;
   var [swho,  swhom, sgive, sbeats] = parameter_strings(move, pvs, dialect);
-  var default_beats = give ? 8 : 4;
-  var final_sbeats = default_beats === beats ? '' : words('for', beats);
   var smove = give ? (give==='*' ? 'give? & take' : moveSubstitution(move, dialect)) : 'take';
-  return words(swho, smove, swhom, final_sbeats);
+  return words(swho, smove, swhom);
 }
 
 defineFigure("give & take",
@@ -476,7 +468,7 @@ function facingStarStringify(move, pvs, dialect) {
   var [swho, sturn, splaces, sbeats] = parameter_strings(move, pvs, dialect);
   var shand = turn ? ('*'===turn ? '*': 'left') : 'right';
   var smove = moveSubstitution(move, dialect);
-  return words(smove, sturn, splaces, 'with', swho, 'putting their', shand, 'hands in and backing up', sbeats);
+  return words(smove, sturn, splaces, 'with', swho, 'putting their', shand, 'hands in and backing up');
 }
 
 defineFigure("facing star",
@@ -511,7 +503,7 @@ function gyreStringify(move, pvs, dialect) {
   var smove = moveSubstitution(move, dialect);
   var leftShoulder = !shoulder;
   var printShoulder = leftShoulder || gyreSubstitutionPrintsRightShoulder(smove);
-  return words(swho, smove, printShoulder ? sshoulder : '', srots, sbeats);
+  return words(swho, smove, printShoulder ? sshoulder : '', srots);
 }
 
 defineFigure("gyre",
@@ -546,9 +538,8 @@ function heyStringify(move, pvs, dialect) {
   var [leader, shalf, sdir, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
   var sdir2 = dir === 'across' ? '' : sdir;
-  var tbeats = beats / half === 16 ? '' : ('for '+beats);
   var thalf = (1 === half) ? false : shalf;
-  return words(sdir2, thalf, smove, comma, leader, "lead", tbeats);
+  return words(sdir2, thalf, smove, comma, leader, "lead");
 }
 
 defineFigure("hey",
@@ -580,10 +571,8 @@ function longLinesStringify(move, pvs, dialect) {
   var [ back,  beats] = pvs;
   var [sback, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
-  var expected_beats = back ? 8 : 4;
-  var tbeats = (beats === expected_beats) ? '' : ('for '+beats);
   var directions = back ? (back==='*' ? 'forward & maybe back' : 'forward & back') : 'forward';
-  return words(smove, directions, tbeats);
+  return words(smove, directions);
 }
 
 defineFigure("long lines",
@@ -606,7 +595,7 @@ function madRobinStringify(move, pvs, dialect) {
   var [srole, sangle, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
   var tangle = angle!==360 && (sangle + ' around');
-  return words(smove, tangle, comma, srole, "in front", sbeats);
+  return words(smove, tangle, comma, srole, "in front");
 }
 
 defineFigure("mad robin",
@@ -637,12 +626,7 @@ function oceanWaveStringify(move, pvs, dialect) {
   var smove = moveSubstitution(move, dialect);
   var tmove = (smove === move) ? 'to '+smove : smove;
   var tbal = bal ? ('*' === bal ? '& maybe balance the wave' : '& balance the wave') : '';
-  var balance_beats = 4 * (bal === true);
-  if (balance_beats + 4 == beats) {
-    return words(tmove, tbal);
-  } else {
-    return words(tmove, tbal, 'for', beats);
-  }
+  return words(tmove, tbal);
 }
 
 defineFigure("ocean wave",
@@ -667,7 +651,7 @@ function passThroughStringify(move, pvs, dialect) {
   var [sdir, sspin, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
   var left_shoulder_maybe = (spin && spin !== '*') ? '' : sspin;
-  return words(smove, left_shoulder_maybe, sdir, sbeats);
+  return words(smove, left_shoulder_maybe, sdir);
 }
 
 defineFigure("pass through",
@@ -689,12 +673,7 @@ function petronellaStringify(move, pvs, dialect) {
   var [balance, beats] = pvs;
   var [sbalance, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
-  var balance_beats = 4 * !!balance;
-  if (balance_beats + 4 == beats) {
-    return words(sbalance, smove);
-  } else {
-    return words(sbalance, smove, 'for', beats);
-  }
+  return words(sbalance, smove);
 }
 
 defineFigure("petronella",
@@ -725,7 +704,7 @@ function poussetteStringify(move, pvs, dialect) {
   } else {
     tturn = 'back then right';
   }
-  return words(shalf_or_full, smove, '-', swho, 'pull', swhom, tturn, sbeats);
+  return words(shalf_or_full, smove, '-', swho, 'pull', swhom, tturn);
 }
 
 defineFigure("poussette",
@@ -745,7 +724,7 @@ function promenadeStringify(move, pvs, dialect) {
   var [ssubject, sdir, sspin, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
   var tspin = spin ? (spin==='*' ? 'on the *' : 'on the left') : (dir === 'along' ? 'on the right' : '');
-  return words(ssubject, smove, sdir, tspin, sbeats);
+  return words(ssubject, smove, sdir, tspin);
 }
 
 defineFigure("promenade",
@@ -772,12 +751,7 @@ function pullByDancersStringify(move, pvs, dialect) {
   var [swho, sbal, sspin, sbeats] = parameter_strings(move, pvs, dialect);
   var pmove = moveSubstitution(move, dialect);
   var smove = pmove === move ? 'pull by' : pmove;
-  var standard_beats = ((beats == 8) && bal) || ((beats == 2) && !bal);
-  if (standard_beats) {
-    return words(swho, sbal, smove, sspin);
-  } else {
-    return words(swho, sbal, smove, sspin, 'for', beats);
-  }
+  return words(swho, sbal, smove, sspin);
 }
 
 function pullByDancersChange(figure,index){
@@ -812,16 +786,13 @@ function pullByDirectionStringify(move, pvs, dialect) {
   var pmove = moveSubstitution(move, dialect);
   var smove = pmove === move ? 'pull by' : pmove;
   var is_diagonal = dir === 'left diagonal' || dir === 'right diagonal';
-  var w;
   if (!is_diagonal) {
-    w = words(sbal, smove, sspin, sdir);
+    return words(sbal, smove, sspin, sdir);
   } else if (('right diagonal' === dir) === spin) {
-    w = words(sbal, smove, sdir); // "pull by left diagonal" left hand is implicit - this makes XYZ a non-mouthful
+    return words(sbal, smove, sdir); // "pull by left diagonal" left hand is implicit - this makes XYZ a non-mouthful
   } else {
-    w = words(sbal, smove, sspin, 'hand', dir); // "pull by left hand right diagonal" - this deserves to be a mouthful
+    return words(sbal, smove, sspin, 'hand', dir); // "pull by left hand right diagonal" - this deserves to be a mouthful
   }
-  var standard_beats = ((beats == 8) && bal) || ((beats == 2) && !bal);
-  return standard_beats ? w : words(w, 'for', beats);
 }
 
 function pullByDirectionChange(figure,index){
@@ -851,7 +822,7 @@ function rightLeftThroughStringify(move, pvs, dialect) {
   var [ diag,  beats] = pvs;
   var [sdiag, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
-  return words(sdiag, smove, sbeats);
+  return words(sdiag, smove);
 }
 
 defineFigure("right left through",
@@ -890,13 +861,8 @@ function roryOMooreStringify(move, pvs, dialect) {
   var [ who,  balance,  dir,  beats] = pvs;
   var [swho, sbalance, sdir, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
-  var standard_beats = ((beats == 8) && balance) || ((beats == 4) && !balance);
   var swho2 = (who === 'everyone') ? '' : swho;
-  if (standard_beats) {
-    return words(sbalance, swho2, smove, sdir);
-  } else {
-    return words(sbalance, swho2, smove, sdir, 'for', beats);
-  }
+  return words(sbalance, swho2, smove, sdir);
 }
 
 defineFigure("Rory O'Moore",
@@ -939,7 +905,7 @@ defineFigure("slice",
 function slideAlongSetStringify(move, pvs, dialect) {
   var [ dir,  beats] = pvs;
   var [sdir, sbeats] = parameter_strings(move, pvs, dialect);
-  return words('slide', sdir, 'along set', sbeats, 'to new neighbors'); // TODO: use dialect for "new neighbors"
+  return words('slide', sdir, 'along set', 'to new neighbors');
 }
 
 defineFigure("slide along set",
@@ -1006,17 +972,14 @@ function squareThroughStringify(move, pvs, dialect) {
   var smove = moveSubstitution(move, dialect);
   var shand2 = hand ? ('*'===hand ? '*' : 'left') : 'right';
   var places = '*'===angle ? '*' : (angle / 90);
-  var beats_unexpected = beats !== squareThroughExpectedBeats(pvs);
-  var beats_not_divisible_by_four = 0 !== beats % 4;
-  var tbeats = (beats_unexpected || beats_not_divisible_by_four) && sbeats;
   var placewords = {2: 'two', 3: 'three', 4: 'four', '*': '*'}[places] ||
         throw_up('unexpected number of places to squareThroughStringify');
 
   if (3===places) {
-    return words(smove, placewords, tbeats, '-', ssubject1, sbal, 'pull by', shand, comma, 'then', ssubject2, 'pull by', shand2, comma, 'then', ssubject1, sbal, 'pull by', shand);
+    return words(smove, placewords, '-', ssubject1, sbal, 'pull by', shand, comma, 'then', ssubject2, 'pull by', shand2, comma, 'then', ssubject1, sbal, 'pull by', shand);
   } else {
     var yadda_text = {2: false, 4: 'then repeat', '*': 'yadda yadda yadda'}[places];
-    return words(smove, placewords, tbeats, '-', ssubject1, sbal, 'pull by', shand, comma, 'then', ssubject2, 'pull by', shand2, yadda_text && comma, yadda_text);
+    return words(smove, placewords, '-', ssubject1, sbal, 'pull by', shand, comma, 'then', ssubject2, 'pull by', shand2, yadda_text && comma, yadda_text);
   }
 }
 
@@ -1049,9 +1012,9 @@ function starStringify(move, pvs, dialect) {
   var [sright_hand, splaces, swrist_grip, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
   if ('' === wrist_grip) {
-    return words(smove, sright_hand, splaces, sbeats);
+    return words(smove, sright_hand, splaces);
   } else {
-    return words(smove, sright_hand, splaces, comma, swrist_grip, (beats!==8) && comma, sbeats);
+    return words(smove, sright_hand, splaces, comma, swrist_grip);
   }
 }
 
@@ -1072,7 +1035,7 @@ function starPromenadeStringify(move, pvs, dialect) {
   var [ who,  dir,  angle,  beats] = pvs;
   var [swho, sdir, sangle, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
-  return words((who != 'gentlespoons') && swho, smove, sdir, sangle, sbeats);
+  return words((who != 'gentlespoons') && swho, smove, sdir, sangle);
 }
 
 defineFigure("star promenade",
@@ -1118,13 +1081,8 @@ function swingStringify(move, pvs, dialect) {
   var no_prefix = prefix === 'none';
   var bprefix = prefix === 'balance' ? 'balance &' : (prefix === '*' ? '*' : '');
   var smove = moveSubstitution(move, dialect);
-  var standard_beats = beats === 16 || (beats === 8 && no_prefix);
   var slong = ((beats === 16) && no_prefix) ? 'long' : '';
-  if (standard_beats) {
-    return words(swho, bprefix, slong, smove);
-  } else {
-    return words(swho, bprefix, slong, smove, 'for', beats);
-  }
+  return words(swho, bprefix, slong, smove);
 }
 
 defineFigure("swing",
@@ -1142,7 +1100,7 @@ function turnAloneStringify(move, pvs, dialect) {
   var [who,custom,beats] = pvs;
   var [swho,scustom,sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
-  return words(('everyone' !== who) && swho, smove, scustom, sbeats);
+  return words(('everyone' !== who) && swho, smove, scustom);
 }
 
 defineFigure("turn alone",
@@ -1160,7 +1118,7 @@ function zigZagStringify(move, pvs, dialect) {
   var comma_maybe = (ender === 'allemande') && comma;
   var return_sspin = spin ? ('*'===spin ? '*' : 'right') : 'left';
   var twho = who === 'partners' ? '' : swho;
-  return words(twho, 'zig', sspin, 'zag', return_sspin, comma_maybe, sender, (sbeats !== '') && comma_maybe, sbeats);
+  return words(twho, 'zig', sspin, 'zag', return_sspin, comma_maybe, sender);
 }
 
 defineFigure("zig zag",
