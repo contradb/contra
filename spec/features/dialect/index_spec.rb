@@ -211,11 +211,23 @@ describe 'Dialect page', js: true do
       end
     end
 
-    it 'reenable items that are deleted' do
+    it 'reenable stored terms that are deleted' do
       with_login do |user|
         FactoryGirl.create(:move_idiom, user: user, term: 'gate', substitution: 'flip')
         visit '/dialect'
         show_advanced_options
+        expect(page).to have_css('option[value=gate][disabled]')
+        click_button('delete-gate')
+        expect(page).to have_css('option[value=gate]')
+        expect(page).to_not have_css('option[value=gate][disabled]')
+      end
+    end
+
+    it 'reenable new terms that are subsequently deleted' do
+      with_login do |user|
+        visit '/dialect'
+        show_advanced_options
+        select('gate')
         expect(page).to have_css('option[value=gate][disabled]')
         click_button('delete-gate')
         expect(page).to have_css('option[value=gate]')
