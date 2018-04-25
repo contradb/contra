@@ -364,12 +364,12 @@ function figure8Change(figure,index) {
   var half_or_full_idx = 3;
   var beats_idx = 4;
   if (index === subject_idx) {
-    var led_by_one_of_the_ones = ['first gentlespoon', 'first ladle'].indexOf(lead) < 0;
-    var led_by_one_of_the_twos = ['second gentlespoon', 'second ladle'].indexOf(lead) < 0;
+    var not_led_by_one_of_the_ones = ['first gentlespoon', 'first ladle'].indexOf(lead) < 0;
+    var not_led_by_one_of_the_twos = ['second gentlespoon', 'second ladle'].indexOf(lead) < 0;
     // do the electric lead for ones and twos only
-    if (('ones' === subject) && led_by_one_of_the_ones) {
+    if (('ones' === subject) && not_led_by_one_of_the_ones) {
       pvs[lead_idx] = 'first ladle';
-    } else if (('twos' === subject) && led_by_one_of_the_twos) {
+    } else if (('twos' === subject) && not_led_by_one_of_the_twos) {
       pvs[lead_idx] = 'second ladle';
     }
   } else if (index == half_or_full_idx) {
