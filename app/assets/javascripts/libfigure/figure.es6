@@ -358,45 +358,46 @@ defineRelatedMove2Way('down the hall', 'up the hall');
 
 function figure8Change(figure,index) {
   var pvs = figure.parameter_values;
-  var [ subject,  lead, half_or_full, beats] = pvs;
-  if (index === 0) { // subject
+  var [ subject, dir, lead, half_or_full, beats] = pvs;
+  var subject_idx = 0;
+  var lead_idx = 2;
+  var half_or_full_idx = 3;
+  var beats_idx = 4;
+  if (index === subject_idx) {
     var led_by_one_of_the_ones = ['first gentlespoon', 'first ladle'].indexOf(lead) < 0;
     var led_by_one_of_the_twos = ['second gentlespoon', 'second ladle'].indexOf(lead) < 0;
     // do the electric lead for ones and twos only
     if (('ones' === subject) && led_by_one_of_the_ones) {
-      pvs[1] = 'first ladle';
+      pvs[lead_idx] = 'first ladle';
     } else if (('twos' === subject) && led_by_one_of_the_twos) {
-      pvs[1] = 'second ladle';
+      pvs[lead_idx] = 'second ladle';
     }
-  } else if (index == 2) { // half_or_full
+  } else if (index == half_or_full_idx) {
     if (1.0 == half_or_full && beats == 8) {
-      pvs[3] = 16;
+      pvs[beats_idx] = 16;
     } else if (0.5 == half_or_full && beats == 16) {
-      pvs[3] = 8;
+      pvs[beats_idx] = 8;
     }
   }
 }
 
 function figure8GoodBeats(figure) {
-  var [subject, lead, half_or_full, beats] = figure.parameter_values;
+  var [subject, dir, lead, half_or_full, beats] = figure.parameter_values;
   return beats === half_or_full * 16;
 }
 
 function figure8Stringify(move, pvs, dialect) {
-  var [ subject,  lead, half_or_full, beats] = pvs;
-  var [ssubject, slead, shalf_or_full, sbeats] = parameter_strings(move, pvs, dialect);
-  var dancer_role = {'first gentlespoon': 'first gentlespoon', // wanted: => 'gentlespoon', see #348
-                     'second gentlespoon': 'second gentlespoon', // wanted: => 'gentlespoon', see #348
-                     'first ladle': false,
-                     'second ladle': false};
-  var tlead = (subject === 'ones' || subject === 'twos') ? dancerSubstitution(dancer_role[lead], dialect) : slead;
-  var the_rest = words(tlead, tlead && 'leading');
+  var [ subject,  dir,  lead,  half_or_full,  beats] = pvs;
+  var [ssubject, sdir, slead, shalf_or_full, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
-  return words(ssubject, shalf_or_full, smove+comma_unless_blank(the_rest), the_rest);
+  var tlead = (subject === 'ones' && lead === 'first ladle') || (subject === 'twos' && lead === 'second ladle') ? '' : slead;
+  var the_rest = words(tlead, tlead && 'leading');
+  var space_sdir = dir ? (' ' + sdir) : '';
+  return words(ssubject, shalf_or_full, smove + space_sdir + comma_unless_blank(the_rest), the_rest);
 }
 
 defineFigure("figure 8",
-             [param_subject_pair_ones, param_lead_dancer_l1, param_half_or_full_half_chatty_max, param_beats_8],
+             [param_subject_pair_ones, param_set_direction_figure_8, param_lead_dancer_l1, param_half_or_full_half_chatty_max, param_beats_8],
              {stringify: figure8Stringify, change: figure8Change, goodBeats: figure8GoodBeats});
 
 ////////////////////////////////////////////////
