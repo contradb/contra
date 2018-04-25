@@ -89,6 +89,7 @@ $(document).ready(function() {
       var idiom_id = editor.attr('data-idiom-id');
       if (!idiom_id) {
         container.remove();     // easy case - new record - local only
+        updateSelectButtonOptionDisabled();
       } else {
         // hard case - in the db
         var status = editor.find('.idiom-ajax-status');
