@@ -176,6 +176,7 @@ var param_set_direction        = {name: "dir", ui: chooser_set_direction,       
 var param_set_direction_along  = {name: "dir", ui: chooser_set_direction, value: "along",  string: stringParamSetDirectionSilencingDefault('along')};
 var param_set_direction_across = {name: "dir", ui: chooser_set_direction, value: "across", string: stringParamSetDirectionSilencingDefault('across')};
 var param_set_direction_grid   = {name: "dir", ui: chooser_set_direction_grid,             string: stringParamSetDirectionSilencingDefault('nope')};
+var param_set_direction_figure_8 = {name: "dir", ui: chooser_set_direction_figure_8, value: ""}; // '', 'across', 'above', 'below'
 
 function stringParamSliceReturn (value) {
   if      ('straight' === value) { return 'and straight back'; }
