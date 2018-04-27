@@ -220,12 +220,15 @@ RSpec.describe DancesHelper, type: :helper do
     ['* turn alone', nil, 'turn alone', '*', '', '*'],
     ['ones arch twos dive', true, 'arch & dive','ones',4],
     ['* arch * dive', nil, 'arch & dive','*','*'],
+    ['form long wavy lines - gentlespoons face out, ladles face in', true, 'form long wavy lines', 'gentlespoons', 0],
+    ['form long wavy lines - * face out, * face in', nil, 'form long wavy lines', '*', 0],
    ]
 
   TESTS.each do |arr|
     render, _good_beats, move, *pvalues = arr
     it "renders #{move} as '#{render}'" do
-      expect(figure_txt_for.call(move,*pvalues, JSLibFigure.default_dialect)).to match(whitespice(render))
+      e = figure_txt_for.call(move,*pvalues, JSLibFigure.default_dialect)
+      expect(e).to match(whitespice(render)), "expected #{e.inspect} to match #{render.inspect}"
     end
   end
 

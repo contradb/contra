@@ -402,6 +402,23 @@ defineFigure("figure 8",
              {stringify: figure8Stringify, change: figure8Change, goodBeats: figure8GoodBeats});
 
 ////////////////////////////////////////////////
+// FORM LONG WAVY LINES                       //
+////////////////////////////////////////////////
+
+function formLongWavyLinesStringify(move, pvs, dialect) {
+  var [ subject,  beats] = pvs;
+  var [ssubject, sbeats] = parameter_strings(move, pvs, dialect);
+  var smove = moveSubstitution(move, dialect);
+  var tsubject = invertPair(subject, dialect);
+  return words(smove, '-', ssubject, 'face out,', tsubject, 'face in');
+}
+
+
+defineFigure("form long wavy lines",
+             [param_subject_pair_gentlespoons, param_beats_0],
+             {stringify: formLongWavyLinesStringify});
+
+////////////////////////////////////////////////
 // GATE                                       //
 ////////////////////////////////////////////////
 
