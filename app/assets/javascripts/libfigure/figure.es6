@@ -14,7 +14,8 @@
 function allemandeGoodBeats(figure) {
   var [who,dir,angle,beats] = figure.parameter_values;
   var angle_over_beats = angle/beats;
-  return (beats > 0) && (360/8 <= angle_over_beats) && (angle_over_beats <= 540/8);
+  if (beats <= 0) { return false; }
+  return (360/8 <= angle_over_beats && angle_over_beats <= 540/8) || (angle === 180 && 2 <= beats && beats <= 4);
 }
 
 defineFigure("allemande", [param_subject_pairz, 

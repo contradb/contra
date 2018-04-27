@@ -28,6 +28,7 @@ RSpec.describe DancesHelper, type: :helper do
     ['partners balance & swing', false, 'swing', 'partners', 'balance', 20],
     ['* * swing', nil, 'swing', '*','*', '*'],
     ['gentlespoons allemande right 1½', true, 'allemande', 'gentlespoons', true, 540, 8],
+    ['gentlespoons allemande right ½', true, 'allemande', 'gentlespoons', true, 180, 2],
     ['gentlespoons allemande right twice', false, 'allemande', 'gentlespoons', true, 720, 10],
     ['gentlespoons allemande right twice', true, 'allemande', 'gentlespoons', true, 720, 12],
     ['* allemande * hand *', nil, 'allemande', '*', '*', '*', '*'],
