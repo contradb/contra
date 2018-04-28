@@ -220,8 +220,13 @@ RSpec.describe DancesHelper, type: :helper do
     ['* turn alone', nil, 'turn alone', '*', '', '*'],
     ['ones arch twos dive', true, 'arch & dive','ones',4],
     ['* arch * dive', nil, 'arch & dive','*','*'],
-    ['form long wavy lines - gentlespoons face out, ladles face in', true, 'form long wavy lines', 'gentlespoons', 0],
-    ['form long wavy lines - * face out, * face in', nil, 'form long wavy lines', '*', 0],
+    ['form long waves - gentlespoons face out, ladles face in', true, 'form long waves', 'gentlespoons', 0],
+    ['form long waves - * face out, * face in', nil, 'form long waves', '*', 0],
+    ['ladles dance in to a long wave in the center - balance the wave', true, 'form a long wave', 'ladles', true, false, true, 8],
+    ['ladles dance out while gentlespoons dance in to a long wave in the center - balance the wave', true, 'form a long wave', 'gentlespoons', true, true, true, 8],
+    ['gentlespoons form a long wave in the center', false, 'form a long wave', 'gentlespoons', false, false, false, 4],
+    ['ladles dance out & balance', true, 'form a long wave', 'gentlespoons', false, true, true, 8],
+    ['* dance out while * dance in to a long wave in the center - *', nil, 'form a long wave', '*', '*', '*', '*', '*'],
    ]
 
   TESTS.each do |arr|

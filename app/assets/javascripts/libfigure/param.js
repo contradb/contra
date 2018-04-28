@@ -32,6 +32,9 @@ function stringParamHalfSashay (value) {
 // param_half_sashay_true  = {name: "½sash", value: true,  ui: chooser_boolean, string: stringParamHalfSashay} not used
 var param_half_sashay_false = {name: "½sash", value: false, ui: chooser_boolean, string: stringParamHalfSashay};
 
+var param_subject_walk_in_true = {name: "in", value: true, ui: chooser_boolean};
+var param_others_walk_out_false = {name: "out", value: false, ui: chooser_boolean};
+
 function stringParamBeatsNotN (n) {
   return function (value) {return value.toString();};
 }

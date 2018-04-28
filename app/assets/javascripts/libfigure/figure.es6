@@ -402,10 +402,10 @@ defineFigure("figure 8",
              {stringify: figure8Stringify, change: figure8Change, goodBeats: figure8GoodBeats});
 
 ////////////////////////////////////////////////
-// FORM LONG WAVY LINES                       //
+// FORM LONG WAVES                            //
 ////////////////////////////////////////////////
 
-function formLongWavyLinesStringify(move, pvs, dialect) {
+function formLongWavesStringify(move, pvs, dialect) {
   var [ subject,  beats] = pvs;
   var [ssubject, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
@@ -414,9 +414,64 @@ function formLongWavyLinesStringify(move, pvs, dialect) {
 }
 
 
-defineFigure("form long wavy lines",
+defineFigure("form long waves",
              [param_subject_pair_gentlespoons, param_beats_0],
-             {stringify: formLongWavyLinesStringify});
+             {stringify: formLongWavesStringify});
+
+////////////////////////////////////////////////
+// FORM A LONG WAVE                           //
+////////////////////////////////////////////////
+
+function formALongWaveChange(figure, index) {
+  var pvs = figure.parameter_values;
+  var [subject, in_, out, bal, beats] = pvs;
+  var pvs = figure.parameter_values;
+  var in_idx = 1;
+  var out_idx = 2;
+  var bal_idx = 3;
+  var beats_idx = 4;
+  var canonical_beats = (in_ || out ? 4 : 0) + (bal ? 4 : 0);
+  if (index === bal_idx || index === in_idx || index === out_idx) {
+    // This could be pretty complicated. Let's simply set the beats if anything beat-related changes. 
+    pvs[beats_idx] = canonical_beats;
+  }
+}
+
+function formALongWaveGoodBeats(figure) {
+  var [ subject,  in_,  out,  bal,  beats] = figure.parameter_values;
+  return beats === (in_ || out ? 4 : 0) + (bal ? 4 : 0);
+}
+
+function formALongWaveStringify(move, pvs, dialect) {
+  var [ subject,  in_,  out,  bal,  beats] = pvs;
+  var [ssubject,  sin, sout, sbal, sbeats] = parameter_strings(move, pvs, dialect);
+  var smove = moveSubstitution(move, dialect);
+  var tsubject = invertPair(subject, dialect);
+  var maybe_balance_the_wave = bal && (bal == '*' ? '- *' : '- balance the wave');
+  if (out) {
+    if (in_) {
+      return words(tsubject, 'dance out while', ssubject, 'dance in to a long wave in the center', maybe_balance_the_wave);
+    } else {
+      // Weird case where they unform the wave, and optionally balance - 90% nonsense!
+      // But we let them unform a wave for symmetry's sake.
+      return words(tsubject, 'dance out', bal && '& balance');
+    }
+  } else {
+    if (in_) {
+      return words(ssubject, 'dance in to a long wave in the center', maybe_balance_the_wave);
+    } else {
+      return words(ssubject, smove, 'in the center', maybe_balance_the_wave);
+    }
+  }
+}
+
+defineFigure("form a long wave",
+             [param_subject_pair_ladles,
+              param_subject_walk_in_true,
+              param_others_walk_out_false,
+              param_balance_true,
+              param_beats_8],
+             {stringify: formALongWaveStringify, goodBeats: formALongWaveGoodBeats, change: formALongWaveChange});
 
 ////////////////////////////////////////////////
 // GATE                                       //
