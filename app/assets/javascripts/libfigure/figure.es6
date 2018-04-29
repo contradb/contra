@@ -480,35 +480,39 @@ defineFigure("form a long wave",
 
 function formAnOceanWaveChange(figure, index) {
   var pvs = figure.parameter_values;
-  const bal_index = 4;
-  const beats_index = 5;
+  const bal_index = 5;
+  const beats_index = 6;
   if (index === bal_index) {
     pvs[beats_index] = pvs[bal_index] ? 8 : 4;
   }
 }
 
 function formAnOceanWaveGoodBeats(figure) {
-  var [walk, center, center_hand, sides, bal, beats] = figure.parameter_values;
+  var [walk, diag, center, center_hand, sides, bal, beats] = figure.parameter_values;
   return beats === (walk ? 4 : 0) + (bal ? 4 : 0);
 }
 
 function formAnOceanWaveStringify(move, pvs, dialect) {
-  var [ walk,  center,  center_hand,  sides,  bal,  beats] = pvs;
-  var [swalk, scenter, scenter_hand, ssides, sbal, sbeats] = parameter_strings(move, pvs, dialect);
-  var an_ocean_wave = moveSubstitutionWithoutForm(move, dialect, true);
+  var [ walk,  diag,  center,  center_hand,  sides,  bal,  beats] = pvs;
+  var [swalk, sdiag, scenter, scenter_hand, ssides, sbal, sbeats] = parameter_strings(move, pvs, dialect);
+  var ocean_wave = moveSubstitutionWithoutForm(move, dialect, false);
+  var diagonal_ocean_wave = words(sdiag, ocean_wave);
+  var a_diagonal_ocean_wave = words(indefiniteArticleFor(diagonal_ocean_wave), diagonal_ocean_wave);
   var tbal = bal ? ('*' === bal ? '& maybe balance' : '& balance') : '';
   var sside_hand = ('*' === center_hand) ? 'opposite' : stringParamHandNoStarHand(!center_hand);
   if (walk && walk !== '*') {
-    return words("to", an_ocean_wave, tbal, '-', scenter, 'take', scenter_hand, 'hands while', invertPair(center, dialect), 'cross and take', sside_hand, 'hands with', ssides);
+    return words("to", a_diagonal_ocean_wave, tbal, '-', scenter, 'take', scenter_hand, 'hands while', invertPair(center, dialect), 'cross and take', sside_hand, 'hands with', ssides);
   } else {
     var form_an_ocean_wave = moveSubstitution(move, dialect);
-    var tmove = (walk === '*') ? ('* ' + an_ocean_wave) : form_an_ocean_wave;
+    var substitution_starts_with_form = /^ *form/.test(form_an_ocean_wave);
+    var form_a_diagonal_ocean_wave = words(substitution_starts_with_form && 'form', a_diagonal_ocean_wave);
+    var tmove = (walk === '*') ? ('* ' + a_diagonal_ocean_wave) : form_a_diagonal_ocean_wave;
     return words(tmove, tbal, '-', scenter, 'take', scenter_hand, 'hands and', ssides, 'take', sside_hand, 'hands');
   }
 }
 
 defineFigure("form an ocean wave",
-             [param_walk_true, param_center_pair_ladles, param_right_hand_take, param_sides_pairs_neighbors, param_balance_false, param_beats_4],
+             [param_walk_true, param_set_direction_acrossish, param_center_pair_ladles, param_right_hand_take, param_sides_pairs_neighbors, param_balance_false, param_beats_4],
              {stringify: formAnOceanWaveStringify, change: formAnOceanWaveChange, goodBeats: formAnOceanWaveGoodBeats});
 
 ////////////////////////////////////////////////

@@ -151,6 +151,15 @@
                     <option value="left diagonal">left diagonal</option>
                   </select>
                 </div>
+                <div ng-if="p.ui == chooser_set_direction_acrossish">
+                  <select ng-model="figure.parameter_values[$index]"
+                          ng-change="userChangedParameter(figure,$index)"
+                          class='form-control'>
+                    <option value="across">across the set</option>
+                    <option value="right diagonal">right diagonal</option>
+                    <option value="left diagonal">left diagonal</option>
+                  </select>
+                </div>
                 <div ng-if="p.ui == chooser_set_direction_grid">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"

@@ -121,16 +121,17 @@ function moveSubstitution(move_term, dialect) {
 // Oh hey, the word 'form' and the word 'a' are both entered by the
 // user, and so are optional.
 // Check the specs for lots of examples.
-function moveSubstitutionWithoutForm(move_term, dialect, add_article) {
+function moveSubstitutionWithoutForm(move_term, dialect, add_article, adjectives) {
   if (undefined === add_article) {add_article = false;}
+  if (undefined === adjectives) {adjectives = false;}
   var subst = moveSubstitution(move_term, dialect);
   var match = subst.match(/(?:form )?(?:(an?) )?(.*)/i);
-  var root = match ? match[2] : subst;
-  var article = match && match[1] || ((root && /^[aeiou]/.test(root)) ? 'an' : 'a');
+  var root = match[2];
+  var article = /^ *[aeiou]/.test(words(adjectives, root)) ? 'an' : 'a';
   if (add_article) {
-    return words(article, root);
+    return words(article, adjectives, root);
   } else {
-    return words(root);
+    return words(adjectives, root);
   }
 }
 

@@ -261,6 +261,7 @@ $(document).ready(function() {
 
   chooserRadioButtons(chooser_slide, ['*',[true, 'left'], [false, 'right']]);
   chooserSelect(chooser_set_direction, ['*',['along', 'along the set'], ['across', 'across the set'], 'right diagonal', 'left diagonal']);
+  chooserSelect(chooser_set_direction_acrossish, ['*', ['across', 'across the set'], 'right diagonal', 'left diagonal']);
   chooserSelect(chooser_set_direction_grid, ['*',['along', 'along the set'], ['across', 'across the set']]);
   chooserSelect(chooser_set_direction_figure_8, ['*','','above','below','across']);
 

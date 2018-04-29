@@ -308,22 +308,65 @@ RSpec.describe JSLibFigure do
   end
 
   it 'moveSubstitutionWithoutForm' do
-    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'form a long wave'}}, true);").to eq('a long wave')
-    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'form a long wave'}}, false);").to eq('long wave')
-    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'form long wave'}}, true);").to eq('a long wave')
-    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'form long wave'}}, false);").to eq('long wave')
-    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'a long wave'}}, true);").to eq('a long wave')
-    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'a long wave'}}, false);").to eq('long wave')
-    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'long wave'}}, true);").to eq('a long wave')
-    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'long wave'}}, false);").to eq('long wave')
+    mkscript = ->(substitution, article, adjective) {
+      "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': #{substitution.inspect}}}, #{article}, #{adjective.inspect});"
+    }
+    strip_form = ->(substitution, article, adjective=false) {
+      jseval(mkscript.call(substitution, article, adjective)).strip
+    }
 
-    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'form an undulating wave'}}, true);").to eq('an undulating wave')
-    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'form an undulating wave'}}, false);").to eq('undulating wave')
-    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'form undulating wave'}}, true);").to eq('an undulating wave')
-    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'form undulating wave'}}, false);").to eq('undulating wave')
-    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'an undulating wave'}}, true);").to eq('an undulating wave')
-    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'an undulating wave'}}, false);").to eq('undulating wave')
-    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'undulating wave'}}, true);").to eq('an undulating wave')
-    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'undulating wave'}}, false);").to eq('undulating wave')
+    # no adjective
+    expect(strip_form.call('form a long wave', true)).to eq('a long wave')
+    expect(strip_form.call('form a long wave', false)).to eq('long wave')
+    expect(strip_form.call('form long wave', true)).to eq('a long wave')
+    expect(strip_form.call('form long wave', false)).to eq('long wave')
+    expect(strip_form.call('a long wave', true)).to eq('a long wave')
+    expect(strip_form.call('a long wave', false)).to eq('long wave')
+    expect(strip_form.call('long wave', true)).to eq('a long wave')
+    expect(strip_form.call('long wave', false)).to eq('long wave')
+    expect(strip_form.call('form an undulating wave', true)).to eq('an undulating wave')
+    expect(strip_form.call('form an undulating wave', false)).to eq('undulating wave')
+    expect(strip_form.call('form undulating wave', true)).to eq('an undulating wave')
+    expect(strip_form.call('form undulating wave', false)).to eq('undulating wave')
+    expect(strip_form.call('an undulating wave', true)).to eq('an undulating wave')
+    expect(strip_form.call('an undulating wave', false)).to eq('undulating wave')
+    expect(strip_form.call('undulating wave', true)).to eq('an undulating wave')
+    expect(strip_form.call('undulating wave', false)).to eq('undulating wave')
+
+    # adjective 'crusty'
+    expect(strip_form.call('form a long wave', true, 'crusty')).to eq('a crusty long wave')
+    expect(strip_form.call('form a long wave', false, 'crusty')).to eq('crusty long wave')
+    expect(strip_form.call('form long wave', true, 'crusty')).to eq('a crusty long wave')
+    expect(strip_form.call('form long wave', false, 'crusty')).to eq('crusty long wave')
+    expect(strip_form.call('a long wave', true, 'crusty')).to eq('a crusty long wave')
+    expect(strip_form.call('a long wave', false, 'crusty')).to eq('crusty long wave')
+    expect(strip_form.call('long wave', true, 'crusty')).to eq('a crusty long wave')
+    expect(strip_form.call('long wave', false, 'crusty')).to eq('crusty long wave')
+    expect(strip_form.call('form an undulating wave', true, 'crusty')).to eq('a crusty undulating wave')
+    expect(strip_form.call('form an undulating wave', false, 'crusty')).to eq('crusty undulating wave')
+    expect(strip_form.call('form undulating wave', true, 'crusty')).to eq('a crusty undulating wave')
+    expect(strip_form.call('form undulating wave', false, 'crusty')).to eq('crusty undulating wave')
+    expect(strip_form.call('an undulating wave', true, 'crusty')).to eq('a crusty undulating wave')
+    expect(strip_form.call('an undulating wave', false, 'crusty')).to eq('crusty undulating wave')
+    expect(strip_form.call('undulating wave', true, 'crusty')).to eq('a crusty undulating wave')
+    expect(strip_form.call('undulating wave', false, 'crusty')).to eq('crusty undulating wave')
+
+    # adjective 'amorphous'
+    expect(strip_form.call('form a long wave', true, 'amorphous')).to eq('an amorphous long wave')
+    expect(strip_form.call('form a long wave', false, 'amorphous')).to eq('amorphous long wave')
+    expect(strip_form.call('form long wave', true, 'amorphous')).to eq('an amorphous long wave')
+    expect(strip_form.call('form long wave', false, 'amorphous')).to eq('amorphous long wave')
+    expect(strip_form.call('a long wave', true, 'amorphous')).to eq('an amorphous long wave')
+    expect(strip_form.call('a long wave', false, 'amorphous')).to eq('amorphous long wave')
+    expect(strip_form.call('long wave', true, 'amorphous')).to eq('an amorphous long wave')
+    expect(strip_form.call('long wave', false, 'amorphous')).to eq('amorphous long wave')
+    expect(strip_form.call('form an undulating wave', true, 'amorphous')).to eq('an amorphous undulating wave')
+    expect(strip_form.call('form an undulating wave', false, 'amorphous')).to eq('amorphous undulating wave')
+    expect(strip_form.call('form undulating wave', true, 'amorphous')).to eq('an amorphous undulating wave')
+    expect(strip_form.call('form undulating wave', false, 'amorphous')).to eq('amorphous undulating wave')
+    expect(strip_form.call('an undulating wave', true, 'amorphous')).to eq('an amorphous undulating wave')
+    expect(strip_form.call('an undulating wave', false, 'amorphous')).to eq('amorphous undulating wave')
+    expect(strip_form.call('undulating wave', true, 'amorphous')).to eq('an amorphous undulating wave')
+    expect(strip_form.call('undulating wave', false, 'amorphous')).to eq('amorphous undulating wave')
   end
 end

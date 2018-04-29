@@ -129,11 +129,11 @@ RSpec.describe DancesHelper, type: :helper do
     ['star * hand - any grip - * places', nil, 'star', '*', '*', '*', '*'],
     ['partners balance & swat the flea', true, 'swat the flea', 'partners',  true,  false, 8],
     ['* optional balance & swat the flea', nil, 'swat the flea', '*',  '*',  false, '*'],
-    ['to an ocean wave & balance - ladles take left hands while gentlespoons cross and take right hands with neighbors', true, 'form an ocean wave', true, 'ladles', false, 'neighbors', true, 8],
-    ['form an ocean wave - ladles take right hands and neighbors take left hands', true, 'form an ocean wave', false, 'ladles', true, 'neighbors', false, 0],
-    ['to an ocean wave - ones take left hands while twos cross and take right hands with neighbors', false, 'form an ocean wave', true, 'ones', false, 'neighbors', false, 2],
-    ['form an ocean wave & balance - ladles take left hands and partners take right hands', true, 'form an ocean wave', false, 'ladles', false, 'partners', true, 4],
-    ['* an ocean wave & maybe balance - * take * hands and * take opposite hands', nil, 'form an ocean wave', '*', '*', '*', '*', '*', '*'],
+    ['to a left diagonal ocean wave & balance - ladles take left hands while gentlespoons cross and take right hands with neighbors', true, 'form an ocean wave', true, 'left diagonal', 'ladles', false, 'neighbors', true, 8],
+    ['form an ocean wave - ladles take right hands and neighbors take left hands', true, 'form an ocean wave', false, 'across', 'ladles', true, 'neighbors', false, 0],
+    ['to an ocean wave - ones take left hands while twos cross and take right hands with neighbors', false, 'form an ocean wave', true, 'across', 'ones', false, 'neighbors', false, 2],
+    ['form a right diagonal ocean wave & balance - ladles take left hands and partners take right hands', true, 'form an ocean wave', false, 'right diagonal', 'ladles', false, 'partners', true, 4],
+    ['* a * ocean wave & maybe balance - * take * hands and * take opposite hands', nil, 'form an ocean wave', '*', '*', '*', '*', '*', '*', '*'],
     ['gentlespoons roll away neighbors with a half sashay', true, 'roll away', 'gentlespoons', 'neighbors', true, 4],
     ['ladles roll away partners', false, 'roll away', 'ladles', 'partners', false, 2], # mabye true, maybe false?
     ['* roll away * maybe with a half sashay', nil, 'roll away', '*', '*', '*', '*'],
@@ -252,7 +252,9 @@ RSpec.describe DancesHelper, type: :helper do
    ['ravens darcy right shoulders 1½', 'gyre', 'ladles', true, 540, 8],
    ['ravens swing', 'swing', 'ladles', 'none', 8],
    ['ravens do si do left shoulder once', 'see saw', 'ladles', false, 360, 8],
-   ['mush into short wavy lines - ravens take right hands and neighbors take left hands', 'form an ocean wave', false, 'ladles', true, 'neighbors', false, 4],
+   ['form a short wavy line - ravens take right hands and neighbors take left hands', 'form an ocean wave', false, 'across', 'ladles', true, 'neighbors', false, 4],
+   ['form a left diagonal short wavy line - ravens take right hands and neighbors take left hands', 'form an ocean wave', false, 'left diagonal', 'ladles', true, 'neighbors', false, 4],
+   ['to a short wavy line & balance - ravens take right hands while larks cross and take left hands with neighbors', 'form an ocean wave', true, 'across', 'ladles', true, 'neighbors', true, 8],
    ['ravens allemande left 1½ around while the larks orbit clockwise ½ around', 'allemande orbit','ladles',false,540,180,8],
    ['larks arch ravens dive', 'arch & dive','gentlespoons',4],
    ['____ arch others dive', 'arch & dive',nil,4],
@@ -260,7 +262,8 @@ RSpec.describe DancesHelper, type: :helper do
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}' with dialect" do
-      expect(figure_txt_for.call(move,*pvalues, JSLibFigure.test_dialect)).to match(whitespice(render))
+      txt = figure_txt_for.call(move,*pvalues, JSLibFigure.test_dialect)
+      expect(txt).to match(whitespice(render)), "expected #{txt.inspect} to equal #{render.inspect}"
     end
   end
 end
