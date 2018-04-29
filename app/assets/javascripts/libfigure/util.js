@@ -44,7 +44,7 @@ var defaultDialect = {moves: {}, dancers: {}};
 var testDialect = {moves: {gyre: 'darcy',
                            allemande: 'almond',
                            'see saw': 'do si do left shoulder',
-                           'ocean wave': 'mush into short wavy lines'},
+                           'form an ocean wave': 'mush into short wavy lines'},
                    dancers: {ladles: 'ravens',
                              gentlespoons: 'larks',
                              'first ladle': 'first raven',

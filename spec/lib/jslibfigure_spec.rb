@@ -306,4 +306,24 @@ RSpec.describe JSLibFigure do
       expect(JSLibFigure.string_in_dialect(input, dialect)).to eq(output)
     end
   end
+
+  it 'moveSubstitutionWithoutForm' do
+    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'form a long wave'}}, true);").to eq('a long wave')
+    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'form a long wave'}}, false);").to eq('long wave')
+    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'form long wave'}}, true);").to eq('a long wave')
+    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'form long wave'}}, false);").to eq('long wave')
+    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'a long wave'}}, true);").to eq('a long wave')
+    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'a long wave'}}, false);").to eq('long wave')
+    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'long wave'}}, true);").to eq('a long wave')
+    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'long wave'}}, false);").to eq('long wave')
+
+    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'form an undulating wave'}}, true);").to eq('an undulating wave')
+    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'form an undulating wave'}}, false);").to eq('undulating wave')
+    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'form undulating wave'}}, true);").to eq('an undulating wave')
+    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'form undulating wave'}}, false);").to eq('undulating wave')
+    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'an undulating wave'}}, true);").to eq('an undulating wave')
+    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'an undulating wave'}}, false);").to eq('undulating wave')
+    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'undulating wave'}}, true);").to eq('an undulating wave')
+    expect(jseval "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': 'undulating wave'}}, false);").to eq('undulating wave')
+  end
 end

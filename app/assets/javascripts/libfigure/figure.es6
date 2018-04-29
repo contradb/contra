@@ -473,6 +473,44 @@ defineFigure("form a long wave",
               param_beats_8],
              {stringify: formALongWaveStringify, goodBeats: formALongWaveGoodBeats, change: formALongWaveChange});
 
+
+////////////////////////////////////////////////
+// FORM OCEAN WAVE                            //
+////////////////////////////////////////////////
+
+function formAnOceanWaveChange(figure, index) {
+  var pvs = figure.parameter_values;
+  const bal_index = 4;
+  const beats_index = 5;
+  if (index === bal_index) {
+    pvs[beats_index] = pvs[bal_index] ? 8 : 4;
+  }
+}
+
+function formAnOceanWaveGoodBeats(figure) {
+  var [walk, center, center_hand, sides, bal, beats] = figure.parameter_values;
+  return beats === (walk ? 4 : 0) + (bal ? 4 : 0);
+}
+
+function formAnOceanWaveStringify(move, pvs, dialect) {
+  var [ walk,  center,  center_hand,  sides,  bal,  beats] = pvs;
+  var [swalk, scenter, scenter_hand, ssides, sbal, sbeats] = parameter_strings(move, pvs, dialect);
+  var an_ocean_wave = moveSubstitutionWithoutForm(move, dialect, true);
+  var tbal = bal ? ('*' === bal ? '& maybe balance' : '& balance') : '';
+  var sside_hand = ('*' === center_hand) ? 'opposite' : stringParamHandNoStarHand(!center_hand);
+  if (walk && walk !== '*') {
+    return words("to", an_ocean_wave, tbal, '-', scenter, 'take', scenter_hand, 'hands while', invertPair(center, dialect), 'cross and take', sside_hand, 'hands with', ssides);
+  } else {
+    var form_an_ocean_wave = moveSubstitution(move, dialect);
+    var tmove = (walk === '*') ? ('* ' + an_ocean_wave) : form_an_ocean_wave;
+    return words(tmove, tbal, '-', scenter, 'take', scenter_hand, 'hands and', ssides, 'take', sside_hand, 'hands');
+  }
+}
+
+defineFigure("form an ocean wave",
+             [param_walk_true, param_center_pair_ladles, param_right_hand_take, param_sides_pairs_neighbors, param_balance_false, param_beats_4],
+             {stringify: formAnOceanWaveStringify, change: formAnOceanWaveChange, goodBeats: formAnOceanWaveGoodBeats});
+
 ////////////////////////////////////////////////
 // GATE                                       //
 ////////////////////////////////////////////////
@@ -675,37 +713,6 @@ function madRobinStringify(move, pvs, dialect) {
 defineFigure("mad robin",
              [param_subject_pair, param_once_around, param_beats],
              {stringify: madRobinStringify, goodBeats: madRobinGoodBeats});
-
-////////////////////////////////////////////////
-// OCEAN WAVE                                 //
-////////////////////////////////////////////////
-
-function oceanWaveChange(figure, index) {
-  var pvs = figure.parameter_values;
-  const bal_index = 0;
-  const beats_index = 1;
-  if (index === bal_index) {
-    pvs[beats_index] = pvs[bal_index] ? 8 : 4;
-  }
-}
-
-function oceanWaveGoodBeats(figure) {
-  var [bal, beats] = figure.parameter_values;
-  return beats === (bal ? 8 : 4);
-}
-
-function oceanWaveStringify(move, pvs, dialect) {
-  var [ bal,  beats] = pvs;
-  var [sbal, sbeats] = parameter_strings(move, pvs, dialect);
-  var smove = moveSubstitution(move, dialect);
-  var tmove = (smove === move) ? 'to '+smove : smove;
-  var tbal = bal ? ('*' === bal ? '& maybe balance the wave' : '& balance the wave') : '';
-  return words(tmove, tbal);
-}
-
-defineFigure("ocean wave",
-             [param_balance_false, param_beats_4],
-             {stringify: oceanWaveStringify, change: oceanWaveChange, goodBeats: oceanWaveGoodBeats});
 
 ////////////////////////////////////////////////
 // PASS BY                                    //
