@@ -34,7 +34,7 @@ var param_half_sashay_false = {name: "½sash", value: false, ui: chooser_boolean
 
 var param_subject_walk_in_true = {name: "in", value: true, ui: chooser_boolean};
 var param_others_walk_out_false = {name: "out", value: false, ui: chooser_boolean};
-var param_walk_true = {name: "walk", value: true, ui: chooser_boolean};
+var param_instant_false = {name: "instant", value: false, ui: chooser_boolean};
 
 function stringParamBeatsNotN (n) {
   return function (value) {return value.toString();};
