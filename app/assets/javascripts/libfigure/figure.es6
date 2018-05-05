@@ -425,7 +425,6 @@ defineFigure("form long waves",
 function formALongWaveChange(figure, index) {
   var pvs = figure.parameter_values;
   var [subject, in_, out, bal, beats] = pvs;
-  var pvs = figure.parameter_values;
   var in_idx = 1;
   var out_idx = 2;
   var bal_idx = 3;
@@ -502,7 +501,7 @@ function formAnOceanWaveStringify(move, pvs, dialect) {
   var diagonal_ocean_wave = words(sdiag, ocean_wave);
   var a_diagonal_ocean_wave = words(indefiniteArticleFor(diagonal_ocean_wave), diagonal_ocean_wave);
   var tbal = bal ? ('*' === bal ? '& maybe balance' : '& balance') : '';
-  var sside_hand = ('*' === center_hand) ? 'opposite' : stringParamHandNoStarHand(!center_hand);
+  var sside_hand = ('*' === center_hand) ? 'opposite' : stringParamHand(!center_hand);
   if (instant) {
     var form_an_ocean_wave = moveSubstitution(move, dialect);
     var substitution_starts_with_form = /^ *form/.test(form_an_ocean_wave);

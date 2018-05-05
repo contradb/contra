@@ -52,7 +52,7 @@ function stringParamClock     (value) {return value ? ('*'===value ? '*' : "cloc
 function stringParamLeftRight (value) {return value ? ('*'===value ? '*' : "left") : "right";}
 function stringParamShoulder  (value) {return value ? ('*'===value ? '* shoulders' : "right shoulders") : "left shoulders";}
 function stringParamHandStarHand  (value) {return value ? ('*'===value ? '* hand' : "right") : "left";}
-function stringParamHandNoStarHand(value) {return value ? ('*'===value ? '*'      : "right") : "left";} // called outside this file!
+function stringParamHand          (value) {return value ? ('*'===value ? '*'      : "right") : "left";} // called outside this file!
 
 // spin = clockwise | ccw | undefined
 var param_spin                   = {name: "turn",                   ui: chooser_spin, string: stringParamClock};
@@ -67,7 +67,7 @@ var param_xshoulder_spin         = {name: "shoulder",               ui: chooser_
 var param_right_shoulder_spin    = {name: "shoulder", value: true,  ui: chooser_right_left_shoulder, string: stringParamShoulder};
 var param_left_shoulder_spin     = {name: "shoulder", value: false, ui: chooser_right_left_shoulder, string: stringParamShoulder};
 
-var param_right_hand_take        = {name: "c.hand", value: true,    ui: chooser_right_left_hand, string: stringParamHandNoStarHand};
+var param_right_hand_take        = {name: "c.hand", value: true,    ui: chooser_right_left_hand, string: stringParamHand};
 
 function stringParamDegrees (value,move) {
   // this second parameter should go away, it should be handled in figure.es6,
