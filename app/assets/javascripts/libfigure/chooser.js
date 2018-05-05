@@ -42,6 +42,7 @@ defineChooser("chooser_star_grip");
 defineChooser("chooser_march_facing");
 defineChooser("chooser_slide");
 defineChooser("chooser_set_direction");
+defineChooser("chooser_set_direction_acrossish");
 defineChooser("chooser_set_direction_grid");
 defineChooser("chooser_set_direction_figure_8");
 defineChooser("chooser_gate_direction");

@@ -402,6 +402,122 @@ defineFigure("figure 8",
              {stringify: figure8Stringify, change: figure8Change, goodBeats: figure8GoodBeats});
 
 ////////////////////////////////////////////////
+// FORM LONG WAVES                            //
+////////////////////////////////////////////////
+
+function formLongWavesStringify(move, pvs, dialect) {
+  var [ subject,  beats] = pvs;
+  var [ssubject, sbeats] = parameter_strings(move, pvs, dialect);
+  var smove = moveSubstitution(move, dialect);
+  var tsubject = invertPair(subject, dialect);
+  return words(smove, '-', ssubject, 'face out,', tsubject, 'face in');
+}
+
+
+defineFigure("form long waves",
+             [param_subject_pair_gentlespoons, param_beats_0],
+             {stringify: formLongWavesStringify});
+
+////////////////////////////////////////////////
+// FORM A LONG WAVE                           //
+////////////////////////////////////////////////
+
+function formALongWaveChange(figure, index) {
+  var pvs = figure.parameter_values;
+  var [subject, in_, out, bal, beats] = pvs;
+  var in_idx = 1;
+  var out_idx = 2;
+  var bal_idx = 3;
+  var beats_idx = 4;
+  var canonical_beats = (in_ || out ? 4 : 0) + (bal ? 4 : 0);
+  if (index === bal_idx || index === in_idx || index === out_idx) {
+    // This could be pretty complicated. Let's simply set the beats if anything beat-related changes. 
+    pvs[beats_idx] = canonical_beats;
+  }
+}
+
+function formALongWaveGoodBeats(figure) {
+  var [ subject,  in_,  out,  bal,  beats] = figure.parameter_values;
+  return beats === (in_ || out ? 4 : 0) + (bal ? 4 : 0);
+}
+
+function formALongWaveStringify(move, pvs, dialect) {
+  var [ subject,  in_,  out,  bal,  beats] = pvs;
+  var [ssubject,  sin, sout, sbal, sbeats] = parameter_strings(move, pvs, dialect);
+  var smove = moveSubstitution(move, dialect);
+  var tsubject = invertPair(subject, dialect);
+  var maybe_balance_the_wave = bal && (bal == '*' ? '- *' : '- balance the wave');
+  if (out) {
+    if (in_) {
+      return words(tsubject, 'dance out while', ssubject, 'dance in to a long wave in the center', maybe_balance_the_wave);
+    } else {
+      // Weird case where they unform the wave, and optionally balance - 90% nonsense!
+      // But we let them unform a wave for symmetry's sake.
+      return words(tsubject, 'dance out', bal && '& balance');
+    }
+  } else {
+    if (in_) {
+      return words(ssubject, 'dance in to a long wave in the center', maybe_balance_the_wave);
+    } else {
+      return words(ssubject, smove, 'in the center', maybe_balance_the_wave);
+    }
+  }
+}
+
+defineFigure("form a long wave",
+             [param_subject_pair_ladles,
+              param_subject_walk_in_true,
+              param_others_walk_out_false,
+              param_balance_true,
+              param_beats_8],
+             {stringify: formALongWaveStringify, goodBeats: formALongWaveGoodBeats, change: formALongWaveChange});
+
+
+////////////////////////////////////////////////
+// FORM OCEAN WAVE                            //
+////////////////////////////////////////////////
+
+function formAnOceanWaveChange(figure, index) {
+  var pvs = figure.parameter_values;
+  const instant_index = 0;
+  const bal_index = 2;
+  const beats_index = 6;
+  if (index === bal_index) {
+    pvs[beats_index] = Math.max(0, pvs[beats_index] + (pvs[bal_index] ? 4 : -4));
+  } else if (index === instant_index) {
+    pvs[beats_index] = Math.max(0, pvs[beats_index] + (pvs[instant_index] ? -4 : 4));
+  }
+}
+
+function formAnOceanWaveGoodBeats(figure) {
+  var [instant, diag, bal, center, center_hand, sides, beats] = figure.parameter_values;
+  return beats === (instant ? 0 : 4) + (bal ? 4 : 0);
+}
+
+function formAnOceanWaveStringify(move, pvs, dialect) {
+  var [ instant,  diag,  bal,  center,  center_hand,  sides,  beats] = pvs;
+  var [sinstant, sdiag, sbal, scenter, scenter_hand, ssides, sbeats] = parameter_strings(move, pvs, dialect);
+  var ocean_wave = moveSubstitutionWithoutForm(move, dialect, false);
+  var diagonal_ocean_wave = words(sdiag, ocean_wave);
+  var a_diagonal_ocean_wave = words(indefiniteArticleFor(diagonal_ocean_wave), diagonal_ocean_wave);
+  var tbal = bal ? ('*' === bal ? '& maybe balance' : '& balance') : '';
+  var sside_hand = ('*' === center_hand) ? 'opposite' : stringParamHand(!center_hand);
+  if (instant) {
+    var form_an_ocean_wave = moveSubstitution(move, dialect);
+    var substitution_starts_with_form = /^ *form/.test(form_an_ocean_wave);
+    var form_a_diagonal_ocean_wave = words(substitution_starts_with_form && 'form', a_diagonal_ocean_wave);
+    var tmove = (instant === '*') ? ('* ' + a_diagonal_ocean_wave) : form_a_diagonal_ocean_wave;
+    return words(tmove, tbal, '-', scenter, 'take', scenter_hand, 'hands and', ssides, 'take', sside_hand, 'hands');
+  } else {
+    return words("to", a_diagonal_ocean_wave, tbal, '-', scenter, 'take', scenter_hand, 'hands while', invertPair(center, dialect), 'cross and take', sside_hand, 'hands with', ssides);
+  }
+}
+
+defineFigure("form an ocean wave",
+             [param_instant_false, param_set_direction_acrossish, param_balance_false, param_center_pair_ladles, param_right_hand_take, param_sides_pairs_neighbors, param_beats_4],
+             {stringify: formAnOceanWaveStringify, change: formAnOceanWaveChange, goodBeats: formAnOceanWaveGoodBeats});
+
+////////////////////////////////////////////////
 // GATE                                       //
 ////////////////////////////////////////////////
 
@@ -603,37 +719,6 @@ function madRobinStringify(move, pvs, dialect) {
 defineFigure("mad robin",
              [param_subject_pair, param_once_around, param_beats],
              {stringify: madRobinStringify, goodBeats: madRobinGoodBeats});
-
-////////////////////////////////////////////////
-// OCEAN WAVE                                 //
-////////////////////////////////////////////////
-
-function oceanWaveChange(figure, index) {
-  var pvs = figure.parameter_values;
-  const bal_index = 0;
-  const beats_index = 1;
-  if (index === bal_index) {
-    pvs[beats_index] = pvs[bal_index] ? 8 : 4;
-  }
-}
-
-function oceanWaveGoodBeats(figure) {
-  var [bal, beats] = figure.parameter_values;
-  return beats === (bal ? 8 : 4);
-}
-
-function oceanWaveStringify(move, pvs, dialect) {
-  var [ bal,  beats] = pvs;
-  var [sbal, sbeats] = parameter_strings(move, pvs, dialect);
-  var smove = moveSubstitution(move, dialect);
-  var tmove = (smove === move) ? 'to '+smove : smove;
-  var tbal = bal ? ('*' === bal ? '& maybe balance the wave' : '& balance the wave') : '';
-  return words(tmove, tbal);
-}
-
-defineFigure("ocean wave",
-             [param_balance_false, param_beats_4],
-             {stringify: oceanWaveStringify, change: oceanWaveChange, goodBeats: oceanWaveGoodBeats});
 
 ////////////////////////////////////////////////
 // PASS BY                                    //

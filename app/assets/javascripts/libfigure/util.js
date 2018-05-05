@@ -39,12 +39,17 @@ function comma_unless_blank(str) {
   return ((!str) || (str.trim() === '')) ? '' : ',';
 }
 
+function indefiniteArticleFor(str) {
+  return /^ *[aeiou]/.test(str) ? 'an' : 'a';
+}
+
+
 var defaultDialect = {moves: {}, dancers: {}};
 
 var testDialect = {moves: {gyre: 'darcy',
                            allemande: 'almond',
                            'see saw': 'do si do left shoulder',
-                           'ocean wave': 'mush into short wavy lines'},
+                           'form an ocean wave': 'form a short wavy line'},
                    dancers: {ladles: 'ravens',
                              gentlespoons: 'larks',
                              'first ladle': 'first raven',

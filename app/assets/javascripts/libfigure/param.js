@@ -32,6 +32,10 @@ function stringParamHalfSashay (value) {
 // param_half_sashay_true  = {name: "½sash", value: true,  ui: chooser_boolean, string: stringParamHalfSashay} not used
 var param_half_sashay_false = {name: "½sash", value: false, ui: chooser_boolean, string: stringParamHalfSashay};
 
+var param_subject_walk_in_true = {name: "in", value: true, ui: chooser_boolean};
+var param_others_walk_out_false = {name: "out", value: false, ui: chooser_boolean};
+var param_instant_false = {name: "instant", value: false, ui: chooser_boolean};
+
 function stringParamBeatsNotN (n) {
   return function (value) {return value.toString();};
 }
@@ -46,21 +50,24 @@ var param_beats_16 = {name: "beats", value: 16, ui: chooser_beats, string: strin
 
 function stringParamClock     (value) {return value ? ('*'===value ? '*' : "clockwise") : "counter-clockwise";}
 function stringParamLeftRight (value) {return value ? ('*'===value ? '*' : "left") : "right";}
-function stringParamHand      (value) {return value ? ('*'===value ? '* hand' : "right") : "left";}
 function stringParamShoulder  (value) {return value ? ('*'===value ? '* shoulders' : "right shoulders") : "left shoulders";}
+function stringParamHandStarHand  (value) {return value ? ('*'===value ? '* hand' : "right") : "left";}
+function stringParamHand          (value) {return value ? ('*'===value ? '*'      : "right") : "left";} // called outside this file!
 
 // spin = clockwise | ccw | undefined
-var param_spin                   = {name: "turn",               ui: chooser_spin, string: stringParamClock};
-var param_spin_clockwise         = {name: "turn", value: true,  ui: chooser_spin, string: stringParamClock};
-var param_spin_ccw               = {name: "turn", value: false, ui: chooser_spin, string: stringParamClock} ;
-var param_spin_left              = {name: "turn", value: true,  ui: chooser_left_right_spin, string: stringParamLeftRight};
-var param_spin_right             = {name: "turn", value: false, ui: chooser_left_right_spin, string: stringParamLeftRight};
-var param_xhand_spin             = {name: "hand",               ui: chooser_right_left_hand, string: stringParamHand};
-var param_right_hand_spin        = {name: "hand", value: true,  ui: chooser_right_left_hand, string: stringParamHand};
-var param_left_hand_spin         = {name: "hand", value: false, ui: chooser_right_left_hand, string: stringParamHand};
+var param_spin                   = {name: "turn",                   ui: chooser_spin, string: stringParamClock};
+var param_spin_clockwise         = {name: "turn", value: true,      ui: chooser_spin, string: stringParamClock};
+var param_spin_ccw               = {name: "turn", value: false,     ui: chooser_spin, string: stringParamClock} ;
+var param_spin_left              = {name: "turn", value: true,      ui: chooser_left_right_spin, string: stringParamLeftRight};
+var param_spin_right             = {name: "turn", value: false,     ui: chooser_left_right_spin, string: stringParamLeftRight};
+var param_xhand_spin             = {name: "hand",                   ui: chooser_right_left_hand, string: stringParamHandStarHand};
+var param_right_hand_spin        = {name: "hand", value: true,      ui: chooser_right_left_hand, string: stringParamHandStarHand};
+var param_left_hand_spin         = {name: "hand", value: false,     ui: chooser_right_left_hand, string: stringParamHandStarHand};
 var param_xshoulder_spin         = {name: "shoulder",               ui: chooser_right_left_shoulder, string: stringParamShoulder};
 var param_right_shoulder_spin    = {name: "shoulder", value: true,  ui: chooser_right_left_shoulder, string: stringParamShoulder};
 var param_left_shoulder_spin     = {name: "shoulder", value: false, ui: chooser_right_left_shoulder, string: stringParamShoulder};
+
+var param_right_hand_take        = {name: "c.hand", value: true,    ui: chooser_right_left_hand, string: stringParamHand};
 
 function stringParamDegrees (value,move) {
   // this second parameter should go away, it should be handled in figure.es6,
@@ -88,6 +95,7 @@ var param_four_places     = {name: "places", value: 360, ui: chooser_places,    
 var param_subject                    = {name: "who", value: "everyone",     ui: chooser_dancers};
 var param_subject_pair               = {name: "who",                        ui: chooser_pair};  // 1 pair of dancers
 var param_subject_pair_ladles        = {name: "who", value: "ladles",       ui: chooser_pair};
+var param_center_pair_ladles         = {name: "center", value: "ladles",    ui: chooser_pair};
 var param_subject_pair_gentlespoons  = {name: "who", value: "gentlespoons", ui: chooser_pair};
 var param_subject_pair_ones          = {name: "who", value: "ones",         ui: chooser_pair};
 var param_subject_pair_or_everyone   = {name: "who", value: "everyone",     ui: chooser_pair_or_everyone};
@@ -95,6 +103,7 @@ var param_subject_pairc_or_everyone  = {name: "who", value: "everyone",     ui: 
 var param_subject_pairz              = {name: "who",                        ui: chooser_pairz}; // 1-2 pairs of dancers
 var param_subject_pairz_partners     = {name: "who", value: "partners",     ui: chooser_pairz};
 var param_subject_pairs              = {name: "who",                        ui: chooser_pairs}; // 2 pairs of dancers
+var param_sides_pairs_neighbors      = {name: "sides", value: "neighbors",  ui: chooser_pairs};
 var param_subject2_pairs             = {name: "who2",                       ui: chooser_pairs};
 var param_subject_pairs_or_everyone  = {name: "who",                        ui: chooser_pairs_or_everyone};
 var param_subject_pairs_partners     = {name: "who", value: "partners",     ui: chooser_pairs};
@@ -176,6 +185,7 @@ var param_set_direction        = {name: "dir", ui: chooser_set_direction,       
 var param_set_direction_along  = {name: "dir", ui: chooser_set_direction, value: "along",  string: stringParamSetDirectionSilencingDefault('along')};
 var param_set_direction_across = {name: "dir", ui: chooser_set_direction, value: "across", string: stringParamSetDirectionSilencingDefault('across')};
 var param_set_direction_grid   = {name: "dir", ui: chooser_set_direction_grid,             string: stringParamSetDirectionSilencingDefault('nope')};
+var param_set_direction_acrossish = {name: "dir", ui: chooser_set_direction_acrossish, value: "across", string: stringParamSetDirectionSilencingDefault('across')};
 var param_set_direction_figure_8 = {name: "dir", ui: chooser_set_direction_figure_8, value: ""}; // '', 'across', 'above', 'below'
 
 function stringParamSliceReturn (value) {

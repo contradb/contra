@@ -129,11 +129,11 @@ RSpec.describe DancesHelper, type: :helper do
     ['star * hand - any grip - * places', nil, 'star', '*', '*', '*', '*'],
     ['partners balance & swat the flea', true, 'swat the flea', 'partners',  true,  false, 8],
     ['* optional balance & swat the flea', nil, 'swat the flea', '*',  '*',  false, '*'],
-    ['to ocean wave', true, 'ocean wave', false, 4],
-    ['to ocean wave & balance the wave', false, 'ocean wave', true, 4],
-    ['to ocean wave & balance the wave', true, 'ocean wave', true, 8],
-    ['to ocean wave', false, 'ocean wave', false, 8],
-    ['to ocean wave & maybe balance the wave', nil, 'ocean wave', '*', '*'],
+    ['to a left diagonal ocean wave & balance - ladles take left hands while gentlespoons cross and take right hands with neighbors', true, 'form an ocean wave', false, 'left diagonal', true, 'ladles', false, 'neighbors', 8],
+    ['form an ocean wave - ladles take right hands and neighbors take left hands', true, 'form an ocean wave', true, 'across', false, 'ladles', true, 'neighbors', 0],
+    ['to an ocean wave - ones take left hands while twos cross and take right hands with neighbors', false, 'form an ocean wave', false, 'across', false, 'ones', false, 'neighbors', 2],
+    ['form a right diagonal ocean wave & balance - ladles take left hands and partners take right hands', true, 'form an ocean wave', true, 'right diagonal', true, 'ladles', false, 'partners', 4],
+    ['* a * ocean wave & maybe balance - * take * hands and * take opposite hands', nil, 'form an ocean wave', '*', '*', '*', '*', '*', '*', '*'],
     ['gentlespoons roll away neighbors with a half sashay', true, 'roll away', 'gentlespoons', 'neighbors', true, 4],
     ['ladles roll away partners', false, 'roll away', 'ladles', 'partners', false, 2], # mabye true, maybe false?
     ['* roll away * maybe with a half sashay', nil, 'roll away', '*', '*', '*', '*'],
@@ -220,12 +220,20 @@ RSpec.describe DancesHelper, type: :helper do
     ['* turn alone', nil, 'turn alone', '*', '', '*'],
     ['ones arch twos dive', true, 'arch & dive','ones',4],
     ['* arch * dive', nil, 'arch & dive','*','*'],
+    ['form long waves - gentlespoons face out, ladles face in', true, 'form long waves', 'gentlespoons', 0],
+    ['form long waves - * face out, * face in', nil, 'form long waves', '*', 0],
+    ['ladles dance in to a long wave in the center - balance the wave', true, 'form a long wave', 'ladles', true, false, true, 8],
+    ['ladles dance out while gentlespoons dance in to a long wave in the center - balance the wave', true, 'form a long wave', 'gentlespoons', true, true, true, 8],
+    ['gentlespoons form a long wave in the center', false, 'form a long wave', 'gentlespoons', false, false, false, 4],
+    ['ladles dance out & balance', true, 'form a long wave', 'gentlespoons', false, true, true, 8],
+    ['* dance out while * dance in to a long wave in the center - *', nil, 'form a long wave', '*', '*', '*', '*', '*'],
    ]
 
   TESTS.each do |arr|
     render, _good_beats, move, *pvalues = arr
     it "renders #{move} as '#{render}'" do
-      expect(figure_txt_for.call(move,*pvalues, JSLibFigure.default_dialect)).to match(whitespice(render))
+      e = figure_txt_for.call(move,*pvalues, JSLibFigure.default_dialect)
+      expect(e).to match(whitespice(render)), "expected #{e.inspect} to match #{render.inspect}"
     end
   end
 
@@ -244,7 +252,9 @@ RSpec.describe DancesHelper, type: :helper do
    ['ravens darcy right shoulders 1½', 'gyre', 'ladles', true, 540, 8],
    ['ravens swing', 'swing', 'ladles', 'none', 8],
    ['ravens do si do left shoulder once', 'see saw', 'ladles', false, 360, 8],
-   ['mush into short wavy lines', 'ocean wave', false, 4],
+   ['form a short wavy line - ravens take right hands and neighbors take left hands', 'form an ocean wave', true, 'across', false, 'ladles', true, 'neighbors', 4],
+   ['form a left diagonal short wavy line - ravens take right hands and neighbors take left hands', 'form an ocean wave', true, 'left diagonal', false, 'ladles', true, 'neighbors', 4],
+   ['to a short wavy line & balance - ravens take right hands while larks cross and take left hands with neighbors', 'form an ocean wave', false, 'across', true, 'ladles', true, 'neighbors', 8],
    ['ravens allemande left 1½ around while the larks orbit clockwise ½ around', 'allemande orbit','ladles',false,540,180,8],
    ['larks arch ravens dive', 'arch & dive','gentlespoons',4],
    ['____ arch others dive', 'arch & dive',nil,4],
@@ -252,7 +262,8 @@ RSpec.describe DancesHelper, type: :helper do
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}' with dialect" do
-      expect(figure_txt_for.call(move,*pvalues, JSLibFigure.test_dialect)).to match(whitespice(render))
+      txt = figure_txt_for.call(move,*pvalues, JSLibFigure.test_dialect)
+      expect(txt).to match(whitespice(render)), "expected #{txt.inspect} to equal #{render.inspect}"
     end
   end
 end

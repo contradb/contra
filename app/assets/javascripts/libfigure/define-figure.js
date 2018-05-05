@@ -110,6 +110,31 @@ function moveSubstitution(move_term, dialect) {
   return dialect.moves[move_term] || move_term;
 }
 
+// The basic applicaiton is a user substitution from 'form an ocean
+// wave' to 'form a short wave' and makes it possible to extract the phrases
+// 'a short wave' and 'short wave'.
+//
+// This takes a substitution that might be 'form a blahblah' and
+// returns either 'a blahblah' or 'blahblah', depending on the
+// optional add_article argument.
+//
+// Oh hey, the word 'form' and the word 'a' are both entered by the
+// user, and so are optional.
+// Check the specs for lots of examples.
+function moveSubstitutionWithoutForm(move_term, dialect, add_article, adjectives) {
+  if (undefined === add_article) {add_article = false;}
+  if (undefined === adjectives) {adjectives = false;}
+  var subst = moveSubstitution(move_term, dialect);
+  var match = subst.match(/(?:form )?(?:(an?) )?(.*)/i);
+  var root = match[2];
+  var article = /^ *[aeiou]/.test(words(adjectives, root)) ? 'an' : 'a';
+  if (add_article) {
+    return words(article, adjectives, root);
+  } else {
+    return words(adjectives, root);
+  }
+}
+
 // === Related Moves =============
 // Note that a lot of these are 'is composed of' relationships, and as such they
 // might be moved to another representation later.
