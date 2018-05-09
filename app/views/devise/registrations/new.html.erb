@@ -4,49 +4,62 @@
     <h1 class="col-sm-6 col-sm-offset-2">Sign Up</h1> 
   </div>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: {class: 'form-horizontal'}) do |f| %>
+    <%= devise_error_messages! %>
 
-  <div class="row field">
-    <div class="col-sm-2 contra-label">Email:</div> 
-    <%= f.email_field :email, autofocus: true, class: "col-sm-6" %>
-    <div class="col-sm-4 understated">e.g. 'jane@gmail.com'</div>
-  </div>
+    <div class="form-group">
+      <div class="col-sm-2 contra-label control-label">Email</div>
+      <div class=col-sm-6><%= f.email_field :email, autofocus: true, class: "form-control", placeholder: "jane@gmail.com" %></div>
+    </div>
 
-  <div class="row field">
-    <div class="col-sm-2 contra-label">Name:</div> 
-    <%= f.text_field :name, class: "col-sm-6" %>
-    <div class="col-sm-4 understated">e.g. 'Cary Ravitz'</div>
-  </div>
+    <div class="form-group">
+      <div class="col-sm-2 contra-label control-label">Name</div> 
+      <div class=col-sm-6><%= f.text_field :name, class: "form-control", placeholder: "Jane Smith" %></div>
+    </div>
 
-  <div class="row field">
-    <div class="col-sm-2 contra-label">Password:</div> 
-    <%= f.password_field :password, autocomplete: "off", class: "col-sm-6" %>
-    <% if @minimum_password_length %>
-    <div class="col-sm-4 understated"><%= @minimum_password_length %> characters minimum</div>
-    <% end %>
-  </div>
+    <div class="form-group">
+      <div class="col-sm-2 contra-label control-label">Password</div> 
+      <div class=col-sm-6><%= f.password_field :password, autocomplete: "off", class: "form-control", placeholder: @minimum_password_length && "minimum #{@minimum_password_length} characters" %></div>
+    </div>
 
-  <div class="row field">
-    <div class="col-sm-2 contra-label">Again:</div> 
-    <%= f.password_field :password_confirmation, autocomplete: "off", class: "col-sm-6" %>
-    <div class="col-sm-4 understated">always two, there are</div>
-  </div>
+    <div class="form-group">
+      <div class="col-sm-2 contra-label control-label">Password Again</div> 
+      <div class=col-sm-6><%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %></div>
+    </div>
 
-  <div class="row actions">
-    <div class="col-sm-2"></div>
-    <%= save_submit_button_html "Sign Up", {class: "col-sm-6"} %>
-  </div>
-<% end %>
+    <div class="form-group">
+      <div class="col-sm-2 contra-label control-label">Data Mistakes</div>
+      <div class=col-sm-6>
+        <div class="control-label" style="text-align: left">If I make a broken public dance, moderators should...</div>
+        <div class=radio><label><%= f.radio_button(:moderation, "community", checked: true) %>do the right thing for the community - edit the dance, unpublish the dance, or contact me</label></div>
+
+        <div class=radio><label><%= f.radio_button(:moderation, "contact-then-private") %>contact me - then unpublish the dance if I don't respond within 2 weeks</label></div>
+        <div class=radio><label><%= f.radio_button(:moderation, "private") %>leave me alone and keep out of my data - only unpublish the dance</label></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-2 contra-label control-label">Newsletter</div>
+      <div class="col-sm-6">
+        <div class=radio><label><%= f.radio_button(:news_email, "true") %>Email me about new features and stuff like that</label></div>
+        <div class=radio><label><%= f.radio_button(:news_email, "false") %>No email</label></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-6"><%= save_submit_button_html "Sign Up" %></div>
+    </div>
+  <% end %>
 
   <div class="row" style="margin-top: 2em">
     <div class="col-sm-2"></div>
     <div class="col-sm-6">
       <%# effective with user 52, inclusive %>
       <h2>User Agreement</h2>
-      <p>By creating an account on this site, you assume the risk that your uploaded data could be lost, modified, or stolen. Having said that, the purpose of ContraDB is to build a free, shared, high-quality, machine-readable database of contra dances, so that humans can dance to them and have fun. We might modify your data according to that vision, for example, by unpublishing a broken and abandoned dance that’s turning up in everyone’s search results. </p>
+      <p>The purpose of ContraDB is to build a free, shared, high-quality, machine-readable database of contra dances, so that humans can dance and have fun. Having said that, bad things can happen on the internet - you assume the risk that your uploaded data could be lost, modified, or stolen. </p>
 
-      <p>Your email address will not be intentionally given to third parties, nor will we spam you with advertisements. It’s primarily intended to send password reset links. We also may send intermittent site announcements when blockbuster new features are released.</p>
+      <p>Your email address will be used to send password reset links and email you asked for above. It will not be intentionally given to third parties, nor will we spam you with advertisements.</p>
     </div>
   </div>
 

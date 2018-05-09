@@ -7,4 +7,3 @@ FactoryGirl.define do
     password '12345678'
   end
 end
-
