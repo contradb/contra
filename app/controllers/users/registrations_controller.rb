@@ -3,7 +3,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   private
   def sign_up_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :moderation)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :moderation, :news_email)
   end
 
   def create_first_user_as_admin

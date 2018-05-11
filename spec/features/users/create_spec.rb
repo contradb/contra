@@ -18,16 +18,16 @@ describe 'Creating user from welcome page' do
     visit '/users/sign_up'
     scrutinize_layout page
     expect(page).to have_content("Sign Up")
-    expect(page).to have_content("Email:")
-    expect(page).to have_content("Name:")
-    expect(page).to have_content("Password:")
+    expect(page).to have_content("Email")
+    expect(page).to have_content("Name")
+    expect(page).to have_content("Password")
     fill_in "user_email",                 with: user_attrs[:email]
     fill_in "user_name",                  with: user_attrs[:name]
     fill_in "user_password",              with: user_attrs[:password]
     fill_in "user_password_confirmation", with: user_attrs[:password]
-    #choose "user_news_email_true"
     expect(find_field("user_moderation_community")).to be_checked
     choose "user_moderation_private"
+    choose "user_news_email_false"
     click_button "Sign Up"
     expect(page).to have_content("Welcome! You have signed up successfully")
     expect(current_url).to eq('http://www.example.com/') # is the splash page
@@ -37,6 +37,7 @@ describe 'Creating user from welcome page' do
     expect(user.email).to eq(user_attrs[:email])
     expect(user.name).to eq(user_attrs[:name])
     expect(user.moderation).to eq('private')
+    expect(user.news_email?).to eq(false)
   end
 
   it "First user is created as admin, second is not" do
