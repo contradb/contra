@@ -3,7 +3,7 @@ require 'login_helper'
 require 'support/scrutinize_layout'
 
 describe 'Editing user' do
-  it 'editing email works' do  # but it doesn't! But in real life it does now. Hm...-dm 12-02-2017
+  it 'editing email works' do
     password = 'smurfs4eva'
     with_login(password: password) do |user|
       visit edit_user_registration_path
@@ -11,11 +11,25 @@ describe 'Editing user' do
       fill_in 'user_name', with: 'Yahoo Serious'
       fill_in 'user_email', with: 'serious@yahoo.com'
       fill_in 'user_current_password', with: password
-      find('button.btn-success').click # click_on('update-user')
+      click_button 'Update Identity'
+      expect(page).to have_text('Your account has been updated successfully.')
       user.reload
       expect(user.name).to eq('Yahoo Serious')
       expect(user.email).to eq('serious@yahoo.com')
-      expect(page).to have_text('Your account has been updated successfully.')
+    end
+  end
+
+  it 'editing contact info works' do
+    with_login do |user|
+      visit edit_user_registration_path
+      choose "user_moderation_private"
+      choose "user_news_email_false"
+      click_button('Update Notifications')
+      user.reload
+      expect(page).to have_text('Preferences updated.')
+      expect(current_url).to eq(root_url)
+      expect(user.moderation).to eq('private')
+      expect(user.news_email?).to eq(false)
     end
   end
 

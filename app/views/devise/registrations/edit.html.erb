@@ -5,6 +5,33 @@
     <h2 class="col-sm-10">Edit <%= resource_name.to_s.humanize %></h2>
   </div>
 
+  <%= form_for(resource, as: resource_name, url: user_update_preferences_path(resource), html: {class: 'form-horizontal', method: :put}) do |f| %>
+    <div class="form-group">
+      <div class="col-sm-2 contra-label control-label">Data Mistakes</div>
+      <div class=col-sm-6>
+        <div class="control-label" style="text-align: left">If I make a broken public dance, moderators should...</div>
+        <div class=radio><label><%= f.radio_button(:moderation, "community", checked: true) %>do the right thing for the community - edit the dance, unpublish the dance, or contact me</label></div>
+
+        <div class=radio><label><%= f.radio_button(:moderation, "contact-then-private") %>contact me - then unpublish the dance if I don't respond within 2 weeks</label></div>
+        <div class=radio><label><%= f.radio_button(:moderation, "private") %>leave me alone and keep out of my data - only unpublish the dance</label></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-2 contra-label control-label">Newsletter</div>
+      <div class="col-sm-6">
+        <div class=radio><label><%= f.radio_button(:news_email, "true") %>Email me about site upgrades</label></div>
+        <div class=radio><label><%= f.radio_button(:news_email, "false") %>No email</label></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-6"><%= save_submit_button_html "Update Notifications", class: 'btn-block' %></div>
+    </div>
+
+    
+  <% end %>
 
   <div class='form-group'>
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
@@ -49,7 +76,7 @@
 
       <div class="row actions">
         <div class="col-sm-2"></div>
-        <div class='col-sm-2'><%= save_submit_button_html "Update", class: 'btn-block' %></div>
+        <div class='col-sm-2'><%= save_submit_button_html "Update Identity", class: 'btn-block' %></div>
       </div>
     <% end %>
 

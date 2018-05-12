@@ -7,7 +7,9 @@ Rails.application.routes.draw do
   post 'dances_filter', to: 'dances#index'
   resources :choreographers
   devise_for :users, controllers: { registrations: "users/registrations" }
-  resources :users, only: [:show, :index]
+  resources :users, only: [:show, :index] do
+    put :update_preferences
+  end
   resources :figures, only: [:index, :show]
   resources :idioms, only: [:create, :update, :destroy]
 
