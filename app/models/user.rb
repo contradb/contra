@@ -9,7 +9,7 @@ class User < ApplicationRecord
 
   validates :name, length: { in: 4..100 }  
 
-  enum moderation: %w(unknown private contact-then-private community), _prefix: true
+  enum moderation: %w(unknown hermit owner collaborative), _prefix: true
 
   # dialect translates cantanerous active record objects into a single
   # nested hash, more suitible for javascript manipulation.

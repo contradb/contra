@@ -25,8 +25,8 @@ describe 'Creating user from welcome page' do
     fill_in "user_name",                  with: user_attrs[:name]
     fill_in "user_password",              with: user_attrs[:password]
     fill_in "user_password_confirmation", with: user_attrs[:password]
-    expect(find_field("user_moderation_community")).to be_checked
-    choose "user_moderation_private"
+    expect(find_field("user_moderation_collaborative")).to be_checked
+    choose "user_moderation_owner"
     choose "user_news_email_false"
     click_button "Sign Up"
     expect(page).to have_content("Welcome! You have signed up successfully")
@@ -36,7 +36,7 @@ describe 'Creating user from welcome page' do
     user = User.last
     expect(user.email).to eq(user_attrs[:email])
     expect(user.name).to eq(user_attrs[:name])
-    expect(user.moderation).to eq('private')
+    expect(user.moderation).to eq('owner')
     expect(user.news_email?).to eq(false)
   end
 

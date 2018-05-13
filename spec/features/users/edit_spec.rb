@@ -29,16 +29,16 @@ describe 'Editing user' do
     end
   end
 
-  it 'editing contact info works' do
+  it 'editing Notifications works' do
     with_login do |user|
       visit edit_user_registration_path
-      choose "user_moderation_private"
+      choose "user_moderation_hermit"
       choose "user_news_email_false"
       click_button('Update Notifications')
       user.reload
       expect(page).to have_text('Preferences updated.')
       expect(current_url).to eq(root_url)
-      expect(user.moderation).to eq('private')
+      expect(user.moderation).to eq('hermit')
       expect(user.news_email?).to eq(false)
     end
   end
