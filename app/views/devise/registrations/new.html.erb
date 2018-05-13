@@ -28,13 +28,13 @@
     </div>
 
     <div class="form-group">
-      <div class="col-sm-2 contra-label control-label">Data Mistakes</div>
+      <div class="col-sm-2 contra-label control-label">Public Data Handling</div>
       <div class=col-sm-6>
-        <div class="control-label" style="text-align: left">If I make a broken public dance, moderators should...</div>
-        <div class=radio><label><%= f.radio_button(:moderation, "community", checked: true) %>do the right thing for the community - edit the dance, unpublish the dance, or contact me</label></div>
+        <div class="control-label" style="text-align: left">If an issue is noticed in a dance I published, moderators should...</div>
+        <div class=radio><label><%= f.radio_button(:moderation, "community", checked: true) %>collaborative - edit or unpublish the dance, emailing me the original text</label></div>
 
-        <div class=radio><label><%= f.radio_button(:moderation, "contact-then-private") %>contact me - then unpublish the dance if I don't respond within 2 weeks</label></div>
-        <div class=radio><label><%= f.radio_button(:moderation, "private") %>leave me alone and keep out of my data - only unpublish the dance</label></div>
+        <div class=radio><label><%= f.radio_button(:moderation, "contact-then-private") %>owner - email me, then if I don't repsond within 2 weeks unpublish the dance</label></div>
+        <div class=radio><label><%= f.radio_button(:moderation, "private") %>hermit - unpublish the dance, don't contact me</label></div>
       </div>
     </div>
 
