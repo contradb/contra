@@ -5,6 +5,8 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all.order "LOWER(name)"
+    @show_newsletter_mailto = current_user&.admin?
+    @current_user = current_user
   end
 
   def show

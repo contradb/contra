@@ -3,7 +3,6 @@ require 'rails_helper'
 require 'login_helper'
 
 describe 'Showing dances' do
-
   it 'displays fields' do
     user = FactoryGirl.create(:user, moderation: :collaborative)
     dance = FactoryGirl.create(:box_the_gnat_contra, publish: true, user: user)
