@@ -3,9 +3,9 @@ require 'rails_helper'
 require 'login_helper'
 
 describe 'Showing dances' do
-
   it 'displays fields' do
-    dance = FactoryGirl.create(:box_the_gnat_contra)
+    user = FactoryGirl.create(:user, moderation: :collaborative)
+    dance = FactoryGirl.create(:box_the_gnat_contra, publish: true, user: user)
     visit dance_path dance.id
     expect(page.body).to include dance.title
     expect(page.body).to include dance.hook
@@ -15,6 +15,18 @@ describe 'Showing dances' do
     expect(page).to have_text ('neighbors balance & swing')
     expect(page).to have_text ('ladles allemande right 1½')
     expect(page.body).to include dance.notes
+    expect(page).to have_text('Published')
+    expect(page).to_not have_text(/collaborative/i)
+  end
+
+  it 'displays moderation link' do
+    user = FactoryGirl.create(:user, moderation: :collaborative, email: 'sue@yahoo.com')
+    dance = FactoryGirl.create(:dance, user: user)
+    with_login(admin: true) do
+      visit dance_path dance.id
+      expect(page).to have_text("Collaborative - moderators may edit or unpublish the dance, emailing sue@yahoo.com the original text")
+      expect(page).to have_link('sue@yahoo.com', href: 'mailto:sue@yahoo.com')
+    end
   end
 
   it 'shows appropriate A1B2 and beat labels' do

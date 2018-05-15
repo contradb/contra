@@ -1,5 +1,9 @@
 <h1>Users</h1>
 
+<% if @show_newsletter_mailto %>
+  <p><big><%= mail_to(@current_user.email, 'write a newsletter...', bcc: @users.where(news_email: true).pluck(:email).join(',')) %></big></p>
+<% end %>
+
 
 <table class="table table-striped table-bordered table-hover table-condensed contra-table-nonfluid">
   <thead>

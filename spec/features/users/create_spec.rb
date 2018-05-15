@@ -13,21 +13,31 @@ describe 'Creating user from welcome page' do
   end
 
   it "Sign Up page works" do
+    expect(User.last).to eq(nil)
+    user_attrs = FactoryGirl.attributes_for(:user)
     visit '/users/sign_up'
     scrutinize_layout page
     expect(page).to have_content("Sign Up")
-    expect(page).to have_content("Email:")
-    expect(page).to have_content("Name:")
-    expect(page).to have_content("Password:")
-    fill_in "user_email",                 with: "forgedmail@bog.us"
-    fill_in "user_name",                  with: "Forgedmail at Bog.us"
-    fill_in "user_password",              with: "testing password 1234"
-    fill_in "user_password_confirmation", with: "testing password 1234"
+    expect(page).to have_content("Email")
+    expect(page).to have_content("Name")
+    expect(page).to have_content("Password")
+    fill_in "user_email",                 with: user_attrs[:email]
+    fill_in "user_name",                  with: user_attrs[:name]
+    fill_in "user_password",              with: user_attrs[:password]
+    fill_in "user_password_confirmation", with: user_attrs[:password]
+    expect(find_field("user_moderation_collaborative")).to be_checked
+    choose "user_moderation_owner"
+    choose "user_news_email_false"
     click_button "Sign Up"
     expect(page).to have_content("Welcome! You have signed up successfully")
     expect(current_url).to eq('http://www.example.com/') # is the splash page
-    expect(page).to have_content("Find Dances") 
+    expect(page).to have_content("Find Dances")
     scrutinize_layout page
+    user = User.last
+    expect(user.email).to eq(user_attrs[:email])
+    expect(user.name).to eq(user_attrs[:name])
+    expect(user.moderation).to eq('owner')
+    expect(user.news_email?).to eq(false)
   end
 
   it "First user is created as admin, second is not" do

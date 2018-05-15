@@ -1,15 +1,26 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show]
-  before_action :authenticate_user!, only: [:new, :edit, :update, :destroy]
+  before_action :set_user, except: [:index, :update_preferences]
+  before_action :authenticate_user!, except: [:index, :show]
 
 
   def index
     @users = User.all.order "LOWER(name)"
+    @show_newsletter_mailto = current_user&.admin?
+    @current_user = current_user
   end
 
   def show
     @dances = @user.dances.readable_by(current_user).alphabetical
     @programs = @user.programs
+  end
+
+  def update_preferences
+    user = User.find(params[:user_id])
+    if user.update(update_preferences_params)
+      redirect_to root_path(user), notice: 'Preferences updated.'
+    else
+      render json: user.errors, status: :unprocessable_entity
+    end
   end
 
   private
@@ -19,8 +30,7 @@ class UsersController < ApplicationController
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
-  def user_params
-    params.require(:user).permit(:email,:name)
+  def update_preferences_params
+    params.require(:user).permit(:id, :moderation, :news_email)
   end
 end
-

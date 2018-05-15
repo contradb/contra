@@ -19,4 +19,24 @@ module DancesHelper
     s << ']'.html_safe
     s
   end
+
+  def admin_moderation_display(user)
+
+    email = mail_to(user.email, nil, target: '_blank',
+                    onClick: "javascript:window.open('mailto:#{user.email}', 'mail');event.preventDefault()")
+    # onclick behavior is a workaround to open in a new window in
+    # firefox, which has a longstanding bug ignoring target
+    case user.moderation
+    when 'collaborative'
+      "Collaborative - moderators may edit or unpublish the dance, emailing ".html_safe + email + " the original text".html_safe
+    when 'owner'
+      "Owner - email ".html_safe + email + ", then if they don't repsond within 2 weeks unpublish the dance".html_safe
+    when 'hermit'
+      "Hermit - unpublish the dance, don't contact them"
+    when 'unknown'
+      "Unknown - ".html_safe + email + " has not specified their modification preference".html_safe
+    else
+      raise "unexpected user moderation #{user.moderation.inspect}"
+    end
+  end
 end

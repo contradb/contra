@@ -16,3 +16,8 @@
 
 <p class="dance-show-user">User: <%= link_to @dance.user.name, @dance.user %></p>
 <p class="dance-show-publish"><%= @dance.publish ? 'Published' : 'Private' %></p>
+<% if @show_moderation %>
+  <p class="dance-show-moderation">
+    Moderation: <%= admin_moderation_display(@dance.user) %>
+  </p>
+<% end %>
