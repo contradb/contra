@@ -10,6 +10,7 @@ describe 'Creating user from welcome page' do
     visit users_path
     scrutinize_layout page
     expect(page).to have_link(user.name, href: user_path(user))
+    # this test is weak and could certainly test more rows...
   end
 
   describe "newsletter mailto" do
@@ -26,9 +27,6 @@ describe 'Creating user from welcome page' do
       with_login(admin: true) do |admin|
         bccs = [user, user2, admin].map(&:email).join('%2C').gsub('@','%40')
         visit users_path
-        # mailto:dc.morse@gmail.com?bcc=allisonjonjak%40gmail.com%2Cdcmorse%40gmail.com
-        # mailto:test@test.com?bcc=spam.me.harder.1%40gmail.com%2Cspam.me.harder.2%40gmail.com%2Ctest%40test.com
-        puts page.html
         expect(page).to have_link('write a newsletter...', href: "mailto:#{admin.email}?bcc=#{bccs}")
       end
     end

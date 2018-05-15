@@ -19,7 +19,7 @@ class UsersController < ApplicationController
     if user.update(update_preferences_params)
       redirect_to root_path(user), notice: 'Preferences updated.'
     else
-      render json: user.errors, status: :unprocessable_entity
+      render :update
     end
   end
 
