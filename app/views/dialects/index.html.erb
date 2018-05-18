@@ -88,9 +88,9 @@
         <div class="modal-body">
           <%= f.label(:substitution) %><br>
           <%= f.hidden_field(:term, class: 'modal-term', value: 'gyre') %>
-          <%= f.text_field(:substitution, class: 'form-control', id: 'gyre-dialog-substitution') %>
+          <%= f.text_field(:substitution, class: 'form-control margin-bottom-10', id: 'gyre-dialog-substitution') %>
           <div class=understated>
-            Experimental: <i>%S shoulder round</i> becomes <i>right shoulder round</i> / <i>left shoulder round</i>. <i>face-to-face %s</i> becomes <i>Face-to-face</i> / <i>face-to-face left shoulder</i>.
+            Experimental: <br><span class=understated-quote>%S shoulder round</span> becomes <span class=understated-quote>right shoulder round</span> / <span class=understated-quote>left shoulder round</span> <br><span class=understated-quote>face-to-face %s</span> becomes <span class=understated-quote>face-to-face</span> / <span class=understated-quote>face-to-face left shoulder</span>
           </div>
         </div>
         <div class="modal-footer">

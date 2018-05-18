@@ -4,7 +4,7 @@ require 'rails_helper'
 RSpec.describe DancesHelper, type: :helper do
 
   figure_txt_for = -> move, *parameter_values, dialect {
-    JSLibFigure.figureToString({'move' => move, 'parameter_values' => parameter_values}, dialect)
+    JSLibFigure.figure_to_string({'move' => move, 'parameter_values' => parameter_values}, dialect)
   }
 
   def whitespice(x) 
@@ -267,20 +267,27 @@ RSpec.describe DancesHelper, type: :helper do
     end
   end
 
-  it "renders right shoulder round the way people want" do
-    txt = figure_txt_for.call('gyre', 'partners', true, 360, 8, JSLibFigure.shoulder_round_dialect)
-    expect(txt).to match('partners right shoulder round once')
-  end
-
-  describe '%s (lower case) in gyre substitution' do
-    it "does not print 'right shoulder'" do
-      txt = figure_txt_for.call('gyre', 'partners', true, 360, 8, {"moves" => {"gyre" => "stare %s"}, "dancers" => {}})
-      expect(txt).to match(whitespice('partners stare once'))
+  describe "%S in substitutiions" do
+    it "renders right shoulder round the way people want" do
+      txt = figure_txt_for.call('gyre', 'partners', true, 360, 8, JSLibFigure.shoulder_round_dialect)
+      expect(txt).to match('partners right shoulder round once')
     end
 
-    it "does print 'left shoulder'" do
-      txt = figure_txt_for.call('gyre', 'partners', false, 360, 8, {"moves" => {"gyre" => "stare %s"}, "dancers" => {}})
-      expect(txt).to match(whitespice('partners stare left shoulders once'))
+    it "doesn't have %S in figure note" do
+      figure = {'move' => 'gyre', 'parameter_values' => ['partners', true, 360, 8], 'note' => 'this is a gyre'}
+      expect(JSLibFigure.figure_to_string(figure,JSLibFigure.shoulder_round_dialect)).to match(whitespice("partners right shoulder round once this is a shoulder round"))
+    end
+
+    describe '%s (lower case) in gyre substitution' do
+      it "does not print 'right shoulder'" do
+        txt = figure_txt_for.call('gyre', 'partners', true, 360, 8, {"moves" => {"gyre" => "stare %s"}, "dancers" => {}})
+        expect(txt).to match(whitespice('partners stare once'))
+      end
+
+      it "does print 'left shoulder'" do
+        txt = figure_txt_for.call('gyre', 'partners', false, 360, 8, {"moves" => {"gyre" => "stare %s"}, "dancers" => {}})
+        expect(txt).to match(whitespice('partners stare left shoulders once'))
+      end
     end
   end
 end
