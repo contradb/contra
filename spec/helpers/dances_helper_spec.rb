@@ -249,7 +249,7 @@ RSpec.describe DancesHelper, type: :helper do
   end
 
   [['ravens almond right 1½', 'allemande', 'ladles', true, 540, 8],
-   ['ravens darcy right shoulders 1½', 'gyre', 'ladles', true, 540, 8],
+   ['ravens darcy 1½', 'gyre', 'ladles', true, 540, 8],
    ['ravens swing', 'swing', 'ladles', 'none', 8],
    ['ravens do si do left shoulder once', 'see saw', 'ladles', false, 360, 8],
    ['form a short wavy line - ravens take right hands and neighbors take left hands', 'form an ocean wave', true, 'across', false, 'ladles', true, 'neighbors', 4],
@@ -264,6 +264,23 @@ RSpec.describe DancesHelper, type: :helper do
     it "renders #{move} as '#{render}' with dialect" do
       txt = figure_txt_for.call(move,*pvalues, JSLibFigure.test_dialect)
       expect(txt).to match(whitespice(render)), "expected #{txt.inspect} to equal #{render.inspect}"
+    end
+  end
+
+  it "renders right shoulder round the way people want" do
+    txt = figure_txt_for.call('gyre', 'partners', true, 360, 8, JSLibFigure.shoulder_round_dialect)
+    expect(txt).to match('partners right shoulder round once')
+  end
+
+  describe '%s (lower case) in gyre substitution' do
+    it "does not print 'right shoulder'" do
+      txt = figure_txt_for.call('gyre', 'partners', true, 360, 8, {"moves" => {"gyre" => "stare %s"}, "dancers" => {}})
+      expect(txt).to match(whitespice('partners stare once'))
+    end
+
+    it "does print 'left shoulder'" do
+      txt = figure_txt_for.call('gyre', 'partners', false, 360, 8, {"moves" => {"gyre" => "stare %s"}, "dancers" => {}})
+      expect(txt).to match(whitespice('partners stare left shoulders once'))
     end
   end
 end

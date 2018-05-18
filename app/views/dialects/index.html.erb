@@ -89,6 +89,9 @@
           <%= f.label(:substitution) %><br>
           <%= f.hidden_field(:term, class: 'modal-term', value: 'gyre') %>
           <%= f.text_field(:substitution, class: 'form-control', id: 'gyre-dialog-substitution') %>
+          <div class=understated>
+            Experimental: <i>%S shoulder round</i> becomes <i>right shoulder round</i> / <i>left shoulder round</i>. <i>face-to-face %s</i> becomes <i>Face-to-face</i> / <i>face-to-face left shoulder</i>.
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

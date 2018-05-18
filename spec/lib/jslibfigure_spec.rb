@@ -88,6 +88,14 @@ RSpec.describe JSLibFigure do
       expect(ms.count {|m| m['term'] == 'swing'}).to eq(1)
       expect(ms.count {|m| m['substitution'] == 'swing'}).to eq(0)
     end
+
+    it "takes '%S' out of a gyre substitution" do
+      ms = JSLibFigure.eval("moveTermsAndSubstitutionsForSelectMenu(#{JSLibFigure.shoulder_round_dialect.to_json})")
+      m = ms.find {|m| m['term'] == 'gyre'}
+      sub = m['substitution']
+      expect(sub).to_not eq('%S shoulder round')
+      expect(sub).to eq('shoulder round')
+    end
   end
 
   describe 'slugify_move / deslugify_move' do
@@ -305,6 +313,15 @@ RSpec.describe JSLibFigure do
       dialect = {"moves" => {}, "dancers" => {"first ladle" => "W1", "ladles" => "women", "ladle" => "woman"}}
       expect(JSLibFigure.string_in_dialect(input, dialect)).to eq(output)
     end
+  end
+
+  it 'move_substitution' do
+    expect(JSLibFigure.move_substitution('gyre', JSLibFigure.shoulder_round_dialect)).to eq('shoulder round')
+  end
+
+  it 'moveSubstitutionWithEscape' do
+    dialect_json = JSLibFigure.shoulder_round_dialect.to_json
+    expect(jseval("moveSubstitutionWithEscape('gyre', #{dialect_json});")).to eq('%S shoulder round')
   end
 
   it 'moveSubstitutionWithoutForm' do
