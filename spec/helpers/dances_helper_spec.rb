@@ -4,7 +4,7 @@ require 'rails_helper'
 RSpec.describe DancesHelper, type: :helper do
 
   figure_txt_for = -> move, *parameter_values, dialect {
-    JSLibFigure.figureToString({'move' => move, 'parameter_values' => parameter_values}, dialect)
+    JSLibFigure.figure_to_string({'move' => move, 'parameter_values' => parameter_values}, dialect)
   }
 
   def whitespice(x) 
@@ -249,7 +249,7 @@ RSpec.describe DancesHelper, type: :helper do
   end
 
   [['ravens almond right 1½', 'allemande', 'ladles', true, 540, 8],
-   ['ravens darcy right shoulders 1½', 'gyre', 'ladles', true, 540, 8],
+   ['ravens darcy 1½', 'gyre', 'ladles', true, 540, 8],
    ['ravens swing', 'swing', 'ladles', 'none', 8],
    ['ravens do si do left shoulder once', 'see saw', 'ladles', false, 360, 8],
    ['form a short wavy line - ravens take right hands and neighbors take left hands', 'form an ocean wave', true, 'across', false, 'ladles', true, 'neighbors', 4],
@@ -264,6 +264,18 @@ RSpec.describe DancesHelper, type: :helper do
     it "renders #{move} as '#{render}' with dialect" do
       txt = figure_txt_for.call(move,*pvalues, JSLibFigure.test_dialect)
       expect(txt).to match(whitespice(render)), "expected #{txt.inspect} to equal #{render.inspect}"
+    end
+  end
+
+  describe "%S in substitutiions" do
+    it "renders right shoulder round the way people want" do
+      txt = figure_txt_for.call('gyre', 'partners', true, 360, 8, JSLibFigure.shoulder_round_dialect)
+      expect(txt).to match('partners right shoulder round once')
+    end
+
+    it "doesn't have %S in figure note" do
+      figure = {'move' => 'gyre', 'parameter_values' => ['partners', true, 360, 8], 'note' => 'this is a gyre'}
+      expect(JSLibFigure.figure_to_string(figure,JSLibFigure.shoulder_round_dialect)).to match(whitespice("partners right shoulder round once this is a shoulder round"))
     end
   end
 end

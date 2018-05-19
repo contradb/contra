@@ -52,7 +52,7 @@ function stringParamClock     (value) {return value ? ('*'===value ? '*' : "cloc
 function stringParamLeftRight (value) {return value ? ('*'===value ? '*' : "left") : "right";}
 function stringParamShoulder  (value) {return value ? ('*'===value ? '* shoulders' : "right shoulders") : "left shoulders";}
 function stringParamHandStarHand  (value) {return value ? ('*'===value ? '* hand' : "right") : "left";}
-function stringParamHand          (value) {return value ? ('*'===value ? '*'      : "right") : "left";} // called outside this file!
+function stringParamHand          (value) {return value ? ('*'===value ? '*'      : "right") : "left";}
 
 // spin = clockwise | ccw | undefined
 var param_spin                   = {name: "turn",                   ui: chooser_spin, string: stringParamClock};

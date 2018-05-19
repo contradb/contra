@@ -106,9 +106,17 @@ function dancerSubstitution(dancer_term, dialect) {
   return dialect.dancers[dancer_term] || dancer_term;
 }
 
+var moveSubstitutionPercentSRegexp = / *%S */g;
+
 function moveSubstitution(move_term, dialect) {
+  var sub = moveSubstitutionWithEscape(move_term, dialect);
+  return sub.replace(moveSubstitutionPercentSRegexp, ' ').trim();
+}
+
+function moveSubstitutionWithEscape(move_term, dialect) {
   return dialect.moves[move_term] || move_term;
 }
+
 
 // The basic applicaiton is a user substitution from 'form an ocean
 // wave' to 'form a short wave' and makes it possible to extract the phrases
@@ -306,7 +314,7 @@ function is_progression(move) {
 function stringInDialect(str, dialect) {
   // Since this is called a lot, performance might be helped by memoizing dialectRegExp(dialect)
   return str.replace(dialectRegExp(dialect), function (match) {
-    return dialect.moves[match] || dialect.dancers[match];
+    return (dialect.moves[match] || dialect.dancers[match]).replace(/%S/g,'');
   });
 }
 

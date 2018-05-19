@@ -28,3 +28,24 @@
 .dialects-index-content section {
   margin-bottom: 3em;
 }
+
+table.gyre-example-table {
+  margin-left:auto;
+  margin-right:auto;
+  td:nth-child(even) {
+    padding: 0 1em;
+  }
+}
+
+.gyre-invisible-when-cellphone {
+  display: none;
+}
+
+@media only screen and (min-width : 480px) {
+  table.gyre-invisible-when-cellphone {
+    display: table;
+  }
+  .gyre-visible-when-cellphone {
+    display: none;
+  }
+}

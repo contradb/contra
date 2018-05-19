@@ -2,7 +2,7 @@
 
 module JSLibFigure
 
-  def self.figureToString(figure_ruby_hash, dialect)
+  def self.figure_to_string(figure_ruby_hash, dialect)
     self.eval("figureToString(#{figure_ruby_hash.to_json},#{dialect.to_json})")
   end
 
@@ -119,6 +119,10 @@ module JSLibFigure
     @test_dialect ||= self.eval("testDialect;")
   end
 
+  def self.shoulder_round_dialect
+    @shoulder_round_dialect ||= {"moves" => {"gyre" => "%S shoulder round"}, "dancers" => {}}
+  end
+
   def self.default_dialect
     @default_dialect ||= self.eval("defaultDialect;")
   end
@@ -129,9 +133,9 @@ module JSLibFigure
 
   def self.move_substitution(move_term, dialect)
     # js implementation:
-    # self.eval("moveSubstitution(#{move_term.inspect}, #{dialect.to_json})")
-    # ruby implementation:
-    dialect.dig('moves', move_term) || move_term
+    self.eval("moveSubstitution(#{move_term.inspect}, #{dialect.to_json})")
+    # obsolete ruby implementation, that doesn't take out %S from '%S shoulder round':
+    # dialect.dig('moves', move_term) || move_term
   end
 
   def self.dancers_category(dancers)

@@ -88,7 +88,18 @@
         <div class="modal-body">
           <%= f.label(:substitution) %><br>
           <%= f.hidden_field(:term, class: 'modal-term', value: 'gyre') %>
-          <%= f.text_field(:substitution, class: 'form-control', id: 'gyre-dialog-substitution') %>
+          <%= f.text_field(:substitution, class: 'form-control margin-bottom-20', id: 'gyre-dialog-substitution', placeholder: 'turn by the %S shoulder') %>
+          <div class=understated>
+            <p class=margin-bottom-20>If you need the direction to show up anywhere but after the move name, use '%S' to show where. For example
+            <span class=gyre-visible-when-cellphone>
+              "%S shoulder round" becomes "left shoulder round" or "right shoulder round". Just "gyre" becomes "gyre left" or "gyre".
+            </span>
+            </p>
+            <table class="gyre-example-table gyre-invisible-when-cellphone">
+              <tr><td>%S shoulder round</td><td>→</td><td>left shoulder round</td><td>|</td><td>right shoulder round</td></tr>
+              <tr><td>gyre</td><td>→</td><td>gyre left</td><td>|</td><td>gyre</td></tr>
+            </table>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

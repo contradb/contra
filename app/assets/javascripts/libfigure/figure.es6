@@ -616,12 +616,16 @@ function gyreGoodBeats(figure) {
 }
 
 function gyreStringify(move, pvs, dialect) {
-  var [who,   shoulder,  rots,  beats] = pvs;
-  var [swho, sshoulder, srots, sbeats] = parameter_strings(move, pvs, dialect);
-  var smove = moveSubstitution(move, dialect);
-  var leftShoulder = !shoulder;
-  var printShoulder = leftShoulder || gyreSubstitutionPrintsRightShoulder(smove);
-  return words(swho, smove, printShoulder ? sshoulder : '', srots);
+  var [who,   shoulders,  rots,  beats] = pvs;
+  var [swho, sshoulders, srots, sbeats] = parameter_strings(move, pvs, dialect);
+  var smove = moveSubstitutionWithEscape(move, dialect);
+  var leftShoulders = !shoulders;
+  if (smove.match(/%S/)) {
+    var smoveExpansion = smove.replace(/%S/g, stringParamHand(shoulders));
+    return words(swho, smoveExpansion, srots);
+  } else {
+    return words(swho, smove, leftShoulders && sshoulders, srots);
+  }
 }
 
 defineFigure("gyre",
