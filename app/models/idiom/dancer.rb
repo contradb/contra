@@ -1,8 +1,10 @@
 class Idiom::Dancer < Idiom::Idiom
   def self.set_roles(user, ladle, ladles, gentlespoon, gentlespoons)
-    {'ladles' => ladles,
+    {'ladle' => ladle,
+     'ladles' => ladles,
      'first ladle' => "first #{ladle}",
      'second ladle' => "second #{ladle}",
+     'gentlespoon' => gentlespoon,
      'gentlespoons' => gentlespoons,
      'first gentlespoon' => "first #{gentlespoon}",
      'second gentlespoon' => "second #{gentlespoon}"
@@ -13,9 +15,11 @@ class Idiom::Dancer < Idiom::Idiom
   end
 
   def self.clear_roles(user)
-    user.idioms.where(term: ['ladles',
+    user.idioms.where(term: ['ladle',
+                             'ladles',
                              'first ladle',
                              'second ladle',
+                             'gentlespoon',
                              'gentlespoons',
                              'first gentlespoon',
                              'second gentlespoon']).destroy_all

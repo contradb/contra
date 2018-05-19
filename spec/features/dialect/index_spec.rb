@@ -14,29 +14,35 @@ describe 'Dialect page', js: true do
         show_advanced_options
 
         # loads with correct html
+        expect(page).to_not have_idiom_with('ladle', 'lady')
         expect(page).to_not have_idiom_with('ladles', 'ladies')
         expect(page).to_not have_idiom_with('first ladle', 'first lady')
         expect(page).to_not have_idiom_with('second ladle', 'second lady')
+        expect(page).to_not have_idiom_with('gentlespoon', 'gent')
         expect(page).to_not have_idiom_with('gentlespoons', 'gents')
         expect(page).to_not have_idiom_with('first gentlespoon', 'first gent')
         expect(page).to_not have_idiom_with('second gentlespoon', 'second gent')
 
+        expect(page).to have_idiom_with('gentlespoon', 'lark')
         expect(page).to have_idiom_with('gentlespoons', 'larks')
         expect(page).to have_idiom_with('first gentlespoon', 'first lark')
         expect(page).to have_idiom_with('second gentlespoon', 'second lark')
+        expect(page).to have_idiom_with('ladle', 'raven')
         expect(page).to have_idiom_with('ladles', 'ravens')
         expect(page).to have_idiom_with('first ladle', 'first raven')
         expect(page).to have_idiom_with('second ladle', 'second raven')
-        expect(page).to have_css('.glyphicon-ok', count: 6) # load with correct blinkenlight
+        expect(page).to have_css('.glyphicon-ok', count: 8) # load with correct blinkenlight
         expect(find_field("larks-ravens")).to be_checked
         expect(find_field("gents-ladies")).to_not be_checked
 
         choose('ladies & gents')
 
         # test html
+        expect(page).to have_idiom_with('ladle', 'lady')
         expect(page).to have_idiom_with('ladles', 'ladies')
         expect(page).to have_idiom_with('first ladle', 'first lady')
         expect(page).to have_idiom_with('second ladle', 'second lady')
+        expect(page).to have_idiom_with('gentlespoon', 'gent')
         expect(page).to have_idiom_with('gentlespoons', 'gents')
         expect(page).to have_idiom_with('first gentlespoon', 'first gent')
         expect(page).to have_idiom_with('second gentlespoon', 'second gent')
@@ -45,9 +51,11 @@ describe 'Dialect page', js: true do
 
         # test db
         dancers = user.reload.dialect['dancers']
+        expect(dancers['ladle']).to eq('lady')
         expect(dancers['ladles']).to eq('ladies')
         expect(dancers['first ladle']).to eq('first lady')
         expect(dancers['second ladle']).to eq('second lady')
+        expect(dancers['gentlespoon']).to eq('gent')
         expect(dancers['gentlespoons']).to eq('gents')
         expect(dancers['first gentlespoon']).to eq('first gent')
         expect(dancers['second gentlespoon']).to eq('second gent')
@@ -62,13 +70,9 @@ describe 'Dialect page', js: true do
 
     it 'no radios are lit when user loads page with unusual dancer idioms' do
       with_login do |user|
-        FactoryGirl.create(:dancer_idiom, user: user, term: 'ladles', substitution: 'ladles chicken')
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'ladle', substitution: 'ladle chicken')
         visit '/dialect'
-
-        expect(find_field("gentlespoons-ladles")).to_not be_checked
-        expect(find_field("gents-ladies")).to_not be_checked
-        expect(find_field("larks-ravens")).to_not be_checked
-        expect(find_field("leads-follows")).to_not be_checked
+        expect_pressed_radios # none
       end
     end
 
@@ -81,14 +85,14 @@ describe 'Dialect page', js: true do
 
         expect_pressed_radios(gentlespoons_ladles: true)
 
-        select 'ladles'
-        fill_in 'ladles-substitution', with: 'T-Rexes'
+        select 'ladle', exact: true
+        fill_in 'ladle-substitution', with: 'T-Rex'
 
         expect(page).to have_css('.glyphicon-ok') # js wait (this was a flake elsewhere in this file, and I ended up doing a sleep there)
         expect_pressed_radios
 
-        click_on 'delete-ladles'
-        expect(page).to_not have_css('#delete-ladles') # js wait (this was a flake elsewhere in this file, and I ended up doing a sleep there)
+        click_on 'delete-ladle'
+        expect(page).to_not have_css('#delete-ladle') # js wait (this was a flake elsewhere in this file, and I ended up doing a sleep there)
         expect_pressed_radios(gentlespoons_ladles: true)
       end
     end
@@ -106,18 +110,18 @@ describe 'Dialect page', js: true do
         sleep(0.5)
         expect_pressed_radios(larks_ravens: true)
 
-        fill_in 'ladles-substitution', with: 'crows'
+        fill_in 'ladle-substitution', with: 'crow'
         sleep(0.5)
         expect(page).to have_css('.glyphicon-ok') # js wait
         expect_pressed_radios
 
-        fill_in 'ladles-substitution', with: 'ravens'
+        fill_in 'ladle-substitution', with: 'raven'
         sleep(0.5)
         expect(page).to have_css('.glyphicon-ok') # js wait
         expect_pressed_radios(larks_ravens: true)
 
-        click_on 'delete-ladles'
-        expect(page).to_not have_css('#delete-ladies') # js wait
+        click_on 'delete-ladle'
+        expect(page).to_not have_css('#delete-ladle') # js wait
         expect_pressed_radios
       end
     end
@@ -291,34 +295,36 @@ describe 'Dialect page', js: true do
                             leads_follows: false)
 
     if gentlespoons_ladles
-      expect(find_field("gentlespoons-ladles")).to be_checked
+      expect(find_field("gentlespoons-ladles")).to be_checked, 'expected gentlespoons-ladles to be checked'
     else
-      expect(find_field("gentlespoons-ladles")).to_not be_checked
+      expect(find_field("gentlespoons-ladles")).to_not be_checked, 'expected gentlespoons-ladles to be unchecked'
     end
 
     if gents_ladies
-      expect(find_field("gents-ladies")).to be_checked
+      expect(find_field("gents-ladies")).to be_checked, 'expected gents-ladies to be checked'
     else
-      expect(find_field("gents-ladies")).to_not be_checked
+      expect(find_field("gents-ladies")).to_not be_checked, 'expected gents-ladies to be unchecked'
     end
 
     if larks_ravens
-      expect(find_field("larks-ravens")).to be_checked
+      expect(find_field("larks-ravens")).to be_checked, 'expected larks-ravens to be checked'
     else
-      expect(find_field("larks-ravens")).to_not be_checked
+      expect(find_field("larks-ravens")).to_not be_checked, 'expected larks-ravens to be unchecked'
     end
 
     if leads_follows
-      expect(find_field("leads-follows")).to be_checked
+      expect(find_field("leads-follows")).to be_checked, 'expected leads-follows to be checked'
     else
-      expect(find_field("leads-follows")).to_not be_checked
+      expect(find_field("leads-follows")).to_not be_checked, 'expected leads-follows to be unchecked'
     end
   end
 
   def make_larks_and_ravens_in_db(user)
+    FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoon', substitution: 'lark')
     FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'larks')
     FactoryGirl.create(:dancer_idiom, user: user, term: 'first gentlespoon', substitution: 'first lark')
     FactoryGirl.create(:dancer_idiom, user: user, term: 'second gentlespoon', substitution: 'second lark')
+    FactoryGirl.create(:dancer_idiom, user: user, term: 'ladle', substitution: 'raven')
     FactoryGirl.create(:dancer_idiom, user: user, term: 'ladles', substitution: 'ravens')
     FactoryGirl.create(:dancer_idiom, user: user, term: 'first ladle', substitution: 'first raven')
     FactoryGirl.create(:dancer_idiom, user: user, term: 'second ladle', substitution: 'second raven')
