@@ -106,7 +106,7 @@ function dancerSubstitution(dancer_term, dialect) {
   return dialect.dancers[dancer_term] || dancer_term;
 }
 
-var moveSubstitutionPercentSRegexp = / *%S */gi;
+var moveSubstitutionPercentSRegexp = / *%S */g;
 
 function moveSubstitution(move_term, dialect) {
   var sub = moveSubstitutionWithEscape(move_term, dialect);
