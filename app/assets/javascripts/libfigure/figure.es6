@@ -620,8 +620,8 @@ function gyreStringify(move, pvs, dialect) {
   var [swho, sshoulders, srots, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitutionWithEscape(move, dialect);
   var leftShoulders = !shoulders;
-  if (smove.match(/%s/i)) {
-    var smoveExpansion = smove.replace(/%S/g, stringParamHand(shoulders)).replace(/%s/g, shoulders ? '' : sshoulders);
+  if (smove.match(/%S/)) {
+    var smoveExpansion = smove.replace(/%S/g, stringParamHand(shoulders));
     return words(swho, smoveExpansion, srots);
   } else {
     return words(swho, smove, leftShoulders && sshoulders, srots);

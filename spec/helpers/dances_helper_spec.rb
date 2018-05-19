@@ -277,17 +277,5 @@ RSpec.describe DancesHelper, type: :helper do
       figure = {'move' => 'gyre', 'parameter_values' => ['partners', true, 360, 8], 'note' => 'this is a gyre'}
       expect(JSLibFigure.figure_to_string(figure,JSLibFigure.shoulder_round_dialect)).to match(whitespice("partners right shoulder round once this is a shoulder round"))
     end
-
-    describe '%s (lower case) in gyre substitution' do
-      it "does not print 'right shoulder'" do
-        txt = figure_txt_for.call('gyre', 'partners', true, 360, 8, {"moves" => {"gyre" => "stare %s"}, "dancers" => {}})
-        expect(txt).to match(whitespice('partners stare once'))
-      end
-
-      it "does print 'left shoulder'" do
-        txt = figure_txt_for.call('gyre', 'partners', false, 360, 8, {"moves" => {"gyre" => "stare %s"}, "dancers" => {}})
-        expect(txt).to match(whitespice('partners stare left shoulders once'))
-      end
-    end
   end
 end
