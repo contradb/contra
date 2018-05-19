@@ -509,7 +509,7 @@ function formAnOceanWaveStringify(move, pvs, dialect) {
     var tmove = (instant === '*') ? ('* ' + a_diagonal_ocean_wave) : form_a_diagonal_ocean_wave;
     return words(tmove, tbal, '-', scenter, 'take', scenter_hand, 'hands and', ssides, 'take', sside_hand, 'hands');
   } else {
-    return words("to", a_diagonal_ocean_wave, tbal, '-', scenter, 'take', scenter_hand, 'hands while', invertPair(center, dialect), 'cross and take', sside_hand, 'hands with', ssides);
+    return words("pass through to", a_diagonal_ocean_wave, tbal, '-', scenter, 'pass and take', scenter_hand, 'hands while', invertPair(center, dialect), 'cross and take', sside_hand, 'hands with', ssides);
   }
 }
 
