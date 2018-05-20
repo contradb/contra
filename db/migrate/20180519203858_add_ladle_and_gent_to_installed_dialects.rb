@@ -17,7 +17,6 @@ class AddLadleAndGentToInstalledDialects < ActiveRecord::Migration[5.1]
     attrs = idiom.attributes.except(*%w(id created_at updated_at)).merge(term: new_term, substitution: new_substitution)
     puts attrs.inspect
     idiom = Idiom::Dancer.create(attrs)
-    puts idiom.to_s
   end
 
   def singularize(substitution)
