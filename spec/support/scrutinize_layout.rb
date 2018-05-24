@@ -7,6 +7,5 @@ def scrutinize_layout(page)
   expect(page).to have_link("ContraDB", href: '/')
   expect(page).to have_link("Figures", href: figures_path)
   expect(page).to have_link("Choreographers", href: choreographers_path)
-  expect(page).to have_link("Users")
   expect(page).to have_link("Help")
 end
