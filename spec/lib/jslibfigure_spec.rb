@@ -274,7 +274,9 @@ RSpec.describe JSLibFigure do
 
   it 'dancers works' do
     expected = ['everyone',
+                'gentlespoon',
                 'gentlespoons',
+                'ladle',
                 'ladles',
                 'partners',
                 'neighbors',
