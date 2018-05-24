@@ -170,9 +170,11 @@ $(document).ready(function() {
                                       var gentlespoons = roleArr[1];
                                       var ladle = roleArr[2];
                                       var ladles = roleArr[3];
-                                      return {'gentlespoons': gentlespoons,
+                                      return {'gentlespoon': gentlespoon,
+                                              'gentlespoons': gentlespoons,
                                               'first gentlespoon': 'first '+gentlespoon,
                                               'second gentlespoon': 'second '+gentlespoon,
+                                              'ladle': ladle,
                                               'ladles': ladles,
                                               'first ladle': 'first '+ladle,
                                               'second ladle': 'second '+ladle};
@@ -181,9 +183,11 @@ $(document).ready(function() {
   // Walk the DOM and set role button lightedness appropriately. Profiled to take <= 5ms in one incarnation
   function checkRoleRadioButtons() {
     // ladles & gentlespoons is the default, and so it's checked if there are zero substitutuions
-    var gentlespoonLadlesChecked = !($('#gentlespoons-substitution').length ||
+    var gentlespoonLadlesChecked = !($('#gentlespoon-substitution').length ||
+                                     $('#gentlespoons-substitution').length ||
                                      $('#first-gentlespoon-substitution').length ||
                                      $('#second-gentlespoon-substitution').length ||
+                                     $('#ladle-substitution').length ||
                                      $('#ladles-substitution').length ||
                                      $('#first-ladle-substitution').length ||
                                      $('#second-ladle-substitution').length);

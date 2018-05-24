@@ -85,7 +85,9 @@ var outOfSetDancers = ['shadows',
 
 defineDancerChooser("chooser_dancers",  // some collection of dancers
                     ['everyone',
+                     'gentlespoon',
                      'gentlespoons',
+                     'ladle',
                      'ladles',
                      'partners',
                      'neighbors',
