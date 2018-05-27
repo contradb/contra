@@ -142,4 +142,14 @@ FactoryGirl.define do
     start_type 'improper'
     figures_json {'[{"parameter_values":["ladles",true,360,8],"move":"do si do"}]'}
   end
+
+  factory :malicious_dance, class: Dance do
+    # simulate xss attack by embedding html in dance elements.
+    # all the angle-brackety-things should be passed through as literals.
+    title      'Malicious Dance'
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json '[{"parameter_values":["<b>neighbors</b>","balance",16],"move":"swing", "note":"this should not be <b>bold</b>"}]'
+  end
 end

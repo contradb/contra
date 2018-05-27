@@ -124,19 +124,15 @@ function parameterLabel (movestring, index) {
 
 function menuMoveLabel(from,to) {
   if (to==from) { return '~'; }
-  else if (to < from) { return 'Up '+ (from - to) }
-  else { return 'Down '+ (to - from) }
+  else if (to < from) { return 'Up '+ (from - to); }
+  else { return 'Down '+ (to - from); }
 }
 
 // =====================================================================================
-// =====================================================================================
-
-
-
 
 
 (function () {
-  var app = angular.module('contra', []);
+  var app = angular.module('contra', ['ngSanitize']);
   var scopeInit = function ($scope,$timeout) {
     var fctrl42 = this;
     var dialect = JSON.parse($('#dialect-json').text());
@@ -204,6 +200,7 @@ function menuMoveLabel(from,to) {
     $scope.defaultFigures = defaultFigures;
     $scope.dancerMenuForChooser = dancerMenuForChooser;
     $scope.dancerSubstitution = dancerSubstitution;
+
     // so not angular, but I'm trying anything at this point. 
     $('.update-dance').on('click', function(e) {
       $('#dance-figures-json').val(JSON.stringify($scope.figures.arr));

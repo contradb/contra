@@ -18,6 +18,7 @@
 //= require jquery-ui/autocomplete
 //= require bootstrap-sprockets
 //= require angular
+//= require angular-sanitize
 //= require angucomplete-alt
 //  LOCAL FILES
 //= require libfigure/polyfill

@@ -93,4 +93,13 @@ describe 'Showing dances' do
     expect(page).to_not have_content('B2 8 shadows swing')
     expect(page).to have_content('B2 8 1st shadows swing')
   end
+
+  it "filters out unapproved html" do
+    dance = FactoryGirl.create(:malicious_dance)
+    visit dance_path(dance)
+    expect(page).to have_content('<b>neighbors</b>')
+    expect(page).to have_content('<b>bold</b>')
+    expect(page).to_not have_css('b', text: 'neighbors')
+    expect(page).to_not have_css('b', text: 'bold')
+  end
 end

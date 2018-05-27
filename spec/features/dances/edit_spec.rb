@@ -204,4 +204,15 @@ describe 'Editing dances', js: true do
       expect(page).to have_content('custom first lark custom')
     end
   end
+
+  it "filters html out of user input" do
+    with_login do |user|
+      dance = FactoryGirl.create(:malicious_dance, user: user)
+      visit edit_dance_path(dance)
+      expect(page).to have_css('button.add-figure') # are we on the editor page?
+      expect(page).to_not have_css('b', text: 'neighbors')
+      expect(page).to_not have_css('b', text: 'bold')
+      expect(page).to have_css()
+    end
+  end
 end
