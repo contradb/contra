@@ -1,4 +1,4 @@
-class CreateChoreographers < ActiveRecord::Migration
+class CreateChoreographers < ActiveRecord::Migration[4.2]
   def change
     create_table :choreographers do |t|
       t.string :name

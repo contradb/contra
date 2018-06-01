@@ -1,6 +1,6 @@
 require 'jslibfigure'
 
-class LongLinesAddForwardOnly < ActiveRecord::Migration
+class LongLinesAddForwardOnly < ActiveRecord::Migration[4.2]
   def down
     raise "not implemented - its possible just not worth the time"
   end

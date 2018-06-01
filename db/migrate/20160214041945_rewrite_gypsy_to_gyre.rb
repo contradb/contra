@@ -1,4 +1,4 @@
-class RewriteGypsyToGyre < ActiveRecord::Migration
+class RewriteGypsyToGyre < ActiveRecord::Migration[4.2]
 
   def contraFigureRewrite (key, from, to)
     Dance.all.each do |d|
