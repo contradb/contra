@@ -931,10 +931,10 @@ defineFigure("roll away",
               param_beats_4]);
 
 ////////////////////////////////////////////////
-// RORY O'MOORE                               //
+// RORY O'MORE                                //
 ////////////////////////////////////////////////
 
-function roryOMooreChange(figure,index) {
+function roryOMoreChange(figure,index) {
   var pvs = figure.parameter_values;
   const bal_index = 1;
   const beats_index = 3;
@@ -943,12 +943,12 @@ function roryOMooreChange(figure,index) {
   }
 }
 
-function roryOMooreGoodBeats(figure) {
+function roryOMoreGoodBeats(figure) {
   var [who, balance, dir, beats] = figure.parameter_values;
   return beats === (balance ? 8 : 4);
 }
 
-function roryOMooreStringify(move, pvs, dialect) {
+function roryOMoreStringify(move, pvs, dialect) {
   var [ who,  balance,  dir,  beats] = pvs;
   var [swho, sbalance, sdir, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
@@ -956,9 +956,9 @@ function roryOMooreStringify(move, pvs, dialect) {
   return words(sbalance, swho2, smove, sdir);
 }
 
-defineFigure("Rory O'Moore",
+defineFigure("Rory O'More",
              [param_subject_pairc_or_everyone, param_balance_true, param_slide_right, param_beats_8],
-             {stringify: roryOMooreStringify, change: roryOMooreChange, goodBeats: roryOMooreGoodBeats});
+             {stringify: roryOMoreStringify, change: roryOMoreChange, goodBeats: roryOMoreGoodBeats});
 
 ////////////////////////////////////////////////
 // SLICE                                      //
