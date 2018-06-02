@@ -1,10 +1,99 @@
+var _contraHtmlEscapeRegEx = /[<>&]/g;
+
+function escapehtml(string) {
+  if (string.match(_contraHtmlEscapeRegEx)) {
+    return string.replace(_contraHtmlEscapeRegEx, function(s) {
+      switch(s) {
+      case '<': return '&lt;';
+      case '>': return '&gt;';
+      case '&': return '&amp;';
+      default: return s;
+      }
+    });
+  } else {
+    return string;
+  }
+}
+
+
 function set_if_unset (dict, key, value) {
     if (!(key in dict))
         dict[key] = value;
 }
 
+////////////////////////////////////////////////////////////////
+
+function Words(arr) {
+  this.arr = arr;
+}
+
+function words () {
+  return new Words(Array.prototype.slice.call(arguments));
+}
+
+Words.prototype.sanitize = function() {
+  return wordsClassic.apply(null, this.arr.map(sanitizeAnything));
+}
+
+Words.prototype.isWord = true;
+
+function Tag(tag, attrs, body) {
+  this.tag = tag;
+  this.attrs = attrs;
+  this.body = body;
+}
+
+function tag(tag, attrs_or_body, body_or_nothing) {
+  var attrs;
+  var body;
+  if (body_or_nothing==undefined) {
+    body = attrs_or_body;
+    attrs = {};
+  } else {
+    body = body_or_nothing;
+    attrs = attrs_or_body;
+  }
+  return new Tag(tag, attrs, body);
+}
+
+Tag.prototype.sanitize = function () {
+  // TODO: attrs
+  return '<' + this.tag + '>' + sanitizeAnything(this.body) + '</' + this.tag + '>';
+}
+
+Tag.prototype.isTag = true;
+
+var sanitizationMap = {
+  '<': '&lt;',
+  '>': '&gt;',
+  '&': '&amp;',
+  '&amp;': '&amp;'
+};
+
+function sanitizeAnything(s) {
+  if (s.sanitize) {
+    return s.sanitize();
+  } else if ('string' === typeof s) {
+    return s.replace(/&amp;|&|<|>/g, function(match) {
+      return sanitizationMap[match] || throw_up('Unexpected match during sanitize');
+    });
+  } else {
+    return s;                   // c.f. comma, false
+  }
+}
+
+function test_words() {
+  (words('<p>hi & stuff</p>').sanitize() == '&lt;p&gt;hi &amp; stuff&lt;/p&gt;') || throw_up('test 1 failed');
+  (new Tag('p', {}, 'hi & stuff').sanitize() == '<p>hi &amp; stuff</p>') || throw_up('test 2 failed'); 
+  (words('hello', new Tag('p', {}, 'hi & stuff'), 'hello').sanitize() == 'hello <p>hi &amp; stuff hello') || throw_up('test 3 failed'); 
+
+  return 'success';
+}
+
+////////////////////////////////////////////////////////////////
+
 // take words, put them in strings, return a big, space separated string of them all. 
-function words() {
+function wordsClassic() {
   if (arguments.length <= 0) return "";
   else {
     var acc = (arguments[0] === false) ? '' : arguments[0];
