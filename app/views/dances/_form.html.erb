@@ -200,7 +200,7 @@
       <div id='dance-hook-initializer'><%= copy_dance&.hook || @dance.hook %></div>
       <%= f.label :hook %>
       <%= f.text_field :hook,
-          {'ng-model': 'hook', 'maxlength': Dance::HOOK_MAX_LENGTH, class: 'form-control', placeholder: "catches out of Rory O'Moore spins"} %>
+          {'ng-model': 'hook', 'maxlength': Dance::HOOK_MAX_LENGTH, class: 'form-control', placeholder: "catches out of Rory O'More spins"} %>
       <div class="fiddly-explanation">
         briefly: what niche does ths dance fill? <span class="hide-at-low-res">&mdash; translated into dialect</span> &mdash; {{<%= Dance::HOOK_MAX_LENGTH %> - hook.length}} characters remaining
       </div>

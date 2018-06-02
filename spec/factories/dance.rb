@@ -63,12 +63,12 @@ FactoryGirl.define do
     figures_json {'[{"parameter_values":["neighbors","none",8],"move":"swing"}, {"parameter_values":["prev neighbors","none",8],"move":"swing"}, {"parameter_values":["neighbors","none",8],"move":"swing"}, {"parameter_values":["next neighbors","none",8],"move":"swing"}, {"parameter_values":["3rd neighbors","none",8],"move":"swing"}, {"parameter_values":["4th neighbors","none",8],"move":"swing"}, {"parameter_values":["shadows","none",8],"move":"swing"}, {"parameter_values":["2nd shadows","none",8],"move":"swing"}]'}
   end
 
-  factory :dance_with_a_rory_o_moore, class: Dance do
+  factory :dance_with_a_rory_o_more, class: Dance do
     title      'Just Rory'
     user { FactoryGirl.create(:user) }
     choreographer { FactoryGirl.create(:choreographer) }
     start_type 'improper'
-    figures_json '[{"parameter_values":["neighbors",true,false,8],"move":"Rory O\'Moore"}]'
+    figures_json '[{"parameter_values":["neighbors",true,false,8],"move":"Rory O\'More"}]'
   end
 
   factory :dance_with_a_circle_right, class: Dance do

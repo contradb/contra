@@ -70,11 +70,11 @@ describe 'Welcome page', js: true do
       expect(page).to have_css('.figure-filter-move', count: 2)
     end
 
-    it "Rory O'Moore" do
-      rory = FactoryGirl.create(:dance_with_a_rory_o_moore)
+    it "Rory O'More" do
+      rory = FactoryGirl.create(:dance_with_a_rory_o_more)
       box = FactoryGirl.create(:box_the_gnat_contra)
       visit '/'
-      select "Rory O'Moore"
+      select "Rory O'More"
       expect(page).to_not have_content(box.title) # js wait
       expect(page).to have_content(rory.title)
       expect(rory.title).to eq("Just Rory")
