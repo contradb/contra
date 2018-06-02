@@ -1,4 +1,4 @@
-class CreateDances < ActiveRecord::Migration
+class CreateDances < ActiveRecord::Migration[4.2]
   def change
     create_table :dances do |t|
       t.belongs_to :user
