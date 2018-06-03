@@ -410,7 +410,7 @@ function formLongWavesStringify(move, pvs, dialect) {
   var [ssubject, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
   var tsubject = invertPair(subject, dialect);
-  return words(smove, '-', tsubject, 'face in,', ssubject, 'face out');
+  return words(smove, '-', ssubject, 'face in,', tsubject, 'face out');
 }
 
 
@@ -473,6 +473,8 @@ defineFigure("form a long wave",
              {stringify: formALongWaveStringify, goodBeats: formALongWaveGoodBeats, change: formALongWaveChange});
 
 
+defineRelatedMove2Way('form a long wave', 'form long waves');
+
 ////////////////////////////////////////////////
 // FORM OCEAN WAVE                            //
 ////////////////////////////////////////////////
@@ -516,6 +518,9 @@ function formAnOceanWaveStringify(move, pvs, dialect) {
 defineFigure("form an ocean wave",
              [param_instant_false, param_set_direction_acrossish, param_balance_false, param_center_pair_ladles, param_by_xhand, param_sides_pairs_neighbors, param_beats_4],
              {stringify: formAnOceanWaveStringify, change: formAnOceanWaveChange, goodBeats: formAnOceanWaveGoodBeats});
+
+defineRelatedMove2Way('form an ocean wave', 'form long waves');
+defineRelatedMove2Way('form an ocean wave', 'form a long wave');
 
 ////////////////////////////////////////////////
 // GATE                                       //
