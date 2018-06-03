@@ -410,7 +410,7 @@ function formLongWavesStringify(move, pvs, dialect) {
   var [ssubject, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
   var tsubject = invertPair(subject, dialect);
-  return words(smove, '-', ssubject, 'face out,', tsubject, 'face in');
+  return words(smove, '-', tsubject, 'face in,', ssubject, 'face out');
 }
 
 
