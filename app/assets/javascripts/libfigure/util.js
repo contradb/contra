@@ -35,6 +35,16 @@ Words.prototype.sanitize = function() {
   return wordsClassic.apply(null, this.arr.map(sanitizeAnything));
 }
 
+Words.prototype.peek = function() {
+  for (var i = 0; i < this.arr.length; i++) {
+    var p = peek(this.arr[i]);
+    if (p) {
+      return p;
+    }
+  }
+  return null;
+}
+
 Words.prototype.isWord = true;
 
 function Tag(tag, attrs, body) {
@@ -61,6 +71,10 @@ Tag.prototype.sanitize = function () {
   return '<' + this.tag + '>' + sanitizeAnything(this.body) + '</' + this.tag + '>';
 }
 
+Tag.prototype.peek = function () {
+  return peek(this.body);
+}
+
 Tag.prototype.isTag = true;
 
 var sanitizationMap = {
@@ -82,13 +96,39 @@ function sanitizeAnything(s) {
   }
 }
 
-function test_words() {
-  (words('<p>hi & stuff</p>').sanitize() == '&lt;p&gt;hi &amp; stuff&lt;/p&gt;') || throw_up('test 1 failed');
-  (new Tag('p', {}, 'hi & stuff').sanitize() == '<p>hi &amp; stuff</p>') || throw_up('test 2 failed'); 
-  (words('hello', new Tag('p', {}, 'hi & stuff'), 'hello').sanitize() == 'hello <p>hi &amp; stuff hello') || throw_up('test 3 failed'); 
-
-  return 'success';
+// returns first non-whitespace character
+function peek(thing) {
+  var m;
+  if (thing.peek) {
+    return thing.peek();
+  } else if ((typeof thing === 'string') && (m = thing.match(/\S/))) {
+    return m[0];
+  } else if (thing == comma) {
+    return ',';
+  } else if (thing == false) {
+    return null;
+  } else {
+    return null;
+  }
 }
+
+// function test_sanitize() {
+//   (words('<p>hi & stuff</p>').sanitize() == '&lt;p&gt;hi &amp; stuff&lt;/p&gt;') || throw_up('test 1 failed');
+//   (new Tag('p', {}, 'hi & stuff').sanitize() == '<p>hi &amp; stuff</p>') || throw_up('test 2 failed');
+//   (words('hello', tag('p', 'hi & stuff'), 'hello').sanitize() == 'hello <p>hi &amp; stuff</p> hello') || throw_up('test 3 failed');
+//   return 'success';
+// }
+
+// function test_peek() {
+//   var t = 0;
+//   ++t && (peek(' ') === null) || throw_up('test '+ t + ' failed');
+//   ++t && (peek(' hi') === 'h') || throw_up('test '+ t + ' failed');
+//   ++t && (peek(words(false, '   ', 'hi')) === 'h') || throw_up('test '+ t + ' failed');
+//   ++t && (peek(words(false, '   ', comma)) === ',') || throw_up('test '+ t + ' failed');
+//   ++t && (peek(tag('i', 'hi')) === 'h') || throw_up('test '+ t + ' failed');
+//   ++t && (peek(words(words('  '), words(false), words('hi'))) === 'h') || throw_up('test '+ t + ' failed');
+//   return 'success';
+// }
 
 ////////////////////////////////////////////////////////////////
 
