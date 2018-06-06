@@ -12,7 +12,7 @@ describe 'Showing dances' do
     expect(page.body).to include dance.choreographer.name
     expect(page.body).to include dance.start_type
     expect(page.body).to include dance.preamble
-    expect(page).to have_text ('neighbors balance & swing')
+    expect(page).to have_text ('neighbors balance &amp; swing')
     expect(page).to have_text ('ladles allemande right 1½')
     expect(page.body).to include dance.notes
     expect(page).to have_text('Published')
@@ -32,8 +32,8 @@ describe 'Showing dances' do
   it 'shows appropriate A1B2 and beat labels' do
     dance = FactoryGirl.create(:box_the_gnat_contra)
     visit dance_path dance.id
-    expect(page).to have_content('A1 8 neighbors balance & box the gnat 8 partners balance & swat the flea')
-    expect(page).to have_content('A2 16 neighbors balance & swing')
+    expect(page).to have_content('A1 8 neighbors balance &amp; box the gnat 8 partners balance &amp; swat the flea')
+    expect(page).to have_content('A2 16 neighbors balance &amp; swing')
     expect(page).to have_content('B1 8 ladles allemande right 1½ 8 partners swing')
     expect(page).to have_content('B2 8 right left through 8 ladles chain')
   end
@@ -97,8 +97,8 @@ describe 'Showing dances' do
   it "filters out unapproved html" do
     dance = FactoryGirl.create(:malicious_dance)
     visit dance_path(dance)
-    expect(page).to have_content('<b>neighbors</b>')
-    expect(page).to have_content('<b>bold</b>')
+    expect(page).to have_content('&lt;b&gt;neighbors&lt;/b&gt;')
+    expect(page).to have_content('&lt;b&gt;bold&lt;/b&gt;')
     expect(page).to_not have_css('b', text: 'neighbors')
     expect(page).to_not have_css('b', text: 'bold')
   end

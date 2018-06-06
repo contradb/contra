@@ -333,7 +333,7 @@ RSpec.describe JSLibFigure do
 
   it 'moveSubstitutionWithoutForm' do
     mkscript = ->(substitution, article, adjective) {
-      "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': #{substitution.inspect}}}, #{article}, #{adjective.inspect});"
+      "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': #{substitution.inspect}}}, #{article}, #{adjective.inspect}).sanitize();"
     }
     strip_form = ->(substitution, article, adjective=false) {
       jseval(mkscript.call(substitution, article, adjective)).strip
@@ -392,5 +392,10 @@ RSpec.describe JSLibFigure do
     expect(strip_form.call('an undulating wave', false, 'amorphous')).to eq('amorphous undulating wave')
     expect(strip_form.call('undulating wave', true, 'amorphous')).to eq('an amorphous undulating wave')
     expect(strip_form.call('undulating wave', false, 'amorphous')).to eq('amorphous undulating wave')
+  end
+
+  it 'figureToString with leading comma in note' do
+    figure = {'move' => 'long lines', 'parameter_values' => [true, 8], 'note' => ", hi"};
+    expect(JSLibFigure.figure_to_string(figure, JSLibFigure.default_dialect)).to eq('long lines forward &amp; back, hi')
   end
 end

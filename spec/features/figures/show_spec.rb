@@ -13,7 +13,7 @@ describe 'figures show' do
       expect(page).to have_css("h1", text: 'Swing')
       expect(page).to have_content('formal parameters: who, prefix, beats')
       # 'examples' table should have two swings for Box the Gnat
-      expect(page).to have_content("#{box.title} neighbors balance & swing partners swing")
+      expect(page).to have_content("#{box.title} neighbors balance &amp; swing partners swing")
     end
 
     it 'with dialect' do

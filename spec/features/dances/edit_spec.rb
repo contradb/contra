@@ -212,7 +212,7 @@ describe 'Editing dances', js: true do
       expect(page).to have_css('button.add-figure') # are we on the editor page?
       expect(page).to_not have_css('b', text: 'neighbors')
       expect(page).to_not have_css('b', text: 'bold')
-      expect(page).to have_css()
+      expect(page).to have_text('<b>neighbors</b> balance & swing this should not be <b>bold</b>')
     end
   end
 end

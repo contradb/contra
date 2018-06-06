@@ -31,8 +31,20 @@ function words () {
   return new Words(Array.prototype.slice.call(arguments));
 }
 
+var wants_no_space_before = [false, null, ',', '.', ';'];
+
 Words.prototype.sanitize = function() {
-  return wordsClassic.apply(null, this.arr.map(sanitizeAnything));
+  var arr = this.arr;
+  var acc = [];
+  var space_before = false;
+  for (var i=0; i<arr.length; i++) {
+    var wants_space_before = -1 === wants_no_space_before.indexOf(peek(arr[i]));
+    if (wants_space_before) {
+      acc.push(' ');
+    }
+    acc.push(sanitizeAnything(arr[i]));
+  }
+  return acc.join('').trim();// wordsClassic.apply(null, this.arr.map(sanitizeAnything));
 }
 
 Words.prototype.peek = function() {
@@ -90,9 +102,13 @@ function sanitizeAnything(s) {
   } else if ('string' === typeof s) {
     return s.replace(/&amp;|&|<|>/g, function(match) {
       return sanitizationMap[match] || throw_up('Unexpected match during sanitize');
-    });
+    }).trim();
+  } else if (comma === s) {
+    return ',';
+  } else if (false === s) {
+    return '';
   } else {
-    return s;                   // c.f. comma, false
+    return ''+s;
   }
 }
 
@@ -116,6 +132,7 @@ function peek(thing) {
 //   (words('<p>hi & stuff</p>').sanitize() == '&lt;p&gt;hi &amp; stuff&lt;/p&gt;') || throw_up('test 1 failed');
 //   (new Tag('p', {}, 'hi & stuff').sanitize() == '<p>hi &amp; stuff</p>') || throw_up('test 2 failed');
 //   (words('hello', tag('p', 'hi & stuff'), 'hello').sanitize() == 'hello <p>hi &amp; stuff</p> hello') || throw_up('test 3 failed');
+//   (words('mad robin', false, comma, 'gentlespoons in front').sanitize() == 'mad robin, gentlespoons in front') || throw_up('test 4 failed');
 //   return 'success';
 // }
 
@@ -132,24 +149,6 @@ function peek(thing) {
 
 ////////////////////////////////////////////////////////////////
 
-// take words, put them in strings, return a big, space separated string of them all. 
-function wordsClassic() {
-  if (arguments.length <= 0) return "";
-  else {
-    var acc = (arguments[0] === false) ? '' : arguments[0];
-    var i;
-    for (i=1; i<arguments.length; i++) {
-      if (comma === arguments[i]) {
-        acc = acc.trim() + ',';
-      } else if (arguments[i] !== false) {
-        acc += " ";
-        acc += arguments[i];
-      }
-    }
-    return acc;
-  }
-}
-
 var comma = ['comma'];
 
 // Patch to support current IE, source http://stackoverflow.com/questions/31720269/internet-explorer-11-object-doesnt-support-property-or-method-isinteger
@@ -164,14 +163,11 @@ function throw_up(str) {
   throw new Error(str);
 }
 
-function comma_unless_blank(str) {
-  return ((!str) || (str.trim() === '')) ? '' : ',';
+// a little weird that this takes a Words now, not a string
+function indefiniteArticleFor(w) {
+  var str = peek(w);
+  return /[aeiou]/.test(str) ? 'an' : 'a';
 }
-
-function indefiniteArticleFor(str) {
-  return /^ *[aeiou]/.test(str) ? 'an' : 'a';
-}
-
 
 var defaultDialect = {moves: {}, dancers: {}};
 

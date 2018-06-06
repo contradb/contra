@@ -393,8 +393,8 @@ function figure8Stringify(move, pvs, dialect) {
   var smove = moveSubstitution(move, dialect);
   var tlead = (subject === 'ones' && lead === 'first ladle') || (subject === 'twos' && lead === 'second ladle') ? '' : slead;
   var the_rest = words(tlead, tlead && 'leading');
-  var space_sdir = dir ? (' ' + sdir) : '';
-  return words(ssubject, shalf_or_full, smove + space_sdir + comma_unless_blank(the_rest), the_rest);
+  var lead_description = words(tlead, tlead && 'leading');
+  return words(ssubject, shalf_or_full, smove, sdir, tlead && comma, tlead && lead_description);
 }
 
 defineFigure("figure 8",
@@ -506,7 +506,7 @@ function formAnOceanWaveStringify(move, pvs, dialect) {
     var form_an_ocean_wave = moveSubstitution(move, dialect);
     var substitution_starts_with_form = /^ *form/.test(form_an_ocean_wave);
     var form_a_diagonal_ocean_wave = words(substitution_starts_with_form && 'form', a_diagonal_ocean_wave);
-    var tmove = (instant === '*') ? ('* ' + a_diagonal_ocean_wave) : form_a_diagonal_ocean_wave;
+    var tmove = (instant === '*') ? words('*', a_diagonal_ocean_wave) : form_a_diagonal_ocean_wave;
     return words(tmove, tbal, '-', scenter, 'take', scenter_hand, 'hands and', ssides, 'take', sside_hand, 'hands');
   } else {
     return words("pass through to", a_diagonal_ocean_wave, tbal, '-', scenter, 'pass and take', scenter_hand, 'hands while', invertPair(center, dialect), 'cross and take', sside_hand, 'hands with', ssides);

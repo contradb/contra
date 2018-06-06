@@ -12,7 +12,7 @@ RSpec.describe DancesHelper, type: :helper do
     when Regexp; x
     when String;
       quote = Regexp.escape(x).to_s
-      /\A\s*#{quote.gsub('\ ','\s+')}\s*\z/
+      /\A\s*#{quote.gsub('\ ','\s+').gsub(/&amp;|&/,'&amp;')}\s*\z/
     else raise 'unexpected type in whitespice'
     end
   end

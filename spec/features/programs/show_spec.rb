@@ -24,7 +24,7 @@ describe 'Showing programs' do
 
     expect(page).to have_content(program.title)
     expect(page).to have_content(dance.title)
-    expect(figure_html).to match(/neighbors +balance +& +swing/)
+    expect(figure_html).to match(/neighbors +balance +&amp; +swing/)
     expect(page).to have_content(figure_html)
     expect(page).to have_content('hambo')
   end

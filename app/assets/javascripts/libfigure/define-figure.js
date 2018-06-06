@@ -33,10 +33,10 @@ function figureToString(f,dialect) {
   if (fig_def) {
     var func = fig_def.props.stringify || figureGenericStringify;
     var main = func(alias(f), f.parameter_values, dialect);
-    var note = f.note;
-    return note ? words(main,stringInDialect(note, dialect)) : main;
+    var note = f.note || '';
+    return words(main,stringInDialect(note, dialect)).sanitize();
   } else if (f.move) {
-    return "rogue figure '"+f.move+"'!";
+    return "rogue figure '"+sanitizeAnything(f.move)+"'!";
   } else {
     return "empty figure";
   }
@@ -135,11 +135,12 @@ function moveSubstitutionWithoutForm(move_term, dialect, add_article, adjectives
   var subst = moveSubstitution(move_term, dialect);
   var match = subst.match(/(?:form )?(?:(an?) )?(.*)/i);
   var root = match[2];
-  var article = /^ *[aeiou]/.test(words(adjectives, root)) ? 'an' : 'a';
+  var adjectives_and_root = words(adjectives, root);
+  var article = /[aeiou]/.test(adjectives_and_root.peek()) ? 'an' : 'a';
   if (add_article) {
     return words(article, adjectives, root);
   } else {
-    return words(adjectives, root);
+    return adjectives_and_root;
   }
 }
 

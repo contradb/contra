@@ -53,7 +53,7 @@ describe 'Creating dances', js: true do
       expect(dance.title).to eql('Rover McGrover')
       expect(current_path).to eq dance_path(dance.id)
       expect(page).to have_content('Dance was successfully created')
-      expect(page).to have_content('partners balance & box the gnat hastily')
+      expect(page).to have_content('partners balance &amp; box the gnat hastily')
     end
   end
 
