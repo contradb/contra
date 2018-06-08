@@ -48,7 +48,8 @@ RSpec.describe DancesController, type: :controller do
     it "assigns @dialect_json" do
       get :new, params: {}
       expect(assigns(:dialect_json)).to be_a(String)
-      expect(assigns(:dialect_json)).to eq(subject.current_user.dialect.to_json)
+      editor_dialect = JSLibFigure.with_text_in_dialect(subject.current_user.dialect, true)
+      expect(assigns(:dialect_json)).to eq(editor_dialect.to_json)
     end
   end
 
@@ -73,7 +74,8 @@ RSpec.describe DancesController, type: :controller do
         dance = FactoryGirl.create(:dance, user: subject.current_user)
         get :edit, params: {:id => dance.to_param}
         expect(assigns(:dialect_json)).to be_a(String)
-        expect(assigns(:dialect_json)).to eq(subject.current_user.dialect.to_json)
+        editor_dialect = JSLibFigure.with_text_in_dialect(subject.current_user.dialect, true)
+        expect(assigns(:dialect_json)).to eq(editor_dialect.to_json)
       end
 
       it "does not render template if not owner" do
@@ -147,7 +149,8 @@ RSpec.describe DancesController, type: :controller do
       it "assigns @dialect_json" do
         post :create, params: {:dance => invalid_attributes}
         expect(assigns(:dialect_json)).to be_a(String)
-        expect(assigns(:dialect_json)).to eq(subject.current_user.dialect.to_json)
+        editor_dialect = JSLibFigure.with_text_in_dialect(subject.current_user.dialect, true)
+        expect(assigns(:dialect_json)).to eq(editor_dialect.to_json)
       end
 
       it "re-renders the 'new' template" do
@@ -205,7 +208,8 @@ RSpec.describe DancesController, type: :controller do
         dance = FactoryGirl.create(:dance, user: subject.current_user)
         post :update, params: {id: dance.to_param, dance: invalid_attributes}
         expect(assigns(:dialect_json)).to be_a(String)
-        expect(assigns(:dialect_json)).to eq(subject.current_user.dialect.to_json)
+        editor_dialect = JSLibFigure.with_text_in_dialect(subject.current_user.dialect, true)
+        expect(assigns(:dialect_json)).to eq(editor_dialect.to_json)
       end
     end
   end

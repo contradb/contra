@@ -76,7 +76,7 @@ class DancesController < ApplicationController
     end
     
     def set_dialect_json
-      @dialect_json = dialect.to_json
+      @dialect_json = JSLibFigure.with_text_in_dialect(dialect, true).to_json
     end
 
     def authenticate_dance_writable!

@@ -219,7 +219,7 @@ RSpec.describe JSLibFigure do
   end
 
   describe 'dialect_for_figures' do
-    let (:empty_dialect) {{'dancers' => {}, 'moves' => {}}}
+    let (:empty_dialect) {{'dancers' => {}, 'moves' => {}, 'text_in_dialect' => false}}
 
     it 'does nothing to a dance that is all in-set' do
       expect(JSLibFigure.dialect_for_figures(empty_dialect,FactoryGirl.build(:box_the_gnat_contra).figures)).to eq(empty_dialect)

@@ -160,6 +160,10 @@ module JSLibFigure
     self.eval("goodBeats(#{figure.to_json})")
   end
 
+  def self.with_text_in_dialect(dialect, bool)
+    dialect.merge('text_in_dialect' => bool)
+  end
+
   JSLIBFIGURE_FILES = %w(polyfill.js util.js move.js chooser.js param.js define-figure.js figure.es6 after-figure.js dance.js)
 
   private

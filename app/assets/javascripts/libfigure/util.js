@@ -169,13 +169,16 @@ function indefiniteArticleFor(w) {
   return /[aeiou]/.test(str) ? 'an' : 'a';
 }
 
+// text_in_dialect: <bool> property can still be missing...
 var defaultDialect = {moves: {}, dancers: {}};
 
 var testDialect = {moves: {gyre: 'darcy',
                            allemande: 'almond',
                            'see saw': 'do si do left shoulder',
                            'form an ocean wave': 'form a short wavy line'},
-                   dancers: {ladles: 'ravens',
+                   dancers: {ladle: 'raven',
+                             ladles: 'ravens',
+                             gentlespoon: 'lark',
                              gentlespoons: 'larks',
                              'first ladle': 'first raven',
                              'second ladle': 'second raven',
@@ -200,7 +203,12 @@ function dialectForFigures(dialect, figures) {
 
 function copyDialect(dialect) {
   return {dancers: libfigureObjectCopy(dialect.dancers),
-          moves: libfigureObjectCopy(dialect.moves)};
+          moves: libfigureObjectCopy(dialect.moves),
+          text_in_dialect: !!dialect.text_in_dialect};
+}
+
+function textInDialect(dialect) {
+  return !!dialect.text_in_dialect;
 }
 
 // I just called this function 'copy', but then I got scared and changed it.
