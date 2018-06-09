@@ -320,6 +320,12 @@ RSpec.describe JSLibFigure do
       dialect = JSLibFigure.shoulder_round_dialect
       expect(JSLibFigure.string_in_dialect('gyreiest gyre', dialect)).to match(' *shoulder roundiest +shoulder round')
     end
+
+    it 'does nothing if the dialect has text_in_dialect: true' do
+      dialect = {"moves" => {}, "dancers" => {"ladle" => "woman", "ladles" => "women", "first ladle" => "W1"}, "text_in_dialect" => true}
+      expect(JSLibFigure.string_in_dialect(input, dialect)).to eq(input)
+      expect(JSLibFigure.string_in_dialect(input, dialect)).to_not eq(output)
+    end
   end
 
   it 'move_substitution' do

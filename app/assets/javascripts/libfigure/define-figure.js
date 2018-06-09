@@ -313,10 +313,14 @@ function is_progression(move) {
 }
 
 function stringInDialect(str, dialect) {
-  // Since this is called a lot, performance might be helped by memoizing dialectRegExp(dialect)
-  return str.replace(dialectRegExp(dialect), function (match) {
-    return (dialect.moves[match] || dialect.dancers[match]).replace(/%S/g,'');
-  });
+  if (textInDialect(dialect)) {
+    return str;
+  } else {
+    // Since this is called a lot, performance might be helped by memoizing dialectRegExp(dialect)
+    return str.replace(dialectRegExp(dialect), function (match) {
+      return (dialect.moves[match] || dialect.dancers[match]).replace(/%S/g,'');
+    });
+  }
 }
 
 function dialectRegExp(dialect) {

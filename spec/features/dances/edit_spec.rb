@@ -188,31 +188,76 @@ describe 'Editing dances', js: true do
     end
   end
 
-  it 'custom moves and move notes update dynamically for dialect' do
-    with_login do |user|
-      custom_text = 'custom allemande gentlespoons custom'
-      custom_text_in_dialect = 'custom almond larks custom'
-      dance = FactoryGirl.create(:dance_with_a_custom, custom_text: custom_text, user: user)
-      allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
-      visit edit_dance_path dance.id
-      expect(page).to have_content(custom_text_in_dialect)
-      expect(page).to_not have_content(custom_text)
-      click_on(custom_text_in_dialect)
-      fill_in('note', with: 'note gyre ladles note')
-      expect(page).to have_content('note darcy ravens note')
-      fill_in('custom', with: 'custom first gentlespoon custom')
-      expect(page).to have_content('custom first lark custom')
+  describe 'dialect text' do
+    it 'custom moves and move notes do not update dynamically for dialect' do # It used to - not sure if this test should be xited
+      with_login do |user|
+        custom_text = 'custom allemande gentlespoons custom'
+        custom_text_in_dialect = 'custom almond larks custom'
+        dance = FactoryGirl.create(:dance_with_a_custom, custom_text: custom_text, user: user)
+        allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
+        visit edit_dance_path dance.id
+        expect(page).to_not have_content(custom_text_in_dialect)
+        expect(page).to have_content(custom_text)
+        click_on(custom_text)
+        fill_in('note', with: 'note gyre ladles note')
+        expect(page).to have_content('note gyre ladles note')
+        expect(page).to_not have_content('note darcy ravens note')
+        fill_in('custom', with: 'custom first gentlespoon custom')
+        expect(page).to have_content('custom first gentlespoon custom')
+        expect(page).to_not have_content('custom first lark custom')
+      end
     end
-  end
 
-  it "filters html out of user input" do
-    with_login do |user|
-      dance = FactoryGirl.create(:malicious_dance, user: user)
-      visit edit_dance_path(dance)
-      expect(page).to have_css('button.add-figure') # are we on the editor page?
-      expect(page).to_not have_css('b', text: 'neighbors')
-      expect(page).to_not have_css('b', text: 'bold')
-      expect(page).to have_text('<b>neighbors</b> balance & swing this should not be <b>bold</b>')
+    it 'default terms in text are transformed into dialect in the editor' do
+      with_login do |user|
+        #
+        # TODO preamble, dance note, hook, figure note
+        #
+        custom_text = 'custom allemande gentlespoons custom'
+        custom_text_in_dialect = 'custom almond larks custom'
+        dance = FactoryGirl.create(:dance_with_a_custom, custom_text: custom_text, user: user)
+        allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
+        visit edit_dance_path(dance)
+        expect(page).to have_content(custom_text_in_dialect)
+        expect(page).to_not have_content(custom_text)
+        # click_on(custom_text)
+        # fill_in('note', with: 'note gyre ladles note')
+        # expect(page).to have_content('note gyre ladles note')
+        # expect(page).to_not have_content('note darcy ravens note')
+        # fill_in('custom', with: 'custom first gentlespoon custom')
+        # expect(page).to have_content('custom first gentlespoon custom')
+        # expect(page).to_not have_content('custom first lark custom')
+      end
+    end
+
+
+    it 'users type text in their dialect and the db saves in using the default terms' do
+      with_login do |user|
+        custom_text = 'fluffy'
+        dance = FactoryGirl.create(:dance_with_a_custom, custom_text: custom_text, user: user)
+        allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
+        visit edit_dance_path(dance)
+        click_on(custom_text)
+        fill_in('note', with: 'note darcy ravens note')
+        fill_in('custom', with: 'custom first lark custom')
+        click_on 'Save Dance'
+        expect(page).to have_content('Dance was successfully updated.')
+        dance = Dance.last
+        custom_figure = dance.figures.first
+        expect(custom_figure['note']).to eq('custom first gentlespoon custom')
+        expect(custom_figure['parameter_values'].first).to eq('custom first gentlespoon ladles custom')
+      end
+    end
+
+    it "filters html out of user input" do
+      with_login do |user|
+        dance = FactoryGirl.create(:malicious_dance, user: user)
+        visit edit_dance_path(dance)
+        expect(page).to have_css('button.add-figure') # are we on the editor page?
+        expect(page).to_not have_css('b', text: 'neighbors')
+        expect(page).to_not have_css('b', text: 'bold')
+        expect(page).to have_text('<b>neighbors</b> balance & swing this should not be <b>bold</b>')
+      end
     end
   end
 end
