@@ -1,4 +1,4 @@
-class DisallowNullsInChoreographers < ActiveRecord::Migration
+class DisallowNullsInChoreographers < ActiveRecord::Migration[4.2]
   def up
     change_column(:choreographers, :name, :string, default: "", null: false)
     Choreographer.all.each {|d| d.name ||= ""}

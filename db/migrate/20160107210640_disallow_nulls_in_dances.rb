@@ -1,4 +1,4 @@
-class DisallowNullsInDances < ActiveRecord::Migration
+class DisallowNullsInDances < ActiveRecord::Migration[4.2]
   def up
     change_column(:dances, :title,      :string, default: "", null: false)
     change_column(:dances, :start_type, :string, default: "", null: false)

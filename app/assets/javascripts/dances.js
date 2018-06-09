@@ -5,7 +5,7 @@ $(function () {
     minLength: 0
   });
   $( "#start-type-autocomplete" ).autocomplete({
-    source: ["improper","Becket","Becket ccw","four face four","square dance","indecent"],
+    source: ["improper","Becket","Becket ccw","proper", "four face four","square dance","indecent", "triplet"],
     autoFocus: true,
     minLength: 0
   });

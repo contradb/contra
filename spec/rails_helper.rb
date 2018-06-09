@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'devise'
 require 'support/controller_macros'
+require 'retries'
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
@@ -75,4 +76,6 @@ RSpec.configure do |config|
   config.after :each do
     Warden.test_reset! if defined? Warden.test_reset! # guard for during model tests, huh.
   end
+
+  config.include Retries
 end

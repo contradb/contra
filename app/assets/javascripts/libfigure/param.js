@@ -66,8 +66,7 @@ var param_left_hand_spin         = {name: "hand", value: false,     ui: chooser_
 var param_xshoulder_spin         = {name: "shoulder",               ui: chooser_right_left_shoulder, string: stringParamShoulder};
 var param_right_shoulder_spin    = {name: "shoulder", value: true,  ui: chooser_right_left_shoulder, string: stringParamShoulder};
 var param_left_shoulder_spin     = {name: "shoulder", value: false, ui: chooser_right_left_shoulder, string: stringParamShoulder};
-
-var param_right_hand_take        = {name: "c.hand", value: true,    ui: chooser_right_left_hand, string: stringParamHand};
+var param_by_xhand = {name: "c.hand", ui: chooser_right_left_hand, string: stringParamHand};
 
 function stringParamDegrees (value,move) {
   // this second parameter should go away, it should be handled in figure.es6,

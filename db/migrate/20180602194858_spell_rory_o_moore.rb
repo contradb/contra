@@ -1,6 +1,6 @@
 require 'jslibfigure'
 
-class LongLinesAddForwardOnly < ActiveRecord::Migration[4.2]
+class SpellRoryOMoore < ActiveRecord::Migration[5.1]
   def down
     raise "not implemented - its possible just not worth the time"
   end
@@ -10,13 +10,8 @@ class LongLinesAddForwardOnly < ActiveRecord::Migration[4.2]
     Dance.all.each do |dance|
       oldfigures = dance.figures
       newfigures = oldfigures.map do |figure|
-        move = JSLibFigure.move(figure)
-        if move == 'long lines'
-          newpvs = figure['parameter_values'].clone.unshift(true)
-          figure.merge('parameter_values' => newpvs)
-        elsif move == 'long lines forward only'
-          newpvs = figure['parameter_values'].clone.unshift(false)
-          figure.merge('move' => 'long lines', 'parameter_values' => newpvs)
+        if "Rory O'Moore" == JSLibFigure.move(figure)
+          figure.merge('move' => "Rory O'More")
         else
           figure
         end

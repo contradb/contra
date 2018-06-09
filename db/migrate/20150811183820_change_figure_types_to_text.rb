@@ -1,4 +1,4 @@
-class ChangeFigureTypesToText < ActiveRecord::Migration
+class ChangeFigureTypesToText < ActiveRecord::Migration[4.2]
   def change
     # This is likely a one-way trip, see:
     # http://blog.nerdery.com/2013/12/ruby-rails-migrating-string-text-back/

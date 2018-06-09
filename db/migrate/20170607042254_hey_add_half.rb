@@ -1,6 +1,6 @@
 require 'jslibfigure'
 
-class HeyAddHalf < ActiveRecord::Migration
+class HeyAddHalf < ActiveRecord::Migration[4.2]
   def down
     raise 'too lazy to implement down'
   end

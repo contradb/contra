@@ -410,7 +410,7 @@ function formLongWavesStringify(move, pvs, dialect) {
   var [ssubject, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
   var tsubject = invertPair(subject, dialect);
-  return words(smove, '-', ssubject, 'face out,', tsubject, 'face in');
+  return words(smove, '-', ssubject, 'face in,', tsubject, 'face out');
 }
 
 
@@ -473,6 +473,8 @@ defineFigure("form a long wave",
              {stringify: formALongWaveStringify, goodBeats: formALongWaveGoodBeats, change: formALongWaveChange});
 
 
+defineRelatedMove2Way('form a long wave', 'form long waves');
+
 ////////////////////////////////////////////////
 // FORM OCEAN WAVE                            //
 ////////////////////////////////////////////////
@@ -507,15 +509,18 @@ function formAnOceanWaveStringify(move, pvs, dialect) {
     var substitution_starts_with_form = /^ *form/.test(form_an_ocean_wave);
     var form_a_diagonal_ocean_wave = words(substitution_starts_with_form && 'form', a_diagonal_ocean_wave);
     var tmove = (instant === '*') ? words('*', a_diagonal_ocean_wave) : form_a_diagonal_ocean_wave;
-    return words(tmove, tbal, '-', scenter, 'take', scenter_hand, 'hands and', ssides, 'take', sside_hand, 'hands');
+    return words(tmove, tbal, '-', scenter, 'by', scenter_hand, 'hands and', ssides, 'by', sside_hand, 'hands');
   } else {
-    return words("pass through to", a_diagonal_ocean_wave, tbal, '-', scenter, 'pass and take', scenter_hand, 'hands while', invertPair(center, dialect), 'cross and take', sside_hand, 'hands with', ssides);
+    return words("pass through to", a_diagonal_ocean_wave, tbal, '-', scenter, 'by', scenter_hand, 'in the center,', ssides, 'by', sside_hand, 'on the sides');
   }
 }
 
 defineFigure("form an ocean wave",
-             [param_instant_false, param_set_direction_acrossish, param_balance_false, param_center_pair_ladles, param_right_hand_take, param_sides_pairs_neighbors, param_beats_4],
+             [param_instant_false, param_set_direction_acrossish, param_balance_false, param_center_pair_ladles, param_by_xhand, param_sides_pairs_neighbors, param_beats_4],
              {stringify: formAnOceanWaveStringify, change: formAnOceanWaveChange, goodBeats: formAnOceanWaveGoodBeats});
+
+defineRelatedMove2Way('form an ocean wave', 'form long waves');
+defineRelatedMove2Way('form an ocean wave', 'form a long wave');
 
 ////////////////////////////////////////////////
 // GATE                                       //
@@ -931,10 +936,10 @@ defineFigure("roll away",
               param_beats_4]);
 
 ////////////////////////////////////////////////
-// RORY O'MOORE                               //
+// RORY O'MORE                                //
 ////////////////////////////////////////////////
 
-function roryOMooreChange(figure,index) {
+function roryOMoreChange(figure,index) {
   var pvs = figure.parameter_values;
   const bal_index = 1;
   const beats_index = 3;
@@ -943,12 +948,12 @@ function roryOMooreChange(figure,index) {
   }
 }
 
-function roryOMooreGoodBeats(figure) {
+function roryOMoreGoodBeats(figure) {
   var [who, balance, dir, beats] = figure.parameter_values;
   return beats === (balance ? 8 : 4);
 }
 
-function roryOMooreStringify(move, pvs, dialect) {
+function roryOMoreStringify(move, pvs, dialect) {
   var [ who,  balance,  dir,  beats] = pvs;
   var [swho, sbalance, sdir, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
@@ -956,9 +961,9 @@ function roryOMooreStringify(move, pvs, dialect) {
   return words(sbalance, swho2, smove, sdir);
 }
 
-defineFigure("Rory O'Moore",
+defineFigure("Rory O'More",
              [param_subject_pairc_or_everyone, param_balance_true, param_slide_right, param_beats_8],
-             {stringify: roryOMooreStringify, change: roryOMooreChange, goodBeats: roryOMooreGoodBeats});
+             {stringify: roryOMoreStringify, change: roryOMoreChange, goodBeats: roryOMoreGoodBeats});
 
 ////////////////////////////////////////////////
 // SLICE                                      //

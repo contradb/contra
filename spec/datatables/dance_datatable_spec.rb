@@ -17,10 +17,10 @@ describe DanceDatatable do
         expect(filtered.map(&:title)).to eq(dances.map(&:title))
       end
 
-      it "quotes and spaces work - Rory O'Moore" do      # something about this figure didn't work -dm 10-15-2017
-        rory = FactoryGirl.create(:dance_with_a_rory_o_moore);
+      it "quotes and spaces work - Rory O'More" do      # something about this figure didn't work -dm 10-15-2017
+        rory = FactoryGirl.create(:dance_with_a_rory_o_more);
         dances << rory
-        filtered = DanceDatatable.send(:filter_dances, dances, ['figure', "Rory O'Moore"])
+        filtered = DanceDatatable.send(:filter_dances, dances, ['figure', "Rory O'More"])
         expect(filtered.map(&:title)).to eq([rory.title])
       end
 

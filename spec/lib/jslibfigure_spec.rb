@@ -127,7 +127,7 @@ RSpec.describe JSLibFigure do
 
     it 'terms contain no forbidden characters' do
       (JSLibFigure.moves + JSLibFigure.dancers).each do |term|
-        # Terms are used in html-attributes, and since Rory O'Moore has a single quote
+        # Terms are used in html-attributes, and since Rory O'More has a single quote
         # we have to always double quote them. So double-quote can't be used in terms.
         expect(term).to_not match(/"/)
       end
@@ -269,7 +269,7 @@ RSpec.describe JSLibFigure do
 
   it 'move_substitution works' do
     expect(JSLibFigure.move_substitution('allemande', JSLibFigure.test_dialect)).to eq('almond')
-    expect(JSLibFigure.move_substitution("Rory O'Moore", JSLibFigure.test_dialect)).to eq("Rory O'Moore")
+    expect(JSLibFigure.move_substitution("Rory O'More", JSLibFigure.test_dialect)).to eq("Rory O'More")
   end
 
   it 'dancers works' do

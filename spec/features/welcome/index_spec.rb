@@ -1,13 +1,14 @@
 # coding: utf-8
 =begin
-  __ _       _                                    _ 
+  __ _       _                                    _
  / _| | __ _| | ___   _   ___ _ __   ___  ___ ___| |
 | |_| |/ _` | |/ / | | | / __| '_ \ / _ \/ __/ __| |
 |  _| | (_| |   <| |_| | \__ \ |_) |  __/ (__\__ \_|
 |_| |_|\__,_|_|\_\\__, | |___/ .__/ \___|\___|___(_)
-                  |___/      |_|                    
+                  |___/      |_|
 
 The specs in this file are flaky, showing false reds. Run them a couple times. -dm 10-08-2017
+Update: used with_retries to make them somewhat less flaky -dm 06-03-2018
 =end
 
 
@@ -70,11 +71,11 @@ describe 'Welcome page', js: true do
       expect(page).to have_css('.figure-filter-move', count: 2)
     end
 
-    it "Rory O'Moore" do
-      rory = FactoryGirl.create(:dance_with_a_rory_o_moore)
+    it "Rory O'More" do
+      rory = FactoryGirl.create(:dance_with_a_rory_o_more)
       box = FactoryGirl.create(:box_the_gnat_contra)
       visit '/'
-      select "Rory O'Moore"
+      select "Rory O'More"
       expect(page).to_not have_content(box.title) # js wait
       expect(page).to have_content(rory.title)
       expect(rory.title).to eq("Just Rory")
@@ -83,13 +84,15 @@ describe 'Welcome page', js: true do
     it "'anything but' works" do
       dance
       only_a_swing = FactoryGirl.create(:dance_with_a_swing)
-      visit '/'
-      expect(page).to have_text(only_a_swing.title)
-      expect(page).to have_text(dance.title)
-      select('anything but')
-      select('swing', match: :first)
-      expect(page).to_not have_text(only_a_swing.title)
-      expect(page).to have_text(dance.title) # because it has a figure that's not a swing
+      with_retries do
+        visit '/'
+        expect(page).to have_text(only_a_swing.title)
+        expect(page).to have_text(dance.title)
+        select('anything but')
+        select('swing', match: :first)
+        expect(page).to_not have_text(only_a_swing.title)
+        expect(page).to have_text(dance.title) # because it has a figure that's not a swing
+      end
     end
 
     describe 'figure filter machinantions' do
@@ -100,7 +103,7 @@ describe 'Welcome page', js: true do
         select('and')
         all('.figure-filter-remove').last.click
       end
-      
+
       it 'the precondition of all these other tests is fulfilled' do
         expect(page).to have_css('.figure-filter', count: 2)
         expect(page).to have_css('.figure-filter-move', count: 1)
@@ -253,20 +256,19 @@ describe 'Welcome page', js: true do
     end
 
     describe 'figure ... button' do
-      before (:each) do
-        visit '/'
-      end
-
       it "is visible initially, when figure is 'any figure'" do
+        visit '/'
         expect(page).to have_button('...')
       end
 
       it 'changing figure filter hides this one but creates two more' do
+        visit '/'
         select('then')
         expect(page).to have_button('...', count: 2)
       end
 
       it "clicking '...' toggles 'ellipsis-expanded' class" do
+        visit '/'
         select('chain')
         expect(page).to_not have_css('.figure-filter-ellipsis.ellipsis-expanded')
         click_button '...'
@@ -277,230 +279,273 @@ describe 'Welcome page', js: true do
 
       context 'accordion' do
         it 'lurks invisibly' do
+          visit '/'
           expect(page).to_not have_css('.figure-filter-accordion')
           expect(page).to have_css('.figure-filter-accordion', visible: false)
         end
 
         it 'pops forth when clicked' do
-          click_button('...') 
+          visit '/'
+          click_button('...')
           expect(page).to have_css('.figure-filter-accordion', visible: true)
         end
 
         it "circle 4 places finds only 'The Rendevouz'" do
-          dances
-          select('circle')
-          click_button('...')
-          select('4 places')
+          with_retries do
+            visit '/'
+            dances
+            select('circle')
+            click_button('...')
+            select('4 places')
 
-          expect(page).to have_content('The Rendevouz') # has circle left 3 & 4 places
-          expect(page).to_not have_content('Box the Gnat Contra') # no circles
-          expect(page).to_not have_content('Call Me') # has circle left 3 places
-          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","circle","*","360","*"]')
+            expect(page).to have_content('The Rendevouz') # has circle left 3 & 4 places
+            expect(page).to_not have_content('Box the Gnat Contra') # no circles
+            expect(page).to_not have_content('Call Me') # has circle left 3 places
+            expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","circle","*","360","*"]')
+          end
         end
 
         it "circle right finds only a dance with circle right" do
-          right = FactoryGirl.create(:dance_with_a_circle_right)
-          dances
-          select('circle')
-          click_button('...')
-          choose('right')
+          with_retries do
+            visit '/'
+            right = FactoryGirl.create(:dance_with_a_circle_right)
+            dances
+            select('circle')
+            click_button('...')
+            choose('right')
 
-          expect(page).to_not have_content('The Rendevouz') # has circle left 3 & 4 places
-          expect(page).to_not have_content('Box the Gnat Contra') # no circles
-          expect(page).to_not have_content('Call Me') # has circle left 3 places
-          expect(page).to have_content(right.title) # has circle right
-          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","circle","false","*","*"]')
+            expect(page).to_not have_content('The Rendevouz') # has circle left 3 & 4 places
+            expect(page).to_not have_content('Box the Gnat Contra') # no circles
+            expect(page).to_not have_content('Call Me') # has circle left 3 places
+            expect(page).to have_content(right.title) # has circle right
+            expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","circle","false","*","*"]')
+          end
         end
 
         it "A slightly different query is sent if the ... is clicked" do
           dances
-          select('circle')
+          with_retries do
+            visit '/'
+            select('circle')
 
-          expect(page).to have_content('The Rendevouz') # has circle left 3 & 4 places
-          expect(page).to_not have_content('Box the Gnat Contra') # no circles
-          expect(page).to have_content('Call Me') # has circle left 3 places
-          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","circle"]') # first query
+            expect(page).to have_content('The Rendevouz') # has circle left 3 & 4 places
+            expect(page).to_not have_content('Box the Gnat Contra') # no circles
+            expect(page).to have_content('Call Me') # has circle left 3 places
+            expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","circle"]') # first query
 
-          click_button('...')
+            click_button('...')
 
-          expect(page).to have_content('The Rendevouz') # has circle left 3 & 4 places
-          expect(page).to_not have_content('Box the Gnat Contra') # no circles
-          expect(page).to have_content('Call Me') # has circle left 3 places
-          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","circle","*","*","*"]') # second query
+            expect(page).to have_content('The Rendevouz') # has circle left 3 & 4 places
+            expect(page).to_not have_content('Box the Gnat Contra') # no circles
+            expect(page).to have_content('Call Me') # has circle left 3 places
+            expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","circle","*","*","*"]') # second query
+          end
         end
 
         it 'circle has an angle select box with the right options' do
-          select('circle')
-          click_button('...')
-          angles = JSLibFigure.angles_for_move('circle')
-          too_small_angle = angles.min - 90
-          too_big_angle = angles.max + 90
-          expect(page).to_not have_css("#figure-filter-root select option", text: JSLibFigure.degrees_to_words(too_small_angle, 'circle'))
-          expect(page).to_not have_css("#figure-filter-root select option", text: JSLibFigure.degrees_to_words(too_big_angle, 'circle'))
-          angles.each do |angle|
-            expect(page).to have_css("#figure-filter-root select option[value='#{angle}']", text: JSLibFigure.degrees_to_words(angle, 'circle'))
+          with_retries do
+            visit '/'
+            select('circle')
+            click_button('...')
+            angles = JSLibFigure.angles_for_move('circle')
+            too_small_angle = angles.min - 90
+            too_big_angle = angles.max + 90
+            expect(page).to_not have_css("#figure-filter-root select option", text: JSLibFigure.degrees_to_words(too_small_angle, 'circle'))
+            expect(page).to_not have_css("#figure-filter-root select option", text: JSLibFigure.degrees_to_words(too_big_angle, 'circle'))
+            angles.each do |angle|
+              expect(page).to have_css("#figure-filter-root select option[value='#{angle}']", text: JSLibFigure.degrees_to_words(angle, 'circle'))
+            end
+            expect(page).to have_css("#figure-filter-root .figure-filter-accordion select option[value='*']")
           end
-          expect(page).to have_css("#figure-filter-root .figure-filter-accordion select option[value='*']")
         end
 
         it "swing for 8 doesn't find 'The Rendevouz', which features only long swings" do
           dances
-          select('swing', match: :first)
-          click_button('...')
-          select('8', match: :prefer_exact) # '8' is in the menu twice, and also in 'figure 8'
+          with_retries do
+            visit '/'
+            select('swing', match: :first)
+            click_button('...')
+            select('8', match: :prefer_exact) # '8' is in the menu twice, and also in 'figure 8'
 
-          expect(page).to_not have_content('The Rendevouz') # has circle left 3 & 4 places
-          expect(page).to have_content('Box the Gnat Contra') # no circles
-          expect(page).to have_content('Call Me') # has circle left 3 places
-          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","swing","*","*","8"]')
+            expect(page).to_not have_content('The Rendevouz') # has circle left 3 & 4 places
+            expect(page).to have_content('Box the Gnat Contra') # no circles
+            expect(page).to have_content('Call Me') # has circle left 3 places
+            expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","swing","*","*","8"]')
+          end
         end
 
         it "non-balance & swing doesn't find 'The Rendevouz', which features only balance & swings" do
           dances
-          select('swing', match: :first)
-          click_button('...')
-          choose('none')
+          with_retries do
+            visit '/'
+            select('swing', match: :first)
+            click_button('...')
+            choose('none')
 
-          expect(page).to_not have_content('The Rendevouz') # has circle left 3 & 4 places
-          expect(page).to have_content('Box the Gnat Contra') # no circles
-          expect(page).to have_content('Call Me') # has circle left 3 places
-          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","swing","*","none","*"]')
+            expect(page).to_not have_content('The Rendevouz') # has circle left 3 & 4 places
+            expect(page).to have_content('Box the Gnat Contra') # no circles
+            expect(page).to have_content('Call Me') # has circle left 3 places
+            expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","swing","*","none","*"]')
+          end
         end
 
         it 'labels appear on chooser elements' do
-          click_button('...')
-          select('swing', match: :first)             # swing uses simple label system
-          expect(page).to have_css('.chooser-label-text', text: 'who')
-          expect(page).to have_css('.chooser-label-text', text: 'prefix')
-          expect(page).to have_css('.chooser-label-text', text: 'beats')
-          select('allemande orbit')                  # allemande orbit uses fancier label system
-          expect(page).to have_css('.chooser-label-text', text: 'who')
-          expect(page).to have_css('.chooser-label-text', text: 'allemande')
-          expect(page).to have_css('.chooser-label-text', text: 'inner')
-          expect(page).to have_css('.chooser-label-text', text: 'outer')
-          expect(page).to have_css('.chooser-label-text', text: 'for')
+          visit '/'
+          with_retries do
+            click_button('...')
+            select('swing', match: :first)             # swing uses simple label system
+            expect(page).to have_css('.chooser-label-text', text: 'who')
+            expect(page).to have_css('.chooser-label-text', text: 'prefix')
+            expect(page).to have_css('.chooser-label-text', text: 'beats')
+            select('allemande orbit')                  # allemande orbit uses fancier label system
+            expect(page).to have_css('.chooser-label-text', text: 'who')
+            expect(page).to have_css('.chooser-label-text', text: 'allemande')
+            expect(page).to have_css('.chooser-label-text', text: 'inner')
+            expect(page).to have_css('.chooser-label-text', text: 'outer')
+            expect(page).to have_css('.chooser-label-text', text: 'for')
+          end
         end
 
         it "allemande with ladles finds only 'Box the Gnat'" do
           dances
-          allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
+          with_retries do
+            visit '/'
+            allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
 
-          select('allemande')
-          click_button('...')
-          select('ladles')
+            select('allemande')
+            click_button('...')
+            select('ladles')
 
-          expect(page).to_not have_content('The Rendevouz')
-          expect(page).to have_content('Box the Gnat Contra')
-          expect(page).to_not have_content('Call Me')
-          expect(page).to_not have_content(allemande.title)
-          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","allemande","ladles","*","*","*"]')
+            expect(page).to_not have_content('The Rendevouz')
+            expect(page).to have_content('Box the Gnat Contra')
+            expect(page).to_not have_content('Call Me')
+            expect(page).to_not have_content(allemande.title)
+            expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","allemande","ladles","*","*","*"]')
+          end
         end
 
         it "allemande has the right dancer chooser menu entries" do
           dances
-
-          select('allemande')
-          click_button('...')
-          expect(page).to have_css("option[value='ladles']")
-          expect(page).to have_css("option[value='gentlespoons']")
-          expect(page).to have_css("option[value='neighbors']")
-          expect(page).to have_css("option[value='partners']")
-          expect(page).to have_css("option[value='same roles']")
-          expect(page).to have_css("option[value='shadows']")
-          expect(page).to have_css("option[value='ones']")
-          expect(page).to have_css("option[value='twos']")
-          expect(page).to have_css("option[value='first corners']")
-          expect(page).to have_css("option[value='second corners']")
-          expect(page).to have_css("option[value='shadows']")
-          expect(page).to_not have_css("option[value='prev neighbors']")
-          expect(page).to_not have_css("option[value='next neighbors']")
-          expect(page).to_not have_css("option[value='2nd neighbors']")
-          expect(page).to_not have_css("option[value='3rd neighbors']")
-          expect(page).to_not have_css("option[value='4th neighbors']")
-          expect(page).to_not have_css("option[value='1st shadows']")
-          expect(page).to_not have_css("option[value='2nd shadows']")
+          with_retries do
+            visit '/'
+            select('allemande')
+            click_button('...')
+            expect(page).to have_css("option[value='ladles']")
+            expect(page).to have_css("option[value='gentlespoons']")
+            expect(page).to have_css("option[value='neighbors']")
+            expect(page).to have_css("option[value='partners']")
+            expect(page).to have_css("option[value='same roles']")
+            expect(page).to have_css("option[value='shadows']")
+            expect(page).to have_css("option[value='ones']")
+            expect(page).to have_css("option[value='twos']")
+            expect(page).to have_css("option[value='first corners']")
+            expect(page).to have_css("option[value='second corners']")
+            expect(page).to have_css("option[value='shadows']")
+            expect(page).to_not have_css("option[value='prev neighbors']")
+            expect(page).to_not have_css("option[value='next neighbors']")
+            expect(page).to_not have_css("option[value='2nd neighbors']")
+            expect(page).to_not have_css("option[value='3rd neighbors']")
+            expect(page).to_not have_css("option[value='4th neighbors']")
+            expect(page).to_not have_css("option[value='1st shadows']")
+            expect(page).to_not have_css("option[value='2nd shadows']")
+          end
         end
 
         it "allemande with allemande left finds only 'Just Allemande'" do
           dances
-          allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
+          with_retries do
+            visit '/'
+            allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
 
-          select('allemande')
-          click_button('...')
-          choose('left', exact: true)
- 
-          expect(page).to_not have_content('The Rendevouz')
-          expect(page).to_not have_content('Box the Gnat Contra')
-          expect(page).to_not have_content('Call Me')
-          expect(page).to have_content(allemande.title)
-          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","allemande","*","false","*","*"]')
+            select('allemande')
+            click_button('...')
+            choose('left', exact: true)
+
+            expect(page).to_not have_content('The Rendevouz')
+            expect(page).to_not have_content('Box the Gnat Contra')
+            expect(page).to_not have_content('Call Me')
+            expect(page).to have_content(allemande.title)
+            expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","allemande","*","false","*","*"]')
+          end
         end
 
         it "allemande once around works" do
           dances
-          allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
+          with_retries do
+            visit '/'
+            allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
 
-          select('allemande')
-          click_button('...')
-          select('once')
- 
-          expect(page).to_not have_content('The Rendevouz')
-          expect(page).to_not have_content('Box the Gnat Contra')
-          expect(page).to_not have_content('Call Me')
-          expect(page).to have_content(allemande.title)
-          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","allemande","*","*","360","*"]')
+            select('allemande')
+            click_button('...')
+            select('once')
+
+            expect(page).to_not have_content('The Rendevouz')
+            expect(page).to_not have_content('Box the Gnat Contra')
+            expect(page).to_not have_content('Call Me')
+            expect(page).to have_content(allemande.title)
+            expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","allemande","*","*","360","*"]')
+          end
         end
 
 
         it "text input keywords work" do
           dances
-          apple = FactoryGirl.create(:dance_with_a_custom, custom_text: 'apple', title: 'just apple')
-          banana = FactoryGirl.create(:dance_with_a_custom, custom_text: 'banana', title: 'just banana')
-          orange = FactoryGirl.create(:dance_with_a_custom, custom_text: 'orange', title: 'just orange')
-          apple_banana = FactoryGirl.create(:dance_with_a_custom, custom_text: 'apple banana', title: 'apple_banana')
+          with_retries do
+            visit '/'
+            apple = FactoryGirl.create(:dance_with_a_custom, custom_text: 'apple', title: 'just apple')
+            banana = FactoryGirl.create(:dance_with_a_custom, custom_text: 'banana', title: 'just banana')
+            orange = FactoryGirl.create(:dance_with_a_custom, custom_text: 'orange', title: 'just orange')
+            apple_banana = FactoryGirl.create(:dance_with_a_custom, custom_text: 'apple banana', title: 'apple_banana')
 
-          select('custom')
-          click_button('...')
-          find(:css, "input.chooser-argument[type=string]").set('apple orange')
- 
-          dances.each do |dance|
-            expect(page).to_not have_content(dance.title)
+            select('custom')
+            click_button('...')
+            find(:css, "input.chooser-argument[type=string]").set('apple orange')
+
+            dances.each do |dance|
+              expect(page).to_not have_content(dance.title)
+            end
+            expect(page).to have_content(apple.title)
+            expect(page).to_not have_content(banana.title)
+            expect(page).to have_content(orange.title)
+            expect(page).to have_content(apple_banana.title)
+            expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","custom","apple orange","*"]')
           end
-          expect(page).to have_content(apple.title)
-          expect(page).to_not have_content(banana.title)
-          expect(page).to have_content(orange.title)
-          expect(page).to have_content(apple_banana.title)
-          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","custom","apple orange","*"]')
         end
 
         it "wrist grip filter works" do
           dances
-          grip = FactoryGirl.create(:dance_with_a_wrist_grip_star)
+          with_retries do
+            visit '/'
+            grip = FactoryGirl.create(:dance_with_a_wrist_grip_star)
 
-          select('star')
-          click_button('...')
-          select('unspecified')
- 
-          expect(page).to_not have_content('The Rendevouz')
-          expect(page).to_not have_content('Box the Gnat Contra')
-          expect(page).to have_content('Call Me')
-          expect(page).to_not have_content(grip.title)
+            select('star')
+            click_button('...')
+            select('unspecified')
 
-          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","star","*","*","","*"]')
+            expect(page).to_not have_content('The Rendevouz')
+            expect(page).to_not have_content('Box the Gnat Contra')
+            expect(page).to have_content('Call Me')
+            expect(page).to_not have_content(grip.title)
+
+            expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","star","*","*","","*"]')
+          end
         end
 
         it "facing filter works" do
           fb = FactoryGirl.create(:dance_with_a_down_the_hall, march_facing: 'forward then backward')
           f = FactoryGirl.create(:dance_with_a_down_the_hall, march_facing: 'forward')
           b = FactoryGirl.create(:dance_with_a_down_the_hall, march_facing: 'backward')
+          with_retries do
+            visit '/'
 
-          select('down the hall')
-          click_button('...')
-          select('forward then backward')
- 
-          expect(page).to_not have_content(f.title)
-          expect(page).to_not have_content(b.title)
-          expect(page).to have_content(fb.title)
+            select('down the hall')
+            click_button('...')
+            select('forward then backward')
+
+            expect(page).to_not have_content(f.title)
+            expect(page).to_not have_content(b.title)
+            expect(page).to have_content(fb.title)
+          end
         end
 
         it "down the hall ender filter works" do
@@ -508,51 +553,59 @@ describe 'Welcome page', js: true do
           tc = FactoryGirl.create(:dance_with_a_down_the_hall, down_the_hall_ender: 'turn-couple', title: 'dth_couples')
           circle = FactoryGirl.create(:dance_with_a_down_the_hall, down_the_hall_ender: 'circle', title: 'dth_circle')
           unspec = FactoryGirl.create(:dance_with_a_down_the_hall, down_the_hall_ender: '', title: 'dth_unspec')
+          with_retries(10) do
+            visit '/'
 
-          select('down the hall')
-          click_button('...')
-          select('turn as a couple')
-          # select('turn alone') # hard because multiple
-          select('bend into a ring')
- 
-          expect(page).to_not have_content(ta.title)
-          expect(page).to_not have_content(tc.title)
-          expect(page).to_not have_content(unspec.title)
-          expect(page).to have_content(circle.title)
+            select('down the hall')
+            click_button('...')
+            select('turn as a couple')
+            # select('turn alone') # hard because multiple
+            select('bend into a ring')
+            expect(page).to_not have_content(tc.title)
+            expect(page).to_not have_content(unspec.title)
+            expect(page).to_not have_content(ta.title)
+            expect(page).to have_content(circle.title)
+          end
         end
 
         it "half_or_full filter works" do
           hey = FactoryGirl.create(:dance_with_a_full_hey)
           dances
+          with_retries do
+            visit '/'
 
-          select('hey',  match: :prefer_exact)
-          click_button('...')
-          choose('full')
- 
-          dances.each do |dance|
-            expect(page).to_not have_content(dance.title)
+            select('hey',  match: :prefer_exact)
+            click_button('...')
+            choose('full')
+
+            dances.each do |dance|
+              expect(page).to_not have_content(dance.title)
+            end
+            expect(page).to have_content(hey.title)
+            expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","hey","*","1","*","*"]')
           end
-          expect(page).to have_content(hey.title)
-          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","hey","*","1","*","*"]')
         end
 
         it 'aliases are subsets' do
           do_si_do = FactoryGirl.create(:dance_with_a_do_si_do)
           see_saw = FactoryGirl.create(:dance_with_a_see_saw)
-          select('see saw')
-          expect(page).to have_content(see_saw.title)
-          expect(page).to_not have_content(do_si_do.title)
-          click_button('...')
-          choose('*')
-          expect(page).to have_content(do_si_do.title)
-          expect(page).to have_content(see_saw.title)
-          expect(page).to have_content("Showing dances with a * do si do *")
-          expect(find(".figure-filter-move").value).to eq('do si do')
-          choose('left')
-          expect(page).to have_content(see_saw.title)
-          expect(page).to_not have_content(do_si_do.title)
-          expect(find(".figure-filter-move").value).to eq('see saw')
-          expect(page).to have_content("Showing dances with a * see saw *")
+          with_retries do
+            visit '/'
+            select('see saw')
+            expect(page).to have_content(see_saw.title)
+            expect(page).to_not have_content(do_si_do.title)
+            click_button('...')
+            choose('*')
+            expect(page).to have_content(do_si_do.title)
+            expect(page).to have_content(see_saw.title)
+            expect(page).to have_content("Showing dances with a * do si do *")
+            expect(find(".figure-filter-move").value).to eq('do si do')
+            choose('left')
+            expect(page).to have_content(see_saw.title)
+            expect(page).to_not have_content(do_si_do.title)
+            expect(find(".figure-filter-move").value).to eq('see saw')
+            expect(page).to have_content("Showing dances with a * see saw *")
+          end
         end
       end
     end

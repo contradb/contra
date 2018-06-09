@@ -1,6 +1,6 @@
 require 'json'
 
-class MergeFigures < ActiveRecord::Migration
+class MergeFigures < ActiveRecord::Migration[4.2]
 
   # wat? http://guides.rubyonrails.org/v3.2.21/migrations.html#using-models-in-your-migrations
   class Dance < ActiveRecord::Base
