@@ -1,5 +1,6 @@
 class DancesController < ApplicationController
-  before_action :set_dance, only: [:show, :edit, :update, :destroy]
+  before_action :set_dance, only: [:destroy]
+  before_action :set_dance_text_to_dialect, only: [:show, :edit, :update]
   before_action :authenticate_user!, only: [:new, :edit, :update, :destroy]
   before_action :authenticate_dance_writable!, only: [:edit, :update, :destroy]
   before_action :authenticate_dance_readable!, only: [:show]
@@ -75,8 +76,12 @@ class DancesController < ApplicationController
       @dance = Dance.find(params[:id])
     end
     
+    def set_dance_text_to_dialect
+      @dance = Dance.find(params[:id]).set_text_to_dialect(dialect)
+    end
+
     def set_dialect_json
-      @dialect_json = JSLibFigure.with_text_in_dialect(dialect, true).to_json
+      @dialect_json = JSLibFigure.dialect_with_text_in_dialect(dialect, true).to_json
     end
 
     def authenticate_dance_writable!

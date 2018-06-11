@@ -160,8 +160,31 @@ module JSLibFigure
     self.eval("goodBeats(#{figure.to_json})")
   end
 
-  def self.with_text_in_dialect(dialect, bool)
+  def self.dialect_with_text_in_dialect(dialect, bool)
     dialect.merge('text_in_dialect' => bool)
+  end
+
+  def self.text_in_dialect(dialect)
+    !!dialect['text_in_dialect']
+  end
+
+  def self.figure_with_text_in_dialect(figure, dialect)
+    # ruby-side implementation - maybe should be js instead
+    if text_in_dialect(dialect)
+      raise "request to transform figure's text to dialect, but the dialect says not to act on the figure's text - are you sure you know what you're doing?"
+    else
+      m = move(figure)
+      formals = m ? formal_parameters(m) : []
+      figure
+        .merge(figure['note'].present? ? {'note' => string_in_dialect(figure['note'], dialect)} : {})
+        .merge('parameter_values' => figure['parameter_values'].each_with_index.map do |parameter_value, i|
+                 if parameter_value.present? && parameter_uses_chooser(formals[i], 'chooser_text')
+                   string_in_dialect(parameter_value, dialect)
+                 else
+                   parameter_value
+                 end
+               end)
+    end
   end
 
   JSLIBFIGURE_FILES = %w(polyfill.js util.js move.js chooser.js param.js define-figure.js figure.es6 after-figure.js dance.js)

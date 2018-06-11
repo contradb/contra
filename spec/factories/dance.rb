@@ -90,12 +90,13 @@ FactoryGirl.define do
   factory :dance_with_a_custom, class: Dance do
     transient do
       custom_text {'this is my custom text'}
+      figure_note { nil }
     end
     sequence(:title) {|n| "CustomDance#{n}Boop"}
     user { FactoryGirl.create(:user) }
     choreographer { FactoryGirl.create(:choreographer) }
     start_type 'improper'
-    figures_json {"[{'parameter_values':[#{custom_text.inspect},8],'move':'custom'}]".gsub("'", '"')}
+    figures_json {"[{'parameter_values':[#{custom_text.inspect},8],'move':'custom'#{if figure_note then ', "note":'+figure_note.inspect else '' end}}]".gsub("'", '"')}
   end
 
   factory :dance_with_a_wrist_grip_star, class: Dance do

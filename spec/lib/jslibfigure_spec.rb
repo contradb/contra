@@ -404,4 +404,17 @@ RSpec.describe JSLibFigure do
     figure = {'move' => 'long lines', 'parameter_values' => [true, 8], 'note' => ", hi"};
     expect(JSLibFigure.figure_to_string(figure, JSLibFigure.default_dialect)).to eq('long lines forward &amp; back, hi')
   end
+
+  describe 'figure_with_text_in_dialect' do
+    let (:dialect) { JSLibFigure.test_dialect }
+    it 'notes' do
+      figure = {"parameter_values" => ["ladles",false,360,8], "move" => "do si do", "note" => "note gentlespoons gyre note"}
+      expect(JSLibFigure.figure_with_text_in_dialect(figure, dialect)).to eq(figure.merge('note' => 'note larks darcy note'))
+    end
+
+    it 'text parameter' do
+      figure = {"parameter_values" => ["custom gentlespoons gyre custom"], "move" => "custom"}
+      expect(JSLibFigure.figure_with_text_in_dialect(figure, dialect)).to eq(figure.merge('parameter_values' => ['custom larks darcy custom']))
+    end
+  end
 end

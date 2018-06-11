@@ -208,6 +208,7 @@ function copyDialect(dialect) {
 }
 
 function textInDialect(dialect) {
+  // see also ruby-side implementation
   return !!dialect.text_in_dialect;
 }
 
