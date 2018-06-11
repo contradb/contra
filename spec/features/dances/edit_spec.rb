@@ -255,14 +255,22 @@ describe 'Editing dances', js: true do
         allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         visit edit_dance_path(dance)
         click_on(custom_text)
-        fill_in('note', with: 'note darcy ravens note')
-        fill_in('custom', with: 'custom first lark custom')
+        text_in_dialect = 'darcy ravens'
+        text_in_canon = 'gyre ladles'
+        fill_in('note', with: text_in_dialect)
+        fill_in('custom', with: text_in_dialect)
+        fill_in('dance_notes', with: text_in_dialect)
+        fill_in('dance_preamble', with: text_in_dialect)
+        fill_in('dance_hook', with: text_in_dialect)
         click_on 'Save Dance'
         expect(page).to have_content('Dance was successfully updated.')
         dance = Dance.last
         custom_figure = dance.figures.first
-        expect(custom_figure['note']).to eq('custom first gentlespoon custom')
-        expect(custom_figure['parameter_values'].first).to eq('custom first gentlespoon ladles custom')
+        expect(custom_figure['note']).to eq(text_in_canon)
+        expect(custom_figure['parameter_values'].first).to eq(text_in_canon)
+        expect(dance.note).to eq(text_in_canon)
+        expect(dance.preamble).to eq(text_in_canon)
+        expect(dance-hook).to eq(text_in_canon)
       end
     end
 
