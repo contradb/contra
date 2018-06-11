@@ -35,26 +35,18 @@ class DancesController < ApplicationController
   def create
     @dance = Dance.new(dance_params_with_real_choreographer intern_choreographer)
     @dance.user_id = current_user.id
-    respond_to do |format|
-      if @dance.save
-        format.html { redirect_to @dance, notice: 'Dance was successfully created.' }
-        format.json { render :show, status: :created, location: @dance }
-      else
-        format.html { render :new }
-        format.json { render json: @dance.errors, status: :unprocessable_entity }
-      end
+    if @dance.save
+      redirect_to @dance, notice: 'Dance was successfully created.'
+    else
+      render :new
     end
   end
 
   def update
-    respond_to do |format|
-      if @dance.update(dance_params_with_real_choreographer intern_choreographer)
-        format.html { redirect_to @dance, notice: 'Dance was successfully updated.' }
-        format.json { render :show, status: :ok, location: @dance }
-      else
-        format.html { render :edit }
-        format.json { render json: @dance.errors, status: :unprocessable_entity }
-      end
+    if @dance.update(dance_params_with_real_choreographer intern_choreographer)
+      redirect_to @dance, notice: 'Dance was successfully updated.'
+    else
+      render :edit
     end
   end
 
