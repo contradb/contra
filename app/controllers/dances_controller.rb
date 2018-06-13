@@ -1,3 +1,5 @@
+require 'dialect_reverser'
+
 class DancesController < ApplicationController
   before_action :set_dance, only: [:destroy]
   before_action :set_dance_text_to_dialect, only: [:show, :edit, :update]
@@ -33,7 +35,7 @@ class DancesController < ApplicationController
 
 
   def create
-    @dance = Dance.new(dance_params_with_real_choreographer intern_choreographer)
+    @dance = Dance.new(dance_params_with_real_choreographer(intern_choreographer))
     @dance.user_id = current_user.id
     if @dance.save
       redirect_to @dance, notice: 'Dance was successfully created.'
@@ -43,7 +45,7 @@ class DancesController < ApplicationController
   end
 
   def update
-    if @dance.update(dance_params_with_real_choreographer intern_choreographer)
+    if @dance.update(canonical_params(dance_params_with_real_choreographer(intern_choreographer)))
       redirect_to @dance, notice: 'Dance was successfully updated.'
     else
       render :edit
@@ -113,6 +115,31 @@ class DancesController < ApplicationController
     end
 
     def intern_choreographer
-      Choreographer.find_or_create_by( name: dance_params["choreographer_name"] )
+      Choreographer.find_or_create_by(name: dance_params["choreographer_name"])
     end
+
+    # consider a move to a Dance class method?
+  def canonical_params(params)
+    dialect_reverser = DialectReverser.new(dialect)
+    notes = params[:notes]
+    preamble = params[:preamble]
+    hook = params[:hook]
+    figures = JSON.parse(params[:figures_json])
+    figures2 = figures.map do |figure|
+      move, parameter_values, note = JSLibFigure.figure_move_parameters_note(figure)
+      formals = move ? JSLibFigure.formal_parameters(move) : []
+      pv2 = parameter_values.each_with_index.map do |parameter_value, i|
+        if parameter_value.present? && JSLibFigure.parameter_uses_chooser(formals[i], 'chooser_text')
+          dialect_reverser.reverse(parameter_value)
+        else
+          parameter_value
+        end
+      end
+      figure.merge('parameter_values' => pv2).merge(note.present? ? {'note' => dialect_reverser.reverse(note)} : {})
+    end
+    params.merge(notes: dialect_reverser.reverse(notes),
+                 preamble: dialect_reverser.reverse(preamble),
+                 hook: dialect_reverser.reverse(hook),
+                 figures_json: figures2.to_json)
+  end
 end

@@ -22,6 +22,22 @@ module JSLibFigure
     figure_ruby_hash['move']
   end
 
+  # new and not-widely-adopted
+  def self.note(figure_ruby_hash)
+    figure_ruby_hash['note']
+  end
+
+  # new and not-widely-adopted
+  def self.parameter_values(figure_ruby_hash)
+    figure_ruby_hash['parameter_values']
+  end
+
+  def self.figure_move_parameters_note(figure_ruby_hash)
+    [figure_ruby_hash['move'],
+     figure_ruby_hash['parameter_values'],
+     figure_ruby_hash['note']]
+  end
+
   def self.is_move?(move)
     move.in?(moves)
   end
@@ -170,6 +186,7 @@ module JSLibFigure
 
   def self.figure_with_text_in_dialect(figure, dialect)
     # ruby-side implementation - maybe should be js instead
+    # similar function appears in DialectReverser - but reversed
     if text_in_dialect(dialect)
       raise "request to transform figure's text to dialect, but the dialect says not to act on the figure's text - are you sure you know what you're doing?"
     else

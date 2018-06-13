@@ -254,6 +254,7 @@ describe 'Editing dances', js: true do
         dance = FactoryGirl.create(:dance_with_a_custom, custom_text: custom_text, user: user)
         allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         visit edit_dance_path(dance)
+        expect(page).to have_link(custom_text)
         click_on(custom_text)
         text_in_dialect = 'darcy ravens'
         text_in_canon = 'gyre ladles'
@@ -268,9 +269,9 @@ describe 'Editing dances', js: true do
         custom_figure = dance.figures.first
         expect(custom_figure['note']).to eq(text_in_canon)
         expect(custom_figure['parameter_values'].first).to eq(text_in_canon)
-        expect(dance.note).to eq(text_in_canon)
+        expect(dance.notes).to eq(text_in_canon)
         expect(dance.preamble).to eq(text_in_canon)
-        expect(dance-hook).to eq(text_in_canon)
+        expect(dance.hook).to eq(text_in_canon)
       end
     end
 
