@@ -584,7 +584,7 @@ describe 'Welcome page', js: true do
           tc = FactoryGirl.create(:dance_with_a_down_the_hall, down_the_hall_ender: 'turn-couple', title: 'dth_couples')
           circle = FactoryGirl.create(:dance_with_a_down_the_hall, down_the_hall_ender: 'circle', title: 'dth_circle')
           unspec = FactoryGirl.create(:dance_with_a_down_the_hall, down_the_hall_ender: '', title: 'dth_unspec')
-          with_retries(10) do
+          with_retries(15) do
             visit '/'
 
             select('down the hall')
@@ -644,38 +644,42 @@ describe 'Welcome page', js: true do
     describe 'dialect' do
       it 'figure filter move' do
         expect_any_instance_of(WelcomeController).to receive(:dialect).and_return(JSLibFigure.test_dialect)
-        visit '/'
-        dances
+        with_retries do
+          visit '/'
+          dances
 
-        expect(page).to_not have_css('option',                  text: exactly('allemande'))
-        expect(page).to     have_css('option[value=allemande]', text: exactly('almond'))
+          expect(page).to_not have_css('option',                  text: exactly('allemande'))
+          expect(page).to     have_css('option[value=allemande]', text: exactly('almond'))
 
-        expect(page).to_not have_css('option',             text: exactly('gyre'))
-        expect(page).to     have_css('option[value=gyre]', text: exactly('darcy'))
+          expect(page).to_not have_css('option',             text: exactly('gyre'))
+          expect(page).to     have_css('option[value=gyre]', text: exactly('darcy'))
 
-        select('almond')
+          select('almond')
 
-        expect(page).to have_content('Box the Gnat Contra')
-        expect(page).to_not have_content('The Rendevouz')
-        expect(page).to_not have_content('Call Me')
+          expect(page).to have_content('Box the Gnat Contra')
+          expect(page).to_not have_content('The Rendevouz')
+          expect(page).to_not have_content('Call Me')
+        end
       end
 
       it 'figure filter dancers' do
         expect_any_instance_of(WelcomeController).to receive(:dialect).and_return(JSLibFigure.test_dialect)
-        visit '/'
-        dances
+        with_retries do
+          visit '/'
+          dances
 
-        allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
+          allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
 
-        select('almond')
-        click_button('...')
-        select('ravens')
+          select('almond')
+          click_button('...')
+          select('ravens')
 
-        expect(page).to_not have_content('The Rendevouz')
-        expect(page).to have_content('Box the Gnat Contra')
-        expect(page).to_not have_content('Call Me')
-        expect(page).to_not have_content(allemande.title)
-        expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","allemande","ladles","*","*","*"]')
+          expect(page).to_not have_content('The Rendevouz')
+          expect(page).to have_content('Box the Gnat Contra')
+          expect(page).to_not have_content('Call Me')
+          expect(page).to_not have_content(allemande.title)
+          expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","allemande","ladles","*","*","*"]')
+        end
       end
 
       it "displays dialect-transformed hooks" do
