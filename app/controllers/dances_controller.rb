@@ -35,7 +35,7 @@ class DancesController < ApplicationController
 
 
   def create
-    @dance = Dance.new(dance_params_with_real_choreographer(intern_choreographer))
+    @dance = Dance.new(canonical_params(dance_params_with_real_choreographer(intern_choreographer)))
     @dance.user_id = current_user.id
     if @dance.save
       redirect_to @dance, notice: 'Dance was successfully created.'

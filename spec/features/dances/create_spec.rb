@@ -247,4 +247,33 @@ describe 'Creating dances', js: true do
                                    {'move' => 'allemande', 'parameter_values' => ['partners', false, 540, 12]}])
     end
   end
+
+  it 'users type text in their dialect and the db saves in using the default terms' do
+    with_login do |user|
+      allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
+      text_in_dialect = 'darcy ravens'
+      text_in_canon = 'gyre ladles'
+      visit new_dance_path
+      click_on('empty figure', match: :first)
+      select('custom')
+      fill_in('note', with: text_in_dialect)
+      fill_in('custom', with: text_in_dialect)
+      fill_in('dance_notes', with: text_in_dialect)
+      fill_in('dance_preamble', with: text_in_dialect)
+      fill_in('dance_hook', with: text_in_dialect)
+      fill_in 'dance_title', with: 'Call Me'
+      fill_in 'dance[choreographer_name]', with: 'Cary Ravitz'
+      fill_in 'dance[start_type]', with: 'improper'
+      click_on 'Save Dance'
+      expect(page).to have_content('Dance was successfully created.')
+      dance = Dance.last
+      custom_figure = dance.figures.first
+      expect(custom_figure['note']).to eq(text_in_canon)
+      expect(custom_figure['parameter_values'].first).to eq(text_in_canon)
+      expect(dance.notes).to eq(text_in_canon)
+      expect(dance.preamble).to eq(text_in_canon)
+      expect(dance.hook).to eq(text_in_canon)
+    end
+  end
+
 end
