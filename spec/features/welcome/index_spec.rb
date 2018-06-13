@@ -1,17 +1,4 @@
 # coding: utf-8
-=begin
-  __ _       _                                    _
- / _| | __ _| | ___   _   ___ _ __   ___  ___ ___| |
-| |_| |/ _` | |/ / | | | / __| '_ \ / _ \/ __/ __| |
-|  _| | (_| |   <| |_| | \__ \ |_) |  __/ (__\__ \_|
-|_| |_|\__,_|_|\_\\__, | |___/ .__/ \___|\___|___(_)
-                  |___/      |_|
-
-The specs in this file are flaky, showing false reds. Run them a couple times. -dm 10-08-2017
-Update: used with_retries to make them somewhat less flaky -dm 06-03-2018
-=end
-
-
 
 require 'rails_helper'
 require 'login_helper'
@@ -96,7 +83,7 @@ describe 'Welcome page', js: true do
     end
 
     describe 'figure filter machinantions' do
-      before (:each) do
+      def setup_and_filter
         dances
         visit '/'
         # get down to (and (filter '*')):
@@ -105,143 +92,184 @@ describe 'Welcome page', js: true do
       end
 
       it 'the precondition of all these other tests is fulfilled' do
-        expect(page).to have_css('.figure-filter', count: 2)
-        expect(page).to have_css('.figure-filter-move', count: 1)
-        expect(page).to have_css("#figure-filter-root>.figure-filter-op") # js wait for...
-        expect(find("#figure-filter-root>.figure-filter-op").value).to eq('and')
-        expect(find("#figure-filter-root>.figure-filter .figure-filter-op").value).to eq('figure')
-        expect(find("#figure-filter-root>.figure-filter .figure-filter-move").value).to eq('*')
-        expect(page).to have_content('Call Me')
-        expect(page).to have_content('Box the Gnat Contra')
-        expect(page).to have_content('The Rendevouz')
+        with_retries do
+          setup_and_filter
+          expect(page).to have_css('.figure-filter', count: 2)
+          expect(page).to have_css('.figure-filter-move', count: 1)
+          expect(page).to have_css("#figure-filter-root>.figure-filter-op") # js wait for...
+          expect(find("#figure-filter-root>.figure-filter-op").value).to eq('and')
+          expect(find("#figure-filter-root>.figure-filter .figure-filter-op").value).to eq('figure')
+          expect(find("#figure-filter-root>.figure-filter .figure-filter-move").value).to eq('*')
+          expect(page).to have_content('Call Me')
+          expect(page).to have_content('Box the Gnat Contra')
+          expect(page).to have_content('The Rendevouz')
+        end
       end
 
       it "changing move changes values" do
-        select('circle')
-
-        expect(page).to have_content('The Rendevouz')
-        expect(page).to_not have_content('Box the Gnat Contra')
-        expect(page).to have_content('Call Me')
+        with_retries do
+          setup_and_filter
+          select('circle')
+          expect(page).to have_content('The Rendevouz')
+          expect(page).to_not have_content('Box the Gnat Contra')
+          expect(page).to have_content('Call Me')
+        end
       end
 
       it "clicking 'add and' inserts a figure filter that responds to change events" do
-        expect(page).to have_css('.figure-filter', count: 2)
-        expect(page).to have_css('.figure-filter-move', count: 1)
-        click_button('add and')
-        expect(page).to have_css('.figure-filter', count: 3)
-        expect(page).to have_css('.figure-filter-move', count: 2)
-        all('.figure-filter-move').first.select('chain')
-        all('.figure-filter-move').last.select('circle')
+        with_retries do
+          setup_and_filter
+          expect(page).to have_css('.figure-filter', count: 2)
+          expect(page).to have_css('.figure-filter-move', count: 1)
+          click_button('add and')
+          expect(page).to have_css('.figure-filter', count: 3)
+          expect(page).to have_css('.figure-filter-move', count: 2)
+          all('.figure-filter-move').first.select('chain')
+          all('.figure-filter-move').last.select('circle')
 
-        expect(page).to have_content('Call Me')
-        expect(page).to_not have_content('Box the Gnat Contra')
-        expect(page).to_not have_content('The Rendevouz')
+          expect(page).to have_content('Call Me')
+          expect(page).to_not have_content('Box the Gnat Contra')
+          expect(page).to_not have_content('The Rendevouz')
+        end
       end
 
       it "changing from 'and' to 'figure' purges subfilters and installs a new working move select" do
-        select('circle')        # rendevous and call me
-        expect(page).to have_css('.figure-filter', count: 2)
-        expect(page).to have_css('.figure-filter-move', count: 1)
-        first('.figure-filter-op').select('figure')
-        select('chain')
-        expect(page).to have_css('.figure-filter', count: 1)
-        expect(page).to have_css('.figure-filter-move', count: 1)
-        expect(page).to_not have_content('The Rendevouz')
-        expect(page).to have_content('Box the Gnat Contra')
-        expect(page).to have_content('Call Me')
+        with_retries do
+          setup_and_filter
+          select('circle')        # rendevous and call me
+          expect(page).to have_css('.figure-filter', count: 2)
+          expect(page).to have_css('.figure-filter-move', count: 1)
+          first('.figure-filter-op').select('figure')
+          select('chain')
+          expect(page).to have_css('.figure-filter', count: 1)
+          expect(page).to have_css('.figure-filter-move', count: 1)
+          expect(page).to_not have_content('The Rendevouz')
+          expect(page).to have_content('Box the Gnat Contra')
+          expect(page).to have_content('Call Me')
+        end
       end
 
       it "change from an empty 'or' to 'no'" do
-        all('.figure-filter-op').last.select('or');
-        expect(page).to have_css('.figure-filter-op', count: 4)
-        expect(page).to have_css('.figure-filter', count: 4)
-        expect(page).to have_css('.figure-filter-add', count: 2)
-        expect(page).to have_css('.figure-filter-move', count: 2)
-        all('.figure-filter-remove').last.click
-        expect(page).to have_css('.figure-filter', count: 3) # css wait
-        all('.figure-filter-remove').last.click
-        expect(page).to have_css('.figure-filter', count: 2) # css wait
-        all('.figure-filter-op').last.select('no');
-        expect(page).to have_css('.figure-filter', count: 3) # <- the main point here
+        with_retries do
+          setup_and_filter
+          all('.figure-filter-op').last.select('or');
+          expect(page).to have_css('.figure-filter-op', count: 4)
+          expect(page).to have_css('.figure-filter', count: 4)
+          expect(page).to have_css('.figure-filter-add', count: 2)
+          expect(page).to have_css('.figure-filter-move', count: 2)
+          all('.figure-filter-remove').last.click
+          expect(page).to have_css('.figure-filter', count: 3) # css wait
+          all('.figure-filter-remove').last.click
+          expect(page).to have_css('.figure-filter', count: 2) # css wait
+          all('.figure-filter-op').last.select('no');
+          expect(page).to have_css('.figure-filter', count: 3) # <- the main point here
+        end
       end
 
       it "change from binary 'and' to 'no'" do
-        click_button('add and')
-        all('.figure-filter-move').first.select('chain')
-        all('.figure-filter-move').last.select('circle')
-        expect(page).to_not have_content('The Rendevouz')
-        expect(page).to_not have_content('Box the Gnat Contra')
-        expect(page).to have_content('Call Me')
-        all('.figure-filter-op').first.select('no'); # have no chain
-        expect(page).to have_content('The Rendevouz')
-        expect(page).to_not have_content('Box the Gnat Contra')
-        expect(page).to_not have_content('Call Me')
+        with_retries do
+          setup_and_filter
+          click_button('add and')
+          all('.figure-filter-move').first.select('chain')
+          all('.figure-filter-move').last.select('circle')
+          expect(page).to_not have_content('The Rendevouz')
+          expect(page).to_not have_content('Box the Gnat Contra')
+          expect(page).to have_content('Call Me')
+          all('.figure-filter-op').first.select('no'); # have no chain
+          expect(page).to have_content('The Rendevouz')
+          expect(page).to_not have_content('Box the Gnat Contra')
+          expect(page).to_not have_content('Call Me')
+        end
       end
 
       it "change from 'figure' to 'no'" do
-        # now we're ['and', ['figure', '*']]
-        first('.figure-filter-op').select('figure')
-        # now we're just ['figure', '*']
-        select('no')
-        # now we're ['no', ['figure', '*']]
-        select('circle')
-        # now we're ['no', ['figure', 'circle']]
-        expect(page).to_not have_content('The Rendevouz')
-        expect(page).to have_content('Box the Gnat Contra')
-        expect(page).to_not have_content('Call Me')
+        with_retries do
+          setup_and_filter
+          # now we're ['and', ['figure', '*']]
+          first('.figure-filter-op').select('figure')
+          # now we're just ['figure', '*']
+          select('no')
+          # now we're ['no', ['figure', '*']]
+          select('circle')
+          # now we're ['no', ['figure', 'circle']]
+          expect(page).to_not have_content('The Rendevouz')
+          expect(page).to have_content('Box the Gnat Contra')
+          expect(page).to_not have_content('Call Me')
+        end
       end
 
       it "change from 'figure' to 'or'" do
-        all('.figure-filter-op').last.select('or')
-        expect(page).to have_css('.figure-filter', count: 4)
-        expect(page).to have_css('.figure-filter-add', count: 2)
-        expect(find("#figure-query-buffer", visible: false).value).to eq('["and",["or",["figure","*"],["figure","*"]]]')
+        with_retries do
+          setup_and_filter
+          all('.figure-filter-op').last.select('or')
+          expect(page).to have_css('.figure-filter', count: 4)
+          expect(page).to have_css('.figure-filter-add', count: 2)
+          expect(find("#figure-query-buffer", visible: false).value).to eq('["and",["or",["figure","*"],["figure","*"]]]')
+        end
       end
 
       it "it adds/removes 'add' button depending on arity of the filter, and 'add' button works" do
-        expect(page).to have_css('.figure-filter-add', count: 1)
-        all('.figure-filter-op').first.select('no')
-        expect(page).to have_css('.figure-filter-add', count: 0)
-        all('.figure-filter-op').first.select('and')
-        expect(page).to have_css('.figure-filter-add', count: 1)
-        expect(page).to have_css('.figure-filter', count: 3)
-        click_button('add and')
-        expect(page).to have_css('.figure-filter', count: 4)
+        with_retries do
+          setup_and_filter
+          expect(page).to have_css('.figure-filter-add', count: 1)
+          all('.figure-filter-op').first.select('no')
+          expect(page).to have_css('.figure-filter-add', count: 0)
+          all('.figure-filter-op').first.select('and')
+          expect(page).to have_css('.figure-filter-add', count: 1)
+          expect(page).to have_css('.figure-filter', count: 3)
+          click_button('add and')
+          expect(page).to have_css('.figure-filter', count: 4)
+        end
       end
 
       describe 'filter remove button' do
         it "root filter does not have a remove button" do
-          expect(page).to_not have_css('#figure-filter-root > button.figure-filter-remove')
+          with_retries do
+            setup_and_filter
+            expect(page).to_not have_css('#figure-filter-root > button.figure-filter-remove')
+          end
         end
 
         it "initial subfilter has a working remove button" do
-          expect(page).to have_css('.figure-filter > button.figure-filter-remove', count: 1)
-          find('.figure-filter-remove').click
-          expect(page).to have_css('.figure-filter', count: 1)
+          with_retries do
+            setup_and_filter
+            expect(page).to have_css('.figure-filter > button.figure-filter-remove', count: 1)
+            find('.figure-filter-remove').click
+            expect(page).to have_css('.figure-filter', count: 1)
+          end
         end
 
         it "another subfilter has a working remove button" do
-          select('circle')
-          click_button('add and')   # adds a '*'
-          expect(page).to have_css('.figure-filter > button.figure-filter-remove', count: 2)
-          all('.figure-filter-remove').last.click
-          expect(page).to have_css('.figure-filter', count: 2)
-          expect(find("#figure-query-buffer", visible: false).value).to eq('["and",["figure","circle"]]')
+          with_retries do
+            setup_and_filter
+            select('circle')
+            click_button('add and')   # adds a '*'
+            expect(page).to have_css('.figure-filter > button.figure-filter-remove', count: 2)
+            all('.figure-filter-remove').last.click
+            expect(page).to have_css('.figure-filter', count: 2)
+            expect(find("#figure-query-buffer", visible: false).value).to eq('["and",["figure","circle"]]')
+          end
         end
 
         it "changing my op still allows my remove button" do # this was a bug at one point
-          all('.figure-filter-op').last.select('or')
-          expect(page).to have_css('#figure-filter-root > .figure-filter > .figure-filter-remove')
-          expect(page).to have_css('.figure-filter-remove', count: 3)
+          with_retries do
+            setup_and_filter
+            all('.figure-filter-op').last.select('or')
+            expect(page).to have_css('#figure-filter-root > .figure-filter > .figure-filter-remove')
+            expect(page).to have_css('.figure-filter-remove', count: 3)
+          end
         end
 
         it "changing my op removes illegal remove buttons among my children, and adds them back in when they are legal" do
-          first('.figure-filter-op').select('no')
-          # [no, [figure *]]
-          expect(page).to_not have_css('.figure-filter-remove') # remove illegal X buttons
-          first('.figure-filter-op').select('and')
-          expect(page).to have_css('#figure-filter-root > .figure-filter > .figure-filter-remove') # re-add X button
-          expect(page).to have_css('.figure-filter-remove', count: 2)
+          with_retries do
+            setup_and_filter
+            first('.figure-filter-op').select('no')
+            # [no, [figure *]]
+            expect(page).to_not have_css('.figure-filter-remove') # remove illegal X buttons
+            first('.figure-filter-op').select('and')
+            expect(page).to have_css('#figure-filter-root > .figure-filter > .figure-filter-remove') # re-add X button
+            expect(page).to have_css('.figure-filter-remove', count: 2)
+          end
         end
       end
 
@@ -250,7 +278,10 @@ describe 'Welcome page', js: true do
         # "no (figure: chain)" => "dances with no chain"
         # "no ((figure: chain) or (figure: hey))" => "dances with no chain or hey"
         it 'works with precondition' do
-          expect(page).to have_content('dances with any figure')
+          with_retries do
+            setup_and_filter
+            expect(page).to have_content('dances with any figure')
+          end
         end
       end
     end
@@ -535,7 +566,7 @@ describe 'Welcome page', js: true do
           fb = FactoryGirl.create(:dance_with_a_down_the_hall, march_facing: 'forward then backward')
           f = FactoryGirl.create(:dance_with_a_down_the_hall, march_facing: 'forward')
           b = FactoryGirl.create(:dance_with_a_down_the_hall, march_facing: 'backward')
-          with_retries do
+          with_retries(10) do
             visit '/'
 
             select('down the hall')
