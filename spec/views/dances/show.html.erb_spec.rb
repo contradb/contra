@@ -30,7 +30,7 @@ RSpec.describe "dances/show", type: :view do
     expect(rendered).to match(/Complicated Formation/)
     expect(rendered).to match(/Becky Hill/)
     # figures
-    expect(rendered).to have_content(regexpify 'partners balance &amp; swing')
+    expect(rendered).to have_content(regexpify 'partners balance & swing')
     # notes
     expect(rendered).to match(/My Note Text/)
   end
@@ -51,7 +51,7 @@ RSpec.describe "dances/show", type: :view do
 
   it 'figure notes do not pass js injection attacks' do
     render
-    expect(rendered).to have_content("&lt;script&gt;alert('no dialog pops up');&lt;/script&gt;")
+    expect(rendered).to have_content("<script>alert('no dialog pops up');</script>")
     expect(rendered).to_not have_content("undefined");
   end
 

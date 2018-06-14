@@ -11,7 +11,7 @@ class DialectReverser
   end
 
   def reverse(string)           # really string-or-falsey
-    string ? string.gsub(regexp, inverted_hash) : string
+    string.present? ? string.gsub(regexp, inverted_hash) : ''
   end
 
   private 
