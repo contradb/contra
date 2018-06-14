@@ -42,9 +42,9 @@ Words.prototype.sanitize = function() {
     if (wants_space_before) {
       acc.push(' ');
     }
-    acc.push(sanitizeAnything(arr[i]));
+    acc.push(sanitizeWordNode(arr[i]));
   }
-  return acc.join('').trim();// wordsClassic.apply(null, this.arr.map(sanitizeAnything));
+  return acc.join('').trim();// wordsClassic.apply(null, this.arr.map(sanitizeWordNode));
 }
 
 Words.prototype.peek = function() {
@@ -80,7 +80,7 @@ function tag(tag, attrs_or_body, body_or_nothing) {
 
 Tag.prototype.sanitize = function () {
   // TODO: attrs
-  return '<' + this.tag + '>' + sanitizeAnything(this.body) + '</' + this.tag + '>';
+  return '<' + this.tag + '>' + sanitizeWordNode(this.body) + '</' + this.tag + '>';
 }
 
 Tag.prototype.peek = function () {
@@ -96,7 +96,7 @@ var sanitizationMap = {
   '&amp;': '&amp;'
 };
 
-function sanitizeAnything(s) {
+function sanitizeWordNode(s) {
   if (s.sanitize) {
     return s.sanitize();
   } else if ('string' === typeof s) {

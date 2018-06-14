@@ -36,7 +36,7 @@ function figureToString(f,dialect) {
     var note = f.note || '';
     return words(main,stringInDialect(note, dialect)).sanitize();
   } else if (f.move) {
-    return "rogue figure '"+sanitizeAnything(f.move)+"'!";
+    return "rogue figure '"+sanitizeWordNode(f.move)+"'!";
   } else {
     return "empty figure";
   }
@@ -136,8 +136,8 @@ function moveSubstitutionWithoutForm(move_term, dialect, add_article, adjectives
   var match = subst.match(/(?:form )?(?:(an?) )?(.*)/i);
   var root = match[2];
   var adjectives_and_root = words(adjectives, root);
-  var article = /[aeiou]/.test(adjectives_and_root.peek()) ? 'an' : 'a';
   if (add_article) {
+    var article = /[aeiou]/.test(adjectives_and_root.peek()) ? 'an' : 'a';
     return words(article, adjectives, root);
   } else {
     return adjectives_and_root;
