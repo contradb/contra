@@ -1,5 +1,5 @@
 module Retries
-  def with_retries(retries=3, &body)
+  def with_retries(retries=5, &body)
     begin
       body.call
     rescue StandardError, RSpec::Expectations::ExpectationNotMetError => e
