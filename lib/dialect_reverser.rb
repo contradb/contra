@@ -5,7 +5,7 @@ class DialectReverser
 
   def initialize(dialect)
     @dialect = dialect
-    raise 'dialect is not one-to-one' unless check_one_to_one
+    # raise 'dialect is not one-to-one' unless check_one_to_one
     @inverted_hash = make_inverted_hash
     @regexp = make_regexp
   end
@@ -17,11 +17,6 @@ class DialectReverser
   private 
   attr_reader :regexp
   attr_reader :inverted_hash
-
-
-  def check_one_to_one
-    true
-  end
 
   def make_inverted_hash
     alist = dialect.fetch('moves').to_a + dialect.fetch('dancers').to_a
