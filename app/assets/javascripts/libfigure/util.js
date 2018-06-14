@@ -1,21 +1,3 @@
-var _contraHtmlEscapeRegEx = /[<>&]/g;
-
-function escapehtml(string) {
-  if (string.match(_contraHtmlEscapeRegEx)) {
-    return string.replace(_contraHtmlEscapeRegEx, function(s) {
-      switch(s) {
-      case '<': return '&lt;';
-      case '>': return '&gt;';
-      case '&': return '&amp;';
-      default: return s;
-      }
-    });
-  } else {
-    return string;
-  }
-}
-
-
 function set_if_unset (dict, key, value) {
     if (!(key in dict))
         dict[key] = value;
