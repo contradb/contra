@@ -204,7 +204,7 @@ module JSLibFigure
     end
   end
 
-  JSLIBFIGURE_FILES = %w(polyfill.js util.js move.js chooser.js param.js define-figure.js figure.es6 after-figure.js dance.js)
+  JSLIBFIGURE_FILES = %w(polyfill.js util.js words.js move.js chooser.js param.js define-figure.js figure.es6 after-figure.js dance.js)
 
   private
   def self.eval(string_of_javascript)

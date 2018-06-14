@@ -23,6 +23,7 @@
 //  LOCAL FILES
 //= require libfigure/polyfill
 //= require libfigure/util
+//= require libfigure/words
 //= require libfigure/move
 //= require libfigure/chooser
 //= require libfigure/param
