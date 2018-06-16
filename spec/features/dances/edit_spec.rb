@@ -275,6 +275,22 @@ describe 'Editing dances', js: true do
       end
     end
 
+    it 'validation failures do not corrupt dialect text' do
+      with_login do |user|
+        custom_text = 'custom ladle custom'
+        custom_text_in_dialect = 'custom raven custom'
+        dance = FactoryGirl.create(:dance_with_a_custom, custom_text: custom_text, user: user)
+        allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
+        visit edit_dance_path(dance)
+        expect(page).to have_link(custom_text_in_dialect)
+        fill_in 'dance_title', with: '' # too short to pass validation
+        click_on 'Save Dance'
+        expect(page).to_not have_content('Dance was successfully updated.')
+        expect(page).to have_link(custom_text_in_dialect)
+        expect(page).to_not have_link(custom_text)
+      end
+    end
+
     it "filters html out of user input" do
       with_login do |user|
         dance = FactoryGirl.create(:malicious_dance, user: user)

@@ -32,8 +32,6 @@ Words.prototype.peek = function() {
   return null;
 }
 
-Words.prototype.isWord = true;
-
 function Tag(tag, attrs, body) {
   this.tag = tag;
   this.attrs = attrs;
@@ -43,7 +41,7 @@ function Tag(tag, attrs, body) {
 function tag(tag, attrs_or_body, body_or_nothing) {
   var attrs;
   var body;
-  if (body_or_nothing==undefined) {
+  if (body_or_nothing===undefined) {
     body = attrs_or_body;
     attrs = {};
   } else {
@@ -61,8 +59,6 @@ Tag.prototype.sanitize = function () {
 Tag.prototype.peek = function () {
   return peek(this.body);
 }
-
-Tag.prototype.isTag = true;
 
 var sanitizationMap = {
   '<': '&lt;',

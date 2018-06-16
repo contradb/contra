@@ -1,12 +1,11 @@
 require 'dialect_reverser'
 
 class DancesController < ApplicationController
-  before_action :set_dance, only: [:destroy]
-  before_action :set_dance_text_to_dialect, only: [:show, :edit, :update]
-  before_action :authenticate_user!, only: [:new, :edit, :update, :destroy]
+  before_action :set_dance, only: [:destroy, :update, :show, :edit]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :authenticate_dance_writable!, only: [:edit, :update, :destroy]
   before_action :authenticate_dance_readable!, only: [:show]
-  before_action :set_dialect_json, only: [:new, :create, :edit, :update]
+  before_action :set_dialect_json_for_editing, only: [:new, :create, :edit, :update]
 
   def index
     @dances = Dance.readable_by(current_user).alphabetical
@@ -30,9 +29,9 @@ class DancesController < ApplicationController
   end
 
   def edit
+    @dance.set_text_to_dialect(dialect)
     @admin_email = Rails.application.secrets.admin_gmail_username
   end
-
 
   def create
     @dance = Dance.new(canonical_params(dance_params_with_real_choreographer(intern_choreographer)))
@@ -40,6 +39,7 @@ class DancesController < ApplicationController
     if @dance.save
       redirect_to @dance, notice: 'Dance was successfully created.'
     else
+      @dance.set_text_to_dialect(dialect)
       render :new
     end
   end
@@ -48,6 +48,7 @@ class DancesController < ApplicationController
     if @dance.update(canonical_params(dance_params_with_real_choreographer(intern_choreographer)))
       redirect_to @dance, notice: 'Dance was successfully updated.'
     else
+      @dance.set_text_to_dialect(dialect)
       render :edit
     end
   end
@@ -70,11 +71,7 @@ class DancesController < ApplicationController
       @dance = Dance.find(params[:id])
     end
     
-    def set_dance_text_to_dialect
-      @dance = Dance.find(params[:id]).set_text_to_dialect(dialect)
-    end
-
-    def set_dialect_json
+    def set_dialect_json_for_editing
       @dialect_json = JSLibFigure.dialect_with_text_in_dialect(dialect, true).to_json
     end
 

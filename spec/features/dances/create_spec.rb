@@ -276,4 +276,26 @@ describe 'Creating dances', js: true do
     end
   end
 
+  it 'users type text in their dialect and validation failures do not corrupt it' do
+    with_login do |user|
+      allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
+      text_in_dialect = 'darcy ravens'
+      text_in_canon = 'gyre ladles'
+      visit new_dance_path
+      click_on('empty figure', match: :first)
+      select('custom')
+      fill_in('note', with: "note #{text_in_dialect} note")
+      fill_in('custom', with: "custom #{text_in_dialect} custom")
+      fill_in('dance_notes', with: "notes #{text_in_dialect} notes")
+      fill_in('dance_preamble', with: "preamble #{text_in_dialect} preamble")
+      fill_in('dance_hook', with: "hook #{text_in_dialect} hook")
+      click_on 'Save Dance'
+      expect(page).to_not have_content('Dance was successfully created.')
+      expect(page).to_not have_link("custom #{text_in_canon} custom note #{text_in_canon} note")
+      expect(page).to have_link("custom #{text_in_dialect} custom note #{text_in_dialect} note")
+      expect(find('#dance_notes').value).to eq("notes #{text_in_dialect} notes")
+      expect(find('#dance_preamble').value).to eq("preamble #{text_in_dialect} preamble")
+      expect(find('#dance_hook').value).to eq("hook #{text_in_dialect} hook")
+    end
+  end
 end
