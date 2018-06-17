@@ -38,21 +38,16 @@ function Tag(tag, attrs, body) {
   this.body = body;
 }
 
-function tag(tag, attrs_or_body, body_or_nothing) {
-  var attrs;
-  var body;
-  if (body_or_nothing===undefined) {
-    body = attrs_or_body;
-    attrs = {};
-  } else {
-    body = body_or_nothing;
-    attrs = attrs_or_body;
-  }
-  return new Tag(tag, attrs, body);
+function tag(tag, body) {
+  return new Tag(tag, {}, body);
 }
 
+// function tag_attrs(tag, attrs, body) {
+//   return new Tag(tag, attrs, body);
+// }
+
 Tag.prototype.sanitize = function () {
-  // TODO: attrs
+  // TODO: simply sanitize and print attrs
   return '<' + this.tag + '>' + sanitizeWordNode(this.body) + '</' + this.tag + '>';
 }
 

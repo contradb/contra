@@ -8,10 +8,6 @@ describe DialectReverser do
     expect(dialect_reverser.reverse('first lark lark almond gentlespoon')).to eq('first gentlespoon gentlespoon allemande gentlespoon')
   end
 
-  it '#check_one_to_one' do
-    raise 'implement me'
-  end
-
   it '#make_regexp' do
     dialect = {'dancers' => {'ladles' => 'ravens'}, 'moves' => {'slice' => 'y*arn'}} # y*arn ensures regexp is properly escaped
     re = DialectReverser.new(dialect).send(:make_regexp)
