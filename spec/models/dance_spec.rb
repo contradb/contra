@@ -117,4 +117,19 @@ RSpec.describe Dance, type: :model do
       expect(dance.moves_that_follow_move('swing')).to eq(Set.new(['swing']))
     end
   end
+
+  it '#set_text_to_dialect' do
+    dance = FactoryGirl.build(:dance_with_a_custom,
+                              custom_text: 'custom allemande gentlespoons custom',
+                              figure_note: 'figure-note allemande figure-note',
+                              preamble: 'preamble allemande preamble',
+                              hook: 'hook allemande hook',
+                              notes: 'dance-notes allemande dance-notes')
+    dance.set_text_to_dialect(JSLibFigure.test_dialect)
+    expect(JSLibFigure.parameter_values(dance.figures.first).first).to eq('custom almond larks custom')
+    expect(JSLibFigure.note(dance.figures.first)).to eq('figure-note almond figure-note')
+    expect(dance.preamble).to eq('preamble almond preamble')
+    expect(dance.hook).to eq('hook almond hook')
+    expect(dance.notes).to eq('dance-notes almond dance-notes')
+  end
 end

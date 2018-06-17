@@ -189,26 +189,7 @@ describe 'Editing dances', js: true do
   end
 
   describe 'dialect text' do
-    it 'custom moves and move notes do not update dynamically for dialect' do # It used to - not sure if this test should be xited
-      with_login do |user|
-        custom_text = 'custom allemande gentlespoons custom'
-        custom_text_in_dialect = 'custom almond larks custom'
-        dance = FactoryGirl.create(:dance_with_a_custom, custom_text: custom_text, user: user)
-        allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
-        visit edit_dance_path dance.id
-        expect(page).to have_content(custom_text_in_dialect)
-        expect(page).to_not have_content(custom_text)
-        click_on(custom_text_in_dialect)
-        fill_in('note', with: 'note gyre ladles note')
-        expect(page).to have_content('note gyre ladles note')
-        expect(page).to_not have_content('note darcy ravens note')
-        fill_in('custom', with: 'custom first gentlespoon custom')
-        expect(page).to have_content('custom first gentlespoon custom')
-        expect(page).to_not have_content('custom first lark custom')
-      end
-    end
-
-    it 'default terms in text are transformed into dialect in the editor' do
+    it 'default terms in a database-fresh dance are translated into dialect in the editor' do
       with_login do |user|
         dialect = JSLibFigure.test_dialect
         dance = FactoryGirl.create(:dance_with_a_custom,

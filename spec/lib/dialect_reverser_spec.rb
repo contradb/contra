@@ -33,6 +33,8 @@ describe DialectReverser do
                 'darcy' => 'gyre',
                 'lark' => 'gentlespoon'}
     # use to_s to enforce hash order:
-    expect(dialect_reverser.send(:make_inverted_hash).to_s).to eq(expected.to_s)
+    got = dialect_reverser.send(:make_inverted_hash)
+    expect(got).to eq(expected)
+    expect(got.keys).to eq(expected.keys) # order matters
   end
 end

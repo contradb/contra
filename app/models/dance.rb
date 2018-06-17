@@ -70,7 +70,7 @@ class Dance < ApplicationRecord
 
   # modify dance text in-place to be in dialect (model shouldn't be saved in this state, it's for setting up forms)
   def set_text_to_dialect(dialect)
-    self.figures = figures.map {|figure| JSLibFigure.figure_with_text_in_dialect(figure, dialect)}
+    self.figures = figures.map {|figure| JSLibFigure.figure_translate_text_into_dialect(figure, dialect)}
     self.preamble = JSLibFigure.string_in_dialect(preamble, dialect)
     self.notes = JSLibFigure.string_in_dialect(notes, dialect)
     self.hook = JSLibFigure.string_in_dialect(hook, dialect)
