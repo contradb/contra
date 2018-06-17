@@ -14,25 +14,19 @@ module JSLibFigure
     self.eval('newFigure()')
   end
 
-  def self.parameter_values(figure_ruby_hash)
-    figure_ruby_hash['parameter_values']
-  end
-
   def self.move(figure_ruby_hash)
     figure_ruby_hash['move']
   end
 
-  # new and not-widely-adopted
-  def self.note(figure_ruby_hash)
-    figure_ruby_hash['note']
-  end
-
-  # new and not-widely-adopted
   def self.parameter_values(figure_ruby_hash)
     figure_ruby_hash['parameter_values']
   end
 
-  def self.figure_move_parameters_note(figure_ruby_hash)
+  def self.note(figure_ruby_hash)
+    figure_ruby_hash['note']
+  end
+
+  def self.figure_unpack(figure_ruby_hash)
     [figure_ruby_hash['move'],
      figure_ruby_hash['parameter_values'],
      figure_ruby_hash['note']]
@@ -176,8 +170,8 @@ module JSLibFigure
     self.eval("goodBeats(#{figure.to_json})")
   end
 
-  def self.dialect_with_text_in_dialect(dialect, bool)
-    dialect.merge('text_in_dialect' => bool)
+  def self.dialect_with_text_translated(dialect)
+    dialect.merge('text_in_dialect' => true)
   end
 
   def self.text_in_dialect(dialect)

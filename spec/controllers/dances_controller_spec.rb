@@ -48,7 +48,7 @@ RSpec.describe DancesController, type: :controller do
     it "assigns @dialect_json" do
       get :new, params: {}
       expect(assigns(:dialect_json)).to be_a(String)
-      editor_dialect = JSLibFigure.dialect_with_text_in_dialect(subject.current_user.dialect, true)
+      editor_dialect = JSLibFigure.dialect_with_text_translated(subject.current_user.dialect)
       expect(assigns(:dialect_json)).to eq(editor_dialect.to_json)
     end
   end
@@ -74,7 +74,7 @@ RSpec.describe DancesController, type: :controller do
         dance = FactoryGirl.create(:dance, user: subject.current_user)
         get :edit, params: {:id => dance.to_param}
         expect(assigns(:dialect_json)).to be_a(String)
-        editor_dialect = JSLibFigure.dialect_with_text_in_dialect(subject.current_user.dialect, true)
+        editor_dialect = JSLibFigure.dialect_with_text_translated(subject.current_user.dialect)
         expect(assigns(:dialect_json)).to eq(editor_dialect.to_json)
       end
 
@@ -149,7 +149,7 @@ RSpec.describe DancesController, type: :controller do
       it "assigns @dialect_json" do
         post :create, params: {:dance => invalid_attributes}
         expect(assigns(:dialect_json)).to be_a(String)
-        editor_dialect = JSLibFigure.dialect_with_text_in_dialect(subject.current_user.dialect, true)
+        editor_dialect = JSLibFigure.dialect_with_text_translated(subject.current_user.dialect)
         expect(assigns(:dialect_json)).to eq(editor_dialect.to_json)
       end
 
@@ -208,7 +208,7 @@ RSpec.describe DancesController, type: :controller do
         dance = FactoryGirl.create(:dance, user: subject.current_user)
         post :update, params: {id: dance.to_param, dance: invalid_attributes}
         expect(assigns(:dialect_json)).to be_a(String)
-        editor_dialect = JSLibFigure.dialect_with_text_in_dialect(subject.current_user.dialect, true)
+        editor_dialect = JSLibFigure.dialect_with_text_translated(subject.current_user.dialect)
         expect(assigns(:dialect_json)).to eq(editor_dialect.to_json)
       end
     end

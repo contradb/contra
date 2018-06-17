@@ -72,7 +72,7 @@ class DancesController < ApplicationController
     end
     
     def set_dialect_json_for_editing
-      @dialect_json = JSLibFigure.dialect_with_text_in_dialect(dialect, true).to_json
+      @dialect_json = JSLibFigure.dialect_with_text_translated(dialect).to_json
     end
 
     def authenticate_dance_writable!
@@ -123,7 +123,7 @@ class DancesController < ApplicationController
     hook = params[:hook]
     figures = JSON.parse(params[:figures_json])
     figures2 = figures.map do |figure|
-      move, parameter_values, note = JSLibFigure.figure_move_parameters_note(figure)
+      move, parameter_values, note = JSLibFigure.figure_unpack(figure)
       formals = move ? JSLibFigure.formal_parameters(move) : []
       pv2 = parameter_values.each_with_index.map do |parameter_value, i|
         if parameter_value.present? && JSLibFigure.parameter_uses_chooser(formals[i], 'chooser_text')

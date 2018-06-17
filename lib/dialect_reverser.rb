@@ -5,7 +5,6 @@ class DialectReverser
 
   def initialize(dialect)
     @dialect = dialect
-    # raise 'dialect is not one-to-one' unless check_one_to_one
     @inverted_hash = make_inverted_hash
     @regexp = make_regexp
   end
