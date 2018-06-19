@@ -44,7 +44,7 @@ describe 'Dialect page', js: true do
         expect(page).to have_idiom_with('second ladle', 'second lady')
         expect(page).to have_idiom_with('gentlespoon', 'gent')
         expect(page).to have_idiom_with('gentlespoons', 'gents')
-        expect(page).to have_idiom_with('first gentlespoon', 'first gent')
+          expect(page).to have_idiom_with('first gentlespoon', 'first gent')
         expect(page).to have_idiom_with('second gentlespoon', 'second gent')
         expect(find_field("larks-ravens")).to_not be_checked
         expect(find_field("gents-ladies")).to be_checked
@@ -265,7 +265,7 @@ describe 'Dialect page', js: true do
     end
   end
 
-  describe 'Advanced show button' do
+  describe 'advanced show button' do
     it 'hides and shows idiom editors' do
       with_login do |user|
         idiom = FactoryGirl.create(:move_idiom, user: user, term: 'slice', substitution: 'yearn')
@@ -280,6 +280,17 @@ describe 'Dialect page', js: true do
         expect(page).to have_css('.new-move-idiom')
         expect(page).to have_css('.new-dancers-idiom')
         expect(page).to have_idiom(idiom)
+      end
+    end
+  end
+
+  describe 'many-to-1 warning' do
+    it 'appears when the page loads' do
+      with_login do |user|
+        FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'ladles')
+        visit '/dialect'
+        expect(page).to have_css('h1', text: 'Slow Down, Velociraptor!')
+        expect(page).to have_content('you should probably just fix one or more of: gentlespoons → ladles ladles → ladles')
       end
     end
   end

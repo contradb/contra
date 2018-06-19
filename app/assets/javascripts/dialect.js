@@ -136,9 +136,11 @@ $(document).ready(function() {
   }
 
   function adjustForNewDialect() {
+    var dialect = scrapeNormalDialect();
     checkRoleRadioButtons();
     updateGyreSubstitutionViews();
     updateSelectButtonOptionDisabled();
+    updateManyToOneWarning(dialect);
   }
 
   function updateGyreSubstitutionViews() {
@@ -223,6 +225,38 @@ $(document).ready(function() {
     return matches===cbsub_length;
   }
 
+  function updateManyToOneWarning(dialect) { // dialect is a standard contradb datastructure
+    $('.manyToOneWarningContainer').empty();
+    if (!dialectIsOneToOne(dialect)) {
+      var substitutions_and_terms = dialectOverloadedSubstitutions(dialect);
+      console.log('Object.values = '+Object.values);
+      $('.manyToOneWarningContainer').append("<div class='panel panel-danger'><div class=panel-heading><h1 class=panel-title>Slow Down, Velociraptor!</h1></div><div class=panel-body><p>Your dialect maps multiple terms to the same substitution. ContraDB will get confused when you type that substitution in notes. Additionally multiple menus may say the same thing but mean different things. </p><p>If you have a compelling reason to this, we'd love to talk to you to make things work for your dialect - see the ‘Help’ menu. Otherwise you should probably just fix one or more of:</p><ul class=no-bullets>"+Object.values(substitutions_and_terms).map(function(x){return x.map(function(y){return ('<li>'+y+' → '+ (dialect.moves[y]||dialect.dancers[y]||y)+'</li>');}).join('');}).join('')+"</ul></div></div>");
+    }
+  }
+
+  // returns a standard contradb dialect, not the DOM-based frankenstein this page uses
+  function scrapeNormalDialect() {
+    var dialect = {dancers: {}, moves: {}};
+    var dancers_list = dancers();
+    var moves_list = moves();
+    var hash_for_term = function(term) {
+      if (dancers_list.indexOf(term) >= 0) {
+        return dialect.dancers;
+      } else if (moves_list.indexOf(term) >= 0){
+        return dialect.moves;
+      } else {
+        throw new Error("term is neither move nor dancer. Hrm.");
+      }
+    };
+    $('.idiom-form').each(function() {
+      var form = $(this);
+      var term = form.find('.idiom-term').val();
+      var substitution = form.find('.idiom-substitution').val();
+      var hash = hash_for_term(term);
+      hash[term] = substitution;
+    });
+    return dialect;
+  }
 
   if ($('#dialect-idioms-init').length === 0) {
     throw new Error("Can't initialize page because can't find #dialect-idioms-init");

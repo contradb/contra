@@ -172,3 +172,8 @@ label {
 .margin-bottom-10 {
   margin-bottom: 10px;
 }
+
+ul.no-bullets {
+  list-style-type: none;
+  padding: 0;
+}
