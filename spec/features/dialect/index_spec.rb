@@ -290,7 +290,7 @@ describe 'Dialect page', js: true do
         FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'ladles')
         visit '/dialect'
         expect(page).to have_css('h1', text: 'Slow Down, Velociraptor!')
-        expect(page).to have_content('you should probably just fix one or more of: gentlespoons → ladles ladles → ladles')
+        expect(page).to have_content('you should probably just fix one or more of: ladles → ladles gentlespoons → ladles')
       end
     end
   end

@@ -31,6 +31,5 @@
 //= require libfigure/figure
 //= require libfigure/after-figure
 //= require libfigure/dance
-//= require polyfill
 //= require dances
 //= require_tree .

@@ -229,8 +229,13 @@ $(document).ready(function() {
     $('.manyToOneWarningContainer').empty();
     if (!dialectIsOneToOne(dialect)) {
       var substitutions_and_terms = dialectOverloadedSubstitutions(dialect);
-      console.log('Object.values = '+Object.values);
-      $('.manyToOneWarningContainer').append("<div class='panel panel-danger'><div class=panel-heading><h1 class=panel-title>Slow Down, Velociraptor!</h1></div><div class=panel-body><p>Your dialect maps multiple terms to the same substitution. ContraDB will get confused when you type that substitution in notes. Additionally multiple menus may say the same thing but mean different things. </p><p>If you have a compelling reason to this, we'd love to talk to you to make things work for your dialect - see the ‘Help’ menu. Otherwise you should probably just fix one or more of:</p><ul class=no-bullets>"+Object.values(substitutions_and_terms).map(function(x){return x.map(function(y){return ('<li>'+y+' → '+ (dialect.moves[y]||dialect.dancers[y]||y)+'</li>');}).join('');}).join('')+"</ul></div></div>");
+      var subst_acc = [];
+      Object.keys(substitutions_and_terms).forEach(function (substitution) {
+        substitutions_and_terms[substitution].forEach(function (term) {
+          subst_acc.push('<li>'+term + ' → ' + substitution+'</li>');
+        });
+      });
+      $('.manyToOneWarningContainer').append("<div class='panel panel-danger'><div class=panel-heading><h1 class=panel-title>Slow Down, Velociraptor!</h1></div><div class=panel-body><p>Your dialect maps multiple terms to the same substitution. ContraDB will get confused when you type that substitution in dances. Additionally, multiple menus may say the same thing but mean different things. </p><p>If you have a compelling reason to this, we'd love to talk to you to make things work for your dialect - see the ‘Help’ menu. Otherwise you should probably just fix one or more of:</p><ul class=no-bullets>"+(subst_acc.join(''))+"</ul></div></div>");
     }
   }
 
