@@ -44,7 +44,7 @@ describe 'Dialect page', js: true do
         expect(page).to have_idiom_with('second ladle', 'second lady')
         expect(page).to have_idiom_with('gentlespoon', 'gent')
         expect(page).to have_idiom_with('gentlespoons', 'gents')
-          expect(page).to have_idiom_with('first gentlespoon', 'first gent')
+        expect(page).to have_idiom_with('first gentlespoon', 'first gent')
         expect(page).to have_idiom_with('second gentlespoon', 'second gent')
         expect(find_field("larks-ravens")).to_not be_checked
         expect(find_field("gents-ladies")).to be_checked
