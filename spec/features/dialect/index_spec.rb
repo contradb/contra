@@ -285,7 +285,7 @@ describe 'Dialect page', js: true do
   end
 
   describe 'many-to-1 warning' do
-    it 'appears when the page loads' do
+    it 'shows only when there are many-to-1 dialects' do
       with_login do |user|
         slow_down_velociraptor = 'Slow Down, Velociraptor!'
         FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'ladles')
