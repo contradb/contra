@@ -235,7 +235,7 @@ $(document).ready(function() {
           subst_acc.push('<li>'+term + ' → ' + substitution+'</li>');
         });
       });
-      $('.manyToOneWarningContainer').append("<div class='panel panel-danger'><div class=panel-heading><h1 class=panel-title>Slow Down, Velociraptor!</h1></div><div class=panel-body><p>Your dialect maps multiple terms to the same substitution. ContraDB will get confused when you type that substitution in dances. Additionally, multiple menus may say the same thing but mean different things. </p><p>If you have a compelling reason to this, we'd love to talk to you to make things work for your dialect - see the ‘Help’ menu. Otherwise you should probably just fix one or more of:</p><ul class=no-bullets>"+(subst_acc.join(''))+"</ul></div></div>");
+      $('.manyToOneWarningContainer').append("<div class='panel panel-danger'><div class=panel-heading><h1 class=panel-title>Slow Down, Velociraptor!</h1></div><div class=panel-body><p>Your dialect maps multiple terms to the same substitution. If you type one of these substitutions, ContraDB won't know which term you meant. Additionally, you may see “duplicates” in your menus that aren't actually duplicates. If you pick the wrong one, users of other dialects will be told the wrong term.</p><p>If you have a compelling reason to do this, reach out to us (see the 'help' menu) so we can try to make things work for you. Otherwise, fix a few of:</p><ul class=no-bullets>"+(subst_acc.join(''))+"</ul></div></div>");
     }
   }
 
