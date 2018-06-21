@@ -41,6 +41,33 @@ var testDialect = {moves: {gyre: 'darcy',
 // ________________________________________________________________
 
 
+function dialectIsOneToOne(dialect) {
+  return isEmpty(dialectOverloadedSubstitutions(dialect));
+}
+
+function dialectOverloadedSubstitutions(dialect) {
+  var substitutions = {};
+  var remember_as_itself = function (x) { substitutions[x] = (substitutions[x] || []).concat([x]); };
+  moves().forEach(remember_as_itself);
+  dancers().forEach(remember_as_itself);
+  [dialect.moves, dialect.dancers].forEach(function(hash) {
+    Object.keys(hash).forEach(function(term) {
+      var substitution = hash[term];
+      substitutions[substitution] = (substitutions[substitution] || []).concat([term]);
+    });
+  });
+  // delete substitutions that are 1-to-1
+  for (var substitution in substitutions) {
+    if (substitutions.hasOwnProperty(substitution)) {
+      if (substitutions[substitution].length === 1)
+        delete substitutions[substitution];
+    }
+  }
+  return substitutions;
+}
+
+// ________________________________________________________________
+
 
 function dialectForFigures(dialect, figures) {
   var new_dialect = copyDialect(dialect);
@@ -126,3 +153,11 @@ function regExpEscape(s) {
   return s.replace(regExpEscape_regexp, '\\$&');
 };
 // source https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript/3561711#3561711
+
+function isEmpty(hash) {
+  // can't use: hash.length === 0
+  for (var x in hash) {
+    return false;
+  }
+  return true;
+}

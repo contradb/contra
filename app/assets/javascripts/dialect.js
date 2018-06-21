@@ -136,9 +136,11 @@ $(document).ready(function() {
   }
 
   function adjustForNewDialect() {
+    var dialect = scrapeNormalDialect();
     checkRoleRadioButtons();
     updateGyreSubstitutionViews();
     updateSelectButtonOptionDisabled();
+    updateManyToOneWarning(dialect);
   }
 
   function updateGyreSubstitutionViews() {
@@ -223,6 +225,43 @@ $(document).ready(function() {
     return matches===cbsub_length;
   }
 
+  function updateManyToOneWarning(dialect) { // dialect is a standard contradb datastructure
+    $('.manyToOneWarningContainer').empty();
+    if (!dialectIsOneToOne(dialect)) {
+      var substitutions_and_terms = dialectOverloadedSubstitutions(dialect);
+      var subst_acc = [];
+      Object.keys(substitutions_and_terms).forEach(function (substitution) {
+        substitutions_and_terms[substitution].forEach(function (term) {
+          subst_acc.push('<li>'+term + ' → ' + substitution+'</li>');
+        });
+      });
+      $('.manyToOneWarningContainer').append("<div class='panel panel-danger'><div class=panel-heading><h1 class=panel-title>Slow Down, Velociraptor!</h1></div><div class=panel-body><p>Your dialect maps multiple terms to the same substitution. If you type one of these substitutions, ContraDB won't know which term you meant. Additionally, you may see “duplicates” in your menus that aren't actually duplicates. If you pick the wrong one, users of other dialects will be told the wrong term.</p><p>If you have a compelling reason to do this, reach out to us (see the 'help' menu) so we can try to make things work for you. Otherwise, fix a few of:</p><ul class=no-bullets>"+(subst_acc.join(''))+"</ul></div></div>");
+    }
+  }
+
+  // returns a standard contradb dialect, not the DOM-based frankenstein this page uses
+  function scrapeNormalDialect() {
+    var dialect = {dancers: {}, moves: {}};
+    var dancers_list = dancers();
+    var moves_list = moves();
+    var hash_for_term = function(term) {
+      if (dancers_list.indexOf(term) >= 0) {
+        return dialect.dancers;
+      } else if (moves_list.indexOf(term) >= 0){
+        return dialect.moves;
+      } else {
+        throw new Error("term is neither move nor dancer. Hrm.");
+      }
+    };
+    $('.idiom-form').each(function() {
+      var form = $(this);
+      var term = form.find('.idiom-term').val();
+      var substitution = form.find('.idiom-substitution').val();
+      var hash = hash_for_term(term);
+      hash[term] = substitution;
+    });
+    return dialect;
+  }
 
   if ($('#dialect-idioms-init').length === 0) {
     throw new Error("Can't initialize page because can't find #dialect-idioms-init");

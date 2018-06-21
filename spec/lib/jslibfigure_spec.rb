@@ -417,4 +417,25 @@ RSpec.describe JSLibFigure do
       expect(JSLibFigure.figure_translate_text_into_dialect(figure, dialect)).to eq(figure.merge('parameter_values' => ['custom larks darcy custom', 8]))
     end
   end
+
+  let :overloaded_dialect_json { "{moves: {'california twirl': 'twirl to swap',
+                                          'box the gnat': 'twirl to swap',
+                                          'swat the flea': 'twirl to swap',
+                                          'see saw': 'do si do'},
+                                   dancers: {}}"}
+  it 'dialectOverloadedSubstitutions' do
+    expect(jseval("dialectOverloadedSubstitutions(#{overloaded_dialect_json})")).to \
+    eq({"do si do" => ["do si do", "see saw"],
+        "twirl to swap" => ["california twirl", "box the gnat", "swat the flea"]})
+  end
+
+  it 'dialectIsOneToOne' do
+    expect(jseval("dialectIsOneToOne(#{overloaded_dialect_json})")).to eq(false)
+    expect(jseval("dialectIsOneToOne(#{JSLibFigure.test_dialect.to_json})")).to eq(true)
+  end
+
+  it 'isEmpty' do
+    expect(jseval("isEmpty({})")).to eq(true)
+    expect(jseval("isEmpty({x: 5})")).to eq(false)
+  end
 end
