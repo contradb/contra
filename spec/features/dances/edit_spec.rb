@@ -283,4 +283,16 @@ describe 'Editing dances', js: true do
       end
     end
   end
+
+  describe "lingo lines" do
+    it "bogus terms such as 'men' are printed in strikethrough in figure note preview" do
+      with_login do |user|
+        dance = FactoryGirl.create(:dance_with_a_custom, custom_text: "men salarymen men men", user: user)
+        visit edit_dance_path(dance)
+        expect(page).to have_content("men salarymen men men")
+        expect(page).to_not have_css('s', text: 'salarymen')
+        expect(page).to have_css('s', text: 'men', count: 3)
+      end
+    end
+  end
 end

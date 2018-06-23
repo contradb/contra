@@ -262,7 +262,8 @@ defineFigure("cross trails",
 function customStringify(move, pvs, dialect) {
   // remove the word 'custom'
   var [scustom,sbeats] = parameter_strings(move, pvs, dialect);
-  var tcustom = (scustom.trim()==='' || scustom==='*') ? moveSubstitution(move, dialect) : scustom;
+  // scustom is not a string! this is a corrupting hack! TODO
+  var tcustom = (scustom.sanitize().trim()==='' || scustom==='*') ? moveSubstitution(move, dialect) : scustom;
   return words(tcustom);
 }
 

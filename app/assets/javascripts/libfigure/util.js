@@ -68,6 +68,35 @@ function dialectOverloadedSubstitutions(dialect) {
 
 // ________________________________________________________________
 
+function lingoLineMarkup(string, dialect) {
+  // lookbehind doesn't work in all versions of js, so we've got to use capture groups for word boundaries, sigh
+  var blacklist = /(\s|^)(men|women)(\s|$)/ig;
+  var buffer = [];
+  var last_match_ended_at;
+  while (true) {
+    last_match_ended_at = blacklist.lastIndex;
+    var match_info = blacklist.exec(string);
+    if (!match_info) break;
+    buffer.push(string.slice(last_match_ended_at, match_info.index));
+    buffer.push(tag('s', match_info[2]));
+    blacklist.lastIndex = blacklist.lastIndex - match_info[3].length; // put back trailing whitespace
+  }
+  buffer.push(string.slice(last_match_ended_at));
+  return new Words(buffer);
+}
+
+function testLingoLineMarkup(string) {
+  var t = 0;
+  ++t && (lingoLineMarkup('foomenfoo', null).sanitize() === 'foomenfoo') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineMarkup('foo men foo', null).sanitize() === 'foo <s>men</s> foo') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineMarkup('foo women foo', null).sanitize() === 'foo <s>women</s> foo') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineMarkup('men men', null).sanitize() === '<s>men</s> <s>men</s>') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineMarkup('men salarymen men men', null).sanitize() === '<s>men</s> salarymen <s>men</s> <s>men</s>') || throw_up('test '+ t + ' failed');
+  return ''+t+' successful tests';
+}
+
+// ________________________________________________________________
+
 
 function dialectForFigures(dialect, figures) {
   var new_dialect = copyDialect(dialect);
