@@ -285,13 +285,33 @@ describe 'Editing dances', js: true do
   end
 
   describe "lingo lines" do
-    it "bogus terms such as 'men' are printed in strikethrough in figure note preview" do
+    it "strikethrough bogoterms and idiom'ed terms" do
       with_login do |user|
-        dance = FactoryGirl.create(:dance_with_a_custom, custom_text: "men salarymen men men", user: user)
+        dance = FactoryGirl.create(:dance_with_a_custom, custom_text: 'click this!', user: user)
+        allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         visit edit_dance_path(dance)
-        expect(page).to have_content("men salarymen men men")
-        expect(page).to_not have_css('s', text: 'salarymen')
+        click_link('click this!')
+        txt = "men ramen noodles gentlespoons men men"
+        fill_in(:custom, with: txt)
+        expect(page).to_not have_css('s', text: 'ramen noodles')
         expect(page).to have_css('s', text: 'men', count: 3)
+        expect(page).to have_css('s', text: 'gentlespoons')
+        expect(page).to have_link(txt)
+      end
+    end
+
+    it "underline substitutions and non-idiom'ed terms" do
+      with_login do |user|
+        dance = FactoryGirl.create(:dance_with_a_custom, custom_text: "larks Larks lArks Rory O'More rory o'more do si do left shoulder", user: user)
+        allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
+        visit edit_dance_path(dance)
+        expect(page).to_not have_css('u', text: 'laRKS')
+        expect(page).to have_css('u', text: 'larks')
+        expect(page).to have_css('u', text: 'Larks')
+        expect(page).to have_css('u', text: 'lArks')
+        expect(page).to have_css('u', text: "Rory O'More")
+        expect(page).to have_css('u', text: "rory o'more")
+        expect(page).to have_css('u', text: 'do si do left shoulder')
       end
     end
   end

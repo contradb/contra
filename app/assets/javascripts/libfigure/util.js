@@ -70,33 +70,61 @@ function dialectOverloadedSubstitutions(dialect) {
 
 function lingoLineMarkup(string, dialect) {
   // lookbehind doesn't work in all versions of js, so we've got to use capture groups for word boundaries, sigh
-  var blacklist = /(\s|^)(men|women)(\s|$)/ig;
+  var regex = /(\s|^)(men|women)(\s|$)/ig;
+  var underlines_and_strikes = underlinesAndStrikes(dialect);
+  var all_lingo_lines = underlines_and_strikes.underlines.concat(underlines_and_strikes.strikes).sort(longestFirstSortFn);
+                      // new Regex((space)(map(join '|' . quote $ underlines + strikes))(space))
+  regex = new RegExp('(\\s|^)(' + all_lingo_lines.map(regExpEscape).join('|') + ')(\\s|$)','ig');
   var buffer = [];
   var last_match_ended_at;
   while (true) {
-    last_match_ended_at = blacklist.lastIndex;
-    var match_info = blacklist.exec(string);
+    last_match_ended_at = regex.lastIndex;
+    var match_info = regex.exec(string);
     if (!match_info) break;
     buffer.push(string.slice(last_match_ended_at, match_info.index));
-    buffer.push(tag('s', match_info[2]));
-    blacklist.lastIndex = blacklist.lastIndex - match_info[3].length; // put back trailing whitespace
+    var is_strike = underlines_and_strikes.strikes.indexOf(match_info[2].toLowerCase()) >= 0;
+    buffer.push(tag(is_strike ? 's' : 'u', match_info[2]));
+    regex.lastIndex = regex.lastIndex - match_info[3].length; // put back trailing whitespace
   }
   buffer.push(string.slice(last_match_ended_at));
   return new Words(buffer);
 }
 
 function testLingoLineMarkup(string) {
+  var d = testDialect;
   var t = 0;
-  ++t && (lingoLineMarkup('foomenfoo', null).sanitize() === 'foomenfoo') || throw_up('test '+ t + ' failed');
-  ++t && (lingoLineMarkup('foo men foo', null).sanitize() === 'foo <s>men</s> foo') || throw_up('test '+ t + ' failed');
-  ++t && (lingoLineMarkup('foo women foo', null).sanitize() === 'foo <s>women</s> foo') || throw_up('test '+ t + ' failed');
-  ++t && (lingoLineMarkup('men men', null).sanitize() === '<s>men</s> <s>men</s>') || throw_up('test '+ t + ' failed');
-  ++t && (lingoLineMarkup('men salarymen men men', null).sanitize() === '<s>men</s> salarymen <s>men</s> <s>men</s>') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineMarkup('foomenfoo', d).sanitize() === 'foomenfoo') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineMarkup('foo men foo', d).sanitize() === 'foo <s>men</s> foo') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineMarkup('foo women foo', d).sanitize() === 'foo <s>women</s> foo') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineMarkup('men men', d).sanitize() === '<s>men</s> <s>men</s>') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineMarkup('men salarymen men men', d).sanitize() === '<s>men</s> salarymen <s>men</s> <s>men</s>') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineMarkup('gentlespoons larks gents', d).sanitize() === '<s>gentlespoons</s> <u>larks</u> <s>gents</s>') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineMarkup('g1 G1', d).sanitize() === '<s>g1</s> <s>G1</s>') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineMarkup('LARKS', d).sanitize() === '<u>LARKS</u>') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineMarkup("Rory O'More", d).sanitize() === "<u>Rory O'More</u>") || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineMarkup("rory o'more", d).sanitize() === "<u>rory o'more</u>") || throw_up('test '+ t + ' failed');
   return ''+t+' successful tests';
+}
+
+var bogusTerms = ['men', 'women', 'man', 'woman', 'gentlemen', 'gentleman', 'gents', 'gent', 'ladies', 'lady', 'leads', 'lead', 'follows', 'follow', 'larks', 'lark', 'ravens', 'raven',
+                  'gypsy', 'yearn', "rory o'more", 'nn', 'n', 'p', 'l', 'g', 'm', 'w', 'n.', 'p.', 'l.', 'g.', 'm.', 'w.', 'g1', 'g2', 'l1', 'l2'];
+
+var terms_for_uands;
+// NB on return value: it is freshly allocated each time
+function underlinesAndStrikes(dialect) {
+  if (!terms_for_uands) {terms_for_uands = moves().concat(dancers());}
+  var underlines = terms_for_uands.map(function(term) {return (dialect.dancers[term] || dialect.moves[term] || term).toLowerCase();});
+  var strikes = terms_for_uands.concat(bogusTerms).filter(function(s) {return -1 === underlines.indexOf(s.toLowerCase());});
+  return {underlines: underlines, strikes: strikes};
 }
 
 // ________________________________________________________________
 
+function longestFirstSortFn(a,b) {
+  return b.length - a.length;
+};
+
+// ________________________________________________________________
 
 function dialectForFigures(dialect, figures) {
   var new_dialect = copyDialect(dialect);

@@ -324,10 +324,9 @@ function stringInDialect(str, dialect) {
 }
 
 function dialectRegExp(dialect) {
-  var longestFirst = function (a,b) { return b.length - a.length; };
   var move_strings = Object.keys(dialect.moves);
   var dance_strings = Object.keys(dialect.dancers);
-  var term_strings = move_strings.concat(dance_strings).sort(longestFirst);
+  var term_strings = move_strings.concat(dance_strings).sort(longestFirstSortFn);
   var unmatchable_re_string = '^[]'; // https://stackoverflow.com/a/25315586/5158597
   var big_re_string = term_strings.map(regExpEscape).map(parenthesize).join('|') || unmatchable_re_string;
   return new RegExp(big_re_string, 'g');
