@@ -68,7 +68,7 @@ function dialectOverloadedSubstitutions(dialect) {
 
 // ________________________________________________________________
 
-function lingoLineMarkup(string, dialect) {
+function lingoLineWords(string, dialect) {
   // lookbehind doesn't work in all versions of js, so we've got to use capture groups for word boundaries, sigh
   var regex = /(\s|^)(men|women)(\s|$)/ig;
   var underlines_and_strikes = underlinesAndStrikes(dialect);
@@ -90,19 +90,21 @@ function lingoLineMarkup(string, dialect) {
   return new Words(buffer);
 }
 
-function testLingoLineMarkup(string) {
+function testLingoLineWords(string) {
   var d = testDialect;
   var t = 0;
-  ++t && (lingoLineMarkup('foomenfoo', d).sanitize() === 'foomenfoo') || throw_up('test '+ t + ' failed');
-  ++t && (lingoLineMarkup('foo men foo', d).sanitize() === 'foo <s>men</s> foo') || throw_up('test '+ t + ' failed');
-  ++t && (lingoLineMarkup('foo women foo', d).sanitize() === 'foo <s>women</s> foo') || throw_up('test '+ t + ' failed');
-  ++t && (lingoLineMarkup('men men', d).sanitize() === '<s>men</s> <s>men</s>') || throw_up('test '+ t + ' failed');
-  ++t && (lingoLineMarkup('men salarymen men men', d).sanitize() === '<s>men</s> salarymen <s>men</s> <s>men</s>') || throw_up('test '+ t + ' failed');
-  ++t && (lingoLineMarkup('gentlespoons larks gents', d).sanitize() === '<s>gentlespoons</s> <u>larks</u> <s>gents</s>') || throw_up('test '+ t + ' failed');
-  ++t && (lingoLineMarkup('g1 G1', d).sanitize() === '<s>g1</s> <s>G1</s>') || throw_up('test '+ t + ' failed');
-  ++t && (lingoLineMarkup('LARKS', d).sanitize() === '<u>LARKS</u>') || throw_up('test '+ t + ' failed');
-  ++t && (lingoLineMarkup("Rory O'More", d).sanitize() === "<u>Rory O'More</u>") || throw_up('test '+ t + ' failed');
-  ++t && (lingoLineMarkup("rory o'more", d).sanitize() === "<u>rory o'more</u>") || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineWords('foomenfoo', d).sanitize() === 'foomenfoo') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineWords('foo men foo', d).sanitize() === 'foo <s>men</s> foo') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineWords('foo women foo', d).sanitize() === 'foo <s>women</s> foo') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineWords('men men', d).sanitize() === '<s>men</s> <s>men</s>') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineWords('men salarymen men men', d).sanitize() === '<s>men</s> salarymen <s>men</s> <s>men</s>') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineWords('gentlespoons larks gents', d).sanitize() === '<s>gentlespoons</s> <u>larks</u> <s>gents</s>') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineWords('g1 G1', d).sanitize() === '<s>g1</s> <s>G1</s>') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineWords('LARKS', d).sanitize() === '<u>LARKS</u>') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineWords("Rory O'More", d).sanitize() === "<u>Rory O'More</u>") || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineWords("rory o'more", d).sanitize() === "<u>rory o'more</u>") || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineWords('foo"bar<>&', {moves: {swing: 'foo"bar<>&'}, dancers: {}}).sanitize() === '<u>foo"bar&lt;&gt;&amp;</u>') || throw_up('test '+ t + ' failed');
+  // TODO: try passing some regex chars through
   return ''+t+' successful tests';
 }
 

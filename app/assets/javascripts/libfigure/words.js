@@ -102,16 +102,18 @@ function peek(thing) {
 //   return 'success';
 // }
 
-// function test_peek() {
-//   var t = 0;
-//   ++t && (peek(' ') === null) || throw_up('test '+ t + ' failed');
-//   ++t && (peek(' hi') === 'h') || throw_up('test '+ t + ' failed');
-//   ++t && (peek(words(false, '   ', 'hi')) === 'h') || throw_up('test '+ t + ' failed');
-//   ++t && (peek(words(false, '   ', comma)) === ',') || throw_up('test '+ t + ' failed');
-//   ++t && (peek(tag('i', 'hi')) === 'h') || throw_up('test '+ t + ' failed');
-//   ++t && (peek(words(words('  '), words(false), words('hi'))) === 'h') || throw_up('test '+ t + ' failed');
-//   return 'success';
-// }
+function test_peek() {
+  var t = 0;
+  ++t && (peek('') === null) || throw_up('test '+ t + ' failed');
+  ++t && (peek(words('')) === null) || throw_up('test '+ t + ' failed');
+  ++t && (peek(' ') === null) || throw_up('test '+ t + ' failed');
+  ++t && (peek(' hi') === 'h') || throw_up('test '+ t + ' failed');
+  ++t && (peek(words(false, '   ', 'hi')) === 'h') || throw_up('test '+ t + ' failed');
+  ++t && (peek(words(false, '   ', comma)) === ',') || throw_up('test '+ t + ' failed');
+  ++t && (peek(tag('i', 'hi')) === 'h') || throw_up('test '+ t + ' failed');
+  ++t && (peek(words(words('  '), words(false), words('hi'))) === 'h') || throw_up('test '+ t + ' failed');
+  return 'success';
+}
 
 ////////////////////////////////////////////////////////////////
 

@@ -258,7 +258,7 @@ RSpec.describe DancesHelper, type: :helper do
    ['ravens allemande left 1½ around while the larks orbit clockwise ½ around', 'allemande orbit','ladles',false,540,180,8],
    ['larks arch ravens dive', 'arch & dive','gentlespoons',4],
    ['____ arch others dive', 'arch & dive',nil,4],
-   ['ravens almond darcy first lark', 'custom','ladles allemande gyre first gentlespoon', 8],
+   ['<u>ravens</u> <u>almond</u> <u>darcy</u> <u>first lark</u>', 'custom','ladles allemande gyre first gentlespoon', 8],
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}' with dialect" do
