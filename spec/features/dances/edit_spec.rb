@@ -291,18 +291,23 @@ describe 'Editing dances', js: true do
         allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         visit edit_dance_path(dance)
         click_link('click this!')
-        txt = "men ramen noodles gentlespoons men men"
-        fill_in(:custom, with: txt)
+        custom = "men ramen noodles gentlespoons men men"
+        note = "women congresswomen ladles"
+        fill_in(:custom, with: custom)
+        fill_in(:note, with: note)
         expect(page).to_not have_css('s', text: 'ramen noodles')
-        expect(page).to have_css('s', text: 'men', count: 3)
+        expect(page).to have_css('s', text: /\Amen\z/, count: 3)
         expect(page).to have_css('s', text: 'gentlespoons')
-        expect(page).to have_link(txt)
+        expect(page).to have_css('s', text: 'women')
+        expect(page).to have_css('s', text: 'ladles')
+        expect(page).to_not have_css('s', text: 'congresswomeen')
+        expect(page).to have_link("#{custom} #{note}")
       end
     end
 
     it "underline substitutions and non-idiom'ed terms" do
       with_login do |user|
-        dance = FactoryGirl.create(:dance_with_a_custom, custom_text: "larks Larks lArks Rory O'More rory o'more do si do left shoulder", user: user)
+        dance = FactoryGirl.create(:dance_with_a_custom, custom_text: "larks Larks lArks Rory O'More rory o'more do si do left shoulder", figure_note: 'ravens swing', user: user)
         allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         visit edit_dance_path(dance)
         expect(page).to_not have_css('u', text: 'laRKS')
@@ -312,6 +317,8 @@ describe 'Editing dances', js: true do
         expect(page).to have_css('u', text: "Rory O'More")
         expect(page).to have_css('u', text: "rory o'more")
         expect(page).to have_css('u', text: 'do si do left shoulder')
+        expect(page).to have_css('u', text: 'ravens')
+        expect(page).to have_css('u', text: 'swing')
       end
     end
   end
