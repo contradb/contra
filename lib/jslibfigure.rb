@@ -166,6 +166,10 @@ module JSLibFigure
     self.eval("stringInDialect(#{s.inspect},#{dialect.to_json})")
   end
 
+  def self.lingo_lines_html(s, dialect)
+    self.eval("lingoLineWords(#{s.inspect}, #{dialect.to_json}).sanitize()").html_safe
+  end
+
   def self.good_beats?(figure)
     self.eval("goodBeats(#{figure.to_json})")
   end
@@ -215,6 +219,14 @@ module JSLibFigure
       context.load(Rails.root.join('app','assets','javascripts','libfigure',file))
     end
     context
+  end
+
+  def self.eval_with_tests_loaded(string_of_javascript)
+    unless @test_context
+      @test_context = self.new_context
+      @test_context.load(Rails.root.join('app','assets','javascripts','libfigure','test.js'))
+    end
+    @test_context.eval(string_of_javascript)
   end
 
   def self.ensure_array_of_terminal(ary)

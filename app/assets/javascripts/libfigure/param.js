@@ -123,11 +123,12 @@ function formalParamIsDancers(param) {
   return !!dancerMenuForChooser(param.ui)
 }
 
-function stringParamCustom(value, move_meh, dialect) {
-  return stringInDialect(value, dialect);
+function wordParamCustom(value, move_meh, dialect) {
+  // worry: is it ok this isn't a string?
+  return lingoLineWords(stringInDialect(value, dialect), dialect);
 }
 
-var param_custom_figure = {name: "custom", value: "", ui: chooser_text, string: stringParamCustom};
+var param_custom_figure = {name: "custom", value: "", ui: chooser_text, words: wordParamCustom};
 
 var wristGrips = ['', 'wrist grip', 'hands across'];
 

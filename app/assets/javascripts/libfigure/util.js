@@ -66,8 +66,14 @@ function dialectOverloadedSubstitutions(dialect) {
   return substitutions;
 }
 
+
 // ________________________________________________________________
 
+function longestFirstSortFn(a,b) {
+  return b.length - a.length;
+};
+
+// ________________________________________________________________
 
 function dialectForFigures(dialect, figures) {
   var new_dialect = copyDialect(dialect);

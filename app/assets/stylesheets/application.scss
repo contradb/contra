@@ -177,3 +177,13 @@ ul.no-bullets {
   list-style-type: none;
   padding: 0;
 }
+
+s {
+  text-decoration-color: #D00;
+}
+
+.no-lingo-lines{
+  s, u {
+    text-decoration: none;
+  }
+}

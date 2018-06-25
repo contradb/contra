@@ -33,8 +33,13 @@ function figureToString(f,dialect) {
   if (fig_def) {
     var func = fig_def.props.stringify || figureGenericStringify;
     var main = func(alias(f), f.parameter_values, dialect);
-    var note = f.note || '';
-    return words(main,stringInDialect(note, dialect)).sanitize();
+    var note = f.note;
+    if (note && note.trim()) {
+      var fancy_note = lingoLineWords(stringInDialect(note, dialect), dialect);
+      return words(main, fancy_note).sanitize();
+    } else {
+      return words(main).sanitize();
+    }
   } else if (f.move) {
     return "rogue figure '"+sanitizeWordNode(f.move)+"'!";
   } else {
@@ -47,24 +52,24 @@ function figureGenericStringify(move, parameter_values, dialect) {
   // todo: clean this up so it's not so obnoxiously ugly
   // it's thouroughly tested, so it will be safe to remove the fishing expeditions for who, balance and beats.
   var ps = parameters(move);
-  var pstrings = parameter_strings(move, parameter_values, dialect);
-  var acc = "";
+  var pwords = parameter_words(move, parameter_values, dialect);
+  var acc = [];
   var subject_index = find_parameter_index_by_name("who", ps);
   var balance_index = find_parameter_index_by_name("bal", ps);
   var beats_index   = find_parameter_index_by_name("beats",ps);
-  if (subject_index >= 0) { acc += pstrings[subject_index] + ' '; }
-  if (balance_index >= 0) { acc += pstrings[balance_index] + ' '; }
-  acc += moveSubstitution(move, dialect);
+  if (subject_index >= 0) { acc.push(pwords[subject_index]); }
+  if (balance_index >= 0) { acc.push(pwords[balance_index]); }
+  acc.push(moveSubstitution(move, dialect));
   ps.length == parameter_values.length || throw_up("parameter type mismatch. "+ps.length+" formals and "+parameter_values.length+" values");
   for (var i=0; i < parameter_values.length; i++) {
     if ((i != subject_index) && (i != balance_index) && (i != beats_index)) {
-      acc += ' ' + pstrings[i];
+      acc.push(pwords[i]);
     }
   }
   if (is_progression(move)) {
-    acc += ' ' + progressionString;
+    acc.push(progressionString);
   }
-  return acc;
+  return new Words(acc);
 }
 
 function find_parameter_index_by_name(name, parameters) {
@@ -77,7 +82,14 @@ var progressionString = "to new neighbors";
 // ================
 
 function parameter_strings(move, parameter_values, dialect) {
-  if (!dialect) {throw_up('forgot dialect argument to parameter_strings');}
+  return parameter_strings_or_words(move, parameter_values, dialect, false);
+}
+
+function parameter_words(move, parameter_values, dialect) {
+  return parameter_strings_or_words(move, parameter_values, dialect, true);
+}
+
+function parameter_strings_or_words(move, parameter_values, dialect, words_ok) {
   var formal_parameters = parameters(move);
   var acc = [];
   for (var i=0; i<parameter_values.length; i++) {
@@ -85,6 +97,9 @@ function parameter_strings(move, parameter_values, dialect) {
     var term;
     if ((pvi === undefined) || (pvi === null)) {
       term = '____';
+    } else if (formal_parameters[i].words && words_ok) {
+      // caller wants special html-enabled return type, and we support it
+      term = formal_parameters[i].words(pvi, move, dialect);
     } else if (formal_parameters[i].string) {
       term = formal_parameters[i].string(pvi, move, dialect);
     } else {
@@ -324,10 +339,9 @@ function stringInDialect(str, dialect) {
 }
 
 function dialectRegExp(dialect) {
-  var longestFirst = function (a,b) { return b.length - a.length; };
   var move_strings = Object.keys(dialect.moves);
   var dance_strings = Object.keys(dialect.dancers);
-  var term_strings = move_strings.concat(dance_strings).sort(longestFirst);
+  var term_strings = move_strings.concat(dance_strings).sort(longestFirstSortFn);
   var unmatchable_re_string = '^[]'; // https://stackoverflow.com/a/25315586/5158597
   var big_re_string = term_strings.map(regExpEscape).map(parenthesize).join('|') || unmatchable_re_string;
   return new RegExp(big_re_string, 'g');

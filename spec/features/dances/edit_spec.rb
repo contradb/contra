@@ -283,4 +283,45 @@ describe 'Editing dances', js: true do
       end
     end
   end
+
+  describe "lingo lines" do
+    it "strikethrough bogoterms and idiom'ed terms" do
+      with_login do |user|
+        dance = FactoryGirl.create(:dance_with_a_custom, custom_text: 'click this!', user: user)
+        allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
+        visit edit_dance_path(dance)
+        click_link('click this!')
+        custom = "men ramen noodles gentlespoons men men"
+        note = "women congresswomen ladles"
+        fill_in(:custom, with: custom)
+        fill_in(:note, with: note)
+        expect(page).to_not have_css('s', text: 'ramen noodles')
+        expect(page).to have_css('s', text: /\Amen\z/, count: 3)
+        expect(page).to have_css('s', text: 'gentlespoons')
+        expect(page).to have_css('s', text: 'women')
+        expect(page).to have_css('s', text: 'ladles')
+        expect(page).to_not have_css('s', text: 'congresswomen')
+        expect(page).to have_link("#{custom} #{note}")
+      end
+    end
+
+    it "underline substitutions and non-idiom'ed terms" do
+      with_login do |user|
+        dance = FactoryGirl.create(:dance_with_a_custom, custom_text: "larks Larks lArks Rory O'More rory o'more do si do left shoulder", figure_note: 'ravens swing', user: user)
+        allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
+        visit edit_dance_path(dance)
+        # custom figure text
+        expect(page).to_not have_css('u', text: 'laRKS')
+        expect(page).to have_css('u', text: 'larks')
+        expect(page).to have_css('u', text: 'Larks')
+        expect(page).to have_css('u', text: 'lArks')
+        expect(page).to have_css('u', text: "Rory O'More")
+        expect(page).to have_css('u', text: "rory o'more")
+        expect(page).to have_css('u', text: 'do si do left shoulder')
+        # figure note
+        expect(page).to have_css('u', text: 'ravens')
+        expect(page).to have_css('u', text: 'swing')
+      end
+    end
+  end
 end
