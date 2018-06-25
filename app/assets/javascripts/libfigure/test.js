@@ -49,7 +49,7 @@ function testLingoLineWords(string) {
   ++t && (lingoLineWords("Rory O'More", d).sanitize() === "<u>Rory O'More</u>") || throw_up('test '+ t + ' failed');
   ++t && (lingoLineWords("rory o'more", d).sanitize() === "<u>rory o'more</u>") || throw_up('test '+ t + ' failed');
   ++t && (lingoLineWords('foo"bar<>&', {moves: {swing: 'foo"bar<>&'}, dancers: {}}).sanitize() === '<u>foo"bar&lt;&gt;&amp;</u>') || throw_up('test '+ t + ' failed');
-  // TODO: try passing some regex chars through  
+  ++t && (lingoLineWords('fo+ foo', {moves: {swing: 'fo+'}, dancers: {}}).sanitize() === '<u>fo+</u> foo') || throw_up('test '+ t + ' failed'); // regexpes escaped
   ++t && (lingoLineWords('swing\nswing', d).sanitize() === '<u>swing</u> \n <u>swing</u>') || throw_up('test '+ t + ' failed');
   
   return ''+t+' successful tests';
