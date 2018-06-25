@@ -113,3 +113,42 @@ function trimButLeaveNewlines(s) {
 ////////////////////////////////////////////////////////////////
 
 var comma = ['comma'];
+
+////////////////////////////////////////////////////////////////
+
+function lingoLineWords(string, dialect) {
+  // lookbehind doesn't work in all versions of js, so we've got to use capture groups for word boundaries, sigh
+  var underlines_and_strikes = underlinesAndStrikes(dialect);
+  var all_lingo_lines = underlines_and_strikes.underlines.concat(underlines_and_strikes.strikes).sort(longestFirstSortFn);
+  var regex = new RegExp('(\\s|^)(' + all_lingo_lines.map(regExpEscape).join('|') + ')(\\s|$)','ig');
+  var buffer = [];
+  var last_match_ended_at;
+  while (true) {
+    last_match_ended_at = regex.lastIndex;
+    var match_info = regex.exec(string);
+    if (!match_info) break;
+    buffer.push(string.slice(last_match_ended_at, match_info.index));
+    var is_strike = underlines_and_strikes.strikes.indexOf(match_info[2].toLowerCase()) >= 0;
+    buffer.push(match_info[1]); // its whitespace, but it might be a newline
+    buffer.push(tag(is_strike ? 's' : 'u', match_info[2]));
+    regex.lastIndex = regex.lastIndex - match_info[3].length; // put back trailing whitespace
+  }
+  buffer.push(string.slice(last_match_ended_at));
+  return new Words(buffer);
+}
+
+var bogusTerms = ['men', 'women', 'man', 'woman', 'gentlemen', 'gentleman',
+                  'gents', 'gent', 'ladies', 'lady',
+                  'leads', 'lead', 'follows', 'follow',
+                  'larks', 'lark', 'ravens', 'raven',
+                  'gypsy', 'yearn', "rory o'moore", 'rollaway', 'roll-away',
+                  'nn', 'n', 'p', 'l', 'g', 'm', 'w', 'n.', 'p.', 'l.', 'g.', 'm.', 'w.', 'g1', 'g2', 'l1', 'l2'];
+
+var terms_for_uands;
+// NB on return value: it is freshly allocated each time
+function underlinesAndStrikes(dialect) {
+  if (!terms_for_uands) {terms_for_uands = moves().concat(dancers());}
+  var underlines = terms_for_uands.map(function(term) {return (dialect.dancers[term] || dialect.moves[term] || term).toLowerCase();});
+  var strikes = terms_for_uands.concat(bogusTerms).filter(function(s) {return -1 === underlines.indexOf(s.toLowerCase());});
+  return {underlines: underlines, strikes: strikes};
+}

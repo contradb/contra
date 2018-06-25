@@ -300,7 +300,7 @@ describe 'Editing dances', js: true do
         expect(page).to have_css('s', text: 'gentlespoons')
         expect(page).to have_css('s', text: 'women')
         expect(page).to have_css('s', text: 'ladles')
-        expect(page).to_not have_css('s', text: 'congresswomeen')
+        expect(page).to_not have_css('s', text: 'congresswomen')
         expect(page).to have_link("#{custom} #{note}")
       end
     end
