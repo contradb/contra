@@ -420,10 +420,10 @@ RSpec.describe JSLibFigure do
 
   describe 'dialect mapping' do
     let :overloaded_dialect_json { "{moves: {'california twirl': 'twirl to swap',
-                                          'box the gnat': 'twirl to swap',
-                                          'swat the flea': 'twirl to swap',
-                                          'see saw': 'do si do'},
-                                   dancers: {}}"}
+                                             'box the gnat': 'twirl to swap',
+                                             'swat the flea': 'twirl to swap',
+                                             'see saw': 'do si do'},
+                                   dancers: {partners: 'partners'}}"}
     it 'dialectOverloadedSubstitutions' do
       expect(jseval("dialectOverloadedSubstitutions(#{overloaded_dialect_json})")).to \
         eq({"do si do" => ["do si do", "see saw"],

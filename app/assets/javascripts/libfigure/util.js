@@ -53,7 +53,12 @@ function dialectOverloadedSubstitutions(dialect) {
   [dialect.moves, dialect.dancers].forEach(function(hash) {
     Object.keys(hash).forEach(function(term) {
       var substitution = hash[term];
-      substitutions[substitution] = (substitutions[substitution] || []).concat([term]);
+      if (!substitutions[substitution]) {
+        substitutions[substitution] = [];
+      }
+      if (-1 === substitutions[substitution].indexOf(term)) {
+        substitutions[substitution].push(term);
+      }
     });
   });
   // delete substitutions that are 1-to-1

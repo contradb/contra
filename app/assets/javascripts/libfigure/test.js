@@ -51,6 +51,5 @@ function testLingoLineWords(string) {
   ++t && (lingoLineWords('foo"bar<>&', {moves: {swing: 'foo"bar<>&'}, dancers: {}}).sanitize() === '<u>foo"bar&lt;&gt;&amp;</u>') || throw_up('test '+ t + ' failed');
   ++t && (lingoLineWords('fo+ foo', {moves: {swing: 'fo+'}, dancers: {}}).sanitize() === '<u>fo+</u> foo') || throw_up('test '+ t + ' failed'); // regexpes escaped
   ++t && (lingoLineWords('swing\nswing', d).sanitize() === '<u>swing</u> \n <u>swing</u>') || throw_up('test '+ t + ' failed');
-  
   return ''+t+' successful tests';
 }
