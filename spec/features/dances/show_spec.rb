@@ -7,14 +7,14 @@ describe 'Showing dances' do
     user = FactoryGirl.create(:user, moderation: :collaborative)
     dance = FactoryGirl.create(:box_the_gnat_contra, publish: true, user: user)
     visit dance_path dance.id
-    expect(page.body).to include dance.title
-    expect(page.body).to include dance.hook
-    expect(page.body).to include dance.choreographer.name
-    expect(page.body).to include dance.start_type
-    expect(page.body).to include dance.preamble
+    expect(page).to have_css('h1', text: dance.title)
+    expect(page).to have_content(dance.hook)
+    expect(page).to have_link(dance.choreographer.name)
+    expect(page).to have_content(dance.start_type)
+    expect(page).to have_content(dance.preamble)
     expect(page).to have_text ('neighbors balance & swing')
     expect(page).to have_text ('ladles allemande right 1½')
-    expect(page.body).to include dance.notes
+    expect(page).to have_content(dance.notes)
     expect(page).to have_text('Published')
     expect(page).to_not have_text(/collaborative/i)
   end
@@ -101,5 +101,17 @@ describe 'Showing dances' do
     expect(page).to have_content('<b>bold</b>')
     expect(page).to_not have_css('b', text: 'neighbors')
     expect(page).to_not have_css('b', text: 'bold')
+  end
+
+  it "shows lingo lines for hook, preamble, and dance notes" do
+    dance = FactoryGirl.create(:dance, notes: 'box circulate', preamble: "* first gentlespoon\n* second gentlespoon", hook: 'women')
+    visit dance_path(dance)
+    expect(page).to have_css('s', text: 'women')
+    expect(page).to have_css('u', text: 'box circulate')
+    expect(page).to have_css('u', text: 'first gentlespoon')
+    # we had a bug where were were omitting newlines, which was sucking for markdown. Let's try an ordered list!
+    expect(page).to have_css('ul', text: /\Afirst gentlespoon second gentlespoon\z/)
+    expect(page).to have_css('li', text: /\Afirst gentlespoon\z/)
+    expect(page).to have_css('li', text: /\Asecond gentlespoon\z/)
   end
 end

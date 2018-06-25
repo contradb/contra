@@ -418,24 +418,49 @@ RSpec.describe JSLibFigure do
     end
   end
 
-  let :overloaded_dialect_json { "{moves: {'california twirl': 'twirl to swap',
+  describe 'dialect mapping' do
+    let :overloaded_dialect_json { "{moves: {'california twirl': 'twirl to swap',
                                           'box the gnat': 'twirl to swap',
                                           'swat the flea': 'twirl to swap',
                                           'see saw': 'do si do'},
                                    dancers: {}}"}
-  it 'dialectOverloadedSubstitutions' do
-    expect(jseval("dialectOverloadedSubstitutions(#{overloaded_dialect_json})")).to \
-    eq({"do si do" => ["do si do", "see saw"],
-        "twirl to swap" => ["california twirl", "box the gnat", "swat the flea"]})
-  end
+    it 'dialectOverloadedSubstitutions' do
+      expect(jseval("dialectOverloadedSubstitutions(#{overloaded_dialect_json})")).to \
+        eq({"do si do" => ["do si do", "see saw"],
+            "twirl to swap" => ["california twirl", "box the gnat", "swat the flea"]})
+    end
 
-  it 'dialectIsOneToOne' do
-    expect(jseval("dialectIsOneToOne(#{overloaded_dialect_json})")).to eq(false)
-    expect(jseval("dialectIsOneToOne(#{JSLibFigure.test_dialect.to_json})")).to eq(true)
+    it 'dialectIsOneToOne' do
+      expect(jseval("dialectIsOneToOne(#{overloaded_dialect_json})")).to eq(false)
+      expect(jseval("dialectIsOneToOne(#{JSLibFigure.test_dialect.to_json})")).to eq(true)
+    end
+
   end
 
   it 'isEmpty' do
     expect(jseval("isEmpty({})")).to eq(true)
     expect(jseval("isEmpty({x: 5})")).to eq(false)
+  end
+
+  def js_test_eval(string)
+    JSLibFigure.send(:eval_with_tests_loaded, string) # hacking in
+  end
+
+  describe 'ad-hoc js unit tests' do
+    it 'testTrimButLeaveNewlines' do
+      expect(js_test_eval('testTrimButLeaveNewlines();')).to be_truthy
+    end
+
+    it 'test_sanitize' do
+      expect(js_test_eval('test_sanitize();')).to be_truthy
+    end
+
+    it 'test_peek' do
+      expect(js_test_eval('test_peek();')).to be_truthy
+    end
+
+    it 'testLingoLineWords' do
+      expect(js_test_eval('testLingoLineWords();')).to be_truthy
+    end
   end
 end

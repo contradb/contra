@@ -310,6 +310,7 @@ describe 'Editing dances', js: true do
         dance = FactoryGirl.create(:dance_with_a_custom, custom_text: "larks Larks lArks Rory O'More rory o'more do si do left shoulder", figure_note: 'ravens swing', user: user)
         allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         visit edit_dance_path(dance)
+        # custom figure text
         expect(page).to_not have_css('u', text: 'laRKS')
         expect(page).to have_css('u', text: 'larks')
         expect(page).to have_css('u', text: 'Larks')
@@ -317,6 +318,7 @@ describe 'Editing dances', js: true do
         expect(page).to have_css('u', text: "Rory O'More")
         expect(page).to have_css('u', text: "rory o'more")
         expect(page).to have_css('u', text: 'do si do left shoulder')
+        # figure note
         expect(page).to have_css('u', text: 'ravens')
         expect(page).to have_css('u', text: 'swing')
       end

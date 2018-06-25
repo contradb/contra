@@ -19,7 +19,7 @@ Words.prototype.sanitize = function() {
     }
     acc.push(sanitizeWordNode(arr[i]));
   }
-  return acc.join('').trim();// wordsClassic.apply(null, this.arr.map(sanitizeWordNode));
+  return trimButLeaveNewlines(acc.join(''));
 }
 
 Words.prototype.peek = function() {
@@ -66,9 +66,9 @@ function sanitizeWordNode(s) {
   if (s.sanitize) {
     return s.sanitize();
   } else if ('string' === typeof s) {
-    return s.replace(/&amp;|&|<|>/g, function(match) {
+    return trimButLeaveNewlines(s.replace(/&amp;|&|<|>/g, function(match) {
       return sanitizationMap[match] || throw_up('Unexpected match during sanitize');
-    }).trim();
+    }));
   } else if (comma === s) {
     return ',';
   } else if (false === s) {
@@ -83,7 +83,7 @@ function peek(thing) {
   var m;
   if (thing.peek) {
     return thing.peek();
-  } else if ((typeof thing === 'string') && (m = thing.match(/\S/))) {
+  } else if ((typeof thing === 'string') && (m = thing.match(/[\S\n]/))) {
     return m[0];
   } else if (thing == comma) {
     return ',';
@@ -94,28 +94,22 @@ function peek(thing) {
   }
 }
 
-// function test_sanitize() {
-//   (words('<p>hi & stuff</p>').sanitize() == '&lt;p&gt;hi &amp; stuff&lt;/p&gt;') || throw_up('test 1 failed');
-//   (new Tag('p', {}, 'hi & stuff').sanitize() == '<p>hi &amp; stuff</p>') || throw_up('test 2 failed');
-//   (words('hello', tag('p', 'hi & stuff'), 'hello').sanitize() == 'hello <p>hi &amp; stuff</p> hello') || throw_up('test 3 failed');
-//   (words('mad robin', false, comma, 'gentlespoons in front').sanitize() == 'mad robin, gentlespoons in front') || throw_up('test 4 failed');
-//   return 'success';
-// }
-
-function test_peek() {
-  var t = 0;
-  ++t && (peek('') === null) || throw_up('test '+ t + ' failed');
-  ++t && (peek(words('')) === null) || throw_up('test '+ t + ' failed');
-  ++t && (peek(' ') === null) || throw_up('test '+ t + ' failed');
-  ++t && (peek(' hi') === 'h') || throw_up('test '+ t + ' failed');
-  ++t && (peek(words(false, '   ', 'hi')) === 'h') || throw_up('test '+ t + ' failed');
-  ++t && (peek(words(false, '   ', comma)) === ',') || throw_up('test '+ t + ' failed');
-  ++t && (peek(tag('i', 'hi')) === 'h') || throw_up('test '+ t + ' failed');
-  ++t && (peek(words(words('  '), words(false), words('hi'))) === 'h') || throw_up('test '+ t + ' failed');
-  return 'success';
+function trimButLeaveNewlines(s) {
+  var start;
+  var end;
+  for (start=0; start<s.length; start++) {
+    if (s[start].match(/[\S\n]/)) {
+      break;
+    }
+  }
+  for (end=s.length-1; end>=start; end--) {
+    if (s[end].match(/[\S\n]/)) {
+      break;
+    }
+  }
+  return s.slice(start, end+1);
 }
 
 ////////////////////////////////////////////////////////////////
 
 var comma = ['comma'];
-

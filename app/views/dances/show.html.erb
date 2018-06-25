@@ -9,8 +9,7 @@
 </div>
 
 <h1 class="dance-show-title"><%= @dance.title %></h1>
-<h2 class="dance-show-hook"><%= JSLibFigure.string_in_dialect(@dance.hook, @dialect) %></h2>
-
+<p class="dance-show-hook">hook: <%= JSLibFigure.lingo_lines_html(JSLibFigure.string_in_dialect(@dance.hook, @dialect), @dialect) %></h2>
 <p class="dance-show-choreographer">by: <strong><%= link_to @dance.choreographer.name, @dance.choreographer %></strong></p>
 <%= render partial: 'bodyshow', locals: {dance: @dance, dialect: @dialect} %>
 
