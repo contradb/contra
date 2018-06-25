@@ -24,8 +24,8 @@ describe 'Showing programs' do
 
     expect(page).to have_content(program.title)
     expect(page).to have_content(dance.title)
-    expect(figure_html).to match(/neighbors +balance +& +swing/)
-    expect(page).to have_content(figure_html)
+    expect(figure_html).to match(/neighbors +balance +&amp; +swing/)
+    expect(page).to have_content(figure_html.gsub('&amp;', '&'))
     expect(page).to have_content('hambo')
   end
 
@@ -41,6 +41,7 @@ describe 'Showing programs' do
 
   describe 'privacy' do
     let (:figure_html) {JSLibFigure.figure_to_string(dance_private.figures.first, JSLibFigure.default_dialect)}
+    let (:figure_html_amp) {figure_html.gsub('&amp;', '&')}
     before(:each) {program.append_new_activity(dance: dance_private)}
 
     it "does not display figures of a private dance" do
@@ -52,21 +53,21 @@ describe 'Showing programs' do
     it "does display figures of a private dance if owner" do
       login_as(owner, scope: :user)
       visit program_path(program)
-      expect(page).to have_content(figure_html)
+      expect(page).to have_content(figure_html_amp)
       expect(page).to_not have_content('This dance is not published')
     end
 
     it "does not display figures of a private dance if logged in as some random person" do
       login_as(user, scope: :user)
       visit program_path(program)
-      expect(page).to_not have_content(figure_html)
+      expect(page).to_not have_content(figure_html_amp)
       expect(page).to have_content('This dance is not published')
     end
 
     it "does display figures of a private dance if admin" do
       login_as(admin, scope: :user)
       visit program_path(program)
-      expect(page).to have_content(figure_html)
+      expect(page).to have_content(figure_html_amp)
       expect(page).to_not have_content('This dance is not published')
     end
   end

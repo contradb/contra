@@ -41,6 +41,28 @@
       </script>
     </section>
 
+    <div class="panel panel-info" style='margin-top: 30px'>
+      <div class="panel-heading">
+        <h3 class="panel-title">New Feature: Type in Your Dialect</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          Now when you type any text on this page, you can expect it
+          to be translated from your dialect, into another user's
+          dialect. So if you use 'gents', and somebody
+          else uses 'larks', you type 'gents' and they see 'larks'.
+        </p>
+
+        <p>
+          We're also experimenting with <i>Lingo Lines</i>.  Lingo
+          Lines <u>underline</u> text that ContraDB can translate
+          and <s>strike</s> text it can't translate to another
+          dialect.
+        </p>
+        <p style='text-align: right'>&mdash;the ContraDB team<br>6.24.2018</p>
+      </div>
+    </div>
+
     <section>
       <%= f.label :preamble %>
       <%= f.text_area :preamble,
@@ -109,7 +131,7 @@
               </span>
               <a ng-click="clickFigure(figureIdx);"
                  href="" class="figure-view" ng-attr-id="{{'figure-'+figureIdx}}">
-                {{figureToString(figures.arr[figureIdx], dialectForFigures(dialect, figures.arr))}}
+                <span ng-bind-html="figureToString(figures.arr[figureIdx], dialectForFigures(dialect, figures.arr))"></span>
                 <%# It is unfortunate that I can't figure out how to
                 store the value of dialectForFigures() somewhere. It
                 irks me that we have to compute it once per figure,

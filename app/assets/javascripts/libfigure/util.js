@@ -3,25 +3,6 @@ function set_if_unset (dict, key, value) {
         dict[key] = value;
 }
 
-// take words, put them in strings, return a big, space separated string of them all. 
-function words() {
-  if (arguments.length <= 0) return "";
-  else {
-    var acc = (arguments[0] === false) ? '' : arguments[0];
-    var i;
-    for (i=1; i<arguments.length; i++) {
-      if (comma === arguments[i]) {
-        acc = acc.trim() + ',';
-      } else if (arguments[i] !== false) {
-        acc += " ";
-        acc += arguments[i];
-      }
-    }
-    return acc;
-  }
-}
-
-var comma = ['comma'];
 
 // Patch to support current IE, source http://stackoverflow.com/questions/31720269/internet-explorer-11-object-doesnt-support-property-or-method-isinteger
 isInteger = Number.isInteger || function(value) {
@@ -35,22 +16,22 @@ function throw_up(str) {
   throw new Error(str);
 }
 
-function comma_unless_blank(str) {
-  return ((!str) || (str.trim() === '')) ? '' : ',';
+// a little weird that this takes a Words now, not a string
+function indefiniteArticleFor(w) {
+  var str = peek(w);
+  return /[aeiou]/.test(str) ? 'an' : 'a';
 }
 
-function indefiniteArticleFor(str) {
-  return /^ *[aeiou]/.test(str) ? 'an' : 'a';
-}
-
-
+// text_in_dialect: <bool> property can still be missing...
 var defaultDialect = {moves: {}, dancers: {}};
 
 var testDialect = {moves: {gyre: 'darcy',
                            allemande: 'almond',
                            'see saw': 'do si do left shoulder',
                            'form an ocean wave': 'form a short wavy line'},
-                   dancers: {ladles: 'ravens',
+                   dancers: {ladle: 'raven',
+                             ladles: 'ravens',
+                             gentlespoon: 'lark',
                              gentlespoons: 'larks',
                              'first ladle': 'first raven',
                              'second ladle': 'second raven',
@@ -60,6 +41,39 @@ var testDialect = {moves: {gyre: 'darcy',
 // ________________________________________________________________
 
 
+function dialectIsOneToOne(dialect) {
+  return isEmpty(dialectOverloadedSubstitutions(dialect));
+}
+
+function dialectOverloadedSubstitutions(dialect) {
+  var substitutions = {};
+  var remember_as_itself = function (x) { substitutions[x] = (substitutions[x] || []).concat([x]); };
+  moves().forEach(remember_as_itself);
+  dancers().forEach(remember_as_itself);
+  [dialect.moves, dialect.dancers].forEach(function(hash) {
+    Object.keys(hash).forEach(function(term) {
+      var substitution = hash[term];
+      substitutions[substitution] = (substitutions[substitution] || []).concat([term]);
+    });
+  });
+  // delete substitutions that are 1-to-1
+  for (var substitution in substitutions) {
+    if (substitutions.hasOwnProperty(substitution)) {
+      if (substitutions[substitution].length === 1)
+        delete substitutions[substitution];
+    }
+  }
+  return substitutions;
+}
+
+
+// ________________________________________________________________
+
+function longestFirstSortFn(a,b) {
+  return b.length - a.length;
+};
+
+// ________________________________________________________________
 
 function dialectForFigures(dialect, figures) {
   var new_dialect = copyDialect(dialect);
@@ -75,7 +89,13 @@ function dialectForFigures(dialect, figures) {
 
 function copyDialect(dialect) {
   return {dancers: libfigureObjectCopy(dialect.dancers),
-          moves: libfigureObjectCopy(dialect.moves)};
+          moves: libfigureObjectCopy(dialect.moves),
+          text_in_dialect: !!dialect.text_in_dialect};
+}
+
+function textInDialect(dialect) {
+  // see also ruby-side implementation
+  return !!dialect.text_in_dialect;
 }
 
 // I just called this function 'copy', but then I got scared and changed it.
@@ -139,3 +159,11 @@ function regExpEscape(s) {
   return s.replace(regExpEscape_regexp, '\\$&');
 };
 // source https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript/3561711#3561711
+
+function isEmpty(hash) {
+  // can't use: hash.length === 0
+  for (var x in hash) {
+    return false;
+  }
+  return true;
+}

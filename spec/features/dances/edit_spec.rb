@@ -188,20 +188,140 @@ describe 'Editing dances', js: true do
     end
   end
 
-  it 'custom moves and move notes update dynamically for dialect' do
-    with_login do |user|
-      custom_text = 'custom allemande gentlespoons custom'
-      custom_text_in_dialect = 'custom almond larks custom'
-      dance = FactoryGirl.create(:dance_with_a_custom, custom_text: custom_text, user: user)
-      allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
-      visit edit_dance_path dance.id
-      expect(page).to have_content(custom_text_in_dialect)
-      expect(page).to_not have_content(custom_text)
-      click_on(custom_text_in_dialect)
-      fill_in('note', with: 'note gyre ladles note')
-      expect(page).to have_content('note darcy ravens note')
-      fill_in('custom', with: 'custom first gentlespoon custom')
-      expect(page).to have_content('custom first lark custom')
+  describe 'dialect text' do
+    it 'default terms in a database-fresh dance are translated into dialect in the editor' do
+      with_login do |user|
+        dialect = JSLibFigure.test_dialect
+        dance = FactoryGirl.create(:dance_with_a_custom,
+                                   user: user,
+                                   custom_text: 'custom allemande gentlespoons custom',
+                                   figure_note: 'figure-note allemande figure-note',
+                                   preamble: 'preamble allemande preamble',
+                                   hook: 'hook allemande hook',
+                                   notes: 'dance-notes allemande dance-notes')
+        figure = dance.figures.first
+        allow_any_instance_of(User).to receive(:dialect).and_return(dialect)
+        visit edit_dance_path(dance)
+
+        dance_in_dialect = Dance.find(dance.id).set_text_to_dialect(dialect)
+        figure_in_dialect = dance_in_dialect.figures.first
+
+        # custom
+        expect(page).to have_content(figure_in_dialect['parameter_values'].first)
+        expect(page).to_not have_content(figure['parameter_values'].first)
+
+        # figure note
+        expect(page).to have_content(figure_in_dialect['note'])
+        expect(page).to_not have_content(figure['note'])
+
+        preamble = page.find('#dance_preamble').value
+        expect(preamble).to eq(dance_in_dialect.preamble)
+        expect(preamble).to_not have_text(dance.preamble)
+
+        dance_note = page.find('#dance_notes').value
+        expect(dance_note).to eq(dance_in_dialect.notes)
+        expect(dance_note).to_not have_text(dance.notes)
+
+        hook = page.find('#dance_hook').value
+        expect(hook).to eq(dance_in_dialect.hook)
+        expect(hook).to_not have_text(dance.hook)
+      end
+    end
+
+
+    it 'users type text in their dialect and the db saves in using the default terms' do
+      with_login do |user|
+        custom_text = 'fluffy'
+        dance = FactoryGirl.create(:dance_with_a_custom, custom_text: custom_text, user: user)
+        allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
+        visit edit_dance_path(dance)
+        expect(page).to have_link(custom_text)
+        click_on(custom_text)
+        text_in_dialect = 'darcy ravens'
+        text_in_canon = 'gyre ladles'
+        fill_in('note', with: text_in_dialect)
+        fill_in('custom', with: text_in_dialect)
+        fill_in('dance_notes', with: text_in_dialect)
+        fill_in('dance_preamble', with: text_in_dialect)
+        fill_in('dance_hook', with: text_in_dialect)
+        click_on 'Save Dance'
+        expect(page).to have_content('Dance was successfully updated.')
+        dance = Dance.last
+        custom_figure = dance.figures.first
+        expect(custom_figure['note']).to eq(text_in_canon)
+        expect(custom_figure['parameter_values'].first).to eq(text_in_canon)
+        expect(dance.notes).to eq(text_in_canon)
+        expect(dance.preamble).to eq(text_in_canon)
+        expect(dance.hook).to eq(text_in_canon)
+      end
+    end
+
+    it 'validation failures do not corrupt dialect text' do
+      with_login do |user|
+        custom_text = 'custom ladle custom'
+        custom_text_in_dialect = 'custom raven custom'
+        dance = FactoryGirl.create(:dance_with_a_custom, custom_text: custom_text, user: user)
+        allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
+        visit edit_dance_path(dance)
+        expect(page).to have_link(custom_text_in_dialect)
+        fill_in 'dance_title', with: '' # too short to pass validation
+        click_on 'Save Dance'
+        expect(page).to_not have_content('Dance was successfully updated.')
+        expect(page).to have_link(custom_text_in_dialect)
+        expect(page).to_not have_link(custom_text)
+      end
+    end
+
+    it "filters html out of user input" do
+      with_login do |user|
+        dance = FactoryGirl.create(:malicious_dance, user: user)
+        visit edit_dance_path(dance)
+        expect(page).to have_css('button.add-figure') # are we on the editor page?
+        expect(page).to_not have_css('b', text: 'neighbors')
+        expect(page).to_not have_css('b', text: 'bold')
+        expect(page).to have_text('<b>neighbors</b> balance & swing this should not be <b>bold</b>')
+      end
+    end
+  end
+
+  describe "lingo lines" do
+    it "strikethrough bogoterms and idiom'ed terms" do
+      with_login do |user|
+        dance = FactoryGirl.create(:dance_with_a_custom, custom_text: 'click this!', user: user)
+        allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
+        visit edit_dance_path(dance)
+        click_link('click this!')
+        custom = "men ramen noodles gentlespoons men men"
+        note = "women congresswomen ladles"
+        fill_in(:custom, with: custom)
+        fill_in(:note, with: note)
+        expect(page).to_not have_css('s', text: 'ramen noodles')
+        expect(page).to have_css('s', text: /\Amen\z/, count: 3)
+        expect(page).to have_css('s', text: 'gentlespoons')
+        expect(page).to have_css('s', text: 'women')
+        expect(page).to have_css('s', text: 'ladles')
+        expect(page).to_not have_css('s', text: 'congresswomen')
+        expect(page).to have_link("#{custom} #{note}")
+      end
+    end
+
+    it "underline substitutions and non-idiom'ed terms" do
+      with_login do |user|
+        dance = FactoryGirl.create(:dance_with_a_custom, custom_text: "larks Larks lArks Rory O'More rory o'more do si do left shoulder", figure_note: 'ravens swing', user: user)
+        allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
+        visit edit_dance_path(dance)
+        # custom figure text
+        expect(page).to_not have_css('u', text: 'laRKS')
+        expect(page).to have_css('u', text: 'larks')
+        expect(page).to have_css('u', text: 'Larks')
+        expect(page).to have_css('u', text: 'lArks')
+        expect(page).to have_css('u', text: "Rory O'More")
+        expect(page).to have_css('u', text: "rory o'more")
+        expect(page).to have_css('u', text: 'do si do left shoulder')
+        # figure note
+        expect(page).to have_css('u', text: 'ravens')
+        expect(page).to have_css('u', text: 'swing')
+      end
     end
   end
 end

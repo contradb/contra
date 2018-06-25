@@ -90,12 +90,16 @@ FactoryGirl.define do
   factory :dance_with_a_custom, class: Dance do
     transient do
       custom_text {'this is my custom text'}
+      figure_note { nil }
     end
     sequence(:title) {|n| "CustomDance#{n}Boop"}
     user { FactoryGirl.create(:user) }
     choreographer { FactoryGirl.create(:choreographer) }
     start_type 'improper'
-    figures_json {"[{'parameter_values':[#{custom_text.inspect},8],'move':'custom'}]".gsub("'", '"')}
+    # I feel like this is the Right Way to do tricky quote-in-quote
+    # json in this file. Should probably migrate everyone else at some
+    # point. -dm 06-24-2018
+    figures_json {%([{"parameter_values":[#{custom_text.to_json}],"move":"custom"#{if figure_note then ', "note":'+figure_note.to_json else '' end}}])}
   end
 
   factory :dance_with_a_wrist_grip_star, class: Dance do
@@ -141,5 +145,15 @@ FactoryGirl.define do
     choreographer { FactoryGirl.create(:choreographer) }
     start_type 'improper'
     figures_json {'[{"parameter_values":["ladles",true,360,8],"move":"do si do"}]'}
+  end
+
+  factory :malicious_dance, class: Dance do
+    # simulate xss attack by embedding html in dance elements.
+    # all the angle-brackety-things should be passed through as literals.
+    title      'Malicious Dance'
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json '[{"parameter_values":["<b>neighbors</b>","balance",16],"move":"swing", "note":"this should not be <b>bold</b>"}]'
   end
 end

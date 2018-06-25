@@ -12,7 +12,7 @@ RSpec.describe DancesHelper, type: :helper do
     when Regexp; x
     when String;
       quote = Regexp.escape(x).to_s
-      /\A\s*#{quote.gsub('\ ','\s+')}\s*\z/
+      /\A\s*#{quote.gsub('\ ','\s+').gsub(/&amp;|&/,'&amp;')}\s*\z/
     else raise 'unexpected type in whitespice'
     end
   end
@@ -129,7 +129,7 @@ RSpec.describe DancesHelper, type: :helper do
     ['star * hand - any grip - * places', nil, 'star', '*', '*', '*', '*'],
     ['partners balance & swat the flea', true, 'swat the flea', 'partners',  true,  false, 8],
     ['* optional balance & swat the flea', nil, 'swat the flea', '*',  '*',  false, '*'],
-    ['pass through to a left diagonal  ocean wave & balance - ladles by left in the center, neighbors by right on the sides', true, 'form an ocean wave', false, 'left diagonal', true, 'ladles', false, 'neighbors', 8],
+    ['pass through to a left diagonal ocean wave &amp; balance - ladles by left in the center, neighbors by right on the sides', true, 'form an ocean wave', false, 'left diagonal', true, 'ladles', false, 'neighbors', 8],
     ['form an ocean wave - ladles by right hands and neighbors by left hands', true, 'form an ocean wave', true, 'across', false, 'ladles', true, 'neighbors', 0],
     ['pass through to an ocean wave - ones by left in the center, neighbors by right on the sides', false, 'form an ocean wave', false, 'across', false, 'ones', false, 'neighbors', 2],
     ['form a right diagonal ocean wave & balance - ladles by left hands and partners by right hands', true, 'form an ocean wave', true, 'right diagonal', true, 'ladles', false, 'partners', 4],
@@ -254,11 +254,11 @@ RSpec.describe DancesHelper, type: :helper do
    ['ravens do si do left shoulder once', 'see saw', 'ladles', false, 360, 8],
    ['form a short wavy line - ravens by right hands and neighbors by left hands', 'form an ocean wave', true, 'across', false, 'ladles', true, 'neighbors', 4],
    ['form a left diagonal short wavy line - ravens by right hands and neighbors by left hands', 'form an ocean wave', true, 'left diagonal', false, 'ladles', true, 'neighbors', 4],
-   ['pass through to a   short wavy line & balance - ravens by right in the center, neighbors by left on the sides', 'form an ocean wave', false, 'across', true, 'ladles', true, 'neighbors', 8],
+   ['pass through to a short wavy line &amp; balance - ravens by right in the center, neighbors by left on the sides', 'form an ocean wave', false, 'across', true, 'ladles', true, 'neighbors', 8],
    ['ravens allemande left 1½ around while the larks orbit clockwise ½ around', 'allemande orbit','ladles',false,540,180,8],
    ['larks arch ravens dive', 'arch & dive','gentlespoons',4],
    ['____ arch others dive', 'arch & dive',nil,4],
-   ['ravens almond darcy first lark', 'custom','ladles allemande gyre first gentlespoon', 8],
+   ['<u>ravens</u> <u>almond</u> <u>darcy</u> <u>first lark</u>', 'custom','ladles allemande gyre first gentlespoon', 8],
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}' with dialect" do

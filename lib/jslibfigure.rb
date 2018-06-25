@@ -14,12 +14,22 @@ module JSLibFigure
     self.eval('newFigure()')
   end
 
+  def self.move(figure_ruby_hash)
+    figure_ruby_hash['move']
+  end
+
   def self.parameter_values(figure_ruby_hash)
     figure_ruby_hash['parameter_values']
   end
 
-  def self.move(figure_ruby_hash)
-    figure_ruby_hash['move']
+  def self.note(figure_ruby_hash)
+    figure_ruby_hash['note']
+  end
+
+  def self.figure_unpack(figure_ruby_hash)
+    [figure_ruby_hash['move'],
+     figure_ruby_hash['parameter_values'],
+     figure_ruby_hash['note']]
   end
 
   def self.is_move?(move)
@@ -156,11 +166,43 @@ module JSLibFigure
     self.eval("stringInDialect(#{s.inspect},#{dialect.to_json})")
   end
 
+  def self.lingo_lines_html(s, dialect)
+    self.eval("lingoLineWords(#{s.inspect}, #{dialect.to_json}).sanitize()").html_safe
+  end
+
   def self.good_beats?(figure)
     self.eval("goodBeats(#{figure.to_json})")
   end
 
-  JSLIBFIGURE_FILES = %w(polyfill.js util.js move.js chooser.js param.js define-figure.js figure.es6 after-figure.js dance.js)
+  def self.dialect_with_text_translated(dialect)
+    dialect.merge('text_in_dialect' => true)
+  end
+
+  def self.text_in_dialect(dialect)
+    !!dialect['text_in_dialect']
+  end
+
+  def self.figure_translate_text_into_dialect(figure, dialect)
+    # ruby-side implementation - maybe should be js instead
+    # similar function appears in DialectReverser - but reversed
+    if text_in_dialect(dialect)
+      raise "request to transform figure's text to dialect, but the dialect says not to act on the figure's text - are you sure you know what you're doing?"
+    else
+      m, parameter_values, note = figure_unpack(figure)
+      formals = m ? formal_parameters(m) : []
+      figure
+        .merge(note.present? ? {'note' => string_in_dialect(note, dialect)} : {})
+        .merge('parameter_values' => parameter_values.each_with_index.map do |parameter_value, i|
+                 if parameter_value.present? && parameter_uses_chooser(formals[i], 'chooser_text')
+                   string_in_dialect(parameter_value, dialect)
+                 else
+                   parameter_value
+                 end
+               end)
+    end
+  end
+
+  JSLIBFIGURE_FILES = %w(polyfill.js util.js words.js move.js chooser.js param.js define-figure.js figure.es6 after-figure.js dance.js)
 
   private
   def self.eval(string_of_javascript)
@@ -177,6 +219,14 @@ module JSLibFigure
       context.load(Rails.root.join('app','assets','javascripts','libfigure',file))
     end
     context
+  end
+
+  def self.eval_with_tests_loaded(string_of_javascript)
+    unless @test_context
+      @test_context = self.new_context
+      @test_context.load(Rails.root.join('app','assets','javascripts','libfigure','test.js'))
+    end
+    @test_context.eval(string_of_javascript)
   end
 
   def self.ensure_array_of_terminal(ary)

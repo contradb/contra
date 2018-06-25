@@ -219,7 +219,7 @@ RSpec.describe JSLibFigure do
   end
 
   describe 'dialect_for_figures' do
-    let (:empty_dialect) {{'dancers' => {}, 'moves' => {}}}
+    let (:empty_dialect) {{'dancers' => {}, 'moves' => {}, 'text_in_dialect' => false}}
 
     it 'does nothing to a dance that is all in-set' do
       expect(JSLibFigure.dialect_for_figures(empty_dialect,FactoryGirl.build(:box_the_gnat_contra).figures)).to eq(empty_dialect)
@@ -320,6 +320,12 @@ RSpec.describe JSLibFigure do
       dialect = JSLibFigure.shoulder_round_dialect
       expect(JSLibFigure.string_in_dialect('gyreiest gyre', dialect)).to match(' *shoulder roundiest +shoulder round')
     end
+
+    it 'does nothing if the dialect has text_in_dialect: true' do
+      dialect = {"moves" => {}, "dancers" => {"ladle" => "woman", "ladles" => "women", "first ladle" => "W1"}, "text_in_dialect" => true}
+      expect(JSLibFigure.string_in_dialect(input, dialect)).to eq(input)
+      expect(JSLibFigure.string_in_dialect(input, dialect)).to_not eq(output)
+    end
   end
 
   it 'move_substitution' do
@@ -333,7 +339,7 @@ RSpec.describe JSLibFigure do
 
   it 'moveSubstitutionWithoutForm' do
     mkscript = ->(substitution, article, adjective) {
-      "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': #{substitution.inspect}}}, #{article}, #{adjective.inspect});"
+      "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': #{substitution.inspect}}}, #{article}, #{adjective.inspect}).sanitize();"
     }
     strip_form = ->(substitution, article, adjective=false) {
       jseval(mkscript.call(substitution, article, adjective)).strip
@@ -392,5 +398,69 @@ RSpec.describe JSLibFigure do
     expect(strip_form.call('an undulating wave', false, 'amorphous')).to eq('amorphous undulating wave')
     expect(strip_form.call('undulating wave', true, 'amorphous')).to eq('an amorphous undulating wave')
     expect(strip_form.call('undulating wave', false, 'amorphous')).to eq('amorphous undulating wave')
+  end
+
+  it 'figureToString with leading comma in note' do
+    figure = {'move' => 'long lines', 'parameter_values' => [true, 8], 'note' => ", hi"};
+    expect(JSLibFigure.figure_to_string(figure, JSLibFigure.default_dialect)).to eq('long lines forward &amp; back, hi')
+  end
+
+  describe 'figure_translate_text_into_dialect' do
+    let (:dialect) { JSLibFigure.test_dialect }
+    it 'notes' do
+      figure = {"parameter_values" => ["ladles",false,360,8], "move" => "do si do", "note" => "note gentlespoons gyre note"}
+      expect(JSLibFigure.figure_translate_text_into_dialect(figure, dialect)).to eq(figure.merge('note' => 'note larks darcy note'))
+    end
+
+    it 'text parameter' do
+      figure = {"parameter_values" => ["custom gentlespoons gyre custom", 8], "move" => "custom"}
+      expect(JSLibFigure.figure_translate_text_into_dialect(figure, dialect)).to eq(figure.merge('parameter_values' => ['custom larks darcy custom', 8]))
+    end
+  end
+
+  describe 'dialect mapping' do
+    let :overloaded_dialect_json { "{moves: {'california twirl': 'twirl to swap',
+                                          'box the gnat': 'twirl to swap',
+                                          'swat the flea': 'twirl to swap',
+                                          'see saw': 'do si do'},
+                                   dancers: {}}"}
+    it 'dialectOverloadedSubstitutions' do
+      expect(jseval("dialectOverloadedSubstitutions(#{overloaded_dialect_json})")).to \
+        eq({"do si do" => ["do si do", "see saw"],
+            "twirl to swap" => ["california twirl", "box the gnat", "swat the flea"]})
+    end
+
+    it 'dialectIsOneToOne' do
+      expect(jseval("dialectIsOneToOne(#{overloaded_dialect_json})")).to eq(false)
+      expect(jseval("dialectIsOneToOne(#{JSLibFigure.test_dialect.to_json})")).to eq(true)
+    end
+
+  end
+
+  it 'isEmpty' do
+    expect(jseval("isEmpty({})")).to eq(true)
+    expect(jseval("isEmpty({x: 5})")).to eq(false)
+  end
+
+  def js_test_eval(string)
+    JSLibFigure.send(:eval_with_tests_loaded, string) # hacking in
+  end
+
+  describe 'ad-hoc js unit tests' do
+    it 'testTrimButLeaveNewlines' do
+      expect(js_test_eval('testTrimButLeaveNewlines();')).to be_truthy
+    end
+
+    it 'test_sanitize' do
+      expect(js_test_eval('test_sanitize();')).to be_truthy
+    end
+
+    it 'test_peek' do
+      expect(js_test_eval('test_peek();')).to be_truthy
+    end
+
+    it 'testLingoLineWords' do
+      expect(js_test_eval('testLingoLineWords();')).to be_truthy
+    end
   end
 end

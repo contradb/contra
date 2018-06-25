@@ -1,9 +1,11 @@
+require 'dialect_reverser'
+
 class DancesController < ApplicationController
-  before_action :set_dance, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, only: [:new, :edit, :update, :destroy]
+  before_action :set_dance, only: [:destroy, :update, :show, :edit]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :authenticate_dance_writable!, only: [:edit, :update, :destroy]
   before_action :authenticate_dance_readable!, only: [:show]
-  before_action :set_dialect_json, only: [:new, :create, :edit, :update]
+  before_action :set_dialect_json_for_editing, only: [:new, :create, :edit, :update]
 
   def index
     @dances = Dance.readable_by(current_user).alphabetical
@@ -27,33 +29,27 @@ class DancesController < ApplicationController
   end
 
   def edit
+    @dance.set_text_to_dialect(dialect)
     @admin_email = Rails.application.secrets.admin_gmail_username
   end
 
-
   def create
-    @dance = Dance.new(dance_params_with_real_choreographer intern_choreographer)
+    @dance = Dance.new(canonical_params(dance_params_with_real_choreographer(intern_choreographer)))
     @dance.user_id = current_user.id
-    respond_to do |format|
-      if @dance.save
-        format.html { redirect_to @dance, notice: 'Dance was successfully created.' }
-        format.json { render :show, status: :created, location: @dance }
-      else
-        format.html { render :new }
-        format.json { render json: @dance.errors, status: :unprocessable_entity }
-      end
+    if @dance.save
+      redirect_to @dance, notice: 'Dance was successfully created.'
+    else
+      @dance.set_text_to_dialect(dialect)
+      render :new
     end
   end
 
   def update
-    respond_to do |format|
-      if @dance.update(dance_params_with_real_choreographer intern_choreographer)
-        format.html { redirect_to @dance, notice: 'Dance was successfully updated.' }
-        format.json { render :show, status: :ok, location: @dance }
-      else
-        format.html { render :edit }
-        format.json { render json: @dance.errors, status: :unprocessable_entity }
-      end
+    if @dance.update(canonical_params(dance_params_with_real_choreographer(intern_choreographer)))
+      redirect_to @dance, notice: 'Dance was successfully updated.'
+    else
+      @dance.set_text_to_dialect(dialect)
+      render :edit
     end
   end
 
@@ -75,8 +71,8 @@ class DancesController < ApplicationController
       @dance = Dance.find(params[:id])
     end
     
-    def set_dialect_json
-      @dialect_json = dialect.to_json
+    def set_dialect_json_for_editing
+      @dialect_json = JSLibFigure.dialect_with_text_translated(dialect).to_json
     end
 
     def authenticate_dance_writable!
@@ -116,6 +112,31 @@ class DancesController < ApplicationController
     end
 
     def intern_choreographer
-      Choreographer.find_or_create_by( name: dance_params["choreographer_name"] )
+      Choreographer.find_or_create_by(name: dance_params["choreographer_name"])
     end
+
+    # consider a move to a Dance class method?
+  def canonical_params(params)
+    dialect_reverser = DialectReverser.new(dialect)
+    notes = params[:notes]
+    preamble = params[:preamble]
+    hook = params[:hook]
+    figures = JSON.parse(params[:figures_json])
+    figures2 = figures.map do |figure|
+      move, parameter_values, note = JSLibFigure.figure_unpack(figure)
+      formals = move ? JSLibFigure.formal_parameters(move) : []
+      pv2 = parameter_values.each_with_index.map do |parameter_value, i|
+        if parameter_value.present? && JSLibFigure.parameter_uses_chooser(formals[i], 'chooser_text')
+          dialect_reverser.reverse(parameter_value)
+        else
+          parameter_value
+        end
+      end
+      figure.merge('parameter_values' => pv2).merge(note.present? ? {'note' => dialect_reverser.reverse(note)} : {})
+    end
+    params.merge(notes: dialect_reverser.reverse(notes),
+                 preamble: dialect_reverser.reverse(preamble),
+                 hook: dialect_reverser.reverse(hook),
+                 figures_json: figures2.to_json)
+  end
 end

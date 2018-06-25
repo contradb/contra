@@ -18,10 +18,12 @@
 //= require jquery-ui/autocomplete
 //= require bootstrap-sprockets
 //= require angular
+//= require angular-sanitize
 //= require angucomplete-alt
 //  LOCAL FILES
 //= require libfigure/polyfill
 //= require libfigure/util
+//= require libfigure/words
 //= require libfigure/move
 //= require libfigure/chooser
 //= require libfigure/param

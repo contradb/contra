@@ -30,7 +30,7 @@ RSpec.describe "dances/show", type: :view do
     expect(rendered).to match(/Complicated Formation/)
     expect(rendered).to match(/Becky Hill/)
     # figures
-    expect(rendered).to match(regexpify 'partners balance &amp; swing')
+    expect(rendered).to have_content(regexpify 'partners balance & swing')
     # notes
     expect(rendered).to match(/My Note Text/)
   end
