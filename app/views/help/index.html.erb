@@ -8,6 +8,7 @@
         <dt>Why are we here?</dt> <dd><%= link_to "the ‘About’ page", about_path %></dd>
         <dt>How do I enter a dance?</dt> <dd><a href="https://youtu.be/1NSr-_tx08s" target="_blank">video tutorial</a>, and perhaps <a href="https://github.com/contradb/contra/wiki/Curating-Dances" target="_blank">community guidelines for curating dances</a></dd>
         <dt>How do I search for dances?</dt> <dd><a href="https://github.com/contradb/contra/wiki/Dance-Figure-Filters" target="_">wiki page</a></dd>
+        <dt>What is a gentlespoon?</dt> <dd>that's our default dialect. Don't like it? Log in and adjust it using the <%= link_to("dialect editor", dialect_path) %>.</dd>
         <dt>Can someone talk me through this?</dt> <dd><%= mail_to Rails.application.secrets.admin_help_mail, Rails.application.secrets.admin_help_name, encode: 'hex' %> is happy to help you through using the site</dd>
         <dt>A dance I wrote is mis-entered, my name is misspelled, or I would like my dance taken down.</dt> <dd><%= mail_to Rails.application.secrets.admin_help_mail, Rails.application.secrets.admin_help_name, encode: 'hex' %> keeps our data clean and consensual. Contact her to add information to a choreographer page representing you.</dd>
         <dt>The site has a bug!</dt> <dd><%= mail_to Rails.application.secrets.admin_code_mail, Rails.application.secrets.admin_code_name, encode: 'hex' %> would like to hear about it</dd>
