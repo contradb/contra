@@ -120,14 +120,16 @@ var param_lead_dancer_l1             = {name: "lead", value: "first ladle", ui: 
 function formalParamIsDancers(param) {
   // harder to maintain implementation:
   // return ['who', 'who2', 'whom', 'lead'].indexOf(param.name) >= 0;
-  return !!dancerMenuForChooser(param.ui)
+  return !!dancerMenuForChooser(param.ui);
 }
 
 function wordParamCustom(value, move_meh, dialect) {
-  // worry: is it ok this isn't a string?
   return lingoLineWords(stringInDialect(value, dialect), dialect);
 }
 
+// so if you use param_custom_figure, you have to use parameter_words
+// instead of parameter_strings. (unless you use the default figure
+// printer, which takes care of it for you, c.f. contra corners)
 var param_custom_figure = {name: "custom", value: "", ui: chooser_text, words: wordParamCustom};
 
 var wristGrips = ['', 'wrist grip', 'hands across'];

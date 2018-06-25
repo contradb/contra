@@ -41,7 +41,7 @@ function figureToString(f,dialect) {
       return words(main).sanitize();
     }
   } else if (f.move) {
-    return "rogue figure '"+sanitizeWordNode(f.move)+"'!";
+    return "rogue figure '"+words(f.move).sanitize()+"'!";
   } else {
     return "empty figure";
   }
