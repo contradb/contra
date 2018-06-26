@@ -250,7 +250,7 @@ $(document).ready(function() {
       } else if (moves_list.indexOf(term) >= 0){
         return dialect.moves;
       } else {
-        throw new Error("term is neither move nor dancer. Hrm.");
+        throw new Error("term '"+term+"' is neither move nor dancer. Hrm.");
       }
     };
     $('.idiom-form').each(function() {

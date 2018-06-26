@@ -182,8 +182,16 @@ s {
   text-decoration-color: #D00;
 }
 
-.no-lingo-lines{
+.no-lingo-lines {
   s, u {
     text-decoration: none;
+  }
+}
+
+@media print {
+  .non-printing-lingo-lines {
+    s, u {
+      text-decoration: none;
+    }
   }
 }

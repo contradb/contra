@@ -22,7 +22,7 @@
 </div>
 
 <% @program.activities_sorted.each_with_index do |activity,index| %>
-  <%= "<div class='activity-breakdown' id='#{activity_anchor_id(index)}'>".html_safe %>
+  <%= content_tag('div', id: activity_anchor_id(index), class: "activity-breakdown no-lingo-lines") do %>
     <%= if activity.dance 
         then content_tag(:h2, (link_to activity.dance.title, activity.dance), class: "activity-breakdown-dance-title")
         elsif activity.text.present?
@@ -62,5 +62,5 @@
     <% elsif activity.dance %>
       <div class="warn-private-dance">This dance is not published.</div>
     <% end %>
-  <%= '</div>'.html_safe %>
+  <% end %>
 <% end %>
