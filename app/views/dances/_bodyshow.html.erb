@@ -2,7 +2,7 @@
 
 <div class="dance-show-preamble"><%= ApplicationHelper::renderMarkdownHtmlOk(JSLibFigure.lingo_lines_html(JSLibFigure.string_in_dialect(dance.preamble, dialect), dialect)) %></div>
 
-<table class="table table-bordered table-condensed contra-table-nonfluid">
+<table class="table table-bordered table-condensed contra-table-nonfluid no-lingo-lines">
   <% begin
        figures = dance.figures
        beats_acc = 0
