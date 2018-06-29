@@ -13,7 +13,6 @@ Rails.application.routes.draw do
   resources :figures, only: [:index, :show]
   resources :idioms, only: [:create, :update, :destroy]
 
-  get 'oops' => 'welcome#oops'
   get 'welcome/index'
 
   resource :dialect, only: [] do

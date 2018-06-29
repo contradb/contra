@@ -23,20 +23,17 @@ class DancesController < ApplicationController
   end
 
   def new
-    redirect_to oops_path
     @dance = Dance.new
     @dance.title ||= "New Dance" 
     @admin_email = Rails.application.secrets.admin_gmail_username
   end
 
   def edit
-    redirect_to oops_path
     @dance.set_text_to_dialect(dialect)
     @admin_email = Rails.application.secrets.admin_gmail_username
   end
 
   def create
-    redirect_to oops_path
     @dance = Dance.new(canonical_params(dance_params_with_real_choreographer(intern_choreographer)))
     @dance.user_id = current_user.id
     if @dance.save
@@ -48,7 +45,6 @@ class DancesController < ApplicationController
   end
 
   def update
-    redirect_to oops_path
     if @dance.update(canonical_params(dance_params_with_real_choreographer(intern_choreographer)))
       redirect_to @dance, notice: 'Dance was successfully updated.'
     else
