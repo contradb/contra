@@ -16,23 +16,21 @@
     <% end %>
 
     <%# todo: rip this copy dance logic out of the view %>
-    <% copy_dance = params[:copy_dance_id] && Dance.find(params[:copy_dance_id]) %>
-    <% choreographer = params[:choreographer_id] && Choreographer.find(params[:choreographer_id]) %>
+    <% copy_dance = nil %>
 
-    <% if copy_dance %>
+    <% if @copied_title %>
       <section>
-        <div>Composing a variation of <strong><%= copy_dance.title %></strong></div>
+        <div>Composing a variation of <strong><%= @copied_title %></strong></div>
       </section>
     <% end %>
 
     <section class="dance-header-editors">
       <%= f.text_field :title, {class: "dance-title-edit form-control input-lg",
-          value: (copy_dance ? "#{copy_dance.title} variation" : 
-          (@dance.title.blank? ? "Untitled" : @dance.title))} %>
+          value: (@dance.title.blank? ? "Untitled" : @dance.title)} %>
       <%= f.text_field :choreographer_name,
           {id: "choreographer-autocomplete", placeholder: "Choreographer", class: 'form-control'}.
           merge(copy_dance ? {value: copy_dance.choreographer.name} :
-          choreographer ? {value: choreographer.name} : {} ) %>
+          @choreographer ? {value: @choreographer.name} : {} ) %>
       <%= f.text_field :start_type,
           {id: "start-type-autocomplete", placeholder: "Formation", class: 'form-control'}
           .merge(copy_dance ? {value: copy_dance.start_type} : {}) %>

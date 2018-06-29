@@ -332,23 +332,81 @@ function stringInDialect(str, dialect) {
     return str;
   } else {
     // Since this is called a lot, performance might be helped by memoizing dialectRegExp(dialect)
-    return str.replace(dialectRegExp(dialect), function (match) {
-      return (dialect.moves[match] || dialect.dancers[match]).replace(/%S/g,'');
+    return str.replace(dialectRegExp(dialect), function (_whole_match, left_whitespace, match) {
+      // conceptually this is a pretty straightforward lookup in one hash or another, and usually that's all it takes...
+      var substitution = dialect.moves[match] || dialect.dancers[match];
+      if (substitution) {return stringInDialectHelper(match, substitution, left_whitespace, match);}
+      // ...but sometimes they've uppercased their text, so we've gotta look again in the hash (in lower case)...
+      var match_lower = match.toLowerCase();
+      substitution = dialect.moves[match_lower] || dialect.dancers[match_lower];
+      if (substitution) {return stringInDialectHelper(match_lower, substitution, left_whitespace, match);}
+      // ...and sometimes the term itself is in mixed case, e.g. 'California twirl' or "Rory O'More"...
+      var term;
+      for (term in dialect.moves) {
+        if (term.toLowerCase() === match_lower) {
+          return stringInDialectHelper(term, dialect.moves[term], left_whitespace, match);
+        }
+      }
+      for (term in dialect.dancers) {
+        if (term.toLowerCase() === match_lower) {
+          return stringInDialectHelper(term, dialect.dancers[term], left_whitespace, match);
+        }
+      }
+      /// ... I guess it's possible none of this worked, which is weird enough to explode.
+      throw_up('failed to look up '+match);
     });
   }
+}
+
+// polish the case and remove %S in the final substitution
+function stringInDialectHelper(term, substitution, left_whitespace, match) {
+  var s;
+  if (hasUpperCase(substitution)) {
+    s = substitution;
+  } else if (moreCapitalizedThan(match, term)) {
+    s = capitalize(substitution);
+  } else {
+    s = substitution;
+  }
+  return left_whitespace + s.replace(/%S/g,'');
+}
+
+function hasUpperCase(x) {
+  return x !== x.toLowerCase();
+}
+
+function moreCapitalizedThan(left, right) {
+  return hasUpperCase(left) && !hasUpperCase(right);
+}
+
+// Return a new string with the first lower case letter (if any) capitalized
+function capitalize(s) {
+  // ugh, unicode is hard in JS
+  for (var i=0; i<s.length; i++) {
+    var c = s[i];
+    var c_big = c.toUpperCase();
+    if (c_big !== c) {
+      var x = s.split('');
+      x.splice(i, 1, c_big);
+      return x.join('');
+    }
+  }
+  return s;
 }
 
 function dialectRegExp(dialect) {
   var move_strings = Object.keys(dialect.moves);
   var dance_strings = Object.keys(dialect.dancers);
   var term_strings = move_strings.concat(dance_strings).sort(longestFirstSortFn);
-  var unmatchable_re_string = '^[]'; // https://stackoverflow.com/a/25315586/5158597
-  var big_re_string = term_strings.map(regExpEscape).map(parenthesize).join('|') || unmatchable_re_string;
-  return new RegExp(big_re_string, 'g');
-}
-
-function parenthesize(term) {
-  return '('+term+')';
+  var big_re_string_center = term_strings.map(regExpEscape).join('|');
+  var big_re_string;
+  if (big_re_string_center) {
+    var punct = '[\u2000-\u206F\u2E00-\u2E7F\'!"#$%&()*+,/:;<=>?@\\[\\]^_`{|}~\\.-]';
+    big_re_string = '(\\s|'+punct+'|^)('+big_re_string_center+')(?=\\s|'+punct+'|$)';
+  } else {
+    big_re_string = '^[]'; // unmatchable regexp - https://stackoverflow.com/a/25315586/5158597
+  }
+  return new RegExp(big_re_string, 'gi');
 }
 
 ////

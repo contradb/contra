@@ -7,6 +7,7 @@ describe 'Copying dances', js: true do
     with_login do |user|
       dance = FactoryGirl.create(:box_the_gnat_contra, user: user)
       visit new_dance_path copy_dance_id: dance.id
+      expect(page).to have_content("Composing a variation of #{dance.title}")
       expect(page.body).to include(dance.title)
       expect(page.body).to include(dance.choreographer.name)
       expect(page.body).to include(dance.start_type)
@@ -28,6 +29,7 @@ describe 'Copying dances', js: true do
       click_button 'Save Dance'
 
       dance2 = Dance.last
+      expect(page).to have_content("Dance was successfully created")
       expect(current_path).to eq dance_path dance2.id
       %w[start_type figures_json hook preamble notes].each do |message|
         expect(dance2.send message).to eql dance1.send message
@@ -39,10 +41,11 @@ describe 'Copying dances', js: true do
 
   it 'applies dialect' do
     with_login do |user|
-      dance = FactoryGirl.create(:box_the_gnat_contra, user: user)
+      dance = FactoryGirl.create(:box_the_gnat_contra, user: user, preamble: "gyre<allemande>gentlespoons")
       allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
       visit new_dance_path copy_dance_id: dance.id
       expect(page).to have_text('ravens almond right 1½')
+      expect(page.find('#dance_preamble').value).to eq('darcy<almond>larks')
     end
   end
 

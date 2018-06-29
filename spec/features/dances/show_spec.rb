@@ -40,12 +40,13 @@ describe 'Showing dances' do
 
   it 'respects preferences' do
     expect(JSLibFigure).to receive(:default_dialect).at_least(:once).and_return(JSLibFigure.test_dialect)
-    dance = FactoryGirl.create(:box_the_gnat_contra)
+    dance = FactoryGirl.create(:box_the_gnat_contra, preamble: "gyre Ladles.Rory O'More-allemande")
     visit dance_path dance.id
     expect(page).to have_text ('ravens almond right 1½')
     expect(page).to_not have_text ('ladles')
     expect(page).to_not have_text ('gentlespoons')
     expect(page).to_not have_text ('allemande')
+    expect(page).to have_text('darcy Ravens.sliding doors-almond')
   end
 
   describe 'actions buttons' do

@@ -269,7 +269,8 @@ RSpec.describe JSLibFigure do
 
   it 'move_substitution works' do
     expect(JSLibFigure.move_substitution('allemande', JSLibFigure.test_dialect)).to eq('almond')
-    expect(JSLibFigure.move_substitution("Rory O'More", JSLibFigure.test_dialect)).to eq("Rory O'More")
+    expect(JSLibFigure.move_substitution("California twirl", JSLibFigure.test_dialect)).to eq("California twirl")
+    expect(JSLibFigure.move_substitution("Rory O'More", JSLibFigure.test_dialect)).to eq("sliding doors")
   end
 
   it 'dancers works' do
@@ -299,11 +300,15 @@ RSpec.describe JSLibFigure do
   end
 
   describe 'string_in_dialect' do
-    let (:input) {"first ladles first ladle ladles ladle"}
-    let (:output) {"W1s W1 women woman"}
+    let (:input) {"first ladle ladles ladle"}
+    let (:output) {"W1 women woman"}
 
     it 'basically works' do
-      expect(JSLibFigure.string_in_dialect("gentlespoons spoon gyre", JSLibFigure.test_dialect)).to eq("larks spoon darcy")
+      expect(JSLibFigure.string_in_dialect("gentlespoons ladlebot roboladle gyre gyre", JSLibFigure.test_dialect)).to eq("larks ladlebot roboladle darcy darcy")
+    end
+
+    it 'works on funky punctuation and with caps' do
+      expect(JSLibFigure.string_in_dialect("Ladles.Rory O'More-allemande\'allemande!allemande\"allemande(Allemande)allemande*allemande+allemande,allemande/allemande[allemande]allemande", JSLibFigure.test_dialect)).to eq("Ravens.sliding doors-almond\'almond!almond\"almond(Almond)almond*almond+almond,almond/almond[almond]almond")
     end
 
     it 'picks longest match on ascending substitution length' do
@@ -318,8 +323,19 @@ RSpec.describe JSLibFigure do
 
     it 'subs the substitution with %S filtered out' do
       dialect = JSLibFigure.shoulder_round_dialect
-      expect(JSLibFigure.string_in_dialect('gyreiest gyre', dialect)).to match(' *shoulder roundiest +shoulder round')
+      expect(JSLibFigure.string_in_dialect("gyreiest gyre'iest gyre", dialect)).to match("gyreiest +shoulder round'iest +shoulder round")
     end
+
+    it 'caps stress testing' do
+      dialect = {"moves" => {"Rory O'More" => "Rory A.More", "California twirl" => 'twirl to swap'}, "dancers" => {"ladles" => "women", "gentlespoons" => "M"}}
+      # case exact match
+      expect(JSLibFigure.string_in_dialect("Rory O'More, California twirl, ladles, gentlespoons", dialect)).to eq("Rory A.More, twirl to swap, women, M")
+      # lower case
+      expect(JSLibFigure.string_in_dialect("rory o'more, california twirl, ladles, gentlespoons", dialect)).to eq("Rory A.More, twirl to swap, women, M")
+      # capitalized
+      expect(JSLibFigure.string_in_dialect("Rory O'More, California Twirl, Ladles, Gentlespoons", dialect)).to eq("Rory A.More, twirl to swap, Women, M")
+    end
+
 
     it 'does nothing if the dialect has text_in_dialect: true' do
       dialect = {"moves" => {}, "dancers" => {"ladle" => "woman", "ladles" => "women", "first ladle" => "W1"}, "text_in_dialect" => true}
