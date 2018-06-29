@@ -307,8 +307,8 @@ RSpec.describe JSLibFigure do
       expect(JSLibFigure.string_in_dialect("gentlespoons ladlebot roboladle gyre gyre", JSLibFigure.test_dialect)).to eq("larks ladlebot roboladle darcy darcy")
     end
 
-    it 'works on funky punctuation' do
-      expect(JSLibFigure.string_in_dialect("Ladles.Rory O'More-allemande\'allemande!allemande\"allemande(Allemande)allemande*allemande+allemande,allemande/allemande[allemande]allemande", JSLibFigure.test_dialect)).to eq("ravens.sliding doors-almond\'almond!almond\"almond(Almond)almond*almond+almond,almond/almond[almond]almond")
+    it 'works on funky punctuation and with caps' do
+      expect(JSLibFigure.string_in_dialect("Ladles.Rory O'More-allemande\'allemande!allemande\"allemande(Allemande)allemande*allemande+allemande,allemande/allemande[allemande]allemande", JSLibFigure.test_dialect)).to eq("Ravens.sliding doors-almond\'almond!almond\"almond(Almond)almond*almond+almond,almond/almond[almond]almond")
     end
 
     it 'picks longest match on ascending substitution length' do

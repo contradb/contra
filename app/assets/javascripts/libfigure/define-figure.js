@@ -334,25 +334,55 @@ function stringInDialect(str, dialect) {
     // Since this is called a lot, performance might be helped by memoizing dialectRegExp(dialect)
     return str.replace(dialectRegExp(dialect), function (match_ignored, left_whitespace, match) {
       var substitution = dialect.moves[match] || dialect.dancers[match];
-      if (substitution) {return stringInDialectHelper(substitution, left_whitespace, match);}
+      if (substitution) {return stringInDialectHelper(match, substitution, left_whitespace, match);}
       var match_lower = match.toLowerCase();
-      substitution = dialect.moves[match] || dialect.dancers[match];
-      if (substitution) {return stringInDialectHelper(substitution, left_whitespace, match);}
+      substitution = dialect.moves[match_lower] || dialect.dancers[match_lower];
+      if (substitution) {return stringInDialectHelper(match_lower, substitution, left_whitespace, match);}
       
       var term;
       for (term in dialect.moves) {
-        if (term.toLowerCase() === match_lower) {return stringInDialectHelper(dialect.moves[term], left_whitespace, match);}
+        if (term.toLowerCase() === match_lower) {return stringInDialectHelper(term, dialect.moves[term], left_whitespace, match);}
       }
       for (term in dialect.dancers) {
-        if (term.toLowerCase() === match_lower) {return stringInDialectHelper(dialect.dancers[term], left_whitespace, match);}
+        if (term.toLowerCase() === match_lower) {return stringInDialectHelper(term, dialect.dancers[term], left_whitespace, match);}
       }
       throw_up('failed to look up '+match);
     });
   }
 }
 
-function stringInDialectHelper(substitution, left_whitespace, match, right_whitespace) {
-  return left_whitespace + substitution.replace(/%S/g,'');
+function stringInDialectHelper(term, substitution, left_whitespace, match) {
+  var s;
+  if (hasUpperCase(substitution)) {
+    s = substitution;
+  } else if (moreCapitalizedThan(match, term)) {
+    s = capitalize(substitution);
+  } else {
+    s = substitution;
+  }
+  return left_whitespace + s.replace(/%S/g,'');
+}
+
+function hasUpperCase(x) {
+  return x !== x.toLowerCase();
+}
+
+function moreCapitalizedThan(left, right) {
+  return hasUpperCase(left) && !hasUpperCase(right);
+}
+
+function capitalize(string_with_a_letter) {
+  // ugh, unicode is hard in JS
+  for (var i=0; i<string_with_a_letter.length; i++) {
+    var c = string_with_a_letter[i];
+    var c_big = c.toUpperCase();
+    if (c_big !== c) {
+      var x = string_with_a_letter.split('');
+      x.splice(i, 1, c_big);
+      return x.join('');
+    }
+  }
+
 }
 
 function dialectRegExp(dialect) {
