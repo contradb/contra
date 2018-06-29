@@ -8,6 +8,7 @@ describe DialectReverser do
     expect(dialect_reverser.reverse('larks')).to eq('gentlespoons')
     expect(dialect_reverser.reverse('first lark lark almond gentlespoon')).to eq('first gentlespoon gentlespoon allemande gentlespoon')
     expect(dialect_reverser.reverse('larksandravens larksandravens')).to eq('larksandravens larksandravens')
+    expect(dialect_reverser.reverse('raven.raven-raven;raven,raven(raven)')).to eq('ladle.ladle-ladle;ladle,ladle(ladle)')
     expect(dialect_reverser.reverse('Larks and ravens.')).to eq('Gentlespoons and ladles.')
     expect(dialect_reverser.reverse('California twirl')).to eq('California twirl')
     expect(dialect_reverser.reverse('california Twirl')).to eq('california Twirl') # kinda want 'California twirl', but not enough to bloat the regexp
