@@ -12,7 +12,12 @@ class DialectReverser
   def reverse(string)           # really string-or-falsey
     if string.present?
       string.gsub(regexp) do |match|
-        term = inverted_hash.fetch(match.downcase)
+        term = inverted_hash.fetch(match.downcase) {|match_downcase|
+          # go fish in case-insensitive "hash lookup" mode
+          key = inverted_hash.keys.find {|k| k.downcase == match_downcase}
+          key or raise("failed to find #{match.inspect} in #{inverted_hash.keys.inspect}")
+          inverted_hash.fetch(key)
+        }
         substitution = dialect_ref(term)
         apply_caps_transition(match, term, substitution)
       end

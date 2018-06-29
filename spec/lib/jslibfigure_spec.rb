@@ -323,7 +323,7 @@ RSpec.describe JSLibFigure do
 
     it 'subs the substitution with %S filtered out' do
       dialect = JSLibFigure.shoulder_round_dialect
-      expect(JSLibFigure.string_in_dialect('gyreiest gyre', dialect)).to match('gyreiest +shoulder round')
+      expect(JSLibFigure.string_in_dialect("gyreiest gyre'iest gyre", dialect)).to match("gyreiest +shoulder round'iest +shoulder round")
     end
 
     it 'caps stress testing' do

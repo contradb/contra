@@ -315,10 +315,11 @@ describe 'Editing dances', js: true do
         expect(page).to have_css('u', text: 'larks')
         expect(page).to have_css('u', text: 'Larks')
         expect(page).to have_css('u', text: 'lArks')
-        expect(page).to_not have_css('u', text: "Rory O'More")
-        expect(page).to_not have_css('u', text: "rory o'more")
         expect(page).to have_css('u', text: "california twirl")
         expect(page).to have_css('u', text: "California twirl")
+        expect(page).to_not have_css('u', text: "Rory O'More")
+        expect(page).to_not have_css('u', text: "rory o'more")
+        expect(page).to have_css('u', text: "sliding doors", count: 2)
         expect(page).to have_css('u', text: 'do si do left shoulder')
         # figure note
         expect(page).to have_css('u', text: 'ravens')
