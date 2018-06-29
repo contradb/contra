@@ -326,6 +326,17 @@ RSpec.describe JSLibFigure do
       expect(JSLibFigure.string_in_dialect('gyreiest gyre', dialect)).to match('gyreiest +shoulder round')
     end
 
+    it 'caps stress testing' do
+      dialect = {"moves" => {"Rory O'More" => "Rory A.More", "California twirl" => 'twirl to swap'}, "dancers" => {"ladles" => "women", "gentlespoons" => "M"}}
+      # case exact match
+      expect(JSLibFigure.string_in_dialect("Rory O'More, California twirl, ladles, gentlespoons", dialect)).to eq("Rory A.More, twirl to swap, women, M")
+      # lower case
+      expect(JSLibFigure.string_in_dialect("rory o'more, california twirl, ladles, gentlespoons", dialect)).to eq("Rory A.More, twirl to swap, women, M")
+      # capitalized
+      expect(JSLibFigure.string_in_dialect("Rory O'More, California Twirl, Ladles, Gentlespoons", dialect)).to eq("Rory A.More, twirl to swap, Women, M")
+    end
+
+
     it 'does nothing if the dialect has text_in_dialect: true' do
       dialect = {"moves" => {}, "dancers" => {"ladle" => "woman", "ladles" => "women", "first ladle" => "W1"}, "text_in_dialect" => true}
       expect(JSLibFigure.string_in_dialect(input, dialect)).to eq(input)

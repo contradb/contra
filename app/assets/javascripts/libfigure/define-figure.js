@@ -351,6 +351,7 @@ function stringInDialect(str, dialect) {
   }
 }
 
+// TODO rename
 function stringInDialectHelper(term, substitution, left_whitespace, match) {
   var s;
   if (hasUpperCase(substitution)) {
@@ -371,18 +372,18 @@ function moreCapitalizedThan(left, right) {
   return hasUpperCase(left) && !hasUpperCase(right);
 }
 
-function capitalize(string_with_a_letter) {
+function capitalize(s) {
   // ugh, unicode is hard in JS
-  for (var i=0; i<string_with_a_letter.length; i++) {
-    var c = string_with_a_letter[i];
+  for (var i=0; i<s.length; i++) {
+    var c = s[i];
     var c_big = c.toUpperCase();
     if (c_big !== c) {
-      var x = string_with_a_letter.split('');
+      var x = s.split('');
       x.splice(i, 1, c_big);
       return x.join('');
     }
   }
-
+  return s;
 }
 
 function dialectRegExp(dialect) {
