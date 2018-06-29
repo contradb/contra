@@ -332,23 +332,42 @@ function stringInDialect(str, dialect) {
     return str;
   } else {
     // Since this is called a lot, performance might be helped by memoizing dialectRegExp(dialect)
-    return str.replace(dialectRegExp(dialect), function (match) {
-      return (dialect.moves[match] || dialect.dancers[match]).replace(/%S/g,'');
+    return str.replace(dialectRegExp(dialect), function (match_ignored, left_whitespace, match) {
+      var substitution = dialect.moves[match] || dialect.dancers[match];
+      if (substitution) {return stringInDialectHelper(substitution, left_whitespace, match);}
+      var match_lower = match.toLowerCase();
+      substitution = dialect.moves[match] || dialect.dancers[match];
+      if (substitution) {return stringInDialectHelper(substitution, left_whitespace, match);}
+      
+      var term;
+      for (term in dialect.moves) {
+        if (term.toLowerCase() === match_lower) {return stringInDialectHelper(dialect.moves[term], left_whitespace, match);}
+      }
+      for (term in dialect.dancers) {
+        if (term.toLowerCase() === match_lower) {return stringInDialectHelper(dialect.dancers[term], left_whitespace, match);}
+      }
+      throw_up('failed to look up '+match);
     });
   }
+}
+
+function stringInDialectHelper(substitution, left_whitespace, match, right_whitespace) {
+  return left_whitespace + substitution.replace(/%S/g,'');
 }
 
 function dialectRegExp(dialect) {
   var move_strings = Object.keys(dialect.moves);
   var dance_strings = Object.keys(dialect.dancers);
   var term_strings = move_strings.concat(dance_strings).sort(longestFirstSortFn);
-  var unmatchable_re_string = '^[]'; // https://stackoverflow.com/a/25315586/5158597
-  var big_re_string = term_strings.map(regExpEscape).map(parenthesize).join('|') || unmatchable_re_string;
-  return new RegExp(big_re_string, 'g');
-}
-
-function parenthesize(term) {
-  return '('+term+')';
+  var big_re_string_center = term_strings.map(regExpEscape).join('|');
+  var big_re_string;
+  if (big_re_string_center) {
+    var punct = '[\u2000-\u206F\u2E00-\u2E7F\'!"#$%&()*+,/:;<=>?@\\[\\]^_`{|}~\\.-]';
+    big_re_string = '(\\s|'+punct+'|^)('+big_re_string_center+')(?=\\s|'+punct+'|$)';
+  } else {
+    big_re_string = '^[]'; // unmatchable regexp - https://stackoverflow.com/a/25315586/5158597
+  }
+  return new RegExp(big_re_string, 'gi');
 }
 
 ////

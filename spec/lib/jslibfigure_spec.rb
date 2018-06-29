@@ -269,7 +269,8 @@ RSpec.describe JSLibFigure do
 
   it 'move_substitution works' do
     expect(JSLibFigure.move_substitution('allemande', JSLibFigure.test_dialect)).to eq('almond')
-    expect(JSLibFigure.move_substitution("Rory O'More", JSLibFigure.test_dialect)).to eq("Rory O'More")
+    expect(JSLibFigure.move_substitution("California twirl", JSLibFigure.test_dialect)).to eq("California twirl")
+    expect(JSLibFigure.move_substitution("Rory O'More", JSLibFigure.test_dialect)).to eq("sliding doors")
   end
 
   it 'dancers works' do
@@ -299,11 +300,15 @@ RSpec.describe JSLibFigure do
   end
 
   describe 'string_in_dialect' do
-    let (:input) {"first ladles first ladle ladles ladle"}
-    let (:output) {"W1s W1 women woman"}
+    let (:input) {"first ladle ladles ladle"}
+    let (:output) {"W1 women woman"}
 
     it 'basically works' do
-      expect(JSLibFigure.string_in_dialect("gentlespoons spoon gyre", JSLibFigure.test_dialect)).to eq("larks spoon darcy")
+      expect(JSLibFigure.string_in_dialect("gentlespoons ladlebot roboladle gyre gyre", JSLibFigure.test_dialect)).to eq("larks ladlebot roboladle darcy darcy")
+    end
+
+    it 'works on funky punctuation' do
+      expect(JSLibFigure.string_in_dialect("Ladles.Rory O'More-allemande\'allemande!allemande\"allemande(Allemande)allemande*allemande+allemande,allemande/allemande[allemande]allemande", JSLibFigure.test_dialect)).to eq("ravens.sliding doors-almond\'almond!almond\"almond(Almond)almond*almond+almond,almond/almond[almond]almond")
     end
 
     it 'picks longest match on ascending substitution length' do
@@ -318,7 +323,7 @@ RSpec.describe JSLibFigure do
 
     it 'subs the substitution with %S filtered out' do
       dialect = JSLibFigure.shoulder_round_dialect
-      expect(JSLibFigure.string_in_dialect('gyreiest gyre', dialect)).to match(' *shoulder roundiest +shoulder round')
+      expect(JSLibFigure.string_in_dialect('gyreiest gyre', dialect)).to match('gyreiest +shoulder round')
     end
 
     it 'does nothing if the dialect has text_in_dialect: true' do
