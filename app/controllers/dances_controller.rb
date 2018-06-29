@@ -23,13 +23,17 @@ class DancesController < ApplicationController
   end
 
   def new
-    @dance = Dance.new
-    @dance.title ||= "New Dance" 
+    copy_dance = params[:copy_dance_id] && Dance.find(params[:copy_dance_id])
+    @dance = copy_dance ? Dance.new(copy_dance.attributes.except(%w(id created_at updated_at)).merge(title: "#{copy_dance.title} variation")) : Dance.new(title: 'New Dance')
+    @copied_title = copy_dance.title if copy_dance
+    @dance.set_text_to_dialect(dialect)
+    @choreographer = params[:choreographer_id] ? Choreographer.find(params[:choreographer_id]) : @dance.choreographer
     @admin_email = Rails.application.secrets.admin_gmail_username
   end
 
   def edit
     @dance.set_text_to_dialect(dialect)
+    @choreographer = params[:choreographer_id] ? Choreographer.find(params[:choreographer_id]) : @dance.choreographer
     @admin_email = Rails.application.secrets.admin_gmail_username
   end
 
