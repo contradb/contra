@@ -160,8 +160,13 @@ RSpec.describe JSLibFigure do
   end
 
   describe 'figure accessors' do
-    it 'move'
-    it 'parameter_values'
+    it 'move' do
+      expect(JSLibFigure.move({'move' => 'swing'})).to eq('swing')
+    end
+
+    it 'parameter_values' do
+      expect(JSLibFigure.parameter_values({'parameter_values' => []})).to eq([])
+    end
   end
 
   describe 'angles_for_move' do
@@ -355,7 +360,7 @@ RSpec.describe JSLibFigure do
 
   it 'moveSubstitutionWithoutForm' do
     mkscript = ->(substitution, article, adjective) {
-      "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': #{substitution.inspect}}}, #{article}, #{adjective.inspect}).sanitize();"
+      "moveSubstitutionWithoutForm('form an ocean wave', {moves: {'form an ocean wave': #{substitution.inspect}}}, #{article}, #{adjective.inspect}).toHtml();"
     }
     strip_form = ->(substitution, article, adjective=false) {
       jseval(mkscript.call(substitution, article, adjective)).strip
@@ -416,9 +421,9 @@ RSpec.describe JSLibFigure do
     expect(strip_form.call('undulating wave', false, 'amorphous')).to eq('amorphous undulating wave')
   end
 
-  it 'figureToString with leading comma in note' do
+  it 'figureToHtml with leading comma in note' do
     figure = {'move' => 'long lines', 'parameter_values' => [true, 8], 'note' => ", hi"};
-    expect(JSLibFigure.figure_to_string(figure, JSLibFigure.default_dialect)).to eq('long lines forward &amp; back, hi')
+    expect(JSLibFigure.figure_to_html(figure, JSLibFigure.default_dialect)).to eq('long lines forward &amp; back, hi')
   end
 
   describe 'figure_translate_text_into_dialect' do
@@ -467,8 +472,12 @@ RSpec.describe JSLibFigure do
       expect(js_test_eval('testTrimButLeaveNewlines();')).to be_truthy
     end
 
-    it 'test_sanitize' do
-      expect(js_test_eval('test_sanitize();')).to be_truthy
+    it 'test_words_toHtml' do
+      expect(js_test_eval('test_words_toHtml();')).to be_truthy
+    end
+
+    it 'test_words_toMarkdown' do
+      expect(js_test_eval('test_words_toMarkdown();')).to be_truthy
     end
 
     it 'test_peek' do

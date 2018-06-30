@@ -105,7 +105,7 @@ describe 'Showing dances' do
   end
 
   it "shows lingo lines for hook, preamble, and dance notes" do
-    dance = FactoryGirl.create(:dance, notes: 'box circulate', preamble: "* first gentlespoon\n* second gentlespoon", hook: 'women')
+    dance = FactoryGirl.create(:dance, notes: 'box circulate', preamble: "* first gentlespoon\n* second gentlespoon\n\n> four score and seven years", hook: 'women')
     visit dance_path(dance)
     expect(page).to have_css('s', text: 'women')
     expect(page).to have_css('u', text: 'box circulate')
@@ -114,5 +114,6 @@ describe 'Showing dances' do
     expect(page).to have_css('ul', text: /\Afirst gentlespoon second gentlespoon\z/)
     expect(page).to have_css('li', text: /\Afirst gentlespoon\z/)
     expect(page).to have_css('li', text: /\Asecond gentlespoon\z/)
+    expect(page).to have_css('blockquote', text: /\Afour score and seven years\z/)
   end
 end

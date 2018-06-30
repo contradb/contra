@@ -8,7 +8,18 @@ function words () {
 
 var wants_no_space_before = [false, null, ',', '.', ';'];
 
-Words.prototype.sanitize = function() {
+var FLATTEN_FORMAT_MARKDOWN = 1001;
+var FLATTEN_FORMAT_HTML = 1002;
+
+Words.prototype.toHtml = function() {
+  return this.flatten(FLATTEN_FORMAT_HTML);
+};
+
+Words.prototype.toMarkdown = function() {
+  return this.flatten(FLATTEN_FORMAT_MARKDOWN);
+};
+
+Words.prototype.flatten = function(format) {
   var arr = this.arr;
   var acc = [];
   var space_before = false;
@@ -17,7 +28,7 @@ Words.prototype.sanitize = function() {
     if (wants_space_before) {
       acc.push(' ');
     }
-    acc.push(sanitizeWordNode(arr[i]));
+    acc.push(flattenWordNode(arr[i], format));
   }
   return trimButLeaveNewlines(acc.join(''));
 }
@@ -46,9 +57,9 @@ function tag(tag, body) {
 //   return new Tag(tag, attrs, body);
 // }
 
-Tag.prototype.sanitize = function () {
+Tag.prototype.flatten = function (format) {
   // TODO: simply sanitize and print attrs
-  return '<' + this.tag + '>' + sanitizeWordNode(this.body) + '</' + this.tag + '>';
+  return '<' + this.tag + '>' + flattenWordNode(this.body, format) + '</' + this.tag + '>';
 }
 
 Tag.prototype.peek = function () {
@@ -62,13 +73,21 @@ var sanitizationMap = {
   '&amp;': '&amp;'
 };
 
-function sanitizeWordNode(s) {
-  if (s.sanitize) {
-    return s.sanitize();
+function flattenWordNode(s, format) {
+  if (s.flatten) {
+    return s.flatten(format);
   } else if ('string' === typeof s) {
-    return trimButLeaveNewlines(s.replace(/&amp;|&|<|>/g, function(match) {
-      return sanitizationMap[match] || throw_up('Unexpected match during sanitize');
-    }));
+    if (format === FLATTEN_FORMAT_HTML) {
+      var replacer = function(match) {
+        return sanitizationMap[match] || throw_up('Unexpected match during flatten sanitize');
+      };
+      return s.replace(/&amp;|&|<|>/g, replacer).trim();
+    } else if (format === FLATTEN_FORMAT_MARKDOWN) {
+      // our markdown has it's own html sanitizer
+      return trimButLeaveNewlines(s);
+    } else {
+      throw_up('unexpected flatten format: '+format.toString());
+    }
   } else if (comma === s) {
     return ',';
   } else if (false === s) {
