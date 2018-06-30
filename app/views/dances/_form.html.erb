@@ -15,9 +15,6 @@
       </div>
     <% end %>
 
-    <%# todo: rip this copy dance logic out of the view %>
-    <% copy_dance = nil %>
-
     <% if @copied_title %>
       <section>
         <div>Composing a variation of <strong><%= @copied_title %></strong></div>
@@ -29,11 +26,8 @@
           value: (@dance.title.blank? ? "Untitled" : @dance.title)} %>
       <%= f.text_field :choreographer_name,
           {id: "choreographer-autocomplete", placeholder: "Choreographer", class: 'form-control'}.
-          merge(copy_dance ? {value: copy_dance.choreographer.name} :
-          @choreographer ? {value: @choreographer.name} : {} ) %>
-      <%= f.text_field :start_type,
-          {id: "start-type-autocomplete", placeholder: "Formation", class: 'form-control'}
-          .merge(copy_dance ? {value: copy_dance.start_type} : {}) %>
+          merge(@choreographer ? {value: @choreographer.name} : {}) %>
+      <%= f.text_field :start_type, id: "start-type-autocomplete", placeholder: "Formation", class: 'form-control' %>
       <script>
         var __choreographers__secret = <%= a_to_safe_str(Choreographer.all.map &:name) %>
       </script>
@@ -64,9 +58,9 @@
     <section>
       <%= f.label :preamble %>
       <%= f.text_area :preamble,
-          {placeholder:
-          "Instruct dancers on how to get into formations such as wavy lines. Instruct dancers to identify out-of-set dancers like shadows.",
-          class: 'form-control', rows: 2}.merge(copy_dance ? {value: copy_dance.preamble} : {}) %>
+                      placeholder:
+                      "Instruct dancers on how to get into formations such as wavy lines. Instruct dancers to identify out-of-set dancers like shadows.",
+                      class: 'form-control', rows: 2 %>
       <%= render 'markdown_dialect_advertisement' %>
     </section>
 
@@ -76,7 +70,7 @@
     <section>
       <div ng-controller="FiguresController as figures" id="figures">
         <div class="display:none"
-             ng-init="figures.arr=defaultFigures(<%= copy_dance ? copy_dance.figures_json : @dance.figures_json %>)">
+             ng-init="figures.arr=defaultFigures(<%= @dance.figures_json %>)">
         </div>
         <div class="actions figure-editor-actions">
           <%= f.label :figures %>
@@ -211,13 +205,13 @@
     <section>
       <div class="field" id="dance-notes">
         <%= f.label :notes %>
-        <%= f.text_area :notes, {rows: 3, class: 'form-control', placeholder: "include nuanced teaching notes, history, and links to other representations of the dance"}.merge(copy_dance ? {value: copy_dance.notes} : {}) %>
+        <%= f.text_area :notes, rows: 3, class: 'form-control', placeholder: "include nuanced teaching notes, history, and links to other representations of the dance" %>
         <%= render 'markdown_dialect_advertisement' %>
       </div>
     </section>
 
     <section ng-controller="HookController as hookcon">
-      <div id='dance-hook-initializer'><%= copy_dance&.hook || @dance.hook %></div>
+      <div id='dance-hook-initializer'><%= @dance.hook %></div>
       <%= f.label :hook %>
       <%= f.text_field :hook,
           {'ng-model': 'hook', 'maxlength': Dance::HOOK_MAX_LENGTH, class: 'form-control', placeholder: "catches out of Rory O'More spins"} %>
