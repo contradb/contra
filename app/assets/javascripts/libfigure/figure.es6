@@ -262,7 +262,7 @@ defineFigure("cross trails",
 function customStringify(move, pvs, dialect) {
   // remove the word 'custom'
   var [scustom,sbeats] = parameter_words(move, pvs, dialect);
-  var ss = scustom.sanitize();
+  var ss = scustom.toHtml();
   var print_move_name = (ss.trim() === '' || ss === '*');
   return print_move_name ? moveSubstitution(move, dialect) : scustom;
 }
