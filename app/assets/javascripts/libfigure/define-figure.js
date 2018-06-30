@@ -28,7 +28,7 @@ function sumBeats(figures,optional_limit) {
   return acc;
 }
 
-function figureToString(f,dialect) {
+function figureToHtml(f,dialect) {
   var fig_def = defined_events[f.move];
   if (fig_def) {
     var func = fig_def.props.stringify || figureGenericStringify;

@@ -86,7 +86,7 @@ class Dance < ApplicationRecord
   #       buf << send(attr[0,attr.length-3]).name
   #     elsif attr == 'figures_json'
   #       figures.each_with_index do |figure, i|
-  #         buf << "  #{i}. #{JSLibFigure.figure_to_string(figure, dialect)}"
+  #         buf << "  #{i}. #{JSLibFigure.figure_to_html(figure, dialect)}"
   #       end
   #     elsif attr == 'publish'
   #       buf << (publish ? 'published' : 'private')
