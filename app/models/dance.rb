@@ -76,4 +76,31 @@ class Dance < ApplicationRecord
     self.hook = JSLibFigure.string_in_dialect(hook, dialect)
     self
   end
+
+  # manual tool for analyzing dance changes - require 'jslibfigure'
+  # there's a commented out spec for this function
+  # def to_s_dump(dialect=JSLibFigure.default_dialect)
+  #   buf = []
+  #   attributes.each do |attr, value|
+  #     if attr =~ /_id$/
+  #       buf << send(attr[0,attr.length-3]).name
+  #     elsif attr == 'figures_json'
+  #       figures.each_with_index do |figure, i|
+  #         buf << "  #{i}. #{JSLibFigure.figure_to_string(figure, dialect)}"
+  #       end
+  #     elsif attr == 'publish'
+  #       buf << (publish ? 'published' : 'private')
+  #     elsif attr.in? %w(hook preamble notes)
+  #       buf << "#{attr}: #{JSLibFigure.string_in_dialect(value, dialect).inspect}"
+  #     elsif not attr.in? %w(created_at updated_at)
+  #       buf << value.to_s
+  #     end
+  #   end
+  #   buf.join("\n")
+  # end
+  #
+  # # [589, 604, 598, 597, 599, 600, 601, 588, 602, 586, 596, 581, 576, 605].each {|id| Dance.find(id).fsnapshot('/home/dm/dances', 'new')}
+  # def fsnapshot(dir, tag)
+  #   File.open("#{dir}/#{id}-#{tag}.txt", 'w') {|f| f.write(to_s_dump)}
+  # end
 end
