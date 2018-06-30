@@ -10,11 +10,27 @@ var wants_no_space_before = [false, null, ',', '.', ';'];
 
 var FLATTEN_FORMAT_MARKDOWN = 1001;
 var FLATTEN_FORMAT_HTML = 1002;
+var FLATTEN_FORMAT_UNSAFE_TEXT = 1003;
+var FLATTEN_FORMAT_SAFE_TEXT = 1004;
 
+// returns *sanitized* html
 Words.prototype.toHtml = function() {
   return this.flatten(FLATTEN_FORMAT_HTML);
 };
 
+// returns *unsanitized* string with Tags (see below) lobotimized into text.
+// Maydo whitespace dialation ala html, but at least it preserves newlines.
+Words.prototype.toUnsafeText = function() {
+  return this.flatten(FLATTEN_FORMAT_UNSAFE_TEXT);
+};
+
+Words.prototype.toSaveText = function() {
+  return this.flatten(FLATTEN_FORMAT_SAFE_TEXT);
+};
+
+// returns *unsanitized* string with Tags (see below) rendered as html (not Markdown)
+// This preserves newlines, unlike toHtml.
+// It's assumed to be headed for a markdown parser that takes care of that.
 Words.prototype.toMarkdown = function() {
   return this.flatten(FLATTEN_FORMAT_MARKDOWN);
 };
@@ -58,8 +74,14 @@ function tag(tag, body) {
 // }
 
 Tag.prototype.flatten = function (format) {
-  // TODO: simply sanitize and print attrs
-  return '<' + this.tag + '>' + flattenWordNode(this.body, format) + '</' + this.tag + '>';
+  if (format === FLATTEN_FORMAT_UNSAFE_TEXT || format === FLATTEN_FORMAT_SAFE_TEXT) {
+    return flattenWordNode(this.body, format);
+  } else if (format === FLATTEN_FORMAT_MARKDOWN || format === FLATTEN_FORMAT_HTML) {
+    // TODO: simply sanitize and print attrs
+    return '<' + this.tag + '>' + flattenWordNode(this.body, format) + '</' + this.tag + '>';
+  } else {
+    throw_up('unexpected word flatten format :'+format.toString());
+  }
 }
 
 Tag.prototype.peek = function () {
@@ -77,13 +99,12 @@ function flattenWordNode(s, format) {
   if (s.flatten) {
     return s.flatten(format);
   } else if ('string' === typeof s) {
-    if (format === FLATTEN_FORMAT_HTML) {
+    if (format === FLATTEN_FORMAT_HTML || format === FLATTEN_FORMAT_SAFE_TEXT) {
       var replacer = function(match) {
         return sanitizationMap[match] || throw_up('Unexpected match during flatten sanitize');
       };
       return s.replace(/&amp;|&|<|>/g, replacer).trim();
-    } else if (format === FLATTEN_FORMAT_MARKDOWN) {
-      // our markdown has it's own html sanitizer
+    } else if (format === FLATTEN_FORMAT_MARKDOWN || format === FLATTEN_FORMAT_UNSAFE_TEXT) {
       return trimButLeaveNewlines(s);
     } else {
       throw_up('unexpected flatten format: '+format.toString());
