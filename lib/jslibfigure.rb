@@ -167,7 +167,11 @@ module JSLibFigure
   end
 
   def self.lingo_lines_html(s, dialect)
-    self.eval("lingoLineWords(#{s.inspect}, #{dialect.to_json}).sanitize()").html_safe
+    self.eval("lingoLineWords(#{s.inspect}, #{dialect.to_json}).toHtml()").html_safe
+  end
+
+  def self.lingo_lines_markdown(s, dialect)
+    self.eval("lingoLineWords(#{s.inspect}, #{dialect.to_json}).toMarkdown()")
   end
 
   def self.good_beats?(figure)

@@ -36,12 +36,12 @@ function figureToString(f,dialect) {
     var note = f.note;
     if (note && note.trim()) {
       var fancy_note = lingoLineWords(stringInDialect(note, dialect), dialect);
-      return words(main, fancy_note).sanitize();
+      return words(main, fancy_note).toHtml();
     } else {
-      return words(main).sanitize();
+      return words(main).toHtml();
     }
   } else if (f.move) {
-    return "rogue figure '"+words(f.move).sanitize()+"'!";
+    return "rogue figure '"+words(f.move).toHtml()+"'!";
   } else {
     return "empty figure";
   }
