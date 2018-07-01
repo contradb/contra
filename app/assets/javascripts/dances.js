@@ -156,7 +156,7 @@ function menuMoveLabel(from,to) {
     setChoosers($scope);
     $scope.wristGrips = wristGrips;
     $scope.dialect = dialect;
-    $scope.figureToString = figureToString;
+    $scope.figureToHtml = figureToHtml;
     $scope.dialectForFigures = dialectForFigures;
     $scope.set_if_unset = set_if_unset;
     $scope.userChangedParameter = userChangedParameter;

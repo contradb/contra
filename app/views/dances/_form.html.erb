@@ -123,7 +123,7 @@
               </span>
               <a ng-click="clickFigure(figureIdx);"
                  href="" class="figure-view" ng-attr-id="{{'figure-'+figureIdx}}">
-                <span ng-bind-html="figureToString(figures.arr[figureIdx], dialectForFigures(dialect, figures.arr))"></span>
+                <span ng-bind-html="figureToHtml(figures.arr[figureIdx], dialectForFigures(dialect, figures.arr))"></span>
                 <%# It is unfortunate that I can't figure out how to
                 store the value of dialectForFigures() somewhere. It
                 irks me that we have to compute it once per figure,

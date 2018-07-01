@@ -28,27 +28,40 @@ function sumBeats(figures,optional_limit) {
   return acc;
 }
 
-function figureToString(f,dialect) {
+function figureToHtml(f, dialect) {
+  return figureFlatten(f, dialect, FLATTEN_FORMAT_HTML);
+}
+
+function figureToUnsafeText(f, dialect) {
+  return figureFlatten(f, dialect, FLATTEN_FORMAT_UNSAFE_TEXT);
+}
+
+function figureToSafeText(f, dialect) {
+  return figureFlatten(f, dialect, FLATTEN_FORMAT_SAFE_TEXT);
+}
+
+function figureFlatten(f, dialect, flatten_format) {
   var fig_def = defined_events[f.move];
   if (fig_def) {
-    var func = fig_def.props.stringify || figureGenericStringify;
+    var func = fig_def.props.words || figureGenericWords;
     var main = func(alias(f), f.parameter_values, dialect);
     var note = f.note;
     if (note && note.trim()) {
       var fancy_note = lingoLineWords(stringInDialect(note, dialect), dialect);
-      return words(main, fancy_note).toHtml();
+      return words(main, fancy_note).flatten(flatten_format);
     } else {
-      return words(main).toHtml();
+      return words(main).flatten(flatten_format);
     }
   } else if (f.move) {
-    return "rogue figure '"+words(f.move).toHtml()+"'!";
+    return "undefined figure '"+words(f.move).flatten(flatten_format)+"'!";
   } else {
     return "empty figure";
   }
 }
 
-// Called if they don't specify a Stringify function in the figure definition:
-function figureGenericStringify(move, parameter_values, dialect) {
+
+// Called if they don't specify a Words function in the figure definition:
+function figureGenericWords(move, parameter_values, dialect) {
   // todo: clean this up so it's not so obnoxiously ugly
   // it's thouroughly tested, so it will be safe to remove the fishing expeditions for who, balance and beats.
   var ps = parameters(move);

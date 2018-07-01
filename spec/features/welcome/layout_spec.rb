@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'login_helper'
 require 'support/scrutinize_layout'
 
 describe 'page layout - tested against root page', js: true do

@@ -1,9 +1,5 @@
 require 'rails_helper'
 
-# from https://github.com/plataformatec/devise/wiki/How-To:-Test-with-Capybara :
-include Warden::Test::Helpers
-Warden.test_mode!
-
 describe 'Choreographer show' do
   let (:choreographer) { FactoryGirl.create(:choreographer) }
   let (:dance_publish) { FactoryGirl.create(:dance, choreographer: choreographer, title: "Publish Dance", publish: true)}

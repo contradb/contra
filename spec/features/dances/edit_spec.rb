@@ -1,6 +1,5 @@
 # coding: utf-8
 require 'rails_helper'
-require 'login_helper'
 
 describe 'Editing dances', js: true do
   it 'displays attributes of an existing dance' do
@@ -114,14 +113,14 @@ describe 'Editing dances', js: true do
     with_login do |user|
       dance = FactoryGirl.create(:box_the_gnat_contra, user: user)
       visit edit_dance_path dance.id
-      expect(page).to have_content('A1 8 neighbors balance & box the gnat 8 partners balance & swat the flea')
-      expect(page).to have_content('A2 16 neighbors balance & swing')
-      expect(page).to have_content('B1 8 ladles allemande right 1½ 8 partners swing')
-      expect(page).to have_content('B2 8 right left through 8 ladles chain')
+      expect(page).to have_words('A1 8 neighbors balance & box the gnat 8 partners balance & swat the flea')
+      expect(page).to have_words('A2 16 neighbors balance & swing')
+      expect(page).to have_words('B1 8 ladles allemande right 1½ 8 partners swing')
+      expect(page).to have_words('B2 8 right left through 8 ladles chain')
       expect(page).to_not have_css('.beats-column-danger')
       click_on('neighbors balance & box the gnat')
       select('10')
-      expect(page).to have_content('A1 10 neighbors balance & box the gnat')
+      expect(page).to have_words('A1 10 neighbors balance & box the gnat')
       expect(page).to have_css('.beats-column-danger', text: '10')
     end
   end
@@ -154,17 +153,17 @@ describe 'Editing dances', js: true do
         visit edit_dance_path dance.id
         expect(page).to_not have_content('next neighbors')
         expect(page).to have_content('2nd neighbors')
-        expect(page).to have_content('B2 8 1st shadows swing')
+        expect(page).to have_words('B2 8 1st shadows swing')
         click_link('3rd neighbors swing')
         select('partners')
         expect(page).to have_content('next neighbors')
         expect(page).to_not have_content('2nd neighbors')
         click_link('2nd shadows swing')
         select('partners')
-        expect(page).to_not have_content('B2 8 1st shadows swing')
-        expect(page).to have_content('B2 8 shadows swing')
+        expect(page).to_not have_words('B2 8 1st shadows swing')
+        expect(page).to have_words('B2 8 shadows swing')
         select('2nd shadows')
-        expect(page).to have_content('B2 8 1st shadows swing')
+        expect(page).to have_words('B2 8 1st shadows swing')
       end
     end
 
@@ -207,12 +206,12 @@ describe 'Editing dances', js: true do
         figure_in_dialect = dance_in_dialect.figures.first
 
         # custom
-        expect(page).to have_content(figure_in_dialect['parameter_values'].first)
-        expect(page).to_not have_content(figure['parameter_values'].first)
+        expect(page).to have_words(figure_in_dialect['parameter_values'].first)
+        expect(page).to_not have_words(figure['parameter_values'].first)
 
         # figure note
-        expect(page).to have_content(figure_in_dialect['note'])
-        expect(page).to_not have_content(figure['note'])
+        expect(page).to have_words(figure_in_dialect['note'])
+        expect(page).to_not have_words(figure['note'])
 
         preamble = page.find('#dance_preamble').value
         expect(preamble).to eq(dance_in_dialect.preamble)

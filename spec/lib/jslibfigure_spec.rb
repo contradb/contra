@@ -421,9 +421,19 @@ RSpec.describe JSLibFigure do
     expect(strip_form.call('undulating wave', false, 'amorphous')).to eq('amorphous undulating wave')
   end
 
-  it 'figureToString with leading comma in note' do
+  it 'figureToHtml with leading comma in note' do
     figure = {'move' => 'long lines', 'parameter_values' => [true, 8], 'note' => ", hi"};
-    expect(JSLibFigure.figure_to_string(figure, JSLibFigure.default_dialect)).to eq('long lines forward &amp; back, hi')
+    expect(JSLibFigure.figure_to_html(figure, JSLibFigure.default_dialect)).to eq('long lines forward &amp; back, hi')
+  end
+
+  it 'figureToUnsafeText works' do
+    figure = {'move' => 'long lines', 'parameter_values' => [true, 8], 'note' => ", hi gentlespoons <script>alert('pwnd')</script>"};
+    expect(JSLibFigure.figure_to_unsafe_text(figure, JSLibFigure.default_dialect)).to eq("long lines forward & back, hi gentlespoons <script>alert('pwnd')</script>")
+  end
+
+  it 'figureToSafeText works' do
+    figure = {'move' => 'long lines', 'parameter_values' => [true, 8], 'note' => ", hi gentlespoons <script>alert('pwnd')</script>"};
+    expect(JSLibFigure.figure_to_safe_text(figure, JSLibFigure.default_dialect)).to eq("long lines forward &amp; back, hi gentlespoons &lt;script&gt;alert('pwnd')&lt;/script&gt;")
   end
 
   describe 'figure_translate_text_into_dialect' do
