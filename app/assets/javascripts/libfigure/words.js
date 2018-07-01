@@ -8,7 +8,37 @@ function words () {
 
 var wants_no_space_before = [false, null, ',', '.', ';'];
 
-Words.prototype.sanitize = function() {
+var FLATTEN_FORMAT_MARKDOWN = 1001;
+var FLATTEN_FORMAT_HTML = 1002;
+var FLATTEN_FORMAT_UNSAFE_TEXT = 1003;
+var FLATTEN_FORMAT_SAFE_TEXT = 1004;
+
+// returns *sanitized* html
+Words.prototype.toHtml = function() {
+  return this.flatten(FLATTEN_FORMAT_HTML);
+};
+
+// returns *unsanitized* string with Tags (see below) lobotimized into text.
+// Maydo whitespace dialation ala html, but at least it preserves newlines.
+Words.prototype.toUnsafeText = function() {
+  return this.flatten(FLATTEN_FORMAT_UNSAFE_TEXT);
+};
+
+// returns *sanitized* e.g. <b>pb&j</b> → &lt;b&gt;pb&amp;a&lt;b&gt;
+// but is different from toHtml because any Tags (see below) are
+// flattened with no bracketing tags, they're all body.
+Words.prototype.toSaveText = function() {
+  return this.flatten(FLATTEN_FORMAT_SAFE_TEXT);
+};
+
+// returns *unsanitized* string with Tags (see below) rendered as html (not Markdown)
+// This preserves newlines, unlike toHtml.
+// It's assumed to be headed for a markdown parser that takes care of that.
+Words.prototype.toMarkdown = function() {
+  return this.flatten(FLATTEN_FORMAT_MARKDOWN);
+};
+
+Words.prototype.flatten = function(format) {
   var arr = this.arr;
   var acc = [];
   var space_before = false;
@@ -17,7 +47,7 @@ Words.prototype.sanitize = function() {
     if (wants_space_before) {
       acc.push(' ');
     }
-    acc.push(sanitizeWordNode(arr[i]));
+    acc.push(flattenWordNode(arr[i], format));
   }
   return trimButLeaveNewlines(acc.join(''));
 }
@@ -46,9 +76,15 @@ function tag(tag, body) {
 //   return new Tag(tag, attrs, body);
 // }
 
-Tag.prototype.sanitize = function () {
-  // TODO: simply sanitize and print attrs
-  return '<' + this.tag + '>' + sanitizeWordNode(this.body) + '</' + this.tag + '>';
+Tag.prototype.flatten = function (format) {
+  if (format === FLATTEN_FORMAT_UNSAFE_TEXT || format === FLATTEN_FORMAT_SAFE_TEXT) {
+    return flattenWordNode(this.body, format);
+  } else if (format === FLATTEN_FORMAT_MARKDOWN || format === FLATTEN_FORMAT_HTML) {
+    // TODO: simply sanitize and print attrs
+    return '<' + this.tag + '>' + flattenWordNode(this.body, format) + '</' + this.tag + '>';
+  } else {
+    throw_up('unexpected word flatten format :'+format.toString());
+  }
 }
 
 Tag.prototype.peek = function () {
@@ -62,13 +98,20 @@ var sanitizationMap = {
   '&amp;': '&amp;'
 };
 
-function sanitizeWordNode(s) {
-  if (s.sanitize) {
-    return s.sanitize();
+function flattenWordNode(s, format) {
+  if (s.flatten) {
+    return s.flatten(format);
   } else if ('string' === typeof s) {
-    return trimButLeaveNewlines(s.replace(/&amp;|&|<|>/g, function(match) {
-      return sanitizationMap[match] || throw_up('Unexpected match during sanitize');
-    }));
+    if (format === FLATTEN_FORMAT_HTML || format === FLATTEN_FORMAT_SAFE_TEXT) {
+      var replacer = function(match) {
+        return sanitizationMap[match] || throw_up('Unexpected match during flatten sanitize');
+      };
+      return s.replace(/&amp;|&|<|>/g, replacer).trim();
+    } else if (format === FLATTEN_FORMAT_MARKDOWN || format === FLATTEN_FORMAT_UNSAFE_TEXT) {
+      return trimButLeaveNewlines(s);
+    } else {
+      throw_up('unexpected flatten format: '+format.toString());
+    }
   } else if (comma === s) {
     return ',';
   } else if (false === s) {

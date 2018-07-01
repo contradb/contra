@@ -2,8 +2,16 @@
 
 module JSLibFigure
 
-  def self.figure_to_string(figure_ruby_hash, dialect)
-    self.eval("figureToString(#{figure_ruby_hash.to_json},#{dialect.to_json})")
+  def self.figure_to_html(figure_ruby_hash, dialect)
+    self.eval("figureToHtml(#{figure_ruby_hash.to_json},#{dialect.to_json})")
+  end
+
+  def self.figure_to_unsafe_text(figure_ruby_hash, dialect)
+    self.eval("figureToUnsafeText(#{figure_ruby_hash.to_json},#{dialect.to_json})")
+  end
+
+  def self.figure_to_safe_text(figure_ruby_hash, dialect)
+    self.eval("figureToSafeText(#{figure_ruby_hash.to_json},#{dialect.to_json})")
   end
 
   def self.beats(figure_ruby_hash)
@@ -167,7 +175,11 @@ module JSLibFigure
   end
 
   def self.lingo_lines_html(s, dialect)
-    self.eval("lingoLineWords(#{s.inspect}, #{dialect.to_json}).sanitize()").html_safe
+    self.eval("lingoLineWords(#{s.inspect}, #{dialect.to_json}).toHtml()").html_safe
+  end
+
+  def self.lingo_lines_markdown(s, dialect)
+    self.eval("lingoLineWords(#{s.inspect}, #{dialect.to_json}).toMarkdown()")
   end
 
   def self.good_beats?(figure)

@@ -1,7 +1,6 @@
 # coding: utf-8
 
 require 'rails_helper'
-require 'login_helper'
 
 describe 'Welcome page', js: true do
   let (:dances) {[:dance, :box_the_gnat_contra, :call_me].map {|d| FactoryGirl.create(d)}}
@@ -25,12 +24,16 @@ describe 'Welcome page', js: true do
       expect(page).to_not have_css('td', text: 'Published') # column invisible by default, it's not hidden, it's simply not there
     end
 
-    it 'displays in descencing updated_at order by default' do
+    it 'displays in descending updated_at order by default' do
       dance
       dance2 = FactoryGirl.create(:box_the_gnat_contra, title: "The First Dance", updated_at: DateTime.now + 1.minute)
       dance3 = FactoryGirl.create(:box_the_gnat_contra, title: "The Last Dance", updated_at: DateTime.now - 1.minute)
       visit '/'
-      expect(page).to have_content(/#{dance2.title}.*#{dance.title}.*#{dance3.title}/)
+      expect(page).to have_content(dance.title) # js wait
+      txt = page.text
+      # check order dance2 dance dance3
+      expect((/#{dance2.title}/ =~ txt) < (/#{dance.title}/ =~ txt)).to eq(true)
+      expect((/#{dance.title}/ =~ txt) < (/#{dance3.title}/ =~ txt)).to eq(true)
     end
 
     it 'shows only dances visible to current user' do

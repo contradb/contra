@@ -1,7 +1,6 @@
 # coding: utf-8
 
 require 'rails_helper'
-require 'login_helper'
 
 describe 'Dialect page', js: true do
   describe 'role radio button' do
@@ -155,6 +154,7 @@ describe 'Dialect page', js: true do
         fill_in 'swing-substitution', with: 'swong' # js wait
         expect(find('.new-move-idiom').value).to eq('') # select box doesn't stick on 'swing'
         expect(page).to have_css('.glyphicon-ok')
+        user.reload
         expect(user.idioms.length).to eq(1)
         expect(user.idioms.first.term).to eq('swing')
         expect(user.idioms.first.substitution).to eq('swong')
@@ -169,6 +169,7 @@ describe 'Dialect page', js: true do
         fill_in 'neighbors-substitution', with: 'buddies' # js wait
         expect(find('.new-dancers-idiom').value).to eq('') # select box doesn't stick on 'neighbors'
         expect(page).to have_css('.glyphicon-ok')
+        user.reload
         expect(user.idioms.length).to eq(1)
         expect(user.idioms.first.term).to eq('neighbors')
         expect(user.idioms.first.substitution).to eq('buddies')
@@ -291,13 +292,13 @@ describe 'Dialect page', js: true do
         FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'ladles')
         visit '/dialect'
         expect(page).to have_css('h1', text: slow_down_velociraptor)
-        expect(page).to have_content('fix a few of: ladles → ladles gentlespoons → ladles')
+        expect(page).to have_words('fix a few of: ladles → ladles gentlespoons → ladles')
         choose('larks & ravens')
         expect(page).to_not have_content(slow_down_velociraptor)
         click_button('substitute...')
         fill_in('gyre-dialog-substitution', with: 'ravens')
         click_button('Save')
-        expect(page).to have_content('fix a few of: gyre → ravens ladles → ravens')
+        expect(page).to have_words('fix a few of: gyre → ravens ladles → ravens')
       end
     end
   end

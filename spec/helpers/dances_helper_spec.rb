@@ -4,7 +4,7 @@ require 'rails_helper'
 RSpec.describe DancesHelper, type: :helper do
 
   figure_txt_for = -> move, *parameter_values, dialect {
-    JSLibFigure.figure_to_string({'move' => move, 'parameter_values' => parameter_values}, dialect)
+    JSLibFigure.figure_to_html({'move' => move, 'parameter_values' => parameter_values}, dialect)
   }
 
   def whitespice(x) 
@@ -275,7 +275,7 @@ RSpec.describe DancesHelper, type: :helper do
 
     it "doesn't have %S in figure note" do
       figure = {'move' => 'gyre', 'parameter_values' => ['partners', true, 360, 8], 'note' => 'this is a gyre'}
-      expect(JSLibFigure.figure_to_string(figure,JSLibFigure.shoulder_round_dialect)).to match(whitespice("partners right shoulder round once this is a shoulder round"))
+      expect(JSLibFigure.figure_to_html(figure,JSLibFigure.shoulder_round_dialect)).to match(whitespice("partners right shoulder round once this is a shoulder round"))
     end
   end
 end

@@ -21,8 +21,8 @@ class ProgramsController < ApplicationController
     @program = Program.new
     @dance_autocomplete_hash_json = dance_autocomplete_hash_json
     if params[:copy_program_id]
-      then (Program.find params[:copy_program_id]).activities_sorted.each_with_index do |a,i|
-      @program.activities.build(index: i, text: a.text, dance_id: a.dance_id)
+      Program.find(params[:copy_program_id]).activities_sorted.each_with_index do |a,i|
+        @program.activities.build(index: i, text: a.text, dance_id: a.dance_id)
       end
       else 3.times {|i| @program.activities.build(index: i)}
     end

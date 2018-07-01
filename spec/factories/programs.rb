@@ -6,10 +6,13 @@ FactoryGirl.define do
     user  { FactoryGirl.create :user }
 
     transient do
-      dances []                 # convenience: can pass in a list of dances directly
+      dances []
+      text_activities []
     end
+
     after(:create) do |program, evaluator|
       evaluator.dances.each {|dance| program.append_new_activity(dance: dance)}
+      evaluator.text_activities.each {|text| program.append_new_activity(text: text)}
     end
   end
 end

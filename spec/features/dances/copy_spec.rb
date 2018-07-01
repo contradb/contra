@@ -1,6 +1,5 @@
 # coding: utf-8
 require 'rails_helper'
-require 'login_helper'
 
 describe 'Copying dances', js: true do
   it 'displays attributes of an existing dance' do
