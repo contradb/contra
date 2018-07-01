@@ -7,7 +7,7 @@
                 <div ng-if="p.ui == chooser_beats">
                   <select
                      ng-model="figure.parameter_values[$index]"
-                     ng-options="b for b in [8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]"
+                     ng-options="b for b in [8,16,0,1,2,3,4,5,6,7,8,10,12,14,16,20,24,32,48,64]"
                      ng-change="userChangedParameter(figure,$index)"
                      class='form-control'>
                   </select>
