@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# script for deploying production on digital ocean - takes no args
+# you should probably run contradb-backup before running this
+
+if [ -z "$HOME" ]
+then
+  echo "\$HOME is not set"
+  exit 1
+fi
+
+set -e
+set -x
+cd $HOME/contra
+sudo service nginx stop
+sudo service unicorn_contra stop; 
+git pull
+bundle install --deployment --without development test
+bundle exec rake assets:precompile
+bin/rake db:migrate
+sudo service unicorn_contra start
+sudo service nginx start
+
