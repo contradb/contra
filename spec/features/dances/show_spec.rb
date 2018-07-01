@@ -1,6 +1,5 @@
 # coding: utf-8
 require 'rails_helper'
-require 'login_helper'
 
 describe 'Showing dances' do
   it 'displays fields' do

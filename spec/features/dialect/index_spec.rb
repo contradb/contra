@@ -1,7 +1,6 @@
 # coding: utf-8
 
 require 'rails_helper'
-require 'login_helper'
 
 describe 'Dialect page', js: true do
   describe 'role radio button' do
@@ -155,6 +154,7 @@ describe 'Dialect page', js: true do
         fill_in 'swing-substitution', with: 'swong' # js wait
         expect(find('.new-move-idiom').value).to eq('') # select box doesn't stick on 'swing'
         expect(page).to have_css('.glyphicon-ok')
+        user.reload
         expect(user.idioms.length).to eq(1)
         expect(user.idioms.first.term).to eq('swing')
         expect(user.idioms.first.substitution).to eq('swong')
@@ -169,6 +169,7 @@ describe 'Dialect page', js: true do
         fill_in 'neighbors-substitution', with: 'buddies' # js wait
         expect(find('.new-dancers-idiom').value).to eq('') # select box doesn't stick on 'neighbors'
         expect(page).to have_css('.glyphicon-ok')
+        user.reload
         expect(user.idioms.length).to eq(1)
         expect(user.idioms.first.term).to eq('neighbors')
         expect(user.idioms.first.substitution).to eq('buddies')

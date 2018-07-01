@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'login_helper'
 
 describe 'figures show' do
   let (:box) { FactoryGirl.create(:box_the_gnat_contra) }

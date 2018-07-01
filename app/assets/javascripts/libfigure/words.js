@@ -24,6 +24,9 @@ Words.prototype.toUnsafeText = function() {
   return this.flatten(FLATTEN_FORMAT_UNSAFE_TEXT);
 };
 
+// returns *sanitized* e.g. <b>pb&j</b> → &lt;b&gt;pb&amp;a&lt;b&gt;
+// but is different from toHtml because any Tags (see below) are
+// flattened with no bracketing tags, they're all body.
 Words.prototype.toSaveText = function() {
   return this.flatten(FLATTEN_FORMAT_SAFE_TEXT);
 };

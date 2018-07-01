@@ -1,7 +1,5 @@
 require 'rails_helper'
-require 'login_helper'
 require 'support/scrutinize_layout'
-include Warden::Test::Helpers
 
 describe 'Editing user' do
   it 'editing Identity works' do

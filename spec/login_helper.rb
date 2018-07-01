@@ -1,17 +1,15 @@
+# from https://github.com/plataformatec/devise/wiki/How-To:-Test-with-Capybara :
+include Warden::Test::Helpers
+Warden.test_mode!
 
-# ONLY TO BE USED IN FEATURE TESTS, because I have no idea what I am doing-dm 07-04-2016
-
-def with_login (admin: false, password: 'aaaaaaaa', &block)
-    # hackily sign in - there's got to be a better way
-    visit '/users/sign_up'
-    fill_in 'user_email', with: 'test@test.com'
-    fill_in 'user_name', with: 'Testy T. Testerson'
-    fill_in 'user_password',              with: password
-    fill_in 'user_password_confirmation', with: password
-    #click_on ' Sign Up':
-    find('button[type="submit"]').click
-    user = User.last
-    # users controller helpfully creates first user as admin - override it
-    user.update(admin: admin) if admin != user.admin?
+def with_login(user: nil, admin: nil, password: nil, &block)
+  raise "can't both pass a user and specify admin - pick one" if user && admin
+  raise "can't both pass a user and specify password - pick one" if user && password
+  user ||= FactoryGirl.create(:user, email: 'test@test.com', name: 'Testerson', password: password || 'aaaaaaaa', admin: admin || false)
+  login_as(user)
+  begin
     block.call user
+  ensure
+    logout
+  end
 end

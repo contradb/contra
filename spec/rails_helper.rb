@@ -80,3 +80,5 @@ RSpec.configure do |config|
 
   config.include Retries
 end
+
+require 'login_helper'

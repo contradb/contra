@@ -1,7 +1,6 @@
 # coding: utf-8
 
 require 'rails_helper'
-require 'login_helper'
 
 describe 'Welcome page', js: true do
   let (:dances) {[:dance, :box_the_gnat_contra, :call_me].map {|d| FactoryGirl.create(d)}}

@@ -1,6 +1,5 @@
 # coding: utf-8
 require 'rails_helper'
-require 'login_helper'
 require 'support/scrutinize_layout'
 
 describe 'Creating dances', js: true do
