@@ -41,6 +41,4 @@ describe 'Deleting programs' do
       expect(page).to_not have_content("I am dead")
     end
   end
-
-  pending "deletes the correct program activities"
 end
