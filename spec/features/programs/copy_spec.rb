@@ -6,19 +6,23 @@ include Warden::Test::Helpers
 Warden.test_mode!
 
 describe 'Copying programs' do
+  let :program {FactoryGirl.create(:program,
+                                   title: "Fish Dance",
+                                   dances: [:box_the_gnat_contra, :call_me].map {|sym| FactoryGirl.create(sym)},
+                                   text_activities: ['waltz', 'break'])}
+  let :activities {[FactoryGirl.create(:activity)]}
+
   before (:each) do
-    @user = FactoryGirl.create(:user)
-    login_as(@user, :scope => :user)
-    @program = FactoryGirl.create(:program, user: @user, title: "Fish Dance")
+    login_as(FactoryGirl.create(:user))
   end
 
   it "copies the title" do
-    visit "/programs/#{@program.id}"
+    visit program_path(program)
     click_link 'Copy'
 
     scrutinize_layout page
     expect(page).to have_selector("input[value='Fish Dance copy']")
   end
 
-  pending "copies the activities"
+  it "copies the program"
 end

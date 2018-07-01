@@ -291,13 +291,13 @@ describe 'Dialect page', js: true do
         FactoryGirl.create(:dancer_idiom, user: user, term: 'gentlespoons', substitution: 'ladles')
         visit '/dialect'
         expect(page).to have_css('h1', text: slow_down_velociraptor)
-        expect(page).to have_content('fix a few of: ladles → ladles gentlespoons → ladles')
+        expect(page).to have_words('fix a few of: ladles → ladles gentlespoons → ladles')
         choose('larks & ravens')
         expect(page).to_not have_content(slow_down_velociraptor)
         click_button('substitute...')
         fill_in('gyre-dialog-substitution', with: 'ravens')
         click_button('Save')
-        expect(page).to have_content('fix a few of: gyre → ravens ladles → ravens')
+        expect(page).to have_words('fix a few of: gyre → ravens ladles → ravens')
       end
     end
   end

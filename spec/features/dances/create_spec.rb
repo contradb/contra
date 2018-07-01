@@ -94,18 +94,19 @@ describe 'Creating dances', js: true do
         make_eight_circle_figures
         find('#figure-menu-4').click # 'circle to the left 5 places'
         click_on 'Up 2'
-        expect(page).to have_text ['A1',
-                                   '8 circle left 1 place',
-                                   '8 circle left 2 places',
-                                   'A2',
-                                   '8 circle left 5 places',
-                                   '8 circle left 3 places',
-                                   'B1',
-                                   '8 circle left 4 places',
-                                   '8 circle left 6 places',
-                                   'B2',
-                                   '8 circle left 7 places',
-                                   '8 circle left 8 places'].join(' ')
+        expect(page).to have_words ["A1",
+                                    "8 circle left 1 place",
+                                    "8 circle left 2 places",
+                                    "A2",
+                                    "8 circle left 5 places",
+                                    "8 circle left 3 places",
+                                    "B1",
+                                    "8 circle left 4 places",
+                                    "8 circle left 6 places",
+                                    "B2",
+                                    "8 circle left 7 places",
+                                    "8 circle left 8 places",
+                                   ].join(' ')
       end
     end
 
@@ -128,9 +129,9 @@ describe 'Creating dances', js: true do
         find('#figure-0').click
         select('chain')
         click_button('Add')
-        expect(page).to have_content("A1 8 ladles chain 8 empty figure move note")
+        expect(page).to have_words("A1 8 ladles chain 8 empty figure move note")
         click_button('Add')
-        expect(page).to have_content("A1 8 ladles chain 8 empty figure A2 8 empty figure move note")
+        expect(page).to have_words("A1 8 ladles chain 8 empty figure A2 8 empty figure move note")
       end
     end
 
@@ -141,7 +142,7 @@ describe 'Creating dances', js: true do
         select('chain')
         click_link('ladles chain')
         click_button('Add')
-        expect(page).to have_content("A1 8 empty figure move note 8 ladles chain")
+        expect(page).to have_words("A1 8 empty figure move note 8 ladles chain")
       end
     end
   end
@@ -166,10 +167,10 @@ describe 'Creating dances', js: true do
         select('do si do')
         find('#figure-0').click
         select('chain')
-        expect(page).to have_content('A1 8 ladles chain')
+        expect(page).to have_words('A1 8 ladles chain')
         click_button('Remove')
         expect(page).to_not have_content('ladies chain')
-        expect(page).to have_content('A1 8 ____ do si do once move who')
+        expect(page).to have_words('A1 8 ____ do si do once move who')
       end
     end
 
@@ -179,10 +180,10 @@ describe 'Creating dances', js: true do
         expect(page).to have_css('#figure-7')
         find('#figure-7').click
         select('do si do')
-        expect(page).to have_content('B2 8 empty figure 8 ____ do si do')
+        expect(page).to have_words('B2 8 empty figure 8 ____ do si do')
         click_button('Remove')
-        expect(page).to_not have_content('do si do')
-        expect(page).to have_content('B2 8 empty figure move')
+        expect(page).to_not have_words('do si do')
+        expect(page).to have_words('B2 8 empty figure move')
       end
     end
 
@@ -213,13 +214,13 @@ describe 'Creating dances', js: true do
         end
         select('custom')
         click_link('custom')
-        expect(page).to have_content('A1 8 custom 8 empty figure A2 8 empty figure Notes')
+        expect(page).to have_words('A1 8 custom 8 empty figure A2 8 empty figure Notes')
         click_button('Rotate')
-        expect(page).to have_content('A1 8 empty figure 8 custom A2 8 empty figure Notes')
+        expect(page).to have_words('A1 8 empty figure 8 custom A2 8 empty figure Notes')
         click_button('Rotate')
-        expect(page).to have_content('A1 8 empty figure 8 empty figure A2 8 custom Notes')
+        expect(page).to have_words('A1 8 empty figure 8 empty figure A2 8 custom Notes')
         click_button('Rotate')
-        expect(page).to have_content('A1 8 custom 8 empty figure A2 8 empty figure Notes')
+        expect(page).to have_words('A1 8 custom 8 empty figure A2 8 empty figure Notes')
       end
     end
   end
@@ -265,7 +266,7 @@ describe 'Creating dances', js: true do
       fill_in 'dance[choreographer_name]', with: 'Cary Ravitz'
       fill_in 'dance[start_type]', with: 'improper'
       click_on 'Save Dance'
-      expect(page).to have_content('Dance was successfully created.')
+      expect(page).to have_words('Dance was successfully created.')
       dance = Dance.last
       custom_figure = dance.figures.first
       expect(custom_figure['note']).to eq(text_in_canon)
