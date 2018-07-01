@@ -45,4 +45,14 @@ describe Program, type: :model do
       expect(@program.activities_sorted.map(&:text)).to be == ["a","b","c"]
     end
   end
+
+  it '#destroy also destroys activities but not dances' do
+    user = FactoryGirl.create(:user)
+    dance = FactoryGirl.create(:dance, user: user)
+    program = FactoryGirl.create(:program, dances: [dance], user: user)
+    activity = program.activities.first
+    program.destroy!
+    expect(Dance.find_by(id: dance.id)).to be_a(Dance)
+    expect(Activity.find_by(id: activity.id)).to be(nil)
+  end
 end
