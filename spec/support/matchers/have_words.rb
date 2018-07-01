@@ -1,6 +1,7 @@
 require 'rspec/expectations'
 
-# have_words is like have_content but it doesn't care about whitespace
+# have_words is like have_content but it glosses over \t and \n
+# inserted by capybara 3. It only accepts a string, not a regexp.
 RSpec::Matchers.define :have_words do |string|
   match do |page|
     re = Regexp.new(Regexp.escape(string).gsub('\ ', '(?:\s+)'))
