@@ -163,7 +163,7 @@ function lingoLineWords(string, dialect) {
   // lookbehind doesn't work in all versions of js, so we've got to use capture groups for word boundaries, sigh
   var underlines_and_strikes = underlinesAndStrikes(dialect);
   var all_lingo_lines = underlines_and_strikes.underlines.concat(underlines_and_strikes.strikes).sort(longestFirstSortFn);
-  var regex = new RegExp('(\\s|^)(' + all_lingo_lines.map(regExpEscape).join('|') + ')(\\s|$)','ig');
+  var regex = new RegExp('(\\s|'+PUNCTUATION_CHARSET_STRING+'|^)(' + all_lingo_lines.map(regExpEscape).join('|') + ')(\\s|'+PUNCTUATION_CHARSET_STRING+'|$)','ig');
   var buffer = [];
   var last_match_ended_at;
   while (true) {

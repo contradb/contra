@@ -414,8 +414,7 @@ function dialectRegExp(dialect) {
   var big_re_string_center = term_strings.map(regExpEscape).join('|');
   var big_re_string;
   if (big_re_string_center) {
-    var punct = '[\u2000-\u206F\u2E00-\u2E7F\'!"#$%&()*+,/:;<=>?@\\[\\]^_`{|}~\\.-]';
-    big_re_string = '(\\s|'+punct+'|^)('+big_re_string_center+')(?=\\s|'+punct+'|$)';
+    big_re_string = '(\\s|'+PUNCTUATION_CHARSET_STRING+'|^)('+big_re_string_center+')(?=\\s|'+PUNCTUATION_CHARSET_STRING+'|$)';
   } else {
     big_re_string = '^[]'; // unmatchable regexp - https://stackoverflow.com/a/25315586/5158597
   }
