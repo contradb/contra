@@ -273,9 +273,9 @@ RSpec.describe DancesHelper, type: :helper do
       expect(txt).to match('partners right shoulder round once')
     end
 
-    it "doesn't have %S in figure note" do
+    it "doesn't have %S in figure note, does have lingo lines" do
       figure = {'move' => 'gyre', 'parameter_values' => ['partners', true, 360, 8], 'note' => 'this is a gyre'}
-      expect(JSLibFigure.figure_to_html(figure,JSLibFigure.shoulder_round_dialect)).to match(whitespice("partners right shoulder round once this is a shoulder round"))
+      expect(JSLibFigure.figure_to_html(figure,JSLibFigure.shoulder_round_dialect)).to match(whitespice("partners right shoulder round once this is a <u>shoulder round</u>"))
     end
   end
 end

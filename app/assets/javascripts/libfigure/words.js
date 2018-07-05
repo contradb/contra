@@ -170,6 +170,7 @@ var comma = ['comma'];
 
 ////////////////////////////////////////////////////////////////
 
+// clamp words in <s> or <u> - string is already in-dialect at the point when this proceess it
 function lingoLineWords(string, dialect) {
   // lookbehind doesn't work in all versions of js, so we've got to use capture groups for word boundaries, sigh
   var underlines_and_strikes = underlinesAndStrikes(dialect);
@@ -202,7 +203,14 @@ var terms_for_uands;
 // NB on return value: it is freshly allocated each time
 function underlinesAndStrikes(dialect) {
   if (!terms_for_uands) {terms_for_uands = moves().concat(dancers());}
-  var underlines = terms_for_uands.map(function(term) {return (dialect.dancers[term] || dialect.moves[term] || term).toLowerCase();});
+  var underlines = terms_for_uands.map(function(term) {
+    var substitution = dialect.dancers[term] || dialect.moves[term];
+    return (substitution ? stripPercentS(substitution) : term).toLowerCase();
+  });
   var strikes = terms_for_uands.concat(bogusTerms).filter(function(s) {return -1 === underlines.indexOf(s.toLowerCase());});
   return {underlines: underlines, strikes: strikes};
+}
+
+function stripPercentS(str) {
+  return str.replace(/%S/g, '').trim();
 }

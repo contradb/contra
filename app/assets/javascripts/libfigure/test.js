@@ -67,5 +67,6 @@ function testLingoLineWords(string) {
   ++t && (lingoLineWords(' men-men(men)men.men[men]men men\nmen{men}men;men*men men ', d).toHtml() === ' <s>men</s>-<s>men</s>(<s>men</s>)<s>men</s>.<s>men</s>[<s>men</s>]<s>men</s> <s>men</s>\n<s>men</s>{<s>men</s>}<s>men</s>;<s>men</s>*<s>men</s> <s>men</s> '.trim()) || throw_up('test '+ t + ' failed'); // don't really care that it's trimmed
   ++t && (lingoLineWords('Larks larks lARkS', d).toHtml() === '<u>Larks</u> <u>larks</u> <u>lARkS</u>') || throw_up('test '+ t + ' failed');
   ++t && (lingoLineWords('men MEN mEn', d).toHtml() === '<s>men</s> <s>MEN</s> <s>mEn</s>') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineWords('right shoulder round', {moves: {gyre: '%S shoulder round'}, dancers: {}}).toHtml() === 'right <u>shoulder round</u>') || throw_up('test '+ t + ' failed'); // wip
   return ''+t+' successful tests';
 }
