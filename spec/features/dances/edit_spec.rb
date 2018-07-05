@@ -278,24 +278,25 @@ describe 'Editing dances', js: true do
         expect(page).to have_css('button.add-figure') # are we on the editor page?
         expect(page).to_not have_css('b', text: 'neighbors')
         expect(page).to_not have_css('b', text: 'bold')
-        expect(page).to have_text('<b>neighbors</b> balance & swing this should not be <b>bold</b>')
+        expect(page).to have_text(/<b>neighbors<\/b> ?balance & swing this should not be <b>bold<\/b>/)
       end
     end
   end
 
   describe "lingo lines" do
-    it "strikethrough bogoterms and idiom'ed terms" do
+    it "strikethrough bogusterms and idiom'ed terms" do
       with_login do |user|
         dance = FactoryGirl.create(:dance_with_a_custom, custom_text: 'click this!', user: user)
         allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         visit edit_dance_path(dance)
         click_link('click this!')
-        custom = "men ramen noodles gentlespoons men men"
+        custom = "men ramen noodles gentlespoons (men)men- Men men"
         note = "women congresswomen ladles"
         fill_in(:custom, with: custom)
         fill_in(:note, with: note)
         expect(page).to_not have_css('s', text: 'ramen noodles')
-        expect(page).to have_css('s', text: /\Amen\z/, count: 3)
+        expect(page).to have_css('s', text: /\Amen\z/, count: 4)
+        expect(page).to have_css('s', text: /\AMen\z/, count: 1)
         expect(page).to have_css('s', text: 'gentlespoons')
         expect(page).to have_css('s', text: 'women')
         expect(page).to have_css('s', text: 'ladles')

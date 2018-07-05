@@ -6,6 +6,23 @@ function words () {
   return new Words(Array.prototype.slice.call(arguments));
 }
 
+Words.prototype.scrunched = function() {return false;};
+
+// ____ ScrunchedWords are Words that don't insert spaces
+//      between arguments as agressively as regular words
+
+function ScrunchedWords(arr) {
+  Words.call(this, arr);
+}
+
+ScrunchedWords.prototype = Object.create(Words.prototype);
+ScrunchedWords.prototype.constructor = ScrunchedWords;
+
+ScrunchedWords.prototype.scrunched = function() {return true;};
+
+// ____ ScrunchedWords end
+
+
 var wants_no_space_before = [false, null, ',', '.', ';'];
 
 var FLATTEN_FORMAT_MARKDOWN = 1001;
@@ -43,7 +60,7 @@ Words.prototype.flatten = function(format) {
   var acc = [];
   var space_before = false;
   for (var i=0; i<arr.length; i++) {
-    var wants_space_before = -1 === wants_no_space_before.indexOf(peek(arr[i]));
+    var wants_space_before = (!this.scrunched()) && (-1 === wants_no_space_before.indexOf(peek(arr[i])));
     if (wants_space_before) {
       acc.push(' ');
     }
@@ -106,9 +123,9 @@ function flattenWordNode(s, format) {
       var replacer = function(match) {
         return sanitizationMap[match] || throw_up('Unexpected match during flatten sanitize');
       };
-      return s.replace(/&amp;|&|<|>/g, replacer).trim();
+      return s.replace(/&amp;|&|<|>/g, replacer);
     } else if (format === FLATTEN_FORMAT_MARKDOWN || format === FLATTEN_FORMAT_UNSAFE_TEXT) {
-      return trimButLeaveNewlines(s);
+      return s;
     } else {
       throw_up('unexpected flatten format: '+format.toString());
     }
@@ -159,11 +176,12 @@ var comma = ['comma'];
 
 ////////////////////////////////////////////////////////////////
 
+// clamp words in <s> or <u> - string is already in-dialect at the point when this proceess it
 function lingoLineWords(string, dialect) {
   // lookbehind doesn't work in all versions of js, so we've got to use capture groups for word boundaries, sigh
   var underlines_and_strikes = underlinesAndStrikes(dialect);
   var all_lingo_lines = underlines_and_strikes.underlines.concat(underlines_and_strikes.strikes).sort(longestFirstSortFn);
-  var regex = new RegExp('(\\s|^)(' + all_lingo_lines.map(regExpEscape).join('|') + ')(\\s|$)','ig');
+  var regex = new RegExp('(\\s|'+PUNCTUATION_CHARSET_STRING+'|^)(' + all_lingo_lines.map(regExpEscape).join('|') + ')(\\s|'+PUNCTUATION_CHARSET_STRING+'|$)','ig');
   var buffer = [];
   var last_match_ended_at;
   while (true) {
@@ -177,7 +195,7 @@ function lingoLineWords(string, dialect) {
     regex.lastIndex = regex.lastIndex - match_info[3].length; // put back trailing whitespace
   }
   buffer.push(string.slice(last_match_ended_at));
-  return new Words(buffer);
+  return new ScrunchedWords(buffer);
 }
 
 var bogusTerms = ['men', 'women', 'man', 'woman', 'gentlemen', 'gentleman',
@@ -191,7 +209,14 @@ var terms_for_uands;
 // NB on return value: it is freshly allocated each time
 function underlinesAndStrikes(dialect) {
   if (!terms_for_uands) {terms_for_uands = moves().concat(dancers());}
-  var underlines = terms_for_uands.map(function(term) {return (dialect.dancers[term] || dialect.moves[term] || term).toLowerCase();});
+  var underlines = terms_for_uands.map(function(term) {
+    var substitution = dialect.dancers[term] || dialect.moves[term];
+    return (substitution ? stripPercentS(substitution) : term).toLowerCase();
+  });
   var strikes = terms_for_uands.concat(bogusTerms).filter(function(s) {return -1 === underlines.indexOf(s.toLowerCase());});
   return {underlines: underlines, strikes: strikes};
+}
+
+function stripPercentS(str) {
+  return str.replace(/%S/g, '').trim();
 }
