@@ -8,6 +8,9 @@ function words () {
 
 Words.prototype.scrunched = function() {return false;};
 
+// ____ ScrunchedWords are Words that don't insert spaces
+//      between arguments as agressively as regular words
+
 function ScrunchedWords(arr) {
   Words.call(this, arr);
 }
@@ -16,6 +19,9 @@ ScrunchedWords.prototype = Object.create(Words.prototype);
 ScrunchedWords.prototype.constructor = ScrunchedWords;
 
 ScrunchedWords.prototype.scrunched = function() {return true;};
+
+// ____ ScrunchedWords end
+
 
 var wants_no_space_before = [false, null, ',', '.', ';'];
 
