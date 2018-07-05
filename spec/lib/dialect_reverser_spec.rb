@@ -17,7 +17,10 @@ describe DialectReverser do
       expect(dialect_reverser.reverse('Sliding doors')).to eq("Rory O'More")
     end
 
-    it 'works with %S'
+    it 'works with %S' do
+      dialect_reverser = DialectReverser.new(JSLibFigure.shoulder_round_dialect)
+      expect(dialect_reverser.reverse('left shoulder round')).to eq('left gyre')
+    end
 
     it 'works with an upper case substitution' do
       dr = DialectReverser.new({'moves' => {'gentlespoons' => 'M'}, 'dancers' => {}})
