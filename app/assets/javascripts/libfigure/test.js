@@ -20,7 +20,7 @@ function test_words_toHtml() {
   (new Tag('p', {}, 'hi & stuff').flatten(FLATTEN_FORMAT_HTML) == '<p>hi &amp; stuff</p>') || throw_up('test 2 failed'); // tag nodes don't have the helper
   (words('hello', tag('p', 'hi & stuff'), 'hello').toHtml() == 'hello <p>hi &amp; stuff</p> hello') || throw_up('test 3 failed');
   (words('mad robin', false, comma, 'gentlespoons in front').toHtml() == 'mad robin, gentlespoons in front') || throw_up('test 4 failed');
-  (words('\n').toHtml() === '' || throw_up('test 5 failed'));
+  (words('\n').toHtml() === '\n' || throw_up('test 5 failed')); // changed!
   return 'success';
 }
 
@@ -62,7 +62,8 @@ function testLingoLineWords(string) {
   ++t && (lingoLineWords("rory o'more", d).toHtml() === "<u>rory o'more</u>") || throw_up('test '+ t + ' failed');
   ++t && (lingoLineWords('foo"bar<>&', {moves: {swing: 'foo"bar<>&'}, dancers: {}}).toHtml() === '<u>foo"bar&lt;&gt;&amp;</u>') || throw_up('test '+ t + ' failed');
   ++t && (lingoLineWords('fo+ foo', {moves: {swing: 'fo+'}, dancers: {}}).toHtml() === '<u>fo+</u> foo') || throw_up('test '+ t + ' failed'); // regexpes escaped
-  ++t && (lingoLineWords('swing\nswing', d).toMarkdown() === '<u>swing</u> \n <u>swing</u>') || throw_up('test '+ t + ' failed');
-  ++t && (lingoLineWords('swing\nswing', d).toHtml() === '<u>swing</u>  <u>swing</u>') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineWords('swing\nswing', d).toMarkdown() === '<u>swing</u>\n<u>swing</u>') || throw_up('test '+ t + ' failed');
+  ++t && (lingoLineWords('swing\nswing', d).toHtml() === '<u>swing</u>\n<u>swing</u>') || throw_up('test '+ t + ' failed'); // \n used to be ' ', but I guess \n is ok too
+  ++t && (lingoLineWords(' men-men(men)men.men[men]men men\nmen{men}men;men*men men ', d).toHtml() === ' <s>men</s>-<s>men</s>(<s>men</s>)<s>men</s>.<s>men</s>[<s>men</s>]<s>men</s> <s>men</s>\n<s>men</s>{<s>men</s>}<s>men</s>;<s>men</s>*<s>men</s> <s>men</s> '.trim()) || throw_up('test '+ t + ' failed'); // don't really care that it's trimmed
   return ''+t+' successful tests';
 }

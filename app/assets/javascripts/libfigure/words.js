@@ -6,6 +6,17 @@ function words () {
   return new Words(Array.prototype.slice.call(arguments));
 }
 
+Words.prototype.scrunched = function() {return false;};
+
+function ScrunchedWords(arr) {
+  Words.call(this, arr);
+}
+
+ScrunchedWords.prototype = Object.create(Words.prototype);
+ScrunchedWords.prototype.constructor = ScrunchedWords;
+
+ScrunchedWords.prototype.scrunched = function() {return true;};
+
 var wants_no_space_before = [false, null, ',', '.', ';'];
 
 var FLATTEN_FORMAT_MARKDOWN = 1001;
@@ -43,7 +54,7 @@ Words.prototype.flatten = function(format) {
   var acc = [];
   var space_before = false;
   for (var i=0; i<arr.length; i++) {
-    var wants_space_before = -1 === wants_no_space_before.indexOf(peek(arr[i]));
+    var wants_space_before = (!this.scrunched()) && (-1 === wants_no_space_before.indexOf(peek(arr[i])));
     if (wants_space_before) {
       acc.push(' ');
     }
@@ -106,9 +117,9 @@ function flattenWordNode(s, format) {
       var replacer = function(match) {
         return sanitizationMap[match] || throw_up('Unexpected match during flatten sanitize');
       };
-      return s.replace(/&amp;|&|<|>/g, replacer).trim();
+      return s.replace(/&amp;|&|<|>/g, replacer);
     } else if (format === FLATTEN_FORMAT_MARKDOWN || format === FLATTEN_FORMAT_UNSAFE_TEXT) {
-      return trimButLeaveNewlines(s);
+      return s;
     } else {
       throw_up('unexpected flatten format: '+format.toString());
     }
@@ -177,7 +188,7 @@ function lingoLineWords(string, dialect) {
     regex.lastIndex = regex.lastIndex - match_info[3].length; // put back trailing whitespace
   }
   buffer.push(string.slice(last_match_ended_at));
-  return new Words(buffer);
+  return new ScrunchedWords(buffer);
 }
 
 var bogusTerms = ['men', 'women', 'man', 'woman', 'gentlemen', 'gentleman',
