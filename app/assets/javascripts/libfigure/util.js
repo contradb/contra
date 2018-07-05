@@ -1,3 +1,5 @@
+var PUNCTUATION_CHARSET_STRING = '[\u2000-\u206F\u2E00-\u2E7F\'!"#$%&()*+,/:;<=>?@\\[\\]^_`{|}~\\.-]';
+
 function set_if_unset (dict, key, value) {
     if (!(key in dict))
         dict[key] = value;

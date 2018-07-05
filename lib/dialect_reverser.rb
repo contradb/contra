@@ -13,8 +13,8 @@ class DialectReverser
     if string.present?
       string.gsub(regexp) do |match|
         term = inverted_hash.fetch(match.downcase) {|match_downcase|
-          # go fish in case-insensitive "hash lookup" mode
-          key = inverted_hash.keys.find {|k| k.downcase == match_downcase}
+          # go fish in case-insensitive, %S stripping "hash lookup" mode
+          key = inverted_hash.keys.find {|k| strip_percent_s(k).downcase == match_downcase}
           key or raise("failed to find #{match.inspect} in #{inverted_hash.keys.inspect}")
           inverted_hash.fetch(key)
         }
@@ -45,8 +45,12 @@ class DialectReverser
     if inverted_hash.length.zero?
       /.^/                      # matches nothing
     else
-      /\b(#{inverted_hash.keys.map {|s| Regexp.escape(s)}.join('|')})\b/i
+      /\b(#{inverted_hash.keys.map {|s| Regexp.escape(strip_percent_s(s))}.join('|')})\b/i
     end
+  end
+
+  def strip_percent_s(substitution)
+    substitution.gsub(/%S/, '').strip
   end
 
   def dialect_ref(term)
