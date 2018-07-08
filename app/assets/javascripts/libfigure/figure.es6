@@ -598,7 +598,7 @@ function facingStarWords(move, pvs, dialect) {
 defineFigure("facing star",
              [param_subject_pair,
               param_spin_clockwise,
-              param_places,
+              param_three_places,
               param_beats_8],
              {words: facingStarWords, goodBeats: facingStarGoodBeats});
 
