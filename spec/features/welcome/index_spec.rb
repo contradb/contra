@@ -10,7 +10,7 @@ describe 'Welcome page', js: true do
   end
 
   context 'datatable' do
-    let (:dance) {FactoryGirl.create(:box_the_gnat_contra, created_at: DateTime.now - 10.years)}
+    let (:dance) {FactoryGirl.create(:box_the_gnat_contra, created_at: DateTime.now - 10.years, updated_at: DateTime.now - 1.week)}
     it 'displays dance columns' do
       dance
       visit '/'
@@ -19,21 +19,21 @@ describe 'Welcome page', js: true do
       expect(page).to have_text(dance.start_type)
       expect(page).to have_text(dance.hook)
       expect(page).to have_link(dance.user.name, href: user_path(dance.user))
-      expect(page).to have_text(dance.updated_at.strftime('%Y-%m-%d'))
-      expect(page).to_not have_text(dance.created_at.strftime('%Y-%m-%d')) # column invisible by default, it's not hidden, it's simply not there
+      expect(page).to have_text(dance.created_at.strftime('%Y-%m-%d'))
+      expect(page).to_not have_text(dance.updated_at.strftime('%Y-%m-%d')) # column invisible by default, it's not hidden, it's simply not there
       expect(page).to_not have_css('td', text: 'Published') # column invisible by default, it's not hidden, it's simply not there
     end
 
-    it 'displays in descending updated_at order by default' do
-      dance
-      dance2 = FactoryGirl.create(:box_the_gnat_contra, title: "The First Dance", updated_at: DateTime.now + 1.minute)
-      dance3 = FactoryGirl.create(:box_the_gnat_contra, title: "The Last Dance", updated_at: DateTime.now - 1.minute)
+    it 'displays in descending created_at order by default' do
+      dance1 = FactoryGirl.create(:box_the_gnat_contra, title: "The Middle Dance", created_at: DateTime.now - 1.minute)
+      dance2 = FactoryGirl.create(:box_the_gnat_contra, title: "The First Dance")
+      dance3 = FactoryGirl.create(:box_the_gnat_contra, title: "The Last Dance", created_at: DateTime.now - 2.minutes)
       visit '/'
-      expect(page).to have_content(dance.title) # js wait
+      expect(page).to have_content(dance1.title) # js wait
       txt = page.text
-      # check order dance2 dance dance3
-      expect((/#{dance2.title}/ =~ txt) < (/#{dance.title}/ =~ txt)).to eq(true)
-      expect((/#{dance.title}/ =~ txt) < (/#{dance3.title}/ =~ txt)).to eq(true)
+      # check order dance2 dance1 dance3
+      expect((/#{dance2.title}/ =~ txt) < (/#{dance1.title}/ =~ txt)).to eq(true)
+      expect((/#{dance1.title}/ =~ txt) < (/#{dance3.title}/ =~ txt)).to eq(true)
     end
 
     it 'shows only dances visible to current user' do
@@ -733,7 +733,7 @@ describe 'Welcome page', js: true do
       it "Clicking vis toggles buttons cause columns to disappear" do
         dances
         visit '/'
-        %w[Title Choreographer Formation Hook User Updated].each do |col|
+        %w[Title Choreographer Formation Hook User Entered].each do |col|
           expect(page).to have_css('#dances-table th', text: col)
           expect(page).to have_css('button.toggle-vis-active', text: col)
           expect(page).to_not have_css('button.toggle-vis-inactive', text: col)
@@ -746,7 +746,7 @@ describe 'Welcome page', js: true do
           expect(page).to have_css('button.toggle-vis-active', text: col)
           expect(page).to_not have_css('button.toggle-vis-inactive', text: col)
         end
-        %w[Entered Published].each do |col|
+        %w[Updated Published].each do |col|
           expect(page).to_not have_css('#dances-table th', text: col)
           expect(page).to_not have_css('button.toggle-vis-active', text: col)
           expect(page).to  have_css('button.toggle-vis-inactive', text: col)
