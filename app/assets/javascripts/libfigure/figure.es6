@@ -912,6 +912,23 @@ defineFigure("pull by direction",
 defineRelatedMove2Way('pull by dancers', 'pull by direction');
 
 ////////////////////////////////////////////////
+// REVOLVING DOOR                             //
+////////////////////////////////////////////////
+
+function revolvingDoorWords(move, pvs, dialect) {
+  var [ subject,  hand,  object,  beats] = pvs;
+  var [ssubject, shand, sobject, sbeats] = parameter_strings(move, pvs, dialect);
+  var smove = moveSubstitution(move, dialect);
+  var thand = hand === '*' ? '*' : shand;
+  return words(smove, ' - ', ssubject, 'take', thand, 'hands and drop off', sobject, 'on other side');
+}
+
+defineFigure("revolving door",
+             [param_subject_pair, param_left_hand_spin, param_object_pairs, param_beats_8],
+             {words: revolvingDoorWords});
+
+
+////////////////////////////////////////////////
 // RIGHT LEFT THROUGH                         //
 ////////////////////////////////////////////////
 

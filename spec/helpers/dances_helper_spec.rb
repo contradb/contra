@@ -227,6 +227,8 @@ RSpec.describe DancesHelper, type: :helper do
     ['gentlespoons form a long wave in the center', false, 'form a long wave', 'gentlespoons', false, false, false, 4],
     ['ladles dance out & balance', true, 'form a long wave', 'gentlespoons', false, true, true, 8],
     ['* dance out while * dance in to a long wave in the center - *', nil, 'form a long wave', '*', '*', '*', '*', '*'],
+    ['revolving door - gentlespoons take left hands and drop off partners on other side', true, 'revolving door', 'gentlespoons', false, 'partners', 8],
+    ['revolving door - * take * hands and drop off * on other side', false, 'revolving door', '*', '*', '*', '*'],
    ]
 
   TESTS.each do |arr|
