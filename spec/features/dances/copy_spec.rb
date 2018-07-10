@@ -27,8 +27,8 @@ describe 'Copying dances', js: true do
       visit new_dance_path copy_dance_id: dance1.id
       click_button 'Save Dance'
 
-      dance2 = Dance.last
       expect(page).to have_content("Dance was successfully created")
+      dance2 = Dance.last
       expect(current_path).to eq dance_path dance2.id
       %w[start_type figures_json hook preamble notes].each do |message|
         expect(dance2.send message).to eql dance1.send message
