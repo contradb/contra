@@ -465,7 +465,7 @@ $(document).ready(function() {
 
   var tinyScreenColumns = ['Title', 'Choreographer'];
   var narrowScreenColumns = tinyScreenColumns.concat(['Hook']);
-  var wideScreenColumns = narrowScreenColumns.concat(['Formation', 'User', 'Updated']);
+  var wideScreenColumns = narrowScreenColumns.concat(['Formation', 'User', 'Entered']);
   var recentlySeenColumns = null;
 
   function toggleColumnVisForResolution(dataTable, width) {
@@ -549,11 +549,11 @@ $(document).ready(function() {
             {"data": "hook"},
             {"data": "formation"},
             {"data": "user_name"},
-            {"data": "updated_at"},
             {"data": "created_at"},
+            {"data": "updated_at"},
             {"data": "published"}
           ],
-          "order": [[ 5, "desc" ]] // 5 should = index of 'updated_at' in the array above
+          "order": [[ 5, "desc" ]] // 5 should = index of 'created_at' in the array above
         });
 
   if (0===$('.table-column-vis-wrap label').length) {
