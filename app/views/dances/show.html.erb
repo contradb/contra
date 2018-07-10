@@ -10,7 +10,9 @@
 
 <div class='non-printing-lingo-lines'>
   <h1 class="dance-show-title"><%= @dance.title %></h1>
-  <p class="dance-show-hook">hook: <%= JSLibFigure.lingo_lines_html(JSLibFigure.string_in_dialect(@dance.hook, @dialect), @dialect) %></h2>
+  <% if @dance.hook.present? %>
+    <p class="dance-show-hook">hook: <%= JSLibFigure.lingo_lines_html(JSLibFigure.string_in_dialect(@dance.hook, @dialect), @dialect) %></h2>
+  <% end %>
   <p class="dance-show-choreographer">by: <strong><%= link_to @dance.choreographer.name, @dance.choreographer %></strong></p>
   <%= render partial: 'bodyshow', locals: {dance: @dance, dialect: @dialect} %>
 
