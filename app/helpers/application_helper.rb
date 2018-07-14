@@ -1,5 +1,11 @@
-module ApplicationHelper
+class LinkStripper < Redcarpet::Render::HTML
+  def link(link, title, content)
+    content
+  end
+end
 
+
+module ApplicationHelper
   MARKDOWN_OPTS = {escape_html: true, safe_links_only: true, hard_wrap: true}
   RENDER_OPTS = {autolink: true,  strikethrough: true}
   @@markdown =
@@ -7,7 +13,7 @@ module ApplicationHelper
   @@markdown_html_ok =
     Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(MARKDOWN_OPTS.merge(escape_html: false)), RENDER_OPTS)
   @@markdown_no_links =
-    Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(MARKDOWN_OPTS.merge(no_links: true)), RENDER_OPTS)
+    Redcarpet::Markdown.new(LinkStripper.new(MARKDOWN_OPTS), RENDER_OPTS.merge(autolink: false))
 
 
   def self.renderMarkdown(txt)
