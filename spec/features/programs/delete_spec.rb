@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe 'Deleting programs' do
-  let :user {FactoryGirl.create(:user)}
-  let! :live {FactoryGirl.create(:program, user: user, title: "I am live")}
-  let! :dead {FactoryGirl.create(:program, user: user, title: "I am dead")}
+  let(:user) {FactoryGirl.create(:user)}
+  let!(:live) {FactoryGirl.create(:program, user: user, title: "I am live")}
+  let!(:dead) {FactoryGirl.create(:program, user: user, title: "I am dead")}
 
   def find_dead_delete_link
     page.find(:css, "a[href=\"/programs/#{dead.id}\"][data-method=\"delete\"]")

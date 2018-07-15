@@ -450,7 +450,7 @@ RSpec.describe JSLibFigure do
   end
 
   describe 'dialect mapping' do
-    let :overloaded_dialect_json { "{moves: {'california twirl': 'twirl to swap',
+    let(:overloaded_dialect_json) { "{moves: {'california twirl': 'twirl to swap',
                                              'box the gnat': 'twirl to swap',
                                              'swat the flea': 'twirl to swap',
                                              'see saw': 'do si do'},

@@ -2,7 +2,7 @@ require 'dialect_reverser'
 require 'rails_helper'
 
 describe DialectReverser do
-  let :dialect_reverser {DialectReverser.new(JSLibFigure.test_dialect)}
+  let(:dialect_reverser) {DialectReverser.new(JSLibFigure.test_dialect)}
 
   describe '#reverse' do
     it 'works' do

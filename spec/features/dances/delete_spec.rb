@@ -2,11 +2,11 @@ require 'rails_helper'
 require 'support/scrutinize_layout'
 
 describe 'Deleting dances' do
-  let :user {FactoryGirl.create(:user)}
-  let :chor {FactoryGirl.create(:choreographer)}
-  let :hash {{user: user, choreographer: chor}}
-  let! :live {FactoryGirl.create(:dance, (hash.merge title: "I am live"))}
-  let! :dead {FactoryGirl.create(:dance, (hash.merge title: "I am dead"))}
+  let(:user) {FactoryGirl.create(:user)}
+  let(:chor) {FactoryGirl.create(:choreographer)}
+  let(:hash) {{user: user, choreographer: chor}}
+  let!(:live) {FactoryGirl.create(:dance, (hash.merge title: "I am live"))}
+  let!(:dead) {FactoryGirl.create(:dance, (hash.merge title: "I am dead"))}
 
   def find_dead_delete_link
     page.find(:css, "a[href=\"/dances/#{dead.id}\"][data-method=\"delete\"]")
