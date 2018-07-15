@@ -17,6 +17,7 @@
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
 //= require jquery-ui/autocomplete
 //= require bootstrap-sprockets
+//= require bootstrap-toggle
 //= require angular
 //= require angular-sanitize
 //= require angucomplete-alt

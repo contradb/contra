@@ -61,6 +61,7 @@ GEM
     bootstrap-sass (3.3.6)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
+    bootstrap-toggle-rails (2.2.1.0)
     builder (3.2.3)
     capybara (3.3.1)
       addressable
@@ -257,6 +258,7 @@ DEPENDENCIES
   ajax-datatables-rails
   angularjs-rails (~> 1.4, >= 1.4.7)
   bootstrap-sass (~> 3.3.5)
+  bootstrap-toggle-rails
   capybara
   devise
   factory_girl_rails

@@ -72,6 +72,7 @@ gem 'sprockets-es6'
 
 # Helpers for Twitter Bootstrap
 gem 'bootstrap-sass', '~> 3.3.5'
+gem 'bootstrap-toggle-rails'
 gem 'sprockets-rails' # , '~> 2.3.2'
 
 gem 'devise'

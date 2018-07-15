@@ -1,3 +1,20 @@
+// Show page
+
+
+$(function () {
+  function validationToggleExec(selector) {
+    var validate = selector.prop('checked');
+    if (validate) {
+      $('body').removeClass('no-lingo-lines');
+    } else {
+      $('body').addClass('no-lingo-lines');
+    }
+  }
+  $('.validation-toggle').change(function(){ validationToggleExec($(this)); });
+  validationToggleExec($('.validation-toggle'));
+});
+
+// Editor below here
 $(function () {
   $( "#choreographer-autocomplete" ).autocomplete({
     source: (typeof __choreographers__secret !== 'undefined') && __choreographers__secret,
