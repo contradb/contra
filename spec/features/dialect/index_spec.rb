@@ -34,7 +34,7 @@ describe 'Dialect page', js: true do
         expect(find_field("larks-ravens")).to be_checked
         expect(find_field("gents-ladies")).to_not be_checked
 
-        choose('ladies & gents')
+        choose('gents & ladies')
 
         # test html
         expect(page).to have_idiom_with('ladle', 'lady')
@@ -61,7 +61,7 @@ describe 'Dialect page', js: true do
         expect(page).to have_css('.idiom-form')
 
         # test delete
-        choose('ladles & gentlespoons')
+        choose('gentlespoons & ladles')
         expect(page).to_not have_css('.idiom-form')
         expect(user.idioms.reload).to be_empty
       end

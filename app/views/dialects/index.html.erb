@@ -6,10 +6,10 @@
       <label>
         <%= tag.input(type: :radio, name: :roles, id: 'gentlespoons-ladles', 'data-remote': true, class: 'dialect-express-role-radio',
             'data-url': roles_restore_defaults_dialect_path, 'data-method': :post) %>
-        ladles &amp; gentlespoons
+        gentlespoons &amp; ladles
       </label>
       <br>
-      <% [{label: 'ladies & gents', params: {gentlespoon: 'gent', gentlespoons: 'gents', ladle: 'lady', ladles: 'ladies'}, id: 'gents-ladies'},
+      <% [{label: 'gents & ladies', params: {gentlespoon: 'gent', gentlespoons: 'gents', ladle: 'lady', ladles: 'ladies'}, id: 'gents-ladies'},
           {label: 'larks & ravens', params: {gentlespoon: 'lark', gentlespoons: 'larks', ladle: 'raven', ladles: 'ravens'}, id: 'larks-ravens'},
           {label: 'leads & follows', params: {gentlespoon: 'lead', gentlespoons: 'leads', ladle: 'follow', ladles: 'follows'}, id: 'leads-follows'}
          ].each do |h| %>
