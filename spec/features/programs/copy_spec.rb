@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'Copying programs', js: true do
-  let :program {FactoryGirl.create(:program,
+  let(:program) {FactoryGirl.create(:program,
                                    title: "Fish Dance",
                                    dances: [:box_the_gnat_contra, :call_me].map {|sym| FactoryGirl.create(sym)},
                                    text_activities: ['waltz', 'break'])}
