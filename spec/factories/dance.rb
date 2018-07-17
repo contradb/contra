@@ -99,7 +99,7 @@ FactoryGirl.define do
     # I feel like this is the Right Way to do tricky quote-in-quote
     # json in this file. Should probably migrate everyone else at some
     # point. -dm 06-24-2018
-    figures_json {%([{"parameter_values":[#{custom_text.to_json}],"move":"custom"#{if figure_note then ', "note":'+figure_note.to_json else '' end}}])}
+    figures_json {%([{"parameter_values":[#{custom_text.to_json}, 8],"move":"custom"#{if figure_note then ', "note":'+figure_note.to_json else '' end}}])}
   end
 
   factory :dance_with_a_wrist_grip_star, class: Dance do
