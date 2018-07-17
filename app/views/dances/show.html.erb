@@ -1,26 +1,24 @@
 <% require 'json' %>
-
 <div class="btn-group">
-<%= copy_dance_button_html(@dance, label: "Copy") %>
-<%= if (signed_in? && (current_user.admin? || (current_user.id == @dance.user_id))) then
-    edit_dance_button_html(@dance, label: "Edit") +
-    delete_dance_button_html(@dance, label: "Delete")
-    end %>
-</div>
-
-<div class='non-printing-lingo-lines'>
-  <h1 class="dance-show-title"><%= @dance.title %></h1>
-  <% if @dance.hook.present? %>
-    <p class="dance-show-hook">hook: <%= JSLibFigure.lingo_lines_html(JSLibFigure.string_in_dialect(@dance.hook, @dialect), @dialect) %></h2>
-  <% end %>
-  <p class="dance-show-choreographer">by: <strong><%= link_to @dance.choreographer.name, @dance.choreographer %></strong></p>
-  <%= render partial: 'bodyshow', locals: {dance: @dance, dialect: @dialect} %>
-
-  <p class="dance-show-user">User: <%= link_to @dance.user.name, @dance.user %></p>
-  <p class="dance-show-publish"><%= @dance.publish ? 'Published' : 'Private' %></p>
-  <% if @show_moderation %>
-    <p class="dance-show-moderation">
-      Moderation: <%= admin_moderation_display(@dance.user) %>
-    </p>
+  <%= copy_dance_button_html(@dance, label: "Copy") %>
+  <% if (signed_in? && (current_user.admin? || (current_user.id == @dance.user_id))) %>
+    <%= edit_dance_button_html(@dance, label: "Edit") %>
+    <%= delete_dance_button_html(@dance, label: "Delete") %>
   <% end %>
 </div>
+<%= render 'validation_toggle' %>
+
+<h1 class="dance-show-title"><%= @dance.title %></h1>
+<% if @dance.hook.present? %>
+  <p class="dance-show-hook">hook: <%= JSLibFigure.lingo_lines_html(JSLibFigure.string_in_dialect(@dance.hook, @dialect), @dialect) %></h2>
+<% end %>
+<p class="dance-show-choreographer">by: <strong><%= link_to @dance.choreographer.name, @dance.choreographer %></strong></p>
+<%= render partial: 'bodyshow', locals: {dance: @dance, dialect: @dialect} %>
+
+<p class="dance-show-user">User: <%= link_to @dance.user.name, @dance.user %></p>
+<p class="dance-show-publish"><%= @dance.publish ? 'Published' : 'Private' %></p>
+<% if @show_moderation %>
+  <p class="dance-show-moderation">
+    Moderation: <%= admin_moderation_display(@dance.user) %>
+  </p>
+<% end %>

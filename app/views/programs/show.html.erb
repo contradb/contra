@@ -8,6 +8,8 @@
     end %>
 </div>
 
+<%= render 'dances/validation_toggle' %>
+
 <h1><%= @program.title %></h1>
 <p>user: <strong><%= link_to @program.user.name, @program.user %></strong></p>
 
@@ -22,7 +24,7 @@
 </div>
 
 <% @program.activities_sorted.each_with_index do |activity,index| %>
-  <%= content_tag('div', id: activity_anchor_id(index), class: "activity-breakdown no-lingo-lines") do %>
+  <%= content_tag('div', id: activity_anchor_id(index), class: "activity-breakdown") do %>
     <%= if activity.dance 
         then content_tag(:h2, (link_to activity.dance.title, activity.dance), class: "activity-breakdown-dance-title")
         elsif activity.text.present?

@@ -76,9 +76,9 @@ describe 'Dialect page', js: true do
     end
 
 
-    it 'ladles and gentlespoons unlights & relights when other stuff shifts underneath its feet' do
+    it 'gentlespoons and ladles unlights & relights when other stuff shifts underneath its feet' do
       with_login do |user|
-        # ladles and gentlespoons has a different implementation path than the other express pickers
+        # gentlespoons and ladles has a different implementation path than the other express pickers
         visit '/dialect'
         show_advanced_options
 
