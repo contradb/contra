@@ -1,5 +1,5 @@
-// Show page
-
+// Show Page Validator Toggle
+// - note that this js also fires on the programs show page - thanks to unintituive asset pipeline behavior
 
 $(function () {
   function validationToggleExec(selector) {
@@ -14,6 +14,7 @@ $(function () {
   validationToggleExec($('.validation-toggle'));
 });
 
+// ________________________________________________________________
 // Editor below here
 $(function () {
   $( "#choreographer-autocomplete" ).autocomplete({

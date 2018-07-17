@@ -6,9 +6,7 @@
     <%= delete_dance_button_html(@dance, label: "Delete") %>
   <% end %>
 </div>
-<div>
-  <input name="validation" type="checkbox" class="validation-toggle" data-toggle="toggle" data-on="Validate" data-off="Clean">
-</div>
+<%= render 'validation_toggle' %>
 
 <h1 class="dance-show-title"><%= @dance.title %></h1>
 <% if @dance.hook.present? %>
