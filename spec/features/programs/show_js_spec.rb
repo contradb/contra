@@ -3,10 +3,6 @@ require 'rails_helper'
 require 'support/scrutinize_layout'
 
 describe 'Showing programs', js: true do
-  let (:owner) {FactoryGirl.create(:user) }
-  let (:user) {FactoryGirl.create(:user)}
-  let (:admin) {FactoryGirl.create(:user, admin: true)}
-  let (:dance_private) {FactoryGirl.create(:dance, publish: false, user: owner, title: "Hopscotch")}
   let (:dance) {FactoryGirl.create(:dance, preamble: 'mousetrap allemande')}
   let (:program) {FactoryGirl.create(:program)}
   
