@@ -142,7 +142,7 @@ RSpec.describe DancesHelper, type: :helper do
     ["centers Rory O'More left", true, "Rory O'More", 'centers', false, true, 4],
     ["centers Rory O'More left", false, "Rory O'More", 'centers', false, true, 8],
     ["optional balance & * Rory O'More *", nil, "Rory O'More", '*', '*', '*', '*'],
-    ['pass through', false, 'pass through', 'along', true, 4],
+    ['pass through', true, 'pass through', 'along', true, 4],
     ['pass through', true, 'pass through', 'along', true, 2],
     ['pass through left shoulders across the set', true, 'pass through', 'across', false, 2],
     ['pass through * shoulders *', nil, 'pass through', '*', '*', '*'],

@@ -753,7 +753,7 @@ function passThroughWords(move, pvs, dialect) {
 
 defineFigure("pass through",
              [param_set_direction_along, param_right_shoulder_spin, param_beats_2],
-             {words: passThroughWords});
+             {words: passThroughWords, goodBeats: goodBeatsMinMaxFn(2, 4)});
 
 defineRelatedMove2Way('pass by', 'pass through');
 
