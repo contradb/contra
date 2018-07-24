@@ -493,18 +493,19 @@ function formAnOceanWaveChange(figure, index) {
 }
 
 function formAnOceanWaveGoodBeats(figure) {
-  var [instant, diag, bal, center, center_hand, sides, beats] = figure.parameter_values;
-  return beats === (instant ? 0 : 4) + (bal ? 4 : 0);
+  var [diag, bal, center, center_hand, sides, beats] = figure.parameter_values;
+  return beats === (bal ? 4 : 0);
 }
 
 function formAnOceanWaveWords(move, pvs, dialect) {
-  var [ instant,  diag,  bal,  center,  center_hand,  sides,  beats] = pvs;
-  var [sinstant, sdiag, sbal, scenter, scenter_hand, ssides, sbeats] = parameter_strings(move, pvs, dialect);
+  var [ diag,  bal,  center,  center_hand,  sides,  beats] = pvs;
+  var [sdiag, sbal, scenter, scenter_hand, ssides, sbeats] = parameter_strings(move, pvs, dialect);
   var ocean_wave = moveSubstitutionWithoutForm(move, dialect, false);
   var diagonal_ocean_wave = words(sdiag, ocean_wave);
   var a_diagonal_ocean_wave = words(indefiniteArticleFor(diagonal_ocean_wave), diagonal_ocean_wave);
   var tbal = bal ? ('*' === bal ? '& maybe balance' : '& balance') : '';
   var sside_hand = ('*' === center_hand) ? 'opposite' : stringParamHand(!center_hand);
+  var instant = true;
   if (instant) {
     var form_an_ocean_wave = moveSubstitution(move, dialect);
     var substitution_starts_with_form = /^ *form/.test(form_an_ocean_wave);
@@ -517,7 +518,7 @@ function formAnOceanWaveWords(move, pvs, dialect) {
 }
 
 defineFigure("form an ocean wave",
-             [param_instant_false, param_set_direction_acrossish, param_balance_false, param_center_pair_ladles, param_by_xhand, param_sides_pairs_neighbors, param_beats_4],
+             [param_set_direction_acrossish, param_balance_false, param_center_pair_ladles, param_by_xhand, param_sides_pairs_neighbors, param_beats_4],
              {words: formAnOceanWaveWords, change: formAnOceanWaveChange, goodBeats: formAnOceanWaveGoodBeats});
 
 defineRelatedMove2Way('form an ocean wave', 'form long waves');
