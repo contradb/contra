@@ -79,9 +79,6 @@ function figureGenericWords(move, parameter_values, dialect) {
       acc.push(pwords[i]);
     }
   }
-  if (is_progression(move)) {
-    acc.push(progressionString);
-  }
   return new Words(acc);
 }
 
@@ -89,8 +86,6 @@ function find_parameter_index_by_name(name, parameters) {
   var match_name_fn = function(p) {return p.name === name;};
   return parameters.findIndex(match_name_fn, parameters);
 }
-
-var progressionString = "to new neighbors";
 
 // ================
 
@@ -332,12 +327,6 @@ function moveProp(move_or_nil, property_name, default_value) {
   } else {
     return default_value;
   }
-}
-
-function is_progression(move) {
-  // var fig_def = defined_events[move];
-  // return fig_def && fig_def.props && fig_def.props.progression || false;
-  return moveProp(move, 'progression', false);
 }
 
 function stringInDialect(str, dialect) {
