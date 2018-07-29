@@ -209,13 +209,19 @@ function menuMoveLabel(from,to) {
       (0 <= idx) && (idx < fctrl42.arr.length) && fctrl42.arr.splice(idx,0,angular.copy(fctrl42.arr[idx]));
       $scope.edit_index_box.length=0;
     };
-    $scope.toggleProgression = function(idx) {
-      var fig = fctrl42.arr[idx];
-      if (fig.progression) {
-        delete fig.progression;
-      } else {
-        fig.progression = 1;
+    $scope.seizeProgression = function(idx) {
+      var figs = fctrl42.arr;
+      // clear next progression
+      if (figs.length > 0) {
+        for (var i=idx; i<idx+figs.length; i++) {
+          var fig = figs[i%figs.length];
+          if (fig.progression) {
+            delete fig.progression;
+            break;
+          }
+        }
       }
+      figs[idx].progression = 1;
       return;
     };
     $scope.menuMoveLabel = menuMoveLabel;

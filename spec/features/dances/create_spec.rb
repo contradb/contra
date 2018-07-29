@@ -57,12 +57,14 @@ describe 'Creating dances', js: true do
   end
 
   context 'figure menu' do
-    it 'progress' do
+    it 'seize progression' do
       with_login do
         visit '/dances/new'
+        expect(page).to have_css('#figure-7', text: 'stand still ⁋')
         find('#figure-menu-3').click
-        click_on '⁋rogress'
+        click_on 'seize ⁋rogression'
         expect(page).to have_css('#figure-3', text: 'stand still ⁋')
+        expect(page).to_not have_css('#figure-7', text: 'stand still ⁋')
         fill_in 'dance[choreographer_name]', with: 'Cary Ravitz'
         fill_in 'dance[start_type]', with: 'improper'
         click_button 'Save Dance'
