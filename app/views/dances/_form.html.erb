@@ -92,12 +92,15 @@
                   <span class="glyphicon glyphicon-option-vertical"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right" ng-attr-aria-labelledby="{{'figure-menu-'+figureIdx}}">
-                  <li><a href="#" ng-click="seizeProgression(figureIdx)">seize ⁋rogression</a></li>
                   <li><a href="#" ng-click="duplicateIdx(figureIdx)">Duplicate</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#" ng-click="seizeProgression(figureIdx)">Seize ⁋rogression</a></li>
+                  <li><a href="#" ng-click="deleteProgression(figureIdx)" ng-if="hasProgression(figureIdx)">Delete ⁋rogression</a></li>
+                  <li><a href="#" ng-click="addExtraProgression(figureIdx)" ng-if="extraProgressionEligible(figureIdx)">Extra ⁋rogression</a></li>
                   <li role="separator" class="divider"></li>
                   <li ng-repeat="figmenu in figures.arr" ng-click="menuMove(figureIdx, $index)" ng-if="$index !== figureIdx"><a href="#">{{menuMoveLabel(figureIdx, $index)}}</a></li>
                   <li role="separator" class="divider"></li>
-                  <li><a href="#" ng-click="deleteFigureIdx(figureIdx)">Delete</a></li>
+                  <li><a href="#" ng-click="deleteFigureIdx(figureIdx)">Delete Figure</a></li>
                 </ul>
               </span>
               <a ng-click="clickFigure(figureIdx);"
