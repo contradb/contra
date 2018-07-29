@@ -4,12 +4,12 @@ require 'rspec/expectations'
 # inserted by capybara 3. It only accepts a string, not a regexp.
 RSpec::Matchers.define :have_words do |string|
   match do |page|
-    re = Regexp.new(Regexp.escape(string).gsub('\ ', '(?:\s+)'))
+    re = Regexp.new(Regexp.escape(string).gsub(/(\\ )+/, '(?:\s+)'))
     have_content(re).matches?(page)
   end
 
   match_when_negated do |page|
-    re = Regexp.new(Regexp.escape(string).gsub('\ ', '(?:\s+)'))
+    re = Regexp.new(Regexp.escape(string).gsub(/(\\ )+/, '(?:\s+)'))
     have_no_content(re).matches?(page)
   end
 
