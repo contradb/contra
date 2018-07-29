@@ -57,6 +57,15 @@ describe 'Creating dances', js: true do
   end
 
   context 'figure menu' do
+    it 'progress' do
+      with_login do
+        visit '/dances/new'
+        find('#figure-menu-3').click
+        click_on '⁋rogress'
+        expect(page).to have_css('#figure-3', text: 'empty figure ⁋')
+      end
+    end
+
     it 'duplicate' do
       with_login do
         visit '/dances/new'

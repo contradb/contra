@@ -202,15 +202,24 @@ function menuMoveLabel(from,to) {
 
     $scope.toJson = angular.toJson;
     $scope.newFigure = newFigure;
-    $scope.addFigure = function () { addFigure(fctrl42.arr, $scope.edit_index_box); }
-    $scope.deleteFigure = function() { deleteFigure(fctrl42.arr, $scope.edit_index_box); }
+    $scope.addFigure = function () { addFigure(fctrl42.arr, $scope.edit_index_box); };
+    $scope.deleteFigure = function() { deleteFigure(fctrl42.arr, $scope.edit_index_box); };
     $scope.deleteFigureIdx = function(idx) {(idx >= 0) && (fctrl42.arr.length > idx) && fctrl42.arr.splice(idx,1); $scope.edit_index_box.length=0;};
     $scope.duplicateIdx = function(idx) {
       (0 <= idx) && (idx < fctrl42.arr.length) && fctrl42.arr.splice(idx,0,angular.copy(fctrl42.arr[idx]));
       $scope.edit_index_box.length=0;
     };
-    $scope.menuMoveLabel = menuMoveLabel
-    $scope.menuMove = function(from, to) {fctrl42.arr.splice(to, 0, fctrl42.arr.splice(from, 1)[0]); $scope.edit_index_box.length=0;}
+    $scope.toggleProgression = function(idx) {
+      var fig = fctrl42.arr[idx];
+      if (fig.progression) {
+        delete fig.progression;
+      } else {
+        fig.progression = 1;
+      }
+      return;
+    };
+    $scope.menuMoveLabel = menuMoveLabel;
+    $scope.menuMove = function(from, to) {fctrl42.arr.splice(to, 0, fctrl42.arr.splice(from, 1)[0]); $scope.edit_index_box.length=0;};
     $scope.rotateFigures = function() {
       (fctrl42.arr.length>0) && fctrl42.arr.unshift(fctrl42.arr.pop());
       $scope.edit_index_box.length=0;
