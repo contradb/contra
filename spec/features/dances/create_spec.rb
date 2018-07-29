@@ -222,19 +222,21 @@ describe 'Creating dances', js: true do
       with_login do
         visit '/dances/new'
         expect(page).to have_css('#figure-0')
+
+        # delete down to 3 figures
         find('#figure-0').click
         5.times do
           click_button('Remove')
         end
-        select('custom')
-        click_link('custom')
-        expect(page).to have_words('A1 8 custom 8 stand still A2 8 stand still Notes')
+        find('#figure-0').click
+
+        expect(page).to have_words('A1 8 stand still 8 stand still A2 8 stand still ⁋ Notes')
         click_button('Rotate')
-        expect(page).to have_words('A1 8 stand still 8 custom A2 8 stand still Notes')
+        expect(page).to have_words('A1 8 stand still ⁋ 8 stand still A2 8 stand still Notes')
         click_button('Rotate')
-        expect(page).to have_words('A1 8 stand still 8 stand still A2 8 custom Notes')
+        expect(page).to have_words('A1 8 stand still 8 stand still ⁋ A2 8 stand still Notes')
         click_button('Rotate')
-        expect(page).to have_words('A1 8 custom 8 stand still A2 8 stand still Notes')
+        expect(page).to have_words('A1 8 stand still 8 stand still A2 8 stand still ⁋ Notes')
       end
     end
   end
@@ -259,7 +261,7 @@ describe 'Creating dances', js: true do
       click_button 'Save Dance'
       dance = Dance.last
       expect(dance.figures).to eq([{'move' => 'swing', 'parameter_values' => ['neighbors', 'balance', 16], 'note' => 'with gusto!'},
-                                   {'move' => 'allemande', 'parameter_values' => ['partners', false, 540, 12]}])
+                                   {'move' => 'allemande', 'parameter_values' => ['partners', false, 540, 12], 'progression' => 1}])
     end
   end
 
