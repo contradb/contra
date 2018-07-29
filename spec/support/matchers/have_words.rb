@@ -8,6 +8,11 @@ RSpec::Matchers.define :have_words do |string|
     have_content(re).matches?(page)
   end
 
+  match_when_negated do |page|
+    re = Regexp.new(Regexp.escape(string).gsub('\ ', '(?:\s+)'))
+    have_no_content(re).matches?(page)
+  end
+
   failure_message do |actual|
     "expected to find #{string.inspect} in:\n#{actual.text}"
   end
