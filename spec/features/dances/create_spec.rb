@@ -63,6 +63,12 @@ describe 'Creating dances', js: true do
         find('#figure-menu-3').click
         click_on '⁋rogress'
         expect(page).to have_css('#figure-3', text: 'stand still ⁋')
+        fill_in 'dance[choreographer_name]', with: 'Cary Ravitz'
+        fill_in 'dance[start_type]', with: 'improper'
+        click_button 'Save Dance'
+        expect(page).to have_content('Dance was successfully created')
+        dance = Dance.all.last
+        expect(dance.figures[3]['progression']).to eq(1)
       end
     end
 

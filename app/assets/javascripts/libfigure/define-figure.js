@@ -50,11 +50,12 @@ function figureFlatten(f, dialect, flatten_format) {
     var func = fig_def.props.words || figureGenericWords;
     var main = func(alias(f), f.parameter_values, dialect);
     var note = f.note;
+    var pilcrow = f.progression ? '⁋' : false;
     if (note && note.trim()) {
       var fancy_note = lingoLineWords(stringInDialect(note, dialect), dialect);
-      return words(main, fancy_note).flatten(flatten_format);
+      return words(main, fancy_note, pilcrow).flatten(flatten_format);
     } else {
-      return words(main).flatten(flatten_format);
+      return words(main, pilcrow).flatten(flatten_format);
     }
   } else if (f.move) {
     return "undefined figure '"+words(f.move).flatten(flatten_format)+"'!";
@@ -62,7 +63,6 @@ function figureFlatten(f, dialect, flatten_format) {
     return "empty figure";
   }
 }
-
 
 // Called if they don't specify a Words function in the figure definition:
 function figureGenericWords(move, parameter_values, dialect) {
