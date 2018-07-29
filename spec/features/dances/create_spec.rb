@@ -62,7 +62,7 @@ describe 'Creating dances', js: true do
         visit '/dances/new'
         find('#figure-menu-3').click
         click_on '⁋rogress'
-        expect(page).to have_css('#figure-3', text: 'empty figure ⁋')
+        expect(page).to have_css('#figure-3', text: 'stand still ⁋')
       end
     end
 
@@ -133,13 +133,13 @@ describe 'Creating dances', js: true do
     it 'adds a figure after the selection, and selects it' do
       with_login do
         visit '/dances/new'
-        expect(page).to have_content('empty figure', count: 8)
+        expect(page).to have_content('stand still', count: 8)
         find('#figure-0').click
         select('chain')
         click_button('Add')
-        expect(page).to have_words("A1 8 ladles chain 8 empty figure move note")
+        expect(page).to have_words("A1 8 ladles chain 8 stand still move beats note")
         click_button('Add')
-        expect(page).to have_words("A1 8 ladles chain 8 empty figure A2 8 empty figure move note")
+        expect(page).to have_words("A1 8 ladles chain 8 stand still A2 8 stand still move beats note")
       end
     end
 
@@ -150,7 +150,7 @@ describe 'Creating dances', js: true do
         select('chain')
         click_link('ladles chain')
         click_button('Add')
-        expect(page).to have_words("A1 8 empty figure move note 8 ladles chain")
+        expect(page).to have_words("A1 8 stand still move beats note 8 ladles chain")
       end
     end
   end
@@ -188,10 +188,10 @@ describe 'Creating dances', js: true do
         expect(page).to have_css('#figure-7')
         find('#figure-7').click
         select('do si do')
-        expect(page).to have_words('B2 8 empty figure 8 ____ do si do')
+        expect(page).to have_words('B2 8 stand still 8 ____ do si do')
         click_button('Remove')
         expect(page).to_not have_words('do si do')
-        expect(page).to have_words('B2 8 empty figure move')
+        expect(page).to have_words('B2 8 stand still move')
       end
     end
 
@@ -222,13 +222,13 @@ describe 'Creating dances', js: true do
         end
         select('custom')
         click_link('custom')
-        expect(page).to have_words('A1 8 custom 8 empty figure A2 8 empty figure Notes')
+        expect(page).to have_words('A1 8 custom 8 stand still A2 8 stand still Notes')
         click_button('Rotate')
-        expect(page).to have_words('A1 8 empty figure 8 custom A2 8 empty figure Notes')
+        expect(page).to have_words('A1 8 stand still 8 custom A2 8 stand still Notes')
         click_button('Rotate')
-        expect(page).to have_words('A1 8 empty figure 8 empty figure A2 8 custom Notes')
+        expect(page).to have_words('A1 8 stand still 8 stand still A2 8 custom Notes')
         click_button('Rotate')
-        expect(page).to have_words('A1 8 custom 8 empty figure A2 8 empty figure Notes')
+        expect(page).to have_words('A1 8 custom 8 stand still A2 8 stand still Notes')
       end
     end
   end
@@ -263,7 +263,7 @@ describe 'Creating dances', js: true do
       text_in_dialect = 'darcy ravens'
       text_in_canon = 'gyre ladles'
       visit new_dance_path
-      click_on('empty figure', match: :first)
+      click_on('stand still', match: :first)
       select('custom')
       fill_in('note', with: text_in_dialect)
       fill_in('custom', with: text_in_dialect)
@@ -291,7 +291,7 @@ describe 'Creating dances', js: true do
       text_in_dialect = 'darcy ravens'
       text_in_canon = 'gyre ladles'
       visit new_dance_path
-      click_on('empty figure', match: :first)
+      click_on('stand still', match: :first)
       select('custom')
       fill_in('note', with: "note #{text_in_dialect} note")
       fill_in('custom', with: "custom #{text_in_dialect} custom")

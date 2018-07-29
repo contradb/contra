@@ -69,7 +69,7 @@ function indexEndsDanceSquarely(figures, index) {
 function defaultFigures (figures) {
   if (figures.length == 0) {
     return [newFigure(), newFigure(), newFigure(), newFigure(),
-            newFigure(), newFigure(), newFigure(), newFigure()];
+            newFigure(), newFigure(), newFigure(), newFigure(1)];
   } else {
     return figures.map(function(figure) {
       var f2 = libfigureObjectCopy(figure);

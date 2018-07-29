@@ -8,8 +8,12 @@
 // and related support functions for dealing with figures
 
 // always freshly allocated
-function newFigure () {
-  return { parameter_values: [] };
+function newFigure (optional_progression) {
+  var m = { move: 'stand still', parameter_values: [8] };
+  if (optional_progression !== null) {
+    m.progression = optional_progression;
+  }
+  return m;
 }
 
 function figureBeats (f) {
@@ -430,6 +434,13 @@ function goodBeatsMinMaxFn(min, max) {
   return function(figure) {
     var beats = figureBeats(figure);
     return (min <= beats) && (beats <= max);
+  };
+}
+
+function goodBeatsMinFn(min) {
+  return function(figure) {
+    var beats = figureBeats(figure);
+    return min <= beats;
   };
 }
 
