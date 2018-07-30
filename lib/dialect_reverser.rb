@@ -26,7 +26,7 @@ class DialectReverser
     end
   end
 
-  private 
+  private
   attr_reader :regexp
   attr_reader :inverted_hash
 

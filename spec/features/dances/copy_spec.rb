@@ -29,8 +29,8 @@ describe 'Copying dances', js: true do
 
       expect(page).to have_content("Dance was successfully created")
       dance2 = Dance.last
-      expect(current_path).to eq dance_path dance2.id
-      %w[start_type figures_json hook preamble notes].each do |message|
+      expect(current_path).to eq dance_path(dance2)
+      %w[start_type figures hook preamble notes].each do |message|
         expect(dance2.send message).to eql dance1.send message
       end
       expect(dance2.title).to eql "#{dance1.title} variation"
@@ -97,7 +97,7 @@ describe 'Copying dances', js: true do
 
       expect(dance.figures.length).to eq(original.figures.length)
       expect(dance.figures[0,6]).to eq(original.figures[0,6])
-      expect(dance.figures[6]).to eq({'move' => 'swing', 'parameter_values' => ['neighbors', 'meltdown', 16], 'note' => 'with gusto!'})
+      expect(dance.figures[6]).to eq({'move' => 'swing', 'parameter_values' => ['neighbors', 'meltdown', 16], 'note' => 'with gusto!', 'progression' => 1})
     end
   end
 end

@@ -10,8 +10,8 @@
 // always freshly allocated
 function newFigure (optional_progression) {
   var m = { move: 'stand still', parameter_values: [8] };
-  if (optional_progression !== null) {
-    m.progression = optional_progression;
+  if (optional_progression) {
+    m.progression = 1;
   }
   return m;
 }

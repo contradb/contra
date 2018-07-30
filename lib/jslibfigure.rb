@@ -260,7 +260,7 @@ module JSLibFigure
 
   def self.ensure_integer(x)
     if x.instance_of?(Integer)
-      return x
+      x
     else
       raise "expecting Integer but got #{x.class.name}"
     end
