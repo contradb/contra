@@ -58,49 +58,33 @@ describe 'Creating dances', js: true do
 
   context 'figure menu' do
     context 'progressions' do
-      it 'seize progression' do
-        with_login do
-          visit '/dances/new'
-          expect(page).to have_css('#figure-7', text: 'stand still ⁋')
-          find('#figure-menu-3').click
-          click_on('Seize ⁋rogression')
-          expect(page).to have_css('#figure-3', text: 'stand still ⁋')
-          expect(page).to_not have_css('#figure-7', text: 'stand still ⁋')
-          fill_in 'dance[choreographer_name]', with: 'Cary Ravitz'
-          fill_in 'dance[start_type]', with: 'improper'
-          click_button 'Save Dance'
-          expect(page).to have_content('Dance was successfully created')
-          dance = Dance.all.last
-          expect(dance.figures[3]['progression']).to eq(1)
-        end
-      end
-
-      it 'delete progression present iff progression and works' do
+      it "'add' works and present iff not progression" do
         with_login do
           visit '/dances/new'
           find('#figure-menu-3').click
-          expect(page).to have_content('Seize ⁋rogression') # js wait
-          expect(page).to_not have_content('Delete ⁋rogression')
-          page.find('body').send_keys(:escape)                  # wave off menu
-          expect(page).to_not have_content('Seize ⁋rogression') # js wait
-          find('#figure-menu-7').click
-          click_on('Delete ⁋rogression')
-          expect(page).to_not have_content('⁋')
-        end
-      end
-
-      it 'extra progression works and present iff progression' do
-        with_login do
-          visit '/dances/new'
-          find('#figure-menu-3').click
-          click_on('Extra ⁋rogression')
+          click_on('Add ⁋rogression')
           expect(page).to have_css('#figure-3', text: 'stand still ⁋')
           expect(page).to have_css('#figure-7', text: 'stand still ⁋')
           expect(page).to have_text('⁋', count: 2)
           find('#figure-menu-3').click
-          expect(page).to_not have_content('Extra ⁋rogression')
+          expect(page).to_not have_content('Add ⁋rogression')
         end
       end
+
+      it "'remove' works and present iff progression" do
+        with_login do
+          visit '/dances/new'
+          find('#figure-menu-3').click
+          expect(page).to have_content('Add ⁋rogression') # js wait
+          expect(page).to_not have_content('Remove ⁋rogression')
+          page.find('body').send_keys(:escape)                  # wave off menu
+          expect(page).to_not have_content('Remove ⁋rogression') # js wait
+          find('#figure-menu-7').click
+          click_on('Remove ⁋rogression')
+          expect(page).to_not have_content('⁋')
+        end
+      end
+
 
     end
     it 'duplicate' do

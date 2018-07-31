@@ -209,41 +209,15 @@ function menuMoveLabel(from,to) {
       (0 <= idx) && (idx < fctrl42.arr.length) && fctrl42.arr.splice(idx,0,angular.copy(fctrl42.arr[idx]));
       $scope.edit_index_box.length=0;
     };
-    $scope.seizeProgression = function(idx) {
-      var figs = fctrl42.arr;
-      // clear next progression
-      if (figs.length > 0) {
-        for (var i=idx; i<idx+figs.length; i++) {
-          var fig = figs[i%figs.length];
-          if (fig.progression) {
-            delete fig.progression;
-            break;
-          }
-        }
+    $scope.toggleProgression = function(idx) {
+      if (fctrl42.arr[idx].progression) {
+        delete fctrl42.arr[idx].progression;
+      } else {
+        fctrl42.arr[idx].progression = 1;
       }
-      figs[idx].progression = 1;
-      return;
-    };
-    $scope.extraProgressionEligible = function(idx) {
-      var figs = fctrl42.arr;
-      if (figs[idx].progression) {
-        return false;
-      }
-      for (var i=0; i<figs.length; i++) {
-        if (figs[i].progression) {
-          return true;
-        }
-      }
-      return false;
-    };
-    $scope.addExtraProgression = function(idx) {
-      fctrl42.arr[idx].progression = 1;
     };
     $scope.hasProgression = function(idx) {
       return fctrl42.arr[idx].progression;
-    };
-    $scope.deleteProgression = function(idx) {
-      delete fctrl42.arr[idx].progression;
     };
     $scope.menuMoveLabel = menuMoveLabel;
     $scope.menuMove = function(from, to) {fctrl42.arr.splice(to, 0, fctrl42.arr.splice(from, 1)[0]); $scope.edit_index_box.length=0;};
