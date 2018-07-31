@@ -181,16 +181,49 @@ class DanceDatatable < AjaxDatatablesRails::Base
     figures.present? ? figures.sort : nil
   end
 
+  # The plan:
+  # replace all matching_figures functions from set-of-matching-figures to
+  # set-of-sets-of-matching-figures.
+
   def self.matching_figures_for_then(filter, dance)
     subfilters = filter.drop(1)
     figures_count = dance.figures.count
-    current_figures = all_figure_indicies(dance)
-    subfilters.each do |subfilter|
-      current_figures = shift_figure_indicies(current_figures, figures_count) & (matching_figures(subfilter, dance) || [])
-      return nil if current_figures.empty?
+    next_figures_to_test = all_figure_indicies(dance)
+    ms = subfilters.map do |subfilter|
+      m = matching_figures(subfilter, dance) || []
+      next_figures_to_test = shift_figure_indicies(next_figures_to_test, figures_count) & m
+      puts "#{m} #{subfilter}"
+      return nil if next_figures_to_test.empty?
+      m
     end
-    current_figures
+    # then matches all contiguous matching subfigures - figure out which those are
+    contiguous = []
+    next_figures_to_test.each do |next_filter| # [1]
+      # length is wrong! It's not the length of the subfilters, but the number of figures matched
+      subfilters.length.times {|i| contiguous |= [(next_filter - i) % figures_count]}
+    end
+    contiguous
   end
+
+  # def self.matching_figures_for_then(filter, dance)
+  #   subfilters = filter.drop(1)
+  #   figures_count = dance.figures.count
+  #   next_figures_to_test = all_figure_indicies(dance)
+  #   ms = subfilters.map do |subfilter|
+  #     m = matching_figures(subfilter, dance) || []
+  #     next_figures_to_test = shift_figure_indicies(next_figures_to_test, figures_count) & m
+  #     puts "#{m} #{subfilter}"
+  #     return nil if next_figures_to_test.empty?
+  #     m
+  #   end
+  #   # then matches all contiguous matching subfigures - figure out which those are
+  #   contiguous = []
+  #   next_figures_to_test.each do |next_filter| # [1]
+  #     # length is wrong! It's not the length of the subfilters, but the number of figures matched
+  #     subfilters.length.times {|i| contiguous |= [(next_filter - i) % figures_count]}
+  #   end
+  #   contiguous
+  # end
 
   def self.shift_figure_indicies(figure_indicies, figures_count)
     x = figure_indicies.map {|f| f+1}

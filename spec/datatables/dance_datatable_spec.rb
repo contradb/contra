@@ -109,25 +109,69 @@ describe DanceDatatable do
     it 'basically works' do
       dance = FactoryGirl.create(:box_the_gnat_contra)
       figure_indicies = DanceDatatable.matching_figures(['then', ['figure', 'box the gnat'], ['figure', 'swat the flea']], dance)
-      expect(figure_indicies).to eq([1])
+      expect(figure_indicies.sort).to eq([0, 1])
     end
 
     it 'wraps' do
       dance = FactoryGirl.create(:dance)
       figure_indicies = DanceDatatable.matching_figures(['then', ['figure', 'circle'], ['figure', 'swing']], dance)
-      expect(figure_indicies).to eq([0])
+      expect(figure_indicies).to eq([0, 6])
     end
 
-    it 'returns everything with zero arguments' do
+    it 'returns nothing with zero arguments' do
       dance = FactoryGirl.create(:dance)
       figure_indicies = DanceDatatable.matching_figures(['then'], dance)
-      expect(figure_indicies).to eq([*(0...dance.figures.length)])
+      expect(figure_indicies).to eq([])
     end
 
     it 'returns index of figure with one argument' do
       dance = FactoryGirl.create(:dance)
       figure_indicies = DanceDatatable.matching_figures(['then', ['figure', 'circle']], dance)
       expect(figure_indicies).to eq([4,6])
+    end
+
+
+    it 'striping test' do
+      dance = FactoryGirl.create(:dance)
+      dance.update!(figures_json: '[{"parameter_values":["neighbors","none",8],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":["neighbors","none",8],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":["neighbors","none",8],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},   {"parameter_values":[true, 8],"move":"long lines"},{"parameter_values":["ladles",true,540,8],"move":"do si do", "progression": 1}]')
+      q1 = ['then', ['figure', 'circle']]
+      q2 = ['then', ['figure', 'circle'], ['figure', 'swing']]
+      q3 = ['then', ['figure', 'circle'], ['figure', 'swing'], ['figure', 'circle']]
+      q5 = ['then', ['figure', 'circle'], ['figure', 'swing'], ['figure', 'circle'], ['figure', 'swing'], ['figure', 'circle']]
+      q6 = ['then', ['figure', 'circle'], ['figure', 'swing'], ['figure', 'circle'], ['figure', 'swing'], ['figure', 'circle'], ['figure', 'swing']]
+      expect(DanceDatatable.matching_figures(q1, dance).sort).to eq([1, 3, 5])
+      expect(DanceDatatable.matching_figures(q2, dance).sort).to eq([1, 2, 3, 4])
+      expect(DanceDatatable.matching_figures(q3, dance).sort).to eq([1, 2, 3, 4, 5])
+      expect(DanceDatatable.matching_figures(q5, dance).sort).to eq([1, 2, 3, 4, 5])
+      expect(DanceDatatable.matching_figures(q6, dance)).to eq(nil)
+    end
+
+    it 'nested then test' do
+      dance = FactoryGirl.create(:dance)
+      dance.update!(figures_json: '[{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":["neighbors","none",8],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":["ladles",true,540,8],"move":"do si do", "progression": 1}]')
+      q1 = ['then', ['figure', 'circle'], ['then', ['figure', 'swing'], ['figure', 'circle']]]
+      expect(DanceDatatable.matching_figures(q1, dance).sort).to eq([0, 1, 2])
+    end
+
+    it 'nested then test' do
+      dance = FactoryGirl.create(:dance)
+      dance.update!(figures_json: '[{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":["neighbors","none",8],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":["ladles",true,540,8],"move":"do si do", "progression": 1}]')
+      q1 = ['then', ['figure', 'circle'], ['or', ['figure', 'swing'], ['then', ['figure', 'swing'], ['figure', 'circle']]]]
+      expect(DanceDatatable.matching_figures(q1, dance).sort).to eq([0, 1, 2])
+    end
+
+    it "issue #461 regression - nested thens" do
+      dance = FactoryGirl.create(:you_cant_get_there_from_here)
+      q = ["then",
+           ["or",
+            ["figure","form an ocean wave"],
+            ["figure","form long waves"]],
+           ["or",
+            ["figure","allemande"],
+            ["then",
+             ["figure","balance"],
+             ["figure","allemande"]]]]
+      expect(DanceDatatable.matching_figures(q, dance).sort).to eq([0, 1, 2,  3, 4,  13])
     end
   end
 
