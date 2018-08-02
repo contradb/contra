@@ -167,7 +167,7 @@ function menuMoveLabel(from,to) {
 
     // had to memoize moveTermsAndSubstitutionsForSelect because the move select menus were blanking after accordioning
     // https://stackoverflow.com/questions/17116114/how-to-troubleshoot-angular-10-digest-iterations-reached-error/17116322#17116322
-    $scope.moveTermsAndSubstitutionsForSelect = moveTermsAndSubstitutionsForSelectMenu(dialect);
+    $scope.moveTermsAndSubstitutionsForSelect = moveTermsAndSubstitutionsForSelectMenu(dialect, 'prune obsolete');
     $scope.parameters = parameters;
     $scope.degreesToRotations = degreesToRotations;
     $scope.degreesToPlaces = degreesToPlaces;
