@@ -70,8 +70,8 @@ RSpec.describe DancesHelper, type: :helper do
     ['cross trails - * * the set * shoulders, * * the set * shoulders', nil, 'cross trails', '*', '*', '*', '*', '*'],
     # ['petronella', 'petronella', false, 8], ambiguous
     ['optional balance & petronella', nil, 'petronella', '*', '*'],
-    ['progress to new neighbors', true, 'progress', 0],
-    ['progress to new neighbors', nil, 'progress', '*'],
+    ['progress', true, 'progress', 0],
+    ['progress', nil, 'progress', '*'],
     ['pull by right', true, 'pull by direction', false, 'along', true, 2],
     ['pull by left', false, 'pull by direction', false, 'along', false, 4],
     ['pull by right across the set', true, 'pull by direction', false, 'across', true, 2],

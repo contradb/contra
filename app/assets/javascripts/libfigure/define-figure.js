@@ -8,8 +8,12 @@
 // and related support functions for dealing with figures
 
 // always freshly allocated
-function newFigure () {
-  return { parameter_values: [] };
+function newFigure (optional_progression) {
+  var m = { move: 'stand still', parameter_values: [8] };
+  if (optional_progression) {
+    m.progression = 1;
+  }
+  return m;
 }
 
 function figureBeats (f) {
@@ -46,11 +50,12 @@ function figureFlatten(f, dialect, flatten_format) {
     var func = fig_def.props.words || figureGenericWords;
     var main = func(alias(f), f.parameter_values, dialect);
     var note = f.note;
+    var pilcrow = f.progression ? '⁋' : false;
     if (note && note.trim()) {
       var fancy_note = lingoLineWords(stringInDialect(note, dialect), dialect);
-      return words(main, fancy_note).flatten(flatten_format);
+      return words(main, fancy_note, pilcrow).flatten(flatten_format);
     } else {
-      return words(main).flatten(flatten_format);
+      return words(main, pilcrow).flatten(flatten_format);
     }
   } else if (f.move) {
     return "undefined figure '"+words(f.move).flatten(flatten_format)+"'!";
@@ -58,7 +63,6 @@ function figureFlatten(f, dialect, flatten_format) {
     return "empty figure";
   }
 }
-
 
 // Called if they don't specify a Words function in the figure definition:
 function figureGenericWords(move, parameter_values, dialect) {
@@ -79,9 +83,6 @@ function figureGenericWords(move, parameter_values, dialect) {
       acc.push(pwords[i]);
     }
   }
-  if (is_progression(move)) {
-    acc.push(progressionString);
-  }
   return new Words(acc);
 }
 
@@ -89,8 +90,6 @@ function find_parameter_index_by_name(name, parameters) {
   var match_name_fn = function(p) {return p.name === name;};
   return parameters.findIndex(match_name_fn, parameters);
 }
-
-var progressionString = "to new neighbors";
 
 // ================
 
@@ -287,12 +286,18 @@ function moveTermsAndSubstitutions(dialect) {
   return ms;
 }
 
-function moveTermsAndSubstitutionsForSelectMenu(dialect) {
+function moveTermsAndSubstitutionsForSelectMenu(dialect, optional_hide_obsolete) {
   if (!dialect) { throw_up('must specify dialect to moveTermsAndSubstitutionsForSelectMenu'); }
   var mtas = moveTermsAndSubstitutions(dialect);
   var swing_index = mtas.findIndex(function (e) { return 'swing' === e.term;});
   if (swing_index >= 5) {
     mtas.unshift(mtas[swing_index]);                       // copy swing to front of the list
+  }
+  if (optional_hide_obsolete) {
+    var progress_index = mtas.findIndex(function(e) { return 'progress' === e.term;});
+    if (progress_index !== -1) {
+      mtas.splice(progress_index, 1);
+    }
   }
   return mtas;
 }
@@ -332,12 +337,6 @@ function moveProp(move_or_nil, property_name, default_value) {
   } else {
     return default_value;
   }
-}
-
-function is_progression(move) {
-  // var fig_def = defined_events[move];
-  // return fig_def && fig_def.props && fig_def.props.progression || false;
-  return moveProp(move, 'progression', false);
 }
 
 function stringInDialect(str, dialect) {
@@ -441,6 +440,13 @@ function goodBeatsMinMaxFn(min, max) {
   return function(figure) {
     var beats = figureBeats(figure);
     return (min <= beats) && (beats <= max);
+  };
+}
+
+function goodBeatsMinFn(min) {
+  return function(figure) {
+    var beats = figureBeats(figure);
+    return min <= beats;
   };
 }
 

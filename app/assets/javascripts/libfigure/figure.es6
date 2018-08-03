@@ -832,7 +832,7 @@ defineFigure("promenade",
 // PROGRESS -- progression                    //
 ////////////////////////////////////////////////
 
-defineFigure("progress", [param_beats_0], {progression: true});
+defineFigure("progress", [param_beats_0]);
 
 ////////////////////////////////////////////////
 // PULL BY DANCERS                            //
@@ -1024,7 +1024,7 @@ function slideAlongSetWords(move, pvs, dialect) {
 
 defineFigure("slide along set",
              [param_slide_left, param_beats_2],
-             {progression: true, words: slideAlongSetWords});
+             {words: slideAlongSetWords});
 
 ////////////////////////////////////////////////
 // SQUARE THROUGH                             //
@@ -1109,6 +1109,12 @@ defineFigure("square through",
               labels: [,,'odd bal'],
               goodBeats: squareThroughGoodBeats
              });
+
+////////////////////////////////////////////////
+// STAND STILL                                //
+////////////////////////////////////////////////
+
+defineFigure("stand still", [param_beats_8], {goodBeats: goodBeatsMinFn(1)});
 
 ////////////////////////////////////////////////
 // STAR                                       //
@@ -1237,4 +1243,4 @@ function zigZagWords(move, pvs, dialect) {
 
 defineFigure("zig zag",
              [param_subject_pairs_partners, param_spin_left, param_zig_zag_ender, param_beats_6],
-             {words: zigZagWords, progression: true});
+             {words: zigZagWords});

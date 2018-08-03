@@ -105,6 +105,8 @@ module JSLibFigure
           f2['move'] = ensure_string(move) if move
           note = figure['note']
           f2['note'] = ensure_string(note) if note
+          progression = figure['progression']
+          f2['progression'] = ensure_integer(progression) if progression
           f2
         end)
     else
@@ -254,6 +256,14 @@ module JSLibFigure
       return x if x.instance_of? cls
     end
     raise "expecting Bool, Int, Nil, or String, but got #{x.class.name}"
+  end
+
+  def self.ensure_integer(x)
+    if x.instance_of?(Integer)
+      x
+    else
+      raise "expecting Integer but got #{x.class.name}"
+    end
   end
 
   def self.ensure_string(s)

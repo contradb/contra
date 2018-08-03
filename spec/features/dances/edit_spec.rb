@@ -28,7 +28,7 @@ describe 'Editing dances', js: true do
       dance2 = FactoryGirl.build(:box_the_gnat_contra, user: user, choreographer: choreographer)
       dance1.reload
       expect(current_path).to eq dance_path dance1.id
-      %w[title start_type figures_json hook preamble notes].each do |message|
+      %w[title start_type figures hook preamble notes].each do |message|
         expect(dance1.send message).to eql dance2.send message
       end
       expect(dance1.choreographer.name).to eql dance2.choreographer.name
@@ -105,7 +105,7 @@ describe 'Editing dances', js: true do
       copy = FactoryGirl.build(:box_the_gnat_contra)
       expect(dance.figures.length).to eq(copy.figures.length)
       expect(dance.figures[0,6]).to eq(copy.figures[0,6])
-      expect(dance.figures[6]).to eq({'move' => 'swing', 'parameter_values' => ['neighbors', 'meltdown', 16], 'note' => 'with gusto!'})
+      expect(dance.figures[6]).to eq({'move' => 'swing', 'parameter_values' => ['neighbors', 'meltdown', 16], 'note' => 'with gusto!', 'progression' => 1})
     end
   end
 

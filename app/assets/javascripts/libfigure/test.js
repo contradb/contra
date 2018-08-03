@@ -37,6 +37,7 @@ function test_peek() {
   var t = 0;
   ++t && (peek('') === null) || throw_up('test '+ t + ' failed');
   ++t && (peek(words('')) === null) || throw_up('test '+ t + ' failed');
+  ++t && (peek(words(false)) === null) || throw_up('test '+ t + ' failed');
   ++t && (peek(' ') === null) || throw_up('test '+ t + ' failed');
   ++t && (peek(' hi') === 'h') || throw_up('test '+ t + ' failed');
   ++t && (peek(words(false, '   ', 'hi')) === 'h') || throw_up('test '+ t + ' failed');
