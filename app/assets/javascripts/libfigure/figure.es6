@@ -1019,7 +1019,7 @@ defineFigure("slice",
 function slideAlongSetWords(move, pvs, dialect) {
   var [ dir,  beats] = pvs;
   var [sdir, sbeats] = parameter_strings(move, pvs, dialect);
-  return words('slide', sdir, 'along set');
+  return words('slide', sdir, 'along set', 'to new', dancerSubstitution('neighbors', dialect));
 }
 
 defineFigure("slide along set",

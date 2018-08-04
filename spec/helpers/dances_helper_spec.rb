@@ -100,8 +100,8 @@ RSpec.describe DancesHelper, type: :helper do
     ['right left through', true, 'right left through', 'across', 8],
     ['left diagonal right left through', true, 'right left through', 'left diagonal', 8],
     ['* right left through', nil, 'right left through', '*', '*'],
-    ['slide left along set', true, 'slide along set', true, 2],
-    ['slide * along set', nil, 'slide along set', '*', '*'],
+    ['slide left along set to new neighbors', true, 'slide along set', true, 2],
+    ['slide * along set to new neighbors', nil, 'slide along set', '*', '*'],
     ['star promenade left ½', true, 'star promenade', 'gentlespoons', false, 180, 4], # prefer: "scoop up partners for star promenade"
     ['star promenade left ¾', true, 'star promenade', 'gentlespoons', false, 270, 6],
     ['ladles star promenade right ½', false, 'star promenade', 'ladles', true, 180, 8],
