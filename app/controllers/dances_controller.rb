@@ -19,7 +19,7 @@ class DancesController < ApplicationController
 
   def show
     @dialect = dialect
-    @show_moderation = current_user&.admin?
+    @show_validation = @show_moderation = current_user&.admin?
   end
 
   def new
