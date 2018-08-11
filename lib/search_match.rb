@@ -1,5 +1,5 @@
 class SearchMatch
-  def initialize(first, count=1, nfigures)
+  def initialize(first, nfigures, count: 1)
     @arr = [first, count, nfigures]
   end
 
@@ -20,14 +20,11 @@ class SearchMatch
   end
 
   def abuts?(other_search_match)
-    puts "#{(last+1) % nfigures} #{other_search_match.first}"
-    puts self.inspect
-    ((last+1) % nfigures == other_search_match.first)
-                          .tap {|x| puts x}
+    (last+1) % nfigures == other_search_match.first
   end
 
   def abut(other_search_match)
-    abuts?(other_search_match) ? SearchMatch.new(first, count + other_search_match.count, nfigures) : nil
+    abuts?(other_search_match) ? SearchMatch.new(first, nfigures, count: count + other_search_match.count) : nil
   end
 
   def ==(x)
@@ -43,6 +40,8 @@ class SearchMatch
   def inspect
     if 1 == count
       "|#{first}%#{nfigures}|"
+    elsif (wraps = (first + count) / nfigures) >= 1
+      "|#{first}#{'/'*wraps}#{last}%#{nfigures}|"
     else
       "|#{first}-#{last}%#{nfigures}|"
     end
