@@ -95,69 +95,79 @@ describe DanceDatatable do
     end
   end
 
-  describe '.shift_figure_indicies' do
-    it 'basically works' do
-      expect(DanceDatatable.shift_figure_indicies([1,3,5], 7)).to eq([2,4,6])
-    end
-
-    it 'wraps' do
-      expect(DanceDatatable.shift_figure_indicies([5], 6)).to eq([0])
-    end
-  end
-
   describe '.matching_figures_for_then' do
     it 'basically works' do
       dance = FactoryGirl.create(:box_the_gnat_contra)
-      figure_indicies = DanceDatatable.matching_figures(['then', ['figure', 'box the gnat'], ['figure', 'swat the flea']], dance)
-      expect(figure_indicies.sort).to eq([0, 1])
+      nfigures = dance.figures.length
+      search_matches = DanceDatatable.matching_figures(['then', ['figure', 'box the gnat'], ['figure', 'swat the flea']], dance)
+      expect(search_matches).to eq(Set[SearchMatch.new(0, nfigures, count: 2)])
     end
 
     it 'wraps' do
       dance = FactoryGirl.create(:dance)
-      figure_indicies = DanceDatatable.matching_figures(['then', ['figure', 'circle'], ['figure', 'swing']], dance)
-      expect(figure_indicies).to eq([0, 6])
+      nfigures = dance.figures.length
+      search_matches = DanceDatatable.matching_figures(['then', ['figure', 'circle'], ['figure', 'swing']], dance)
+      expect(nfigures).to eq(7)
+      expect(search_matches).to eq(Set[SearchMatch.new(6, nfigures, count: 2)])
+      expect(search_matches.first.last).to eq(0)
     end
 
-    it 'returns nothing with zero arguments' do
+    it 'with zero arguments, returns all the zero-length matches' do
       dance = FactoryGirl.create(:dance)
-      figure_indicies = DanceDatatable.matching_figures(['then'], dance)
-      expect(figure_indicies).to eq([])
+      nfigures = dance.figures.length
+      search_matches = DanceDatatable.matching_figures(['then'], dance)
+      expect(search_matches).to eq(Set.new(nfigures.times.map {|i| SearchMatch.new(i, nfigures, count: 0)}))
     end
 
-    it 'returns index of figure with one argument' do
+    it 'with one argument returns submatch' do
       dance = FactoryGirl.create(:dance)
+      nfigures = dance.figures.length
       figure_indicies = DanceDatatable.matching_figures(['then', ['figure', 'circle']], dance)
-      expect(figure_indicies).to eq([4,6])
+      expect(figure_indicies).to eq(Set[SearchMatch.new(4, nfigures),
+                                        SearchMatch.new(6, nfigures)])
     end
 
 
     it 'striping test' do
       dance = FactoryGirl.create(:dance)
-      dance.update!(figures_json: '[{"parameter_values":["neighbors","none",8],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":["neighbors","none",8],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":["neighbors","none",8],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},   {"parameter_values":[true, 8],"move":"long lines"},{"parameter_values":["ladles",true,540,8],"move":"do si do", "progression": 1}]')
+      dance.update!(figures_json: '[{"parameter_values":["neighbors","none",8],"move":"swing"},
+                                    {"parameter_values":[true,360,8],"move":"circle"},
+                                    {"parameter_values":["neighbors","none",8],"move":"swing"},
+                                    {"parameter_values":[true,360,8],"move":"circle"},
+                                    {"parameter_values":["neighbors","none",8],"move":"swing"},
+                                    {"parameter_values":[true,360,8],"move":"circle"},
+                                    {"parameter_values":[true, 8],"move":"long lines"},
+                                    {"parameter_values":["ladles",true,540,8],"move":"do si do", "progression": 1}]')
+      nfigures = dance.figures.length
       q1 = ['then', ['figure', 'circle']]
       q2 = ['then', ['figure', 'circle'], ['figure', 'swing']]
       q3 = ['then', ['figure', 'circle'], ['figure', 'swing'], ['figure', 'circle']]
       q5 = ['then', ['figure', 'circle'], ['figure', 'swing'], ['figure', 'circle'], ['figure', 'swing'], ['figure', 'circle']]
       q6 = ['then', ['figure', 'circle'], ['figure', 'swing'], ['figure', 'circle'], ['figure', 'swing'], ['figure', 'circle'], ['figure', 'swing']]
-      expect(DanceDatatable.matching_figures(q1, dance).sort).to eq([1, 3, 5])
-      expect(DanceDatatable.matching_figures(q2, dance).sort).to eq([1, 2, 3, 4])
-      expect(DanceDatatable.matching_figures(q3, dance).sort).to eq([1, 2, 3, 4, 5])
-      expect(DanceDatatable.matching_figures(q5, dance).sort).to eq([1, 2, 3, 4, 5])
+      expect(DanceDatatable.matching_figures(q1, dance)).to eq(search_match_indicies([1, 3, 5], nfigures, count: 1))
+      expect(DanceDatatable.matching_figures(q2, dance)).to eq(search_match_indicies([1, 3], nfigures, count: 2))
+      expect(DanceDatatable.matching_figures(q3, dance)).to eq(search_match_indicies([1, 3], nfigures, count: 3))
+      expect(DanceDatatable.matching_figures(q5, dance)).to eq(search_match_indicies([1], nfigures, count: 5))
       expect(DanceDatatable.matching_figures(q6, dance)).to eq(nil)
     end
 
-    it 'nested then test' do
-      dance = FactoryGirl.create(:dance)
-      dance.update!(figures_json: '[{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":["neighbors","none",8],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":["ladles",true,540,8],"move":"do si do", "progression": 1}]')
-      q1 = ['then', ['figure', 'circle'], ['then', ['figure', 'swing'], ['figure', 'circle']]]
-      expect(DanceDatatable.matching_figures(q1, dance).sort).to eq([0, 1, 2])
+    def search_match_indicies(indicies, nfigures, count: 1)
+      Set.new(indicies.map {|i| SearchMatch.new(i, nfigures, count: count)})
     end
 
-    it 'nested then test' do
-      dance = FactoryGirl.create(:dance)
-      dance.update!(figures_json: '[{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":["neighbors","none",8],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":["ladles",true,540,8],"move":"do si do", "progression": 1}]')
-      q1 = ['then', ['figure', 'circle'], ['or', ['figure', 'swing'], ['then', ['figure', 'swing'], ['figure', 'circle']]]]
-      expect(DanceDatatable.matching_figures(q1, dance).sort).to eq([0, 1, 2])
+    describe 'nested thens' do
+      let (:dance) { FactoryGirl.create(:dance).tap {|d| d.update!(figures_json: '[{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":["neighbors","none",8],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":["ladles",true,540,8],"move":"do si do", "progression": 1}]')}}
+      let (:nfigures) {dance.figures.length}
+      let (:q1) {['then', ['figure', 'circle'],                             ['then', ['figure', 'swing'], ['figure', 'circle']]]}
+      let (:q2) {['then', ['figure', 'circle'], ['or', ['figure', 'swing'], ['then', ['figure', 'swing'], ['figure', 'circle']]]]}
+
+      it 'works' do
+        expect(DanceDatatable.matching_figures(q1, dance)).to eq(Set[SearchMatch.new(0,nfigures, count: 3)])
+      end
+
+      it 'superimpose' do
+        expect(DanceDatatable.matching_figures(q2, dance)).to eq(Set[SearchMatch.new(0,nfigures, count: 3), SearchMatch.new(0,nfigures, count: 2)])
+      end
     end
 
     it "issue #461 regression - nested thens" do
@@ -171,7 +181,8 @@ describe DanceDatatable do
             ["then",
              ["figure","balance"],
              ["figure","allemande"]]]]
-      expect(DanceDatatable.matching_figures(q, dance).sort).to eq([0, 1, 2,  3, 4,  13])
+      expect(DanceDatatable.matching_figures(q, dance)).to eq(Set[SearchMatch.new(13, 14, count: 3),
+                                                                  SearchMatch.new(2, 14, count: 3)])
     end
   end
 
@@ -198,5 +209,12 @@ describe DanceDatatable do
 
     # unspecified because I don't need it yet: 
     # what happens when you get a non faux_array and it has a faux_array as a key or value.
+  end
+
+  it '.dice_search_matches' do
+    result = DanceDatatable.send(:dice_search_matches, Set[SearchMatch.new(7,8, count: 2), SearchMatch.new(6,8, count:2)])
+    expect(result).to eq(Set[SearchMatch.new(6,8),
+                             SearchMatch.new(7,8),
+                             SearchMatch.new(0,8)])
   end
 end
