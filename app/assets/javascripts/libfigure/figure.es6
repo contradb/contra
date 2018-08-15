@@ -727,7 +727,7 @@ function madRobinWords(move, pvs, dialect) {
 }
 
 defineFigure("mad robin",
-             [param_subject_pair, param_once_around, param_beats],
+             [param_subject_pair, param_once_around, param_beats_6],
              {words: madRobinWords, goodBeats: madRobinGoodBeats});
 
 ////////////////////////////////////////////////
@@ -808,7 +808,8 @@ defineFigure("poussette",
              [param_half_or_full_half_chatty_max,
               param_subject_pair,
               param_object_pairs_or_ones_or_twos,
-              param_spin, param_beats],
+              param_spin,
+              param_beats_6],
              {words: poussetteWords,
               goodBeats: poussetteGoodBeats});
 

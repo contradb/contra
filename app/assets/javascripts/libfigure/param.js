@@ -39,7 +39,8 @@ var param_pass_through_true = {name: "pass thru", value: true, ui: chooser_boole
 function stringParamBeatsNotN (n) {
   return function (value) {return value.toString();};
 }
-var param_beats   = {name: "beats",           ui: chooser_beats, string: stringParamBeatsNotN(-100)}; // always display beats
+// do not use param_beats without a default number of beats - it causes dance validation explosions in the editor -dm 08-14-2018
+//  var param_beats   = {name: "beats",           ui: chooser_beats, string: stringParamBeatsNotN(-100)};
 var param_beats_0 = {name: "beats", value: 0, ui: chooser_beats, string: stringParamBeatsNotN(0)};
 var param_beats_2 = {name: "beats", value: 2, ui: chooser_beats, string: stringParamBeatsNotN(2)};
 var param_beats_4 = {name: "beats", value: 4, ui: chooser_beats, string: stringParamBeatsNotN(4)};
