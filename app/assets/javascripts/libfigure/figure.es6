@@ -185,16 +185,34 @@ defineRelatedMove2Way('California twirl', 'box the gnat');
 // CHAIN                                      //
 ////////////////////////////////////////////////
 
+function chainChange(figure,index) {
+  var pvs = figure.parameter_values;
+  const who_index = 0;
+  const hand_index = 1;
+  if (index === who_index) {
+    pvs[hand_index] = pvs[who_index] === 'ladles';
+  }
+}
+
 function chainWords(move, pvs, dialect) {
-  var [ who,  diag,  beats] = pvs;
-  var [swho, sdiag, sbeats] = parameter_strings(move, pvs, dialect);
+  var [ who,  hand,  diag,  beats] = pvs;
+  var [swho, shand, sdiag, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
-  return words(sdiag, swho, smove);
+  var thand;
+  if (hand === '*') {
+    thand = '*-hand';
+  } else if (hand === (who === 'ladles')){
+    thand = false;
+  } else {
+    thand = shand + '-hand';
+  }
+
+  return words(sdiag, swho, thand, smove);
 }
 
 defineFigure("chain",
-             [param_subject_role_ladles, param_set_direction_across, param_beats_8],
-             {words: chainWords});
+             [param_subject_role_ladles, param_by_right_hand, param_set_direction_across, param_beats_8],
+             {words: chainWords, change: chainChange});
 
 ////////////////////////////////////////////////
 // CIRCLE                                     //

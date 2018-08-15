@@ -16,7 +16,7 @@ FactoryGirl.define do
     start_type 'improper'
     hook 'stompy fun'
     preamble 'blah blah blah'
-    figures_json '[{"parameter_values":["neighbors",true,true,8],"move":"box the gnat"},{"parameter_values":["partners",true,false,8],"move":"box the gnat"},{"parameter_values":["neighbors","balance",16],"move":"swing"},{"parameter_values":["ladles",true,540,8],"move":"allemande"},{"parameter_values":["partners","none",8],"move":"swing"},{"parameter_values":["across",8],"move":"right left through"},{"parameter_values":["ladles","across",8],"move":"chain", "progression": 1}]'
+    figures_json '[{"parameter_values":["neighbors",true,true,8],"move":"box the gnat"},{"parameter_values":["partners",true,false,8],"move":"box the gnat"},{"parameter_values":["neighbors","balance",16],"move":"swing"},{"parameter_values":["ladles",true,540,8],"move":"allemande"},{"parameter_values":["partners","none",8],"move":"swing"},{"parameter_values":["across",8],"move":"right left through"},{"parameter_values":["ladles",true,"across",8],"move":"chain", "progression": 1}]'
     notes 'swat the flea variation'
   end
 
@@ -25,7 +25,7 @@ FactoryGirl.define do
     user { FactoryGirl.create(:user) }
     choreographer { FactoryGirl.create(:choreographer) }
     start_type 'Becket ccw'
-    figures_json '[{"parameter_values":["across",8],"move":"right left through"},{"parameter_values":["ladles","across",8],"move":"chain"},{"parameter_values":[false,360,"",8],"move":"star","note":"look for new neighbor"},{"parameter_values":["neighbors","none",8],"move":"swing"},{"parameter_values":[true,270,8],"move":"circle"},{"parameter_values":["ladles",0.5,"across",8],"move":"hey"},{"parameter_values":["partners","balance",16],"move":"swing", "progression": 1}]'
+    figures_json '[{"parameter_values":["across",8],"move":"right left through"},{"parameter_values":["ladles",true,"across",8],"move":"chain"},{"parameter_values":[false,360,"",8],"move":"star","note":"look for new neighbor"},{"parameter_values":["neighbors","none",8],"move":"swing"},{"parameter_values":[true,270,8],"move":"circle"},{"parameter_values":["ladles",0.5,"across",8],"move":"hey"},{"parameter_values":["partners","balance",16],"move":"swing", "progression": 1}]'
   end
 
   factory :dance_with_empty_figure, class: Dance do
