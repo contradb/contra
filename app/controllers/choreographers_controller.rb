@@ -5,6 +5,7 @@ class ChoreographersController < ApplicationController
   def index
     @choreographers = Choreographer.all.order "LOWER(name)"
     @show_admin_actions = current_user&.admin?
+    @user = current_user
   end
 
   def show
