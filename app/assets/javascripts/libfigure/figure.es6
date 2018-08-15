@@ -177,7 +177,7 @@ defineFigure("butterfly whirl", [param_beats_4]);
 ////////////////////////////////////////////////
 
 defineFigure("California twirl",
-             [param_subject_pairs_partners, param_beats_4]);
+             [param_subject_pairz_partners, param_beats_4]);
 
 defineRelatedMove2Way('California twirl', 'box the gnat');
 
