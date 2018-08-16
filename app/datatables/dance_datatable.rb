@@ -122,6 +122,15 @@ class DanceDatatable < AjaxDatatablesRails::Base
     end
   end
 
+  def self.matching_figures_for_formation(filter, dance)
+    filter_formation = filter[1]
+    if '*' == filter_formation || dance.start_type == filter_formation
+      Set[]
+    else
+      nil
+    end
+  end
+
   def self.param_passes_filter?(formal_param, dance_param, param_filter)
     if JSLibFigure.parameter_uses_chooser(formal_param, 'chooser_text')
       # substring search
