@@ -25,11 +25,7 @@ class SearchMatch
   end
 
   def include?(index)
-    f = first
-    n = nfigures
-    count.times do |i|
-      return true if index == (i+f) % n
-    end
+    each {|i| return true if i == index}
     false
   end
 
