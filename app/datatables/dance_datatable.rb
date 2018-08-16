@@ -102,7 +102,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
   def self.matching_figures_for_figure(filter, dance)
     filter_move = filter[1]
     if '*' == filter_move              # wildcard
-      all_figures_match(dance)
+      all_figures_match(dance.figures.length)
     else
       formals = JSLibFigure.is_move?(filter_move) ? JSLibFigure.formal_parameters(filter_move) : []
       nfigures = dance.figures.length
@@ -180,8 +180,8 @@ class DanceDatatable < AjaxDatatablesRails::Base
   # anything but is mainly useful when paired with then
   def self.matching_figures_for_anything_but(filter, dance)
     subfilter = filter[1]
-    figures = all_figure_indicies(dance) - (matching_figures(subfilter, dance) || [])
-    figures.present? ? figures.sort : nil
+    matches = all_figures_match(dance.figures.length) - dice_search_matches(matching_figures(subfilter, dance) || Set[])
+    matches.present? ? matches : nil
   end
 
   def self.matching_figures_for_then(filter, dance)
@@ -190,6 +190,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
     subfilters = filter.drop(1)
     subfilters.each do |subfilter|
       m = matching_figures(subfilter, dance)
+      m or return nil
       new_concerns = Set[]
       going_concerns.each do |search_match_head|
         m.each do |search_match_tail|
@@ -211,9 +212,10 @@ class DanceDatatable < AjaxDatatablesRails::Base
     Set.new(nfigures.times.map{|i| SearchMatch.new(i, nfigures)})
   end
 
-  # obsolete?
-  def self.all_figure_indicies(dance)
-    [*0...dance.figures.count]
+  # given a set of search matches, return a set of new search matches with count: 1 search matches for every index anywhere in the set
+  def self.dice_search_matches(set)
+    Set.new(
+      set.map {|search_match| search_match.map {|i| SearchMatch.new(i, search_match.nfigures)}}.flatten)
   end
 
   def self.hash_to_array(h)
@@ -231,11 +233,5 @@ class DanceDatatable < AjaxDatatablesRails::Base
       end
       arr
     end
-  end
-
-  # given a set of search matches, return a set of new search matches with count: 1 search matches for every index anywhere in the set
-  def self.dice_search_matches(set)
-    Set.new(
-      set.map {|search_match| search_match.map {|i| SearchMatch.new(i, search_match.nfigures)}}.flatten)
   end
 end
