@@ -156,6 +156,7 @@ describe DanceDatatable do
     end
 
     describe 'nested thens' do
+      # circle, swing, circle, do si do
       let (:dance) { FactoryGirl.create(:dance).tap {|d| d.update!(figures_json: '[{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":["neighbors","none",8],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":["ladles",true,540,8],"move":"do si do", "progression": 1}]')}}
       let (:nfigures) {dance.figures.length}
       let (:q1) {['then', ['figure', 'circle'],                             ['then', ['figure', 'swing'], ['figure', 'circle']]]}
