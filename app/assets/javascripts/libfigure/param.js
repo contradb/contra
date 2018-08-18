@@ -39,7 +39,8 @@ var param_pass_through_true = {name: "pass thru", value: true, ui: chooser_boole
 function stringParamBeatsNotN (n) {
   return function (value) {return value.toString();};
 }
-var param_beats   = {name: "beats",           ui: chooser_beats, string: stringParamBeatsNotN(-100)}; // always display beats
+// do not use param_beats without a default number of beats - it causes dance validation explosions in the editor -dm 08-14-2018
+//  var param_beats   = {name: "beats",           ui: chooser_beats, string: stringParamBeatsNotN(-100)};
 var param_beats_0 = {name: "beats", value: 0, ui: chooser_beats, string: stringParamBeatsNotN(0)};
 var param_beats_2 = {name: "beats", value: 2, ui: chooser_beats, string: stringParamBeatsNotN(2)};
 var param_beats_4 = {name: "beats", value: 4, ui: chooser_beats, string: stringParamBeatsNotN(4)};
@@ -66,7 +67,8 @@ var param_left_hand_spin         = {name: "hand", value: false,     ui: chooser_
 var param_xshoulder_spin         = {name: "shoulder",               ui: chooser_right_left_shoulder, string: stringParamShoulder};
 var param_right_shoulder_spin    = {name: "shoulder", value: true,  ui: chooser_right_left_shoulder, string: stringParamShoulder};
 var param_left_shoulder_spin     = {name: "shoulder", value: false, ui: chooser_right_left_shoulder, string: stringParamShoulder};
-var param_by_xhand = {name: "c.hand", ui: chooser_right_left_hand, string: stringParamHand};
+var param_by_xhand      = {name: "c.hand", ui: chooser_right_left_hand, string: stringParamHand};
+var param_by_right_hand = {name: "hand",   ui: chooser_right_left_hand, string: stringParamHand, value: true};
 
 function stringParamDegrees (value,move) {
   // this second parameter should go away, it should be handled in figure.es6,

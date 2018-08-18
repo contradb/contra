@@ -177,7 +177,7 @@ defineFigure("butterfly whirl", [param_beats_4]);
 ////////////////////////////////////////////////
 
 defineFigure("California twirl",
-             [param_subject_pairs_partners, param_beats_4]);
+             [param_subject_pairz_partners, param_beats_4]);
 
 defineRelatedMove2Way('California twirl', 'box the gnat');
 
@@ -185,16 +185,34 @@ defineRelatedMove2Way('California twirl', 'box the gnat');
 // CHAIN                                      //
 ////////////////////////////////////////////////
 
+function chainChange(figure,index) {
+  var pvs = figure.parameter_values;
+  const who_index = 0;
+  const hand_index = 1;
+  if (index === who_index) {
+    pvs[hand_index] = pvs[who_index] === 'ladles';
+  }
+}
+
 function chainWords(move, pvs, dialect) {
-  var [ who,  diag,  beats] = pvs;
-  var [swho, sdiag, sbeats] = parameter_strings(move, pvs, dialect);
+  var [ who,  hand,  diag,  beats] = pvs;
+  var [swho, shand, sdiag, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
-  return words(sdiag, swho, smove);
+  var thand;
+  if (hand === '*') {
+    thand = '*-hand';
+  } else if (hand === (who === 'ladles')){
+    thand = false;
+  } else {
+    thand = shand + '-hand';
+  }
+
+  return words(sdiag, swho, thand, smove);
 }
 
 defineFigure("chain",
-             [param_subject_role_ladles, param_set_direction_across, param_beats_8],
-             {words: chainWords});
+             [param_subject_role_ladles, param_by_right_hand, param_set_direction_across, param_beats_8],
+             {words: chainWords, change: chainChange});
 
 ////////////////////////////////////////////////
 // CIRCLE                                     //
@@ -727,7 +745,7 @@ function madRobinWords(move, pvs, dialect) {
 }
 
 defineFigure("mad robin",
-             [param_subject_pair, param_once_around, param_beats],
+             [param_subject_pair, param_once_around, param_beats_6],
              {words: madRobinWords, goodBeats: madRobinGoodBeats});
 
 ////////////////////////////////////////////////
@@ -808,7 +826,8 @@ defineFigure("poussette",
              [param_half_or_full_half_chatty_max,
               param_subject_pair,
               param_object_pairs_or_ones_or_twos,
-              param_spin, param_beats],
+              param_spin,
+              param_beats_6],
              {words: poussetteWords,
               goodBeats: poussetteGoodBeats});
 
@@ -832,7 +851,7 @@ defineFigure("promenade",
 // PROGRESS -- progression                    //
 ////////////////////////////////////////////////
 
-defineFigure("progress", [param_beats_0], {progression: true});
+defineFigure("progress", [param_beats_0]);
 
 ////////////////////////////////////////////////
 // PULL BY DANCERS                            //
@@ -1019,12 +1038,12 @@ defineFigure("slice",
 function slideAlongSetWords(move, pvs, dialect) {
   var [ dir,  beats] = pvs;
   var [sdir, sbeats] = parameter_strings(move, pvs, dialect);
-  return words('slide', sdir, 'along set', 'to new', dancerSubstitution('neighbors', dialect));
+  return words('slide', sdir, 'along set');
 }
 
 defineFigure("slide along set",
              [param_slide_left, param_beats_2],
-             {progression: true, words: slideAlongSetWords});
+             {words: slideAlongSetWords});
 
 ////////////////////////////////////////////////
 // SQUARE THROUGH                             //
@@ -1109,6 +1128,12 @@ defineFigure("square through",
               labels: [,,'odd bal'],
               goodBeats: squareThroughGoodBeats
              });
+
+////////////////////////////////////////////////
+// STAND STILL                                //
+////////////////////////////////////////////////
+
+defineFigure("stand still", [param_beats_8], {goodBeats: goodBeatsMinFn(1)});
 
 ////////////////////////////////////////////////
 // STAR                                       //
@@ -1237,4 +1262,4 @@ function zigZagWords(move, pvs, dialect) {
 
 defineFigure("zig zag",
              [param_subject_pairs_partners, param_spin_left, param_zig_zag_ender, param_beats_6],
-             {words: zigZagWords, progression: true});
+             {words: zigZagWords});

@@ -165,7 +165,8 @@ $(document).ready(function() {
 
   var checkboxSubstitutions = $.map([['gent', 'gents', 'lady', 'ladies'],
                                      ['lark', 'larks', 'raven', 'ravens'],
-                                     ['lead', 'leads', 'follow', 'follows']
+                                     ['lead', 'leads', 'follow', 'follows'],
+                                     ['man', 'men', 'woman', 'women']
                                     ],
                                     function(roleArr) {
                                       var gentlespoon = roleArr[0];

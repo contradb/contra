@@ -69,7 +69,7 @@ function indexEndsDanceSquarely(figures, index) {
 function defaultFigures (figures) {
   if (figures.length == 0) {
     return [newFigure(), newFigure(), newFigure(), newFigure(),
-            newFigure(), newFigure(), newFigure(), newFigure()];
+            newFigure(), newFigure(), newFigure(), newFigure('progress')];
   } else {
     return figures.map(function(figure) {
       var f2 = libfigureObjectCopy(figure);
@@ -167,7 +167,7 @@ function menuMoveLabel(from,to) {
 
     // had to memoize moveTermsAndSubstitutionsForSelect because the move select menus were blanking after accordioning
     // https://stackoverflow.com/questions/17116114/how-to-troubleshoot-angular-10-digest-iterations-reached-error/17116322#17116322
-    $scope.moveTermsAndSubstitutionsForSelect = moveTermsAndSubstitutionsForSelectMenu(dialect);
+    $scope.moveTermsAndSubstitutionsForSelect = moveTermsAndSubstitutionsForSelectMenu(dialect, 'prune obsolete');
     $scope.parameters = parameters;
     $scope.degreesToRotations = degreesToRotations;
     $scope.degreesToPlaces = degreesToPlaces;
@@ -202,15 +202,25 @@ function menuMoveLabel(from,to) {
 
     $scope.toJson = angular.toJson;
     $scope.newFigure = newFigure;
-    $scope.addFigure = function () { addFigure(fctrl42.arr, $scope.edit_index_box); }
-    $scope.deleteFigure = function() { deleteFigure(fctrl42.arr, $scope.edit_index_box); }
+    $scope.addFigure = function () { addFigure(fctrl42.arr, $scope.edit_index_box); };
+    $scope.deleteFigure = function() { deleteFigure(fctrl42.arr, $scope.edit_index_box); };
     $scope.deleteFigureIdx = function(idx) {(idx >= 0) && (fctrl42.arr.length > idx) && fctrl42.arr.splice(idx,1); $scope.edit_index_box.length=0;};
     $scope.duplicateIdx = function(idx) {
       (0 <= idx) && (idx < fctrl42.arr.length) && fctrl42.arr.splice(idx,0,angular.copy(fctrl42.arr[idx]));
       $scope.edit_index_box.length=0;
     };
-    $scope.menuMoveLabel = menuMoveLabel
-    $scope.menuMove = function(from, to) {fctrl42.arr.splice(to, 0, fctrl42.arr.splice(from, 1)[0]); $scope.edit_index_box.length=0;}
+    $scope.toggleProgression = function(idx) {
+      if (fctrl42.arr[idx].progression) {
+        delete fctrl42.arr[idx].progression;
+      } else {
+        fctrl42.arr[idx].progression = 1;
+      }
+    };
+    $scope.hasProgression = function(idx) {
+      return fctrl42.arr[idx].progression;
+    };
+    $scope.menuMoveLabel = menuMoveLabel;
+    $scope.menuMove = function(from, to) {fctrl42.arr.splice(to, 0, fctrl42.arr.splice(from, 1)[0]); $scope.edit_index_box.length=0;};
     $scope.rotateFigures = function() {
       (fctrl42.arr.length>0) && fctrl42.arr.unshift(fctrl42.arr.pop());
       $scope.edit_index_box.length=0;

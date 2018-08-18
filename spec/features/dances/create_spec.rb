@@ -57,6 +57,36 @@ describe 'Creating dances', js: true do
   end
 
   context 'figure menu' do
+    context 'progressions' do
+      it "'add' works and present iff not progression" do
+        with_login do
+          visit '/dances/new'
+          find('#figure-menu-3').click
+          click_on('Add ⁋rogression')
+          expect(page).to have_css('#figure-3', text: 'stand still ⁋')
+          expect(page).to have_css('#figure-7', text: 'stand still ⁋')
+          expect(page).to have_text('⁋', count: 2)
+          find('#figure-menu-3').click
+          expect(page).to_not have_content('Add ⁋rogression')
+        end
+      end
+
+      it "'remove' works and present iff progression" do
+        with_login do
+          visit '/dances/new'
+          find('#figure-menu-3').click
+          expect(page).to have_content('Add ⁋rogression') # js wait
+          expect(page).to_not have_content('Remove ⁋rogression')
+          page.find('body').send_keys(:escape)                  # wave off menu
+          expect(page).to_not have_content('Remove ⁋rogression') # js wait
+          find('#figure-menu-7').click
+          click_on('Remove ⁋rogression')
+          expect(page).to_not have_content('⁋')
+        end
+      end
+
+
+    end
     it 'duplicate' do
       with_login do
         visit '/dances/new'
@@ -70,12 +100,12 @@ describe 'Creating dances', js: true do
       end
     end
 
-    it 'delete' do
+    it 'delete figure' do
       with_login do
         visit '/dances/new'
         make_eight_circle_figures
         find('#figure-menu-4').click # 'circle to the left 5 places'
-        click_on 'Delete'
+        click_on 'Delete Figure'
         expect(page).to have_text "circle left 1 place"
         expect(page).to have_text "circle left 2 places"
         expect(page).to have_text "circle left 3 places"
@@ -124,13 +154,13 @@ describe 'Creating dances', js: true do
     it 'adds a figure after the selection, and selects it' do
       with_login do
         visit '/dances/new'
-        expect(page).to have_content('empty figure', count: 8)
+        expect(page).to have_content('stand still', count: 8)
         find('#figure-0').click
         select('chain')
         click_button('Add')
-        expect(page).to have_words("A1 8 ladles chain 8 empty figure move note")
+        expect(page).to have_words("A1 8 ladles chain 8 stand still move beats note")
         click_button('Add')
-        expect(page).to have_words("A1 8 ladles chain 8 empty figure A2 8 empty figure move note")
+        expect(page).to have_words("A1 8 ladles chain 8 stand still A2 8 stand still move beats note")
       end
     end
 
@@ -141,7 +171,7 @@ describe 'Creating dances', js: true do
         select('chain')
         click_link('ladles chain')
         click_button('Add')
-        expect(page).to have_words("A1 8 empty figure move note 8 ladles chain")
+        expect(page).to have_words("A1 8 stand still move beats note 8 ladles chain")
       end
     end
   end
@@ -179,10 +209,10 @@ describe 'Creating dances', js: true do
         expect(page).to have_css('#figure-7')
         find('#figure-7').click
         select('do si do')
-        expect(page).to have_words('B2 8 empty figure 8 ____ do si do')
+        expect(page).to have_words('B2 8 stand still 8 ____ do si do')
         click_button('Remove')
         expect(page).to_not have_words('do si do')
-        expect(page).to have_words('B2 8 empty figure move')
+        expect(page).to have_words('B2 8 stand still move')
       end
     end
 
@@ -207,19 +237,21 @@ describe 'Creating dances', js: true do
       with_login do
         visit '/dances/new'
         expect(page).to have_css('#figure-0')
+
+        # delete down to 3 figures
         find('#figure-0').click
         5.times do
           click_button('Remove')
         end
-        select('custom')
-        click_link('custom')
-        expect(page).to have_words('A1 8 custom 8 empty figure A2 8 empty figure Notes')
+        find('#figure-0').click
+
+        expect(page).to have_words('A1 8 stand still 8 stand still A2 8 stand still ⁋ Notes')
         click_button('Rotate')
-        expect(page).to have_words('A1 8 empty figure 8 custom A2 8 empty figure Notes')
+        expect(page).to have_words('A1 8 stand still ⁋ 8 stand still A2 8 stand still Notes')
         click_button('Rotate')
-        expect(page).to have_words('A1 8 empty figure 8 empty figure A2 8 custom Notes')
+        expect(page).to have_words('A1 8 stand still 8 stand still ⁋ A2 8 stand still Notes')
         click_button('Rotate')
-        expect(page).to have_words('A1 8 custom 8 empty figure A2 8 empty figure Notes')
+        expect(page).to have_words('A1 8 stand still 8 stand still A2 8 stand still ⁋ Notes')
       end
     end
   end
@@ -244,7 +276,7 @@ describe 'Creating dances', js: true do
       click_button 'Save Dance'
       dance = Dance.last
       expect(dance.figures).to eq([{'move' => 'swing', 'parameter_values' => ['neighbors', 'balance', 16], 'note' => 'with gusto!'},
-                                   {'move' => 'allemande', 'parameter_values' => ['partners', false, 540, 12]}])
+                                   {'move' => 'allemande', 'parameter_values' => ['partners', false, 540, 12], 'progression' => 1}])
     end
   end
 
@@ -254,7 +286,7 @@ describe 'Creating dances', js: true do
       text_in_dialect = 'darcy ravens'
       text_in_canon = 'gyre ladles'
       visit new_dance_path
-      click_on('empty figure', match: :first)
+      click_on('stand still', match: :first)
       select('custom')
       fill_in('note', with: text_in_dialect)
       fill_in('custom', with: text_in_dialect)
@@ -282,7 +314,7 @@ describe 'Creating dances', js: true do
       text_in_dialect = 'darcy ravens'
       text_in_canon = 'gyre ladles'
       visit new_dance_path
-      click_on('empty figure', match: :first)
+      click_on('stand still', match: :first)
       select('custom')
       fill_in('note', with: "note #{text_in_dialect} note")
       fill_in('custom', with: "custom #{text_in_dialect} custom")
