@@ -115,6 +115,7 @@ var param_subject_role_gentlespoons  = {name: "who", value: "gentlespoons", ui: 
 //  param_subject_partners           = {name: "who", value: "partners",     ui: chooser_pairs}; // not used
 //  param_subject_hetero_partners    = {name: "who", value: "partners",     ui: chooser_hetero}; // not used
 var param_object_hetero_partners     = {name: "whom", value: "partners",    ui: chooser_hetero};
+var param_object_dancer              = {name: "whom",                       ui: chooser_dancer};
 var param_object_pairs               = {name: "whom",                       ui: chooser_pairs};
 var param_object_pairs_or_ones_or_twos = {name: "whom",                     ui: chooser_pairs_or_ones_or_twos};
 var param_lead_dancer_l1             = {name: "lead", value: "first ladle", ui: chooser_dancer};
