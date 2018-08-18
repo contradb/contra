@@ -202,6 +202,7 @@ var bogusTerms = ['men', 'women', 'man', 'woman', 'gentlemen', 'gentleman',
                   'gents', 'gent', 'ladies', 'lady',
                   'leads', 'lead', 'follows', 'follow',
                   'larks', 'lark', 'ravens', 'raven',
+                  'sex',
                   'gypsy', 'yearn', "rory o'moore", 'rollaway', 'roll-away',
                   'nn', 'n', 'p', 'l', 'g', 'm', 'w', 'n.', 'p.', 'l.', 'g.', 'm.', 'w.', 'g1', 'g2', 'l1', 'l2'];
 

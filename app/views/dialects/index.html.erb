@@ -11,7 +11,8 @@
       <br>
       <% [{label: 'gents & ladies', params: {gentlespoon: 'gent', gentlespoons: 'gents', ladle: 'lady', ladles: 'ladies'}, id: 'gents-ladies'},
           {label: 'larks & ravens', params: {gentlespoon: 'lark', gentlespoons: 'larks', ladle: 'raven', ladles: 'ravens'}, id: 'larks-ravens'},
-          {label: 'leads & follows', params: {gentlespoon: 'lead', gentlespoons: 'leads', ladle: 'follow', ladles: 'follows'}, id: 'leads-follows'}
+          {label: 'leads & follows', params: {gentlespoon: 'lead', gentlespoons: 'leads', ladle: 'follow', ladles: 'follows'}, id: 'leads-follows'},
+          {label: 'men & women', params: {gentlespoon: 'man', gentlespoons: 'men', ladle: 'woman', ladles: 'women'}, id: 'men-women'}
          ].each do |h| %>
         <label>
           <%= tag.input(type: :radio, name: :roles, id: h[:id], 'data-remote': true, class: 'dialect-express-role-radio',
@@ -40,6 +41,8 @@
     <%= button_tag('show...', class: 'btn btn-default dialect-advanced-toggle-button', style: 'margin-bottom: 1em') %>
 
     <div class=dialect-advanced-content style='display: none'>
+
+      <p>See <a href="https://www.youtube.com/watch?v=ENMyXnJurKc&t=0s" target="_">this video</a> for orientation.</p>
 
       <div class='form-inline'>
         <select class="new-move-idiom new-idiom form-control" style='margin-bottom: 1em'>

@@ -82,13 +82,11 @@ class DanceDatatable < AjaxDatatablesRails::Base
     matching_figures(filter, dance) != nil
   end
 
-  # These functions return either nil (failure) or a set of SearchMatches
+  # matching_figures and matching_figures_* functions return either nil (failure) or a set of SearchMatches
   #
   # The set may have zero elements, which means a successful match, but no specific index matches all criteria.
   # To see an example of that, think of the dance (and (figure 'chain') (figure 'right left through')), which can
   # match because it has a chain, and a right left through, but no figure satisfies both of those exactly.
-  #
-  # The set must always be sorted
 
   def self.matching_figures(filter, dance)
     operator = filter.first
@@ -101,22 +99,21 @@ class DanceDatatable < AjaxDatatablesRails::Base
 
   def self.matching_figures_for_figure(filter, dance)
     filter_move = filter[1]
+    nfigures = dance.figures.length
     if '*' == filter_move              # wildcard
-      all_figures_match(dance.figures.length)
+      nfigures > 0 ? all_figures_match(nfigures) : nil
     else
       formals = JSLibFigure.is_move?(filter_move) ? JSLibFigure.formal_parameters(filter_move) : []
-      nfigures = dance.figures.length
       search_matches = Set[]
-      indicies = dance.figures.each_with_index do |figure, figure_index|
+      dance.figures.each_with_index do |figure, figure_index|
         actuals = JSLibFigure.parameter_values(figure)
         filter_canonical = JSLibFigure.de_alias_move(filter_move)
         filter_is_alias = filter_canonical != filter_move
         param_filters = filter.drop(2)
         param_filters = JSLibFigure.alias_filter(filter_move) if filter_is_alias && param_filters.empty?
-        matches = JSLibFigure.move(figure) == filter_canonical &&
-                  param_filters.each_with_index.all? {|param_filter, i| param_passes_filter?(formals[i], actuals[i], param_filter)}
-        matches ? figure_index : nil
-        search_matches << SearchMatch.new(figure_index, nfigures) if matches
+        it_matches = JSLibFigure.move(figure) == filter_canonical &&
+                     param_filters.each_with_index.all? {|param_filter, i| param_passes_filter?(formals[i], actuals[i], param_filter)}
+        search_matches << SearchMatch.new(figure_index, nfigures) if it_matches
       end
       search_matches.present? ? search_matches : nil
     end
@@ -158,7 +155,9 @@ class DanceDatatable < AjaxDatatablesRails::Base
   def self.matching_figures_for_all(filter, dance)
     subfilter = filter[1]
     matches = matching_figures(subfilter, dance)
-    if dance.figures.length.times.all? {|i| matches.any? {|search_match| search_match.include?(i)}}
+    if dance.figures.length == 0
+      Set[]
+    elsif matches && dance.figures.length.times.all? {|i| matches.any? {|search_match| search_match.include?(i)}}
       matches
     else
       nil
@@ -167,23 +166,23 @@ class DanceDatatable < AjaxDatatablesRails::Base
 
   def self.matching_figures_for_or(filter, dance)
     subfilters = filter.drop(1)
-    nfigures = dance.figures.length
     matches = Set[]
     subfilters.each do |subfilter|
       matches |= matching_figures(subfilter, dance) || Set[]
-      return matches if matches.length == nfigures
     end
     matches.present? ? matches : nil
   end
 
   def self.matching_figures_for_and(filter, dance)
-    nfigures = dance.figures.length
     subfilters = filter.drop(1)
-    return Set[] if subfilters.empty? # should maybe return the infinitely large set of all searchmatches instead
-    matches = subfilters.map {|subfilter| matching_figures(subfilter, dance) or return nil}
-    m = matches.first
-    matches.drop(1).each {|x| m &= x} # naive intersection
-    m
+    if subfilters.empty?
+      Set[] # should arguably return the infinitely large set of all searchmatches instead
+    else
+      matches = subfilters.map {|subfilter| matching_figures(subfilter, dance) or return nil}
+      m = matches.first
+      matches.drop(1).each {|x| m &= x} # naive intersection, treating SearchMatch(1,8) as not intersecting with SearchMatch(1,8, count: 2)
+      m
+    end
   end
 
   # anything but is mainly useful when paired with then
@@ -194,8 +193,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
   end
 
   def self.matching_figures_for_then(filter, dance)
-    figures_count = dance.figures.count
-    going_concerns = all_empty_matches(figures_count)
+    going_concerns = all_empty_matches(dance.figures.length)
     subfilters = filter.drop(1)
     subfilters.each do |subfilter|
       m = matching_figures(subfilter, dance)

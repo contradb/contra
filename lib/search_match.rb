@@ -9,7 +9,7 @@ class SearchMatch
   end
 
   def first
-    @arr[0]
+    arr[0]
   end
 
   def last
@@ -17,19 +17,15 @@ class SearchMatch
   end
 
   def count
-    @arr[1]
+    arr[1]
   end
 
   def nfigures
-    @arr[2]
+    arr[2]
   end
 
   def include?(index)
-    f = first
-    n = nfigures
-    count.times do |i|
-      return true if index == (i+f) % n
-    end
+    each {|i| return true if i == index}
     false
   end
 
@@ -59,7 +55,7 @@ class SearchMatch
   alias :eql? :==
 
   def hash
-    @arr.hash
+    arr.hash
   end
 
   def inspect

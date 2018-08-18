@@ -311,7 +311,8 @@ describe 'Dialect page', js: true do
   def expect_pressed_radios(gentlespoons_ladles: false,
                             gents_ladies: false,
                             larks_ravens: false,
-                            leads_follows: false)
+                            leads_follows: false,
+                            men_women: false)
 
     if gentlespoons_ladles
       expect(find_field("gentlespoons-ladles")).to be_checked, 'expected gentlespoons-ladles to be checked'
@@ -335,6 +336,12 @@ describe 'Dialect page', js: true do
       expect(find_field("leads-follows")).to be_checked, 'expected leads-follows to be checked'
     else
       expect(find_field("leads-follows")).to_not be_checked, 'expected leads-follows to be unchecked'
+    end
+
+    if men_women
+      expect(find_field("men-women")).to be_checked, 'expected men-women to be checked'
+    else
+      expect(find_field("men-women")).to_not be_checked, 'expected men-women to be unchecked'
     end
   end
 

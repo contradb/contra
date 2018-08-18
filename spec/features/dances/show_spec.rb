@@ -37,7 +37,7 @@ describe 'Showing dances' do
     expect(page).to have_words('B2 8 right left through 8 ladles chain')
   end
 
-  it 'respects preferences' do
+  it 'respects dialect' do
     expect(JSLibFigure).to receive(:default_dialect).at_least(:once).and_return(JSLibFigure.test_dialect)
     dance = FactoryGirl.create(:box_the_gnat_contra, preamble: "gyre Ladles.Rory O'More-allemande")
     visit dance_path dance.id
@@ -46,6 +46,15 @@ describe 'Showing dances' do
     expect(page).to_not have_text ('gentlespoons')
     expect(page).to_not have_text ('allemande')
     expect(page).to have_text('darcy Ravens.sliding doors-almond')
+  end
+
+  it 'displays pilcrow' do
+    dance = FactoryGirl.build(:box_the_gnat_contra, preamble: "gyre Ladles.Rory O'More-allemande")
+    figures = dance.figures.dup
+    figures.last['progression'] = 1
+    dance.update!(figures: figures)
+    visit dance_path(dance)
+    expect(page).to have_text('ladles chain ⁋')
   end
 
   describe 'actions buttons' do

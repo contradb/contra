@@ -93,10 +93,11 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right" ng-attr-aria-labelledby="{{'figure-menu-'+figureIdx}}">
                   <li><a href="#" ng-click="duplicateIdx(figureIdx)">Duplicate</a></li>
+                  <li><a href="#" ng-click="toggleProgression(figureIdx)">{{hasProgression(figureIdx) ? 'Remove' : 'Add'}} ⁋rogression</a></li>
                   <li role="separator" class="divider"></li>
                   <li ng-repeat="figmenu in figures.arr" ng-click="menuMove(figureIdx, $index)" ng-if="$index !== figureIdx"><a href="#">{{menuMoveLabel(figureIdx, $index)}}</a></li>
                   <li role="separator" class="divider"></li>
-                  <li><a href="#" ng-click="deleteFigureIdx(figureIdx)">Delete</a></li>
+                  <li><a href="#" ng-click="deleteFigureIdx(figureIdx)">Delete Figure</a></li>
                 </ul>
               </span>
               <a ng-click="clickFigure(figureIdx);"
