@@ -79,13 +79,13 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
   /* space out the figure-filter-remove button, if it's there. Don't
      style the left margin of the close button, because that mucks up
      it's alignment when it's on it's own line (i.e. when on mobile) */
-  margin-right: 0.4em;          
+  margin-right: 0.4em;
 }
 
 .figure-filter-op + .figure-filter-remove {
   /* sometimes the close is scrunched up against the op, in which case
      space it out a little like above */
-  margin-left: 0.4em;          
+  margin-left: 0.4em;
 }
 
 #figure-filter-root {
@@ -93,7 +93,7 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
 }
 
 #figure-query-buffer {
-  display: none; 
+  display: none;
 }
 
 

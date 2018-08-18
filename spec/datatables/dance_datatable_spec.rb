@@ -49,6 +49,20 @@ describe DanceDatatable do
       end
     end
 
+    describe 'formation' do
+      it 'Becket ccw' do
+        dances
+        filtered = DanceDatatable.send(:filter_dances, dances, ['formation', 'Becket ccw'])
+        expect(filtered.map(&:title)).to eq(['Call Me'])
+      end
+
+      it 'improper' do
+        dances
+        filtered = DanceDatatable.send(:filter_dances, dances, ['formation', 'improper'])
+        expect(filtered.map(&:title).sort).to eq((dances.map(&:title) - ['Call Me']).sort)
+      end
+    end
+
     describe 'and' do
       it 'works' do
         filtered = DanceDatatable.send(:filter_dances, dances, ['and', ['figure', 'circle'], ['figure', 'right left through']])

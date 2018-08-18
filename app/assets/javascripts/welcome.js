@@ -456,6 +456,12 @@ $(document).ready(function() {
         populateAccordionForMove(accordion, query[1], query.slice(2));
       }
       break;
+    case 'formation':
+      figureFilter.children('.figure-filter-op').val(op);
+      addFormationFilterConstellation(figureFilter);
+      installEventHandlers(figureFilter);
+      figureFilter.children('.formation-filter-formation').val(query[1]);
+      break;
     default:
       figureFilter.children('.figure-filter-op').val(op);
       for (var i=1; i<query.length; i++) {
