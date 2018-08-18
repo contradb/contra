@@ -28,7 +28,15 @@ FactoryGirl.define do
     figures_json '[{"parameter_values":["across",8],"move":"right left through"},{"parameter_values":["ladles",true,"across",8],"move":"chain"},{"parameter_values":[false,360,"",8],"move":"star","note":"look for new neighbor"},{"parameter_values":["neighbors","none",8],"move":"swing"},{"parameter_values":[true,270,8],"move":"circle"},{"parameter_values":["ladles",0.5,"across",8],"move":"hey"},{"parameter_values":["partners","balance",16],"move":"swing", "progression": 1}]'
   end
 
-  factory :dance_with_empty_figure, class: Dance do
+  factory :you_cant_get_there_from_here, class: Dance do
+    title "You Can't Get There From Here"
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json '[{"parameter_values":["everyone",4],"move":"balance","note":"the wave"},{"parameter_values":["neighbors",true,270,4],"move":"allemande","note":"to"},{"parameter_values":["ladles",0],"move":"form long waves","note":"the wave"},{"parameter_values":["everyone",4],"move":"balance"},{"parameter_values":["neighbors",true,270,4],"move":"allemande","note":""},{"parameter_values":[false,"across",false,"gentlespoons",false,"neighbors",0],"move":"form an ocean wave"},{"parameter_values":["everyone",4],"move":"balance","note":"the wave"},{"parameter_values":["neighbors","none",12],"move":"swing"},{"parameter_values":[true,270,8],"move":"circle"},{"parameter_values":["partners","none",8],"move":"swing"},{"parameter_values":[true,270,8],"move":"circle"},{"parameter_values":["neighbors",true,630,8],"move":"do si do"},{"parameter_values":[0],"move":"progress"},{"parameter_values":[false,"across",false,"ladles",false,"neighbors",0],"move":"form an ocean wave","note":"in short waves"}]'
+  end
+
+  factory :dance_with_empty_figure, class: Dance do # note that empty figure is no longer officially supported -dm 07-30-2018
     title      'Emptyish'
     user { FactoryGirl.create(:user) }
     choreographer { FactoryGirl.create(:choreographer) }
@@ -145,6 +153,14 @@ FactoryGirl.define do
     choreographer { FactoryGirl.create(:choreographer) }
     start_type 'improper'
     figures_json {'[{"parameter_values":["ladles",true,360,8],"move":"do si do"}]'}
+  end
+
+  factory :dance_with_zero_figures, class: Dance do
+    title {'zero'}
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json {'[]'}
   end
 
   factory :malicious_dance, class: Dance do

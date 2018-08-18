@@ -4,7 +4,9 @@ require 'rails_helper'
 
 describe DanceDatatable do
   describe '.filter_dances' do
-    let (:dances) { [:dance, :box_the_gnat_contra, :call_me].map {|name| FactoryGirl.create(name)} }
+    let (:dances) { [:dance, :box_the_gnat_contra, :call_me, :dance_with_zero_figures].map {|name| FactoryGirl.create(name)} }
+    let (:zero) { dances.last }
+    let (:dance_titles_without_zero) { dances.map(&:title) - [dances.last.title]}
 
     describe 'figure' do
       it 'works' do
@@ -14,7 +16,7 @@ describe DanceDatatable do
 
       it 'wildcard' do
         filtered = DanceDatatable.send(:filter_dances, dances, ['figure', '*'])
-        expect(filtered.map(&:title)).to eq(dances.map(&:title))
+        expect(filtered.map(&:title)).to eq(dance_titles_without_zero)
       end
 
       it "quotes and spaces work - Rory O'More" do      # something about this figure didn't work -dm 10-15-2017
@@ -43,7 +45,7 @@ describe DanceDatatable do
         }
         partners_should_not_match = augmented_dances.last
         filtered = DanceDatatable.send(:filter_dances, augmented_dances, ['figure', 'swing', 'neighbors', '*', '*'])
-        expect(filtered.map(&:title).sort).to eq(augmented_dances.map(&:title).sort - [partners_should_not_match.title])
+        expect(filtered.map(&:title).sort).to eq(augmented_dances.map(&:title).sort - [partners_should_not_match.title, zero.title])
       end
     end
 
@@ -55,24 +57,24 @@ describe DanceDatatable do
 
       it 'works with no' do
         filtered = DanceDatatable.send(:filter_dances, dances, ['and', ['no', ['figure', 'chain']], ['figure', 'star']])
-        expect(filtered).to eq([])        
+        expect(filtered).to eq([])
       end
     end
 
     it 'or' do
       filtered = DanceDatatable.send(:filter_dances, dances, ['or', ['figure', 'circle'], ['figure', 'right left through']])
-      expect(filtered.map(&:title)).to eq(dances.map(&:title))
+      expect(filtered.map(&:title)).to eq(dance_titles_without_zero)
     end
 
     it 'no' do
       filtered = DanceDatatable.send(:filter_dances, dances, ['no', ['figure', 'hey']])
-      expect(filtered.map(&:title)).to eq(['The Rendevouz', 'Box the Gnat Contra'])
+      expect(filtered.map(&:title)).to eq(['The Rendevouz', 'Box the Gnat Contra', zero.title])
     end
 
     it 'all' do
-      dances2 = [FactoryGirl.create(:dance_with_a_swing)] + dances
+      dances2 = [:dance_with_a_swing, :dance_with_a_do_si_do].map {|d| FactoryGirl.create(d)} + dances
       filtered = DanceDatatable.send(:filter_dances, dances2, ['all', ['figure', 'swing']])
-      expect(filtered.map(&:title)).to eq(['Monofigure'])
+      expect(filtered.map(&:title)).to eq([dances2.first.title, zero.title])
     end
 
     it 'anything but' do
@@ -95,39 +97,95 @@ describe DanceDatatable do
     end
   end
 
-  describe '.shift_figure_indicies' do
-    it 'basically works' do
-      expect(DanceDatatable.shift_figure_indicies([1,3,5], 7)).to eq([2,4,6])
-    end
-
-    it 'wraps' do
-      expect(DanceDatatable.shift_figure_indicies([5], 6)).to eq([0])
-    end
-  end
-
   describe '.matching_figures_for_then' do
     it 'basically works' do
       dance = FactoryGirl.create(:box_the_gnat_contra)
-      figure_indicies = DanceDatatable.matching_figures(['then', ['figure', 'box the gnat'], ['figure', 'swat the flea']], dance)
-      expect(figure_indicies).to eq([1])
+      nfigures = dance.figures.length
+      search_matches = DanceDatatable.matching_figures(['then', ['figure', 'box the gnat'], ['figure', 'swat the flea']], dance)
+      expect(search_matches).to eq(Set[SearchMatch.new(0, nfigures, count: 2)])
     end
 
     it 'wraps' do
       dance = FactoryGirl.create(:dance)
-      figure_indicies = DanceDatatable.matching_figures(['then', ['figure', 'circle'], ['figure', 'swing']], dance)
-      expect(figure_indicies).to eq([0])
+      nfigures = dance.figures.length
+      search_matches = DanceDatatable.matching_figures(['then', ['figure', 'circle'], ['figure', 'swing']], dance)
+      expect(nfigures).to eq(7)
+      expect(search_matches).to eq(Set[SearchMatch.new(6, nfigures, count: 2)])
+      expect(search_matches.first.last).to eq(0)
     end
 
-    it 'returns everything with zero arguments' do
+    it 'with zero arguments, returns all the zero-length matches' do
       dance = FactoryGirl.create(:dance)
-      figure_indicies = DanceDatatable.matching_figures(['then'], dance)
-      expect(figure_indicies).to eq([*(0...dance.figures.length)])
+      nfigures = dance.figures.length
+      search_matches = DanceDatatable.matching_figures(['then'], dance)
+      expect(search_matches).to eq(Set.new(nfigures.times.map {|i| SearchMatch.new(i, nfigures, count: 0)}))
     end
 
-    it 'returns index of figure with one argument' do
+    it 'with one argument returns submatch' do
       dance = FactoryGirl.create(:dance)
+      nfigures = dance.figures.length
       figure_indicies = DanceDatatable.matching_figures(['then', ['figure', 'circle']], dance)
-      expect(figure_indicies).to eq([4,6])
+      expect(figure_indicies).to eq(Set[SearchMatch.new(4, nfigures),
+                                        SearchMatch.new(6, nfigures)])
+    end
+
+
+    it 'striping test' do
+      dance = FactoryGirl.create(:dance)
+      dance.update!(figures_json: '[{"parameter_values":["neighbors","none",8],"move":"swing"},
+                                    {"parameter_values":[true,360,8],"move":"circle"},
+                                    {"parameter_values":["neighbors","none",8],"move":"swing"},
+                                    {"parameter_values":[true,360,8],"move":"circle"},
+                                    {"parameter_values":["neighbors","none",8],"move":"swing"},
+                                    {"parameter_values":[true,360,8],"move":"circle"},
+                                    {"parameter_values":[true, 8],"move":"long lines"},
+                                    {"parameter_values":["ladles",true,540,8],"move":"do si do", "progression": 1}]')
+      nfigures = dance.figures.length
+      q1 = ['then', ['figure', 'circle']]
+      q2 = ['then', ['figure', 'circle'], ['figure', 'swing']]
+      q3 = ['then', ['figure', 'circle'], ['figure', 'swing'], ['figure', 'circle']]
+      q5 = ['then', ['figure', 'circle'], ['figure', 'swing'], ['figure', 'circle'], ['figure', 'swing'], ['figure', 'circle']]
+      q6 = ['then', ['figure', 'circle'], ['figure', 'swing'], ['figure', 'circle'], ['figure', 'swing'], ['figure', 'circle'], ['figure', 'swing']]
+      expect(DanceDatatable.matching_figures(q1, dance)).to eq(search_match_indicies([1, 3, 5], nfigures, count: 1))
+      expect(DanceDatatable.matching_figures(q2, dance)).to eq(search_match_indicies([1, 3], nfigures, count: 2))
+      expect(DanceDatatable.matching_figures(q3, dance)).to eq(search_match_indicies([1, 3], nfigures, count: 3))
+      expect(DanceDatatable.matching_figures(q5, dance)).to eq(search_match_indicies([1], nfigures, count: 5))
+      expect(DanceDatatable.matching_figures(q6, dance)).to eq(nil)
+    end
+
+    def search_match_indicies(indicies, nfigures, count: 1)
+      Set.new(indicies.map {|i| SearchMatch.new(i, nfigures, count: count)})
+    end
+
+    describe 'nested thens' do
+      # circle, swing, circle, do si do
+      let (:dance) { FactoryGirl.create(:dance).tap {|d| d.update!(figures_json: '[{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":["neighbors","none",8],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":["ladles",true,540,8],"move":"do si do", "progression": 1}]')}}
+      let (:nfigures) {dance.figures.length}
+      let (:q1) {['then', ['figure', 'circle'],                             ['then', ['figure', 'swing'], ['figure', 'circle']]]}
+      let (:q2) {['then', ['figure', 'circle'], ['or', ['figure', 'swing'], ['then', ['figure', 'swing'], ['figure', 'circle']]]]}
+
+      it 'works' do
+        expect(DanceDatatable.matching_figures(q1, dance)).to eq(Set[SearchMatch.new(0,nfigures, count: 3)])
+      end
+
+      it 'superimpose' do
+        expect(DanceDatatable.matching_figures(q2, dance)).to eq(Set[SearchMatch.new(0,nfigures, count: 3), SearchMatch.new(0,nfigures, count: 2)])
+      end
+    end
+
+    it "issue #461 regression - nested thens" do
+      dance = FactoryGirl.create(:you_cant_get_there_from_here)
+      q = ["then",
+           ["or",
+            ["figure","form an ocean wave"],
+            ["figure","form long waves"]],
+           ["or",
+            ["figure","allemande"],
+            ["then",
+             ["figure","balance"],
+             ["figure","allemande"]]]]
+      expect(DanceDatatable.matching_figures(q, dance)).to eq(Set[SearchMatch.new(13, 14, count: 3),
+                                                                  SearchMatch.new(2, 14, count: 3)])
     end
   end
 
@@ -154,5 +212,12 @@ describe DanceDatatable do
 
     # unspecified because I don't need it yet: 
     # what happens when you get a non faux_array and it has a faux_array as a key or value.
+  end
+
+  it '.dice_search_matches' do
+    result = DanceDatatable.send(:dice_search_matches, Set[SearchMatch.new(7,8, count: 2), SearchMatch.new(6,8, count:2)])
+    expect(result).to eq(Set[SearchMatch.new(6,8),
+                             SearchMatch.new(7,8),
+                             SearchMatch.new(0,8)])
   end
 end
