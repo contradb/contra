@@ -260,7 +260,7 @@ function crossTrailsWords(move, pvs, dialect) {
   var sfirst_dir = first_dir ? (first_dir + ' the set') :  '____';
   var ssecond_dir = {across: 'along the set', along: 'across the set', '*':'* the set'}[first_dir] || '____';
   var second_shoulder = '*'===first_shoulder ? '*' : !first_shoulder;
-  var ssecond_shoulder = stringParamShoulder(second_shoulder);
+  var ssecond_shoulder = stringParamShoulders(second_shoulder);
   var smove = moveSubstitution(move, dialect);
   return words(smove, '-',  sfirst_who, sfirst_dir, sfirst_shoulder+',', ssecond_who, ssecond_dir, ssecond_shoulder);
 }
@@ -268,7 +268,7 @@ function crossTrailsWords(move, pvs, dialect) {
 defineFigure("cross trails",
              [param_subject_pairs,
               param_set_direction_grid,
-              param_right_shoulder_spin,
+              param_right_shoulders_spin,
               param_subject2_pairs,
               param_beats_4],
              {words: crossTrailsWords, change: crossTrailsChange});
@@ -311,10 +311,10 @@ function doSiDoWords(move, pvs, dialect) {
 }
 
 defineFigure("do si do",
-             [param_subject_pairz, param_right_shoulder_spin, param_once_around, param_beats_8],
+             [param_subject_pairz, param_right_shoulders_spin, param_once_around, param_beats_8],
              {words: doSiDoWords, alias: doSiDoAlias, goodBeats: doSiDoGoodBeats});
 
-defineFigureAlias("see saw", "do si do", [null, param_left_shoulder_spin, null, null]);
+defineFigureAlias("see saw", "do si do", [null, param_left_shoulders_spin, null, null]);
 
 ////////////////////////////////////////////////
 // DOWN THE HALL  &  UP THE HALL              //
@@ -654,7 +654,7 @@ function gyreWords(move, pvs, dialect) {
 
 defineFigure("gyre",
              [param_subject_pairz,
-              param_right_shoulder_spin,
+              param_right_shoulders_spin,
               param_once_around,
               param_beats_8],
              {words: gyreWords, goodBeats: gyreGoodBeats});
@@ -752,7 +752,7 @@ defineFigure("mad robin",
 // PASS BY                                    //
 ////////////////////////////////////////////////
 
-defineFigure("pass by", [param_subject_pairz, param_right_shoulder_spin, param_beats_2]);
+defineFigure("pass by", [param_subject_pairz, param_right_shoulders_spin, param_beats_2]);
 
 defineRelatedMove2Way('pass by', 'hey');
 defineRelatedMove2Way('pass by', 'half hey');
@@ -770,7 +770,7 @@ function passThroughWords(move, pvs, dialect) {
 }
 
 defineFigure("pass through",
-             [param_set_direction_along, param_right_shoulder_spin, param_beats_2],
+             [param_set_direction_along, param_right_shoulders_spin, param_beats_2],
              {words: passThroughWords});
 
 defineRelatedMove2Way('pass by', 'pass through');

@@ -51,7 +51,7 @@ var param_beats_16 = {name: "beats", value: 16, ui: chooser_beats, string: strin
 
 function stringParamClock     (value) {return value ? ('*'===value ? '*' : "clockwise") : "counter-clockwise";}
 function stringParamLeftRight (value) {return value ? ('*'===value ? '*' : "left") : "right";}
-function stringParamShoulder  (value) {return value ? ('*'===value ? '* shoulders' : "right shoulders") : "left shoulders";}
+function stringParamShoulders  (value) {return value ? ('*'===value ? '* shoulders' : "right shoulders") : "left shoulders";}
 function stringParamHandStarHand  (value) {return value ? ('*'===value ? '* hand' : "right") : "left";}
 function stringParamHand          (value) {return value ? ('*'===value ? '*'      : "right") : "left";}
 
@@ -64,9 +64,9 @@ var param_spin_right             = {name: "turn", value: false,     ui: chooser_
 var param_xhand_spin             = {name: "hand",                   ui: chooser_right_left_hand, string: stringParamHandStarHand};
 var param_right_hand_spin        = {name: "hand", value: true,      ui: chooser_right_left_hand, string: stringParamHandStarHand};
 var param_left_hand_spin         = {name: "hand", value: false,     ui: chooser_right_left_hand, string: stringParamHandStarHand};
-var param_xshoulder_spin         = {name: "shoulder",               ui: chooser_right_left_shoulder, string: stringParamShoulder};
-var param_right_shoulder_spin    = {name: "shoulder", value: true,  ui: chooser_right_left_shoulder, string: stringParamShoulder};
-var param_left_shoulder_spin     = {name: "shoulder", value: false, ui: chooser_right_left_shoulder, string: stringParamShoulder};
+var param_xshoulders_spin        = {name: "shoulder",               ui: chooser_right_left_shoulder, string: stringParamShoulders};
+var param_right_shoulders_spin   = {name: "shoulder", value: true,  ui: chooser_right_left_shoulder, string: stringParamShoulders};
+var param_left_shoulders_spin    = {name: "shoulder", value: false, ui: chooser_right_left_shoulder, string: stringParamShoulders};
 var param_by_xhand      = {name: "c.hand", ui: chooser_right_left_hand, string: stringParamHand};
 var param_by_right_hand = {name: "hand",   ui: chooser_right_left_hand, string: stringParamHand, value: true};
 
