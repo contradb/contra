@@ -101,7 +101,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
     filter_move = filter[1]
     nfigures = dance.figures.length
     if '*' == filter_move              # wildcard
-      all_figures_match(nfigures)
+      nfigures > 0 ? all_figures_match(nfigures) : nil
     else
       formals = JSLibFigure.is_move?(filter_move) ? JSLibFigure.formal_parameters(filter_move) : []
       search_matches = Set[]
@@ -146,7 +146,9 @@ class DanceDatatable < AjaxDatatablesRails::Base
   def self.matching_figures_for_all(filter, dance)
     subfilter = filter[1]
     matches = matching_figures(subfilter, dance)
-    if matches && dance.figures.length.times.all? {|i| matches.any? {|search_match| search_match.include?(i)}}
+    if dance.figures.length == 0
+      Set[]
+    elsif matches && dance.figures.length.times.all? {|i| matches.any? {|search_match| search_match.include?(i)}}
       matches
     else
       nil
