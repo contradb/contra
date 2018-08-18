@@ -25,6 +25,7 @@ describe 'Editing dances', js: true do
       dance1 = FactoryGirl.create(:box_the_gnat_contra, user: user, choreographer: choreographer)
       visit edit_dance_path dance1.id
       click_button 'Save Dance'
+      expect(page).to have_content('Dance was successfully updated.')
       dance2 = FactoryGirl.build(:box_the_gnat_contra, user: user, choreographer: choreographer)
       dance1.reload
       expect(current_path).to eq dance_path dance1.id
@@ -47,6 +48,7 @@ describe 'Editing dances', js: true do
       fill_in 'dance[notes]', with: 'notey'
       choose 'Publish'
       click_button 'Save Dance'
+      expect(page).to have_content('Dance was successfully updated.')
       dance.reload
 
       expect(dance.title).to eq('Call Me')
@@ -99,6 +101,7 @@ describe 'Editing dances', js: true do
       fill_in 'note', with: 'with gusto!'
 
       click_button 'Save Dance'
+      expect(page).to have_content('Dance was successfully updated.')
 
       dance.reload
 
