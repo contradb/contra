@@ -90,6 +90,7 @@ describe 'Copying dances', js: true do
       fill_in 'note', with: 'with gusto!'
 
       click_button 'Save Dance'
+      expect(page).to have_content('Dance was successfully created.')
 
       expect(Dance.all.length).to eq(old_dance_count+1)
 

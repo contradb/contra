@@ -14,7 +14,7 @@ describe 'Creating dances', js: true do
       fill_in 'dance[hook]', with: 'spin to your partner'
       choose 'Private'
       click_button 'Save Dance'
-      
+
       expect(page).to have_css('h1', text: 'Call Me')
       expect(page).to have_content('Cary Ravitz')
       expect(page).to have_content('improper')
@@ -274,6 +274,7 @@ describe 'Creating dances', js: true do
       fill_in 'dance[choreographer_name]', with: 'Cary Ravitz'
       fill_in 'dance[start_type]', with: 'improper'
       click_button 'Save Dance'
+      expect(page).to have_content('Dance was successfully created.')
       dance = Dance.last
       expect(dance.figures).to eq([{'move' => 'swing', 'parameter_values' => ['neighbors', 'balance', 16], 'note' => 'with gusto!'},
                                    {'move' => 'allemande', 'parameter_values' => ['partners', false, 540, 12], 'progression' => 1}])
