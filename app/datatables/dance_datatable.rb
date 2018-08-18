@@ -146,7 +146,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
   def self.matching_figures_for_all(filter, dance)
     subfilter = filter[1]
     matches = matching_figures(subfilter, dance)
-    if dance.figures.length.times.all? {|i| matches.any? {|search_match| search_match.include?(i)}}
+    if matches && dance.figures.length.times.all? {|i| matches.any? {|search_match| search_match.include?(i)}}
       matches
     else
       nil

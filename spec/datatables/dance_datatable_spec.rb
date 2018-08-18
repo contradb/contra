@@ -55,7 +55,7 @@ describe DanceDatatable do
 
       it 'works with no' do
         filtered = DanceDatatable.send(:filter_dances, dances, ['and', ['no', ['figure', 'chain']], ['figure', 'star']])
-        expect(filtered).to eq([])        
+        expect(filtered).to eq([])
       end
     end
 
@@ -70,9 +70,9 @@ describe DanceDatatable do
     end
 
     it 'all' do
-      dances2 = [FactoryGirl.create(:dance_with_a_swing)] + dances
+      dances2 = [:dance_with_a_swing, :dance_with_a_do_si_do].map {|d| FactoryGirl.create(d)} + dances
       filtered = DanceDatatable.send(:filter_dances, dances2, ['all', ['figure', 'swing']])
-      expect(filtered.map(&:title)).to eq(['Monofigure'])
+      expect(filtered.map(&:title)).to eq([dances2.first.title])
     end
 
     it 'anything but' do
