@@ -85,6 +85,67 @@ describe 'Welcome page', js: true do
       end
     end
 
+    it 'formation' do
+      becket = FactoryGirl.create(:call_me, start_type: 'Becket', title: 'Becket')
+      square = FactoryGirl.create(:dance, start_type: 'square dance', title: 'square')
+      dances2 = dances + [becket, square]
+      visit '/'
+      select 'formation'
+
+      select 'improper'
+      expect(Set.new(dances2.map(&:start_type))).to eq(Set['improper', 'Becket ccw', 'Becket', 'square dance'])
+      expect(page).to_not have_text('Call Me')
+      expect(page).to_not have_text('Becket')
+      expect(page).to_not have_text('sqaure')
+      dances2.each do |dance|
+        expect(page).to have_link(dance.title) if dance.start_type == 'improper'
+      end
+
+      select 'Becket *'
+      expect(page).to have_link(becket.title)
+      expect(page).to have_link('Call Me')
+      dances2.each do |dance|
+        if dance.title.in?([becket.title, 'Call Me'])
+          expect(page).to have_link(dance.title)
+        else
+          expect(page).to_not have_link(dance.title)
+        end
+      end
+
+      select 'Becket cw'
+      expect(page).to_not have_link('Call Me')
+      expect(page).to have_link(becket.title)
+      dances2.each do |dance|
+        if dance.title.in?([becket.title])
+          expect(page).to have_link(dance.title)
+        else
+          expect(page).to_not have_link(dance.title)
+        end
+      end
+
+      select 'Becket ccw'
+      expect(page).to_not have_link(becket.title)
+      expect(page).to have_link('Call Me')
+      dances2.each do |dance|
+        if dance.title.in?(['Call Me'])
+          expect(page).to have_link(dance.title)
+        else
+          expect(page).to_not have_link(dance.title)
+        end
+      end
+
+      select 'everything else'
+      expect(page).to_not have_link('Call Me')
+      expect(page).to have_link(square.title)
+      dances2.each do |dance|
+        if dance.title.in?([square.title])
+          expect(page).to have_link(dance.title)
+        else
+          expect(page).to_not have_link(dance.title)
+        end
+      end
+    end
+
     describe 'figure filter machinantions' do
       def setup_and_filter
         dances
@@ -673,6 +734,7 @@ describe 'Welcome page', js: true do
 
           allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
 
+          expect(page).to_not have_content('Processing...')
           select('almond')
           click_button('...')
           select('ravens')
@@ -699,13 +761,17 @@ describe 'Welcome page', js: true do
         dances
         visit '/'
         select('and')
-        expect(page).to have_css('.figure-filter-move', count: 2) # wait for js to run
+        expect(page).to have_css('.figure-filter-move', count: 2) # js wait
         all('.figure-filter-move').first.select('swing', match: :first)
         all('.figure-filter-move').last.select('allemande')
         all('.figure-filter-ellipsis').last.click
         select('ladles')        # ladles allemande right 1½ for '*' beats
         choose('right')
         select('1½')
+        click_button('add and')
+        expect(page).to have_css('.figure-filter-op', count: 4) # js wait
+        all('.figure-filter-op').last.select('formation')
+        select('improper')
         click_link('Box the Gnat Contra')
         expect(page).to have_content('partners swing') # wait for page to load
         page.go_back
@@ -713,6 +779,7 @@ describe 'Welcome page', js: true do
         expect(page).to have_css(move_selector, count: 2)
         expect(all(move_selector).first.value).to eq('swing')
         expect(all(move_selector).last.value).to eq('allemande')
+        expect(page).to_not have_content('Processing...')
         expect(page).to have_css('.figure-filter-ellipsis.ellipsis-expanded', count: 1)
         expect(page).to have_css('.figure-filter-accordion', count: 1, visible: true)
         expect(page).to have_css('.chooser-argument', count: 4)
@@ -722,10 +789,15 @@ describe 'Welcome page', js: true do
         expect(find(".chooser-argument [type=radio][value='false']")).to_not be_checked
         expect(all(".chooser-argument")[2].value.to_s).to eq(540.to_s)
         expect(all(".chooser-argument")[3].value).to eq('*')
+        expect(page).to have_css('.figure-filter-formation', count: 1)
+        op_values = find_all('.figure-filter-op').map(&:value)
+        expect(op_values.count('and')).to eq(1)
+        expect(op_values.count('figure')).to eq(2)
+        expect(op_values.count('formation')).to eq(1)
         expect(page).to have_content('Box the Gnat Contra')
         expect(page).to_not have_content('The Rendevouz')
         expect(page).to_not have_content('Call Me')
-        expect(page).to have_content('Showing dances with a swing and a ladles allemande right 1½.')
+        expect(page).to have_content('Showing dances with a swing and a ladles allemande right 1½ and an improper formation.')
       end
     end
 

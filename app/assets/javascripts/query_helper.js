@@ -10,6 +10,7 @@ function buildFigureSentenceHelper(query, article, dialect) {
 
 var figureSentenceDispatchTable = {
   figure: sentenceForFigure,
+  formation: sentenceForFormation,
   and: sentenceForBinOp,
   or: sentenceForBinOp,
   then: sentenceForBinOp,
@@ -53,6 +54,21 @@ function sentenceForFigure(query, article, dialect) {
   }
 }
 
+function sentenceForFormation(query, article, _dialect) {
+  query.length === 2 || throw_up('expected formation query length to be exactly 2');
+  var formation = query[1];
+  if (formation === '*') {
+    return (article === 'a') ? 'any formation' : (article +' formation');
+  } else {
+    var phrase_without_article = formation + ' formation';
+    if (article === 'a') {
+      return ('aeiou'.indexOf(formation[0]) >= 0) ? ('an ' + phrase_without_article) : ('a ' + phrase_without_article);
+    } else {
+      return article + ' ' + phrase_without_article;
+    }
+  }
+}
+
 function sentenceForBinOp(query, article, dialect) {
   var op = query[0];
   // oxford comma?
@@ -62,7 +78,7 @@ function sentenceForBinOp(query, article, dialect) {
 // returns true if sentenceForMaybeComplex uses parens
 function isComplex(query, article) {
   var op = query[0];
-  return !(op === 'figure' || ('a' === article && (op === 'anything but' || op === 'no')));
+  return !(op === 'figure' || op === 'formation' || ('a' === article && (op === 'anything but' || op === 'no')));
 }
 
 function sentenceForMaybeComplex(query, article, dialect) {
@@ -72,6 +88,8 @@ function sentenceForMaybeComplex(query, article, dialect) {
   var boringArticle = 'a' === article || '' === article;
   if (op==='figure') {
     return sentenceForFigure(query, article, dialect);
+  } else if (op==='formation') {
+    return sentenceForFormation(query, article, dialect);
   } else if (boringArticle && (op === 'anything but' || op === 'no')) {
     return buildFigureSentenceHelper(query, article, dialect);
   } else if (boringArticle) {

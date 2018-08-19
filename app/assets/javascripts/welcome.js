@@ -5,7 +5,7 @@ $(document).ready(function() {
 
   var dialect = JSON.parse($('#dialect-json').text());
 
-  function installEventHandlers(selector) {
+  function installGenericFilterEventHandlers(selector) {
     selector.find('.figure-filter-op').change(filterOpChanged);
     selector.find('.figure-filter-add').click(clickFilterAddSubfilter);
     selector.find('.figure-filter-remove').click(filterRemoveSubfilter);
@@ -28,6 +28,7 @@ $(document).ready(function() {
     <div class='figure-filter' data-op=and>\
       <select class='figure-filter-op form-control'>\
         <option value='figure' selected>figure</option>\
+        <option value='formation'>formation</option>\
         <option value='and'>and</option> \
         <option value='or'>or</option>\
         <option value='then'>then</option>\
@@ -38,10 +39,12 @@ $(document).ready(function() {
       <span class='figure-filter-end-of-subfigures'></span>\
     </div>";
 
+  var formationSelectHtml = "<select class='figure-filter-formation form-control'>"+['improper','Becket *', 'Becket cw', 'Becket ccw', 'proper', 'everything else'].map(function(label) {return '<option>'+label+'</option>';}).join('')+"</select>";
 
   function maxSubfilterCount(op) {
     switch(op) {
     case 'figure':
+    case 'formation':
       return 0;
     case 'all':
     case 'no':
@@ -102,6 +105,11 @@ $(document).ready(function() {
       addFigureFilterMoveConstellation(filter);
     } else {
       removeFigureFilterMoveConstellation(filter);
+    }
+    if (op === 'formation') {
+      addFormationFilterConstellation(filter);
+    } else {
+      removeFormationFilterConstellation(filter);
     }
     var hasNoAddButton = filter.children('.figure-filter-add').length === 0;
     if (hasNoAddButton && actualSubfilterCount < maxSubfilterCount(op)) {
@@ -177,6 +185,22 @@ $(document).ready(function() {
   function makeFigureFilterAccordion(filter) {
     return $("<table class='figure-filter-accordion'></table>").hide();
   }
+
+  function removeFormationFilterConstellation(filter) {
+    filter.children('.figure-filter-formation').remove();
+  }
+
+  function addFormationFilterConstellation(filter) {
+    filter
+      .children('.figure-filter-op')
+      .after(makeFormationFilterSelect(filter));
+  }
+
+
+  function makeFormationFilterSelect(filter) {
+    return $(formationSelectHtml).change(updateQuery);
+  }
+
 
   var chooserWidgetType = {};
   var chooserToFilterHtml = {};
@@ -350,7 +374,7 @@ $(document).ready(function() {
 
   function filterAddSubfilter(parentFilter) { // caller is responsible to updateQuery() when done
     var childFilter = $(filterHtml);
-    installEventHandlers(childFilter);
+    installGenericFilterEventHandlers(childFilter);
     addFigureFilterMoveConstellation(childFilter);
     childFilter.insertBefore(parentFilter.children('.figure-filter-end-of-subfigures'));
     ensureChildRemoveButtons(parentFilter);
@@ -380,7 +404,7 @@ $(document).ready(function() {
       var move = figure_filter.children('.figure-filter-move').val();
       var a = [op, move];
       if (accordionIsHidden(figure_filter)) {
-        return a; 
+        return a;
       }
       var formals = isMove(move) ? parameters(move) : [];
       formals.forEach(function(formal, i) {
@@ -399,6 +423,9 @@ $(document).ready(function() {
         }
       });
       return a;
+    } else if (op === 'formation') {
+      var formation = figure_filter.children('.figure-filter-formation').val();
+      return [op, formation];
     } else {
       var kids = figure_filter.children('.figure-filter').get();
       var filter = kids.map(buildFigureQuery);
@@ -418,7 +445,7 @@ $(document).ready(function() {
     switch(op) {
     case 'figure':
       addFigureFilterMoveConstellation(figureFilter);
-      installEventHandlers(figureFilter);
+      installGenericFilterEventHandlers(figureFilter);
       figureFilter.children('.figure-filter-move').val(query[1]);
       if (query.length > 2) {
         // ... was clicked
@@ -427,6 +454,12 @@ $(document).ready(function() {
         accordion.show();
         populateAccordionForMove(accordion, query[1], query.slice(2));
       }
+      break;
+    case 'formation':
+      figureFilter.children('.figure-filter-op').val(op);
+      addFormationFilterConstellation(figureFilter);
+      installGenericFilterEventHandlers(figureFilter);
+      figureFilter.children('.figure-filter-formation').val(query[1]);
       break;
     default:
       figureFilter.children('.figure-filter-op').val(op);
@@ -492,7 +525,7 @@ $(document).ready(function() {
     $('#figure-query-buffer').val(JSON.stringify(fq));
     $('.figure-query-sentence').text(buildFigureSentence(fq, dialect));
     if (dataTable) {
-      dataTable.draw(); 
+      dataTable.draw();
     }
   };
 
@@ -502,7 +535,7 @@ $(document).ready(function() {
     root.attr('id', 'figure-filter-root');
     $('#figure-filter-root-container').append(root);
     addFigureFilterMoveConstellation(root);
-    installEventHandlers(root);
+    installGenericFilterEventHandlers(root);
     updateQuery();
   } else {
     // back button pressed -> rebuilding the dom from figure query buffer

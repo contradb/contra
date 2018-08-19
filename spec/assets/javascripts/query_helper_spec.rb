@@ -23,7 +23,10 @@ RSpec.describe 'query-helper' do
      [["and",["then",["figure","allemande"],["figure","balance"]],["figure","box circulate"]],
       'a', '(an allemande then a balance) and a box circulate'],
      [['no', ['anything but', ['figure', 'swing']]], 'a', 'no non swing'],
-     [['figure', '*'], 'a', 'any figure']
+     [['figure', '*'], 'a', 'any figure'],
+     [['formation', 'improper'], 'a', 'an improper formation'],
+     [['and', ['figure', 'swing'], ['formation', 'improper']], 'a', 'a swing and an improper formation'],
+     [['and', ['formation', 'improper'], ['figure', 'swing']], 'a', 'an improper formation and a swing'],
     ].each do |a|
       q, article, value = a
       it "buildFigureSentenceHelper(#{q.to_s}, #{article.inspect}, defaultDialect) => #{value.inspect}" do

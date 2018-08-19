@@ -49,6 +49,27 @@ describe DanceDatatable do
       end
     end
 
+    describe 'formation' do
+      # there's some heavier testing of this in features/welcome/index_spec.rb -dm 08-19-2018
+      it 'Becket ccw' do
+        dances
+        filtered = DanceDatatable.send(:filter_dances, dances, ['formation', 'Becket ccw'])
+        expect(filtered.map(&:title)).to eq(['Call Me'])
+      end
+
+      it 'improper' do
+        dances
+        filtered = DanceDatatable.send(:filter_dances, dances, ['formation', 'improper'])
+        expect(filtered.map(&:title).sort).to eq((dances.map(&:title) - ['Call Me']).sort)
+      end
+
+      it 'everything else' do
+        dances2 = dances + [FactoryGirl.create(:dance, start_type: 'circle mixer', title: 'wacky')]
+        filtered = DanceDatatable.send(:filter_dances, dances2, ['formation', 'everything else'])
+        expect(filtered.map(&:title)).to eq(['wacky'])
+      end
+    end
+
     describe 'and' do
       it 'works' do
         filtered = DanceDatatable.send(:filter_dances, dances, ['and', ['figure', 'circle'], ['figure', 'right left through']])
