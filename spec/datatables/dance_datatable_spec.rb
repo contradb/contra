@@ -50,6 +50,7 @@ describe DanceDatatable do
     end
 
     describe 'formation' do
+      # there's some heavier testing of this in features/welcome/index_spec.rb -dm 08-19-2018
       it 'Becket ccw' do
         dances
         filtered = DanceDatatable.send(:filter_dances, dances, ['formation', 'Becket ccw'])

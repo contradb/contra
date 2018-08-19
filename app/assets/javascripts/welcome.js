@@ -5,7 +5,7 @@ $(document).ready(function() {
 
   var dialect = JSON.parse($('#dialect-json').text());
 
-  function installEventHandlers(selector) {
+  function installGenericFilterEventHandlers(selector) {
     selector.find('.figure-filter-op').change(filterOpChanged);
     selector.find('.figure-filter-add').click(clickFilterAddSubfilter);
     selector.find('.figure-filter-remove').click(filterRemoveSubfilter);
@@ -39,7 +39,7 @@ $(document).ready(function() {
       <span class='figure-filter-end-of-subfigures'></span>\
     </div>";
 
-  var formationSelectHtml = "<select class='formation-filter-formation form-control'>"+['improper','Becket *', 'Becket cw', 'Becket ccw', 'proper', 'everything else'].map(function(label) {return '<option>'+label+'</option>';})+"</select>";
+  var formationSelectHtml = "<select class='figure-filter-formation form-control'>"+['improper','Becket *', 'Becket cw', 'Becket ccw', 'proper', 'everything else'].map(function(label) {return '<option>'+label+'</option>';}).join('')+"</select>";
 
   function maxSubfilterCount(op) {
     switch(op) {
@@ -187,7 +187,7 @@ $(document).ready(function() {
   }
 
   function removeFormationFilterConstellation(filter) {
-    filter.children('.formation-filter-formation').remove();
+    filter.children('.figure-filter-formation').remove();
   }
 
   function addFormationFilterConstellation(filter) {
@@ -198,9 +198,7 @@ $(document).ready(function() {
 
 
   function makeFormationFilterSelect(filter) {
-    return $(formationSelectHtml).change(function () {
-      updateQuery();
-    });
+    return $(formationSelectHtml).change(updateQuery);
   }
 
 
@@ -376,7 +374,7 @@ $(document).ready(function() {
 
   function filterAddSubfilter(parentFilter) { // caller is responsible to updateQuery() when done
     var childFilter = $(filterHtml);
-    installEventHandlers(childFilter);
+    installGenericFilterEventHandlers(childFilter);
     addFigureFilterMoveConstellation(childFilter);
     childFilter.insertBefore(parentFilter.children('.figure-filter-end-of-subfigures'));
     ensureChildRemoveButtons(parentFilter);
@@ -426,7 +424,7 @@ $(document).ready(function() {
       });
       return a;
     } else if (op === 'formation') {
-      var formation = figure_filter.children('.formation-filter-formation').val();
+      var formation = figure_filter.children('.figure-filter-formation').val();
       return [op, formation];
     } else {
       var kids = figure_filter.children('.figure-filter').get();
@@ -447,7 +445,7 @@ $(document).ready(function() {
     switch(op) {
     case 'figure':
       addFigureFilterMoveConstellation(figureFilter);
-      installEventHandlers(figureFilter);
+      installGenericFilterEventHandlers(figureFilter);
       figureFilter.children('.figure-filter-move').val(query[1]);
       if (query.length > 2) {
         // ... was clicked
@@ -460,8 +458,8 @@ $(document).ready(function() {
     case 'formation':
       figureFilter.children('.figure-filter-op').val(op);
       addFormationFilterConstellation(figureFilter);
-      installEventHandlers(figureFilter);
-      figureFilter.children('.formation-filter-formation').val(query[1]);
+      installGenericFilterEventHandlers(figureFilter);
+      figureFilter.children('.figure-filter-formation').val(query[1]);
       break;
     default:
       figureFilter.children('.figure-filter-op').val(op);
@@ -537,7 +535,7 @@ $(document).ready(function() {
     root.attr('id', 'figure-filter-root');
     $('#figure-filter-root-container').append(root);
     addFigureFilterMoveConstellation(root);
-    installEventHandlers(root);
+    installGenericFilterEventHandlers(root);
     updateQuery();
   } else {
     // back button pressed -> rebuilding the dom from figure query buffer

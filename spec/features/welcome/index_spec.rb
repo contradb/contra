@@ -776,11 +776,11 @@ describe 'Welcome page', js: true do
         click_link('Box the Gnat Contra')
         expect(page).to have_content('partners swing') # wait for page to load
         page.go_back
-        expect(page).to_not have_content('Processing...')
         move_selector = '.figure-filter-move'
         expect(page).to have_css(move_selector, count: 2)
         expect(all(move_selector).first.value).to eq('swing')
         expect(all(move_selector).last.value).to eq('allemande')
+        expect(page).to_not have_content('Processing...')
         expect(page).to have_css('.figure-filter-ellipsis.ellipsis-expanded', count: 1)
         expect(page).to have_css('.figure-filter-accordion', count: 1, visible: true)
         expect(page).to have_css('.chooser-argument', count: 4)
@@ -790,7 +790,7 @@ describe 'Welcome page', js: true do
         expect(find(".chooser-argument [type=radio][value='false']")).to_not be_checked
         expect(all(".chooser-argument")[2].value.to_s).to eq(540.to_s)
         expect(all(".chooser-argument")[3].value).to eq('*')
-        expect(page).to have_css('.formation-filter-formation', count: 1)
+        expect(page).to have_css('.figure-filter-formation', count: 1)
         op_values = find_all('.figure-filter-op').map(&:value)
         expect(op_values.count('and')).to eq(1)
         expect(op_values.count('figure')).to eq(2)
