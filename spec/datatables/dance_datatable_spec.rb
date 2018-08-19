@@ -61,6 +61,12 @@ describe DanceDatatable do
         filtered = DanceDatatable.send(:filter_dances, dances, ['formation', 'improper'])
         expect(filtered.map(&:title).sort).to eq((dances.map(&:title) - ['Call Me']).sort)
       end
+
+      it 'everything else' do
+        dances2 = dances + [FactoryGirl.create(:dance, start_type: 'circle mixer', title: 'wacky')]
+        filtered = DanceDatatable.send(:filter_dances, dances2, ['formation', 'everything else'])
+        expect(filtered.map(&:title)).to eq(['wacky'])
+      end
     end
 
     describe 'and' do

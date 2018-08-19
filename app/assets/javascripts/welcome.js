@@ -39,6 +39,7 @@ $(document).ready(function() {
       <span class='figure-filter-end-of-subfigures'></span>\
     </div>";
 
+  var formationSelectHtml = "<select class='formation-filter-formation form-control'>"+['improper','Becket *', 'Becket cw', 'Becket ccw', 'proper', 'everything else'].map(function(label) {return '<option>'+label+'</option>';})+"</select>";
 
   function maxSubfilterCount(op) {
     switch(op) {
@@ -197,7 +198,7 @@ $(document).ready(function() {
 
 
   function makeFormationFilterSelect(filter) {
-    return $("<select class='formation-filter-formation form-control'><option>improper</option><option>Becket</option></select>").change(function () {
+    return $(formationSelectHtml).change(function () {
       updateQuery();
     });
   }

@@ -121,12 +121,20 @@ class DanceDatatable < AjaxDatatablesRails::Base
 
   def self.matching_figures_for_formation(filter, dance)
     filter_formation = filter[1]
-    if '*' == filter_formation || dance.start_type == filter_formation
-      Set[]
+    if filter_formation == 'everything else'
+      FILTER_FORMATION_TO_RE.values.none? {|re| re =~ dance.start_type} ? Set[] : nil
     else
-      nil
+      filter_re = FILTER_FORMATION_TO_RE[filter_formation]
+      filter_re or raise "unrecognised formation filter #{filter_formation.inspect}"
+      filter_re =~ dance.start_type ? Set[] : nil
     end
   end
+
+  FILTER_FORMATION_TO_RE = {'improper' => /improper/i,
+                            'Becket *' => /Becket/i,
+                            'Becket cw' => /Becket(?!.*ccw).*$/i,
+                            'Becket ccw' => /Becket ccw/i,
+                            'proper' => /^proper/i};
 
   def self.param_passes_filter?(formal_param, dance_param, param_filter)
     if JSLibFigure.parameter_uses_chooser(formal_param, 'chooser_text')

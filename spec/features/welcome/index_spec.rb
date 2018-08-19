@@ -86,13 +86,63 @@ describe 'Welcome page', js: true do
     end
 
     it 'formation' do
+      becket = FactoryGirl.create(:call_me, start_type: 'Becket', title: 'Becket')
+      square = FactoryGirl.create(:dance, start_type: 'square dance', title: 'square')
+      dances2 = dances + [becket, square]
       visit '/'
       select 'formation'
+
       select 'improper'
-      expect(Set.new(dances.map(&:start_type))).to eq(Set['improper', 'Becket ccw'])
+      expect(Set.new(dances2.map(&:start_type))).to eq(Set['improper', 'Becket ccw', 'Becket', 'square dance'])
       expect(page).to_not have_text('Call Me')
-      dances.each do |dance|
-        expect(page).to have_text(dance.title) if dance.start_type == 'improper'
+      expect(page).to_not have_text('Becket')
+      expect(page).to_not have_text('sqaure')
+      dances2.each do |dance|
+        expect(page).to have_link(dance.title) if dance.start_type == 'improper'
+      end
+
+      select 'Becket *'
+      expect(page).to have_link(becket.title)
+      expect(page).to have_link('Call Me')
+      dances2.each do |dance|
+        if dance.title.in?([becket.title, 'Call Me'])
+          expect(page).to have_link(dance.title)
+        else
+          expect(page).to_not have_link(dance.title)
+        end
+      end
+
+      select 'Becket cw'
+      expect(page).to_not have_link('Call Me')
+      expect(page).to have_link(becket.title)
+      dances2.each do |dance|
+        if dance.title.in?([becket.title])
+          expect(page).to have_link(dance.title)
+        else
+          expect(page).to_not have_link(dance.title)
+        end
+      end
+
+      select 'Becket ccw'
+      expect(page).to_not have_link(becket.title)
+      expect(page).to have_link('Call Me')
+      dances2.each do |dance|
+        if dance.title.in?(['Call Me'])
+          expect(page).to have_link(dance.title)
+        else
+          expect(page).to_not have_link(dance.title)
+        end
+      end
+
+      select 'everything else'
+      expect(page).to_not have_link('Call Me')
+      expect(page).to have_link(square.title)
+      dances2.each do |dance|
+        if dance.title.in?([square.title])
+          expect(page).to have_link(dance.title)
+        else
+          expect(page).to_not have_link(dance.title)
+        end
       end
     end
 
