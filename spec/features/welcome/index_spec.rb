@@ -656,8 +656,6 @@ describe 'Welcome page', js: true do
             select('turn as a couple')
             # select('turn alone') # hard because multiple
             select('bend into a ring')
-            expect(page).to have_content('Showing dances with a * down the * * and bend into a ring.')
-            expect(page).to_not have_content('Processing...')
             expect(page).to_not have_content(tc.title)
             expect(page).to_not have_content(unspec.title)
             expect(page).to_not have_content(ta.title)
@@ -736,6 +734,7 @@ describe 'Welcome page', js: true do
 
           allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
 
+          expect(page).to_not have_content('Processing...')
           select('almond')
           click_button('...')
           select('ravens')
