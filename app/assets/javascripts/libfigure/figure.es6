@@ -317,6 +317,24 @@ defineFigure("do si do",
 defineFigureAlias("see saw", "do si do", [null, param_left_shoulders_spin, null, null]);
 
 ////////////////////////////////////////////////
+// DOLPHIN HEY                                //
+////////////////////////////////////////////////
+
+function dolphinHeyWords(move, pvs, dialect) {
+  var [ who,  whom,  shoulder,  beats] = pvs;
+  var [swho, swhom, sshoulder, sbeats] = parameter_strings(move, pvs, dialect);
+  var smove = moveSubstitution(move, dialect);
+  return words(smove, '- start with', swho, 'passing', swhom, 'by', sshoulder);
+}
+
+defineFigure("dolphin hey",
+             [param_subject_pair, param_object_dancer, param_xshoulders_spin, param_beats_8],
+             {words: dolphinHeyWords});
+
+defineRelatedMove2Way('dolphin hey', 'hey');
+
+
+////////////////////////////////////////////////
 // DOWN THE HALL  &  UP THE HALL              //
 ////////////////////////////////////////////////
 
