@@ -328,7 +328,7 @@ function dolphinHeyWords(move, pvs, dialect) {
 }
 
 defineFigure("dolphin hey",
-             [param_subject_pair, param_object_dancer, param_xshoulders_spin, param_beats_8],
+             [param_subject_pair, param_object_dancer, param_xshoulders_spin, param_beats_16],
              {words: dolphinHeyWords});
 
 defineRelatedMove2Way('dolphin hey', 'hey');
