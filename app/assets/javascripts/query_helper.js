@@ -16,7 +16,7 @@ var figureSentenceDispatchTable = {
   then: sentenceForBinOp,
   no: sentenceForNo,
   all: sentenceForAll,
-  '~': sentenceForAnythingBut
+  '~': sentenceForFigurewiseNot
 };
 
 function destringifyFigureFilterParam(param) {
@@ -119,7 +119,7 @@ function sentenceForAll(query, article, dialect) {
   return 'all (' + buildFigureSentenceHelper(query[1], article, dialect) + ')';
 }
 
-function sentenceForAnythingBut(query, article, dialect) {
+function sentenceForFigurewiseNot(query, article, dialect) {
   if (isComplex(query[1], article)) {
     return '~ '+ sentenceForMaybeComplex(query[1], 'a', dialect);
   } else {

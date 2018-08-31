@@ -73,9 +73,7 @@ subexpressions. E.g. `chain and hey` will match lots of dances, but
 since no single figure is both a chain and a hey, no figures will ever
 match.
 
-### &&
-
-[proposed 8-2018]
+### &
 
 Like `and`, but the dance will only match if there is at least one
 matching patch.
@@ -94,7 +92,7 @@ intended.
 What we were maybe trying to get in the previous example was a search
 for dances that had a swing followed by any move besides a hey, but
 that were still allowed to have heys elsewhere in the dance. Enter
-`~`. `~` matches all figures (length-1 patches) that are not matched
+`~`. `~` matches all figures (length-1 patches)+ that are not matched
 by their subexpression. `swing then ~hey` - will match dances with a
 swing followed by any figure not a hey.
 
