@@ -77,10 +77,17 @@ function sentenceForBinOp(query, article, dialect) {
   return query.slice(1).map(function(query) { return sentenceForMaybeComplex(query, article, dialect); }).join(' '+op+' ');
 }
 
-// returns true if sentenceForMaybeComplex uses parens
+
+var verySimpleFilterOps = ['figure', 'formation', 'progression'];
+var somewhatSimpleFilterOps = ['~', 'no'];
+
+// returns true if sentenceForMaybeComplex uses parens.
+// Modify sentenceForMaybeComplex if you change this function.
 function isComplex(query, article) {
   var op = query[0];
-  return !(op === 'figure' || op === 'formation' || op === 'progression' || ('a' === article && (op === '~' || op === 'no')));
+  var not_complex = verySimpleFilterOps.indexOf(op) >= 0 ||
+        ('a' === article && somewhatSimpleFilterOps.indexOf(op) >= 0);
+  return !not_complex;
 }
 
 function sentenceForMaybeComplex(query, article, dialect) {
@@ -88,13 +95,9 @@ function sentenceForMaybeComplex(query, article, dialect) {
   // Modify isComplex() if you change this function.
   var op = query[0];
   var boringArticle = 'a' === article || '' === article;
-  if (op==='figure') {
-    return sentenceForFigure(query, article, dialect);
-  } else if (op==='formation') {
-    return sentenceForFormation(query, article, dialect);
-  } else if (op==='progression') {
-    return sentenceForProgression(query, article, dialect);
-  } else if (boringArticle && (op === '~' || op === 'no')) {
+  if (verySimpleFilterOps.indexOf(op) >= 0) {
+    return buildFigureSentenceHelper(query, article, dialect);
+  } else if (boringArticle && somewhatSimpleFilterOps.indexOf(op) >= 0) {
     return buildFigureSentenceHelper(query, article, dialect);
   } else if (boringArticle) {
     return '(' + buildFigureSentenceHelper(query, 'a', dialect) + ')';

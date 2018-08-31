@@ -27,16 +27,16 @@ $(document).ready(function() {
   var filterHtml = "\
     <div class='figure-filter' data-op=and>\
       <select class='figure-filter-op form-control'>\
-        <option value='figure' selected>figure</option>\
-        <option value='formation'>formation</option>\
-        <option value='progression'>progression</option>\
-        <option value='or'>or</option>\
-        <option value='and'>and</option> \
-        <option value='&'>&</option> \
-        <option value='then'>then</option>\
-        <option value='no'>no</option>\
-        <option value='all'>all</option>\
-        <option value='~'>~</option>\
+        <option selected>figure</option>\
+        <option>formation</option>\
+        <option>progression</option>\
+        <option>or</option>\
+        <option>and</option> \
+        <option>&</option> \
+        <option>then</option>\
+        <option>no</option>\
+        <option>all</option>\
+        <option>~</option>\
       </select>\
       <span class='figure-filter-end-of-subfigures'></span>\
     </div>";
