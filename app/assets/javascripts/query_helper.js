@@ -16,7 +16,7 @@ var figureSentenceDispatchTable = {
   then: sentenceForBinOp,
   no: sentenceForNo,
   all: sentenceForAll,
-  'anything but': sentenceForAnythingBut
+  '~': sentenceForAnythingBut
 };
 
 function destringifyFigureFilterParam(param) {
@@ -78,7 +78,7 @@ function sentenceForBinOp(query, article, dialect) {
 // returns true if sentenceForMaybeComplex uses parens
 function isComplex(query, article) {
   var op = query[0];
-  return !(op === 'figure' || op === 'formation' || ('a' === article && (op === 'anything but' || op === 'no')));
+  return !(op === 'figure' || op === 'formation' || ('a' === article && (op === '~' || op === 'no')));
 }
 
 function sentenceForMaybeComplex(query, article, dialect) {
@@ -90,7 +90,7 @@ function sentenceForMaybeComplex(query, article, dialect) {
     return sentenceForFigure(query, article, dialect);
   } else if (op==='formation') {
     return sentenceForFormation(query, article, dialect);
-  } else if (boringArticle && (op === 'anything but' || op === 'no')) {
+  } else if (boringArticle && (op === '~' || op === 'no')) {
     return buildFigureSentenceHelper(query, article, dialect);
   } else if (boringArticle) {
     return '(' + buildFigureSentenceHelper(query, 'a', dialect) + ')';
@@ -115,13 +115,13 @@ function sentenceForNo(query, article, dialect) {
 }
 
 function sentenceForAll(query, article, dialect) {
-  // could aggressively reduce 'all anything but' to 'no', but that's too nice
+  // could aggressively reduce 'all ~' to 'no', but that's too nice
   return 'all (' + buildFigureSentenceHelper(query[1], article, dialect) + ')';
 }
 
 function sentenceForAnythingBut(query, article, dialect) {
   if (isComplex(query[1], article)) {
-    return 'anything but '+ sentenceForMaybeComplex(query[1], 'a', dialect);
+    return '~ '+ sentenceForMaybeComplex(query[1], 'a', dialect);
   } else {
     return article + ' non ' + sentenceForMaybeComplex(query[1], '', dialect);
   }

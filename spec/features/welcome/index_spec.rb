@@ -71,14 +71,14 @@ describe 'Welcome page', js: true do
       expect(rory.title).to eq("Just Rory")
     end
 
-    it "'anything but' works" do
+    it "'~' works" do
       dance
       only_a_swing = FactoryGirl.create(:dance_with_a_swing)
       with_retries do
         visit '/'
         expect(page).to have_text(only_a_swing.title)
         expect(page).to have_text(dance.title)
-        select('anything but')
+        select('~')
         select('swing', match: :first)
         expect(page).to_not have_text(only_a_swing.title)
         expect(page).to have_text(dance.title) # because it has a figure that's not a swing

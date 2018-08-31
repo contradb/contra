@@ -98,9 +98,9 @@ describe DanceDatatable do
       expect(filtered.map(&:title)).to eq([dances2.first.title, zero.title])
     end
 
-    it 'anything but' do
+    it '~' do
       dances2 = [FactoryGirl.create(:dance_with_a_swing)] + dances
-      filtered = DanceDatatable.send(:filter_dances, dances2, ['anything but', ['figure', 'swing']])
+      filtered = DanceDatatable.send(:filter_dances, dances2, ['~', ['figure', 'swing']])
       expect(filtered.map(&:title)).to eq(['The Rendevouz', 'Box the Gnat Contra', 'Call Me'])
     end
 
@@ -110,9 +110,9 @@ describe DanceDatatable do
         expect(filtered.map(&:title)).to eq(['The Rendevouz', 'Call Me'])
       end
 
-      it 'works with anything but' do
+      it 'works with ~' do
         # All the swings in Call Me are immediately followed by either a circle or a right left through.
-        filtered = DanceDatatable.send(:filter_dances, dances, ['then', ['figure', 'swing'], ['anything but', ['or', ['figure', 'circle'], ['figure', 'right left through']]]])
+        filtered = DanceDatatable.send(:filter_dances, dances, ['then', ['figure', 'swing'], ['~', ['or', ['figure', 'circle'], ['figure', 'right left through']]]])
         expect(filtered.map(&:title)).to eq(['The Rendevouz', 'Box the Gnat Contra'])
       end
     end
@@ -217,8 +217,8 @@ describe DanceDatatable do
     end
 
     it 'is recursive' do
-      h = {'faux_array' => true, "0" => 'anything but', "1" => {'faux_array' => true, "0" => 'figure', "1" => 'swing'}}
-      expect(DanceDatatable.send(:hash_to_array, h)).to eq(['anything but', ['figure', 'swing']])
+      h = {'faux_array' => true, "0" => '~', "1" => {'faux_array' => true, "0" => 'figure', "1" => 'swing'}}
+      expect(DanceDatatable.send(:hash_to_array, h)).to eq(['~', ['figure', 'swing']])
     end
 
     it 'does not disturb hashes that do not have the faux_array key true' do

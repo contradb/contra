@@ -34,7 +34,7 @@ $(document).ready(function() {
         <option value='then'>then</option>\
         <option value='no'>no</option>\
         <option value='all'>all</option>\
-        <option value='anything but'>anything but</option>\
+        <option value='~'>~</option>\
       </select>\
       <span class='figure-filter-end-of-subfigures'></span>\
     </div>";
@@ -48,7 +48,7 @@ $(document).ready(function() {
       return 0;
     case 'all':
     case 'no':
-    case 'anything but':
+    case '~':
       return 1;
     case undefined:
       throw 'missing argument to maxSubfilterCount';
@@ -61,7 +61,7 @@ $(document).ready(function() {
     switch(op) {
     case 'no':
     case 'all':
-    case 'anything but':
+    case '~':
       return 1;
     case undefined:
       throw 'missing argument to minSubfilterCount';

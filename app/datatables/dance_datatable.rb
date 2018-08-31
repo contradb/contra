@@ -90,7 +90,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
 
   def self.matching_figures(filter, dance)
     operator = filter.first
-    fn = :"matching_figures_for_#{operator.gsub(' ', '_')}"
+    fn = :"matching_figures_for_#{operator=='~' ? 'figurewise_not' : operator.gsub(' ', '_')}"
     raise "#{operator.inspect} is not a valid operator in #{filter.inspect}" unless self.respond_to?(fn, true)
     matches = send(fn, filter, dance)
     # puts "matching_figures #{dance.title} #{filter.inspect} = #{matches.inspect}"
@@ -193,8 +193,8 @@ class DanceDatatable < AjaxDatatablesRails::Base
     end
   end
 
-  # anything but is mainly useful when paired with then
-  def self.matching_figures_for_anything_but(filter, dance)
+  # ~ is mainly useful when paired with then
+  def self.matching_figures_for_figurewise_not(filter, dance)
     subfilter = filter[1]
     matches = all_figures_match(dance.figures.length) - dice_search_matches(matching_figures(subfilter, dance) || Set[])
     matches.present? ? matches : nil
