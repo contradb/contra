@@ -16,7 +16,9 @@ var figureSentenceDispatchTable = {
   then: sentenceForBinOp,
   no: sentenceForNo,
   all: sentenceForAll,
-  '~': sentenceForFigurewiseNot
+  '~': sentenceForFigurewiseNot,
+  '&': sentenceForBinOp,
+  'progression': sentenceForProgression
 };
 
 function destringifyFigureFilterParam(param) {
@@ -78,7 +80,7 @@ function sentenceForBinOp(query, article, dialect) {
 // returns true if sentenceForMaybeComplex uses parens
 function isComplex(query, article) {
   var op = query[0];
-  return !(op === 'figure' || op === 'formation' || ('a' === article && (op === '~' || op === 'no')));
+  return !(op === 'figure' || op === 'formation' || op === 'progression' || ('a' === article && (op === '~' || op === 'no')));
 }
 
 function sentenceForMaybeComplex(query, article, dialect) {
@@ -90,6 +92,8 @@ function sentenceForMaybeComplex(query, article, dialect) {
     return sentenceForFigure(query, article, dialect);
   } else if (op==='formation') {
     return sentenceForFormation(query, article, dialect);
+  } else if (op==='progression') {
+    return sentenceForProgression(query, article, dialect);
   } else if (boringArticle && (op === '~' || op === 'no')) {
     return buildFigureSentenceHelper(query, article, dialect);
   } else if (boringArticle) {
@@ -125,4 +129,8 @@ function sentenceForFigurewiseNot(query, article, dialect) {
   } else {
     return article + ' non ' + sentenceForMaybeComplex(query[1], '', dialect);
   }
+}
+
+function sentenceForProgression(query, article, dialect) {
+  return article + ' progression';
 }

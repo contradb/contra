@@ -29,8 +29,10 @@ $(document).ready(function() {
       <select class='figure-filter-op form-control'>\
         <option value='figure' selected>figure</option>\
         <option value='formation'>formation</option>\
-        <option value='and'>and</option> \
+        <option value='progression'>progression</option>\
         <option value='or'>or</option>\
+        <option value='and'>and</option> \
+        <option value='&'>&</option> \
         <option value='then'>then</option>\
         <option value='no'>no</option>\
         <option value='all'>all</option>\
@@ -45,6 +47,7 @@ $(document).ready(function() {
     switch(op) {
     case 'figure':
     case 'formation':
+    case 'progression':
       return 0;
     case 'all':
     case 'no':
@@ -73,6 +76,7 @@ $(document).ready(function() {
   function minUsefulSubfilterCount(op) {
     switch(op) {
     case 'and':
+    case '&':
     case 'or':
     case 'then':
       return 2;

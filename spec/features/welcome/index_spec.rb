@@ -85,6 +85,19 @@ describe 'Welcome page', js: true do
       end
     end
 
+    it "'&' and 'progression' work" do
+      dances
+      with_retries do
+        visit '/'
+        select('&')
+        select('circle', match: :first)
+        all('.figure-filter-op').last.select('progression')
+        expect(page).to_not have_text('Box the Gnat Contra')
+        expect(page).to_not have_text('Call Me')
+        expect(page).to have_text('The Rendevouz')
+      end
+    end
+
     it 'formation' do
       becket = FactoryGirl.create(:call_me, start_type: 'Becket', title: 'Becket')
       square = FactoryGirl.create(:dance, start_type: 'square dance', title: 'square')

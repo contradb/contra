@@ -70,6 +70,12 @@ describe DanceDatatable do
       end
     end
 
+    it 'progression' do
+      dances
+      filtered = DanceDatatable.send(:filter_dances, dances, ['progression'])
+      expect(filtered.map(&:title)).to eq(["The Rendevouz", "Box the Gnat Contra", "Call Me"])
+    end
+
     describe 'and' do
       it 'works' do
         filtered = DanceDatatable.send(:filter_dances, dances, ['and', ['figure', 'circle'], ['figure', 'right left through']])
@@ -80,6 +86,11 @@ describe DanceDatatable do
         filtered = DanceDatatable.send(:filter_dances, dances, ['and', ['no', ['figure', 'chain']], ['figure', 'star']])
         expect(filtered).to eq([])
       end
+    end
+
+    it '& works with progression' do
+      filtered = DanceDatatable.send(:filter_dances, dances, ['&', ['figure', 'circle'], ['progression']])
+      expect(filtered.map(&:title)).to eq(['The Rendevouz'])
     end
 
     it 'or' do
@@ -117,6 +128,16 @@ describe DanceDatatable do
       end
     end
   end
+
+    it '.matching_figures_for_progression only works on figures with progressions' do
+      dance = FactoryGirl.create(:box_the_gnat_contra)
+      f = dance.figures
+      f[3]['progression'] = 1
+      dance.figures = f
+      nfigures = dance.figures.length
+      search_matches = DanceDatatable.matching_figures(['progression'], dance)
+      expect(search_matches).to eq(Set[SearchMatch.new(nfigures-1, nfigures),SearchMatch.new(3, nfigures)])
+    end
 
   describe '.matching_figures_for_then' do
     it 'basically works' do
