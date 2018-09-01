@@ -6,7 +6,7 @@ describe 'Welcome page', js: true do
   let (:dances) {[:dance, :box_the_gnat_contra, :call_me].map {|d| FactoryGirl.create(d)}}
   it 'has a link to help on filters' do
     visit '/'
-    expect(page).to have_link('', href: "https://github.com/contradb/contra/wiki/Dance-Figure-Filters")
+    expect(page).to have_link('', href: "https://github.com/contradb/contra/blob/master/doc/search.md#advanced-search-on-contradb")
   end
 
   context 'datatable' do
