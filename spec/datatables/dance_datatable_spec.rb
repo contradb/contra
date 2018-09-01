@@ -89,7 +89,7 @@ describe DanceDatatable do
     end
 
     it '& works with progression' do
-      filtered = DanceDatatable.send(:filter_dances, dances, ['&', ['figure', 'circle'], ['progression']])
+      filtered = DanceDatatable.send(:filter_dances, dances, ['&', ['figure', 'slide along set'], ['progression']])
       expect(filtered.map(&:title)).to eq(['The Rendevouz'])
     end
 

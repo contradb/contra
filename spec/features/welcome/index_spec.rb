@@ -90,8 +90,9 @@ describe 'Welcome page', js: true do
       with_retries do
         visit '/'
         select('&')
-        select('circle', match: :first)
+        select('slide along set', match: :first)
         all('.figure-filter-op').last.select('progression')
+        expect(page).to have_text('The Rendevouz')
         expect(page).to_not have_text('Box the Gnat Contra')
         expect(page).to_not have_text('Call Me')
         expect(page).to have_text('The Rendevouz')
