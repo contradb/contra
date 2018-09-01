@@ -91,8 +91,6 @@ class DanceDatatable < AjaxDatatablesRails::Base
   def self.matching_figures(filter, dance)
     operator = filter.first
     nm = case operator
-         when '~'
-           'figurewise_not'
          when '&'
            'figurewise_and'
          else
@@ -213,8 +211,8 @@ class DanceDatatable < AjaxDatatablesRails::Base
     a.present? ? a : nil
   end
 
-  # ~ is mainly useful when paired with then
-  def self.matching_figures_for_figurewise_not(filter, dance)
+  # figurewise_not
+  def self.matching_figures_for_not(filter, dance)
     subfilter = filter[1]
     matches = all_figures_match(dance.figures.length) - dice_search_matches(matching_figures(subfilter, dance) || Set[])
     matches.present? ? matches : nil

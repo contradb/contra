@@ -37,7 +37,7 @@ then allemande` will match a dance where the first and last figures
 are allemandes.
 
 `then` gets more interesting when it's subexpressions are more than
-simple figures - e.g. `~` and `all`, but for that we need a more
+simple figures - e.g. `not` and `all`, but for that we need a more
 complicated understanding of queries.
 
 ## Queries Actually Match Choreography within a Dance - 'Patches'
@@ -87,23 +87,23 @@ This is important if you're using `then`: `swing then no hey` will
 match the same dances as `swing and no hey` - likely not what you
 intended.
 
-### ~ (pronounced 'figurewise not')
+### not ('figurewise not')
 
 What we were maybe trying to get in the previous example was a search
 for dances that had a swing followed by any move besides a hey, but
 that were still allowed to have heys elsewhere in the dance. Enter
-`~`. `~` matches all figures (length-1 patches)+ that are not matched
-by their subexpression. `swing then ~hey` - will match dances with a
+`not`. `not` matches all figures (length-1 patches)+ that are not matched
+by their subexpression. `swing then not hey` - will match dances with a
 swing followed by any figure not a hey.
 
-`~` was formerly called 'anything but'.
+`not` was formerly called 'anything but'.
 
 ### all
 
 The dance matches only if every figure matches - this isn't too
-practical, and anyway `all x` is equivalent to `~ no x`,
-but it seems somehow to complete the set. Here's one possible
+practical, and anyway `all figure x` is equivalent to `not no figure
+x`, but it seems somehow to complete the set. Here's one possible
 application: imagine teaching contra to a preschool, and you want to
 find only dances with certain figures. You could use: `all (swing or
-allemande or circle or do si do or progress or ...)` to search for dances 
+allemande or circle or do si do or star or ...)` to search for dances
 that use only simple moves.

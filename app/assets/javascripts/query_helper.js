@@ -16,7 +16,7 @@ var figureSentenceDispatchTable = {
   then: sentenceForBinOp,
   no: sentenceForNo,
   all: sentenceForAll,
-  '~': sentenceForFigurewiseNot,
+  not: sentenceForNot,
   '&': sentenceForBinOp,
   'progression': sentenceForProgression
 };
@@ -79,7 +79,7 @@ function sentenceForBinOp(query, article, dialect) {
 
 
 var verySimpleFilterOps = ['figure', 'formation', 'progression'];
-var somewhatSimpleFilterOps = ['~', 'no'];
+var somewhatSimpleFilterOps = ['not', 'no'];
 
 // returns true if sentenceForMaybeComplex uses parens.
 // Modify sentenceForMaybeComplex if you change this function.
@@ -122,11 +122,11 @@ function sentenceForNo(query, article, dialect) {
 }
 
 function sentenceForAll(query, article, dialect) {
-  // could aggressively reduce 'all ~' to 'no', but that's too nice
+  // could aggressively reduce 'all not' to 'no', but that's too nice
   return 'all (' + buildFigureSentenceHelper(query[1], article, dialect) + ')';
 }
 
-function sentenceForFigurewiseNot(query, article, dialect) {
+function sentenceForNot(query, article, dialect) {
   if (isComplex(query[1], article)) {
     return 'not '+ sentenceForMaybeComplex(query[1], 'a', dialect);
   } else {

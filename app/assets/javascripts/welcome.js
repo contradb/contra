@@ -35,8 +35,8 @@ $(document).ready(function() {
         <option>&</option> \
         <option>then</option>\
         <option>no</option>\
+        <option>not</option>\
         <option>all</option>\
-        <option>~</option>\
       </select>\
       <span class='figure-filter-end-of-subfigures'></span>\
     </div>";
@@ -49,9 +49,9 @@ $(document).ready(function() {
     case 'formation':
     case 'progression':
       return 0;
-    case 'all':
     case 'no':
-    case '~':
+    case 'not':
+    case 'all':
       return 1;
     case undefined:
       throw 'missing argument to maxSubfilterCount';
@@ -63,8 +63,8 @@ $(document).ready(function() {
   function minSubfilterCount(op) {
     switch(op) {
     case 'no':
+    case 'not':
     case 'all':
-    case '~':
       return 1;
     case undefined:
       throw 'missing argument to minSubfilterCount';
