@@ -6,7 +6,8 @@ FactoryGirl.define do
     start_type 'improper'
     hook 'pioneered slide progression'
     preamble 'a preamble appears here'
-    figures_json '[{"parameter_values":["neighbors","balance",16],"move":"swing"},{"parameter_values":[true, 8],"move":"long lines"},{"parameter_values":["ladles",true,540,8],"move":"do si do"},{"parameter_values":["partners","balance",16],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":[true,2],"move":"slide along set"},{"parameter_values":[true,270,6],"move":"circle", "progression": 1}]'
+    figures_json '[{"parameter_values":["neighbors","balance",16],"move":"swing"},{"parameter_values":[true, 8],"move":"long lines"},{"parameter_values":["ladles",true,540,8],"move":"do si do"},{"parameter_values":["partners","balance",16],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":[true,2],"move":"slide along set", "progression": 1},{"parameter_values":[true,270,6],"move":"circle"}]'
+    # todo: put this progression on the right figure - the slide!
   end
 
   factory :box_the_gnat_contra, class: Dance do

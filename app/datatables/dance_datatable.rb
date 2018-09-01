@@ -90,7 +90,13 @@ class DanceDatatable < AjaxDatatablesRails::Base
 
   def self.matching_figures(filter, dance)
     operator = filter.first
-    fn = :"matching_figures_for_#{operator.gsub(' ', '_')}"
+    nm = case operator
+         when '&'
+           'figurewise_and'
+         else
+           operator.gsub(' ', '_')
+         end
+    fn = :"matching_figures_for_#{nm}"
     raise "#{operator.inspect} is not a valid operator in #{filter.inspect}" unless self.respond_to?(fn, true)
     matches = send(fn, filter, dance)
     # puts "matching_figures #{dance.title} #{filter.inspect} = #{matches.inspect}"
@@ -119,6 +125,21 @@ class DanceDatatable < AjaxDatatablesRails::Base
     end
   end
 
+  def self.param_passes_filter?(formal_param, dance_param, param_filter)
+    if JSLibFigure.parameter_uses_chooser(formal_param, 'chooser_text')
+      # substring search
+      keywords = param_filter.split(' ')
+      keywords.any? {|keyword| dance_param.include?(keyword)}
+    elsif JSLibFigure.parameter_uses_chooser(formal_param, 'chooser_half_or_full')
+      param_filter === '*' || param_filter.to_f === dance_param.to_f
+    elsif JSLibFigure.formal_param_is_dancers(formal_param)
+      param_filter === '*' || JSLibFigure.dancers_category(dance_param) === param_filter
+    else
+      # asterisk always matches, or exact match
+      param_filter === '*' || param_filter.to_s === dance_param.to_s
+    end
+  end
+
   def self.matching_figures_for_formation(filter, dance)
     filter_formation = filter[1]
     if filter_formation == 'everything else'
@@ -134,21 +155,13 @@ class DanceDatatable < AjaxDatatablesRails::Base
                             'Becket *' => /Becket/i,
                             'Becket cw' => /Becket(?!.*ccw).*$/i,
                             'Becket ccw' => /Becket ccw/i,
-                            'proper' => /^proper/i};
+                            'proper' => /^proper/i}
 
-  def self.param_passes_filter?(formal_param, dance_param, param_filter)
-    if JSLibFigure.parameter_uses_chooser(formal_param, 'chooser_text')
-      # substring search
-      keywords = param_filter.split(' ')
-      keywords.any? {|keyword| dance_param.include?(keyword)}
-    elsif JSLibFigure.parameter_uses_chooser(formal_param, 'chooser_half_or_full')
-      param_filter === '*' || param_filter.to_f === dance_param.to_f
-    elsif JSLibFigure.formal_param_is_dancers(formal_param)
-      param_filter === '*' || JSLibFigure.dancers_category(dance_param) === param_filter
-    else
-      # asterisk always matches, or exact match
-      param_filter === '*' || param_filter.to_s === dance_param.to_s
-    end
+  def self.matching_figures_for_progression(filter, dance)
+    nfigures = dance.figures.length
+    s = Set[]
+    dance.figures.each_with_index {|f,i| s << SearchMatch.new(i, nfigures) if JSLibFigure.progression(f)}
+    s.present? ? s : nil
   end
 
   def self.matching_figures_for_no(filter, dance)
@@ -193,8 +206,13 @@ class DanceDatatable < AjaxDatatablesRails::Base
     end
   end
 
-  # anything but is mainly useful when paired with then
-  def self.matching_figures_for_anything_but(filter, dance)
+  def self.matching_figures_for_figurewise_and(filter, dance)
+    a = matching_figures_for_and(filter, dance)
+    a.present? ? a : nil
+  end
+
+  # figurewise_not
+  def self.matching_figures_for_not(filter, dance)
     subfilter = filter[1]
     matches = all_figures_match(dance.figures.length) - dice_search_matches(matching_figures(subfilter, dance) || Set[])
     matches.present? ? matches : nil

@@ -167,6 +167,11 @@ RSpec.describe JSLibFigure do
     it 'parameter_values' do
       expect(JSLibFigure.parameter_values({'parameter_values' => []})).to eq([])
     end
+
+    it 'progression' do
+      expect(JSLibFigure.progression({'progression' => 1})).to eq(1)
+      expect(JSLibFigure.progression({})).to eq(nil)
+    end
   end
 
   describe 'angles_for_move' do

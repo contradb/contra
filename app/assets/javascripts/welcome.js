@@ -27,14 +27,16 @@ $(document).ready(function() {
   var filterHtml = "\
     <div class='figure-filter' data-op=and>\
       <select class='figure-filter-op form-control'>\
-        <option value='figure' selected>figure</option>\
-        <option value='formation'>formation</option>\
-        <option value='and'>and</option> \
-        <option value='or'>or</option>\
-        <option value='then'>then</option>\
-        <option value='no'>no</option>\
-        <option value='all'>all</option>\
-        <option value='anything but'>anything but</option>\
+        <option selected>figure</option>\
+        <option>formation</option>\
+        <option>progression</option>\
+        <option>or</option>\
+        <option>and</option> \
+        <option>&</option> \
+        <option>then</option>\
+        <option>no</option>\
+        <option>not</option>\
+        <option>all</option>\
       </select>\
       <span class='figure-filter-end-of-subfigures'></span>\
     </div>";
@@ -45,10 +47,11 @@ $(document).ready(function() {
     switch(op) {
     case 'figure':
     case 'formation':
+    case 'progression':
       return 0;
-    case 'all':
     case 'no':
-    case 'anything but':
+    case 'not':
+    case 'all':
       return 1;
     case undefined:
       throw 'missing argument to maxSubfilterCount';
@@ -60,8 +63,8 @@ $(document).ready(function() {
   function minSubfilterCount(op) {
     switch(op) {
     case 'no':
+    case 'not':
     case 'all':
-    case 'anything but':
       return 1;
     case undefined:
       throw 'missing argument to minSubfilterCount';
@@ -73,6 +76,7 @@ $(document).ready(function() {
   function minUsefulSubfilterCount(op) {
     switch(op) {
     case 'and':
+    case '&':
     case 'or':
     case 'then':
       return 2;

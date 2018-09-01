@@ -6,7 +6,7 @@ describe 'Welcome page', js: true do
   let (:dances) {[:dance, :box_the_gnat_contra, :call_me].map {|d| FactoryGirl.create(d)}}
   it 'has a link to help on filters' do
     visit '/'
-    expect(page).to have_link('', href: "https://github.com/contradb/contra/wiki/Dance-Figure-Filters")
+    expect(page).to have_link('', href: "https://github.com/contradb/contra/blob/master/doc/search.md#advanced-search-on-contradb")
   end
 
   context 'datatable' do
@@ -71,17 +71,31 @@ describe 'Welcome page', js: true do
       expect(rory.title).to eq("Just Rory")
     end
 
-    it "'anything but' works" do
+    it "'not' works" do
       dance
       only_a_swing = FactoryGirl.create(:dance_with_a_swing)
       with_retries do
         visit '/'
         expect(page).to have_text(only_a_swing.title)
         expect(page).to have_text(dance.title)
-        select('anything but')
+        select('not')
         select('swing', match: :first)
         expect(page).to_not have_text(only_a_swing.title)
         expect(page).to have_text(dance.title) # because it has a figure that's not a swing
+      end
+    end
+
+    it "'&' and 'progression' work" do
+      dances
+      with_retries do
+        visit '/'
+        select('&')
+        select('slide along set', match: :first)
+        all('.figure-filter-op').last.select('progression')
+        expect(page).to have_text('The Rendevouz')
+        expect(page).to_not have_text('Box the Gnat Contra')
+        expect(page).to_not have_text('Call Me')
+        expect(page).to have_text('The Rendevouz')
       end
     end
 

@@ -16,7 +16,9 @@ var figureSentenceDispatchTable = {
   then: sentenceForBinOp,
   no: sentenceForNo,
   all: sentenceForAll,
-  'anything but': sentenceForAnythingBut
+  not: sentenceForNot,
+  '&': sentenceForBinOp,
+  'progression': sentenceForProgression
 };
 
 function destringifyFigureFilterParam(param) {
@@ -75,10 +77,17 @@ function sentenceForBinOp(query, article, dialect) {
   return query.slice(1).map(function(query) { return sentenceForMaybeComplex(query, article, dialect); }).join(' '+op+' ');
 }
 
-// returns true if sentenceForMaybeComplex uses parens
+
+var verySimpleFilterOps = ['figure', 'formation', 'progression'];
+var somewhatSimpleFilterOps = ['not', 'no'];
+
+// returns true if sentenceForMaybeComplex uses parens.
+// Modify sentenceForMaybeComplex if you change this function.
 function isComplex(query, article) {
   var op = query[0];
-  return !(op === 'figure' || op === 'formation' || ('a' === article && (op === 'anything but' || op === 'no')));
+  var not_complex = verySimpleFilterOps.indexOf(op) >= 0 ||
+        ('a' === article && somewhatSimpleFilterOps.indexOf(op) >= 0);
+  return !not_complex;
 }
 
 function sentenceForMaybeComplex(query, article, dialect) {
@@ -86,11 +95,9 @@ function sentenceForMaybeComplex(query, article, dialect) {
   // Modify isComplex() if you change this function.
   var op = query[0];
   var boringArticle = 'a' === article || '' === article;
-  if (op==='figure') {
-    return sentenceForFigure(query, article, dialect);
-  } else if (op==='formation') {
-    return sentenceForFormation(query, article, dialect);
-  } else if (boringArticle && (op === 'anything but' || op === 'no')) {
+  if (verySimpleFilterOps.indexOf(op) >= 0) {
+    return buildFigureSentenceHelper(query, article, dialect);
+  } else if (boringArticle && somewhatSimpleFilterOps.indexOf(op) >= 0) {
     return buildFigureSentenceHelper(query, article, dialect);
   } else if (boringArticle) {
     return '(' + buildFigureSentenceHelper(query, 'a', dialect) + ')';
@@ -115,14 +122,18 @@ function sentenceForNo(query, article, dialect) {
 }
 
 function sentenceForAll(query, article, dialect) {
-  // could aggressively reduce 'all anything but' to 'no', but that's too nice
+  // could aggressively reduce 'all not' to 'no', but that's too nice
   return 'all (' + buildFigureSentenceHelper(query[1], article, dialect) + ')';
 }
 
-function sentenceForAnythingBut(query, article, dialect) {
+function sentenceForNot(query, article, dialect) {
   if (isComplex(query[1], article)) {
-    return 'anything but '+ sentenceForMaybeComplex(query[1], 'a', dialect);
+    return 'not '+ sentenceForMaybeComplex(query[1], 'a', dialect);
   } else {
     return article + ' non ' + sentenceForMaybeComplex(query[1], '', dialect);
   }
+}
+
+function sentenceForProgression(query, article, dialect) {
+  return article + ' progression';
 }
