@@ -1,6 +1,6 @@
 # Advanced Search on ContraDB
 ## Introduction
-You can search dances for patterns of figures. [This video](https://www.youtube.com/watch?v=pAEUoKCn63o) walks you through it. 
+You can search dances for patterns of figures. [This somewhat dated video](https://www.youtube.com/watch?v=pAEUoKCn63o) walks you through it. 
 
 ## Filter Operator Reference
 

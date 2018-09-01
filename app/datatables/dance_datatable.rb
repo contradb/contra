@@ -157,12 +157,12 @@ class DanceDatatable < AjaxDatatablesRails::Base
                             'Becket *' => /Becket/i,
                             'Becket cw' => /Becket(?!.*ccw).*$/i,
                             'Becket ccw' => /Becket ccw/i,
-                            'proper' => /^proper/i};
+                            'proper' => /^proper/i}
 
   def self.matching_figures_for_progression(filter, dance)
     nfigures = dance.figures.length
     s = Set[]
-    dance.figures.each_with_index {|f,i| s << SearchMatch.new(i, nfigures) if f['progression']} # todo: make figure accessor in jslibfigure
+    dance.figures.each_with_index {|f,i| s << SearchMatch.new(i, nfigures) if JSLibFigure.progression(f)}
     s.present? ? s : nil
   end
 

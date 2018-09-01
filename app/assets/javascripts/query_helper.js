@@ -128,7 +128,7 @@ function sentenceForAll(query, article, dialect) {
 
 function sentenceForFigurewiseNot(query, article, dialect) {
   if (isComplex(query[1], article)) {
-    return '~ '+ sentenceForMaybeComplex(query[1], 'a', dialect);
+    return 'not '+ sentenceForMaybeComplex(query[1], 'a', dialect);
   } else {
     return article + ' non ' + sentenceForMaybeComplex(query[1], '', dialect);
   }

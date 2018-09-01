@@ -30,6 +30,10 @@ module JSLibFigure
     figure_ruby_hash['parameter_values']
   end
 
+  def self.progression(figure_ruby_hash)
+    figure_ruby_hash['progression']
+  end
+
   def self.note(figure_ruby_hash)
     figure_ruby_hash['note']
   end
