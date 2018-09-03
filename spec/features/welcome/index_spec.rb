@@ -22,6 +22,7 @@ describe 'Welcome page', js: true do
       expect(page).to have_text(dance.created_at.strftime('%Y-%m-%d'))
       expect(page).to_not have_text(dance.updated_at.strftime('%Y-%m-%d')) # column invisible by default, it's not hidden, it's simply not there
       expect(page).to_not have_css('td', text: 'Published') # column invisible by default, it's not hidden, it's simply not there
+      expect(page).to_not have_css('td', text: 'whole dance') # column invisible by default, it's not hidden, it's simply not there
     end
 
     it 'displays in descending created_at order by default' do
@@ -61,7 +62,7 @@ describe 'Welcome page', js: true do
       expect(page).to have_css('.figure-filter-move', count: 2)
     end
 
-    it "Rory O'More" do
+    it "searches for the problematicly named figure \"Rory O'More\" work" do
       rory = FactoryGirl.create(:dance_with_a_rory_o_more)
       box = FactoryGirl.create(:box_the_gnat_contra)
       visit '/'
@@ -71,7 +72,7 @@ describe 'Welcome page', js: true do
       expect(rory.title).to eq("Just Rory")
     end
 
-    it "'not' works" do
+    it "'not' filter works" do
       dance
       only_a_swing = FactoryGirl.create(:dance_with_a_swing)
       with_retries do
@@ -85,7 +86,7 @@ describe 'Welcome page', js: true do
       end
     end
 
-    it "'&' and 'progression' work" do
+    it "'&' and 'progression' filters work" do
       dances
       with_retries do
         visit '/'
@@ -99,7 +100,7 @@ describe 'Welcome page', js: true do
       end
     end
 
-    it 'formation' do
+    it "'formation' filters work" do
       becket = FactoryGirl.create(:call_me, start_type: 'Becket', title: 'Becket')
       square = FactoryGirl.create(:dance, start_type: 'square dance', title: 'square')
       dances2 = dances + [becket, square]
@@ -832,7 +833,7 @@ describe 'Welcome page', js: true do
           expect(page).to have_css('button.toggle-vis-active', text: col)
           expect(page).to_not have_css('button.toggle-vis-inactive', text: col)
         end
-        %w[Updated Published].each do |col|
+        %w[Updated Published Figures].each do |col|
           expect(page).to_not have_css('#dances-table th', text: col)
           expect(page).to_not have_css('button.toggle-vis-active', text: col)
           expect(page).to  have_css('button.toggle-vis-inactive', text: col)
@@ -845,6 +846,14 @@ describe 'Welcome page', js: true do
           expect(page).to have_css('button.toggle-vis-inactive', text: col)
           expect(page).to_not have_css('button.toggle-vis-active', text: col)
         end
+      end
+
+      it 'figures column' do
+        dances
+        visit '/'
+        expect(page).to_not have_content('whole dance', count: 3)
+        click_button 'Figures'
+        expect(page).to have_content('whole dance', count: 3)
       end
     end
   end

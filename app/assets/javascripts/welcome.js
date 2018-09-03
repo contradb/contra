@@ -588,7 +588,8 @@ $(document).ready(function() {
             {"data": "user_name"},
             {"data": "created_at"},
             {"data": "updated_at"},
-            {"data": "published"}
+            {"data": "published"},
+            {"data": "figures"}
           ],
           "order": [[ 5, "desc" ]] // 5 should = index of 'created_at' in the array above
         });

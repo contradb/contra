@@ -16,11 +16,13 @@ class DanceDatatable < AjaxDatatablesRails::Base
       user_name: { source: "User.name" },
       created_at: { source: "Dance.created_at", searchable: false, orderable: true },
       updated_at: { source: "Dance.updated_at", searchable: false, orderable: true },
-      published: { source: "Dance.publish", searchable: false, orderable: true }
+      published: { source: "Dance.publish", searchable: false, orderable: true },
+      figures: { source: "Dance.squirreled_away_search_matches", searchable: false, orderable: true}
     }
   end
 
   def data
+    filter = DanceDatatable.hash_to_array(figure_query)
     records.map do |dance|
       {
         title: link_to(dance.title, dance_path(dance)),
@@ -30,7 +32,8 @@ class DanceDatatable < AjaxDatatablesRails::Base
         user_name: link_to(dance.user.name, user_path(dance.user)),
         created_at: dance.created_at.strftime('%Y-%m-%d'),
         updated_at: dance.updated_at.strftime('%Y-%m-%d'),
-        published: dance.publish ? 'Published' : nil
+        published: dance.publish ? 'Published' : nil,
+        figures: dance.squirreled_away_search_match_text
       }
     end
   end
@@ -74,12 +77,8 @@ class DanceDatatable < AjaxDatatablesRails::Base
   private
 
   def self.filter_dances(dances, filter)
-    raise "filter must be an array, but got #{filter.inspect} of class #{filter.class}" unless filter.is_a? Array
-    dances.select {|dance| matching_figures?(filter, dance)}
-  end
-
-  def self.matching_figures?(filter, dance)
-    matching_figures(filter, dance) != nil
+    filter.is_a?(Array) or raise "filter must be an array, but got #{filter.inspect} of class #{filter.class}"
+    dances.select {|dance| matching_figures(filter, dance) != nil}
   end
 
   # matching_figures and matching_figures_* functions return either nil (failure) or a set of SearchMatches
