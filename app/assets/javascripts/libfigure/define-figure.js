@@ -110,7 +110,7 @@ function parameter_strings_or_words(move, parameter_values, dialect, words_ok) {
     if ((pvi === undefined) || (pvi === null)) {
       term = '____';
     } else if (formal_parameters[i].words && words_ok) {
-      // caller wants special html-enabled return type, and we support it
+      // caller wants special html-enabled return type, and we support it, e.g. Custom
       term = formal_parameters[i].words(pvi, move, dialect);
     } else if (formal_parameters[i].string) {
       term = formal_parameters[i].string(pvi, move, dialect);
@@ -131,6 +131,25 @@ function parameterSubstitution(formal_parameter, actual_parameter, dialect) {
 // called when we do know the parameter is a dancer
 function dancerSubstitution(dancer_term, dialect) {
   return dialect.dancers[dancer_term] || dancer_term;
+}
+
+function heySubstitution(hey_arr, dialect) {
+  var hey0 = hey_arr[0];
+  if (hey0 === 'full' || hey0 === 'half') {
+    return hey0;
+  } else {
+    var nth_time = hey_arr[1] === 2 ? ' 2nd time' : '';
+    return dancerSubstitution(hey0, dialect) + ' meet' + nth_time;
+  }
+}
+
+function heyValue(hey_arr) {
+  var hey0 = hey_arr[0];
+  if (hey0 === 'full' || hey0 === 'half') {
+    return hey0;
+  } else {
+    return hey0 + '%%' + hey_arr[1];
+  }
 }
 
 var moveSubstitutionPercentSRegexp = / *%S */g;

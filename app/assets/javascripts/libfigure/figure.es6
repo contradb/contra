@@ -683,32 +683,38 @@ defineFigure("gyre",
 
 function heyChange(figure,index) {
   var pvs = figure.parameter_values;
-  var half_or_full_idx = 1;
-  var beats_idx = 3;
-  var half_or_full = pvs[half_or_full_idx];
-  var beats = pvs[beats_idx];
-  if (half_or_full_idx === index && (half_or_full * beats === 8)) {
-    pvs[beats_idx] = half_or_full * 16;
+  var hey_length_idx = 2;
+  var beats_idx = 4;
+  var hey_length = pvs[hey_length_idx];
+  if (hey_length_idx === index) {
+    pvs[beats_idx] = heyLengthMeetTimes(hey_length) * 8;
   }
 }
 
 function heyGoodBeats(figure) {
-  var [who, half, dir, beats] = figure.parameter_values;
-  return beats === half * 16;
+  var [who, shoulder, hey_length, dir, beats] = figure.parameter_values;
+  return beats === 8 * heyLengthMeetTimes(hey_length);
 }
 
 function heyWords(move, pvs, dialect) {
-  var [  who,   half,  dir,  beats] = pvs;
-  var [leader, shalf, sdir, sbeats] = parameter_strings(move, pvs, dialect);
+  var [  who,   shoulder,  hey_length,  dir,  beats] = pvs;
+  var [leader, sshoulder, shey_length, sdir, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
   var sdir2 = dir === 'across' ? '' : sdir;
-  var thalf = (1 === half) ? false : shalf;
-  return words(sdir2, thalf, smove, comma, leader, "lead");
+  var uses_until = hey_length !== 'full' && hey_length !== 'half';
+  var main_move_phrase = uses_until ? words(sdir2, smove) : words(sdir2, shey_length, smove);
+  var other_sshoulder = stringParamShoulders('*' === shoulder ? shoulder : !shoulder);
+  var who_is_pair = dancerMenuForChooser('chooser_pair').indexOf(who) >= 0; // pair not pairs
+  var first_shoulder_place = !who_is_pair ? 'on the ends' : 'in the middle';
+  var second_shoulder_place = who_is_pair ? 'on the ends' : 'in the middle';
+  // TODO: left shoulders in the middle => lefts in center
+  return words(leader, "start", indefiniteArticleFor(main_move_phrase), main_move_phrase, "-", sshoulder, first_shoulder_place, comma, other_sshoulder, second_shoulder_place, uses_until && '-', uses_until && shey_length);
 }
 
 defineFigure("hey",
-             [param_subject_pair_ladles,
-              param_half_or_full_half_chatty_half,
+             [param_subject_pairz_ladles,
+              param_right_shoulders_spin,
+              param_hey_length_full,
               param_set_direction_across,
               param_beats_8],
              {words: heyWords, change: heyChange, goodBeats: heyGoodBeats});

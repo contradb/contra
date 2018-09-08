@@ -103,6 +103,7 @@ var param_subject_pair_or_everyone   = {name: "who", value: "everyone",     ui: 
 var param_subject_pairc_or_everyone  = {name: "who", value: "everyone",     ui: chooser_pairc_or_everyone}; // has `centers`
 var param_subject_pairz              = {name: "who",                        ui: chooser_pairz}; // 1-2 pairs of dancers
 var param_subject_pairz_partners     = {name: "who", value: "partners",     ui: chooser_pairz};
+var param_subject_pairz_ladles       = {name: "who", value: "ladles",       ui: chooser_pairz};
 var param_subject_pairs              = {name: "who",                        ui: chooser_pairs}; // 2 pairs of dancers
 var param_sides_pairs_neighbors      = {name: "sides", value: "neighbors",  ui: chooser_pairs};
 var param_subject2_pairs             = {name: "who2",                       ui: chooser_pairs};
@@ -281,3 +282,36 @@ var param_half_or_full_half  = {name: "half", value: 0.5,  ui: chooser_half_or_f
 var param_half_or_full_half_chatty_half = {name: "half", value: 0.5,  ui: chooser_half_or_full, string: stringParamHalfOrFullNotN(1.0)}; // hey is chatty about its halfness, but mum about fullness
 var param_half_or_full_half_chatty_max  = {name: "half", value: 0.5,  ui: chooser_half_or_full, string: stringParamHalfOrFullNotN(-100)}; // poussette is chatty about both halfness and fullness
 var param_half_or_full_full  = {name: "half", value: 1.0,  ui: chooser_half_or_full, string: stringParamHalfOrFullNotN(1.0)};
+
+var param_hey_length_full = {name: "until", value: 'full', ui: chooser_hey_length, string: stringParamHeyLength};
+
+// TODO: refactor to heyLengthMeetTimes
+function stringParamHeyLength(value, move, dialect) {
+  if (value === 'full' || value === 'half' || value === '*') {
+    return value;
+  } else {
+    var match = /%%([12])$/.exec(value);
+    if (match) {
+      var dancer_end = match.index;
+      var dancer = value.slice(0,dancer_end);
+      var meeting =  match[1] === '2' ? ' meet the second time' : ' meet';
+      return 'until ' + dancerSubstitution(dancer, dialect) + meeting;
+    }
+    throw_up('unparseable hey length: '+value);
+  }
+}
+
+// TODO: move to a better file
+function heyLengthMeetTimes(hey_length) {
+  if (hey_length === 'full') {
+    return 2;
+  } else if (hey_length === 'half') {
+    return 1;
+  } else if (hey_length === '*') {
+    return hey_length;
+  } else {
+    var match = /%%([12])$/.exec(hey_length);
+    match || throw_up('unparseable hey length: '+hey_length);
+    return match[1] === '1' ? 1 : 2;
+  }
+}
