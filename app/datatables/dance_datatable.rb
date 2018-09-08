@@ -173,6 +173,16 @@ class DanceDatatable < AjaxDatatablesRails::Base
     end
   end
 
+  def self.matching_figures_for_repeat3(filter, dance)
+    subfilter = filter[1]
+    matches = matching_figures(subfilter, dance)
+    if matches && matches.length >= 3
+      matches
+    else
+      nil
+    end
+  end
+
   def self.matching_figures_for_all(filter, dance)
     subfilter = filter[1]
     matches = matching_figures(subfilter, dance)

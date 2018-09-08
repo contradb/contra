@@ -37,6 +37,7 @@ $(document).ready(function() {
         <option>no</option>\
         <option>not</option>\
         <option>all</option>\
+        <option>repeat3</option>\
       </select>\
       <span class='figure-filter-end-of-subfigures'></span>\
     </div>";
@@ -52,6 +53,7 @@ $(document).ready(function() {
     case 'no':
     case 'not':
     case 'all':
+    case 'repeat3':
       return 1;
     case undefined:
       throw 'missing argument to maxSubfilterCount';
@@ -65,6 +67,7 @@ $(document).ready(function() {
     case 'no':
     case 'not':
     case 'all':
+    case 'repeat3':
       return 1;
     case undefined:
       throw 'missing argument to minSubfilterCount';
