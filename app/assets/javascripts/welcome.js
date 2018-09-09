@@ -320,7 +320,9 @@ $(document).ready(function() {
   chooserSelect(chooser_hey_length,
                 ['*',
                  'full',
-                 'half']);
+                 'half',
+                 'less than half',
+                 'between half and full']);
 
   // additional choosers go here -dm 11-24-2017
   if ($(window).width() < 768) {

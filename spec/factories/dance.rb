@@ -132,12 +132,15 @@ FactoryGirl.define do
     figures_json {"[{'parameter_values':['#{march_facing}','#{down_the_hall_ender}',8],'move':'down the hall'}]".gsub("'", '"')}
   end
 
-  factory :dance_with_a_full_hey, class: Dance do
+  factory :dance_with_a_hey, class: Dance do
+    transient do
+      hey_length {'full'}
+    end
     sequence(:title) {|n| "HeyDance#{n}"}
     user { FactoryGirl.create(:user) }
     choreographer { FactoryGirl.create(:choreographer) }
     start_type 'improper'
-    figures_json {'[{"parameter_values":["gentlespoons",true,"full","across",8],"move":"hey"}]'}
+    figures_json {%([{"parameter_values":["gentlespoons",true,#{hey_length.to_json},"across",8],"move":"hey"}])}
   end
 
   factory :dance_with_a_full_poussette, class: Dance do

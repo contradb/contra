@@ -696,20 +696,29 @@ describe 'Welcome page', js: true do
         end
 
         it "hey_length filter works" do
-          full_hey = FactoryGirl.create(:dance_with_a_full_hey)
-          dances
+          hey_dances = %w(ladles%%1 half ladles%%2 full).map {|hey_length| FactoryGirl.create(:dance_with_a_hey, hey_length: hey_length)}
+          hey_lengths = ['less than half',
+                         'half',
+                         'between half and full',
+                         'full']
           with_retries(1) do
             visit '/'
 
             select('hey')
             click_button('...')
-            select('full')
+            hey_dances.each_with_index do |dance, i|
+              hey_length = hey_lengths[i]
+              select(hey_length)
 
-            dances.each do |dance|
-              expect(page).to_not have_content(dance.title)
+              hey_dances.each do |dance2|
+                if dance == dance2
+                  expect(page).to have_content(dance2.title)
+                else
+                  expect(page).to_not have_content(dance2.title)
+                end
+              end
+              # expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","hey","*","*","full","*","*"]')
             end
-            expect(page).to have_content(full_hey.title)
-            expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","hey","*","*","full","*","*"]')
           end
         end
 

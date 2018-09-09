@@ -134,9 +134,19 @@ class DanceDatatable < AjaxDatatablesRails::Base
       param_filter == '*' || param_filter.to_f === dance_param.to_f
     elsif JSLibFigure.formal_param_is_dancers(formal_param)
       param_filter == '*' || JSLibFigure.dancers_category(dance_param) === param_filter
+    elsif param_filter == '*' || param_filter.to_s === dance_param.to_s
+      # DEFUALT CASE: asterisk always matches, or exact match
+      true
+    elsif JSLibFigure.parameter_uses_chooser(formal_param, 'chooser_hey_length')
+      meet_times = JSLibFigure.hey_length_meet_times(dance_param)
+      if dance_param.in?(%w(half full))
+        false
+      else
+        param_filter === 'less than half' && meet_times <= 1 or
+          param_filter === 'between half and full' && meet_times == 2
+      end
     else
-      # asterisk always matches, or exact match
-      param_filter == '*' || param_filter.to_s === dance_param.to_s
+      false
     end
   end
 

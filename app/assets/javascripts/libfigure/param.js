@@ -289,6 +289,10 @@ var param_hey_length_full = {name: "until", value: 'full', ui: chooser_hey_lengt
 function stringParamHeyLength(value, move, dialect) {
   if (value === 'full' || value === 'half' || value === '*') {
     return value;
+  } else if (value === 'less than half') {
+    return 'todo fix me';
+  } else if (value === 'between half and full') {
+    return 'todo fix me';
   } else {
     var match = /%%([12])$/.exec(value);
     if (match) {
@@ -297,15 +301,15 @@ function stringParamHeyLength(value, move, dialect) {
       var meeting =  match[1] === '2' ? ' meet the second time' : ' meet';
       return 'until ' + dancerSubstitution(dancer, dialect) + meeting;
     }
-    throw_up('unparseable hey length: '+value);
+    throw_up('unparseable hey length - '+value);
   }
 }
 
 // TODO: move to a better file
 function heyLengthMeetTimes(hey_length) {
-  if (hey_length === 'full') {
+  if (hey_length === 'full' || hey_length === 'between half and full') {
     return 2;
-  } else if (hey_length === 'half') {
+  } else if (hey_length === 'half' || hey_length === 'less than half') {
     return 1;
   } else if (hey_length === '*') {
     return hey_length;
