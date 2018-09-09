@@ -703,7 +703,7 @@ function heyWords(move, pvs, dialect) {
   var sdir2 = dir === 'across' ? '' : sdir;
   var uses_until = hey_length !== 'full' && hey_length !== 'half';
   var main_move_phrase = uses_until ? words(sdir2, smove) : words(sdir2, shey_length, smove);
-  var other_sshoulder = stringParamShoulders('*' === shoulder ? shoulder : !shoulder);
+  var other_sshoulder = stringParamShoulders('*' === shoulder || null === shoulder ? shoulder : !shoulder);
   var who_is_pair = dancerMenuForChooser('chooser_pair').indexOf(who) >= 0; // pair not pairs
   var first_shoulder_place = !who_is_pair ? 'on the ends' : 'in the middle';
   var second_shoulder_place = who_is_pair ? 'on the ends' : 'in the middle';

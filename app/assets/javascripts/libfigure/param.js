@@ -49,11 +49,28 @@ var param_beats_8 = {name: "beats", value: 8, ui: chooser_beats, string: stringP
 var param_beats_12 = {name: "beats", value: 12, ui: chooser_beats, string: stringParamBeatsNotN(12)};
 var param_beats_16 = {name: "beats", value: 16, ui: chooser_beats, string: stringParamBeatsNotN(16)};
 
-function stringParamClock     (value) {return value ? ('*'===value ? '*' : "clockwise") : "counter-clockwise";}
-function stringParamLeftRight (value) {return value ? ('*'===value ? '*' : "left") : "right";}
-function stringParamShoulders  (value) {return value ? ('*'===value ? '* shoulders' : "right shoulders") : "left shoulders";}
-function stringParamHandStarHand  (value) {return value ? ('*'===value ? '* hand' : "right") : "left";}
-function stringParamHand          (value) {return value ? ('*'===value ? '*'      : "right") : "left";}
+function makeTurnStringParam(left, right, asterisk, null_) {
+  return function(value) {
+    if (value) {
+      if ('*'===value) {
+        return asterisk;
+      } else {
+        return left;
+      }
+    } else {
+      if (null===value) {
+        return null_;
+      } else {
+        return right;
+      }
+    }
+  };
+}
+var stringParamClock = makeTurnStringParam('clockwise', 'counter-clockwise', '*', '____');
+var stringParamLeftRight = makeTurnStringParam('left', 'right', '*', '____');
+var stringParamShoulders = makeTurnStringParam('right shoulders', 'left shoulders', '* shoulders', '____');
+var stringParamHandStarHand = makeTurnStringParam('right', 'left', '* hand', '____');
+var stringParamHand = makeTurnStringParam('right', 'left', '*', '____');
 
 // spin = clockwise | ccw | undefined
 var param_spin                   = {name: "turn",                   ui: chooser_spin, string: stringParamClock};

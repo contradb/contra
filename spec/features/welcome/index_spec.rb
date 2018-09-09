@@ -701,7 +701,7 @@ describe 'Welcome page', js: true do
                          'half',
                          'between half and full',
                          'full']
-          with_retries(1) do
+          with_retries do
             visit '/'
 
             select('hey')
