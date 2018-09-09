@@ -66,8 +66,6 @@ function figureFlatten(f, dialect, flatten_format) {
 
 // Called if they don't specify a Words function in the figure definition:
 function figureGenericWords(move, parameter_values, dialect) {
-  // todo: clean this up so it's not so obnoxiously ugly
-  // it's thouroughly tested, so it will be safe to remove the fishing expeditions for who, balance and beats.
   var ps = parameters(move);
   var pwords = parameter_words(move, parameter_values, dialect);
   var acc = [];

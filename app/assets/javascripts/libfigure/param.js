@@ -304,14 +304,15 @@ var param_half_or_full_full  = {name: "half", value: 1.0,  ui: chooser_half_or_f
 
 var param_hey_length_full = {name: "until", value: 'full', ui: chooser_hey_length, string: stringParamHeyLength};
 
-// TODO: refactor to heyLengthMeetTimes
 function stringParamHeyLength(value, move, dialect) {
   if (value === 'full' || value === 'half' || value === '*') {
     return value;
+  } else if (value === null) {
+    return '____';
   } else if (value === 'less than half') {
-    return 'todo fix me';
+    return 'until someone meets';
   } else if (value === 'between half and full') {
-    return 'todo fix me';
+    return 'until someone meets the second time';
   } else {
     var match = /%%([12])$/.exec(value);
     if (match) {
@@ -324,7 +325,7 @@ function stringParamHeyLength(value, move, dialect) {
   }
 }
 
-// TODO: move to a better file
+// Kept in this file because of it's great similarity to stringParamHeyLength
 function heyLengthMeetTimes(hey_length) {
   if (hey_length === 'full' || hey_length === 'between half and full') {
     return 2;
