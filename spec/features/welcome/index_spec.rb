@@ -678,20 +678,38 @@ describe 'Welcome page', js: true do
         end
 
         it "half_or_full filter works" do
-          hey = FactoryGirl.create(:dance_with_a_full_hey)
+          poussette = FactoryGirl.create(:dance_with_a_full_poussette)
           dances
           with_retries do
             visit '/'
 
-            select('hey',  match: :prefer_exact)
+            select('poussette')
             click_button('...')
             choose('full')
 
             dances.each do |dance|
               expect(page).to_not have_content(dance.title)
             end
-            expect(page).to have_content(hey.title)
-            expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","hey","*","1","*","*"]')
+            expect(page).to have_content(poussette.title)
+            expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","poussette","1","*","*","*","*"]')
+          end
+        end
+
+        it "hey_length filter works" do
+          full_hey = FactoryGirl.create(:dance_with_a_full_hey)
+          dances
+          with_retries(1) do
+            visit '/'
+
+            select('hey')
+            click_button('...')
+            select('full')
+
+            dances.each do |dance|
+              expect(page).to_not have_content(dance.title)
+            end
+            expect(page).to have_content(full_hey.title)
+            expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","hey","*","*","full","*","*"]')
           end
         end
 

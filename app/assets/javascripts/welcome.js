@@ -316,6 +316,12 @@ $(document).ready(function() {
   chooserRadioButtons(chooser_go_back, ['*', [true, 'forward &amp; back'], [false, 'forward']]);
   chooserRadioButtons(chooser_give, ['*', [true,'give &amp; take'], [false,'take']]);
   chooserRadioButtons(chooser_half_or_full, ['*', [0.5,'half'], [1.0,'full']]);
+
+  chooserSelect(chooser_hey_length,
+                ['*',
+                 'full',
+                 'half']);
+
   // additional choosers go here -dm 11-24-2017
   if ($(window).width() < 768) {
     chooserSelect(chooser_swing_prefix, ['*', 'none', 'balance', 'meltdown']);
