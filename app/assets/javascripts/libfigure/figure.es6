@@ -703,17 +703,16 @@ function heyWords(move, pvs, dialect) {
   var sdir2 = dir === 'across' ? '' : sdir;
   var uses_until = hey_length !== 'full' && hey_length !== 'half';
   var main_move_phrase = uses_until ? words(sdir2, smove) : words(sdir2, shey_length, smove);
-  var other_sshoulder = stringParamShoulders('*' === shoulder || null === shoulder ? shoulder : !shoulder);
+  var other_sshoulder = stringParamShouldersTerse('*' === shoulder || null === shoulder ? shoulder : !shoulder);
   var who_is_pair = dancerMenuForChooser('chooser_pair').indexOf(who) >= 0; // pair not pairs
-  var first_shoulder_place = !who_is_pair ? 'on the ends' : 'in the middle';
-  var second_shoulder_place = who_is_pair ? 'on the ends' : 'in the middle';
-  // TODO: left shoulders in the middle => lefts in center
+  var first_shoulder_place = !who_is_pair ? 'on ends' : 'in center';
+  var second_shoulder_place = who_is_pair ? 'on ends' : 'in center';
   return words(leader, "start", indefiniteArticleFor(main_move_phrase), main_move_phrase, "-", sshoulder, first_shoulder_place, comma, other_sshoulder, second_shoulder_place, uses_until && '-', uses_until && shey_length);
 }
 
 defineFigure("hey",
              [param_subject_pairz_ladles,
-              param_right_shoulders_spin,
+              param_rights_spin,
               param_hey_length_full,
               param_set_direction_across,
               param_beats_8],

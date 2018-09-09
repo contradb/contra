@@ -69,6 +69,7 @@ function makeTurnStringParam(left, right, asterisk, null_) {
 var stringParamClock = makeTurnStringParam('clockwise', 'counter-clockwise', '*', '____');
 var stringParamLeftRight = makeTurnStringParam('left', 'right', '*', '____');
 var stringParamShoulders = makeTurnStringParam('right shoulders', 'left shoulders', '* shoulders', '____');
+var stringParamShouldersTerse = makeTurnStringParam('rights', 'lefts', '* shoulders', '____');
 var stringParamHandStarHand = makeTurnStringParam('right', 'left', '* hand', '____');
 var stringParamHand = makeTurnStringParam('right', 'left', '*', '____');
 
@@ -83,6 +84,7 @@ var param_right_hand_spin        = {name: "hand", value: true,      ui: chooser_
 var param_left_hand_spin         = {name: "hand", value: false,     ui: chooser_right_left_hand, string: stringParamHandStarHand};
 var param_xshoulders_spin        = {name: "shoulder",               ui: chooser_right_left_shoulder, string: stringParamShoulders};
 var param_right_shoulders_spin   = {name: "shoulder", value: true,  ui: chooser_right_left_shoulder, string: stringParamShoulders};
+var param_rights_spin            = {name: "shoulder", value: true,  ui: chooser_right_left_shoulder, string: stringParamShouldersTerse}; // shoulder
 var param_left_shoulders_spin    = {name: "shoulder", value: false, ui: chooser_right_left_shoulder, string: stringParamShoulders};
 var param_by_xhand      = {name: "c.hand", ui: chooser_right_left_hand, string: stringParamHand};
 var param_by_right_hand = {name: "hand",   ui: chooser_right_left_hand, string: stringParamHand, value: true};
