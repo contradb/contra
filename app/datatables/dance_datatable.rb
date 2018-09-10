@@ -138,6 +138,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
       # DEFUALT CASE: asterisk always matches, or exact match
       true
     elsif JSLibFigure.parameter_uses_chooser(formal_param, 'chooser_hey_length')
+      # some easy hey length cases - half/full exact match - are already handled above.
       meet_times = JSLibFigure.hey_length_meet_times(dance_param)
       if dance_param.in?(%w(half full))
         false

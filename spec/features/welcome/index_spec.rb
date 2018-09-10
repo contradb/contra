@@ -717,7 +717,7 @@ describe 'Welcome page', js: true do
                   expect(page).to_not have_content(dance2.title)
                 end
               end
-              # expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","hey","*","*","full","*","*"]')
+              expect(find("#figure-query-buffer", visible: false).value).to eq(%{["figure","hey","*","*",#{hey_length.inspect},"*","*"]})
             end
           end
         end
