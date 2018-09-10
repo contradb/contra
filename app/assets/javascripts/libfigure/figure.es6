@@ -701,7 +701,7 @@ function heyWords(move, pvs, dialect) {
   var [leader, sshoulder, shey_length, sdir, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
   var sdir2 = dir === 'across' ? '' : sdir;
-  var uses_until = hey_length !== 'full' && hey_length !== 'half';
+  var uses_until = !(hey_length === 'full' || hey_length === 'half' || hey_length === null || hey_length == '*');
   var main_move_phrase = uses_until ? words(sdir2, smove) : words(sdir2, shey_length, smove);
   var other_sshoulder = stringParamShouldersTerse('*' === shoulder || null === shoulder ? shoulder : !shoulder);
   var who_is_pair = dancerMenuForChooser('chooser_pair').indexOf(who) >= 0; // pair not pairs
@@ -713,7 +713,7 @@ function heyWords(move, pvs, dialect) {
 defineFigure("hey",
              [param_subject_pairz_ladles,
               param_rights_spin,
-              param_hey_length_full,
+              param_hey_length_half,
               param_set_direction_across,
               param_beats_8],
              {words: heyWords, change: heyChange, goodBeats: heyGoodBeats});

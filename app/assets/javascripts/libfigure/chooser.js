@@ -169,8 +169,8 @@ var heyLengthMenu = (function () {
   var pairz = dancerMenuForChooser("chooser_pairz");
   var acc = ['full', 'half'];
   for (var i=0; i<pairz.length; i++) {
-    acc.push([pairz[i]+'%%1']);
-    acc.push([pairz[i]+'%%2']);
+    acc.push(pairz[i]+'%%1');
+    acc.push(pairz[i]+'%%2');
   }
   return acc;
 })();

@@ -166,8 +166,7 @@ function parseHeyLength(hey_length) {
   } else {
     var match = /%%([12])$/.exec(hey_length);
     if (match) {
-      var dancer_end = match.index;
-      var dancer = hey_length.slice(0,dancer_end);
+      var dancer = hey_length.slice(0, match.index);
       var meeting =  match[1] === '2' ? 2 : 1;
       return [dancer, meeting];
     }

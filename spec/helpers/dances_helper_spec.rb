@@ -64,7 +64,7 @@ RSpec.describe DancesHelper, type: :helper do
     ['neighbors start a full hey - lefts on ends, rights in center', true, 'hey', 'neighbors', false, 'full', 'across', 16],
     ['gentlespoons start a right diagonal full hey - lefts in center, rights on ends', true, 'hey', 'gentlespoons', false, 'full', 'right diagonal', 16],
     ['gentlespoons start a right diagonal hey - lefts in center, rights on ends - until gentlespoons meet the second time', false, 'hey', 'gentlespoons', false, 'gentlespoons%%2', 'right diagonal', 8],
-    ['* start a * hey - * shoulders on ends, * shoulders in center - *', nil, 'hey', '*', '*', '*', '*', '*'],
+    ['* start a * * hey - * shoulders on ends, * shoulders in center', nil, 'hey', '*', '*', '*', '*', '*'],
     ['long lines forward & back', true, 'long lines', true, 8],
     ['long lines forward', false, 'long lines', false, 3],
     ['long lines forward', true, 'long lines', false, 4],

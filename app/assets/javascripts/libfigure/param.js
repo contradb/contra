@@ -302,7 +302,7 @@ var param_half_or_full_half_chatty_half = {name: "half", value: 0.5,  ui: choose
 var param_half_or_full_half_chatty_max  = {name: "half", value: 0.5,  ui: chooser_half_or_full, string: stringParamHalfOrFullNotN(-100)}; // poussette is chatty about both halfness and fullness
 var param_half_or_full_full  = {name: "half", value: 1.0,  ui: chooser_half_or_full, string: stringParamHalfOrFullNotN(1.0)};
 
-var param_hey_length_full = {name: "until", value: 'full', ui: chooser_hey_length, string: stringParamHeyLength};
+var param_hey_length_half = {name: "until", value: 'half', ui: chooser_hey_length, string: stringParamHeyLength};
 
 function stringParamHeyLength(value, move, dialect) {
   if (value === 'full' || value === 'half' || value === '*') {

@@ -229,7 +229,7 @@ function menuMoveLabel(from,to) {
     $scope.dancerMenuForChooser = dancerMenuForChooser;
     $scope.dancerSubstitution = dancerSubstitution;
     $scope.heyLengthMenu = heyLengthMenu;
-    $scope.heySubstitution = heySubstitution;
+    $scope.heyLengthSubstitution = heyLengthSubstitution;
 
     // so not angular, but I'm trying anything at this point. 
     $('.update-dance').on('click', function(e) {
