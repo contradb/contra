@@ -254,7 +254,7 @@
                 <div ng-if="p.ui == chooser_hey_length">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="heyValue(hey_duration) as heySubstitution(hey_duration, dialectForFigures(dialect, figures.arr)) for hey_duration in heyLengthMenu"
+                          ng-options="hey_lengths as heySubstitution(hey_lengths, dialectForFigures(dialect, figures.arr)) for hey_lengths in heyLengthMenu"
                           class="form-control">
                   </select>
                 </div>

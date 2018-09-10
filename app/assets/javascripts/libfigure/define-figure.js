@@ -131,22 +131,14 @@ function dancerSubstitution(dancer_term, dialect) {
   return dialect.dancers[dancer_term] || dancer_term;
 }
 
-function heySubstitution(hey_arr, dialect) {
+function heySubstitution(hey_length, dialect) { // rename heySubstitution to heyLengthSubstitution
+  var hey_arr = parseHeyLength(hey_length);
   var hey0 = hey_arr[0];
   if (hey0 === 'full' || hey0 === 'half') {
     return hey0;
   } else {
-    var nth_time = hey_arr[1] === 2 ? ' 2nd time' : '';
+    var nth_time = hey_length[1] === 2 ? ' 2nd time' : '';
     return dancerSubstitution(hey0, dialect) + ' meet' + nth_time;
-  }
-}
-
-function heyValue(hey_arr) {
-  var hey0 = hey_arr[0];
-  if (hey0 === 'full' || hey0 === 'half') {
-    return hey0;
-  } else {
-    return hey0 + '%%' + hey_arr[1];
   }
 }
 
