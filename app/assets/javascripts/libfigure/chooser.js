@@ -165,14 +165,12 @@ function dancers() {
   return dancerMenuForChooser(chooser_dancers);
 }
 
-var heyMenu;
-
-{ // initialize heyMenu
+var heyLengthMenu = (function () {
   var pairz = dancerMenuForChooser("chooser_pairz");
-  var acc = [['full', 1], ['half', 1]];
+  var acc = ['full', 'half'];
   for (var i=0; i<pairz.length; i++) {
-    acc.push([pairz[i],1]);
-    acc.push([pairz[i],2]);
+    acc.push([pairz[i]+'%%1']);
+    acc.push([pairz[i]+'%%2']);
   }
-  heyMenu = acc;
-}
+  return acc;
+})();

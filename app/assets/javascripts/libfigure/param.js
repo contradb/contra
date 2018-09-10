@@ -314,28 +314,9 @@ function stringParamHeyLength(value, move, dialect) {
   } else if (value === 'between half and full') {
     return 'until someone meets the second time';
   } else {
-    var match = /%%([12])$/.exec(value);
-    if (match) {
-      var dancer_end = match.index;
-      var dancer = value.slice(0,dancer_end);
-      var meeting =  match[1] === '2' ? ' meet the second time' : ' meet';
-      return 'until ' + dancerSubstitution(dancer, dialect) + meeting;
-    }
-    throw_up('unparseable hey length - '+value);
-  }
-}
-
-// Kept in this file because of it's great similarity to stringParamHeyLength
-function heyLengthMeetTimes(hey_length) {
-  if (hey_length === 'full' || hey_length === 'between half and full') {
-    return 2;
-  } else if (hey_length === 'half' || hey_length === 'less than half') {
-    return 1;
-  } else if (hey_length === '*') {
-    return hey_length;
-  } else {
-    var match = /%%([12])$/.exec(hey_length);
-    match || throw_up('unparseable hey length: '+hey_length);
-    return match[1] === '1' ? 1 : 2;
+    var pair = parseHeyLength(value);
+    var dancer = pair[0];
+    var meeting =  pair[1] === 2 ? ' meet the second time' : ' meet';
+    return 'until ' + dancerSubstitution(dancer, dialect) + meeting;
   }
 }

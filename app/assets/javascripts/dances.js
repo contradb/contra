@@ -228,7 +228,7 @@ function menuMoveLabel(from,to) {
     $scope.defaultFigures = defaultFigures;
     $scope.dancerMenuForChooser = dancerMenuForChooser;
     $scope.dancerSubstitution = dancerSubstitution;
-    $scope.heyMenu = heyMenu;
+    $scope.heyLengthMenu = heyLengthMenu;
     $scope.heySubstitution = heySubstitution;
     $scope.heyValue = heyValue;
 
