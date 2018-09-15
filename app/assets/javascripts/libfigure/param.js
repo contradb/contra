@@ -36,6 +36,13 @@ var param_subject_walk_in_true = {name: "in", value: true, ui: chooser_boolean};
 var param_others_walk_out_false = {name: "out", value: false, ui: chooser_boolean};
 var param_pass_through_true = {name: "pass thru", value: true, ui: chooser_boolean};
 
+// angular is picky about duped addresses of params, so we give them unique addresses.
+// if we move to another framework, these can all be compressed
+var param_ricochet1_false = {name: "rico", value: false, ui: chooser_boolean};
+var param_ricochet2_false = {name: "rico", value: false, ui: chooser_boolean};
+var param_ricochet3_false = {name: "rico", value: false, ui: chooser_boolean};
+var param_ricochet4_false = {name: "rico", value: false, ui: chooser_boolean};
+
 function stringParamBeatsNotN (n) {
   return function (value) {return value.toString();};
 }
@@ -126,6 +133,7 @@ var param_subject_pairz_ladles       = {name: "who", value: "ladles",       ui: 
 var param_subject_pairs              = {name: "who",                        ui: chooser_pairs}; // 2 pairs of dancers
 var param_sides_pairs_neighbors      = {name: "sides", value: "neighbors",  ui: chooser_pairs};
 var param_subject2_pairs             = {name: "who2",                       ui: chooser_pairs};
+var param_subject2_pair_ladles       = {name: "who2", value: "ladles",      ui: chooser_pair};
 var param_subject_pairs_or_everyone  = {name: "who",                        ui: chooser_pairs_or_everyone};
 var param_subject_pairs_partners     = {name: "who", value: "partners",     ui: chooser_pairs};
 var param_subject_dancer             = {name: "who",                        ui: chooser_dancer};

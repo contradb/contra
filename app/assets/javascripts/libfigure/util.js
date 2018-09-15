@@ -178,6 +178,10 @@ function heyLengthMeetTimes(hey_length) {
   return parseHeyLength(hey_length)[1];
 }
 
+function dancerIsPair(dancer) {
+  return dancerMenuForChooser('chooser_pair').indexOf(dancer) >= 0;
+}
+
 // see also the similar ruby-side function slugify_move
 function slugifyTerm(term) {
   return term.toLowerCase().replace(/&/g, 'and').replace(/ /g, '-').replace(/[^a-z0-9-]/g, '');

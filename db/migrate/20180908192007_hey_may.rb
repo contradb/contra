@@ -20,7 +20,9 @@ class HeyMay < ActiveRecord::Migration[5.1]
                        else
                          raise "panic! #{pvs[1].inspect} #{pvs.inspect} #{dance.title.inspect} #{dance.id}"
                        end
+          new_pvs.insert(-2, false, false, false, false) # insert ricochets
           new_pvs.insert(1, nil) # insert shoulder
+          new_pvs.insert(0, pvs[0]) # insert who copy
           figure.merge('parameter_values' => new_pvs)
         else
           figure
