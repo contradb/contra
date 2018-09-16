@@ -59,7 +59,7 @@ RSpec.describe DancesHelper, type: :helper do
     ['custom', nil, 'custom', ' ', '*'],
     ['put your right hand in', nil, 'custom', 'put your right hand in', '*'],
     ['ladles start a half hey - rights in center, lefts on ends', true, 'hey', 'ladles', 'ladles', true, 'half', 'across', false, false, false, false, 8],
-    ['ladles start a half hey - ____ in center, ____ on ends', true, 'hey', 'ladles', 'ladles', nil, 'half', 'across', false, false, false, false, 8],
+    ['ladles start a half hey - ____ in center, ____ on ends - ladles ricochet, gentlespoons ricochet', true, 'hey', 'ladles', 'ladles', nil, 'half', 'across', true, true, false, false, 8],
     ['ladles start a hey - rights in center, lefts on ends - until ladles meet', false, 'hey', 'ladles', 'ladles', true, 'ladles%%1', 'across', false, false, false, false, 16],
     ['neighbors start a full hey - lefts on ends, rights in center - ladles ricochet first time, gentlespoons ricochet second time', true, 'hey', 'neighbors', 'ladles', false, 'full', 'across', true, false, false, true, 16],
     ['gentlespoons start a right diagonal full hey - lefts in center, rights on ends', true, 'hey', 'gentlespoons', 'gentlespoons', false, 'full', 'right diagonal', false, false, false, false, 16],

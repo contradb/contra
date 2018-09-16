@@ -724,7 +724,7 @@ function heyWords(move, pvs, dialect) {
     for (var i=0; i<ricos.length; i++) {
       if (ricos[i]) {
         var who = (i&1) && (center_pass != '*') ? invertPair(center_pass, dialect) : scenter_pass;
-        var time = (i&2) ? ' second time' : ' first time';
+        var time = hey_length === 'half' ? '' : ((i&2) ? ' second time' : ' first time');
         if (ricos[i] !== '*') {
           rico_strings.push(who + ' ricochet' + time);
         } else {
