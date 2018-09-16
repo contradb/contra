@@ -155,7 +155,34 @@ function figuresUseDancers(figures, dancers_term) {
   return false;
 }
 
-// see also the similar ruby-side function slugify_move 
+// unpacks a hey length into a pair
+function parseHeyLength(hey_length) {
+  if (hey_length === 'full' || hey_length === 'between half and full') {
+    return [hey_length, 2];
+  } else if (hey_length === 'half' || hey_length === 'less than half') {
+    return [hey_length, 1];
+  } else if (hey_length === '*' || hey_length === null) {
+    return [hey_length, hey_length]; // kinda nonsense, but whatever
+  } else {
+    var match = /%%([12])$/.exec(hey_length);
+    if (match) {
+      var dancer = hey_length.slice(0, match.index);
+      var meeting =  match[1] === '2' ? 2 : 1;
+      return [dancer, meeting];
+    }
+  }
+  throw_up('unparseable hey length - '+hey_length);
+}
+
+function heyLengthMeetTimes(hey_length) {
+  return parseHeyLength(hey_length)[1];
+}
+
+function dancerIsPair(dancer) {
+  return dancerMenuForChooser('chooser_pair').indexOf(dancer) >= 0;
+}
+
+// see also the similar ruby-side function slugify_move
 function slugifyTerm(term) {
   return term.toLowerCase().replace(/&/g, 'and').replace(/ /g, '-').replace(/[^a-z0-9-]/g, '');
 }

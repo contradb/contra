@@ -149,6 +149,21 @@ describe 'Editing dances', js: true do
     end
   end
 
+  it 'hey_length chooser works' do
+    with_login do |user|
+      dance = FactoryGirl.create(:dance_with_a_hey, user: user, hey_length: 'gentlespoons%%2')
+      visit edit_dance_path(dance)
+      click_link('until gentlespoons meet the second time', exact: false)
+      select('gentlespoons meet', exact: true)
+      select('ladles meet 2nd time');
+      expect(page).to have_text('until ladles meet the second time')
+      click_button 'Save Dance'
+      expect(page).to have_content('Dance was successfully updated.')
+      dance.reload
+      expect(JSLibFigure.parameter_values(dance.figures[0])).to include('ladles%%2')
+    end
+  end
+
   describe 'dynamic shadow/1st shadow and next neighbor/2nd neighbor behavior' do
     it 'rewrites figure texts' do
       with_login do |user|

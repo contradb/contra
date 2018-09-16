@@ -678,20 +678,47 @@ describe 'Welcome page', js: true do
         end
 
         it "half_or_full filter works" do
-          hey = FactoryGirl.create(:dance_with_a_full_hey)
+          poussette = FactoryGirl.create(:dance_with_a_full_poussette)
           dances
           with_retries do
             visit '/'
 
-            select('hey',  match: :prefer_exact)
+            select('poussette')
             click_button('...')
             choose('full')
 
             dances.each do |dance|
               expect(page).to_not have_content(dance.title)
             end
-            expect(page).to have_content(hey.title)
-            expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","hey","*","1","*","*"]')
+            expect(page).to have_content(poussette.title)
+            expect(find("#figure-query-buffer", visible: false).value).to eq('["figure","poussette","1","*","*","*","*"]')
+          end
+        end
+
+        it "hey_length filter works" do
+          hey_dances = %w(ladles%%1 half ladles%%2 full).map {|hey_length| FactoryGirl.create(:dance_with_a_hey, hey_length: hey_length)}
+          hey_lengths = ['less than half',
+                         'half',
+                         'between half and full',
+                         'full']
+          with_retries do
+            visit '/'
+
+            select('hey')
+            click_button('...')
+            hey_dances.each_with_index do |dance, i|
+              hey_length = hey_lengths[i]
+              select(hey_length)
+
+              hey_dances.each do |dance2|
+                if dance == dance2
+                  expect(page).to have_content(dance2.title)
+                else
+                  expect(page).to_not have_content(dance2.title)
+                end
+              end
+              expect(find("#figure-query-buffer", visible: false).value).to eq(%{["figure","hey","*","*","*",#{hey_length.inspect},"*","*","*","*","*","*"]})
+            end
           end
         end
 
