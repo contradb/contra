@@ -55,7 +55,7 @@ defineChooser("chooser_go_back");
 defineChooser("chooser_give");
 defineChooser("chooser_half_or_full");
 defineChooser("chooser_swing_prefix");
-
+defineChooser("chooser_hey_length");
 
 var _dancerMenuForChooser = {};
 
@@ -164,3 +164,13 @@ function dancersCategory(chooser) {
 function dancers() {
   return dancerMenuForChooser(chooser_dancers);
 }
+
+var heyLengthMenu = (function () {
+  var pairz = dancerMenuForChooser("chooser_pairz");
+  var acc = ['full', 'half'];
+  for (var i=0; i<pairz.length; i++) {
+    acc.push(pairz[i]+'%%1');
+    acc.push(pairz[i]+'%%2');
+  }
+  return acc;
+})();

@@ -683,35 +683,72 @@ defineFigure("gyre",
 
 function heyChange(figure,index) {
   var pvs = figure.parameter_values;
-  var half_or_full_idx = 1;
-  var beats_idx = 3;
-  var half_or_full = pvs[half_or_full_idx];
-  var beats = pvs[beats_idx];
-  if (half_or_full_idx === index && (half_or_full * beats === 8)) {
-    pvs[beats_idx] = half_or_full * 16;
+  var first_pass_idx = 0;
+  var center_pass_idx = 1;
+  var hey_length_idx = 3;
+  var beats_idx = 9;
+  var hey_length = pvs[hey_length_idx];
+  if (hey_length_idx === index) {
+    pvs[beats_idx] = heyLengthMeetTimes(hey_length) * 8;
+  }
+
+  if (dancerIsPair(pvs[first_pass_idx])) {
+    if (first_pass_idx === index) {
+      pvs[center_pass_idx] = pvs[first_pass_idx];
+    } else if (center_pass_idx === index) {
+      pvs[first_pass_idx] = pvs[center_pass_idx];
+    }
   }
 }
 
 function heyGoodBeats(figure) {
-  var [who, half, dir, beats] = figure.parameter_values;
-  return beats === half * 16;
+  var [who, who2, shoulder, hey_length, dir, rico1, rico2, rico3, rico4, beats] = figure.parameter_values;
+  return beats === 8 * heyLengthMeetTimes(hey_length);
 }
 
 function heyWords(move, pvs, dialect) {
-  var [  who,   half,  dir,  beats] = pvs;
-  var [leader, shalf, sdir, sbeats] = parameter_strings(move, pvs, dialect);
+  var [ first_pass,  center_pass,  shoulder,  hey_length,  dir,  rico1,  rico2,  rico3,  rico4, beats] = pvs;
+  var [sfirst_pass, scenter_pass, sshoulder, shey_length, sdir, srico1, srico2, srico3, srico4, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
   var sdir2 = dir === 'across' ? '' : sdir;
-  var thalf = (1 === half) ? false : shalf;
-  return words(sdir2, thalf, smove, comma, leader, "lead");
+  var uses_until = !(hey_length === 'full' || hey_length === 'half' || hey_length === null || hey_length == '*');
+  var main_move_phrase = uses_until ? words(sdir2, smove) : words(sdir2, shey_length, smove);
+  var other_sshoulder = stringParamShouldersTerse('*' === shoulder || null === shoulder ? shoulder : !shoulder);
+  var first_pass_is_pair = dancerIsPair(first_pass);
+  var first_shoulder_place = !first_pass_is_pair ? 'on ends' : 'in center';
+  var second_shoulder_place = first_pass_is_pair ? 'on ends' : 'in center';
+  var rico_string = '';
+  if (rico1||rico2||rico3||rico4) {
+    var ricos = [rico1, rico2, rico3, rico4];
+    var rico_strings = [];
+    for (var i=0; i<ricos.length; i++) {
+      if (ricos[i]) {
+        var who = (i&1) && (center_pass != '*') ? invertPair(center_pass, dialect) : scenter_pass;
+        var time = hey_length === 'half' ? '' : ((i&2) ? ' second time' : ' first time');
+        if (ricos[i] !== '*') {
+          rico_strings.push(who + ' ricochet' + time);
+        } else {
+          rico_strings.push(who + ' maybe ricochet' + time);
+        }
+      }
+    }
+    rico_string = ' - ' + rico_strings.join(', ');
+  }
+  return words(sfirst_pass, "start", indefiniteArticleFor(main_move_phrase), main_move_phrase, "-", sshoulder, first_shoulder_place, comma, other_sshoulder, second_shoulder_place, uses_until && '-', uses_until && shey_length, rico_string);
 }
 
 defineFigure("hey",
-             [param_subject_pair_ladles,
-              param_half_or_full_half_chatty_half,
+             [param_subject_pairz_ladles,
+              param_subject2_pair_ladles,
+              param_rights_spin,
+              param_hey_length_half,
               param_set_direction_across,
+              param_ricochet1_false,
+              param_ricochet2_false,
+              param_ricochet3_false,
+              param_ricochet4_false,
               param_beats_8],
-             {words: heyWords, change: heyChange, goodBeats: heyGoodBeats});
+             {words: heyWords, change: heyChange, goodBeats: heyGoodBeats, labels: ['pass1','c.pass1',,,,'rico1','rico2','rico3','rico4']});
 
 ////////////////////////////////////////////////
 // LONG LINES                                 //

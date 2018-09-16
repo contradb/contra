@@ -141,6 +141,16 @@ RSpec.describe JSLibFigure do
     end
   end
 
+  it 'hey_length_meet_times' do
+    expect(JSLibFigure.hey_length_meet_times('full')).to eq(2)
+    expect(JSLibFigure.hey_length_meet_times('half')).to eq(1)
+    expect(JSLibFigure.hey_length_meet_times('neighbors%%1')).to eq(1)
+    expect(JSLibFigure.hey_length_meet_times('gentlespoons%%2')).to eq(2)
+    expect(JSLibFigure.hey_length_meet_times('*')).to eq('*')
+    expect{JSLibFigure.hey_length_meet_times('gentlespoons%%3')}.to raise_error(MiniRacer::RuntimeError)
+    expect{JSLibFigure.hey_length_meet_times('gentlespoons%%0')}.to raise_error(MiniRacer::RuntimeError)
+  end
+
   it 'formal_parameters works' do
     params = JSLibFigure.formal_parameters('balance the ring')
     expect(params.length).to eq 1
