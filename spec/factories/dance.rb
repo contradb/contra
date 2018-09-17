@@ -7,7 +7,6 @@ FactoryGirl.define do
     hook 'pioneered slide progression'
     preamble 'a preamble appears here'
     figures_json '[{"parameter_values":["neighbors","balance",16],"move":"swing"},{"parameter_values":[true, 8],"move":"long lines"},{"parameter_values":["ladles",true,540,8],"move":"do si do"},{"parameter_values":["partners","balance",16],"move":"swing"},{"parameter_values":[true,360,8],"move":"circle"},{"parameter_values":[true,2],"move":"slide along set", "progression": 1},{"parameter_values":[true,270,6],"move":"circle"}]'
-    # todo: put this progression on the right figure - the slide!
   end
 
   factory :box_the_gnat_contra, class: Dance do
@@ -26,7 +25,7 @@ FactoryGirl.define do
     user { FactoryGirl.create(:user) }
     choreographer { FactoryGirl.create(:choreographer) }
     start_type 'Becket ccw'
-    figures_json '[{"parameter_values":["across",8],"move":"right left through"},{"parameter_values":["ladles",true,"across",8],"move":"chain"},{"parameter_values":[false,360,"",8],"move":"star","note":"look for new neighbor"},{"parameter_values":["neighbors","none",8],"move":"swing"},{"parameter_values":[true,270,8],"move":"circle"},{"parameter_values":["ladles",0.5,"across",8],"move":"hey"},{"parameter_values":["partners","balance",16],"move":"swing", "progression": 1}]'
+    figures_json '[{"parameter_values":["across",8],"move":"right left through"},{"parameter_values":["ladles",true,"across",8],"move":"chain"},{"parameter_values":[false,360,"",8],"move":"star","note":"look for new neighbor"},{"parameter_values":["neighbors","none",8],"move":"swing"},{"parameter_values":[true,270,8],"move":"circle"},{"parameter_values":["ladles","ladles",false,"half","across",false,false,false,false,8],"move":"hey"},{"parameter_values":["partners","balance",16],"move":"swing", "progression": 1}]'
   end
 
   factory :you_cant_get_there_from_here, class: Dance do
@@ -132,12 +131,23 @@ FactoryGirl.define do
     figures_json {"[{'parameter_values':['#{march_facing}','#{down_the_hall_ender}',8],'move':'down the hall'}]".gsub("'", '"')}
   end
 
-  factory :dance_with_a_full_hey, class: Dance do
+  factory :dance_with_a_hey, class: Dance do
+    transient do
+      hey_length {'full'}
+    end
     sequence(:title) {|n| "HeyDance#{n}"}
     user { FactoryGirl.create(:user) }
     choreographer { FactoryGirl.create(:choreographer) }
     start_type 'improper'
-    figures_json {'[{"parameter_values":["gentlespoons",1.0,"across",8],"move":"hey"}]'}
+    figures_json {%([{"parameter_values":["gentlespoons","gentlespoons",true,#{hey_length.to_json},"across",false,false,false,false,8],"move":"hey"}])}
+  end
+
+  factory :dance_with_a_full_poussette, class: Dance do
+    sequence(:title) {|n| "PoussetteDance#{n}"}
+    user { FactoryGirl.create(:user) }
+    choreographer { FactoryGirl.create(:choreographer) }
+    start_type 'improper'
+    figures_json {'[{"parameter_values":[1.0,"gentlespoons","neighbors",true,6],"move":"poussette"}]'}
   end
 
   factory :dance_with_a_see_saw, class: Dance do

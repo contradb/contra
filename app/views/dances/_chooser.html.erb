@@ -251,3 +251,10 @@
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'balance'" ng-change="userChangedParameter(figure,$index)"/> balance</label>
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'meltdown'" ng-change="userChangedParameter(figure,$index)"/> meltdown</label>
                 </div>
+                <div ng-if="p.ui == chooser_hey_length">
+                  <select ng-model="figure.parameter_values[$index]"
+                          ng-change="userChangedParameter(figure,$index)"
+                          ng-options="hey_lengths as heyLengthSubstitution(hey_lengths, dialectForFigures(dialect, figures.arr)) for hey_lengths in heyLengthMenu"
+                          class="form-control">
+                  </select>
+                </div>

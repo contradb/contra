@@ -26,7 +26,7 @@ class User < ApplicationRecord
   end
 
   def obfuscated_name
-    name.gsub(/[a-z]([a-z])[a-z]/, '*\1*')
+    name.gsub(/[a-z]([a-z])[a-z]/, '\1')
   end
 
   private

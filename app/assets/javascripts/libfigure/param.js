@@ -36,6 +36,13 @@ var param_subject_walk_in_true = {name: "in", value: true, ui: chooser_boolean};
 var param_others_walk_out_false = {name: "out", value: false, ui: chooser_boolean};
 var param_pass_through_true = {name: "pass thru", value: true, ui: chooser_boolean};
 
+// angular is picky about duped addresses of params, so we give them unique addresses.
+// if we move to another framework, these can all be compressed
+var param_ricochet1_false = {name: "rico", value: false, ui: chooser_boolean};
+var param_ricochet2_false = {name: "rico", value: false, ui: chooser_boolean};
+var param_ricochet3_false = {name: "rico", value: false, ui: chooser_boolean};
+var param_ricochet4_false = {name: "rico", value: false, ui: chooser_boolean};
+
 function stringParamBeatsNotN (n) {
   return function (value) {return value.toString();};
 }
@@ -49,11 +56,29 @@ var param_beats_8 = {name: "beats", value: 8, ui: chooser_beats, string: stringP
 var param_beats_12 = {name: "beats", value: 12, ui: chooser_beats, string: stringParamBeatsNotN(12)};
 var param_beats_16 = {name: "beats", value: 16, ui: chooser_beats, string: stringParamBeatsNotN(16)};
 
-function stringParamClock     (value) {return value ? ('*'===value ? '*' : "clockwise") : "counter-clockwise";}
-function stringParamLeftRight (value) {return value ? ('*'===value ? '*' : "left") : "right";}
-function stringParamShoulders  (value) {return value ? ('*'===value ? '* shoulders' : "right shoulders") : "left shoulders";}
-function stringParamHandStarHand  (value) {return value ? ('*'===value ? '* hand' : "right") : "left";}
-function stringParamHand          (value) {return value ? ('*'===value ? '*'      : "right") : "left";}
+function makeTurnStringParam(left, right, asterisk, null_) {
+  return function(value) {
+    if (value) {
+      if ('*'===value) {
+        return asterisk;
+      } else {
+        return left;
+      }
+    } else {
+      if (null===value) {
+        return null_;
+      } else {
+        return right;
+      }
+    }
+  };
+}
+var stringParamClock = makeTurnStringParam('clockwise', 'counter-clockwise', '*', '____');
+var stringParamLeftRight = makeTurnStringParam('left', 'right', '*', '____');
+var stringParamShoulders = makeTurnStringParam('right shoulders', 'left shoulders', '* shoulders', '____');
+var stringParamShouldersTerse = makeTurnStringParam('rights', 'lefts', '* shoulders', '____');
+var stringParamHandStarHand = makeTurnStringParam('right', 'left', '* hand', '____');
+var stringParamHand = makeTurnStringParam('right', 'left', '*', '____');
 
 // spin = clockwise | ccw | undefined
 var param_spin                   = {name: "turn",                   ui: chooser_spin, string: stringParamClock};
@@ -66,6 +91,7 @@ var param_right_hand_spin        = {name: "hand", value: true,      ui: chooser_
 var param_left_hand_spin         = {name: "hand", value: false,     ui: chooser_right_left_hand, string: stringParamHandStarHand};
 var param_xshoulders_spin        = {name: "shoulder",               ui: chooser_right_left_shoulder, string: stringParamShoulders};
 var param_right_shoulders_spin   = {name: "shoulder", value: true,  ui: chooser_right_left_shoulder, string: stringParamShoulders};
+var param_rights_spin            = {name: "shoulder", value: true,  ui: chooser_right_left_shoulder, string: stringParamShouldersTerse}; // shoulder
 var param_left_shoulders_spin    = {name: "shoulder", value: false, ui: chooser_right_left_shoulder, string: stringParamShoulders};
 var param_by_xhand      = {name: "c.hand", ui: chooser_right_left_hand, string: stringParamHand};
 var param_by_right_hand = {name: "hand",   ui: chooser_right_left_hand, string: stringParamHand, value: true};
@@ -103,9 +129,11 @@ var param_subject_pair_or_everyone   = {name: "who", value: "everyone",     ui: 
 var param_subject_pairc_or_everyone  = {name: "who", value: "everyone",     ui: chooser_pairc_or_everyone}; // has `centers`
 var param_subject_pairz              = {name: "who",                        ui: chooser_pairz}; // 1-2 pairs of dancers
 var param_subject_pairz_partners     = {name: "who", value: "partners",     ui: chooser_pairz};
+var param_subject_pairz_ladles       = {name: "who", value: "ladles",       ui: chooser_pairz};
 var param_subject_pairs              = {name: "who",                        ui: chooser_pairs}; // 2 pairs of dancers
 var param_sides_pairs_neighbors      = {name: "sides", value: "neighbors",  ui: chooser_pairs};
 var param_subject2_pairs             = {name: "who2",                       ui: chooser_pairs};
+var param_subject2_pair_ladles       = {name: "who2", value: "ladles",      ui: chooser_pair};
 var param_subject_pairs_or_everyone  = {name: "who",                        ui: chooser_pairs_or_everyone};
 var param_subject_pairs_partners     = {name: "who", value: "partners",     ui: chooser_pairs};
 var param_subject_dancer             = {name: "who",                        ui: chooser_dancer};
@@ -281,3 +309,22 @@ var param_half_or_full_half  = {name: "half", value: 0.5,  ui: chooser_half_or_f
 var param_half_or_full_half_chatty_half = {name: "half", value: 0.5,  ui: chooser_half_or_full, string: stringParamHalfOrFullNotN(1.0)}; // hey is chatty about its halfness, but mum about fullness
 var param_half_or_full_half_chatty_max  = {name: "half", value: 0.5,  ui: chooser_half_or_full, string: stringParamHalfOrFullNotN(-100)}; // poussette is chatty about both halfness and fullness
 var param_half_or_full_full  = {name: "half", value: 1.0,  ui: chooser_half_or_full, string: stringParamHalfOrFullNotN(1.0)};
+
+var param_hey_length_half = {name: "until", value: 'half', ui: chooser_hey_length, string: stringParamHeyLength};
+
+function stringParamHeyLength(value, move, dialect) {
+  if (value === 'full' || value === 'half' || value === '*') {
+    return value;
+  } else if (value === null) {
+    return '____';
+  } else if (value === 'less than half') {
+    return 'until someone meets';
+  } else if (value === 'between half and full') {
+    return 'until someone meets the second time';
+  } else {
+    var pair = parseHeyLength(value);
+    var dancer = pair[0];
+    var meeting =  pair[1] === 2 ? ' meet the second time' : ' meet';
+    return 'until ' + dancerSubstitution(dancer, dialect) + meeting;
+  }
+}

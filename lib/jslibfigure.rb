@@ -176,6 +176,10 @@ module JSLibFigure
     self.eval("dancers()")
   end
 
+  def self.hey_length_meet_times(hey_length_string)
+    self.eval("heyLengthMeetTimes(#{hey_length_string.inspect})")
+  end
+
   def self.string_in_dialect(s, dialect)
     self.eval("stringInDialect(#{s.inspect},#{dialect.to_json})")
   end
