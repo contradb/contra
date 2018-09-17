@@ -17,7 +17,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
       created_at: { source: "Dance.created_at", searchable: false, orderable: true },
       updated_at: { source: "Dance.updated_at", searchable: false, orderable: true },
       published: { source: "Dance.publish", searchable: false, orderable: true },
-      figures: { source: "Dance.squirreled_away_search_matches", searchable: false, orderable: true}
+      figures: { source: "Dance.figures_json", searchable: false, orderable: true}
     }
   end
 
@@ -33,7 +33,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
         created_at: dance.created_at.strftime('%Y-%m-%d'),
         updated_at: dance.updated_at.strftime('%Y-%m-%d'),
         published: dance.publish ? 'Published' : nil,
-        figures: dance.squirreled_away_search_match_text
+        figures: figures_html(filter, dance)
       }
     end
   end
@@ -73,8 +73,14 @@ class DanceDatatable < AjaxDatatablesRails::Base
 
   # ==== Insert 'presenter'-like methods below if necessary
 
-
-  private
+  def figures_html(filter, dance)
+    matching_indicies = SearchMatch.to_index_array(self.class.matching_figures(filter, dance))
+    if matching_indicies.length === dance.figures.length
+      'whole dance'
+    else
+      matching_indicies.map {|i| JSLibFigure.figure_to_html(dance.figures[i], dialect)}.join('<br>').html_safe
+    end
+  end
 
   def self.filter_dances(dances, filter)
     filter.is_a?(Array) or raise "filter must be an array, but got #{filter.inspect} of class #{filter.class}"

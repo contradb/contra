@@ -97,7 +97,7 @@ Tag.prototype.flatten = function (format) {
   if (format === FLATTEN_FORMAT_UNSAFE_TEXT || format === FLATTEN_FORMAT_SAFE_TEXT) {
     return flattenWordNode(this.body, format);
   } else if (format === FLATTEN_FORMAT_MARKDOWN || format === FLATTEN_FORMAT_HTML) {
-    // TODO: simply sanitize and print attrs
+    Object.keys(this.attrs).length === 0 || throw_up('attrs not yet implemented, but used');
     return '<' + this.tag + '>' + flattenWordNode(this.body, format) + '</' + this.tag + '>';
   } else {
     throw_up('unexpected word flatten format :'+format.toString());

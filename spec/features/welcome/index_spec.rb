@@ -854,6 +854,9 @@ describe 'Welcome page', js: true do
         expect(page).to_not have_content('whole dance', count: 3)
         click_button 'Figures'
         expect(page).to have_content('whole dance', count: 3)
+        select('circle')
+        expect(page).to have_css('tr', text: /The Rendevouz.*circle left 4 places\ncircle left 3 places/)
+        expect(page).to have_css('tr', text: /Call Me.*circle left 3 places/)
       end
     end
   end
