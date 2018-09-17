@@ -74,7 +74,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
   # ==== Insert 'presenter'-like methods below if necessary
 
   def figures_html(filter, dance)
-    matching_indicies = SearchMatch.to_index_array(self.class.matching_figures(filter, dance))
+    matching_indicies = SearchMatch.flatten_set_to_index_a(self.class.matching_figures(filter, dance))
     if matching_indicies.length === dance.figures.length
       'whole dance'
     else

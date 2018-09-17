@@ -71,7 +71,7 @@ class SearchMatch
     end
   end
 
-  def self.to_index_array(search_matches_or_nil)
+  def self.flatten_set_to_index_a(search_matches_or_nil)
     return [] if search_matches_or_nil.nil?
     indexes = Set[]
     search_matches_or_nil.each do |search_match|

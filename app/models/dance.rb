@@ -103,18 +103,4 @@ class Dance < ApplicationRecord
   # def fsnapshot(dir, tag)
   #   File.open("#{dir}/#{id}-#{tag}.txt", 'w') {|f| f.write(to_s_dump)}
   # end
-
-  attr_accessor :squirrelled_away_search_matches
-
-  def squirreled_away_search_match_text
-    indexes = SearchMatch.to_index_array(squirrelled_away_search_matches)
-    case indexes.length
-    when 0
-      'nothing' + squirrelled_away_search_matches.inspect
-    when figures.length
-      'whole dance'
-    else
-      indexes.inspect
-    end
-  end
 end
