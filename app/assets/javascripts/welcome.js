@@ -176,7 +176,7 @@ $(document).ready(function() {
       var $move = $(this);
       var move = $move.val();
       var $accordion = $move.siblings('.figure-filter-accordion');
-      var defaultParameterValues = isAlias(move) ? aliasFilter(move) : null;
+      var defaultParameterValues = move != '*' && isAlias(move) ? aliasFilter(move) : null;
       populateAccordionForMove($accordion, move, defaultParameterValues);
       updateQuery();
     });
