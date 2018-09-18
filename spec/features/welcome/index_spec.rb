@@ -878,7 +878,7 @@ describe 'Welcome page', js: true do
       it 'figures column' do
         dances
         visit '/'
-        expect(page).to_not have_content('whole dance', count: 3)
+        expect(page).to_not have_content('whole dance')
         click_button 'Figures'
         expect(page).to have_content('whole dance', count: 3)
         select('circle')
