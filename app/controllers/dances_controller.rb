@@ -85,8 +85,14 @@ class DancesController < ApplicationController
 
     def authenticate_dance_readable!
       unless @dance.readable?(current_user)
-        flash[:notice] = "this dance has not been published"
-        redirect_back(fallback_location: '/dances')
+        if current_user
+          flash[:notice] = "that dance has not been published so you can't see it"
+          redirect_back(fallback_location: root_path)
+        else
+          flash[:notice] = "that dance has not been published - maybe it's yours and you could see it if you logged in?"
+          session[:after_login] = request.env['PATH_INFO']
+          redirect_to(new_user_session_path)
+        end
       end
     end
 
