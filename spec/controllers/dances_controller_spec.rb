@@ -27,29 +27,7 @@ RSpec.describe DancesController, type: :controller do
       get :show, params: {:id => dance.to_param}
       expect(assigns(:dance)).to eq(dance)
     end
-
-    describe "without login" do
-      it "refuses to show a private dance, instead redirecting to login" do
-        dance = FactoryGirl.create(:dance, publish: false)
-        @request.env['HTTP_REFERER'] = '/'
-        get :show, params: {:id => dance.to_param}
-        expect(response).to redirect_to(new_user_session_path)
-        expect(flash[:notice]).to eq("that dance has not been published - maybe it's yours and you could see it if you logged in?")
-      end
-    end
-
-    describe 'with logged in user' do
-      login_user
-      it "refuses to show someone else's private dance" do
-        dance = FactoryGirl.create(:dance, publish: false)
-        @request.env['HTTP_REFERER'] = '/'
-        get :show, params: {:id => dance.to_param}
-        expect(response).to redirect_to(root_path)
-        expect(flash[:notice]).to eq("that dance has not been published so you can't see it")
-      end
-    end
   end
-
 
   describe "GET #new" do
     login_user
