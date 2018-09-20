@@ -13,17 +13,18 @@ describe 'Editing choreographer' do
         expect(page).to have_current_path(root_path)
       end
     end
+
     it 'denies and prompts for login with no login' do
       visit(edit_choreographer_path(choreographer))
       expect(page).to have_content("Only an admin can do this")
       expect(page).to have_current_path(new_user_session_path)
     end
+
     it 'allows admin through' do
       with_login(admin: true) do
         visit(edit_choreographer_path(choreographer))
         expect(page).to have_css('h1', text: "Choreographer #{choreographer.name}")
         expect(page).to have_current_path(edit_choreographer_path(choreographer))
-
       end
     end
   end
