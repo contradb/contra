@@ -74,7 +74,7 @@ class DancesController < ApplicationController
     def set_dance
       @dance = Dance.find(params[:id])
     end
-    
+
     def set_dialect_json_for_editing
       @dialect_json = JSLibFigure.dialect_with_text_translated(dialect).to_json
     end
@@ -85,8 +85,7 @@ class DancesController < ApplicationController
 
     def authenticate_dance_readable!
       unless @dance.readable?(current_user)
-        flash[:notice] = "this dance has not been published"
-        redirect_back(fallback_location: '/dances')
+        deny_or_login!(deny_notice: "that dance has not been published so you can't see it", login_notice: "that dance has not been published - maybe it's yours and you could see it if you logged in?")
       end
     end
 

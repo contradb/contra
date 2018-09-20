@@ -11,7 +11,7 @@ describe 'Showing programs' do
   let (:dance_private) {FactoryGirl.create(:dance, publish: false, user: owner, title: "Hopscotch")}
   let (:dance) {FactoryGirl.create(:dance, title: "Awendigo")}
   let (:program) {FactoryGirl.create(:program, title: "New Years Eve 2015")}
-  
+
   it "renders stored values" do
     program.append_new_activity(dance: dance, text: 'dancy text')
     program.append_new_activity(text: 'hambo')

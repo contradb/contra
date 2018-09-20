@@ -27,16 +27,7 @@ RSpec.describe DancesController, type: :controller do
       get :show, params: {:id => dance.to_param}
       expect(assigns(:dance)).to eq(dance)
     end
-
-    it "refuses to show a private dance, instead redirecting back and giving a warning" do
-      dance = FactoryGirl.create(:dance, publish: false)
-      @request.env['HTTP_REFERER'] = '/'
-      get :show, params: {:id => dance.to_param}
-      expect(response).to redirect_to '/'
-      expect(flash[:notice]).to eq('this dance has not been published')
-    end
   end
-
 
   describe "GET #new" do
     login_user

@@ -124,4 +124,26 @@ describe 'Showing dances' do
     expect(page).to have_css('li', text: /\Asecond gentlespoon\z/)
     expect(page).to have_css('blockquote', text: /\Afour score and seven years\z/)
   end
+
+  it "gives helpful feedback to users seeking to access their private dance" do
+    user = FactoryGirl.create(:user, password: 'abc%123%ABC')
+    dance = FactoryGirl.create(:dance, publish: false, user: user)
+    visit dance_path(dance)
+    expect(page).to have_content("that dance has not been published - maybe it's yours and you could see it if you logged in?")
+    expect(page).to have_current_path(new_user_session_path)
+    fill_in('user_email', with: user.email)
+    fill_in('user_password', with: user.password)
+    click_on('Login')
+    expect(page).to have_css('h1', text: dance.title)
+    expect(page).to have_current_path(dance_path(dance))
+  end
+
+  it "gives helpful feedback to users seeking to access someone else's private dance" do
+    dance = FactoryGirl.create(:dance, publish: false)
+    with_login do |user|
+      visit dance_path(dance)
+      expect(page).to have_content("that dance has not been published so you can't see it")
+      expect(page).to have_current_path(root_path)
+    end
+  end
 end
