@@ -6,17 +6,12 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   def authenticate_ownership!(user_id)
-    unless signed_in? && (current_user.id == user_id)
-      flash[:notice] = "Please access one of your own pages"
-      redirect_back(fallback_location: '/')
-    end
+    deny_or_login! unless signed_in? && (current_user.id == user_id)
   end
 
   def authenticate_administrator!
-    unless signed_in? && current_user.admin?
-      flash[:error] = "Only an admin can do this"
-      redirect_back(fallback_location: '/')
-    end
+    be_an_admin = "Only an admin can do this"
+    deny_or_login!(deny_notice: be_an_admin, login_notice: be_an_admin) unless signed_in? && current_user.admin?
   end
 
   def deny_or_login!(deny_notice: "You don't have access to that", login_notice: "You don't have access to that - maybe you would if you logged in?")

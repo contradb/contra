@@ -74,7 +74,7 @@ class DancesController < ApplicationController
     def set_dance
       @dance = Dance.find(params[:id])
     end
-    
+
     def set_dialect_json_for_editing
       @dialect_json = JSLibFigure.dialect_with_text_translated(dialect).to_json
     end
