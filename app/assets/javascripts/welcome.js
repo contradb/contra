@@ -37,6 +37,7 @@ $(document).ready(function() {
         <option>no</option>\
         <option>not</option>\
         <option>all</option>\
+        <option>count</option>\
       </select>\
       <span class='figure-filter-end-of-subfigures'></span>\
     </div>";
@@ -52,6 +53,7 @@ $(document).ready(function() {
     case 'no':
     case 'not':
     case 'all':
+    case 'count':
       return 1;
     case undefined:
       throw 'missing argument to maxSubfilterCount';
@@ -65,6 +67,7 @@ $(document).ready(function() {
     case 'no':
     case 'not':
     case 'all':
+    case 'count':
       return 1;
     case undefined:
       throw 'missing argument to minSubfilterCount';
@@ -114,6 +117,11 @@ $(document).ready(function() {
       addFormationFilterConstellation(filter);
     } else {
       removeFormationFilterConstellation(filter);
+    }
+    if (op === 'count') {
+      addCountFilterConstellation(filter);
+    } else {
+      removeCountFilterConstellation(filter);
     }
     var hasNoAddButton = filter.children('.figure-filter-add').length === 0;
     if (hasNoAddButton && actualSubfilterCount < maxSubfilterCount(op)) {
@@ -204,6 +212,19 @@ $(document).ready(function() {
   function makeFormationFilterSelect(filter) {
     return $(formationSelectHtml).change(updateQuery);
   }
+
+  function removeCountFilterConstellation(filter) {
+    filter.children('.figure-filter-count-comparison').remove();
+    filter.children('.figure-filter-count-number').remove();
+  }
+
+  function addCountFilterConstellation(filter) {
+    filter
+      .children('.figure-filter-op')
+      .after($('<select class="figure-filter-comparison form-control"><option>&gt;</option><option>&lt;</option><option>=</option><option>≠</option></select>'));
+  }
+
+  // ================================================================
 
 
   var chooserWidgetType = {};
