@@ -131,6 +131,16 @@ function dancerSubstitution(dancer_term, dialect) {
   return dialect.dancers[dancer_term] || dancer_term;
 }
 
+function dancerMenuLabel(dancer_term, dialect) {
+  if (dancer_term) {
+    return dancerSubstitution(dancer_term, dialect);
+  } else {
+    return 'unspecified';
+  }
+}
+
+
+
 function heyLengthSubstitution(hey_length, dialect) {
   var hey_arr = parseHeyLength(hey_length);
   var hey0 = hey_arr[0];

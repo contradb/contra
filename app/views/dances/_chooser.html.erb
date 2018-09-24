@@ -46,84 +46,84 @@
                 <div ng-if="p.ui == chooser_dancers">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerSubstitution(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_dancers')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_dancers')"
                           class='form-control'>
                   </select>
                 </div>
                 <div ng-if="p.ui == chooser_pair">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerSubstitution(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pair')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pair')"
                           class='form-control'>
                   </select>
                 </div>
                 <div ng-if="p.ui == chooser_pair_or_everyone">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerSubstitution(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pair_or_everyone')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pair_or_everyone')"
                           class='form-control'>
                   </select>
                 </div>
                 <div ng-if="p.ui == chooser_pairc_or_everyone">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerSubstitution(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pairc_or_everyone')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pairc_or_everyone')"
                           class='form-control'>
                   </select>
                 </div>
                 <div ng-if="p.ui == chooser_pairz">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerSubstitution(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pairz')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pairz')"
                           class="form-control">
                   </select>
                 </div>
                 <div ng-if="p.ui == chooser_pairz_or_unspecified">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerSubstitution(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pairz_or_unspecified')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pairz_or_unspecified')"
                           class="form-control">
                   </select>
                 </div>
                 <div ng-if="p.ui == chooser_pairs">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerSubstitution(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pairs')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pairs')"
                           class='form-control'>
                   </select>
                 </div>
                 <div ng-if="p.ui == chooser_pairs_or_ones_or_twos">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerSubstitution(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pairs_or_ones_or_twos')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pairs_or_ones_or_twos')"
                           class='form-control'>
                   </select>
                 </div>
                 <div ng-if="p.ui == chooser_pairs_or_everyone">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerSubstitution(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pairs_or_everyone')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pairs_or_everyone')"
                           class='form-control'>
                   </select>
                 </div>
                 <div ng-if="p.ui == chooser_dancer">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerSubstitution(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_dancer')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_dancer')"
                           class='form-control'>
                   </select>
                 </div>
                 <div ng-if="p.ui == chooser_role">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerSubstitution(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_role')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_role')"
                           class='form-control'>
                   </select>
                 </div>
                 <div ng-if="p.ui == chooser_hetero">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerSubstitution(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_hetero')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_hetero')"
                           class='form-control'>
                   </select>
                 </div>
