@@ -752,7 +752,7 @@ function heyWords(move, pvs, dialect) {
 
 defineFigure("hey",
              [param_subject_pairz_ladles,
-              param_subject2_pairz, // really want pairz_or_null, default to null, says cranhandler
+              param_subject2_pairz_or_unspecified,
               param_rights_spin,
               param_hey_length_half,
               param_set_direction_across,

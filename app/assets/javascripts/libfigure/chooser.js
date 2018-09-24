@@ -130,6 +130,8 @@ defineDancerChooser("chooser_pairz",    // 1-2 pairs of dancers
                      'first corners',
                      'second corners'
                     ].concat(outOfSetDancers));
+defineDancerChooser("chooser_pairz_or_unspecified",
+                    [''].concat(dancerMenuForChooser('chooser_pairz')));
 defineDancerChooser("chooser_pairs",     // 2 pairs of dancers
                     ['partners', 'neighbors', 'same roles'].concat(outOfSetDancers));
 defineDancerChooser("chooser_pairs_or_ones_or_twos",
