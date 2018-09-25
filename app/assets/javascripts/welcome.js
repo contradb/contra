@@ -287,7 +287,7 @@ $(document).ready(function() {
   { // dancer chooser menus
     var dcs = dancerChoosers();
     for (var i=0; i < dcs.length; i++) {
-      var substituter = function(dancers) { return [dancers, dancerSubstitution(dancers, dialect)]; };
+      var substituter = function(dancers) { return [dancers, dancerMenuLabel(dancers, dialect)]; };
       chooserSelect(dcs[i], ['*'].concat(dancerCategoryMenuForChooser(dcs[i]).map(substituter)));
     }
   }

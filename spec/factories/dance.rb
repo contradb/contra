@@ -25,7 +25,7 @@ FactoryGirl.define do
     user { FactoryGirl.create(:user) }
     choreographer { FactoryGirl.create(:choreographer) }
     start_type 'Becket ccw'
-    figures_json '[{"parameter_values":["across",8],"move":"right left through"},{"parameter_values":["ladles",true,"across",8],"move":"chain"},{"parameter_values":[false,360,"",8],"move":"star","note":"look for new neighbor"},{"parameter_values":["neighbors","none",8],"move":"swing"},{"parameter_values":[true,270,8],"move":"circle"},{"parameter_values":["ladles","ladles",false,"half","across",false,false,false,false,8],"move":"hey"},{"parameter_values":["partners","balance",16],"move":"swing", "progression": 1}]'
+    figures_json '[{"parameter_values":["across",8],"move":"right left through"},{"parameter_values":["ladles",true,"across",8],"move":"chain"},{"parameter_values":[false,360,"",8],"move":"star","note":"look for new neighbor"},{"parameter_values":["neighbors","none",8],"move":"swing"},{"parameter_values":[true,270,8],"move":"circle"},{"parameter_values":["ladles","",false,"half","across",false,false,false,false,8],"move":"hey"},{"parameter_values":["partners","balance",16],"move":"swing", "progression": 1}]'
   end
 
   factory :you_cant_get_there_from_here, class: Dance do
@@ -139,7 +139,7 @@ FactoryGirl.define do
     user { FactoryGirl.create(:user) }
     choreographer { FactoryGirl.create(:choreographer) }
     start_type 'improper'
-    figures_json {%([{"parameter_values":["gentlespoons","gentlespoons",true,#{hey_length.to_json},"across",false,false,false,false,8],"move":"hey"}])}
+    figures_json {%([{"parameter_values":["gentlespoons","",true,#{hey_length.to_json},"across",false,false,false,false,8],"move":"hey"}])}
   end
 
   factory :dance_with_a_full_poussette, class: Dance do
