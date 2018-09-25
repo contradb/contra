@@ -703,11 +703,12 @@ function heyWords(move, pvs, dialect) {
   var any_ricochets = rico1||rico2||rico3||rico4;
   var center_pass;
   var scenter_pass;
+  var error = '';
   if (dancerIsPair(first_pass)) {
     center_pass = first_pass;
     scenter_pass = sfirst_pass;
     if (dancerIsPair(second_pass)) {
-      return words("only first or second pass may name a single pair of dancers, the other has to name 2 pairs of dancers");
+      error = 'exactly one pass should be a single pair of dancers';
     }
   } else if (dancerIsPair(second_pass)) {
     center_pass = second_pass;
@@ -718,8 +719,14 @@ function heyWords(move, pvs, dialect) {
   } else if ('*' === second_pass) {
     center_pass = second_pass;
     scenter_pass = second_pass;
+  } else if (any_ricochets && !second_pass) {
+    center_pass = null;
+    scenter_pass = '____';
+    error = 'specify second pass';
   } else if (any_ricochets) {
-    return words("if you use ricochets, and the first pass isn't just two dancers, then you have to specify a second pass that is");
+    center_pass = null;
+    scenter_pass = '____';
+    error = 'exactly one pass should be a single pair of dancers';
   }
   var sdir2 = dir === 'across' ? '' : sdir;
   var uses_until = !(hey_length === 'full' || hey_length === 'half' || hey_length === null || hey_length == '*');
@@ -745,7 +752,7 @@ function heyWords(move, pvs, dialect) {
     }
     rico_string = ' - ' + rico_strings.join(', ');
   }
-  return words(sfirst_pass, "start", indefiniteArticleFor(main_move_phrase), main_move_phrase, "-", sshoulder, first_shoulder_place, comma, other_sshoulder, second_shoulder_place, uses_until && '-', uses_until && shey_length, rico_string);
+  return words(error && 'Error ('+error+') -', sfirst_pass, "start", indefiniteArticleFor(main_move_phrase), main_move_phrase, "-", sshoulder, first_shoulder_place, comma, other_sshoulder, second_shoulder_place, uses_until && '-', uses_until && shey_length, rico_string);
 }
 
 // so either the first pairz or the second will be a pair. If it's not, it's an error in dance entry.
