@@ -683,21 +683,11 @@ defineFigure("gyre",
 
 function heyChange(figure,index) {
   var pvs = figure.parameter_values;
-  var first_pass_idx = 0;
-  var center_pass_idx = 1;
   var hey_length_idx = 3;
   var beats_idx = 9;
   var hey_length = pvs[hey_length_idx];
   if (hey_length_idx === index) {
     pvs[beats_idx] = heyLengthMeetTimes(hey_length) * 8;
-  }
-
-  if (dancerIsPair(pvs[first_pass_idx])) {
-    if (first_pass_idx === index) {
-      pvs[center_pass_idx] = pvs[first_pass_idx];
-    } else if (center_pass_idx === index) {
-      pvs[first_pass_idx] = pvs[center_pass_idx];
-    }
   }
 }
 
@@ -707,9 +697,37 @@ function heyGoodBeats(figure) {
 }
 
 function heyWords(move, pvs, dialect) {
-  var [ first_pass,  center_pass,  shoulder,  hey_length,  dir,  rico1,  rico2,  rico3,  rico4, beats] = pvs;
-  var [sfirst_pass, scenter_pass, sshoulder, shey_length, sdir, srico1, srico2, srico3, srico4, sbeats] = parameter_strings(move, pvs, dialect);
+  var [ first_pass,  second_pass,  shoulder,  hey_length,  dir,  rico1,  rico2,  rico3,  rico4, beats] = pvs;
+  var [sfirst_pass, ssecond_pass, sshoulder, shey_length, sdir, srico1, srico2, srico3, srico4, sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
+  var any_ricochets = rico1||rico2||rico3||rico4;
+  var center_pass;
+  var scenter_pass;
+  var error = '';
+  if (dancerIsPair(first_pass)) {
+    center_pass = first_pass;
+    scenter_pass = sfirst_pass;
+    if (dancerIsPair(second_pass)) {
+      error = 'exactly one pass should be a single pair of dancers';
+    }
+  } else if (dancerIsPair(second_pass)) {
+    center_pass = second_pass;
+    scenter_pass = ssecond_pass;
+  } else if ('*' === first_pass) {
+    center_pass = first_pass;
+    scenter_pass = sfirst_pass;
+  } else if ('*' === second_pass) {
+    center_pass = second_pass;
+    scenter_pass = second_pass;
+  } else if (any_ricochets && !second_pass) {
+    center_pass = null;
+    scenter_pass = '____';
+    error = 'specify second pass';
+  } else if (any_ricochets) {
+    center_pass = null;
+    scenter_pass = '____';
+    error = 'exactly one pass should be a single pair of dancers';
+  }
   var sdir2 = dir === 'across' ? '' : sdir;
   var uses_until = !(hey_length === 'full' || hey_length === 'half' || hey_length === null || hey_length == '*');
   var main_move_phrase = uses_until ? words(sdir2, smove) : words(sdir2, shey_length, smove);
@@ -718,7 +736,7 @@ function heyWords(move, pvs, dialect) {
   var first_shoulder_place = !first_pass_is_pair ? 'on ends' : 'in center';
   var second_shoulder_place = first_pass_is_pair ? 'on ends' : 'in center';
   var rico_string = '';
-  if (rico1||rico2||rico3||rico4) {
+  if (any_ricochets) {
     var ricos = [rico1, rico2, rico3, rico4];
     var rico_strings = [];
     for (var i=0; i<ricos.length; i++) {
@@ -734,12 +752,14 @@ function heyWords(move, pvs, dialect) {
     }
     rico_string = ' - ' + rico_strings.join(', ');
   }
-  return words(sfirst_pass, "start", indefiniteArticleFor(main_move_phrase), main_move_phrase, "-", sshoulder, first_shoulder_place, comma, other_sshoulder, second_shoulder_place, uses_until && '-', uses_until && shey_length, rico_string);
+  return words(error && 'Error ('+error+') -', sfirst_pass, "start", indefiniteArticleFor(main_move_phrase), main_move_phrase, "-", sshoulder, first_shoulder_place, comma, other_sshoulder, second_shoulder_place, uses_until && '-', uses_until && shey_length, rico_string);
 }
+
+// so either the first pairz or the second will be a pair. If it's not, it's an error in dance entry.
 
 defineFigure("hey",
              [param_subject_pairz_ladles,
-              param_subject2_pair_ladles,
+              param_subject2_pairz_or_unspecified,
               param_rights_spin,
               param_hey_length_half,
               param_set_direction_across,
@@ -748,7 +768,7 @@ defineFigure("hey",
               param_ricochet3_false,
               param_ricochet4_false,
               param_beats_8],
-             {words: heyWords, change: heyChange, goodBeats: heyGoodBeats, labels: ['pass1','c.pass1',,,,'rico1','rico2','rico3','rico4']});
+             {words: heyWords, change: heyChange, goodBeats: heyGoodBeats, labels: ['pass1','pass2',,,,'rico1','rico2','rico3','rico4']});
 
 ////////////////////////////////////////////////
 // LONG LINES                                 //
