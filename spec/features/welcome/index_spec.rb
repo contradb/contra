@@ -228,6 +228,30 @@ describe 'Welcome page', js: true do
         end
       end
 
+      it "changing from 'and' to 'count' installs a new working count filter" do
+        with_retries do
+          setup_and_filter
+          select('circle')        # rendevous and call me
+          first('.figure-filter-op').select('count')
+          expect(page).to have_css('.figure-filter', count: 2)
+          expect(page).to have_css('.figure-filter-move', count: 1)
+          expect(page).to have_css('.figure-filter-count-comparison', count: 1)
+          expect(page).to have_css('.figure-filter-count-number', count: 1)
+          select('0')
+          select('>')
+          expect(page).to_not have_content('Processing')
+          expect(page).to have_content('Box the Gnat Contra')
+          expect(page).to have_content('Call Me')
+          expect(page).to have_content('The Rendevouz')
+          select('≥')
+          select('2')
+          expect(page).to_not have_content('Processing')
+          expect(page).to_not have_content('Box the Gnat Contra')
+          expect(page).to_not have_content('Call Me')
+          expect(page).to have_content('The Rendevouz')
+        end
+      end
+
       it "change from an empty 'or' to 'no'" do
         with_retries do
           setup_and_filter
@@ -840,6 +864,41 @@ describe 'Welcome page', js: true do
         expect(page).to_not have_content('The Rendevouz')
         expect(page).to_not have_content('Call Me')
         expect(page).to have_content('Showing dances with a swing and a ladles allemande right 1½ and an improper formation.')
+      end
+
+      it 'count' do
+        dances
+        visit '/'
+        select('count')
+        select('contra corners') # clear out search results
+        expect(page).to_not have_content('Processing')
+        expect(page).to have_css('.figure-filter-op', count: 2)
+        expect(page).to have_css('.figure-filter-move', count: 1)
+        expect(page).to have_css('.figure-filter-count-comparison', count: 1)
+        expect(page).to have_css('.figure-filter-count-number', count: 1)
+        select('>')
+        select('1')
+        select('circle')
+        # these are flaky and not really important to the back button testing:
+        # expect(page).to_not have_content('Processing')
+        # expect(page).to_not have_content('Box the Gnat Contra')
+        # expect(page).to_not have_content('Call Me')
+        # expect(page).to have_content('The Rendevouz')
+        click_link('The Rendevouz')
+        expect(page).to have_css('h1', text: 'The Rendevouz') # wait for page to load
+        page.go_back
+        expect(page).to have_css('.figure-filter-op', count: 2)
+        expect(page).to have_css('.figure-filter-move', count: 1)
+        expect(page).to have_css('.figure-filter-count-comparison', count: 1)
+        expect(page).to have_css('.figure-filter-count-number', count: 1)
+        expect(page).to_not have_content('Processing')
+        expect(page).to_not have_content('Box the Gnat Contra')
+        expect(page).to_not have_content('Call Me')
+        page.save_screenshot('/tmp/maybe-fail.png')
+        expect(page).to have_content('The Rendevouz')
+        expect(find('.figure-filter-count-comparison').value).to eq('>')
+        expect(find('.figure-filter-count-number').value).to eq('1')
+        expect(find('.figure-filter-move').value).to eq('circle')
       end
     end
 

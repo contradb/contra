@@ -44,6 +44,12 @@ $(document).ready(function() {
 
   var formationSelectHtml = "<select class='figure-filter-formation form-control'>"+['improper','Becket *', 'Becket cw', 'Becket ccw', 'proper', 'everything else'].map(function(label) {return '<option>'+label+'</option>';}).join('')+"</select>";
 
+  var n_ary_helper = ['or', 'and', '&', 'then'];
+
+  function n_ary(op) {
+    return n_ary_helper.indexOf(op) >= 0;
+  }
+
   function maxSubfilterCount(op) {
     switch(op) {
     case 'figure':
@@ -58,12 +64,20 @@ $(document).ready(function() {
     case undefined:
       throw 'missing argument to maxSubfilterCount';
     default:
-      return Infinity;
+      if (n_ary(op)) {
+        return Infinity;
+      } else {
+        throw new Error('unknown operator: '+op);
+      }
     }
   }
 
   function minSubfilterCount(op) {
     switch(op) {
+    case 'figure':
+    case 'progression':
+    case 'formation':
+      return 0;
     case 'no':
     case 'not':
     case 'all':
@@ -72,20 +86,16 @@ $(document).ready(function() {
     case undefined:
       throw 'missing argument to minSubfilterCount';
     default:
-      return 0;
+      if (n_ary(op)) {
+        return 0;
+      } else {
+        throw new Error('unknown operator: '+op);
+      }
     }
   }
 
   function minUsefulSubfilterCount(op) {
-    switch(op) {
-    case 'and':
-    case '&':
-    case 'or':
-    case 'then':
-      return 2;
-    default:
-      return minSubfilterCount(op);
-    }
+    return n_ary(op) ? 2 : minSubfilterCount(op);
   }
 
   function clickEllipsis(e) {
@@ -205,12 +215,7 @@ $(document).ready(function() {
   function addFormationFilterConstellation(filter) {
     filter
       .children('.figure-filter-op')
-      .after(makeFormationFilterSelect(filter));
-  }
-
-
-  function makeFormationFilterSelect(filter) {
-    return $(formationSelectHtml).change(updateQuery);
+      .after($(formationSelectHtml).change(updateQuery));
   }
 
   function removeCountFilterConstellation(filter) {
@@ -221,7 +226,9 @@ $(document).ready(function() {
   function addCountFilterConstellation(filter) {
     filter
       .children('.figure-filter-op')
-      .after($('<select class="figure-filter-comparison form-control"><option>&gt;</option><option>&lt;</option><option>=</option><option>≠</option></select>'));
+      .after($('<select class="figure-filter-count-number form-control"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option></select>').change(updateQuery))
+      .after($('<select class="figure-filter-count-comparison form-control"><option>&gt;</option><option>&lt;</option><option>≥</option><option>≤</option><option>=</option><option>≠</option></select>').change(updateQuery));
+
   }
 
   // ================================================================
@@ -459,11 +466,17 @@ $(document).ready(function() {
     } else if (op === 'formation') {
       var formation = figure_filter.children('.figure-filter-formation').val();
       return [op, formation];
-    } else {
+    } else if (n_ary(op) || op === 'no' || op === 'not' || op === 'count' || op === 'progression') {
       var kids = figure_filter.children('.figure-filter').get();
       var filter = kids.map(buildFigureQuery);
       filter.unshift(op);
+      if (op === 'count') {
+        filter.push(figure_filter.children('.figure-filter-count-comparison').val());
+        filter.push(figure_filter.children('.figure-filter-count-number').val());
+      }
       return filter;
+    } else {
+      throw new Error('unknown operator: '+op);
     }
   }
 
@@ -494,7 +507,20 @@ $(document).ready(function() {
       installGenericFilterEventHandlers(figureFilter);
       figureFilter.children('.figure-filter-formation').val(query[1]);
       break;
+    case 'count':
+      var subfilter  = query[1];
+      var comparison = query[2];
+      var number     = query[3];
+      figureFilter.children('.figure-filter-op').val(op);
+      addCountFilterConstellation(figureFilter);
+      installGenericFilterEventHandlers(figureFilter); // ??? why is this not set for 'default' case below? because bug
+      figureFilter.children('.figure-filter-count-comparison').val(comparison);
+      figureFilter.children('.figure-filter-count-number').val(number);
+      figureFilter.append(buildDOMtoMatchQuery(subfilter));
+      break;
     default:
+      // installGenericFilterEventHandlers(figureFilter); // TODO add spec to need this and then refactor
+      if (!n_ary(op)) { throw new Error('unknown operator: '+op); }
       figureFilter.children('.figure-filter-op').val(op);
       for (var i=1; i<query.length; i++) {
         figureFilter.append(buildDOMtoMatchQuery(query[i]));
@@ -592,7 +618,7 @@ $(document).ready(function() {
     }
   }
 
-  var dataTable = 
+  var dataTable =
         $('#dances-table').DataTable({
           "processing": true,
           "serverSide": true,
