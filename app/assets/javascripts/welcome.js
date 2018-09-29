@@ -6,9 +6,9 @@ $(document).ready(function() {
   var dialect = JSON.parse($('#dialect-json').text());
 
   function installGenericFilterEventHandlers(selector) {
-    selector.find('.figure-filter-op').change(filterOpChanged);
-    selector.find('.figure-filter-add').click(clickFilterAddSubfilter);
-    selector.find('.figure-filter-remove').click(filterRemoveSubfilter);
+    selector.find('.figure-filter-op').off('change').change(filterOpChanged); // do not double-install filterOpChanged
+    selector.find('.figure-filter-add').off('click').click(clickFilterAddSubfilter); // do not double-install clickFilterAddSubfilter
+    selector.find('.figure-filter-remove').off('click').click(filterRemoveSubfilter); // do not double-install filterRemoveSubfilter
     // selector.find('.figure-filter-move').change(updateQuery); // removed because now done by constellation
   }
 
@@ -228,8 +228,8 @@ $(document).ready(function() {
   function addCountFilterConstellation(filter) {
     filter
       .children('.figure-filter-op')
-      .after($('<select class="figure-filter-count-number form-control"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select>').change(updateQuery))
-      .after($('<select class="figure-filter-count-comparison form-control"><option>&gt;</option><option>&lt;</option><option>≥</option><option>≤</option><option>=</option><option>≠</option></select>').change(updateQuery));
+      .after($('<select class="figure-filter-count-number form-control"><option>0</option><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select>').change(updateQuery))
+      .after($('<select class="figure-filter-count-comparison form-control"><option>≥</option><option>≤</option><option>&gt;</option><option>&lt;</option><option>=</option><option>≠</option></select>').change(updateQuery));
 
   }
 
