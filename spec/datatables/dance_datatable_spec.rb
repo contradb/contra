@@ -129,25 +129,28 @@ describe DanceDatatable do
     end
 
     describe 'count' do
+      let (:all_titles) { dances.map(&:title) }
+
+      def filtered_titles(comparison, number)
+        DanceDatatable.send(:filter_dances, dances, ['count', ['figure', 'circle'], comparison, number.to_s]).map(&:title)
+      end
+
       it '≥ 2' do
-        filtered = DanceDatatable.send(:filter_dances, dances, ['count', ['figure', 'circle'], '≥', '2'])
-        expect(filtered.map(&:title)).to eq(['The Rendevouz'])
+        expect(filtered_titles('≥', 2)).to eq(['The Rendevouz'])
       end
 
       it '< 2' do
-        filtered = DanceDatatable.send(:filter_dances, dances, ['count', ['figure', 'circle'], '<', '2'])
-        expect(filtered.map(&:title)).to eq(dances.map(&:title) - ['The Rendevouz'])
+        expect(filtered_titles('<', 2)).to eq(all_titles - ['The Rendevouz'])
       end
 
       it '≠ 1' do
-        filtered = DanceDatatable.send(:filter_dances, dances, ['count', ['figure', 'circle'], '≠', '1'])
-        expect(filtered.map(&:title)).to eq(dances.map(&:title) - ['Call Me'])
+        expect(filtered_titles('≠', 1)).to eq(all_titles - ['Call Me'])
       end
 
       it '= 1' do
-        filtered = DanceDatatable.send(:filter_dances, dances, ['count', ['figure', 'circle'], '=', '1'])
-        expect(filtered.map(&:title)).to eq(['Call Me'])
+        expect(filtered_titles('=', 1)).to eq(['Call Me'])
       end
+
     end
   end
 
