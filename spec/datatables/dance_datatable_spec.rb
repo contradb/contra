@@ -127,6 +127,31 @@ describe DanceDatatable do
         expect(filtered.map(&:title)).to eq(['The Rendevouz', 'Box the Gnat Contra'])
       end
     end
+
+    describe 'count' do
+      let (:all_titles) { dances.map(&:title) }
+
+      def filtered_titles(comparison, number)
+        DanceDatatable.send(:filter_dances, dances, ['count', ['figure', 'circle'], comparison, number.to_s]).map(&:title)
+      end
+
+      it '≥ 2' do
+        expect(filtered_titles('≥', 2)).to eq(['The Rendevouz'])
+      end
+
+      it '< 2' do
+        expect(filtered_titles('<', 2)).to eq(all_titles - ['The Rendevouz'])
+      end
+
+      it '≠ 1' do
+        expect(filtered_titles('≠', 1)).to eq(all_titles - ['Call Me'])
+      end
+
+      it '= 1' do
+        expect(filtered_titles('=', 1)).to eq(['Call Me'])
+      end
+
+    end
   end
 
     it '.matching_figures_for_progression only works on figures with progressions' do
