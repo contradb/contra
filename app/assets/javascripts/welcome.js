@@ -46,11 +46,12 @@ $(document).ready(function() {
 
   var n_ary_helper = ['or', 'and', '&', 'then'];
 
+  // returns true if an operator takes any number of arguments
   function n_ary(op) {
     return n_ary_helper.indexOf(op) >= 0;
   }
 
-  function maxSubfilterCount(op) {
+  function maxParameterCount(op) {
     switch(op) {
     case 'figure':
     case 'formation':
@@ -62,7 +63,7 @@ $(document).ready(function() {
     case 'count':
       return 1;
     case undefined:
-      throw 'missing argument to maxSubfilterCount';
+      throw 'missing argument to maxParameterCount';
     default:
       if (n_ary(op)) {
         return Infinity;
@@ -72,7 +73,7 @@ $(document).ready(function() {
     }
   }
 
-  function minSubfilterCount(op) {
+  function minParameterCount(op) {
     switch(op) {
     case 'figure':
     case 'progression':
@@ -84,7 +85,7 @@ $(document).ready(function() {
     case 'count':
       return 1;
     case undefined:
-      throw 'missing argument to minSubfilterCount';
+      throw 'missing argument to minParameterCount';
     default:
       if (n_ary(op)) {
         return 0;
@@ -94,8 +95,8 @@ $(document).ready(function() {
     }
   }
 
-  function minUsefulSubfilterCount(op) {
-    return n_ary(op) ? 2 : minSubfilterCount(op);
+  function minUsefulParameterCount(op) {
+    return n_ary(op) ? 2 : minParameterCount(op);
   }
 
   function clickEllipsis(e) {
@@ -110,11 +111,11 @@ $(document).ready(function() {
     var filter = opSelect.closest('.figure-filter');
     var op = opSelect.val();
     var actualSubfilterCount = filter.children('.figure-filter').length;
-    while (actualSubfilterCount > maxSubfilterCount(op)) {
+    while (actualSubfilterCount > maxParameterCount(op)) {
       filter.children('.figure-filter').last().remove();
       actualSubfilterCount--;
     }
-    while (actualSubfilterCount < minUsefulSubfilterCount(op)) {
+    while (actualSubfilterCount < minUsefulParameterCount(op)) {
       filterAddSubfilter(filter);
       actualSubfilterCount++;
     }
@@ -135,11 +136,11 @@ $(document).ready(function() {
     }
     var hasNoAddButton = filter.children('.figure-filter-add').length === 0;
     // this code largely duplicated in buildDOMtoMatchQuery
-    if (hasNoAddButton && actualSubfilterCount < maxSubfilterCount(op)) {
+    if (hasNoAddButton && actualSubfilterCount < maxParameterCount(op)) {
       var addButton = $(addButtonHtml);
       addButton.click(clickFilterAddSubfilter);
       filter.children('.figure-filter-end-of-subfigures').after(addButton);
-    } else if ((!hasNoAddButton) && actualSubfilterCount >= maxSubfilterCount(op)) {
+    } else if ((!hasNoAddButton) && actualSubfilterCount >= maxParameterCount(op)) {
       filter.children('.figure-filter-add').remove();
     }
     ensureChildRemoveButtons(filter);
@@ -156,7 +157,7 @@ $(document).ready(function() {
   function ensureChildRemoveButtons(filter) {
     var subfilters = filter.children('.figure-filter');
     var op = filter.children('.figure-filter-op').val();
-    if (subfilters.length > minSubfilterCount(op)) {
+    if (subfilters.length > minParameterCount(op)) {
       subfilters.each(function () {
         var $subfilter = $(this);
         if (0 === $subfilter.children('.figure-filter-remove').length) {
@@ -169,7 +170,7 @@ $(document).ready(function() {
           }
         }
       });
-    } else if (subfilters.length <= minSubfilterCount(op)) {
+    } else if (subfilters.length <= minParameterCount(op)) {
       filter.children('.figure-filter').each(function() {
         $(this).children('.figure-filter-remove').remove();
       });
@@ -516,7 +517,6 @@ $(document).ready(function() {
       figureFilter.children('.figure-filter-end-of-subfigures').before(buildDOMtoMatchQuery(subfilter));
       break;
     default:
-      // installGenericFilterEventHandlers(figureFilter); // TODO add spec to need this and then refactor
       if (!n_ary(op)) { throw new Error('unknown operator: '+op); }
       figureFilter.children('.figure-filter-op').val(op);
       for (var i=1; i<query.length; i++) {
@@ -527,7 +527,7 @@ $(document).ready(function() {
     ensureChildRemoveButtons(figureFilter);
     installGenericFilterEventHandlers(figureFilter);
     figureFilter.children('.figure-filter').attr('data-op', op);
-    if (figureFilter.children('.figure-filter').length < maxSubfilterCount(op)) {
+    if (figureFilter.children('.figure-filter').length < maxParameterCount(op)) {
       // this code largely duplicate in filterOpChanged
       var addButton = $(addButtonHtml);
       addButton.click(clickFilterAddSubfilter);

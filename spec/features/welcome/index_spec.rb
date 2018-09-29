@@ -894,7 +894,6 @@ describe 'Welcome page', js: true do
         expect(page).to_not have_content('Processing')
         expect(page).to_not have_content('Box the Gnat Contra')
         expect(page).to_not have_content('Call Me')
-        page.save_screenshot('/tmp/maybe-fail.png')
         expect(page).to have_content('The Rendevouz')
         expect(find('.figure-filter-count-comparison').value).to eq('>')
         expect(find('.figure-filter-count-number').value).to eq('1')
