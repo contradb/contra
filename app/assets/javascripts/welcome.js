@@ -134,6 +134,7 @@ $(document).ready(function() {
       removeCountFilterConstellation(filter);
     }
     var hasNoAddButton = filter.children('.figure-filter-add').length === 0;
+    // this code largely duplicated in buildDOMtoMatchQuery
     if (hasNoAddButton && actualSubfilterCount < maxSubfilterCount(op)) {
       var addButton = $(addButtonHtml);
       addButton.click(clickFilterAddSubfilter);
@@ -226,7 +227,7 @@ $(document).ready(function() {
   function addCountFilterConstellation(filter) {
     filter
       .children('.figure-filter-op')
-      .after($('<select class="figure-filter-count-number form-control"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option></select>').change(updateQuery))
+      .after($('<select class="figure-filter-count-number form-control"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select>').change(updateQuery))
       .after($('<select class="figure-filter-count-comparison form-control"><option>&gt;</option><option>&lt;</option><option>≥</option><option>≤</option><option>=</option><option>≠</option></select>').change(updateQuery));
 
   }
@@ -487,11 +488,9 @@ $(document).ready(function() {
   function buildDOMtoMatchQuery(query) {
     var op = query[0];
     var figureFilter = $(filterHtml);
-
     switch(op) {
     case 'figure':
       addFigureFilterMoveConstellation(figureFilter);
-      installGenericFilterEventHandlers(figureFilter);
       figureFilter.children('.figure-filter-move').val(query[1]);
       if (query.length > 2) {
         // ... was clicked
@@ -504,7 +503,6 @@ $(document).ready(function() {
     case 'formation':
       figureFilter.children('.figure-filter-op').val(op);
       addFormationFilterConstellation(figureFilter);
-      installGenericFilterEventHandlers(figureFilter);
       figureFilter.children('.figure-filter-formation').val(query[1]);
       break;
     case 'count':
@@ -513,19 +511,28 @@ $(document).ready(function() {
       var number     = query[3];
       figureFilter.children('.figure-filter-op').val(op);
       addCountFilterConstellation(figureFilter);
-      installGenericFilterEventHandlers(figureFilter); // ??? why is this not set for 'default' case below? because bug
       figureFilter.children('.figure-filter-count-comparison').val(comparison);
       figureFilter.children('.figure-filter-count-number').val(number);
-      figureFilter.append(buildDOMtoMatchQuery(subfilter));
+      figureFilter.children('.figure-filter-end-of-subfigures').before(buildDOMtoMatchQuery(subfilter));
       break;
     default:
       // installGenericFilterEventHandlers(figureFilter); // TODO add spec to need this and then refactor
       if (!n_ary(op)) { throw new Error('unknown operator: '+op); }
       figureFilter.children('.figure-filter-op').val(op);
       for (var i=1; i<query.length; i++) {
-        figureFilter.append(buildDOMtoMatchQuery(query[i]));
+        figureFilter.children('.figure-filter-end-of-subfigures').before(buildDOMtoMatchQuery(query[i]));
       }
       break;
+    }
+    ensureChildRemoveButtons(figureFilter);
+    installGenericFilterEventHandlers(figureFilter);
+    figureFilter.children('.figure-filter').attr('data-op', op);
+    if (figureFilter.children('.figure-filter').length < maxSubfilterCount(op)) {
+      // this code largely duplicate in filterOpChanged
+      var addButton = $(addButtonHtml);
+      addButton.click(clickFilterAddSubfilter);
+      figureFilter.children('.figure-filter-end-of-subfigures').after(addButton);
+      updateAddButtonText(figureFilter, op);
     }
     return figureFilter;
   }

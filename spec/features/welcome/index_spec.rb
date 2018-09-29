@@ -240,7 +240,7 @@ describe 'Welcome page', js: true do
           select('0')
           select('>')
           expect(page).to_not have_content('Processing')
-          expect(page).to have_content('Box the Gnat Contra')
+          expect(page).to_not have_content('Box the Gnat Contra')
           expect(page).to have_content('Call Me')
           expect(page).to have_content('The Rendevouz')
           select('≥')
@@ -899,6 +899,22 @@ describe 'Welcome page', js: true do
         expect(find('.figure-filter-count-comparison').value).to eq('>')
         expect(find('.figure-filter-count-number').value).to eq('1')
         expect(find('.figure-filter-move').value).to eq('circle')
+      end
+
+      it 'decorates subfilters with [x] buttons, conjunctions, and "add or"' do
+        dances
+        visit '/'
+        select('or')
+        click_link(dances.first.title)
+        expect(page).to have_css('h1', text: dances.first.title)
+        page.go_back
+        expect(page).to have_css('.figure-filter[data-op=or]', count: 2)
+        expect(page).to have_css('.figure-filter-remove', count: 2)
+        expect(page).to have_css('button.figure-filter-add', text: 'add or')
+        click_button('add or')
+        expect(page).to have_css('.figure-filter-remove', count: 3)
+        all('.figure-filter-remove').last.click
+        expect(page).to have_css('.figure-filter-remove', count: 2)
       end
     end
 
