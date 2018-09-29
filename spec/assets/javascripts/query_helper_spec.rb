@@ -8,18 +8,18 @@ RSpec.describe 'query-helper' do
      [['figure', '*'], 'no', 'no figure'],
      [['figure', 'swing'], 'a', 'a swing'],
      [['figure', 'allemande'], 'a', 'an allemande'],
-     [['figure', 'circle'], 'a', /a circle/],
+     [['figure', 'circle'], 'a', 'a circle'],
      [['figure', 'circle', true, 360, 8], 'a', 'a circle left 4 places'],
      [['no', ['figure', 'allemande']], 'a', 'no allemande'],
      [['no', ['or', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no allemande and no swing'],
      [['no', ['and', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no allemande or no swing'],
      [['no', ['then', ['figure', 'allemande'], ['figure', 'swing']]], 'a', 'no (an allemande then a swing)'],
      [['then', ['figure', 'allemande'], ['figure', 'swing']], 'a', 'an allemande then a swing'],
-     [['then', ['figure', 'allemande'], ['not', ['figure', 'swing']]], 'a', /an allemande then a non +swing/],
+     [['then', ['figure', 'allemande'], ['not', ['figure', 'swing']]], 'a', 'an allemande then a non swing'],
      [['then', ['figure', 'allemande'], ['not', ['or', ['figure', 'swing'], ['figure', 'chain']]]], 'a',
-      /an allemande then +not +\(a swing or a chain\)/],
-     [['not', ['figure', 'swing']], 'a', /a non +swing/],
-     [['not', ['or', ['figure', 'swing'], ['figure', 'chain']]], 'a', /not +\(a swing or a chain\)/],
+      'an allemande then not (a swing or a chain)'],
+     [['not', ['figure', 'swing']], 'a', 'a non swing'],
+     [['not', ['or', ['figure', 'swing'], ['figure', 'chain']]], 'a', 'not (a swing or a chain)'],
      [["and",["then",["figure","allemande"],["figure","balance"]],["figure","box circulate"]],
       'a', '(an allemande then a balance) and a box circulate'],
      [['no', ['not', ['figure', 'swing']]], 'a', 'no non swing'],
@@ -28,10 +28,18 @@ RSpec.describe 'query-helper' do
      [['and', ['figure', 'swing'], ['formation', 'improper']], 'a', 'a swing and an improper formation'],
      [['and', ['formation', 'improper'], ['figure', 'swing']], 'a', 'an improper formation and a swing'],
      [['&', ['figure', 'swing'], ['progression']], 'a', 'a swing & a progression'],
+     [['count', ['figure', 'swing'], '>', 2], 'a', 'a swing more than 2 times'],
+     [['count', ['figure', 'swing'], '=', 2], 'a', 'a swing 2 times'],
+     [['count', ['or', ['figure', 'swing'], ['figure', 'chain']], '=', 2], 'a', 'a swing or a chain 2 times'],
+     [['count', ['figure', 'swing'], '≤', 2], 'a', 'a swing no more than 2 times'],
+     [['count', ['figure', 'swing'], '<', 2], 'a', 'a swing less than 2 times'],
+     [['count', ['figure', 'swing'], '≥', 2], 'a', 'a swing at least 2 times'],
+     [['count', ['figure', 'swing'], '≠', 2], 'a', 'a swing not 2 times'],
+     [['then', ['figure', 'chain'], ['count', ['figure', 'swing'], '=', 2]], 'a', 'a chain then (a swing 2 times)'],
     ].each do |a|
       q, article, value = a
       it "buildFigureSentenceHelper(#{q.to_s}, #{article.inspect}, defaultDialect) => #{value.inspect}" do
-        expect(eval("buildFigureSentenceHelper(#{q.to_s}, #{article.inspect}, defaultDialect);")).to match(whitespice(value))
+        expect(eval("buildFigureSentenceHelper(#{q.to_s}, #{article.inspect}, defaultDialect);")).to match(whitespice(value)), value
       end
     end
   end
