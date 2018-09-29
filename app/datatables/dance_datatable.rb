@@ -267,7 +267,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
     comparison = COMPARISON_STRING_TO_RUBY_OP.fetch(comparison_str)
     number = number_string.to_i
     if m_count.public_send(comparison, number) # for example 'count >= 3'
-      m
+      m || Set[]
     else
       nil
     end
