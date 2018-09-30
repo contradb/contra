@@ -6,6 +6,10 @@
   <h2>Administrator</h2>
 <% end %>
 
+<% if @user.blogger? %>
+  <h2>Blogger</h2>
+<% end %>
+
 <h2>Dances</h2>
 <%= if user_signed_in? && (current_user.id == @user.id)
     then new_dance_button_html()

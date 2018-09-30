@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Blogs</h1>
+
+<table class="table table-striped table-bordered table-hover table-condensed contra-table-nonfluid">
+  <thead>
+    <tr>
+      <th>Title</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @blogs.each do |blog| %>
+      <tr>
+        <td>
+          <%= link_to(blog.title, blog_path(blog)) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+<%= link_to 'New Blog', new_blog_path %>

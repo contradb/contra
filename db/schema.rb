@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180924041545) do
+ActiveRecord::Schema.define(version: 20180930182550) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,16 @@ ActiveRecord::Schema.define(version: 20180924041545) do
     t.datetime "updated_at", null: false
     t.index ["dance_id"], name: "index_activities_on_dance_id"
     t.index ["program_id"], name: "index_activities_on_program_id"
+  end
+
+  create_table "blogs", force: :cascade do |t|
+    t.text "title"
+    t.text "body"
+    t.bigint "user_id"
+    t.boolean "publish", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_blogs_on_user_id"
   end
 
   create_table "choreographers", id: :serial, force: :cascade do |t|
@@ -84,12 +94,14 @@ ActiveRecord::Schema.define(version: 20180924041545) do
     t.boolean "admin", default: false, null: false
     t.boolean "news_email", default: true, null: false
     t.integer "moderation", default: 0, null: false
+    t.boolean "blogger", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "activities", "dances"
   add_foreign_key "activities", "programs"
+  add_foreign_key "blogs", "users"
   add_foreign_key "idioms", "users"
   add_foreign_key "programs", "users"
 end

@@ -14,10 +14,12 @@ class ApplicationController < ActionController::Base
     deny_or_login!(deny_notice: be_an_admin, login_notice: be_an_admin) unless signed_in? && current_user.admin?
   end
 
-  def deny_or_login!(deny_notice: "You don't have access to that", login_notice: "You don't have access to that - maybe you would if you logged in?")
+  def deny_or_login!(deny_notice: "You don't have access to that",
+                     login_notice: "You don't have access to that - maybe you would if you logged in?",
+                     fallback_location: root_path)
     if current_user
       flash[:notice] = deny_notice
-      redirect_back(fallback_location: root_path)
+      redirect_back(fallback_location: fallback_location)
     else
       flash[:notice] = login_notice
       session[:after_login] = request.env['PATH_INFO']

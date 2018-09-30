@@ -1,20 +1,18 @@
 Rails.application.routes.draw do
+  resources :blogs
   resources :programs
-  get 'about/index'
-
+  resources :choreographers
+  resources :figures, only: [:index, :show]
 
   resources :dances, except: [:index]
   post 'dances_filter', to: 'dances#index'
-  resources :choreographers
+
   devise_for :users, controllers: { registrations: "users/registrations" }
   resources :users, only: [:show, :index] do
     put :update_preferences
   end
-  resources :figures, only: [:index, :show]
+
   resources :idioms, only: [:create, :update, :destroy]
-
-  get 'welcome/index'
-
   resource :dialect, only: [] do
     get :index
     post :roles
@@ -23,6 +21,8 @@ Rails.application.routes.draw do
     post :restore_defaults
   end
 
+  get 'about/index'
+  get 'welcome/index'
   get 'about' => 'about#index'
   get '/help' => 'help#index'
   root 'welcome#index'

@@ -1,0 +1,18 @@
+<p id="notice"><%= notice %></p>
+
+<% unless @blog.publish? %>
+  <p class='warn-private-blog'>This blog is not published</p>
+<% end %>
+
+<h1>
+  <%= @blog.title %>
+</h1>
+
+<p>
+By <%= link_to(@blog.user.name, user_path(@blog.user)) %>
+</p>
+
+<%= ApplicationHelper::renderMarkdownHtmlOk(@blog.body) %>
+
+<%= link_to 'Edit', edit_blog_path(@blog) %> |
+
