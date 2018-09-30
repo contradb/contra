@@ -3,7 +3,7 @@ class BlogsController < ApplicationController
   before_action :authenticate_blog_readable!, except: [:index]
 
   def index
-    @blogs = current_user&.blogger? ? Blog.all : Blog.where(publish: true)
+    @blogs = Blog.all.select {|blog| blog.readable?(current_user)}
   end
 
   def show

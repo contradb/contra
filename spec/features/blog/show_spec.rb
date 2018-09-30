@@ -40,7 +40,6 @@ describe 'Blog show' do
 
   it "renders markdown" do
     blog = FactoryGirl.create(:blog, body: '[yahoo.com](https://www.yahoo.com) **bold** *italic*', publish: true)
-    puts blog_path(blog)
     visit(blog_path(blog))
     expect(page).to have_link('yahoo.com', href: 'https://www.yahoo.com')
     File.open('/tmp/1.html', 'w') {|f| f.write(page.html)}

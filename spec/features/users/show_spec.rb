@@ -8,7 +8,7 @@ describe "user profile" do
     visit user_path(user)
     expect(page).to have_css(:h1, text: user.name)
     expect(page).to have_link(dance.title, href: dance_path(dance))
-    expect(page).to have_link(program.title), href: program_path(program)
+    expect(page).to have_link(program.title, href: program_path(program))
     expect(page).to_not have_text('Administrator')
     expect(page).to_not have_text('Blogger')
   end
