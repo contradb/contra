@@ -21,12 +21,10 @@
     <%= form.text_area :body, id: :blog_body %>
   </div>
 
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id, id: :blog_user_id %>
-  </div>
+  <%= form.check_box(:publish, 'data-toggle': :toggle, 'data-on': :publish, 'data-off': :unpublish) %>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= save_submit_button_html "Save Blog" %>
+    <%# form.submit %>
   </div>
 <% end %>

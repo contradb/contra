@@ -18,10 +18,10 @@ class ApplicationController < ActionController::Base
                      login_notice: "You don't have access to that - maybe you would if you logged in?",
                      fallback_location: root_path)
     if current_user
-      flash[:notice] = deny_notice
+      flash[:alert] = deny_notice
       redirect_back(fallback_location: fallback_location)
     else
-      flash[:notice] = login_notice
+      flash[:alert] = login_notice
       session[:after_login] = request.env['PATH_INFO']
       redirect_to(new_user_session_path)
     end

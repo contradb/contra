@@ -2,11 +2,12 @@
 include Warden::Test::Helpers
 Warden.test_mode!
 
-def with_login(user: nil, admin: false, password: nil, &block)
+def with_login(user: nil, admin: false, blogger: false, password: nil, &block)
   raise "can't both pass a user and specify admin - pick one" if user && admin
+  raise "can't both pass a user and specify blogger - pick one" if user && blogger
   raise "can't both pass a user and specify password - pick one" if user && password
   password ||= 'aaaaaaaa'
-  user ||= FactoryGirl.create(:user, password: password, admin: admin)
+  user ||= FactoryGirl.create(:user, password: password, admin: admin, blogger: blogger)
   login_as(user)
   begin
     block.call user

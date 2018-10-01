@@ -9,4 +9,8 @@ class Blog < ApplicationRecord
   def writeable?(user=nil)
     user.present? && (user.blogger? || user.admin?)
   end
+
+  def body_html
+    ApplicationHelper::renderMarkdownHtmlOk(body || '')
+  end
 end

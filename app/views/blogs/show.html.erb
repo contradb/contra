@@ -4,6 +4,7 @@
   <p class='warn-private-blog'>This blog is not published</p>
 <% end %>
 
+TITLE:
 <h1>
   <%= @blog.title %>
 </h1>
@@ -12,7 +13,7 @@
 By <%= link_to(@blog.user.name, user_path(@blog.user)) %>
 </p>
 
-<%= ApplicationHelper::renderMarkdownHtmlOk(@blog.body) %>
+<%= @blog.body_html %>
 
 <%= link_to 'Edit', edit_blog_path(@blog) %> |
 
