@@ -42,7 +42,6 @@ describe 'Blog show' do
     blog = FactoryGirl.create(:blog, body: '[yahoo.com](https://www.yahoo.com) **bold** *italic*', publish: true)
     visit(blog_path(blog))
     expect(page).to have_link('yahoo.com', href: 'https://www.yahoo.com')
-    File.open('/tmp/1.html', 'w') {|f| f.write(page.html)}
     expect(page).to have_css(:strong, text: 'bold')
     expect(page).to have_css(:em, text: 'italic')
   end

@@ -1,5 +1,7 @@
 class Blog < ApplicationRecord
   belongs_to :user
+  validates :title, presence: true
+  validates :body, presence: true
 
   def readable?(user=nil)
     return true if publish?
