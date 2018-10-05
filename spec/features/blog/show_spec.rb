@@ -45,4 +45,38 @@ describe 'Blog show' do
     expect(page).to have_css(:strong, text: 'bold')
     expect(page).to have_css(:em, text: 'italic')
   end
+
+  describe "editor actions" do
+    let (:blog) {FactoryGirl.create(:blog)}
+
+    personas = [{writeable: true, login: {blogger: true}},
+                {writeable: true, login: {admin: true}},
+                {writeable: false, login: {}},
+                {writeable: false, login: {really_login: false}}]
+
+    personas.each do |persona|
+      it "#{persona[:writeable] ? '' : 'do not'} writeable for user with #{persona[:login].inspect}" do
+        with_login(persona[:login]) do
+          visit(blog_path(blog))
+          if persona[:writeable]
+            expect(page).to have_link('Edit', href: edit_blog_path(blog))
+            expect(page).to have_link('Delete', href: blog_path(blog))
+          else
+            expect(page).to_not have_link('Edit', href: edit_blog_path(blog))
+            expect(page).to_not have_link('Delete', href: blog_path(blog))
+          end
+        end
+      end
+    end
+
+    it "delete button works" do
+      with_login(blogger: true) do
+        visit(blog_path(blog))
+        click_link('Delete')
+        expect(page).to have_text('Blog was successfully destroyed.')
+        expect(Blog.find_by(id: blog.id)).to be(nil)
+        expect(current_path).to eq(blogs_path)
+      end
+    end
+  end
 end

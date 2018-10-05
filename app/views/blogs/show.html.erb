@@ -1,19 +1,17 @@
-<p id="notice"><%= notice %></p>
+<% if @show_writeable_buttons %>
+  <div class="btn-group">
+    <%= edit_blog_button_html(@blog, label: "Edit") %>
+    <%= delete_blog_button_html(@blog, label: "Delete") %>
+  </div>
+<% end %>
+
 
 <% unless @blog.publish? %>
   <p class='warn-private-blog'>This blog is not published</p>
 <% end %>
 
-TITLE:
-<h1>
-  <%= @blog.title %>
-</h1>
+<h1><%= @blog.title %></h1>
 
-<p>
-By <%= link_to(@blog.user.name, user_path(@blog.user)) %>
-</p>
+<p>By <%= link_to(@blog.user.name, user_path(@blog.user)) %></p>
 
 <%= @blog.body_html %>
-
-<%= link_to 'Edit', edit_blog_path(@blog) %> |
-

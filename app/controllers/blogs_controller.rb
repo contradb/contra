@@ -6,6 +6,7 @@ class BlogsController < ApplicationController
   def show
     @blog = Blog.find(params[:id])
     authenticate_blog_readable!(@blog)
+    @show_writeable_buttons = @blog.writeable?(current_user)
   end
 
   def new
