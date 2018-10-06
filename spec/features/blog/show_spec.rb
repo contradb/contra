@@ -11,6 +11,7 @@ describe 'Blog show' do
     scrutinize_layout(page)
     expect(page).to have_css(:h1, text: blog.title)
     expect(page).to have_content("By #{blog.user.name}")
+    expect(page).to have_content(blog.sort_at.strftime('%B %-d, %Y'))
     expect(page).to_not have_css(".warn-private-blog")
   end
 

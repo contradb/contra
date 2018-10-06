@@ -6,12 +6,14 @@
 <% end %>
 
 
-<% unless @blog.publish? %>
-  <p class='warn-private-blog'>This blog is not published</p>
-<% end %>
 
 <h1><%= @blog.title %></h1>
 
-<p>By <%= link_to(@blog.user.name, user_path(@blog.user)) %></p>
+<p>By <%= link_to(@blog.user.name, user_path(@blog.user)) %>
+  <br><%= @blog.sort_at.strftime('%B %-d, %Y') %>
+  <% unless @blog.publish? %>
+    <br><span class='warn-private-blog'>This blog is not published</span>
+  <% end %>
+</p>
 
 <%= @blog.body_html %>
