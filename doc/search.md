@@ -24,6 +24,12 @@ Matches iff any of the subexpressions match the dance.
 
 Matches iff the subexpression does not match the dance.
 
+### count
+
+Most queries are for the presence or absence of a thing - the thing
+appears either 0 times or 1 time in the dance. Count lets you specify
+numbers of times other than 0 or 1 to check for the query.
+
 ### then
 
 Like `and`, but the subexpressions have to match in the order they
@@ -77,6 +83,15 @@ match.
 
 Like `and`, but the dance will only match if there is at least one
 matching patch.
+
+### count
+
+Count matches the patches of it's subexpression, if it matches at
+all. Note that some combinations of `count` and `then` are kind-of
+non-useful, such as: "swing then count chain ≥ 2" means "A swing
+followed by a chain, and - oh yeah - the dance has to have two
+chains".
+
 
 ### no
 

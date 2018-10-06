@@ -18,7 +18,8 @@ var figureSentenceDispatchTable = {
   all: sentenceForAll,
   not: sentenceForNot,
   '&': sentenceForBinOp,
-  'progression': sentenceForProgression
+  progression: sentenceForProgression,
+  count: sentenceForCount
 };
 
 function destringifyFigureFilterParam(param) {
@@ -136,4 +137,20 @@ function sentenceForNot(query, article, dialect) {
 
 function sentenceForProgression(query, article, dialect) {
   return article + ' progression';
+}
+
+var comparison_to_words = {'>': 'more than',
+                           '=': '',
+                           '≠': 'not',
+                           '≤': 'no more than',
+                           '<': 'less than',
+                           '≥': 'at least'};
+
+function sentenceForCount(query, article, dialect) {
+  var subquery   = query[1];
+  var comparison = query[2];
+  var number     = query[3];
+  var comparison_string = comparison_to_words[comparison];
+  if (undefined === comparison_string) { comparison_string = '(buggy comparison)'; }
+  return buildFigureSentenceHelper(subquery, article, dialect) + ' ' + comparison_string + ' ' + number + ' ' + (number === 1 ? 'time' : 'times');
 }

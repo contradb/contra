@@ -253,6 +253,26 @@ class DanceDatatable < AjaxDatatablesRails::Base
     going_concerns
   end
 
+  COMPARISON_STRING_TO_RUBY_OP = {'≥' => :'>=',
+                                  '≤' => :'<=',
+                                  '≠' => :'!=',
+                                  '=' => :'==',
+                                  '>' => :'>',
+                                  '<' => :'<'}.freeze
+
+  def self.matching_figures_for_count(filter, dance)
+    _filter, subfilter, comparison_str, number_string = filter
+    m = matching_figures(subfilter, dance)
+    m_count = m.nil? ? 0 : m.length
+    comparison = COMPARISON_STRING_TO_RUBY_OP.fetch(comparison_str)
+    number = number_string.to_i
+    if m_count.public_send(comparison, number) # for example 'count >= 3'
+      m || Set[]
+    else
+      nil
+    end
+  end
+
   def self.all_empty_matches(nfigures)
     Set.new(nfigures.times.map{|i| SearchMatch.new(i, nfigures, count: 0)})
   end

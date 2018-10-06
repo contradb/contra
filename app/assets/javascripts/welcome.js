@@ -6,9 +6,9 @@ $(document).ready(function() {
   var dialect = JSON.parse($('#dialect-json').text());
 
   function installGenericFilterEventHandlers(selector) {
-    selector.find('.figure-filter-op').change(filterOpChanged);
-    selector.find('.figure-filter-add').click(clickFilterAddSubfilter);
-    selector.find('.figure-filter-remove').click(filterRemoveSubfilter);
+    selector.find('.figure-filter-op').off('change').change(filterOpChanged); // do not double-install filterOpChanged
+    selector.find('.figure-filter-add').off('click').click(clickFilterAddSubfilter); // do not double-install clickFilterAddSubfilter
+    selector.find('.figure-filter-remove').off('click').click(filterRemoveSubfilter); // do not double-install filterRemoveSubfilter
     // selector.find('.figure-filter-move').change(updateQuery); // removed because now done by constellation
   }
 
@@ -37,13 +37,21 @@ $(document).ready(function() {
         <option>no</option>\
         <option>not</option>\
         <option>all</option>\
+        <option>count</option>\
       </select>\
       <span class='figure-filter-end-of-subfigures'></span>\
     </div>";
 
   var formationSelectHtml = "<select class='figure-filter-formation form-control'>"+['improper','Becket *', 'Becket cw', 'Becket ccw', 'proper', 'everything else'].map(function(label) {return '<option>'+label+'</option>';}).join('')+"</select>";
 
-  function maxSubfilterCount(op) {
+  var n_ary_helper = ['or', 'and', '&', 'then'];
+
+  // returns true if an operator takes any number of arguments
+  function n_ary(op) {
+    return n_ary_helper.indexOf(op) >= 0;
+  }
+
+  function maxParameterCount(op) {
     switch(op) {
     case 'figure':
     case 'formation':
@@ -52,37 +60,43 @@ $(document).ready(function() {
     case 'no':
     case 'not':
     case 'all':
+    case 'count':
       return 1;
     case undefined:
-      throw 'missing argument to maxSubfilterCount';
+      throw 'missing argument to maxParameterCount';
     default:
-      return Infinity;
+      if (n_ary(op)) {
+        return Infinity;
+      } else {
+        throw new Error('unknown operator: '+op);
+      }
     }
   }
 
-  function minSubfilterCount(op) {
+  function minParameterCount(op) {
     switch(op) {
+    case 'figure':
+    case 'progression':
+    case 'formation':
+      return 0;
     case 'no':
     case 'not':
     case 'all':
+    case 'count':
       return 1;
     case undefined:
-      throw 'missing argument to minSubfilterCount';
+      throw 'missing argument to minParameterCount';
     default:
-      return 0;
+      if (n_ary(op)) {
+        return 0;
+      } else {
+        throw new Error('unknown operator: '+op);
+      }
     }
   }
 
-  function minUsefulSubfilterCount(op) {
-    switch(op) {
-    case 'and':
-    case '&':
-    case 'or':
-    case 'then':
-      return 2;
-    default:
-      return minSubfilterCount(op);
-    }
+  function minUsefulParameterCount(op) {
+    return n_ary(op) ? 2 : minParameterCount(op);
   }
 
   function clickEllipsis(e) {
@@ -97,11 +111,11 @@ $(document).ready(function() {
     var filter = opSelect.closest('.figure-filter');
     var op = opSelect.val();
     var actualSubfilterCount = filter.children('.figure-filter').length;
-    while (actualSubfilterCount > maxSubfilterCount(op)) {
+    while (actualSubfilterCount > maxParameterCount(op)) {
       filter.children('.figure-filter').last().remove();
       actualSubfilterCount--;
     }
-    while (actualSubfilterCount < minUsefulSubfilterCount(op)) {
+    while (actualSubfilterCount < minUsefulParameterCount(op)) {
       filterAddSubfilter(filter);
       actualSubfilterCount++;
     }
@@ -115,12 +129,18 @@ $(document).ready(function() {
     } else {
       removeFormationFilterConstellation(filter);
     }
+    if (op === 'count') {
+      addCountFilterConstellation(filter);
+    } else {
+      removeCountFilterConstellation(filter);
+    }
     var hasNoAddButton = filter.children('.figure-filter-add').length === 0;
-    if (hasNoAddButton && actualSubfilterCount < maxSubfilterCount(op)) {
+    // this code largely duplicated in buildDOMtoMatchQuery
+    if (hasNoAddButton && actualSubfilterCount < maxParameterCount(op)) {
       var addButton = $(addButtonHtml);
       addButton.click(clickFilterAddSubfilter);
       filter.children('.figure-filter-end-of-subfigures').after(addButton);
-    } else if ((!hasNoAddButton) && actualSubfilterCount >= maxSubfilterCount(op)) {
+    } else if ((!hasNoAddButton) && actualSubfilterCount >= maxParameterCount(op)) {
       filter.children('.figure-filter-add').remove();
     }
     ensureChildRemoveButtons(filter);
@@ -137,7 +157,7 @@ $(document).ready(function() {
   function ensureChildRemoveButtons(filter) {
     var subfilters = filter.children('.figure-filter');
     var op = filter.children('.figure-filter-op').val();
-    if (subfilters.length > minSubfilterCount(op)) {
+    if (subfilters.length > minParameterCount(op)) {
       subfilters.each(function () {
         var $subfilter = $(this);
         if (0 === $subfilter.children('.figure-filter-remove').length) {
@@ -150,7 +170,7 @@ $(document).ready(function() {
           }
         }
       });
-    } else if (subfilters.length <= minSubfilterCount(op)) {
+    } else if (subfilters.length <= minParameterCount(op)) {
       filter.children('.figure-filter').each(function() {
         $(this).children('.figure-filter-remove').remove();
       });
@@ -197,13 +217,23 @@ $(document).ready(function() {
   function addFormationFilterConstellation(filter) {
     filter
       .children('.figure-filter-op')
-      .after(makeFormationFilterSelect(filter));
+      .after($(formationSelectHtml).change(updateQuery));
   }
 
-
-  function makeFormationFilterSelect(filter) {
-    return $(formationSelectHtml).change(updateQuery);
+  function removeCountFilterConstellation(filter) {
+    filter.children('.figure-filter-count-comparison').remove();
+    filter.children('.figure-filter-count-number').remove();
   }
+
+  function addCountFilterConstellation(filter) {
+    filter
+      .children('.figure-filter-op')
+      .after($('<select class="figure-filter-count-number form-control"><option>0</option><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select>').change(updateQuery))
+      .after($('<select class="figure-filter-count-comparison form-control"><option>≥</option><option>≤</option><option>&gt;</option><option>&lt;</option><option>=</option><option>≠</option></select>').change(updateQuery));
+
+  }
+
+  // ================================================================
 
 
   var chooserWidgetType = {};
@@ -438,11 +468,17 @@ $(document).ready(function() {
     } else if (op === 'formation') {
       var formation = figure_filter.children('.figure-filter-formation').val();
       return [op, formation];
-    } else {
+    } else if (n_ary(op) || op === 'no' || op === 'not' || op === 'count' || op === 'progression') {
       var kids = figure_filter.children('.figure-filter').get();
       var filter = kids.map(buildFigureQuery);
       filter.unshift(op);
+      if (op === 'count') {
+        filter.push(figure_filter.children('.figure-filter-count-comparison').val());
+        filter.push(figure_filter.children('.figure-filter-count-number').val());
+      }
       return filter;
+    } else {
+      throw new Error('unknown operator: '+op);
     }
   }
 
@@ -453,11 +489,9 @@ $(document).ready(function() {
   function buildDOMtoMatchQuery(query) {
     var op = query[0];
     var figureFilter = $(filterHtml);
-
     switch(op) {
     case 'figure':
       addFigureFilterMoveConstellation(figureFilter);
-      installGenericFilterEventHandlers(figureFilter);
       figureFilter.children('.figure-filter-move').val(query[1]);
       if (query.length > 2) {
         // ... was clicked
@@ -470,15 +504,35 @@ $(document).ready(function() {
     case 'formation':
       figureFilter.children('.figure-filter-op').val(op);
       addFormationFilterConstellation(figureFilter);
-      installGenericFilterEventHandlers(figureFilter);
       figureFilter.children('.figure-filter-formation').val(query[1]);
       break;
+    case 'count':
+      var subfilter  = query[1];
+      var comparison = query[2];
+      var number     = query[3];
+      figureFilter.children('.figure-filter-op').val(op);
+      addCountFilterConstellation(figureFilter);
+      figureFilter.children('.figure-filter-count-comparison').val(comparison);
+      figureFilter.children('.figure-filter-count-number').val(number);
+      figureFilter.children('.figure-filter-end-of-subfigures').before(buildDOMtoMatchQuery(subfilter));
+      break;
     default:
+      if (!n_ary(op)) { throw new Error('unknown operator: '+op); }
       figureFilter.children('.figure-filter-op').val(op);
       for (var i=1; i<query.length; i++) {
-        figureFilter.append(buildDOMtoMatchQuery(query[i]));
+        figureFilter.children('.figure-filter-end-of-subfigures').before(buildDOMtoMatchQuery(query[i]));
       }
       break;
+    }
+    ensureChildRemoveButtons(figureFilter);
+    installGenericFilterEventHandlers(figureFilter);
+    figureFilter.children('.figure-filter').attr('data-op', op);
+    if (figureFilter.children('.figure-filter').length < maxParameterCount(op)) {
+      // this code largely duplicate in filterOpChanged
+      var addButton = $(addButtonHtml);
+      addButton.click(clickFilterAddSubfilter);
+      figureFilter.children('.figure-filter-end-of-subfigures').after(addButton);
+      updateAddButtonText(figureFilter, op);
     }
     return figureFilter;
   }
@@ -571,7 +625,7 @@ $(document).ready(function() {
     }
   }
 
-  var dataTable = 
+  var dataTable =
         $('#dances-table').DataTable({
           "processing": true,
           "serverSide": true,
