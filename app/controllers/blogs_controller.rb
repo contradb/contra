@@ -1,12 +1,13 @@
 class BlogsController < ApplicationController
   def index
     @blogs = Blog.all.select {|blog| blog.readable?(current_user)}
+    @show_blogger_controls = Blog.writeable?(current_user)
   end
 
   def show
     @blog = Blog.find(params[:id])
     authenticate_blog_readable!(@blog)
-    @show_writeable_buttons = @blog.writeable?(current_user)
+    @show_blogger_controls = @blog.writeable?(current_user)
   end
 
   def new

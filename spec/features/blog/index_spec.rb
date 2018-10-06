@@ -12,6 +12,7 @@ describe 'Blog index' do
     visit(blogs_path)
     expect(page).to have_link(blog.title, href: blog_path(blog))
     expect(page).to_not have_link(unpublished.title)
+    expect(page).to_not have_text('publish')
   end
 
   it "user.blogger? sees all blogs" do
@@ -27,9 +28,9 @@ describe 'Blog index' do
     with_login(user: user) do
       visit(blogs_path)
       expect(page).to have_link(unpublished.title, href: blog_path(unpublished))
+      expect(page).to have_words("#{unpublished.title} not published")
     end
   end
-
 
   it "layout" do
     visit(blogs_path)

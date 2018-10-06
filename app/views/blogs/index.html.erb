@@ -1,9 +1,19 @@
 <h1>Blogs</h1>
 
+<% if @show_blogger_controls %>
+  <div class="btn-group">
+    <%= new_blog_button_html %>
+  </div>
+<% end %>
+
+
 <table class="table table-striped table-bordered table-hover table-condensed contra-table-nonfluid">
   <thead>
     <tr>
       <th>Title</th>
+      <% if @show_blogger_controls %>
+        <th></th>
+      <% end %>
     </tr>
   </thead>
 
@@ -13,10 +23,14 @@
         <td>
           <%= link_to(blog.title, blog_path(blog)) %>
         </td>
+        <% if @show_blogger_controls %>
+          <td>
+            <% unless blog.publish? %>
+              not published
+            <% end %>
+          </td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<br>
-<%= link_to 'New Blog', new_blog_path %>

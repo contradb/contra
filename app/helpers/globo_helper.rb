@@ -84,7 +84,11 @@ module GloboHelper
             new_program_path(copy_program_id: program), 
             BUTTON_HTML_ATTR)
   end
-
+  def new_blog_button_html(label: "New Blog")
+    link_to(content_tag(:span, new_icon_html() + ' ' + label),
+            new_blog_path, 
+            BUTTON_HTML_ATTR)
+  end
   def edit_blog_button_html(blog, label: "Edit Blog")
     link_to(content_tag( :span, edit_icon_html() + ' ' + label ),
             edit_blog_path(blog),

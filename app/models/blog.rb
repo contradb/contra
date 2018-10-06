@@ -3,12 +3,16 @@ class Blog < ApplicationRecord
   validates :title, presence: true
   validates :body, presence: true
 
-  def readable?(user=nil)
-    return true if publish?
+  def writeable?(user=nil)
+    self.class.writeable?(user)
+  end
+
+  def self.writeable?(user=nil)
     user.present? && (user.blogger? || user.admin?)
   end
 
-  def writeable?(user=nil)
+  def readable?(user=nil)
+    return true if publish?
     user.present? && (user.blogger? || user.admin?)
   end
 
