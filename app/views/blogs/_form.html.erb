@@ -11,19 +11,21 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="field form-group">
     <%= form.label :title %>
-    <%= form.text_area :title, id: :blog_title %>
+    <%= form.text_field :title, id: :blog_title, class: 'form-control' %>
   </div>
 
-  <div class="field">
+  <div class="field form-group">
     <%= form.label :body %>
-    <%= form.text_area :body, id: :blog_body %>
+    <%= form.text_area :body, id: :blog_body, class: 'form-control', rows: [6,[@blog.body ? @blog.body.lines.count + 2: 0, 20].min].max %>
   </div>
 
-  <%= form.check_box(:publish, 'data-toggle': :toggle, 'data-on': :publish, 'data-off': :unpublish) %>
+  <div class="field form-group">
+    <%= form.check_box(:publish, 'data-toggle': :toggle, 'data-on': :publish, 'data-off': :unpublish, 'data-size': :large) %>
+  </div>
 
-  <div class="actions">
+  <div class="actions form-group">
     <%= save_submit_button_html "Save Blog" %>
     <%# form.submit %>
   </div>

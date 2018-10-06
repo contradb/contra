@@ -12,17 +12,20 @@
   <% end %>
 
   <div class="choreographer-form-fields-deluxe">
-    <div class="field">
+    <div class="field form-group">
       <%= f.label :name %><br>
-      <%= f.text_field :name %>
+      <%= f.text_field :name, class: 'form-control' %>
     </div>
-    <div class="field">
+    <div class="field form-group">
       <%= f.label :publish %><br>
-      <%= f.select(:publish, [["Unknown", nil]].concat(Choreographer.publishes.keys.map {|key| [key.humanize, key]})) %>
+      <%= f.select(:publish,
+                   [["Unknown", nil]].concat(Choreographer.publishes.keys.map {|key| [key.humanize, key]}),
+                   {},
+                   class: 'form-control') %>
     </div>
-    <div class="field">
+    <div class="field form-group">
       <%= f.label :website %><br>
-      <%= f.text_field :website %>
+      <%= f.text_field :website, class: 'form-control' %>
     </div>
     <div class="actions">
     <%= save_submit_button_html "Save Choreographer" %>
