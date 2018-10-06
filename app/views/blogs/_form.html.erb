@@ -19,6 +19,15 @@
   <div class="field form-group">
     <%= form.label :body %>
     <%= form.text_area :body, id: :blog_body, class: 'form-control', rows: [6,[@blog.body ? @blog.body.lines.count + 2: 0, 20].min].max %>
+    <div class="fiddly-explanation hide-at-low-res">
+      may use <a href="https://guides.github.com/features/mastering-markdown/#examples" target="_">markdown</a> formatting &mdash; not translated into dialect
+    </div>
+
+  </div>
+
+  <div class="field form-group">
+    <%= form.label :sort_at, 'Date' %>
+    <%= form.date_field :sort_at, id: :blog_sort_at, class: 'form-control' %>
   </div>
 
   <div class="field form-group">

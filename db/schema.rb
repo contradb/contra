@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20180930182550) do
     t.text "body"
     t.bigint "user_id"
     t.boolean "publish", default: false, null: false
+    t.datetime "sort_at", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_blogs_on_user_id"

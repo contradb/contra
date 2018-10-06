@@ -3,7 +3,7 @@ require 'support/scrutinize_layout'
 
 
 describe 'Blog index' do
-  let (:blog) {FactoryGirl.create(:blog, publish: true)}
+  let (:blog) {FactoryGirl.create(:blog, publish: true, sort_at: DateTime.new(2017,5,15))}
   let (:unpublished) {FactoryGirl.create(:blog, publish: false)}
 
   it "lists published blogs" do
@@ -11,8 +11,16 @@ describe 'Blog index' do
     unpublished
     visit(blogs_path)
     expect(page).to have_link(blog.title, href: blog_path(blog))
+    expect(page).to have_text(blog.sort_at.strftime('%d/%m/%Y'))
     expect(page).to_not have_link(unpublished.title)
     expect(page).to_not have_text('publish')
+  end
+
+  it "lists blogs in increasing :sort_at order" do
+    [2019, 2017, 2018].map {|year| FactoryGirl.create(:blog, publish: true, sort_at: DateTime.new(year))}
+    visit(blogs_path)
+    expect(page).to_not have_text(/2019.*2017.*2018/)
+    expect(page).to have_text(/2017.*2018.*2019/)
   end
 
   it "user.blogger? sees all blogs" do

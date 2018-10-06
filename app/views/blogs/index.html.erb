@@ -11,8 +11,9 @@
   <thead>
     <tr>
       <th>Title</th>
+      <th>Date</th>
       <% if @show_blogger_controls %>
-        <th></th>
+        <th>Notes</th>
       <% end %>
     </tr>
   </thead>
@@ -22,6 +23,9 @@
       <tr>
         <td>
           <%= link_to(blog.title, blog_path(blog)) %>
+        </td>
+        <td>
+          <%= blog.sort_at.strftime('%d/%m/%Y') %>
         </td>
         <% if @show_blogger_controls %>
           <td>

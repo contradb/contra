@@ -1,6 +1,6 @@
 class BlogsController < ApplicationController
   def index
-    @blogs = Blog.all.select {|blog| blog.readable?(current_user)}
+    @blogs = Blog.order(:sort_at).select {|blog| blog.readable?(current_user)}
     @show_blogger_controls = Blog.writeable?(current_user)
   end
 
@@ -11,7 +11,7 @@ class BlogsController < ApplicationController
   end
 
   def new
-    @blog = Blog.new
+    @blog = Blog.new(sort_at: DateTime.now)
     authenticate_blog_writable!(@blog)
   end
 
@@ -66,6 +66,6 @@ class BlogsController < ApplicationController
   end
 
   def blog_params
-    params.require(:blog).permit(:title, :body, :publish)
+    params.require(:blog).permit(:title, :body, :publish, :sort_at)
   end
 end
