@@ -18,6 +18,6 @@ class Blog < ApplicationRecord
   end
 
   def body_html
-    ApplicationHelper::renderMarkdownHtmlOk(body || '')
+    ApplicationHelper::renderMarkdown(body || '')
   end
 end

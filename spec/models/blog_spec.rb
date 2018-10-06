@@ -50,4 +50,8 @@ describe Blog do
       expect(FactoryGirl.build(:blog).writeable?(user)).to be(true)
     end
   end
+
+  it '#body_html markdown' do
+    expect(FactoryGirl.build(:blog, body: "The **quick** brown fox <script>alert('boo')</script>").body_html).to eq("<div class='contra-markdown-block'><p>The <strong>quick</strong> brown fox &lt;script&gt;alert(&#39;boo&#39;)&lt;/script&gt;</p>\n</div>")
+  end
 end

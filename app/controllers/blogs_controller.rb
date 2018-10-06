@@ -59,8 +59,8 @@ class BlogsController < ApplicationController
 
   def authenticate_blog_writable!(blog)
     unless blog.writeable?(current_user)
-      deny_or_login!(deny_notice: "Oops! You're not authorized to view that page.",
-                     login_notice: "Oops! You're not authorized to view that page. If you're a blogger you could try logging in.",
+      deny_or_login!(deny_notice: "Oops! You're not authorized to do that.",
+                     login_notice: "Oops! You're not authorized to do that. If you're a blogger you could try logging in.",
                      fallback_location: blogs_path)
     end
   end

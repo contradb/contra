@@ -6,7 +6,7 @@ describe 'Blog create' do
     user = FactoryGirl.create(:user, blogger: true, password: password)
 
     visit(new_blog_path)
-    expect(page).to have_content("Oops! You're not authorized to view that page. If you're a blogger you could try logging in")
+    expect(page).to have_content("Oops! You're not authorized to do that. If you're a blogger you could try logging in")
     expect(page).to have_current_path(new_user_session_path)
 
     fill_in('user_email', with: user.email)

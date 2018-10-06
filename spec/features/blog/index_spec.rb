@@ -11,7 +11,7 @@ describe 'Blog index' do
     unpublished
     visit(blogs_path)
     expect(page).to have_link(blog.title, href: blog_path(blog))
-    expect(page).to have_text(blog.sort_at.strftime('%d/%m/%Y'))
+    expect(page).to have_text(blog_date_string(blog))
     expect(page).to_not have_link(unpublished.title)
     expect(page).to_not have_text('publish')
   end
@@ -31,17 +31,21 @@ describe 'Blog index' do
     expect_to_see_unpublished_blog(FactoryGirl.create(:user, admin: true))
   end
 
+  it "layout" do
+    visit(blogs_path)
+    scrutinize_layout(page)
+  end
+
   def expect_to_see_unpublished_blog(user)
     unpublished
     with_login(user: user) do
       visit(blogs_path)
       expect(page).to have_link(unpublished.title, href: blog_path(unpublished))
-      expect(page).to have_words("#{unpublished.title} not published")
+      expect(page).to have_words("#{unpublished.title} #{blog_date_string(unpublished)} not published")
     end
   end
 
-  it "layout" do
-    visit(blogs_path)
-    scrutinize_layout(page)
+  def blog_date_string(blog)
+    blog.sort_at.strftime('%d/%m/%Y')
   end
 end
