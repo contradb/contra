@@ -12,6 +12,13 @@
 !/log/.keep
 /tmp
 .byebug_history
+/elm-stuff
 /node_modules
 .ruby-version
 /spec/examples.txt
+/public/packs
+/public/packs-test
+/elm-stuff
+/node_modules
+yarn-debug.log*
+.yarn-integrity
