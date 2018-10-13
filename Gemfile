@@ -86,5 +86,6 @@ gem 'ajax-datatables-rails'
 
 gem 'actionview-encoded_mail_to'
 
-gem 'webpacker', '>= 4.0.x'
+gem 'webpacker', git: 'https://github.com/rails/webpacker.git' # 4.0.0.pre.3 is not good enough!
+
 

@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   resources :idioms, only: [:create, :update, :destroy]
 
   get 'welcome/index'
+  get 'welcome/elm'
 
   resource :dialect, only: [] do
     get :index
