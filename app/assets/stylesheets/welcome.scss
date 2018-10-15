@@ -1,6 +1,7 @@
 $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/error-with-javascript-enabled-tests-bootstrap-3-rails-4-travis-ci */
 @import "bootstrap";
 
+.elm-filter-page,
 .welcome-index-content {
   margin-left: 15px;
   margin-right: 15px;

@@ -1,29 +1,38 @@
 module Main exposing (..)
 
 import Browser
-import Html exposing (Html, h1, text)
-import Html.Attributes exposing (style)
+import Html exposing (Html, text, select, option, div)
+import Html.Attributes exposing (style, value, class, id)
+import FilterExpression exposing (FilterExpression)
+import FilterDecode
 
 -- MODEL
 
 type alias Model =
   {
+    expression : FilterExpression
   }
+
 
 -- INIT
 
 init : (Model, Cmd Message)
 init =
-  (Model, Cmd.none)
+  ({expression = Figure "*" []}, Cmd.none)
 
 -- VIEW
 
 view : Model -> Html Message
 view model =
-  -- The inline style is being used for example purposes in order to keep this example simple and
-  -- avoid loading additional resources. Use a proper stylesheet when building your own app.
-  h1 [style "display" "flex", style "justify-content" "center"]
-     [text "Hello Elm!"]
+  let
+      filterOption filterType = option [value filterType] [text filterType]
+  in
+  div [class "elm-filter-page"]
+      [div [class "figure-filter-root-container"]
+           [div [class "figure-filter"] --
+                [select [class "form-control", class "figure-filter-op"] <| List.map filterOption filterTypes
+                ]]]
+  -- h1 [style "display" "flex", style "justify-content" "center"] [text "Hello Elm!"]
 
 -- MESSAGE
 
