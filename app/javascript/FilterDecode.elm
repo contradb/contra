@@ -1,29 +1,38 @@
 module FilterDecode exposing (..)
 
-import Json.Decode as Dc
-import FilterExpression as Fe exposing (FilterExpression(..))
+import Json.Decode
+import FakeJSLibFigure as LibFigure exposing (FilterExpression(..))
 
-filterExpression : Dc.Decoder FilterExpression
+filterExpression : Json.Decode.Decoder LibFigure.FilterExpression
 filterExpression =
     let
         keyFromFirstElement string =
             case string of
-                "progression" ->
-                    Dc.succeed Progression
-
                 "formation" ->
-                    Dc.andThen formationDecoder (Dc.maybe (Dc.index 1 Dc.string))
+                    Json.Decode.andThen (Formation >> Json.Decode.succeed) (Json.Decode.index 1 Json.Decode.string)
+
+                "progression" ->
+                    Json.Decode.succeed Progression
+
+                "figure" ->
+                    Json.Decode.andThen figureDecoder (Json.Decode.index 1 Json.Decode.string)
 
                 _ ->
-                    Dc.fail "I only grok a few things so far, and you're not on the list, bub"
+                    Json.Decode.fail <| "Sorry pal, I only grok a few filters so far, and '" ++ string ++ "' isn't one of them"
 
-        formationDecoder maybeString =
-            case maybeString of
-                Just string ->
-                    Dc.succeed (Formation string)
+        figureDecoder moveStr =
+            case LibFigure.toMove moveStr of
+                Just move ->
+                    Json.Decode.succeed <| Figure move []
 
                 Nothing ->
-                    Dc.fail "Expected formation to have a string parameter"
+                    Json.Decode.fail <| "Trying to decode a non-move: " ++ moveStr
 
     in
-    Dc.andThen keyFromFirstElement (Dc.index 0 Dc.string)
+    Json.Decode.andThen keyFromFirstElement (Json.Decode.index 0 Json.Decode.string)
+
+-- ["&",["figure","circle"],["progression"]]
+-- ["&",["figure","circle","true","270","*"],["progression"]]
+-- Json.Decode.decodeString FilterDecode.filterExpression """["&",["figure","circle"],["progression"]]"""
+-- Json.Decode.decodeString FilterDecode.filterExpression """["figure","circle","true","270","*"]"""
+-- Json.Decode.decodeString FilterDecode.filterExpression """["figure","circle"]"""

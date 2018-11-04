@@ -3,7 +3,7 @@ module Main exposing (..)
 import Browser
 import Html exposing (Html, text, select, option, div)
 import Html.Attributes exposing (style, value, class, id)
-import FilterExpression exposing (FilterExpression)
+import FakeJSLibFigure exposing (FilterExpression(..), filterTypes, Move(..))
 import FilterDecode
 
 -- MODEL
@@ -18,7 +18,7 @@ type alias Model =
 
 init : (Model, Cmd Message)
 init =
-  ({expression = Figure "*" []}, Cmd.none)
+  ({expression = Figure Swing []}, Cmd.none)
 
 -- VIEW
 
