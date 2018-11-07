@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'rails_helper'
 # require 'spec_helper'
 # require 'app/datatables/dance_datatable.rb'
@@ -251,8 +252,8 @@ describe DanceDatatable do
             ["then",
              ["figure","balance"],
              ["figure","allemande"]]]]
-      expect(DanceDatatable.matching_figures(q, dance)).to eq(Set[SearchMatch.new(13, 14, count: 3),
-                                                                  SearchMatch.new(2, 14, count: 3)])
+      expect(DanceDatatable.matching_figures(q, dance)).to eq(Set[SearchMatch.new(12, 13, count: 3),
+                                                                  SearchMatch.new(2, 13, count: 3)])
     end
   end
 
