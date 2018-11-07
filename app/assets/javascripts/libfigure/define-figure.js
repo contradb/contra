@@ -306,18 +306,12 @@ function moveTermsAndSubstitutions(dialect) {
   return ms;
 }
 
-function moveTermsAndSubstitutionsForSelectMenu(dialect, optional_hide_obsolete) {
+function moveTermsAndSubstitutionsForSelectMenu(dialect) {
   if (!dialect) { throw_up('must specify dialect to moveTermsAndSubstitutionsForSelectMenu'); }
   var mtas = moveTermsAndSubstitutions(dialect);
   var swing_index = mtas.findIndex(function (e) { return 'swing' === e.term;});
   if (swing_index >= 5) {
     mtas.unshift(mtas[swing_index]);                       // copy swing to front of the list
-  }
-  if (optional_hide_obsolete) {
-    var progress_index = mtas.findIndex(function(e) { return 'progress' === e.term;});
-    if (progress_index !== -1) {
-      mtas.splice(progress_index, 1);
-    }
   }
   return mtas;
 }
