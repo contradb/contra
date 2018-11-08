@@ -37,7 +37,7 @@ $(document).ready(function() {
         <option>no</option>\
         <option>not</option>\
         <option>all</option>\
-        <option>count</option>\
+        <option value='count'>number of</option>\
       </select>\
       <span class='figure-filter-end-of-subfigures'></span>\
     </div>";

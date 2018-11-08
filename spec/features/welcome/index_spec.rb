@@ -228,11 +228,11 @@ describe 'Welcome page', js: true do
         end
       end
 
-      it "changing from 'and' to 'count' installs a new working count filter" do
+      it "changing from 'and' to 'number of' installs a new working number filter" do
         with_retries do
           setup_and_filter
           select('circle')        # rendevous and call me
-          first('.figure-filter-op').select('count')
+          first('.figure-filter-op').select('number of')
           expect(page).to have_css('.figure-filter', count: 2)
           expect(page).to have_css('.figure-filter-move', count: 1)
           expect(page).to have_css('.figure-filter-count-comparison', count: 1)
@@ -866,10 +866,10 @@ describe 'Welcome page', js: true do
         expect(page).to have_content('Showing dances with a swing and a ladles allemande right 1½ and an improper formation.')
       end
 
-      it 'count' do
+      it 'number of' do
         dances
         visit '/'
-        select('count')
+        select('number of')
         select('contra corners') # clear out search results
         expect(page).to_not have_content('Processing')
         expect(page).to have_css('.figure-filter-op', count: 2)
