@@ -155,7 +155,7 @@ function figuresUseDancers(figures, dancers_term) {
   return false;
 }
 
-// unpacks a hey length into a pair
+// unpacks a hey length into a pair, [dancer, meeting_count] or ['full', meeting_count]
 function parseHeyLength(hey_length) {
   if (hey_length === 'full' || hey_length === 'between half and full') {
     return [hey_length, 2];

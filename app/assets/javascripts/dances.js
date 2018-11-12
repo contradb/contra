@@ -3,8 +3,9 @@
 
 $(function () {
   function validationToggleExec(selector) {
-    var validate = selector.prop('checked');
-    if (validate) {
+    if (0 === selector.length) {
+      return;
+    } else if (selector.prop('checked')) {
       $('body').removeClass('no-lingo-lines');
     } else {
       $('body').addClass('no-lingo-lines');

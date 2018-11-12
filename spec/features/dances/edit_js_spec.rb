@@ -313,10 +313,12 @@ describe 'Editing dances', js: true do
         fill_in(:custom, with: custom)
         fill_in(:note, with: note)
         expect(page).to_not have_css('s', text: 'ramen noodles')
+        expect(page).to_not have_css('.no-lingo-lines s', text: /\Amen\z/) # don't disable lingo lines in editor, as in #494
         expect(page).to have_css('s', text: /\Amen\z/, count: 4)
         expect(page).to have_css('s', text: /\AMen\z/, count: 1)
         expect(page).to have_css('s', text: 'gentlespoons')
         expect(page).to have_css('s', text: 'women')
+        expect(page).to_not have_css('.no-lingo-lines s', text: 'women') # don't disable lingo lines in editor, as in #494
         expect(page).to have_css('s', text: 'ladles')
         expect(page).to_not have_css('s', text: 'congresswomen')
         expect(page).to have_link("#{custom} #{note}")
