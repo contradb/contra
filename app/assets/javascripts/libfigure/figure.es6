@@ -693,7 +693,20 @@ function heyChange(figure,index) {
 
 function heyGoodBeats(figure) {
   var [who, who2, shoulder, hey_length, dir, rico1, rico2, rico3, rico4, beats] = figure.parameter_values;
-  return beats === 8 * heyLengthMeetTimes(hey_length);
+  var [duration_or_dancer, meet_times] = parseHeyLength(hey_length);
+  if (-1 !== ['full', 'between half and full', 'half', 'less than half'].indexOf(duration_or_dancer)) {
+    return beats === 8 * heyLengthMeetTimes(hey_length);
+  } else {
+    switch (meet_times) {
+    case 1:
+      return 0 <= beats && beats <= 8;
+    case 2:
+      return 8 < beats && beats <= 16;
+    default:
+      return false;             // should never happen so quietly freak out
+    }
+  }
+
 }
 
 function heyWords(move, pvs, dialect) {
