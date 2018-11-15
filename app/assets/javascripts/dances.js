@@ -187,11 +187,7 @@ function menuMoveLabel(from,to) {
         $scope.edit_index_box.length = 0;
       } else {
         $scope.edit_index_box[0] = figureIdx;
-        var is_empty_figure = !$scope.figures.arr[figureIdx].move;
-        if (is_empty_figure) {
-          // focus the move select box:
-          $timeout(function() { $('#move-'+figureIdx).focus(); });
-        }
+        $timeout(function() { $('#move-'+figureIdx).focus(); }); // focus the move select box
       }
     };
     $scope.editable_figures = function(figures) {
