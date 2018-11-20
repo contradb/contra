@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :dances, dependent: :destroy
   has_many :programs, -> { order "LOWER(title)" }, dependent: :destroy
   has_many :idioms, dependent: :destroy, class_name: 'Idiom::Idiom'
+  has_many :duts, dependent: :destroy
 
   validates :name, length: { in: 4..100 }  
 
