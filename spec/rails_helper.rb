@@ -1,3 +1,4 @@
+require 'rspec/rails'           # booped above "require 'spec_helper'" to fix zeus problem
 require 'spec_helper'
 require 'devise'
 require 'support/controller_macros'
@@ -8,8 +9,6 @@ ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
-require 'spec_helper'
-require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'capybara/poltergeist'
 Capybara.javascript_driver = :poltergeist
