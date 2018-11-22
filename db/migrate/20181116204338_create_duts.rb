@@ -6,5 +6,6 @@ class CreateDuts < ActiveRecord::Migration[5.1]
       t.references :tag, foreign_key: true, null: false
       t.timestamps
     end
+    add_index :duts, [:dance_id, :user_id, :tag_id], unique: true
   end
 end

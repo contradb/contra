@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 20181116204338) do
     t.bigint "tag_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["dance_id", "user_id", "tag_id"], name: "index_duts_on_dance_id_and_user_id_and_tag_id", unique: true
     t.index ["dance_id"], name: "index_duts_on_dance_id"
     t.index ["tag_id"], name: "index_duts_on_tag_id"
     t.index ["user_id"], name: "index_duts_on_user_id"
@@ -82,6 +83,7 @@ ActiveRecord::Schema.define(version: 20181116204338) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
