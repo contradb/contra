@@ -15,6 +15,15 @@ $(function () {
   validationToggleExec($('.validation-toggle'));
 });
 
+// Show Page Tag Buttons
+
+$(function () {
+  $('.activate-tag').on('ajax:success', function() {
+    $(this).removeClass('btn-default').addClass('btn-primary');
+    return true;                // continue event propagation
+  });
+});
+
 // ________________________________________________________________
 // Editor below here
 $(function () {

@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   resources :dances, except: [:index]
   post 'dances_filter', to: 'dances#index'
+  resources :duts, only: [:create, :destroy]
   resources :choreographers
   devise_for :users, controllers: { registrations: "users/registrations" }
   resources :users, only: [:show, :index] do
