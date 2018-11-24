@@ -18,8 +18,19 @@ $(function () {
 // Show Page Tag Buttons
 
 $(function () {
-  $('.activate-tag').on('ajax:success', function() {
-    $(this).removeClass('btn-default').addClass('btn-primary');
+  $('.activate-tag').on('ajax:success', function(e, json) {
+    var $this = $(this);
+    var created = !!json;
+    if (created) {
+      $this.removeClass('btn-default').addClass('btn-primary');
+      $this.data('method', 'delete').attr('data-method', 'delete');
+      $this.data('saved-create-href', $this.attr('href'));
+      $this.attr('href', '/duts/'+json.id);
+    } else {                    // dut deleted
+      $this.removeClass('btn-primary').addClass('btn-default');
+      $this.data('method', 'post').attr('data-method', 'post');
+      $this.attr('href', $this.data('saved-create-href'));
+    }
     return true;                // continue event propagation
   });
 });

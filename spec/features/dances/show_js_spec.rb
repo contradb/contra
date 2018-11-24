@@ -28,17 +28,31 @@ describe 'Showing dances', js: true do
 
     it 'button toggles creation of duts' do
       with_login do |user|
+        tag = Tag.find_by(name: 'please review')
         visit dance_path(dance)
-        click_on('please review')
-        expect(page).to have_css('.btn.btn-primary', text: 'please review')
-        dut = Dut.last
-        expect(dut).to be_a(Dut)
-        expect(dut.user_id).to eq(user.id)
-        expect(dut.dance_id).to eq(dance.id)
-        expect(dut.tag_id).to eq(Tag.find_by(name: 'please review').id)
+        click_on(tag.name)
+        expect(page).to have_css('.btn.btn-primary', text: tag.name)
+        expect(Dut.find_by(user: user, tag: tag, dance: dance)).to be_a(Dut)
+        click_on(tag.name)
+        expect(page).to have_css('.btn.btn-default', text: tag.name)
+        expect(Dut.find_by(user: user, dance: dance, tag: tag)).to be(nil)
+        click_on(tag.name)
+        expect(page).to have_css('.btn.btn-primary', text: tag.name)
+        expect(Dut.find_by(user: user, tag: tag, dance: dance)).to be_a(Dut)
       end
     end
 
-    it 'without login, prompts'
+    it 'without login, prompts' do
+      visit dance_path(dance)
+      click_on('verified')
+      expect(page).to have_button('Login')
+      expect(page).to have_current_path(new_user_session_path)
+      user = FactoryGirl.create(:user)
+      fill_in(:user_email, with: user.email)
+      fill_in(:user_password, with: user.password)
+      click_on('Login')
+      expect(page).to have_css('h1', text: dance.title)
+      expect(page).to have_css('.btn.btn-primary', text: 'verified')
+    end
   end
 end
