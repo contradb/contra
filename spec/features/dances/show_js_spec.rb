@@ -28,7 +28,7 @@ describe 'Showing dances', js: true do
 
     it 'button toggles creation of duts' do
       with_login do |user|
-        tag = Tag.find_by(name: 'please review')
+        tag = Tag.find_by(name: 'verified')
         visit dance_path(dance)
         click_on(tag.name)
         expect(page).to have_css('.btn.btn-primary', text: tag.name)
@@ -39,6 +39,18 @@ describe 'Showing dances', js: true do
         click_on(tag.name)
         expect(page).to have_css('.btn.btn-primary', text: tag.name)
         expect(Dut.find_by(user: user, tag: tag, dance: dance)).to be_a(Dut)
+      end
+    end
+
+    it 'loads with buttons toggled if a dut already exists' do
+      with_login do |user|
+        tag = Tag.find_by(name: 'please review') or raise 'expected this to be created for reasons I don\'t recall'
+        FactoryGirl.create(:dut, tag: tag, user: user, dance: dance)
+        visit dance_path(dance)
+        expect(page).to have_css('.btn.btn-primary', text: tag.name)
+        click_on(tag.name)
+        expect(page).to have_css('.btn.btn-default', text: tag.name)
+        expect(Dut.find_by(user: user, dance: dance, tag: tag)).to be(nil)
       end
     end
 

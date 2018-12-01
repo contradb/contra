@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :tag do
-    name "edgy"
+    sequence(:name) {|n| "edgy#{n}" }
   end
 end

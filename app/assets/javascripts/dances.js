@@ -18,8 +18,14 @@ $(function () {
 // Show Page Tag Buttons
 
 $(function () {
+  $('.activate-tag').click(function () {
+    $(this).append('<span class="glyphicon glyphicon-time" aria-label="wait..."></span>');
+    return true;
+    });
+
   $('.activate-tag').on('ajax:success', function(e, json) {
     var $this = $(this);
+    $this.remove('span');
     var created = !!json;
     if (created) {
       $this.removeClass('btn-default').addClass('btn-primary');
