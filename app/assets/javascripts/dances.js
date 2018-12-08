@@ -16,23 +16,25 @@ $(function () {
 });
 
 // Show Page Tag Buttons
-
+// New Plan: text, then (maybe hidden) glyphyicon, then span with x2. Elements are never removed
 $(function () {
   $('.activate-tag').click(function () {
+    $(this).children('span').remove();
     $(this).append('<span class="glyphicon glyphicon-time" aria-label="wait..."></span>');
     return true;
     });
 
   $('.activate-tag').on('ajax:success', function(e, json) {
     var $this = $(this);
-    $this.remove('span');
     var created = !!json;
     if (created) {
+      $this.children('span').removeClass('glyphicon-time').addClass('glyphicon-ok');
       $this.removeClass('btn-default').addClass('btn-primary');
       $this.data('method', 'delete').attr('data-method', 'delete');
       $this.data('saved-create-href', $this.attr('href'));
       $this.attr('href', '/duts/'+json.id);
     } else {                    // dut deleted
+      $this.children('span').remove();
       $this.removeClass('btn-primary').addClass('btn-default');
       $this.data('method', 'post').attr('data-method', 'post');
       $this.attr('href', $this.data('saved-create-href'));

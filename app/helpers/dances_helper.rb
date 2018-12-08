@@ -44,7 +44,11 @@ module DancesHelper
     dut_create_href = duts_path(dance_id: @dance, tag_id: tag)
     dut = Dut.find_by(tag: tag, user: current_user, dance: @dance)
     if dut
-      link_to(tag.name, dut_path(dut), class: 'btn btn-primary activate-tag', 'data-saved-create-href': dut_create_href, method: :delete, remote: :true)
+      link_to(dut_path(dut), class: 'btn btn-primary activate-tag', 'data-saved-create-href': dut_create_href, method: :delete, remote: :true) {
+        duts_count = Dut.where(tag: tag, dance: @dance).count
+        sanitize(tag.name) + content_tag('span', '', class: 'glyphicon glyphicon-ok') +
+          if duts_count >= 1 then " ×#{duts_count}" else '' end
+      }
     else
       link_to(tag.name, dut_create_href, class: 'btn btn-default activate-tag ', method: :post, remote: :true)
     end
