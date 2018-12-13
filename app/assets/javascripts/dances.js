@@ -18,11 +18,11 @@ $(function () {
 // Show Page Tag Buttons
 // New Plan: text, then (maybe hidden) glyphyicon, then span with x2. Elements are never removed
 $(function () {
-  $('.activate-tag').click(function () {
-    $(this).children('span').remove();
-    $(this).append('<span class="glyphicon glyphicon-time" aria-label="wait..."></span>');
-    return true;
-    });
+  $('.tag-constellation input[type="checkbox"]').change(function (e) {
+    console.log('hey!');
+    console.log($(this).is(':checked'));
+    $(this).closest('.tag-constellation').find('.tag-label').toggleClass('tag-label-untagged');
+  });
 
   $('.activate-tag').on('ajax:success', function(e, json) {
     var $this = $(this);

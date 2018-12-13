@@ -22,6 +22,5 @@
     Moderation: <%= admin_moderation_display(@dance.user) %>
   </p>
 <% end %>
-<% @tags.each do |tag| %>
-  <%= tag_toggle_button(tag: tag, dance: @dance, user: current_user) %>
-<% end %>
+<%= @dance.title %>
+<%= render partial: "dut", collection: @tags, as: :_tag, locals: {dance: @dance, user: current_user} %>

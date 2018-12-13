@@ -10,6 +10,6 @@ class MakeBasicTags < ActiveRecord::Migration[5.1]
 
   private
   def basic_tag_names
-    ['verified', 'please review']
+    ['verified', 'broken']
   end
 end

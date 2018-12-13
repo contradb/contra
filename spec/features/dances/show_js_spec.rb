@@ -26,31 +26,45 @@ describe 'Showing dances', js: true do
   describe 'tags' do
     let (:dance) {FactoryGirl.create(:dance)}
 
-    [0, 1].each do |other_dut_count|
-      it 'button toggles creation of duts' do
-        with_login do |user|
-          tag = Tag.find_by(name: 'verified')
-          other_dut_count.times {FactoryGirl.create(:dut, tag: tag, dance: dance)}
-          tag_clicked_label = other_dut_count > 0 ? "#{tag.name} ×2" : tag.name
-          tag_unclicked_label = other_dut_count > 0 ? "#{tag.name} ×1" : tag.name
-          # TODO
-          visit dance_path(dance)
-          click_on(tag.name)
-          expect(page).to have_css('.btn.btn-primary', text: tag.name)
-          expect(Dut.find_by(user: user, tag: tag, dance: dance)).to be_a(Dut)
-          click_on(tag.name)
-          expect(page).to have_css('.btn.btn-default', text: tag.name)
-          expect(Dut.find_by(user: user, dance: dance, tag: tag)).to be(nil)
-          click_on(tag.name)
-          expect(page).to have_css('.btn.btn-primary', text: tag.name)
-          expect(Dut.find_by(user: user, tag: tag, dance: dance)).to be_a(Dut)
-        end
+    it 'bootstrap toggles toggle duts' do
+      with_login do |user|
+        tag = Tag.find_by(name: 'verified')
+
+        handle = Capybara.page.driver.current_window_handle
+        Capybara.page.driver.resize_window_to(handle, 800, 1200)
+
+        visit dance_path(dance)
+
+        expect(page).to have_css('.tag-label-untagged', text: tag.name)
+        # expect(Dut.find_by(dance: dance, user: user, tag: tag)).to be(nil)
+        # expect to have no icon
+        # expect to not have xAnything
+
+        toggle_tag(tag)
+        
+        expect(page).to_not have_css('.tag-label-untagged', text: tag.name)
+
+        # expect(Dut.find_by(dance: dance, user: user, tag: tag)).to_not be(nil)
+        # expect to have icon
+        # expect to have x1
+
+        toggle_tag(tag)
+        expect(page).to have_css('.tag-label-untagged', text: tag.name)
+        # expect(Dut.find_by(dance: dance, user: user, tag: tag)).to be(nil)
+        # expect to have no icon
+        # expect to not have xAnything
+
+        # Dave put away nog
       end
+    end
+
+    def toggle_tag(tag)
+      page.find(".tag-constellation[data-tag-id='#{tag.id}'] .toggle-handle").click
     end
 
     [0, 1].each do |other_dut_count|
       it "loads with buttons toggled if a dut already exists (with #{other_dut_count} other duts)" do
-        tag = Tag.find_by(name: 'please review') or raise "expected this to be created for reasons I don't recall"
+        tag = Tag.find_by(name: 'broken') or raise "expected this to be created for reasons I don't recall"
         tag_clicked_label = "#{tag.name} ×#{1 + other_dut_count}"
         tag_unclicked_label = if other_dut_count == 0 then tag.name else "#{tag.name} ×#{other_dut_count}" end
 

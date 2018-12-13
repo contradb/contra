@@ -146,10 +146,4 @@ describe 'Showing dances' do
       expect(page).to have_current_path(root_path)
     end
   end
-
-  it "has buttons displaying tags" do
-    visit dance_path(FactoryGirl.create(:dance))
-    expect(page).to have_link('please review')
-    expect(page).to have_link('verified')
-  end
 end

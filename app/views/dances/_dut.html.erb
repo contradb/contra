@@ -1,0 +1,9 @@
+<% duts = Dut.where(tag: _tag, dance: dance) %>
+<% zero_duts = 0 == duts.count %>
+<% dut = duts.find_by(user: user) %>
+<%= content_tag(:div, class: "tag-constellation", 'data-tag-id': _tag.id) do %>
+  <%= content_tag :span, _tag.name, class: "tag-label#{zero_duts ? ' tag-label-untagged' : ''}"  %>
+  x1
+  <%= tag(:input, type: :checkbox, 'data-toggle': :toggle, checked: !zero_duts) %>
+
+<% end %>
