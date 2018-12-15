@@ -26,6 +26,23 @@ If you've come this far, maybe it's time to contact the project for a db replica
 2. The first user you create through the website has super special
 powers.
 
+### Outline of install for Windows - Dec 2018
+
+Sketch only and not tested - ask for help on any of this
+
+- Virtualbox Ubuntu LTS
+- clone git repo
+- install rbenv
+- install ruby 2.4.1 in rbenv
+- bundle install
+- configure config/database.yml
+- get a replica database from contradb.com
+
+Then:
+- bundle exec rspec [runs all tests]
+- bundle exec rails s [runs server on http://localhost:3000]
+- bundle exec rails c [runs repl loop]
+
 ## Deployment
 
 [Deployment instructions](https://github.com/contradb/contra/wiki/Installing-new-git-version-onto-production-server) are in the wiki.
