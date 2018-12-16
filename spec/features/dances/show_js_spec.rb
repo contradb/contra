@@ -30,29 +30,31 @@ describe 'Showing dances', js: true do
       with_login do |user|
         tag = Tag.find_by(name: 'verified')
 
-        handle = Capybara.page.driver.current_window_handle
-        Capybara.page.driver.resize_window_to(handle, 800, 1200)
+        # handle = Capybara.page.driver.current_window_handle
+        # Capybara.page.driver.resize_window_to(handle, 800, 1200)
 
         visit dance_path(dance)
 
+        expect(page).to_not have_css(".#{tag.glyphicon}")
         expect(page).to have_css('.tag-label-untagged', text: tag.name)
+        expect(page).to have_text(tag.name + ' × 0')
         # expect(Dut.find_by(dance: dance, user: user, tag: tag)).to be(nil)
         # expect to have no icon
-        # expect to not have xAnything
 
         toggle_tag(tag)
-        
-        expect(page).to_not have_css('.tag-label-untagged', text: tag.name)
 
+        expect(page).to have_css(".#{tag.glyphicon}")
+        expect(page).to_not have_css('.tag-label-untagged', text: tag.name)
+        expect(page).to have_text(tag.name + ' × 1')
         # expect(Dut.find_by(dance: dance, user: user, tag: tag)).to_not be(nil)
         # expect to have icon
-        # expect to have x1
 
         toggle_tag(tag)
+        expect(page).to_not have_css(".#{tag.glyphicon}")
         expect(page).to have_css('.tag-label-untagged', text: tag.name)
+        expect(page).to have_text(tag.name + ' × 0')
         # expect(Dut.find_by(dance: dance, user: user, tag: tag)).to be(nil)
         # expect to have no icon
-        # expect to not have xAnything
 
         # Dave put away nog
       end

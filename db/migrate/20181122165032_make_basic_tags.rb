@@ -1,15 +1,16 @@
 class MakeBasicTags < ActiveRecord::Migration[5.1]
 
   def up
-    basic_tag_names.map {|name| Tag.create!(name: name)}
+    tag_attributes.map {|attrs| Tag.create!(attrs)}
   end
 
   def down
-    basic_tag_names.map {|name| Tag.find_by(name: name)&.destroy!}
+    tag_attributes.map {|attrs| Tag.find_by(name: attrs.fetch(:name))&.destroy!}
   end
 
   private
-  def basic_tag_names
-    ['verified', 'broken']
+  def tag_attributes
+    [{name: 'verified', glyphicon: 'glyphicon-ok'},
+     {name: 'broken', glyphicon: 'glyphicon-fire', color: 'red'}]
   end
 end

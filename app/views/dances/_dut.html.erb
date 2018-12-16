@@ -2,8 +2,9 @@
 <% zero_duts = 0 == duts.count %>
 <% dut = duts.find_by(user: user) %>
 <%= content_tag(:div, class: "tag-constellation", 'data-tag-id': _tag.id) do %>
+  <%= content_tag :span, '', {class: "glyphicon #{_tag.glyphicon} #{dut ? '' : 'invisible'}"}.merge(_tag.color ? {style: "color: #{_tag.color}"} : {}) %>
   <%= content_tag :span, _tag.name, class: "tag-label#{zero_duts ? ' tag-label-untagged' : ''}"  %>
-  x1
+  × <%= content_tag :span, duts.count.to_s, class: 'tag-multiplier', 'data-other-user-count': duts.count - (dut ? 1 : 0) %>
   <%= tag(:input, type: :checkbox, 'data-toggle': :toggle, checked: !zero_duts) %>
 
 <% end %>
