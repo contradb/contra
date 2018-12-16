@@ -34,6 +34,7 @@ Sketch only and not tested - ask for help on any of this
 - clone git repo
 - install rbenv
 - install ruby 2.4.1 in rbenv
+- gem install bundler
 - bundle install
 - configure config/database.yml
 - get a replica database from contradb.com
