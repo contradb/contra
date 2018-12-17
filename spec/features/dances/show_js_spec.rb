@@ -26,37 +26,60 @@ describe 'Showing dances', js: true do
   describe 'tags' do
     let (:dance) {FactoryGirl.create(:dance)}
 
-    it 'bootstrap toggles toggle duts' do
-      with_login do |user|
-        tag = Tag.find_by(name: 'verified')
+    describe 'toggling' do
+      it 'zero duts initially' do
+        with_login do |user|
+          tag = Tag.find_by(name: 'verified')
 
-        # handle = Capybara.page.driver.current_window_handle
-        # Capybara.page.driver.resize_window_to(handle, 800, 1200)
+          # handle = Capybara.page.driver.current_window_handle
+          # Capybara.page.driver.resize_window_to(handle, 800, 1200)
 
-        visit dance_path(dance)
+          visit dance_path(dance)
 
-        expect(page).to_not have_css(".#{tag.glyphicon}")
-        expect(page).to have_css('.tag-label-untagged', text: tag.name)
-        expect(page).to have_text(tag.name + ' × 0')
-        # expect(Dut.find_by(dance: dance, user: user, tag: tag)).to be(nil)
-        # expect to have no icon
+          expect(page).to_not have_css(".#{tag.glyphicon}")
+          expect(page).to have_css('.tag-label-untagged', text: tag.name)
+          expect(page).to have_text(tag.name + ' × 0')
+          # expect(Dut.find_by(dance: dance, user: user, tag: tag)).to be(nil)
+          # expect to have no icon
 
-        toggle_tag(tag)
+          toggle_tag(tag)
 
-        expect(page).to have_css(".#{tag.glyphicon}")
-        expect(page).to_not have_css('.tag-label-untagged', text: tag.name)
-        expect(page).to have_text(tag.name + ' × 1')
-        # expect(Dut.find_by(dance: dance, user: user, tag: tag)).to_not be(nil)
-        # expect to have icon
+          expect(page).to have_css(".#{tag.glyphicon}")
+          expect(page).to_not have_css('.tag-label-untagged', text: tag.name)
+          expect(page).to have_text(tag.name + ' × 1')
+          # expect(Dut.find_by(dance: dance, user: user, tag: tag)).to_not be(nil)
+          # expect to have icon
 
-        toggle_tag(tag)
-        expect(page).to_not have_css(".#{tag.glyphicon}")
-        expect(page).to have_css('.tag-label-untagged', text: tag.name)
-        expect(page).to have_text(tag.name + ' × 0')
-        # expect(Dut.find_by(dance: dance, user: user, tag: tag)).to be(nil)
-        # expect to have no icon
+          toggle_tag(tag)
+          expect(page).to_not have_css(".#{tag.glyphicon}")
+          expect(page).to have_css('.tag-label-untagged', text: tag.name)
+          expect(page).to have_text(tag.name + ' × 0')
+          # expect(Dut.find_by(dance: dance, user: user, tag: tag)).to be(nil)
+          # expect to have no icon
 
-        # Dave put away nog
+          # Dave put away nog
+        end
+      end
+
+      it 'other-people duts initially' do
+        with_login do |user|
+          tag = Tag.find_by(name: 'verified')
+          initial_dut_count = 2
+
+          initial_dut_count.times {FactoryGirl.create(:dut, tag: tag, dance: dance)}
+
+          visit dance_path(dance)
+
+          expect(page).to have_css(".#{tag.glyphicon}")
+          expect(page).to_not have_css('.tag-label-untagged', text: tag.name)
+          expect(page).to have_text("#{tag.name} × #{initial_dut_count}")
+
+          toggle_tag(tag)
+
+          expect(page).to have_css(".#{tag.glyphicon}")
+          expect(page).to_not have_css('.tag-label-untagged', text: tag.name)
+          expect(page).to have_text("#{tag.name} × #{initial_dut_count + 1}")
+        end
       end
     end
 
