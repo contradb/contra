@@ -26,6 +26,17 @@ describe 'Showing dances', js: true do
   describe 'tags' do
     let (:dance) {FactoryGirl.create(:dance)}
 
+    it 'bootstrap_color attribute colors glyphicon and toggles' do
+      with_login do |user|
+        tag = Tag.find_by(name: 'broken')
+        FactoryGirl.create(:dut, user: user, tag: tag, dance: dance)
+        visit dance_path(dance)
+        expect(tag.bootstrap_color).to eq('danger')
+        expect(page).to have_css(".glyphicon.#{tag.glyphicon}.text-#{tag.bootstrap_color}")
+        expect(page).to have_css("input[type='checkbox'][data-onstyle=#{tag.bootstrap_color.inspect}]", visible: false)
+      end
+    end
+
     describe 'toggling' do
       it 'zero duts initially' do
         with_login do |user|

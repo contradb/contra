@@ -11,6 +11,6 @@ class MakeBasicTags < ActiveRecord::Migration[5.1]
   private
   def tag_attributes
     [{name: 'verified', glyphicon: 'glyphicon-ok'},
-     {name: 'broken', glyphicon: 'glyphicon-fire', color: 'red'}]
+     {name: 'broken', glyphicon: 'glyphicon-fire', bootstrap_color: 'danger'}]
   end
 end
