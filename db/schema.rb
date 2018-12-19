@@ -83,6 +83,8 @@ ActiveRecord::Schema.define(version: 20181122165032) do
     t.string "name", null: false
     t.string "glyphicon", default: "glyphicon-tag", null: false
     t.string "bootstrap_color"
+    t.string "on_phrase"
+    t.string "off_sentence"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_tags_on_name", unique: true

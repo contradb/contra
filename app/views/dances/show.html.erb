@@ -22,5 +22,7 @@
     Moderation: <%= admin_moderation_display(@dance.user) %>
   </p>
 <% end %>
-<%= @dance.title %>
 <%= render partial: "dut", collection: @tags, as: :_tag, locals: {dance: @dance, user: current_user} %>
+<br />
+<br />
+<br />

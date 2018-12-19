@@ -10,7 +10,9 @@ class MakeBasicTags < ActiveRecord::Migration[5.1]
 
   private
   def tag_attributes
-    [{name: 'verified', glyphicon: 'glyphicon-ok'},
-     {name: 'broken', glyphicon: 'glyphicon-fire', bootstrap_color: 'danger'}]
+    [{name: 'verified', glyphicon: 'glyphicon-ok',
+      on_phrase: 'have called this transcription', off_sentence: 'no known calls of this transcription'},
+     {name: 'broken', glyphicon: 'glyphicon-fire', bootstrap_color: 'danger',
+      on_phrase: 'have reported this', off_sentence: 'no reports of issues'}]
   end
 end

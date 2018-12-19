@@ -26,7 +26,7 @@ describe 'Showing dances', js: true do
   describe 'tags' do
     let (:dance) {FactoryGirl.create(:dance)}
 
-    it 'bootstrap_color attribute colors glyphicon and toggles' do
+    it 'bootstrap_color attribute works' do
       with_login do |user|
         tag = Tag.find_by(name: 'broken')
         FactoryGirl.create(:dut, user: user, tag: tag, dance: dance)
@@ -37,8 +37,8 @@ describe 'Showing dances', js: true do
       end
     end
 
-    describe 'toggling' do
-      it 'zero duts initially' do
+    describe 'bootstrap toggle' do
+      it 'zero tags initially' do
         with_login do |user|
           tag = Tag.find_by(name: 'verified')
 
@@ -50,29 +50,27 @@ describe 'Showing dances', js: true do
           expect(page).to_not have_css(".#{tag.glyphicon}")
           expect(page).to have_css('.tag-label-untagged', text: tag.name)
           expect(page).to have_text(tag.name + ' × 0')
+          expect(page).to have_text(tag.off_sentence)
           # expect(Dut.find_by(dance: dance, user: user, tag: tag)).to be(nil)
-          # expect to have no icon
 
           toggle_tag(tag)
 
           expect(page).to have_css(".#{tag.glyphicon}")
           expect(page).to_not have_css('.tag-label-untagged', text: tag.name)
           expect(page).to have_text(tag.name + ' × 1')
+          expect(page).to have_text("you #{tag.on_phrase}")
           # expect(Dut.find_by(dance: dance, user: user, tag: tag)).to_not be(nil)
-          # expect to have icon
 
           toggle_tag(tag)
           expect(page).to_not have_css(".#{tag.glyphicon}")
           expect(page).to have_css('.tag-label-untagged', text: tag.name)
           expect(page).to have_text(tag.name + ' × 0')
+          expect(page).to have_text(tag.off_sentence)
           # expect(Dut.find_by(dance: dance, user: user, tag: tag)).to be(nil)
-          # expect to have no icon
-
-          # Dave put away nog
         end
       end
 
-      it 'other-people duts initially' do
+      it "other-people's tags already exist" do
         with_login do |user|
           tag = Tag.find_by(name: 'verified')
           initial_dut_count = 2
@@ -84,12 +82,14 @@ describe 'Showing dances', js: true do
           expect(page).to have_css(".#{tag.glyphicon}")
           expect(page).to_not have_css('.tag-label-untagged', text: tag.name)
           expect(page).to have_text("#{tag.name} × #{initial_dut_count}")
+          raise 'test sentence'
 
           toggle_tag(tag)
 
           expect(page).to have_css(".#{tag.glyphicon}")
           expect(page).to_not have_css('.tag-label-untagged', text: tag.name)
           expect(page).to have_text("#{tag.name} × #{initial_dut_count + 1}")
+          raise 'test sentence'
         end
       end
     end
@@ -98,45 +98,13 @@ describe 'Showing dances', js: true do
       page.find(".tag-constellation[data-tag-id='#{tag.id}'] .toggle-handle").click
     end
 
-    [0, 1].each do |other_dut_count|
-      it "loads with buttons toggled if a dut already exists (with #{other_dut_count} other duts)" do
-        tag = Tag.find_by(name: 'broken') or raise "expected this to be created for reasons I don't recall"
-        tag_clicked_label = "#{tag.name} ×#{1 + other_dut_count}"
-        tag_unclicked_label = if other_dut_count == 0 then tag.name else "#{tag.name} ×#{other_dut_count}" end
-
-        with_login do |user|
-          FactoryGirl.create(:dut, tag: tag, user: user, dance: dance)
-          other_dut_count.times {FactoryGirl.create(:dut, tag: tag, dance: dance)}
-          visit dance_path(dance)
-          expect(page).to have_css('.btn.btn-primary', text: tag_clicked_label)
-          expect(page).to have_css('.btn.btn-primary span.glyphicon-ok')
-          click_on(tag.name)
-          expect(page).to have_css('.btn.btn-default', text: tag_unclicked_label)
-          expect(Dut.find_by(user: user, dance: dance, tag: tag)).to be(nil)
-        end
-      end
+    xit 'shows a waiting icon' do
+      raise 'todo'
     end
 
-    it 'shows a waiting icon' do
-      with_login do |user|
-        tag = Tag.find_by(name: 'verified')
-        visit dance_path(dance)
-        expect(page).to_not have_css('.btn.btn-default span.glyphicon-time')
-        click_on(tag.name)
-        expect(page).to have_css('.btn.btn-default span.glyphicon-time') # if this spec gets flaky, maybe stub the controller to never return
-
-        button = page.find('.btn.btn-primary', text: tag.name)
-        expect(button).to_not have_css('.glyphicon-time')
-        expect(button).to have_css('.glyphicon-ok')
-
-        click_on(tag.name)
-        button = page.find('.btn.btn-default', text: tag.name)
-        expect(button).to_not have_css('span')
-      end
-    end
-
-    it 'without login, prompts' do
+    xit 'without login, prompts' do
       visit dance_path(dance)
+      raise 'todo'
       click_on('verified')
       expect(page).to have_button('Login')
       expect(page).to have_current_path(new_user_session_path)

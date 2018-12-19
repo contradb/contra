@@ -1,10 +1,14 @@
 <% duts = Dut.where(tag: _tag, dance: dance) %>
-<% zero_duts = 0 == duts.count %>
 <% dut = duts.find_by(user: user) %>
+<% duts_count = duts.count %>
+<% other_duts_count = duts_count - (dut ? 1 : 0) %>
 <%= content_tag(:div, class: "tag-constellation", 'data-tag-id': _tag.id) do %>
-  <%= content_tag(:span, '', class: "glyphicon #{_tag.glyphicon} #{dut ? '' : 'invisible'} #{_tag.bootstrap_color ? ('text-'+_tag.bootstrap_color) : ''}") %>
-  <%= content_tag :span, _tag.name, class: "tag-label#{zero_duts ? ' tag-label-untagged' : ''}"  %>
-  × <%= content_tag :span, duts.count.to_s, class: 'tag-multiplier', 'data-other-user-count': duts.count - (dut ? 1 : 0) %>
-  <%= tag(:input, {type: :checkbox, 'data-toggle': :toggle, checked: !zero_duts}.merge(_tag.bootstrap_color? ? {'data-onstyle': _tag.bootstrap_color} : {})) %>
-
+  <%= content_tag(:span, '', class: "glyphicon #{_tag.glyphicon} #{duts_count > 0 ? '' : 'invisible'} #{_tag.bootstrap_color ? ('text-'+_tag.bootstrap_color) : ''}") %>
+  <%= content_tag :span, _tag.name, class: "tag-label#{duts_count == 0 ? ' tag-label-untagged' : ''}"  %>
+  × <%= content_tag :span, duts.count.to_s, class: 'tag-multiplier', 'data-other-user-count': other_duts_count %>
+  <%= tag(:input, {type: :checkbox, 'data-toggle': :toggle, checked: !!dut}.merge(_tag.bootstrap_color? ? {'data-onstyle': _tag.bootstrap_color} : {})) %>
+  <%= content_tag :span, _tag.off_sentence, class: 'off-sentence', style: (0 == duts_count ? '' : 'display: none;') %>
+  <% tag_on_sentence = _tag.on_phrase.blank? ? '' : (other_duts_count > 0 ? "#{pluralize(other_duts_count+1, 'user')} #{_tag.on_phrase}" : "you #{_tag.on_phrase}") %>
+  <%= content_tag :span, tag_on_sentence, class: 'on-sentence', style: (0 == duts_count ? 'display: none;' : '') %>
 <% end %>
+<br />

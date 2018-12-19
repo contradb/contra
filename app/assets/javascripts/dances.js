@@ -21,17 +21,28 @@ $(function () {
   $('.tag-constellation input[type="checkbox"]').change(function (e) {
     var checked = $(this).is(':checked');
     var constellation = $(this).closest('.tag-constellation');
-
-    // glyphicon on/off
-    constellation.find('.glyphicon').toggleClass('invisible');
-
-    // strikethrough on/off
-    constellation.find('.tag-label').toggleClass('tag-label-untagged');
-
-    // update multiplier
     var multiplier = constellation.find('.tag-multiplier');
     var other_user_count = parseInt(multiplier.data('other-user-count'));
-    multiplier.text(other_user_count + (checked ? 1 : 0));
+    var dut_count = other_user_count + (checked ? 1 : 0);
+    var tag_active = dut_count > 0;
+
+    // glyphicon on/off
+    constellation.find('.glyphicon').toggleClass('invisible', !tag_active);
+
+    // strikethrough on/off
+    constellation.find('.tag-label').toggleClass('tag-label-untagged', !tag_active);
+
+    // update multiplier
+    multiplier.text(dut_count);
+
+    // update sentence - CODE IS WRONG in case of OTHER PEOPLE'S DUTS
+    if (checked) {
+      constellation.find('.on-sentence').show();
+      constellation.find('.off-sentence').hide();
+    } else {
+      constellation.find('.on-sentence').hide();
+      constellation.find('.off-sentence').show();
+    }
   });
 
 
