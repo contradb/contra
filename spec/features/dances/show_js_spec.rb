@@ -73,6 +73,7 @@ describe 'Showing dances', js: true do
       it "other-people's tags already exist" do
         with_login do |user|
           tag = Tag.find_by(name: 'verified')
+          expect(tag.on_phrase).to eq("have called this transcription")
           initial_dut_count = 2
 
           initial_dut_count.times {FactoryGirl.create(:dut, tag: tag, dance: dance)}
@@ -82,14 +83,14 @@ describe 'Showing dances', js: true do
           expect(page).to have_css(".#{tag.glyphicon}")
           expect(page).to_not have_css('.tag-label-untagged', text: tag.name)
           expect(page).to have_text("#{tag.name} × #{initial_dut_count}")
-          raise 'test sentence'
+          expect(page).to have_text("2 users have called this transcription")
 
           toggle_tag(tag)
 
           expect(page).to have_css(".#{tag.glyphicon}")
           expect(page).to_not have_css('.tag-label-untagged', text: tag.name)
           expect(page).to have_text("#{tag.name} × #{initial_dut_count + 1}")
-          raise 'test sentence'
+          expect(page).to have_text("2 users have called this transcription")
         end
       end
     end
