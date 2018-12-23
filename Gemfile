@@ -10,6 +10,7 @@ gem 'rails', '~> 5.1.5'
 
 gem 'pg'
 
+gem 'webpacker', '~> 3.5'
 
 # Use SCSS for stylesheets
 gem 'sass-rails'
