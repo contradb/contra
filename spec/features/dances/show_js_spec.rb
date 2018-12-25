@@ -84,13 +84,15 @@ describe 'Showing dances', js: true do
           expect(page).to_not have_css('.tag-label-untagged', text: tag.name)
           expect(page).to have_text("#{tag.name} × #{initial_dut_count}")
           expect(page).to have_text("2 users have called this transcription")
+          expect(page).to_not have_text("3 users have called this transcription")
 
           toggle_tag(tag)
 
           expect(page).to have_css(".#{tag.glyphicon}")
           expect(page).to_not have_css('.tag-label-untagged', text: tag.name)
           expect(page).to have_text("#{tag.name} × #{initial_dut_count + 1}")
-          expect(page).to have_text("2 users have called this transcription")
+          expect(page).to_not have_text("2 users have called this transcription")
+          expect(page).to have_text("3 users have called this transcription")
         end
       end
     end

@@ -35,7 +35,7 @@ $(function () {
     // update multiplier
     multiplier.text(dut_count);
 
-    // update sentence - CODE IS WRONG in case of OTHER PEOPLE'S DUTS
+    // update sentence
     if (checked) {
       constellation.find('.on-sentence').show();
       constellation.find('.off-sentence').hide();

@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'rails_helper'
 
 describe Tag do
@@ -11,9 +12,21 @@ describe Tag do
   end
 
   describe '#documentation' do
-    it do
-      tag = Tag.find_by(name: 'verified')
-      expect(tag.documentation(me: false, other_count: 0)).to eq(tag.off_sentence)
+    let (:tag) {Tag.find_by(name: 'verified')}
+    it 'nobody → off_sentence' do
+      expect(tag.documentation(me: false)).to eq(tag.off_sentence)
+    end
+
+    it 'one other person → "1 user #{on_sentence}"' do
+      expect(tag.documentation(other_count: 1)).to eq("1 user #{tag.on_phrase}")
+    end
+
+    it 'this person → "you #{on_sentence}"' do
+      expect(tag.documentation(me: true)).to eq("you #{tag.on_phrase}")
+    end
+
+    it 'this person and others → "2 users #{on_sentence}"' do
+      expect(tag.documentation(me: true, other_count: 1)).to eq("2 users #{tag.on_phrase}")
     end
   end
 end
