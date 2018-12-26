@@ -51,7 +51,7 @@ describe 'Showing dances', js: true do
           expect(page).to have_css('.tag-label-untagged', text: tag.name)
           expect(page).to have_text(tag.name + ' × 0')
           expect(page).to have_text(tag.off_sentence)
-          # expect(Dut.find_by(dance: dance, user: user, tag: tag)).to be(nil)
+          expect(Dut.find_by(dance: dance, user: user, tag: tag)).to eq(nil)
 
           toggle_tag(tag)
 
@@ -59,14 +59,16 @@ describe 'Showing dances', js: true do
           expect(page).to_not have_css('.tag-label-untagged', text: tag.name)
           expect(page).to have_text(tag.name + ' × 1')
           expect(page).to have_text("you #{tag.on_phrase}")
-          # expect(Dut.find_by(dance: dance, user: user, tag: tag)).to_not be(nil)
+          sleep(1)
+          expect(Dut.find_by(dance: dance, user: user, tag: tag)).to_not eq(nil)
 
           toggle_tag(tag)
           expect(page).to_not have_css(".#{tag.glyphicon}")
           expect(page).to have_css('.tag-label-untagged', text: tag.name)
           expect(page).to have_text(tag.name + ' × 0')
           expect(page).to have_text(tag.off_sentence)
-          # expect(Dut.find_by(dance: dance, user: user, tag: tag)).to be(nil)
+          sleep(1)
+          expect(Dut.find_by(dance: dance, user: user, tag: tag)).to eq(nil)
         end
       end
 
