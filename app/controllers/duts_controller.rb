@@ -1,19 +1,15 @@
 class DutsController < ApplicationController
   def toggle
-    dut_params_with_user = dut_params.merge(user: current_user)
+    dut_params_with_user = dut_params.merge(user_id: current_user.id)
 
     if checked?
-      puts 'checked!'
       if Dut.find_or_create_by(dut_params_with_user)
-        puts 'ok!'
-        head :ok
+        render json: {on: true}, status: :ok
       else
-        puts 'not ok!'
         render json: @dut.errors, status: :unprocessable_entity
       end
     else
-      puts 'not checked!'
-      if Dut.find_by(dut_params_with_user)&.destroy
+      if Dut.find_by(dut_params_with_user)&.delete
         head :ok
       else
         head :unprocessable_entity

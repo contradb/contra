@@ -18,16 +18,22 @@ $(function () {
 // Show Page Tag Buttons
 // New Plan: text, then (maybe hidden) glyphyicon, then span with x2. Elements are never removed
 $(function () {
+
+  function multiplierOtherUserCount($multiplier) {
+    return parseInt($multiplier.data('other-user-count'));;
+  }
+
   $('.tag-constellation input[type="checkbox"]').change(function (e) {
     var checked = $(this).is(':checked');
     var constellation = $(this).closest('.tag-constellation');
     var multiplier = constellation.find('.tag-multiplier');
-    var other_user_count = parseInt(multiplier.data('other-user-count'));
-    var dut_count = other_user_count + (checked ? 1 : 0);
+    var dut_count = multiplierOtherUserCount(multiplier) + (checked ? 1 : 0);
     var tag_active = dut_count > 0;
 
-    // glyphicon on/off
-    constellation.find('.glyphicon').toggleClass('invisible', !tag_active);
+    // glyphicon to clock while we wait for ajax
+    var glyphicon = constellation.find('.glyphicon');
+    var real_glyphicon = glyphicon.data('contra-glyphicon-class');
+    glyphicon.removeClass(real_glyphicon).removeClass('invisible').addClass('glyphicon-time');
 
     // strikethrough on/off
     constellation.find('.tag-label').toggleClass('tag-label-untagged', !tag_active);
@@ -45,7 +51,20 @@ $(function () {
     }
   });
 
-
+  // replace glyphicon-time with the real glyphicon (or blank) when ajax completes
+  $('.tag-checkbox').on('ajax:success', function(e, json) {
+    var $this = $(this);
+    var created = json.on;
+    var constellation = $this.closest('.tag-constellation');
+    var multiplier = constellation.find('.tag-multiplier');
+    var other_user_count = multiplierOtherUserCount(multiplier);
+    var all_user_count = other_user_count + (created ? 1 : 0);
+    var glyphicon = constellation.find('.glyphicon');
+    var real_glyphicon = glyphicon.data('contra-glyphicon-class');
+    glyphicon.toggleClass('invisible', all_user_count == 0);
+    glyphicon.removeClass('glyphicon-time').addClass(real_glyphicon);
+    return true;                // continue event propagation
+  });
 });
 
 // ________________________________________________________________
