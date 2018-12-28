@@ -12,7 +12,6 @@ class Tag < ApplicationRecord
       "you #{on_phrase}"
     else
       "#{ActionController::Base.helpers.pluralize(count, 'user')} #{on_phrase}"
-
     end
   end
 end
