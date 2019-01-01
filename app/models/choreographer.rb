@@ -5,7 +5,7 @@ class Choreographer < ApplicationRecord
 
   before_destroy :reattribute_dances_to_unknown
 
-  enum publish: {never: 0, sometimes: 5, always: 10}, _prefix: true
+  enum publish: {never: 0, sometimes: 5, always: 10, deceased_and_unknown: 9}, _prefix: true
 
   # human readable website
   def website_label
