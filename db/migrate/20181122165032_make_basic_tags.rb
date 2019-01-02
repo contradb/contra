@@ -11,8 +11,14 @@ class MakeBasicTags < ActiveRecord::Migration[5.1]
   private
   def tag_attributes
     [{name: 'verified', glyphicon: 'glyphicon-ok',
-      on_phrase: 'have called this transcription', off_sentence: 'no known calls of this transcription'},
+      on_verb: 'have called',
+      on_verb_3rd_person_singular: 'has called',
+      on_phrase: 'this transcription',
+      off_sentence: 'no known calls of this transcription'},
      {name: 'broken', glyphicon: 'glyphicon-fire', bootstrap_color: 'danger',
-      on_phrase: 'have reported this', off_sentence: 'no reports of issues'}]
+      on_verb: 'have reported',
+      on_verb_3rd_person_singular: 'has reported',
+      on_phrase: 'this',
+      off_sentence: 'no reports of issues'}]
   end
 end

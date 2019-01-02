@@ -9,9 +9,11 @@ class Tag < ApplicationRecord
       off_sentence
     elsif other_count.zero?
       me or raise
-      "you #{on_phrase}"
+      "you #{on_verb} #{on_phrase}"
     else
-      "#{ActionController::Base.helpers.pluralize(count, 'user')} #{on_phrase}"
+      verb = count == 1 ? on_verb_3rd_person_singular : on_verb
+      the_users = ActionController::Base.helpers.pluralize(count, 'user')
+      "#{the_users} #{verb} #{on_phrase}"
     end
   end
 end

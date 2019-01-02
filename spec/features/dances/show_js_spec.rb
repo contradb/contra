@@ -56,7 +56,7 @@ describe 'Showing dances', js: true do
           expect(page).to have_css(".#{tag.glyphicon}")
           expect(page).to_not have_css('.tag-label-untagged', text: tag.name)
           expect(page).to have_text(tag.name + ' × 1')
-          expect(page).to have_text("you #{tag.on_phrase}")
+          expect(page).to have_text("you #{tag.on_verb} #{tag.on_phrase}")
           sleep(0.125)
           expect(page).to_not have_css('glyphicon-time')
           expect(Dut.find_by(dance: dance, user: user, tag: tag)).to_not eq(nil)
@@ -77,7 +77,8 @@ describe 'Showing dances', js: true do
       it "other-people's tags already exist" do
         with_login do |user|
           tag = Tag.find_by(name: 'verified')
-          expect(tag.on_phrase).to eq("have called this transcription")
+          expect(tag.on_verb).to eq("have called")
+          expect(tag.on_phrase).to eq("this transcription")
           initial_dut_count = 2
 
           initial_dut_count.times {FactoryGirl.create(:dut, tag: tag, dance: dance)}
@@ -104,7 +105,8 @@ describe 'Showing dances', js: true do
       it "loads toggled when you've already made a dut" do
         with_login do |user|
           tag = Tag.find_by(name: 'verified')
-          expect(tag.on_phrase).to eq("have called this transcription")
+          expect(tag.on_verb).to eq("have called")
+          expect(tag.on_phrase).to eq("this transcription")
           FactoryGirl.create(:dut, tag: tag, dance: dance, user: user)
 
           visit dance_path(dance)
