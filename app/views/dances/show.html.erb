@@ -1,4 +1,3 @@
-<% require 'json' %>
 <div class="btn-group">
   <%= copy_dance_button_html(@dance, label: "Copy") %>
   <% if (signed_in? && (current_user.admin? || (current_user.id == @dance.user_id))) %>
