@@ -1,3 +1,4 @@
 <div title="toggle validations for common dance entry errors, e.g. typing 'gentlemen' when you're using 'leads'">
-  <%= tag :input, name: :validation, type: :checkbox, class: :'validation-toggle', 'data-toggle': :toggle, 'data-on': :Validate, 'data-off': :Clean, 'data-size': :small, checked: @show_validation %>
+  <%= tag :input, name: :validation, type: :checkbox, class: :'validation-toggle', 'data-toggle': :toggle, 'data-on': :Validate, 'data-size': :small, checked: @show_validation %>
+  <div class='understated'>underline translated words in user supplied text</div>
 </div>
