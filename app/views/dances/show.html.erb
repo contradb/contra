@@ -1,27 +1,55 @@
-<div class="btn-group">
-  <%= copy_dance_button_html(@dance, label: "Copy") %>
-  <% if (signed_in? && (current_user.admin? || (current_user.id == @dance.user_id))) %>
-    <%= edit_dance_button_html(@dance, label: "Edit") %>
-    <%= delete_dance_button_html(@dance, label: "Delete") %>
-  <% end %>
+<div class='container'>
+  <div class='row'>
+    <div class='col-xs-12'>
+      <h1 class="dance-show-title"><%= @dance.title %></h1>
+    </div>
+    <div class='col-xs-8 col-md-6'>
+      <% if @dance.hook.present? %>
+        <p class="dance-show-hook">hook: <%= JSLibFigure.lingo_lines_html(JSLibFigure.string_in_dialect(@dance.hook, @dialect), @dialect) %></h2>
+      <% end %>
+      <p class="dance-show-choreographer">by: <strong><%= link_to @dance.choreographer.name, @dance.choreographer %></strong></p>
+      <%= render partial: 'bodyshow', locals: {dance: @dance, dialect: @dialect} %>
+
+    </div>
+    <div class='col-xs-4 col-md-6'>
+      <div class='panel panel-default'>
+        <div class="panel-heading">
+          <h2 class='panel-title'>Database</h2>
+        </div>
+        <div class='panel-body'>
+          <p class="dance-show-user">user: <%= link_to @dance.user.name, @dance.user %></p>
+          <p class="dance-show-publish"><%= @dance.publish ? 'published' : 'private' %></p>
+          <div class="btn-group">
+            <%= copy_dance_button_html(@dance, label: "Copy") %>
+            <% if (signed_in? && (current_user.admin? || (current_user.id == @dance.user_id))) %>
+              <%= edit_dance_button_html(@dance, label: "Edit") %>
+              <%= delete_dance_button_html(@dance, label: "Delete") %>
+            <% end %>
+          </div>
+        </div>
+        <div class="panel-heading panel-heading-mid-panel-hack">
+          <h3 class='panel-title'>Validation</h3>
+        </div>
+        <div class='panel-body'>
+          <%= render 'validation_toggle' %>
+          <% if @show_moderation %>
+            <p class="dance-show-moderation">
+              Moderation: <%= admin_moderation_display(@dance.user) %>
+            </p>
+          <% end %>
+        </div>
+        <div class="panel-heading panel-heading-mid-panel-hack">
+          <h3 class='panel-title'>Tags</h3>
+        </div>
+        <div class='panel-body'>
+          <%= render partial: "dut", collection: @tags, as: :_tag, locals: {dance: @dance, user: current_user} %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<%= render 'validation_toggle' %>
 
-<h1 class="dance-show-title"><%= @dance.title %></h1>
-<% if @dance.hook.present? %>
-  <p class="dance-show-hook">hook: <%= JSLibFigure.lingo_lines_html(JSLibFigure.string_in_dialect(@dance.hook, @dialect), @dialect) %></h2>
-<% end %>
-<p class="dance-show-choreographer">by: <strong><%= link_to @dance.choreographer.name, @dance.choreographer %></strong></p>
-<%= render partial: 'bodyshow', locals: {dance: @dance, dialect: @dialect} %>
 
-<p class="dance-show-user">User: <%= link_to @dance.user.name, @dance.user %></p>
-<p class="dance-show-publish"><%= @dance.publish ? 'Published' : 'Private' %></p>
-<% if @show_moderation %>
-  <p class="dance-show-moderation">
-    Moderation: <%= admin_moderation_display(@dance.user) %>
-  </p>
-<% end %>
-<%= render partial: "dut", collection: @tags, as: :_tag, locals: {dance: @dance, user: current_user} %>
 <br />
 <br />
 <br />
