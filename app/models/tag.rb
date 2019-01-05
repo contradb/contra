@@ -4,6 +4,7 @@ class Tag < ApplicationRecord
   has_many :dances, through: :duts # n.b. dance may appear multiple times, consider pairing with .distinct
 
   def documentation(me: false, other_count: 0)
+    off_sentence && on_verb && on_phrase or return nil
     count = other_count + (me ? 1 : 0)
     if count.zero?
       off_sentence
@@ -15,5 +16,9 @@ class Tag < ApplicationRecord
       the_users = ActionController::Base.helpers.pluralize(count, 'user')
       "#{the_users} #{verb} #{on_phrase}"
     end
+  end
+
+  def on_verb_3rd_person_singular
+    super || on_verb
   end
 end

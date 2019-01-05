@@ -12,22 +12,30 @@ describe Tag do
   end
 
   describe '#documentation' do
-    let (:tag) {Tag.find_by(name: 'verified')}
-
-    it 'nobody → off_sentence' do
-      expect(tag.documentation(me: false)).to eq(tag.off_sentence)
+    it 'returns nil if on_* or off_* fields are nil' do
+      tag = FactoryGirl.build(:tag)
+      expect(tag.documentation).to eq(nil)
+      expect(tag.documentation(me: true)).to eq(nil)
+      expect(tag.documentation(other_count: 4)).to eq(nil)
     end
 
-    it 'one other person → "1 user #{on_verb_3rd_person_singular} #{on_sentence}"' do
-      expect(tag.documentation(other_count: 1)).to eq("1 user #{tag.on_verb_3rd_person_singular} #{tag.on_phrase}")
-    end
+    describe do
+      let (:tag) {FactoryGirl.build(:tag, :verified)}
+      it 'nobody → off_sentence' do
+        expect(tag.documentation(me: false)).to eq(tag.off_sentence)
+      end
 
-    it 'this person → "you #{on_sentence}"' do
-      expect(tag.documentation(me: true)).to eq("you #{tag.on_verb} #{tag.on_phrase}")
-    end
+      it 'one other person → "1 user #{on_verb_3rd_person_singular} #{on_sentence}"' do
+        expect(tag.documentation(other_count: 1)).to eq("1 user #{tag.on_verb_3rd_person_singular} #{tag.on_phrase}")
+      end
 
-    it 'this person and others → "2 users #{on_sentence}"' do
-      expect(tag.documentation(me: true, other_count: 1)).to eq("2 users #{tag.on_verb} #{tag.on_phrase}")
+      it 'this person → "you #{on_sentence}"' do
+        expect(tag.documentation(me: true)).to eq("you #{tag.on_verb} #{tag.on_phrase}")
+      end
+
+      it 'this person and others → "2 users #{on_sentence}"' do
+        expect(tag.documentation(me: true, other_count: 1)).to eq("2 users #{tag.on_verb} #{tag.on_phrase}")
+      end
     end
   end
 end

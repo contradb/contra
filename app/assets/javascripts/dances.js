@@ -39,7 +39,7 @@ $(function () {
     constellation.find('.tag-label').toggleClass('tag-label-untagged', !tag_active);
 
     // update multiplier
-    multiplier.text(dut_count);
+    multiplier.text(dut_count===0 ? '' : dut_count);
 
     // update sentence
     if (checked) {

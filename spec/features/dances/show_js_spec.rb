@@ -46,7 +46,8 @@ describe 'Showing dances', js: true do
 
           expect(page).to_not have_css(".#{tag.glyphicon}")
           expect(page).to have_css('.tag-label-untagged', text: tag.name)
-          expect(page).to have_text(tag.name + ' 0')
+          expect(page).to have_css('.tag-multiplier.badge', visible: false)
+          expect(page).to_not have_css('.tag-multiplier.badge')
           expect(page).to have_text(tag.off_sentence)
           expect(Dut.find_by(dance: dance, user: user, tag: tag)).to eq(nil)
 
@@ -55,7 +56,7 @@ describe 'Showing dances', js: true do
           expect(page).to_not have_css('glyphicon-time');
           expect(page).to have_css(".#{tag.glyphicon}")
           expect(page).to_not have_css('.tag-label-untagged', text: tag.name)
-          expect(page).to have_text(tag.name + ' 1')
+          expect(page).to have_css('.tag-multiplier.badge', visible: true, text: 1)
           expect(page).to have_text("you #{tag.on_verb} #{tag.on_phrase}")
           sleep(0.125)
           expect(page).to_not have_css('glyphicon-time')
@@ -66,7 +67,8 @@ describe 'Showing dances', js: true do
           expect(page).to_not have_css(".#{tag.glyphicon}")
           expect(page).to_not have_css('glyphicon-time');
           expect(page).to have_css('.tag-label-untagged', text: tag.name)
-          expect(page).to have_text(tag.name + ' 0')
+          expect(page).to have_css('.tag-multiplier.badge', visible: false)
+          expect(page).to_not have_css('.tag-multiplier.badge')
           expect(page).to have_text(tag.off_sentence)
           sleep(0.125)
           expect(page).to_not have_css('glyphicon-time')
@@ -113,7 +115,7 @@ describe 'Showing dances', js: true do
 
           expect(page).to have_css(".#{tag.glyphicon}")
           expect(page).to_not have_css('.tag-label-untagged', text: tag.name)
-          expect(page).to have_text("#{tag.name} 1")
+          expect(page).to have_css('.tag-multiplier.badge', visible: true, text: 1)
           expect(page).to have_text("you have called this transcription")
           expect(find(".tag-constellation[data-tag-id='#{tag.id}']").find('input', visible: false)).to be_checked
 
@@ -122,7 +124,8 @@ describe 'Showing dances', js: true do
           expect(page).to_not have_css('glyphicon-time')
           expect(page).to_not have_css(".#{tag.glyphicon}")
           expect(page).to have_css('.tag-label-untagged', text: tag.name)
-          expect(page).to have_text("#{tag.name} 0")
+          expect(page).to have_css('.tag-multiplier.badge', visible: false)
+          expect(page).to_not have_css('.tag-multiplier.badge')
           expect(page).to have_text(tag.off_sentence)
           expect(find(".tag-constellation[data-tag-id='#{tag.id}']").find('input', visible: false)).to_not be_checked
         end
