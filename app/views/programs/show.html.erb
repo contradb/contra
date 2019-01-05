@@ -1,29 +1,50 @@
 <% moves_already_introduced = {} %>
+<div class='container'> <!-- TODO: reindent -->
 
-<div class="btn-group">
-<%= copy_program_button_html(@program, label: "Copy") %>
-<%= if (signed_in? && (current_user.id == @program.user_id)) then
-    edit_program_button_html(@program, label: "Edit") +
-    delete_program_button_html(@program, label: "Delete")
-    end %>
-</div>
-
-<%= render 'dances/validation_toggle' %>
 
 <h1><%= @program.title %></h1>
 <p>user: <strong><%= link_to @program.user.name, @program.user %></strong></p>
 
 
-<div class="activity-toc">
-  <h2>Table of Contents</h2>
-  <ol>
-    <% @program.activities_sorted.each_with_index do |activity,index| %>
-      <li>
-        <%= activity.dance.blank? ? '' : link_to(content_tag(:span, activity.dance.title, class: "activity-toc-dance-title") + " by " + activity.dance.choreographer.name, anchor: activity_anchor_id(index)) %>
-        <%= activity.text.blank? ? '' : link_to(ApplicationHelper::renderMarkdownInlineNoLinks(activity.text), anchor: activity_anchor_id(index)) %>
-      </li>
-    <% end %>
-  </ol>
+<div class='row'>
+  <div class='col-sm-8'>
+    <div class="activity-toc">
+      <h2>Table of Contents</h2>
+      <ol>
+        <% @program.activities_sorted.each_with_index do |activity,index| %>
+          <li>
+            <%= activity.dance.blank? ? '' : link_to(content_tag(:span, activity.dance.title, class: "activity-toc-dance-title") + " by " + activity.dance.choreographer.name, anchor: activity_anchor_id(index)) %>
+            <%= activity.text.blank? ? '' : link_to(ApplicationHelper::renderMarkdownInlineNoLinks(activity.text), anchor: activity_anchor_id(index)) %>
+          </li>
+        <% end %>
+      </ol>
+    </div>
+  </div>
+  <div class='col-sm-4'>
+    <div class='visible-xs-block'>
+      <br><br>
+    </div>
+    <div class='panel panel-default'>
+      <div class="panel-heading">
+        <h2 class='panel-title'>Database</h2>
+      </div>
+      <div class='panel-body'>
+        <div class="btn-group">
+          <%= copy_program_button_html(@program, label: "Copy") %>
+          <%= if (signed_in? && (current_user.id == @program.user_id)) then
+              edit_program_button_html(@program, label: "Edit") +
+              delete_program_button_html(@program, label: "Delete")
+              end %>
+        </div>
+      </div>
+      <div class="panel-heading panel-heading-mid-panel-hack">
+        <h3 class='panel-title'>Validation</h3>
+      </div>
+      <div class='panel-body'>
+        <%= render 'dances/validation_toggle' %>
+      </div>
+    </div>
+  </div>
 </div>
 
 <% @program.activities_sorted.each_with_index do |activity,index| %>
@@ -69,3 +90,4 @@
     <% end %>
   <% end %>
 <% end %>
+</div>

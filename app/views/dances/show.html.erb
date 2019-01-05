@@ -3,7 +3,9 @@
     <div class='col-xs-12'>
       <h1 class="dance-show-title"><%= @dance.title %></h1>
     </div>
-    <div class='col-xs-8 col-md-6'>
+  </div>
+  <div class='row'>
+    <div class='col-sm-8'>
       <% if @dance.hook.present? %>
         <p class="dance-show-hook">hook: <%= JSLibFigure.lingo_lines_html(JSLibFigure.string_in_dialect(@dance.hook, @dialect), @dialect) %></h2>
       <% end %>
@@ -11,7 +13,7 @@
       <%= render partial: 'bodyshow', locals: {dance: @dance, dialect: @dialect} %>
 
     </div>
-    <div class='col-xs-4 col-md-6'>
+    <div class='col-sm-4'>
       <div class='panel panel-default'>
         <div class="panel-heading">
           <h2 class='panel-title'>Database</h2>
@@ -26,12 +28,6 @@
               <%= delete_dance_button_html(@dance, label: "Delete") %>
             <% end %>
           </div>
-        </div>
-        <div class="panel-heading panel-heading-mid-panel-hack">
-          <h3 class='panel-title'>Validation</h3>
-        </div>
-        <div class='panel-body'>
-          <%= render 'validation_toggle' %>
           <% if @show_moderation %>
             <p class="dance-show-moderation">
               Moderation: <%= admin_moderation_display(@dance.user) %>
@@ -43,6 +39,12 @@
         </div>
         <div class='panel-body'>
           <%= render partial: "dut", collection: @tags, as: :_tag, locals: {dance: @dance, user: current_user} %>
+        </div>
+        <div class="panel-heading panel-heading-mid-panel-hack">
+          <h3 class='panel-title'>Validation</h3>
+        </div>
+        <div class='panel-body'>
+          <%= render 'validation_toggle' %>
         </div>
       </div>
     </div>
