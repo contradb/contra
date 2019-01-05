@@ -3,14 +3,24 @@
 <% duts_count = duts.count %>
 <% other_duts_count = duts_count - (dut ? 1 : 0) %>
 <%= content_tag(:div, class: "tag-constellation", 'data-tag-id': _tag.id) do %>
-  <%= content_tag(:span, '', 'data-contra-glyphicon-class': _tag.glyphicon, class: "glyphicon #{_tag.glyphicon} #{duts_count > 0 ? '' : 'invisible'} #{_tag.bootstrap_color ? ('text-'+_tag.bootstrap_color) : ''}") %>
-  <span class='tag-label-and-multiplier'>
-  <%= content_tag :span, _tag.name, class: "tag-label#{duts_count == 0 ? ' tag-label-untagged' : ''}"  %>
-  <%= content_tag :span, duts.count.to_s, class: 'tag-multiplier badge', 'data-other-user-count': other_duts_count %>
-  </span>
-  <%= check_box_tag('checked', 'yeah', !!dut, {class: 'tag-checkbox', data: {url: '/duts', remote: true, method: :post, params: {dance_id: dance.id, tag_id: _tag.id}.to_query, size: :mini, toggle: :toggle}}.merge(_tag.bootstrap_color? ? {'data-onstyle': _tag.bootstrap_color} : {})) %>
-  <%= content_tag :span, _tag.documentation(other_count: other_duts_count, me: false), class: 'off-sentence understated', style: (dut ? 'display: none;' : '') %>
+  <table>
+    <tr>
+      <td style='vertical-align: top; padding-right: 1em'>
+        <%= content_tag(:span, '', 'data-contra-glyphicon-class': _tag.glyphicon, class: "glyphicon #{_tag.glyphicon} #{duts_count > 0 ? '' : 'invisible'} #{_tag.bootstrap_color ? ('text-'+_tag.bootstrap_color) : ''}") %>
+      </td>
+      <td>
+        <span class='tag-label-and-multiplier'>
+        <%= content_tag :span, _tag.name, class: "tag-label#{duts_count == 0 ? ' tag-label-untagged' : ''}"  %>
+        <%= content_tag :span, duts.count.to_s, class: 'tag-multiplier badge', 'data-other-user-count': other_duts_count %>
+        </span>
+        <%= check_box_tag('checked', 'yeah', !!dut, {class: 'tag-checkbox', data: {url: '/duts', remote: true, method: :post, params: {dance_id: dance.id, tag_id: _tag.id}.to_query, size: :mini, toggle: :toggle}}.merge(_tag.bootstrap_color? ? {'data-onstyle': _tag.bootstrap_color} : {})) %>
+        <div style='margin-top: 0.5em'>
+          <%= content_tag :span, _tag.documentation(other_count: other_duts_count, me: false), class: 'off-sentence understated', style: (dut ? 'display: none;' : '') %>
 
-  <%= content_tag :span, _tag.documentation(other_count: other_duts_count, me: true), class: 'on-sentence understated', style: (dut ? '' : 'display: none;') %>
+          <%= content_tag :span, _tag.documentation(other_count: other_duts_count, me: true), class: 'on-sentence understated', style: (dut ? '' : 'display: none;') %>
+        <div>
+      </td>
+    </tr>
+  </table>
 <% end %>
 <br />

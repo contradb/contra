@@ -28,7 +28,7 @@ describe 'Showing dances', js: true do
 
     it 'bootstrap_color attribute works' do
       with_login do |user|
-        tag = Tag.find_by(name: 'please review')
+        tag = FactoryGirl.create(:tag, name: 'broken', bootstrap_color: 'danger', glyphicon: 'glyphicon-fire')
         FactoryGirl.create(:dut, user: user, tag: tag, dance: dance)
         visit dance_path(dance)
         expect(tag.bootstrap_color).to eq('danger')
