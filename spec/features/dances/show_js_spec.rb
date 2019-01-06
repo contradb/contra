@@ -25,23 +25,23 @@ describe 'Showing dances', js: true do
 
   describe 'tags' do
     let (:dance) {FactoryGirl.create(:dance)}
+    let (:tag) {FactoryGirl.create(:tag, :verified)}
 
     it 'bootstrap_color attribute works' do
       with_login do |user|
-        tag = FactoryGirl.create(:tag, name: 'broken', bootstrap_color: 'danger', glyphicon: 'glyphicon-fire')
-        FactoryGirl.create(:dut, user: user, tag: tag, dance: dance)
+        red_tag = FactoryGirl.create(:tag, name: 'broken', bootstrap_color: 'danger', glyphicon: 'glyphicon-fire')
+        FactoryGirl.create(:dut, user: user, tag: red_tag, dance: dance)
         visit dance_path(dance)
-        expect(tag.bootstrap_color).to eq('danger')
-        expect(page).to have_css(".glyphicon.#{tag.glyphicon}.text-#{tag.bootstrap_color}")
-        expect(page).to have_css("input[type='checkbox'][data-onstyle=#{tag.bootstrap_color.inspect}]", visible: false)
+        expect(red_tag.bootstrap_color).to eq('danger')
+        expect(page).to have_css(".glyphicon.#{red_tag.glyphicon}.text-#{red_tag.bootstrap_color}")
+        expect(page).to have_css("input[type='checkbox'][data-onstyle=#{red_tag.bootstrap_color.inspect}]", visible: false)
       end
     end
 
     describe 'bootstrap toggle' do
       it 'zero tags initially' do
+        tag
         with_login do |user|
-          tag = Tag.find_by(name: 'verified')
-
           visit dance_path(dance)
 
           expect(page).to_not have_css(".#{tag.glyphicon}")
@@ -77,8 +77,8 @@ describe 'Showing dances', js: true do
       end
 
       it "other-people's tags already exist" do
+        tag
         with_login do |user|
-          tag = Tag.find_by(name: 'verified')
           expect(tag.on_verb).to eq("have called")
           expect(tag.on_phrase).to eq("this transcription")
           initial_dut_count = 2
@@ -105,8 +105,8 @@ describe 'Showing dances', js: true do
       end
 
       it "loads toggled when you've already made a dut" do
+        tag
         with_login do |user|
-          tag = Tag.find_by(name: 'verified')
           expect(tag.on_verb).to eq("have called")
           expect(tag.on_phrase).to eq("this transcription")
           FactoryGirl.create(:dut, tag: tag, dance: dance, user: user)
@@ -133,7 +133,7 @@ describe 'Showing dances', js: true do
     end
 
     it 'shows a waiting icon while ajax is in flight' do
-      tag = Tag.find_by(name: 'verified')
+      tag
       with_login do
         visit dance_path(dance)
         first_time = true
@@ -150,7 +150,7 @@ describe 'Showing dances', js: true do
     end
 
     it 'without login, prompts for login, then returns them to the dance' do
-      tag = Tag.find_by(name: 'verified')
+      tag
       visit dance_path(dance)
       toggle_tag(tag)
       expect(page).to have_content('Login to tag dances')
