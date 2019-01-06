@@ -13,9 +13,9 @@
         <%= content_tag :span, _tag.name, class: "tag-label#{duts_count == 0 ? ' tag-label-untagged' : ''}"  %>
         <%= content_tag :span, duts.count > 0 ? duts.count : '', class: 'tag-multiplier badge', 'data-other-user-count': other_duts_count %>
         </span>
-        <div class='tag-toggle-container'>
+        <%= content_tag :div, class: conditional_classes(always: 'tag-toggle-container', test: !current_user, thens: 'tag-redirect-click-to-login') do %>
           <%= check_box_tag('checked', 'yeah', !!dut, {class: 'tag-checkbox', data: {url: '/duts', remote: true, method: :post, params: {dance_id: dance.id, tag_id: _tag.id}.to_query, size: :mini, toggle: :toggle}}.merge(_tag.bootstrap_color? ? {'data-onstyle': _tag.bootstrap_color} : {})) %>
-        </div>
+        <% end %>
         <div class='tag-documentation-container'>
           <%= content_tag :span, _tag.documentation(other_count: other_duts_count, me: false), class: 'off-sentence understated', style: (dut ? 'display: none;' : '') %>
 

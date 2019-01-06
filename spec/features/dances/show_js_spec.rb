@@ -132,18 +132,15 @@ describe 'Showing dances', js: true do
       end
     end
 
-    def toggle_tag(tag)
-      page.find(".tag-constellation[data-tag-id='#{tag.id}'] .toggle-handle").click
-    end
-
     xit 'shows a waiting icon' do
       raise 'todo'
     end
 
-    xit 'without login, prompts' do
+    it 'without login, prompts for login, then returns them to the dance' do
+      tag = Tag.find_by(name: 'verified')
       visit dance_path(dance)
-      raise 'todo'
-      click_on('verified')
+      toggle_tag(tag)
+      expect(page).to have_content('Login to tag dances')
       expect(page).to have_button('Login')
       expect(page).to have_current_path(new_user_session_path)
       user = FactoryGirl.create(:user)
@@ -151,7 +148,11 @@ describe 'Showing dances', js: true do
       fill_in(:user_password, with: user.password)
       click_on('Login')
       expect(page).to have_css('h1', text: dance.title)
-      expect(page).to have_css('.btn.btn-primary', text: 'verified')
+      expect(current_path).to eq(dance_path(dance))
+    end
+
+    def toggle_tag(tag)
+      page.find(".tag-constellation[data-tag-id='#{tag.id}'] .toggle-handle").click
     end
   end
 end

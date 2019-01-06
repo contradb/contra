@@ -65,6 +65,18 @@ $(function () {
     glyphicon.removeClass('glyphicon-time').addClass(real_glyphicon);
     return true;                // continue event propagation
   });
+
+  function interceptTagClickAndSendToLogin(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.href = '/tag-without-login';
+  }
+
+  $('.tag-redirect-click-to-login').each(function() {
+    // This intercepts the event before the slider can react to it.
+    // Not using the jquery helpers because jquery doesn't expose this.
+    this.addEventListener('click', interceptTagClickAndSendToLogin, true);
+  });
 });
 
 // ________________________________________________________________

@@ -53,4 +53,14 @@ module ApplicationHelper
     end ||
       "#{controller_name.capitalize} | Contra"
   end
+
+  def conditional_classes(test:, thens:, elses: nil, always: nil)
+    if test
+      always ? "#{always} #{thens}" : thens
+    elsif elses
+      always ? "#{always} #{elses}" : elses
+    else
+      always || ''
+    end
+  end
 end

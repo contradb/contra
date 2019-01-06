@@ -1,5 +1,11 @@
 class DutsController < ApplicationController
   def toggle
+    unless current_user
+      # js shouldn't let them get here unless there's something wrong
+      head :forbidden
+      return
+    end
+
     dut_params_with_user = dut_params.merge(user_id: current_user.id)
 
     if checked?
@@ -17,24 +23,10 @@ class DutsController < ApplicationController
     end
   end
 
-  def create
-    raise "TODO: Needs to redirect if not logged in" if current_user.nil?
-    @dut = Dut.new(dut_params.merge(user: current_user))
-    if @dut.save
-      render json: @dut, status: :ok
-    else
-      render json: @dut.errors, status: :unprocessable_entity
-    end
-  end
-
-  def destroy
-    dut_id = params[:id]
-    if dut_id
-      Dut.find_by(id: dut_id)&.destroy!
-      head :ok
-    else
-      head :unprocessable_entity
-    end
+  def tag_without_login
+    flash[:notice] = 'Login to tag dances'
+    session[:after_login] = request.env['HTTP_REFERER']
+    redirect_to(new_user_session_path)
   end
 
   private
