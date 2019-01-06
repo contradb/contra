@@ -132,8 +132,21 @@ describe 'Showing dances', js: true do
       end
     end
 
-    xit 'shows a waiting icon' do
-      raise 'todo'
+    it 'shows a waiting icon while ajax is in flight' do
+      tag = Tag.find_by(name: 'verified')
+      with_login do
+        visit dance_path(dance)
+        first_time = true
+        allow_any_instance_of(DutsController).to receive(:toggle) do |duts_controller|
+          if first_time
+            first_time = false
+            sleep 1
+            duts_controller.toggle
+          end
+        end
+        toggle_tag(tag)
+        expect(page).to have_css('.glyphicon-time')
+      end
     end
 
     it 'without login, prompts for login, then returns them to the dance' do
