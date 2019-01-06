@@ -16,19 +16,19 @@ module ApplicationHelper
     Redcarpet::Markdown.new(LinkStripper.new(MARKDOWN_OPTS), RENDER_OPTS.merge(autolink: false))
 
 
-  def self.renderMarkdown(txt)
+  def renderMarkdown(txt)
     ("<div class='contra-markdown-block'>"+@@markdown.render(txt)+"</div>").html_safe
   end
 
-  def self.renderMarkdownHtmlOk(txt)
+  def renderMarkdownHtmlOk(txt)
     ("<div class='contra-markdown-block'>"+@@markdown_html_ok.render(txt)+"</div>").html_safe
   end
 
-  def self.renderMarkdownInline(txt)
+  def renderMarkdownInline(txt)
     ("<span class='contra-markdown-inline'>"+@@markdown.render(txt)+"</span>").html_safe
   end
 
-  def self.renderMarkdownInlineNoLinks(txt)
+  def renderMarkdownInlineNoLinks(txt)
     ("<span class='contra-markdown-inline'>"+@@markdown_no_links.render(txt)+"</span>").html_safe
   end
 

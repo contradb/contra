@@ -14,7 +14,7 @@
         <% @program.activities_sorted.each_with_index do |activity,index| %>
           <li>
             <%= activity.dance.blank? ? '' : link_to(content_tag(:span, activity.dance.title, class: "activity-toc-dance-title") + " by " + activity.dance.choreographer.name, anchor: activity_anchor_id(index)) %>
-            <%= activity.text.blank? ? '' : link_to(ApplicationHelper::renderMarkdownInlineNoLinks(activity.text), anchor: activity_anchor_id(index)) %>
+            <%= activity.text.blank? ? '' : link_to(renderMarkdownInlineNoLinks(activity.text), anchor: activity_anchor_id(index)) %>
           </li>
         <% end %>
       </ol>
@@ -52,7 +52,7 @@
     <%= if activity.dance 
         then content_tag(:h2, (link_to activity.dance.title, activity.dance), class: "activity-breakdown-dance-title")
         elsif activity.text.present?
-        then content_tag(:h2, ApplicationHelper::renderMarkdown(activity.text), class: "activity-breakdown-text")
+        then content_tag(:h2, renderMarkdown(activity.text), class: "activity-breakdown-text")
         else content_tag(:h2, "~ ~ ~", class: "activity-breakdown-empty-activity")
         end %>
     <%= if activity.dance
@@ -62,7 +62,7 @@
         end %>
 
     <%= if activity.dance && activity.text.present?
-        then content_tag(:p, ApplicationHelper::renderMarkdown(activity.text), class: "activity-breakdown-text")
+        then content_tag(:p, renderMarkdown(activity.text), class: "activity-breakdown-text")
         end %>
 
     <%= if activity.dance&.readable?(current_user)
