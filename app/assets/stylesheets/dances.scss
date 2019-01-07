@@ -201,3 +201,28 @@ $a1b2beats-selected-border-color: #888;
     font-family: 'PT Serif', serif;
   }
 }
+
+.btn.activate-tag span.glphicon {
+  padding-left: 1em;
+}
+
+.tag-label-untagged {
+  text-decoration: line-through;
+}
+
+.tag-constellation .tag-icon-td {
+  vertical-align: top;
+  padding-right: 1em;
+}
+
+.tag-constellation .tag-main-td {
+  width: 100%;
+}
+
+.tag-toggle-container {
+  float: right;
+}
+
+.tag-documentation-container {
+  margin-top: 0.5em;
+}

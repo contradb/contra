@@ -6,6 +6,8 @@ class Dance < ApplicationRecord
   validates :title, length: { in: 3..100 }
   validates :start_type, length: { in: 1..100 }
   accepts_nested_attributes_for :choreographer
+  has_many :duts, dependent: :destroy
+  has_many :tags, through: :duts
 
   scope :alphabetical, ->() { order "LOWER(title)" }
   scope :readable_by, ->(user=nil) {

@@ -20,6 +20,7 @@ class DancesController < ApplicationController
   def show
     @dialect = dialect
     @show_validation = @show_moderation = current_user&.admin?
+    @tags = Tag.all
   end
 
   def new

@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
   resources :programs
   get 'about/index'
-
-
   resources :dances, except: [:index]
   post 'dances_filter', to: 'dances#index'
+  post 'duts' => 'duts#toggle'
+  get 'tag-without-login' => 'duts#tag_without_login'
   resources :choreographers
   devise_for :users, controllers: { registrations: "users/registrations" }
   resources :users, only: [:show, :index] do

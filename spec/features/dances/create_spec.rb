@@ -20,7 +20,7 @@ describe 'Creating dances', js: true do
       expect(page).to have_content('improper')
       expect(page).to have_content('long wavy lines gents out') # preamble
       expect(page).to have_content('spin to your partner') # hook
-      expect(page).to have_content('Private')
+      expect(page).to have_content('private')
       expect(page).to_not have_content('Published')
     end
   end

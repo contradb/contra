@@ -1,71 +1,89 @@
 <% moves_already_introduced = {} %>
+<div class='container'> <!-- TODO: reindent -->
+  <h1><%= @program.title %></h1>
+  <p>user: <strong><%= link_to @program.user.name, @program.user %></strong></p>
+  <div class='row'>
+    <div class='col-sm-8'>
+      <div class="activity-toc">
+        <h2>Table of Contents</h2>
+        <ol>
+          <% @program.activities_sorted.each_with_index do |activity,index| %>
+            <li>
+              <%= activity.dance.blank? ? '' : link_to(content_tag(:span, activity.dance.title, class: "activity-toc-dance-title") + " by " + activity.dance.choreographer.name, anchor: activity_anchor_id(index)) %>
+              <%= activity.text.blank? ? '' : link_to(renderMarkdownInlineNoLinks(activity.text), anchor: activity_anchor_id(index)) %>
+            </li>
+          <% end %>
+        </ol>
+      </div>
+    </div>
+    <div class='col-sm-4'>
+      <div class='visible-xs-block'>
+        <br><br>
+      </div>
+      <div class='panel panel-default'>
+        <div class="panel-heading">
+          <h2 class='panel-title'>Database</h2>
+        </div>
+        <div class='panel-body'>
+          <div class="btn-group">
+            <%= copy_program_button_html(@program, label: "Copy") %>
+            <%= if (signed_in? && (current_user.id == @program.user_id)) then
+                edit_program_button_html(@program, label: "Edit") +
+                delete_program_button_html(@program, label: "Delete")
+                end %>
+          </div>
+        </div>
+        <div class="panel-heading panel-heading-mid-panel-hack">
+          <h3 class='panel-title'>Validation</h3>
+        </div>
+        <div class='panel-body'>
+          <%= render 'dances/validation_toggle' %>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<div class="btn-group">
-<%= copy_program_button_html(@program, label: "Copy") %>
-<%= if (signed_in? && (current_user.id == @program.user_id)) then
-    edit_program_button_html(@program, label: "Edit") +
-    delete_program_button_html(@program, label: "Delete")
-    end %>
-</div>
+  <% @program.activities_sorted.each_with_index do |activity,index| %>
+    <%= content_tag('div', id: activity_anchor_id(index), class: "activity-breakdown") do %>
+      <%= if activity.dance 
+          then content_tag(:h2, (link_to activity.dance.title, activity.dance), class: "activity-breakdown-dance-title")
+          elsif activity.text.present?
+          then content_tag(:h2, renderMarkdown(activity.text), class: "activity-breakdown-text")
+          else content_tag(:h2, "~ ~ ~", class: "activity-breakdown-empty-activity")
+          end %>
+      <%= if activity.dance
+          then 
+            authorspan = content_tag(:b, (link_to activity.dance.choreographer.name, activity.dance.choreographer))
+            content_tag(:p, "by: ".html_safe + authorspan)
+          end %>
 
-<%= render 'dances/validation_toggle' %>
+      <%= if activity.dance && activity.text.present?
+          then content_tag(:p, renderMarkdown(activity.text), class: "activity-breakdown-text")
+          end %>
 
-<h1><%= @program.title %></h1>
-<p>user: <strong><%= link_to @program.user.name, @program.user %></strong></p>
-
-
-<div class="activity-toc">
-  <h2>Table of Contents</h2>
-  <ol>
-    <% @program.activities_sorted.each_with_index do |activity,index| %>
-      <li>
-        <%= activity.dance.blank? ? '' : link_to(content_tag(:span, activity.dance.title, class: "activity-toc-dance-title") + " by " + activity.dance.choreographer.name, anchor: activity_anchor_id(index)) %>
-        <%= activity.text.blank? ? '' : link_to(ApplicationHelper::renderMarkdownInlineNoLinks(activity.text), anchor: activity_anchor_id(index)) %>
-      </li>
-    <% end %>
-  </ol>
-</div>
-
-<% @program.activities_sorted.each_with_index do |activity,index| %>
-  <%= content_tag('div', id: activity_anchor_id(index), class: "activity-breakdown") do %>
-    <%= if activity.dance 
-        then content_tag(:h2, (link_to activity.dance.title, activity.dance), class: "activity-breakdown-dance-title")
-        elsif activity.text.present?
-        then content_tag(:h2, ApplicationHelper::renderMarkdown(activity.text), class: "activity-breakdown-text")
-        else content_tag(:h2, "~ ~ ~", class: "activity-breakdown-empty-activity")
-        end %>
-    <%= if activity.dance
-        then 
-          authorspan = content_tag(:b, (link_to activity.dance.choreographer.name, activity.dance.choreographer))
-          content_tag(:p, "by: ".html_safe + authorspan)
-        end %>
-
-    <%= if activity.dance && activity.text.present?
-        then content_tag(:p, ApplicationHelper::renderMarkdown(activity.text), class: "activity-breakdown-text")
-        end %>
-
-    <%= if activity.dance&.readable?(current_user)
-          introduce_moves = []
-          activity.dance.figures.each do |figure|
-            move = JSLibFigure.alias(figure)
-            if move && !moves_already_introduced[move]
-              moves_already_introduced[move] = true
-              introduce_moves.push move
+      <%= if activity.dance&.readable?(current_user)
+            introduce_moves = []
+            activity.dance.figures.each do |figure|
+              move = JSLibFigure.alias(figure)
+              if move && !moves_already_introduced[move]
+                moves_already_introduced[move] = true
+                introduce_moves.push move
+              end
             end
-          end
-          # every custom move is different, so print 'custom' in every 
-          # dance it's present in, by forgetting we've seen 'custom':
-          moves_already_introduced.delete 'custom'
-          # print new moves
-          unless introduce_moves.empty? 
-            content_tag(:p, "introduces moves: ".html_safe + move_links(introduce_moves, @dialect))
-          end
-        end %>
+            # every custom move is different, so print 'custom' in every 
+            # dance it's present in, by forgetting we've seen 'custom':
+            moves_already_introduced.delete 'custom'
+            # print new moves
+            unless introduce_moves.empty? 
+              content_tag(:p, "introduces moves: ".html_safe + move_links(introduce_moves, @dialect))
+            end
+          end %>
 
-    <% if activity.dance&.readable?(current_user) %>
-      <%= render partial: 'dances/bodyshow', locals: {dance: activity.dance, dialect: @dialect} %>
-    <% elsif activity.dance %>
-      <div class="warn-private-dance">This dance is not published.</div>
+      <% if activity.dance&.readable?(current_user) %>
+        <%= render partial: 'dances/bodyshow', locals: {dance: activity.dance, dialect: @dialect} %>
+      <% elsif activity.dance %>
+        <div class="warn-private-dance">This dance is not published.</div>
+      <% end %>
     <% end %>
   <% end %>
-<% end %>
+</div>

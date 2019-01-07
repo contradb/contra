@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181107035156) do
+ActiveRecord::Schema.define(version: 20181116204338) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,18 @@ ActiveRecord::Schema.define(version: 20181107035156) do
     t.text "hook", default: "", null: false
   end
 
+  create_table "duts", force: :cascade do |t|
+    t.bigint "dance_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dance_id", "user_id", "tag_id"], name: "index_duts_on_dance_id_and_user_id_and_tag_id", unique: true
+    t.index ["dance_id"], name: "index_duts_on_dance_id"
+    t.index ["tag_id"], name: "index_duts_on_tag_id"
+    t.index ["user_id"], name: "index_duts_on_user_id"
+  end
+
   create_table "idioms", id: :serial, force: :cascade do |t|
     t.string "type", null: false
     t.string "term", null: false
@@ -65,6 +77,19 @@ ActiveRecord::Schema.define(version: 20181107035156) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_programs_on_user_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "glyphicon", default: "glyphicon-tag", null: false
+    t.string "bootstrap_color"
+    t.string "on_verb"
+    t.string "on_verb_3rd_person_singular"
+    t.string "on_phrase"
+    t.string "off_sentence"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
@@ -90,6 +115,9 @@ ActiveRecord::Schema.define(version: 20181107035156) do
 
   add_foreign_key "activities", "dances"
   add_foreign_key "activities", "programs"
+  add_foreign_key "duts", "dances"
+  add_foreign_key "duts", "tags"
+  add_foreign_key "duts", "users"
   add_foreign_key "idioms", "users"
   add_foreign_key "programs", "users"
 end
