@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :tag do
     sequence(:name) {|n| "edgy#{n}" }
 
+    # mirrored in production
     trait :verified do
       name 'verified'
       glyphicon 'glyphicon-ok'
@@ -11,6 +12,7 @@ FactoryGirl.define do
       off_sentence 'no known calls of this transcription'
     end
 
+    # not currently mirrored in production
     trait :broken do
       name 'please review'
       glyphicon 'glyphicon-fire'

@@ -39,26 +39,4 @@ module DancesHelper
       raise "unexpected user moderation #{user.moderation.inspect}"
     end
   end
-
-  def tag_toggle_button(tag:, dance:, user:)
-    dut_create_href = duts_path(dance_id: @dance, tag_id: tag)
-    other_users_dut_count = Dut.where(tag: tag, dance: @dance).where.not(user: user).length
-    dut = Dut.find_by(tag: tag, user: current_user, dance: @dance)
-    if dut
-      link_to(dut_path(dut), class: 'btn btn-primary activate-tag', 'data-saved-create-href': dut_create_href, method: :delete, remote: :true, 'data-count': other_users_dut_count.to_s) {
-        tag_label_html(tag_name: tag.name, popularity: other_users_dut_count+1, glyphicon_show: true)
-      }
-    else
-      link_to(dut_create_href, class: 'btn btn-default activate-tag ', method: :post, remote: :true, 'data-count': other_users_dut_count.to_s) {
-        tag_label_html(tag_name: tag.name, popularity: other_users_dut_count, glyphicon_show: false)
-      }
-    end
-  end
-
-  private
-  def tag_label_html(tag_name:, popularity:, glyphicon_show:)
-    sanitize(tag_name) +
-      content_tag('span', '', {class: 'glyphicon glyphicon-ok'}.merge(glyphicon_show ? {} : {style: 'display: none'})) +
-      content_tag('span', popularity > 0 ? popularity : '', class: 'dut-popularity')
-  end
 end

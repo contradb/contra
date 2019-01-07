@@ -9,10 +9,8 @@
         <%= content_tag(:span, '', 'data-contra-glyphicon-class': _tag.glyphicon, class: "glyphicon #{_tag.glyphicon} #{duts_count > 0 ? '' : 'invisible'} #{_tag.bootstrap_color ? ('text-'+_tag.bootstrap_color) : ''}") %>
       </td>
       <td class='tag-main-td'>
-        <span class='tag-label-and-multiplier'>
         <%= content_tag :span, _tag.name, class: "tag-label#{duts_count == 0 ? ' tag-label-untagged' : ''}"  %>
         <%= content_tag :span, duts.count > 0 ? duts.count : '', class: 'tag-multiplier badge', 'data-other-user-count': other_duts_count %>
-        </span>
         <%= content_tag :div, class: conditional_classes(always: 'tag-toggle-container', test: !current_user, thens: 'tag-redirect-click-to-login') do %>
           <%= check_box_tag('checked', 'yeah', !!dut, {class: 'tag-checkbox', data: {url: '/duts', remote: true, method: :post, params: {dance_id: dance.id, tag_id: _tag.id}.to_query, size: :mini, toggle: :toggle}}.merge(_tag.bootstrap_color? ? {'data-onstyle': _tag.bootstrap_color} : {})) %>
         <% end %>

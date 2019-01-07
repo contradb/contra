@@ -16,13 +16,13 @@ $(function () {
 });
 
 // Show Page Tag Buttons
-// New Plan: text, then (maybe hidden) glyphyicon, then span with x2. Elements are never removed
 $(function () {
 
   function multiplierOtherUserCount($multiplier) {
     return parseInt($multiplier.data('other-user-count'));;
   }
 
+  // tag bootstrap slider slide event:
   $('.tag-constellation input[type="checkbox"]').change(function (e) {
     var checked = $(this).is(':checked');
     var constellation = $(this).closest('.tag-constellation');
@@ -51,7 +51,7 @@ $(function () {
     }
   });
 
-  // replace glyphicon-time with the real glyphicon (or blank) when ajax completes
+  // when ajax completes, replace glyphicon-time with the real glyphicon (or blank)
   $('.tag-checkbox').on('ajax:success', function(e, json) {
     var $this = $(this);
     var created = json.on;

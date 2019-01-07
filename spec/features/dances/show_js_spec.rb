@@ -39,7 +39,7 @@ describe 'Showing dances', js: true do
     end
 
     describe 'bootstrap toggle' do
-      it 'zero tags initially' do
+      it 'causes duts and various DOM elements to update - starting from zero duts' do
         tag
         with_login do |user|
           visit dance_path(dance)

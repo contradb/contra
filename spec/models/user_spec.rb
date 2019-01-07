@@ -35,7 +35,7 @@ describe User do
 
   describe 'tags' do
     let (:dut) {FactoryGirl.create(:dut)}
-    it '# duts association' do
+    it '#duts association' do
       expect(dut.user.duts.to_a).to eq([dut])
     end
   end

@@ -3,6 +3,7 @@ class Tag < ApplicationRecord
   has_many :duts, dependent: :destroy
   has_many :dances, through: :duts # n.b. dance may appear multiple times, consider pairing with .distinct
 
+  # returns a string (or nil if the db doesn't have full information)
   def documentation(me: false, other_count: 0)
     off_sentence && on_verb && on_phrase or return nil
     count = other_count + (me ? 1 : 0)
