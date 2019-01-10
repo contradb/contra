@@ -212,6 +212,10 @@ s {
   }
 }
 
+@media print {
+  .col-print-12 { width: 100% }
+}
+
 /* turn off bootstrap toggle animation in testing  */
 .rails-env-test .toggle-group { transition: none; -webkit-transition: none; }
 

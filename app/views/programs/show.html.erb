@@ -3,7 +3,7 @@
   <h1><%= @program.title %></h1>
   <p>user: <strong><%= link_to @program.user.name, @program.user %></strong></p>
   <div class='row'>
-    <div class='col-sm-8'>
+    <div class='col-sm-8 col-print-12'>
       <div class="activity-toc">
         <h2>Table of Contents</h2>
         <ol>
@@ -20,7 +20,7 @@
       <div class='visible-xs-block'>
         <br><br>
       </div>
-      <div class='panel panel-default'>
+      <div class='panel panel-default hidden-print'>
         <div class="panel-heading">
           <h2 class='panel-title'>Database</h2>
         </div>
