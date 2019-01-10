@@ -80,7 +80,7 @@
           end %>
 
       <% if activity.dance&.readable?(current_user) %>
-        <div class='dance-in-program'>
+        <div class='dance-body-in-program'>
           <%= render partial: 'dances/bodyshow', locals: {dance: activity.dance, dialect: @dialect} %>
         </div>
       <% elsif activity.dance %>
