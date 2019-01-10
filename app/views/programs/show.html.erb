@@ -80,7 +80,9 @@
           end %>
 
       <% if activity.dance&.readable?(current_user) %>
-        <%= render partial: 'dances/bodyshow', locals: {dance: activity.dance, dialect: @dialect} %>
+        <div class='dance-in-program'>
+          <%= render partial: 'dances/bodyshow', locals: {dance: activity.dance, dialect: @dialect} %>
+        </div>
       <% elsif activity.dance %>
         <div class="warn-private-dance">This dance is not published.</div>
       <% end %>
