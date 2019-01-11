@@ -11,10 +11,10 @@ describe 'Showing programs', js: true do
     expect(JSLibFigure).to receive(:default_dialect).at_least(:once).and_return(JSLibFigure.test_dialect)
     visit program_path(program)
     expect(page).to have_css('.no-lingo-lines u', text: 'almond')
-    find('label', text: 'Clean').click
+    find('.validation-toggle-partial label', text: 'Off').click
     expect(page).to_not have_css('.no-lingo-lines u', text: 'almond')
     expect(page).to have_text('mousetrap almond')
-    find('label', text: 'Validate').click
+    find('.validation-toggle-partial label', text: 'Validate').click
     expect(page).to have_css('.no-lingo-lines u', text: 'almond')
   end
 end

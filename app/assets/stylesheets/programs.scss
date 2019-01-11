@@ -7,12 +7,6 @@
     font-style: italic;
 }
 
-.activity-toc {
-    border-left-style: solid;
-    border-color: #337ab7;
-    padding-left: 2em;
-}
-
 .activity-breakdown {
     border-left-style: solid;
     border-color: #888;
@@ -93,4 +87,8 @@ h2.activity-breakdown-empty-activity {
 
 .warn-private-dance {
   color: red;
+}
+
+.dance-body-in-program .dance-show-formation {
+  font-size: 125%;
 }

@@ -15,6 +15,70 @@ $(function () {
   validationToggleExec($('.validation-toggle'));
 });
 
+// Show Page Tag Buttons
+$(function () {
+
+  function multiplierOtherUserCount($multiplier) {
+    return parseInt($multiplier.data('other-user-count'));;
+  }
+
+  // tag bootstrap slider slide event:
+  $('.tag-constellation input[type="checkbox"]').change(function (e) {
+    var checked = $(this).is(':checked');
+    var constellation = $(this).closest('.tag-constellation');
+    var multiplier = constellation.find('.tag-multiplier');
+    var dut_count = multiplierOtherUserCount(multiplier) + (checked ? 1 : 0);
+    var tag_active = dut_count > 0;
+
+    // glyphicon to clock while we wait for ajax
+    var glyphicon = constellation.find('.glyphicon');
+    var real_glyphicon = glyphicon.data('contra-glyphicon-class');
+    glyphicon.removeClass(real_glyphicon).removeClass('invisible').addClass('glyphicon-time');
+
+    // strikethrough on/off
+    constellation.find('.tag-label').toggleClass('tag-label-untagged', !tag_active);
+
+    // update multiplier
+    multiplier.text(dut_count===0 ? '' : dut_count);
+
+    // update sentence
+    if (checked) {
+      constellation.find('.on-sentence').show();
+      constellation.find('.off-sentence').hide();
+    } else {
+      constellation.find('.on-sentence').hide();
+      constellation.find('.off-sentence').show();
+    }
+  });
+
+  // when ajax completes, replace glyphicon-time with the real glyphicon (or blank)
+  $('.tag-checkbox').on('ajax:success', function(e, json) {
+    var $this = $(this);
+    var created = json.on;
+    var constellation = $this.closest('.tag-constellation');
+    var multiplier = constellation.find('.tag-multiplier');
+    var other_user_count = multiplierOtherUserCount(multiplier);
+    var all_user_count = other_user_count + (created ? 1 : 0);
+    var glyphicon = constellation.find('.glyphicon');
+    var real_glyphicon = glyphicon.data('contra-glyphicon-class');
+    glyphicon.toggleClass('invisible', all_user_count == 0);
+    glyphicon.removeClass('glyphicon-time').addClass(real_glyphicon);
+    return true;                // continue event propagation
+  });
+
+  function interceptTagClickAndSendToLogin(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.href = '/tag-without-login';
+  }
+
+  $('.tag-redirect-click-to-login').each(function() {
+    // This intercepts the event before the slider can react to it.
+    // Not using the jquery helpers because jquery doesn't expose this.
+    this.addEventListener('click', interceptTagClickAndSendToLogin, true);
+  });
+});
+
 // ________________________________________________________________
 // Editor below here
 $(function () {

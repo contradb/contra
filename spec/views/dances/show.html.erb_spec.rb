@@ -18,6 +18,7 @@ RSpec.describe "dances/show", type: :view do
   before(:each) do
     assign(:dance, dance)
     assign(:dialect, JSLibFigure.default_dialect)
+    assign(:tags, [:verified].map {|factory_name| FactoryGirl.build(:tag, factory_name)})
   end
 
   # was false positive bugs because there were double-spaces in html

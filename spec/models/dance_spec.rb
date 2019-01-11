@@ -40,7 +40,7 @@ RSpec.describe Dance, type: :model do
     end
   end
 
-  describe "permissions" do 
+  describe "permissions" do
     let! (:admonsterator) { FactoryGirl.create(:user, admin: true) }
     let (:user_a) { FactoryGirl.create(:user) }
     let (:user_b) { FactoryGirl.create(:user) }
@@ -132,6 +132,18 @@ RSpec.describe Dance, type: :model do
     expect(dance.preamble).to eq('preamble almond preamble')
     expect(dance.hook).to eq('hook almond hook')
     expect(dance.notes).to eq('dance-notes almond dance-notes')
+  end
+
+  describe 'tags' do
+    let (:dut) {FactoryGirl.create(:dut)}
+
+    it '#duts association' do
+      expect(dut.dance.duts.to_a).to eq([dut])
+    end
+
+    it '#tags association' do
+      expect(dut.dance.tags.to_a).to eq([dut.tag])
+    end
   end
 
 #   it "#to_s_dump" do

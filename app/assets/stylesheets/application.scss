@@ -211,3 +211,24 @@ s {
     }
   }
 }
+
+@media print {
+  .col-print-12 { width: 100% }
+}
+
+/* turn off bootstrap toggle animation in testing  */
+.rails-env-test .toggle-group { transition: none; -webkit-transition: none; }
+
+/* panel headings aren't really designed to be anywhere but the top of a panel in bootstrap 3, and I need them mid-panel */
+.panel-heading.panel-heading-mid-panel-hack {
+  border-top: 1px solid rgb(221, 221, 221); /* hardcoding this color here is derfinerfly a hack, what if the mixin changes upstream? */
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+/* Don't print link hrefs, bootstrap */
+@media print {
+  a[href]:after {
+    content: none
+  }
+}

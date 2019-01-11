@@ -1,3 +1,6 @@
-<div title="toggle validations for common dance entry errors, e.g. typing 'gentlemen' when you're using 'leads'">
-  <%= tag :input, name: :validation, type: :checkbox, class: :'validation-toggle', 'data-toggle': :toggle, 'data-on': :Validate, 'data-off': :Clean, 'data-size': :small, checked: @show_validation %>
+<div class='validation-toggle-partial'>
+  <div>
+    <%= tag :input, name: :validation, type: :checkbox, class: :'validation-toggle', 'data-toggle': :toggle, 'data-on': :Validate, 'data-size': :small, checked: @show_validation %>
+  </div>
+  <p class='understated' style='margin-top: 0.5em'>toggle validations for common dance entry errors, e.g. typing 'gentlemen' when you're using 'leads'</p>
 </div>
