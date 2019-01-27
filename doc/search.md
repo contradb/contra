@@ -96,7 +96,7 @@ chains".
 ### no
 
 The dance matches iff the subexpression doesn't match.
-If the dance matches, then all 1-fiugre-long patches match.
+If the dance matches, then all 1-figure-long patches match.
 
 This is important if you're using `then`: `swing then no hey` will
 match the same dances as `swing and no hey` - likely not what you
