@@ -85,3 +85,5 @@ gem 'jquery-datatables-rails'
 gem 'ajax-datatables-rails'
 
 gem 'actionview-encoded_mail_to'
+
+gem 'webpacker', '>= 4.0.x'
