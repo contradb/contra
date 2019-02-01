@@ -7,6 +7,18 @@
 
 import Vue from 'vue/dist/vue.esm'
 
+import '../libfigure/polyfill';
+import '../libfigure/util';
+import '../libfigure/words';
+import '../libfigure/move';
+import '../libfigure/chooser';
+import '../libfigure/param';
+import '../libfigure/define-figure';
+import '../libfigure/figure';
+import '../libfigure/after-figure';
+import '../libfigure/dance';
+import '../libfigure/module';
+
 document.addEventListener('DOMContentLoaded', () => {
   var app = new Vue({
     el: '#app',
