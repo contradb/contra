@@ -50,7 +50,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'pry'
   gem 'pry-doc'
-  gem 'pry-stack_explorer'
+  gem 'pry-stack_explorer', '~> 0.4.9.3'
 end
 
 group :test do
