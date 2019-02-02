@@ -296,9 +296,4 @@ module JSLibFigure
   def self.strip_export_clumsily(src)
     src.gsub(/^\s*export\s/,'')
   end
-
-  # TODO: remove uncalled code
-  def self.const_to_var(src)
-    src.gsub(/\bconst\b/,'var')
-  end
 end

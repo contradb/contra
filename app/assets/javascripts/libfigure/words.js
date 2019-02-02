@@ -1,5 +1,4 @@
 // GENERATED FILE - source is in "/home/dm/contra/app/javascript/libfigure/words.js" - regenerate this with the rake task
-console.log('words.js here');
 /***/ function Words(arr) {
 /***/   this.arr = arr;
 /***/ }

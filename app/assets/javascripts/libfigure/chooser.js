@@ -1,5 +1,4 @@
 // GENERATED FILE - source is in "/home/dm/contra/app/javascript/libfigure/chooser.js" - regenerate this with the rake task
-console.log('chooser.js here');
 /***/ //        ____ _   _  ___   ___  ____  _____ ____  
 /***/ //       / ___| | | |/ _ \ / _ \/ ___|| ____|  _ \ 
 /***/ //      | |   | |_| | | | | | | \___ \|  _| | |_) |

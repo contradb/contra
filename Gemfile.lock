@@ -56,7 +56,7 @@ GEM
       execjs (~> 2.0)
     bcrypt (3.1.12)
     bindex (0.5.0)
-    binding_of_caller (0.7.3)
+    binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
     bootstrap-sass (3.3.6)
       autoprefixer-rails (>= 5.2.1)
@@ -296,4 +296,4 @@ DEPENDENCIES
   webpacker (>= 4.0.x)
 
 BUNDLED WITH
-   1.17.1
+   2.0.1

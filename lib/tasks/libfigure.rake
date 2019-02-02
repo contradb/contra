@@ -11,7 +11,7 @@ namespace :libfigure do
       text = text.gsub(/^/,'/***/ ')
       File.open(Rails.root.join('app/assets/javascripts/libfigure/',basename), 'w') do |f|
         f.write("// GENERATED FILE - source is in #{javascript_src.inspect} - regenerate this with the rake task\n")
-        f.write("console.log('#{basename} here');\n")
+        # f.write("console.log('#{basename} here');\n")
         f.write(text)
         print('.')
       end
