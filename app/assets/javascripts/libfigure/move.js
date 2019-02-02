@@ -1,4 +1,5 @@
 // GENERATED FILE - source is in "/home/dm/contra/app/javascript/libfigure/move.js" - regenerate this with the rake task
+console.log('move.js here');
 /***/ //       __  __  _____     _______ 
 /***/ //      |  \/  |/ _ \ \   / / ____|
 /***/ //      | |\/| | | | \ \ / /|  _|  

@@ -1,4 +1,5 @@
 // GENERATED FILE - source is in "/home/dm/contra/app/javascript/libfigure/util.js" - regenerate this with the rake task
+console.log('util.js here');
 /***/ var PUNCTUATION_CHARSET_STRING = '[\u2000-\u206F\u2E00-\u2E7F\'!"#$%&()*+,/:;<=>?@\\[\\]^_`{|}~\\.-]';
 /***/ 
 /***/ function set_if_unset (dict, key, value) {

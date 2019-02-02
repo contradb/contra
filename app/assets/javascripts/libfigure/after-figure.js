@@ -1,4 +1,5 @@
 // GENERATED FILE - source is in "/home/dm/contra/app/javascript/libfigure/after-figure.js" - regenerate this with the rake task
+console.log('after-figure.js here');
 /***/ //     _    _____ _____ _____ ____       _____ ___ ____ _   _ ____  _____    _     
 /***/ //    / \  |  ___|_   _| ____|  _ \     |  ___|_ _/ ___| | | |  _ \| ____|  (_)___ 
 /***/ //   / _ \ | |_    | | |  _| | |_) |____| |_   | | |  _| | | | |_) |  _|    | / __|

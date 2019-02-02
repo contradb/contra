@@ -513,4 +513,22 @@ RSpec.describe JSLibFigure do
       expect(js_test_eval('testLingoLineWords();')).to be_truthy
     end
   end
+
+  describe '.const_to_var' do
+    it 'preserves whitespace at beginning' do
+      expect(JSLibFigure.send(:const_to_var, "\nconst foo = 42;")).to eq("\nvar foo = 42;")
+    end
+
+    it 'does not require leading whitespace' do
+      expect(JSLibFigure.send(:const_to_var, "const foo = 42;")).to eq("var foo = 42;")
+    end
+
+    it 'trailing chars' do
+      expect(JSLibFigure.send(:const_to_var, "constfoo = 42;")).to eq("constfoo = 42;")
+    end
+
+    it 'leading chars' do
+      expect(JSLibFigure.send(:const_to_var, "unconst foo = 42;")).to eq("unconst foo = 42;")
+    end
+  end
 end

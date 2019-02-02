@@ -1,4 +1,5 @@
 // GENERATED FILE - source is in "/home/dm/contra/app/javascript/libfigure/test.js" - regenerate this with the rake task
+console.log('test.js here');
 /***/ // Each of these tests is called from rspec
 /***/ // If you add a function here, you have to add a rspec-side test to call it.
 /***/ 

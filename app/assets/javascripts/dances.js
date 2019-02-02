@@ -213,8 +213,10 @@ function menuMoveLabel(from,to) {
 
 // =====================================================================================
 
+  console.log('got to dances.js');
 
 (function () {
+  console.log('initializing Angular');
   var app = angular.module('contra', ['ngSanitize']);
   var scopeInit = function ($scope,$timeout) {
     var fctrl42 = this;

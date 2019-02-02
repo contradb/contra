@@ -227,7 +227,7 @@ module JSLibFigure
   JSLIBFIGURE_FILES = %w(polyfill.js util.js words.js move.js chooser.js param.js define-figure.js figure.js after-figure.js dance.js module.js)
 
   # exported to hack es6 into es5
-  def self.filter_out_import_and_export(src)
+  def self.translate_to_es5(src)
     strip_import_clumsily(strip_export_clumsily(src))
   end
 
@@ -246,9 +246,9 @@ module JSLibFigure
     context
   end
 
-  def self.context_load(context, pathname, filter_out_import_and_export: true)
+  def self.context_load(context, pathname, translate_to_es5: true)
     src = File.read(pathname)
-    src = filter_out_import_and_export(src) if filter_out_import_and_export
+    src = translate_to_es5(src) if translate_to_es5
     context.eval(src, filename: pathname.to_s)
   end
 
@@ -295,5 +295,10 @@ module JSLibFigure
 
   def self.strip_export_clumsily(src)
     src.gsub(/^\s*export\s/,'')
+  end
+
+  # TODO: remove uncalled code
+  def self.const_to_var(src)
+    src.gsub(/\bconst\b/,'var')
   end
 end

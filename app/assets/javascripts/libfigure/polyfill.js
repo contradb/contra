@@ -1,4 +1,5 @@
 // GENERATED FILE - source is in "/home/dm/contra/app/javascript/libfigure/polyfill.js" - regenerate this with the rake task
+console.log('polyfill.js here');
 /***/ if (!Array.prototype.findIndex) {
 /***/   Array.prototype.findIndex = function(predicate) {
 /***/     'use strict';

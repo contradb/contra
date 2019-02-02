@@ -1,4 +1,5 @@
 // GENERATED FILE - source is in "/home/dm/contra/app/javascript/libfigure/figure.js" - regenerate this with the rake task
+console.log('figure.js here');
 /***/ //  _____ ___ ____ _   _ ____  _____
 /***/ // |  ___|_ _/ ___| | | |  _ \| ____|
 /***/ // | |_   | | |  _| | | | |_) |  _|

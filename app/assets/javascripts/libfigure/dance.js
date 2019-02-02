@@ -1,4 +1,5 @@
 // GENERATED FILE - source is in "/home/dm/contra/app/javascript/libfigure/dance.js" - regenerate this with the rake task
+console.log('dance.js here');
 /***/ var invertPairHash =
 /***/       {"ladles": "gentlespoons"
 /***/        ,"gentlespoons": "ladles"

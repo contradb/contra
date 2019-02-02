@@ -1,4 +1,5 @@
 // GENERATED FILE - source is in "/home/dm/contra/app/javascript/libfigure/param.js" - regenerate this with the rake task
+console.log('param.js here');
 /***/ //     ____   _    ____      _    __  __
 /***/ //    |  _ \ / \  |  _ \    / \  |  \/  |
 /***/ //    | |_) / _ \ | |_) |  / _ \ | |\/| |
