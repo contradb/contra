@@ -277,8 +277,8 @@ RSpec.describe JSLibFigure do
 
   it 'formal_param_is_dancers works' do
     # representative samplings:
-    nopes = %w(param_balance_false param_beats_8 param_spin_ccw param_left_shoulders_spin param_four_places param_star_grip)
-    yerps = %w(param_subject param_subject_pairz param_object_pairs_or_ones_or_twos)
+    nopes = %w(balance_false beats_8 spin_ccw left_shoulders_spin four_places star_grip).map {|s| "param('#{s}')"}
+    yerps = %w(subject subject_pairz object_pairs_or_ones_or_twos).map {|s| "param('#{s}')"}
     nopes.each do |nope|
       expect(JSLibFigure.formal_param_is_dancers(jseval(nope))).to be(false)
     end
