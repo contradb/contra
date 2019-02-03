@@ -669,7 +669,7 @@ describe 'Welcome page', js: true do
           fb = FactoryGirl.create(:dance_with_a_down_the_hall, march_facing: 'forward then backward')
           f = FactoryGirl.create(:dance_with_a_down_the_hall, march_facing: 'forward')
           b = FactoryGirl.create(:dance_with_a_down_the_hall, march_facing: 'backward')
-          with_retries(10) do
+          with_retries do
             visit '/'
 
             select('down the hall')
