@@ -71,7 +71,7 @@ describe 'Dialect page', js: true do
       with_login do |user|
         FactoryGirl.create(:dancer_idiom, user: user, term: 'ladle', substitution: 'ladle chicken')
         visit '/dialect'
-        expect_pressed_radios # none
+        expect_no_pressed_radios
       end
     end
 
@@ -87,8 +87,8 @@ describe 'Dialect page', js: true do
         select 'ladle', exact: true
         fill_in 'ladle-substitution', with: 'T-Rex'
         blur
-        expect_ladle_substitution_to_update
-        expect_pressed_radios
+        expect_ladle_substitution_to_have_glyphicon_ok
+        expect_no_pressed_radios
 
         click_on 'delete-ladle'
         expect(page).to_not have_css('#delete-ladle')
@@ -112,17 +112,17 @@ describe 'Dialect page', js: true do
 
         fill_in 'ladle-substitution', with: 'crow'
         blur
-        expect_ladle_substitution_to_update
-        expect_pressed_radios
+        expect_ladle_substitution_to_have_glyphicon_ok
+        expect_no_pressed_radios
 
         fill_in 'ladle-substitution', with: 'raven'
         blur
-        expect_ladle_substitution_to_update
+        expect_ladle_substitution_to_have_glyphicon_ok
         expect_pressed_radios(larks_ravens: true)
 
         click_on 'delete-ladle'
         expect(page).to_not have_css('#delete-ladle') # js wait
-        expect_pressed_radios
+        expect_no_pressed_radios
       end
     end
   end
@@ -312,6 +312,10 @@ describe 'Dialect page', js: true do
     expect(page).to have_css('.dialect-advanced-toggle-button.btn-primary') # js wait for completion
   end
 
+  def expect_no_pressed_radios
+    expect_pressed_radios # calling this with no argument true means expect all false
+  end
+
   def expect_pressed_radios(gentlespoons_ladles: false,
                             gents_ladies: false,
                             larks_ravens: false,
@@ -364,7 +368,7 @@ describe 'Dialect page', js: true do
     page.find('body').click
   end
 
-  def expect_ladle_substitution_to_update
+  def expect_ladle_substitution_to_have_glyphicon_ok
     expect(page).to have_css('#ladle-substitution + span .glyphicon-ok')
   end
 end
