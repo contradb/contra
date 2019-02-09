@@ -19,25 +19,17 @@ import '../libfigure/after-figure';
 import '../libfigure/dance';
 import '../libfigure/module';
 
-// import App from '../app.vue';
-import Figure from '../figure.vue';
+import App from '../app.vue';
+// import Figure from '../figure.vue';
 
-console.log(Figure);
+// console.log(Figure);
 
 document.addEventListener('DOMContentLoaded', () => {
   var app = new Vue({
     el: '#app',
-    template: `
-      <div>
-        {{ message }}
-        <Figure></Figure>
-        fluffy
-      </div>`,
-    data: {
-      message: 'Hello Moose!'
-    },
+    template: `<App/>`,
     components: {
-      Figure
+      App
     }
   });
 });

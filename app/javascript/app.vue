@@ -1,16 +1,17 @@
 <template>
   <div id="app">
     Select a figure:
-    <select v-model="move">
-      <option>swing</option>
-      <option>Bar</option>
-      <option>Baz</option>
-    </select>
+    <Figure></Figure>
+
+    {{message}}
   </div>
 </template>
 
 <script>
+import Figure from './figure'
+
 export default {
+
   data: function () {
     return {
       message: "Hello Fish!",
