@@ -1,6 +1,11 @@
 <template>
   <div id="app">
-    <p>{{ message }}</p>
+    Select a figure:
+    <select v-model="move">
+      <option>swing</option>
+      <option>Bar</option>
+      <option>Baz</option>
+    </select>
   </div>
 </template>
 
@@ -8,7 +13,8 @@
 export default {
   data: function () {
     return {
-      message: "Hello Vue!"
+      message: "Hello Fish!",
+      move: 'swing'
     }
   }
 }

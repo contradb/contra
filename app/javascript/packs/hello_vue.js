@@ -5,7 +5,7 @@
 // like app/views/layouts/application.html.erb.
 // All it does is render <div>Hello Vue</div> at the bottom of the page.
 
-import Vue from 'vue/dist/vue.esm'
+import Vue from 'vue/dist/vue.esm';
 
 import '../libfigure/polyfill';
 import '../libfigure/util';
@@ -19,11 +19,25 @@ import '../libfigure/after-figure';
 import '../libfigure/dance';
 import '../libfigure/module';
 
+// import App from '../app.vue';
+import Figure from '../figure.vue';
+
+console.log(Figure);
+
 document.addEventListener('DOMContentLoaded', () => {
   var app = new Vue({
     el: '#app',
+    template: `
+      <div>
+        {{ message }}
+        <Figure></Figure>
+        fluffy
+      </div>`,
     data: {
-      message: 'Hello Vue!'
+      message: 'Hello Moose!'
+    },
+    components: {
+      Figure
     }
   });
 });
