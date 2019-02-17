@@ -1,23 +1,19 @@
 <template>
   <div id="app">
     Select a figure but not right here!
-    <Figure></Figure>
-
-    {{message}}
+    <SearchNode v-bind:dialect='dialect'></SearchNode>
   </div>
 </template>
 
 <script>
-import Figure from './figure';
-import {moves} from './libfigure/define-figure.js'
+import SearchNode from './search-node';
 console.log('moves', moves())
 
 export default {
-  components: {Figure},
+  components: {SearchNode},
   props: ['dialect'],
   data: function () {
     return {
-      message: "Hello Fish!",
       move: 'swing'
     }
   }

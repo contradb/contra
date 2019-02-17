@@ -308,7 +308,7 @@ function moveTermsAndSubstitutions(dialect) {
   return ms;
 }
 
-function moveTermsAndSubstitutionsForSelectMenu(dialect) {
+export const moveTermsAndSubstitutionsForSelectMenu = (dialect) => {
   if (!dialect) { throw_up('must specify dialect to moveTermsAndSubstitutionsForSelectMenu'); }
   var mtas = moveTermsAndSubstitutions(dialect);
   var swing_index = mtas.findIndex(function (e) { return 'swing' === e.term;});
