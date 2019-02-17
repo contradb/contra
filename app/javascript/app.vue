@@ -1,20 +1,24 @@
 <template>
   <div id="app">
     Select a figure but not right here!
-    <SearchNode v-bind:dialect='dialect'></SearchNode>
+    <SearchNode v-bind:dialect='dialect' v-bind:tree="tree" v-on:set-figure='setFigure'></SearchNode>
   </div>
 </template>
 
 <script>
 import SearchNode from './search-node';
-console.log('moves', moves())
 
 export default {
   components: {SearchNode},
   props: ['dialect'],
   data: function () {
     return {
-      move: 'swing'
+      tree: ['figure', 'swing']
+    }
+  },
+  methods: {
+    setFigure(tree, move) {
+      this.tree[1] = move;
     }
   }
 }
