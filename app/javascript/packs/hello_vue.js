@@ -25,9 +25,12 @@ import App from '../app.vue';
 // console.log(Figure);
 
 document.addEventListener('DOMContentLoaded', () => {
+  // console.log("dialect=",dialect);
+  const dialect = JSON.parse(document.getElementById('dialect-json').innerHTML);
   var app = new Vue({
     el: '#app',
-    template: `<App/>`,
+    data: {dialect: dialect},
+    template: `<App v-bind:dialect='dialect' />`,
     components: {
       App
     }

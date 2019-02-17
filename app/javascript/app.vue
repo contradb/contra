@@ -14,6 +14,7 @@ console.log('moves', moves())
 
 export default {
   components: {Figure},
+  props: ['dialect'],
   data: function () {
     return {
       message: "Hello Fish!",
