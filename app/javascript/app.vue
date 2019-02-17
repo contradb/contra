@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     Select a figure but not right here!
-    <SearchNode v-bind:dialect='dialect' v-bind:tree="tree" v-on:set-figure='setFigure'></SearchNode>
+    <SearchNode v-bind:dialect='dialect' v-bind:tree="tree" v-on:set-figure='setFigure' v-on:set-tree='setTree'></SearchNode>
   </div>
 </template>
 
@@ -19,6 +19,13 @@ export default {
   methods: {
     setFigure(tree, move) {
       this.tree[1] = move;
+    },
+    setTree(oldTree, newTree) {
+      if (oldTree != this.tree) {
+        console.warn('oldTree does not match this.tree');
+      }
+      console.log('setTree', newTree);
+      this.tree = newTree;
     }
   }
 }
