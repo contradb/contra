@@ -489,6 +489,7 @@ $(document).ready(function() {
   function buildDOMtoMatchQuery(query) {
     var op = query[0];
     var figureFilter = $(filterHtml);
+    figureFilter.children('.figure-filter-op').val(op);
     switch(op) {
     case 'figure':
       addFigureFilterMoveConstellation(figureFilter);
@@ -502,7 +503,6 @@ $(document).ready(function() {
       }
       break;
     case 'formation':
-      figureFilter.children('.figure-filter-op').val(op);
       addFormationFilterConstellation(figureFilter);
       figureFilter.children('.figure-filter-formation').val(query[1]);
       break;
@@ -510,15 +510,15 @@ $(document).ready(function() {
       var subfilter  = query[1];
       var comparison = query[2];
       var number     = query[3];
-      figureFilter.children('.figure-filter-op').val(op);
       addCountFilterConstellation(figureFilter);
       figureFilter.children('.figure-filter-count-comparison').val(comparison);
       figureFilter.children('.figure-filter-count-number').val(number);
       figureFilter.children('.figure-filter-end-of-subfigures').before(buildDOMtoMatchQuery(subfilter));
       break;
+    case 'progression':
+      break;
     default:
       if (!n_ary(op)) { throw new Error('unknown operator: '+op); }
-      figureFilter.children('.figure-filter-op').val(op);
       for (var i=1; i<query.length; i++) {
         figureFilter.children('.figure-filter-end-of-subfigures').before(buildDOMtoMatchQuery(query[i]));
       }
