@@ -51,6 +51,10 @@ $(document).ready(function() {
     return n_ary_helper.indexOf(op) >= 0;
   }
 
+  function unary(op) {
+    return op === 'no' || op === 'not' || op === 'all' || op === 'count' || op === 'progression';
+  }
+
   function maxParameterCount(op) {
     switch(op) {
     case 'figure':
@@ -468,7 +472,7 @@ $(document).ready(function() {
     } else if (op === 'formation') {
       var formation = figure_filter.children('.figure-filter-formation').val();
       return [op, formation];
-    } else if (n_ary(op) || op === 'no' || op === 'not' || op === 'count' || op === 'progression') {
+    } else if (n_ary(op) || unary(op)) {
       var kids = figure_filter.children('.figure-filter').get();
       var filter = kids.map(buildFigureQuery);
       filter.unshift(op);
@@ -518,9 +522,13 @@ $(document).ready(function() {
     case 'progression':
       break;
     default:
-      if (!n_ary(op)) { throw new Error('unknown operator: '+op); }
-      for (var i=1; i<query.length; i++) {
-        figureFilter.children('.figure-filter-end-of-subfigures').before(buildDOMtoMatchQuery(query[i]));
+      if (n_ary(op) || unary(op)) {
+        if ('count' === op) { throw_up("count is a special case supposedly already handled"); }
+        for (var i=1; i<query.length; i++) {
+          figureFilter.children('.figure-filter-end-of-subfigures').before(buildDOMtoMatchQuery(query[i]));
+        }
+      } else {
+        throw new Error('unknown operator: '+op);
       }
       break;
     }
