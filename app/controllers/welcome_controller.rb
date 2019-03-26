@@ -8,4 +8,7 @@ class WelcomeController < ApplicationController
   def vue
     @dialect_json = dialect.to_json
   end
+
+  def check_box_boss                       # CheckBoxBoss
+  end
 end
