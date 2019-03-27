@@ -6,13 +6,30 @@
 // All it does is render <div>Hello Vue</div> at the bottom of the page.
 
 import Vue from 'vue/dist/vue.esm';
-
+import Vuex from 'vuex/dist/vuex.esm';
 import CheckBoxBoss from '../check_box_boss.vue';
+
+Vue.use(Vuex);
+
+const store = new Vuex.Store({
+  state: {
+    red: false,
+    green: false,
+    blue: false
+  },
+  mutations: {
+    set_color(state, {color, value}) {
+      state[color] = !state[color];
+    }
+  }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   var check_box_boss = new Vue({
     el: '#checkbox-app',
-    data: {},
+    store,
+    data: {
+    },
     template: `<CheckBoxBoss />`,
     components: {
       CheckBoxBoss

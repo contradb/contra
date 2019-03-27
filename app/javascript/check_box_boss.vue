@@ -1,9 +1,12 @@
 <template>
   <div id="checkbox-app">
     this is the check_box_boss
-    <CheckBox v-bind:state=red />
-    <CheckBox v-bind:state=green />
-    <CheckBox v-bind:state=blue />
+    <CheckBox v-bind:color="'red'" /> Red
+    <CheckBox v-bind:color="'red'" /> Red
+    <CheckBox v-bind:color="'green'" /> Green
+    <CheckBox v-bind:color="'blue'" /> Blue
+    <CheckBox v-bind:color="'green'" /> Green
+    <CheckBox v-bind:color="'blue'" /> Blue
   </div>
 </template>
 
