@@ -25,6 +25,26 @@ const store = new Vuex.Store({
       } else {
         state.checked = ancestors;
       }
+    },
+    wrap(state, {name}) {
+      if (!state.checked) {return;}
+      var c = state.checked.concat(); // copy
+      if (0 === c.length) {
+        state.tree = [name, state.tree];
+      } else {
+        var tree = state.tree.concat(); // copy
+        var t = tree;
+        var i = c[0]+1;
+        while (c.length > 1) {
+          t[i] = t[i].concat();
+          t = t[i];
+          c.shift();
+          i = c[0]+1;
+        }
+        // c.length === 1
+        t[i] = [name, t[i]];
+        state.tree = tree;
+      }
     }
   }
 });
@@ -35,9 +55,15 @@ document.addEventListener('DOMContentLoaded', () => {
     store,
     data: {
     },
-    template: `<TreeManipulatorGator v-bind:subtree="$store.state.tree" />`,
+    template: `<div><TreeManipulatorGator v-bind:subtree="$store.state.tree" /><br><br><button type="button" class='btn btn-default' v-on:click='wrap()'>wrap</button></div>`,
     components: {
       TreeManipulatorGator
+    },
+    methods: {
+      wrap() {
+        console.log('wrap() click handler');
+        this.$store.commit('wrap', {name: 'wrap'});
+      }
     }
   });
 });
