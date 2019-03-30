@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   get '/help' => 'help#index'
   get '/vue' => 'welcome#vue'
   get '/cbb' => 'welcome#check_box_boss'
+  get '/tree' => 'welcome#tree'
   root 'welcome#index'
 
   # Example of regular route:
