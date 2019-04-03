@@ -138,7 +138,6 @@ class CountSearchEx extends unaryMixin(SearchEx) {
 }
 registerSearchEx('CountSearchEx');
 
-
 function test() {
   let errors = [];
 
@@ -185,3 +184,4 @@ test();
         // not ('anything but' in UI)
         // all
         // count ('number of' in UI)
+export { SearchEx };
