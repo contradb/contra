@@ -23,6 +23,9 @@ class  SearchEx {
   static castFrom(searchEx) {
     return new this({subexpressions: searchEx.subexpressions});
   }
+  static default() {
+    return SearchEx.fromLisp(['figure', '*']);
+  }
 };
 
 function registerSearchEx(className) {
@@ -42,26 +45,34 @@ function errorMissingParameter(name) {
 }
 
 let nullaryMixin = Base => class extends Base {
-  max_subexpressions() { return 0; }
-  min_subexpressions() { return 0; }
-  min_useful_subexpressions() { return 0; };
-}
+  maxSubexpressions() { return 0; }
+  minSubexpressions() { return 0; }
+  minUsefulSubexpressions() { return 0; };
+};
 
 let unaryMixin = Base => class extends Base {
-  max_subexpressions() { return 1; }
-  min_subexpressions() { return 1; }
-  min_useful_subexpressions() { return 1; };
+  maxSubexpressions() { return 1; }
+  minSubexpressions() { return 1; }
+  minUsefulSubexpressions() { return 1; };
   static castFrom(searchEx) {
     const newSubs = 1===searchEx.subexpressions.length ? searchEx.subexpressions : [searchEx];
     return new this({subexpressions: newSubs});
   }
-}
+};
 
 let binaryishMixin = Base => class extends Base {
-  max_subexpressions() { return Infinity; }
-  min_subexpressions() { return 0; }
-  min_useful_subexpressions() { return 2; };
-}
+  maxSubexpressions() { return Infinity; }
+  minSubexpressions() { return 0; }
+  minUsefulSubexpressions() { return 2; };
+  static castFrom(searchEx) {
+    if (0 === searchEx.minSubexpressions() && searchEx.maxSubexpressions() > 0) {
+      // TODO: move this functionality off the root class and into the mixins. 
+      return super.castFrom(searchEx);
+    } else {
+      return new this({subexpressions: [searchEx, SearchEx.default()]});
+    }
+  }
+};
 
 class FigureSearchEx extends nullaryMixin(SearchEx) {
   constructor(args) {
@@ -152,6 +163,7 @@ class CountSearchEx extends unaryMixin(SearchEx) {
   }
   static castFrom(searchEx) {
     const newSubs = 1===searchEx.subexpressions.length ? searchEx.subexpressions : [searchEx];
+    // TODO: refactor this to not duplicate logic from unaryMixin
     return new this({subexpressions: newSubs, comparison: '>', number: 0});
   }
 }
@@ -191,8 +203,12 @@ function test1() {
 function test2() {
   let errors = [];
 
-  [{op: 'then', from: ['and', ['progression']], expect: ['then', ['progression']]},
-   // {from: ['figure', 'swing'], op: 'and', expect: ['and', ['figure', 'swing'], ['figure', '*']]},
+  [{op: 'then', from: ['progression'], expect: ['then', ['progression'], ['figure', '*']]},
+   {op: 'then', from: ['not', ['progression']], expect: ['then', ['not', ['progression']], ['figure', '*']]},
+   {op: 'then', from: ['and'], expect: ['then']},
+   {op: 'then', from: ['and', ['progression']], expect: ['then', ['progression']]},
+   {op: 'then', from: ['and', ['progression'], ['figure', 'chain']], expect: ['then', ['progression'], ['figure', 'chain']]},
+   {op: 'and', from: ['figure', 'swing'], expect: ['and', ['figure', 'swing'], ['figure', '*']]},
    {op: 'figure', from: ['and'], expect: ['figure', '*']},
    {op: 'formation', from: ['and'], expect: ['formation', 'improper']},
    {op: 'progression', from: ['and'], expect: ['progression']},
