@@ -17,6 +17,12 @@ class  SearchEx {
       return constructor.fromLispHelper(constructor, lisp);
     }
   }
+  castTo(op) {
+    return opToConstructor[op].castFrom(this);
+  }
+  static castFrom(searchEx) {
+    return new this({subexpressions: searchEx.subexpressions});
+  }
 };
 
 function registerSearchEx(className) {
@@ -45,6 +51,10 @@ let unaryMixin = Base => class extends Base {
   max_subexpressions() { return 1; }
   min_subexpressions() { return 1; }
   min_useful_subexpressions() { return 1; };
+  static castFrom(searchEx) {
+    const newSubs = 1===searchEx.subexpressions.length ? searchEx.subexpressions : [searchEx];
+    return new this({subexpressions: newSubs});
+  }
 }
 
 let binaryishMixin = Base => class extends Base {
@@ -66,6 +76,9 @@ class FigureSearchEx extends nullaryMixin(SearchEx) {
   static fromLispHelper(constructor, lisp) {
     return new constructor({move: lisp[1], parameters: lisp.slice(2)});
   }
+  static castFrom(searchEx) {
+    return new this({move: '*'});
+  }
 };
 registerSearchEx('FigureSearchEx');
 
@@ -77,6 +90,9 @@ class FormationSearchEx extends nullaryMixin(SearchEx) {
   };
   toLisp() {
     return [this.op(), this.formation];
+  }
+  static castFrom(searchEx) {
+    return new this({formation: 'improper'});
   }
 };
 registerSearchEx('FormationSearchEx');
@@ -132,18 +148,21 @@ class CountSearchEx extends unaryMixin(SearchEx) {
   }
   static fromLispHelper(constructor, lisp) {
     const [_op, subexpression, comparison, number] = lisp;
-    console.log(lisp, number);
     return new constructor({subexpressions: [SearchEx.fromLisp(subexpression)], comparison: comparison, number: number});
+  }
+  static castFrom(searchEx) {
+    const newSubs = 1===searchEx.subexpressions.length ? searchEx.subexpressions : [searchEx];
+    return new this({subexpressions: newSubs, comparison: '>', number: 0});
   }
 }
 registerSearchEx('CountSearchEx');
 
-function test() {
-  let errors = [];
+function lispEquals(lisp1, lisp2) {
+  return JSON.stringify(lisp1) === JSON.stringify(lisp2);
+}
 
-  function lispEquals(lisp1, lisp2) {
-    return JSON.stringify(lisp1) === JSON.stringify(lisp2);
-  }
+function test1() {
+  let errors = [];
 
   [['figure', 'do si do'],
    ['figure', 'swing', 'partners', '*', 8],
@@ -163,25 +182,54 @@ function test() {
   });
 
   if (errors.length > 0) {
-    throw new Error('tests ' + JSON.stringify(errors) + ' failed');
+    throw new Error('test1 tests ' + JSON.stringify(errors) + ' failed');
   } else {
     return 'tests pass';
   }
 }
 
-test();
+function test2() {
+  let errors = [];
 
-// new FigureSearchEx({subexpressions: 'foo', figure: 'do si do', parameters: [8]});
+  [{op: 'then', from: ['and', ['progression']], expect: ['then', ['progression']]},
+   // {from: ['figure', 'swing'], op: 'and', expect: ['and', ['figure', 'swing'], ['figure', '*']]},
+   {op: 'figure', from: ['and'], expect: ['figure', '*']},
+   {op: 'formation', from: ['and'], expect: ['formation', 'improper']},
+   {op: 'progression', from: ['and'], expect: ['progression']},
+   {op: 'no', from: ['and'], expect: ['no', ['and']]},
+   {op: 'no', from: ['not', ['figure', '*']], expect: ['no', ['figure', '*']]},
+   {op: 'no', from: ['or', ['figure', 'swing'], ['figure', 'chain']], expect: ['no', ['or', ['figure', 'swing'], ['figure', 'chain']]]},
+   {op: 'not', from: ['and'], expect: ['not', ['and']]},
+   {op: 'not', from: ['no', ['figure', '*']], expect: ['not', ['figure', '*']]},
+   {op: 'not', from: ['or', ['figure', 'swing'], ['figure', 'chain']], expect: ['not', ['or', ['figure', 'swing'], ['figure', 'chain']]]},
+   {op: 'all', from: ['and'], expect: ['all', ['and']]},
+   {op: 'all', from: ['no', ['figure', '*']], expect: ['all', ['figure', '*']]},
+   {op: 'all', from: ['or', ['figure', 'swing'], ['figure', 'chain']], expect: ['all', ['or', ['figure', 'swing'], ['figure', 'chain']]]},
+   {op: 'count', from: ['and'], expect: ['count', ['and'], '>', 0]},
+   {op: 'count', from: ['no', ['figure', '*']], expect: ['count', ['figure', '*'], '>', 0]},
+   {op: 'count', from: ['or', ['figure', 'swing'], ['figure', 'chain']], expect: ['count', ['or', ['figure', 'swing'], ['figure', 'chain']], '>', 0]},
 
-        // figure
-        // formation
-        // progression
-        // or
-        // and
-        // &
-        // then
-        // no
-        // not ('anything but' in UI)
-        // all
-        // count ('number of' in UI)
+
+   // no
+   // not
+   // all
+  ].forEach(function({from, op, expect}, i) {
+    const got = SearchEx.fromLisp(from).castTo(op).toLisp();
+    if (!lispEquals(expect, got)) {
+      console.log('got ', got, 'expected ', expect);
+      errors.push(i);
+    }
+  });
+
+  if (errors.length > 0) {
+    throw new Error('test2 tests ' + JSON.stringify(errors) + ' failed');
+  } else {
+    return 'tests pass';
+  }
+}
+
+test1();
+test2();
+
+window.SearchEx = SearchEx;
 export { SearchEx };
