@@ -3,7 +3,13 @@ class  SearchEx {
   constructor({subexpressions = []} = {}) {
     this.subexpressions = subexpressions;
   }
-  // subtypes to implement: toLisp() and static fromLispHelper(...)
+  // subtypes to implement:
+  // toLisp()
+  // static fromLispHelper(...)
+  // static castFrom()
+  // static minSubexpressions()
+  // static maxSubexpressions()
+  // static minUsefulSubexpressions()
   op() {
     return constructorNameToOp[this.constructor.name];
   }
@@ -20,12 +26,12 @@ class  SearchEx {
   castTo(op) {
     return opToConstructor[op].castFrom(this);
   }
-  static castFrom(searchEx) {
-    return new this({subexpressions: searchEx.subexpressions});
-  }
   static default() {
     return SearchEx.fromLisp(['figure', '*']);
   }
+  minSubexpressions() {return this.constructor.minSubexpressions();}
+  maxSubexpressions() {return this.constructor.maxSubexpressions();}
+  minUsefulSubexpressions() {return this.constructor.minUsefulSubexpressions();}
 };
 
 function registerSearchEx(className) {
@@ -45,31 +51,39 @@ function errorMissingParameter(name) {
 }
 
 let nullaryMixin = Base => class extends Base {
-  maxSubexpressions() { return 0; }
-  minSubexpressions() { return 0; }
-  minUsefulSubexpressions() { return 0; };
+  static maxSubexpressions() { return 0; }
+  static minSubexpressions() { return 0; }
+  static minUsefulSubexpressions() { return 0; };
+  static castFrom(searchEx) {
+    return new this();
+  }
 };
 
 let unaryMixin = Base => class extends Base {
-  maxSubexpressions() { return 1; }
-  minSubexpressions() { return 1; }
-  minUsefulSubexpressions() { return 1; };
+  static maxSubexpressions() { return 1; }
+  static minSubexpressions() { return 1; }
+  static minUsefulSubexpressions() { return 1; };
   static castFrom(searchEx) {
-    const newSubs = 1===searchEx.subexpressions.length ? searchEx.subexpressions : [searchEx];
-    return new this({subexpressions: newSubs});
+    return new this(this.castConstructorDefaults(searchEx));
+  }
+  static castConstructorDefaults(searchEx) {
+    return {subexpressions: 1===searchEx.subexpressions.length ? searchEx.subexpressions : [searchEx]};
   }
 };
 
 let binaryishMixin = Base => class extends Base {
-  maxSubexpressions() { return Infinity; }
-  minSubexpressions() { return 0; }
-  minUsefulSubexpressions() { return 2; };
+  static maxSubexpressions() { return Infinity; }
+  static minSubexpressions() { return 0; }
+  static minUsefulSubexpressions() { return 2; };
   static castFrom(searchEx) {
     if (0 === searchEx.minSubexpressions() && searchEx.maxSubexpressions() > 0) {
-      // TODO: move this functionality off the root class and into the mixins. 
-      return super.castFrom(searchEx);
+      return new this({subexpressions: searchEx.subexpressions});
     } else {
-      return new this({subexpressions: [searchEx, SearchEx.default()]});
+      const ses = [searchEx];
+      while (ses.length < this.minUsefulSubexpressions()) {
+        ses.push(SearchEx.default());
+      }
+      return new this({subexpressions: ses});
     }
   }
 };
@@ -161,10 +175,8 @@ class CountSearchEx extends unaryMixin(SearchEx) {
     const [_op, subexpression, comparison, number] = lisp;
     return new constructor({subexpressions: [SearchEx.fromLisp(subexpression)], comparison: comparison, number: number});
   }
-  static castFrom(searchEx) {
-    const newSubs = 1===searchEx.subexpressions.length ? searchEx.subexpressions : [searchEx];
-    // TODO: refactor this to not duplicate logic from unaryMixin
-    return new this({subexpressions: newSubs, comparison: '>', number: 0});
+  static castConstructorDefaults(searchEx) {
+    return {comparison: '>', number: 0, ...super.castConstructorDefaults(searchEx)};
   }
 }
 registerSearchEx('CountSearchEx');
@@ -224,11 +236,6 @@ function test2() {
    {op: 'count', from: ['and'], expect: ['count', ['and'], '>', 0]},
    {op: 'count', from: ['no', ['figure', '*']], expect: ['count', ['figure', '*'], '>', 0]},
    {op: 'count', from: ['or', ['figure', 'swing'], ['figure', 'chain']], expect: ['count', ['or', ['figure', 'swing'], ['figure', 'chain']], '>', 0]},
-
-
-   // no
-   // not
-   // all
   ].forEach(function({from, op, expect}, i) {
     const got = SearchEx.fromLisp(from).castTo(op).toLisp();
     if (!lispEquals(expect, got)) {
@@ -247,5 +254,4 @@ function test2() {
 test1();
 test2();
 
-window.SearchEx = SearchEx;
 export { SearchEx };
