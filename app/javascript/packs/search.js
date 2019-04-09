@@ -23,8 +23,30 @@ const store = new Vuex.Store({
     // set_color(state, {color, value}) {
     //   state[color] = !state[color];
     // }
+    setOp(state, {path, op}) {
+      const searchEx = SearchEx.fromLisp(state.lisp); // argh! no getter access in mutations because ... reasons
+      state.lisp = setSearchExAtPath(getSearchExAtPath(searchEx, path).castTo(op), searchEx, path).toLisp();
+    }
   }
 });
+
+function getSearchExAtPath(rootSearchEx, path) {
+  return path.reduce((searchEx, subExIndex) => searchEx.subexpressions[subExIndex], rootSearchEx);
+}
+
+// modifies substructure, AND you have to pay attention to the return value.
+function setSearchExAtPath(valueSearchEx, rootSearchEx, path) {
+  if (path.length) {
+    let searchEx = rootSearchEx;
+    for (let i=0; i<path.length-1; i++) {
+      searchEx = searchEx.subexpressions[path[i]];
+    }
+    searchEx.subexpressions[path[path.length-1]] = valueSearchEx;
+    return rootSearchEx;
+  } else {
+    return valueSearchEx;
+  }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   var search = new Vue({

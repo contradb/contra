@@ -116,6 +116,9 @@ class FormationSearchEx extends nullaryMixin(SearchEx) {
   toLisp() {
     return [this.op(), this.formation];
   }
+  static fromLispHelper(constructor, lisp) {
+    return new constructor({formation: lisp[1]});
+  }
   static castFrom(searchEx) {
     return new this({formation: 'improper'});
   }
@@ -144,7 +147,7 @@ class SimpleUnarySearchEx extends unaryMixin(SearchEx) {
 // expressions that take just other SearchEx's and no other things.
 class SimpleBinaryishSearchEx extends binaryishMixin(SearchEx) {
   toLisp() {
-    return [this.op(), ...this.subexpressions.map(sex => sex.toLisp())];
+    return [this.op(), ...this.subexpressions.map(searchEx => searchEx.toLisp())];
   }
   static fromLispHelper(constructor, lisp) {
     return new constructor({subexpressions: lisp.slice(1).map(SearchEx.fromLisp)});
@@ -190,6 +193,7 @@ function test1() {
 
   [['figure', 'do si do'],
    ['figure', 'swing', 'partners', '*', 8],
+   ['formation', 'improper'],
    ['progression'],
    ['or', ['figure', 'do si do'], ['figure', 'swing']],
    ['and', ['figure', 'do si do'], ['figure', 'swing']],
