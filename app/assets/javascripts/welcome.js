@@ -51,6 +51,10 @@ $(document).ready(function() {
     return n_ary_helper.indexOf(op) >= 0;
   }
 
+  function unary(op) {
+    return op === 'no' || op === 'not' || op === 'all' || op === 'count' || op === 'progression';
+  }
+
   function maxParameterCount(op) {
     switch(op) {
     case 'figure':
@@ -468,7 +472,7 @@ $(document).ready(function() {
     } else if (op === 'formation') {
       var formation = figure_filter.children('.figure-filter-formation').val();
       return [op, formation];
-    } else if (n_ary(op) || op === 'no' || op === 'not' || op === 'count' || op === 'progression') {
+    } else if (n_ary(op) || unary(op)) {
       var kids = figure_filter.children('.figure-filter').get();
       var filter = kids.map(buildFigureQuery);
       filter.unshift(op);
@@ -489,6 +493,7 @@ $(document).ready(function() {
   function buildDOMtoMatchQuery(query) {
     var op = query[0];
     var figureFilter = $(filterHtml);
+    figureFilter.children('.figure-filter-op').val(op);
     switch(op) {
     case 'figure':
       addFigureFilterMoveConstellation(figureFilter);
@@ -502,7 +507,6 @@ $(document).ready(function() {
       }
       break;
     case 'formation':
-      figureFilter.children('.figure-filter-op').val(op);
       addFormationFilterConstellation(figureFilter);
       figureFilter.children('.figure-filter-formation').val(query[1]);
       break;
@@ -510,17 +514,21 @@ $(document).ready(function() {
       var subfilter  = query[1];
       var comparison = query[2];
       var number     = query[3];
-      figureFilter.children('.figure-filter-op').val(op);
       addCountFilterConstellation(figureFilter);
       figureFilter.children('.figure-filter-count-comparison').val(comparison);
       figureFilter.children('.figure-filter-count-number').val(number);
       figureFilter.children('.figure-filter-end-of-subfigures').before(buildDOMtoMatchQuery(subfilter));
       break;
+    case 'progression':
+      break;
     default:
-      if (!n_ary(op)) { throw new Error('unknown operator: '+op); }
-      figureFilter.children('.figure-filter-op').val(op);
-      for (var i=1; i<query.length; i++) {
-        figureFilter.children('.figure-filter-end-of-subfigures').before(buildDOMtoMatchQuery(query[i]));
+      if (n_ary(op) || unary(op)) {
+        if ('count' === op) { throw_up("count is a special case supposedly already handled"); }
+        for (var i=1; i<query.length; i++) {
+          figureFilter.children('.figure-filter-end-of-subfigures').before(buildDOMtoMatchQuery(query[i]));
+        }
+      } else {
+        throw new Error('unknown operator: '+op);
       }
       break;
     }

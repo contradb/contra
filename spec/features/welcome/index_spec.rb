@@ -669,7 +669,7 @@ describe 'Welcome page', js: true do
           fb = FactoryGirl.create(:dance_with_a_down_the_hall, march_facing: 'forward then backward')
           f = FactoryGirl.create(:dance_with_a_down_the_hall, march_facing: 'forward')
           b = FactoryGirl.create(:dance_with_a_down_the_hall, march_facing: 'backward')
-          with_retries(10) do
+          with_retries do
             visit '/'
 
             select('down the hall')
@@ -864,6 +864,19 @@ describe 'Welcome page', js: true do
         expect(page).to_not have_content('The Rendevouz')
         expect(page).to_not have_content('Call Me')
         expect(page).to have_content('Showing dances with a swing and a ladles allemande right 1½ and an improper formation.')
+      end
+
+      it 'all filters at least load when back-ed' do
+        dances
+        visit '/'
+        filters = page.find('.figure-filter-op').all('option').map {|elt| elt['innerHTML'].gsub('&amp;', '&') }
+        filters.each do |filter|
+          page.select(filter, match: :first)
+          expect(page).to have_text(/Showing \d+ to \d+ of \d+ entries/)
+          page.refresh
+          # when filters are broken on reload, it has an empty table and doesn't show this text:
+          expect(page).to have_text(/Showing \d+ to \d+ of \d+ entries/)
+        end
       end
 
       it 'number of' do
