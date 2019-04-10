@@ -43,8 +43,9 @@ group :production do
 end
 
 group :development do
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console'
+  gem 'web-console' # Access an IRB console on exception pages or by using <%= console %> in views
+  gem "spring"
+  gem 'spring-commands-rspec'
 end
 
 group :development, :test do
