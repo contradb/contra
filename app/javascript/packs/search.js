@@ -8,8 +8,6 @@ import Vuex from 'vuex/dist/vuex.esm';
 import { SearchEx } from '../search_ex.js';
 import SearchExEditor from '../search_ex_editor.vue';
 
-window.SearchEx = SearchEx;
-
 Vue.use(Vuex);
 
 const store = new Vuex.Store({

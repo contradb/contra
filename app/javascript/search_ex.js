@@ -1,9 +1,6 @@
 // search node class heirarchy goes here
 class  SearchEx {
   constructor({subexpressions = []} = {}) {
-    for (let i=0; i<allProps.length; i++) {
-      // this[allProps[i]] = null; // TODO: remove all the dead functionality required to make this line work - don't need it
-    }
     this.subexpressions = subexpressions;
   }
   // subtypes to implement:
@@ -35,6 +32,11 @@ class  SearchEx {
   minSubexpressions() {return this.constructor.minSubexpressions();}
   maxSubexpressions() {return this.constructor.maxSubexpressions();}
   minUsefulSubexpressions() {return this.constructor.minUsefulSubexpressions();}
+
+  static allProps() {
+    // all properties held by any subclass.
+    return allProps;
+  }
 };
 
 function registerSearchEx(className, ...props) {

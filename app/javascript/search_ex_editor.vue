@@ -32,7 +32,7 @@
 
 <script>
 
-
+import { SearchEx } from 'search_ex.js';
 
 export default {
   name: 'SearchExEditor',
@@ -46,7 +46,6 @@ export default {
       required: true
     }
   },
-  // components: {CheckBox},
   data: function() {
     return {
     };
@@ -60,17 +59,34 @@ export default {
         return this.searchEx.op();
       },
       set: function(value) {
-        // this.$store.commit('check_mutation', {ancestors: this.ancestors});
-        console.log('computed op set got value: ', value);
         this.$store.commit('setOp', {path: this.path, op: value});
       }
     },
-    formation: {
-      get: function() { return this.searchEx.formation; },
-      set: function(value) { this.$store.commit('setFormation', {path: this.path, formation: value}) }
-    }
+      ...SearchEx.allProps().reduce(function(acc, prop) {
+        const mutationName = mutationNameForProp(prop);
+        if (prop !== 'subexpressions') {
+          acc[prop] = {
+            get: function() { return this.searchEx[prop]; },
+            set: function(value) {
+              const h = {path: this.path};
+              h[prop] = value;
+              this.$store.commit(mutationName, h);
+            }
+          };
+        }
+        return acc;
+      }, {})
   }
 }
+
+function mutationNameForProp(propertyName) {
+  if (propertyName.length >= 1) {
+    return 'set' + propertyName.charAt(0).toUpperCase() + propertyName.slice(1);
+  } else {
+    throw new Error("propertyName is too short");
+  }
+}
+
 </script>
 
 <style scoped>
