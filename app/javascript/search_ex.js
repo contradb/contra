@@ -1,6 +1,9 @@
 // search node class heirarchy goes here
 class  SearchEx {
   constructor({subexpressions = []} = {}) {
+    for (let i=0; i<allProps.length; i++) {
+      // this[allProps[i]] = null; // TODO: remove all the dead functionality required to make this line work - don't need it
+    }
     this.subexpressions = subexpressions;
   }
   // subtypes to implement:
@@ -34,17 +37,25 @@ class  SearchEx {
   minUsefulSubexpressions() {return this.constructor.minUsefulSubexpressions();}
 };
 
-function registerSearchEx(className) {
+function registerSearchEx(className, ...props) {
   const op = className.replace(/SearchEx$/, '').toLowerCase().replace(/ampersand/g, '&');
   constructorNameToOp[className] = op;
   opToConstructor[op] = eval(className);
   if (!opToConstructor[op]) {
     throw new Error('class name ' + className + ' not found');
   }
+  for (let prop of props) {
+    if (!allProps.includes(prop)) {
+      allProps.push(prop);
+    }
+  }
 }
 
 const opToConstructor = {};
 const constructorNameToOp = {};
+const allProps = [];
+
+registerSearchEx('SearchEx', 'subexpressions');
 
 function errorMissingParameter(name) {
   throw new Error('missing parameter "'+name+'"');
@@ -105,7 +116,7 @@ class FigureSearchEx extends nullaryMixin(SearchEx) {
     return new this({move: '*'});
   }
 };
-registerSearchEx('FigureSearchEx');
+registerSearchEx('FigureSearchEx', 'move', 'parameters');
 
 class FormationSearchEx extends nullaryMixin(SearchEx) {
   constructor(args) {
@@ -123,7 +134,7 @@ class FormationSearchEx extends nullaryMixin(SearchEx) {
     return new this({formation: 'improper'});
   }
 };
-registerSearchEx('FormationSearchEx');
+registerSearchEx('FormationSearchEx', 'formation');
 
 class ProgressionSearchEx extends nullaryMixin(SearchEx) {
   toLisp() {
@@ -182,7 +193,7 @@ class CountSearchEx extends unaryMixin(SearchEx) {
     return {comparison: '>', number: 0, ...super.castConstructorDefaults(searchEx)};
   }
 }
-registerSearchEx('CountSearchEx');
+registerSearchEx('CountSearchEx', 'comparison', 'number');
 
 function lispEquals(lisp1, lisp2) {
   return JSON.stringify(lisp1) === JSON.stringify(lisp2);

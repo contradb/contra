@@ -26,6 +26,11 @@ const store = new Vuex.Store({
     setOp(state, {path, op}) {
       const searchEx = SearchEx.fromLisp(state.lisp); // argh! no getter access in mutations because ... reasons
       state.lisp = setSearchExAtPath(getSearchExAtPath(searchEx, path).castTo(op), searchEx, path).toLisp();
+    },
+    setFormation(state, {path, formation}) {
+      const searchEx = SearchEx.fromLisp(state.lisp);
+      getSearchExAtPath(searchEx, path).formation = formation; // destructive!
+      state.lisp = searchEx.toLisp();
     }
   }
 });

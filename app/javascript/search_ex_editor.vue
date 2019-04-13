@@ -13,6 +13,16 @@
       <option>all</option>
       <option value='count'>number of</option>
     </select>
+    <div v-if="formation">
+      <select v-model="formation" class='figure-filter-formation form-control'>
+        <option>improper</option>
+        <option>Becket *</option>
+        <option>Becket cw</option>
+        <option>Becket ccw</option>
+        <option>proper</option>
+        <option>everything else</option>
+      </select>
+    </div>
     <ul v-if="searchEx.subexpressions.length">
       <li v-for="(subEx, index) in searchEx.subexpressions"><SearchExEditor v-bind:path='path.concat(index)' v-bind:lisp='subEx.toLisp()' /></li>
     </ul>
@@ -31,10 +41,6 @@ export default {
       type: Array,
       required: true
     },
-    // searchEx: {
-    //   type: Object,
-    //   required: true
-    // },
     path: {
       type: Array,
       required: true
@@ -58,6 +64,10 @@ export default {
         console.log('computed op set got value: ', value);
         this.$store.commit('setOp', {path: this.path, op: value});
       }
+    },
+    formation: {
+      get: function() { return this.searchEx.formation; },
+      set: function(value) { this.$store.commit('setFormation', {path: this.path, formation: value}) }
     }
   }
 }
