@@ -621,11 +621,11 @@ $(document).ready(function() {
   }
 
   // oh, I can't use arrays in params? Fine, I'll create hashes with indexes as keys
-  function arrayToObject (a) {
+  function arrayToIntHash (a) {
     if (Array.isArray(a)) {
       var o = { faux_array: true };
       for (var i=0; i<a.length; i++) {
-        o[i] = arrayToObject(a[i]);
+        o[i] = arrayToIntHash(a[i]);
       }
       return o;
     } else {
@@ -641,8 +641,8 @@ $(document).ready(function() {
             url: $('#dances-table').data('source'),
             type: 'POST',
             data: function(d) {
-              // d.figureQuery = arrayToObject(['and', ['no', ['figure', 'gyre']], ['then', ['figure', 'roll away'], ['figure', 'swing']]]);
-              d.figureQuery = arrayToObject(JSON.parse($('#figure-query-buffer').val()));
+              // d.figureQuery = arrayToIntHash(['and', ['no', ['figure', 'gyre']], ['then', ['figure', 'roll away'], ['figure', 'swing']]]);
+              d.figureQuery = arrayToIntHash(JSON.parse($('#figure-query-buffer').val()));
             }
           },
           "pagingType": "full_numbers",
