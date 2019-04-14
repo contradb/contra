@@ -81,7 +81,7 @@ gem 'redcarpet'
 
 gem 'rails-controller-testing'
 
-gem 'jquery-datatables-rails'
+gem 'jquery-datatables-rails', git: 'https://github.com/contradb/jquery-datatables-rails.git'
 gem 'ajax-datatables-rails'
 
 gem 'actionview-encoded_mail_to'
