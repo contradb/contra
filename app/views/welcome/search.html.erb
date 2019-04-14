@@ -1,4 +1,32 @@
 <%= javascript_pack_tag 'search' %>
+<section>
+  <h2>Find Dances</h2>
+  <div>
+    <span class="figure-query-sentence"></span>
+    <a href="https://github.com/contradb/contra/blob/master/doc/search.md#advanced-search-on-contradb" target="_"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>
+  </div>
 
-<div id='search-app'></div>
+  <div id='search-app'></div>
+
+  <table id="dances-table-vue", class="table table-bordered table-hover table-condensed", data-source="<%= dances_filter_path(format: :json) %>">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Choreographer</th>
+        <th>Hook</th>
+        <th>Formation</th>
+        <th>User</th>
+        <th>Entered</th>
+        <th>Updated</th>
+        <th>Published</th>
+        <th>Figures</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</section>
+
+<div id='dialect-json'><%= @dialect_json %></div>
+
 

@@ -5,6 +5,10 @@ class WelcomeController < ApplicationController
     @dialect_json = dialect.to_json
   end
 
+  def search
+    @dialect_json = dialect.to_json
+  end
+
   def vue
     @dialect_json = dialect.to_json
   end
