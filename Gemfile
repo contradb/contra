@@ -12,7 +12,7 @@ gem 'pg'
 
 
 # Use SCSS for stylesheets
-gem 'sass-rails'
+gem 'sassc-rails'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
@@ -69,7 +69,7 @@ gem 'sprockets-es6'
 
 
 # Helpers for Twitter Bootstrap
-gem 'bootstrap-sass', '~> 3.3.5'
+gem 'bootstrap-sass', '>= 3.4.1'
 gem 'bootstrap-toggle-rails'
 gem 'sprockets-rails' # , '~> 2.3.2'
 
@@ -79,7 +79,7 @@ gem 'redcarpet'
 
 gem 'rails-controller-testing'
 
-gem 'jquery-datatables-rails'
+gem 'jquery-datatables-rails', git: 'https://github.com/contradb/jquery-datatables-rails.git'
 gem 'ajax-datatables-rails'
 
 gem 'actionview-encoded_mail_to'
