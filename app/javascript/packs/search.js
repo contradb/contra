@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     el: '#search-app',
     store,
     data: {},
-    template: `<div><SearchExEditor v-bind:lisp="$store.state.lisp" v-bind:path="[]" /><hr><p>state: {{$store.state.lisp}}</p><input id="figure-query-buffer" type='text' v-bind:value='$store.state.lisp'></div>`,
+    template: `<div><SearchExEditor v-bind:lisp="$store.state.lisp" v-bind:path="[]" /><hr><p>state: {{$store.state.lisp}}</p></div>`,
     components: {
       SearchExEditor
     },

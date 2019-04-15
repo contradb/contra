@@ -39,9 +39,10 @@ describe 'Search page', js: true do
       page.assert_selector('.figure-filter-op', count: 3)
       all('.figure-filter-op')[1].select('formation')
       select('Becket *')
-      dances.each {|dance|
-        expect(page).send(dance.start_type.include?("Becket") ? :to : :to_not, have_link(dance.title, href: dance_path(dance)))
-      }
+      dances.each do |dance|
+        to_or_to_not = dance.start_type.include?("Becket") ? :to : :to_not
+        expect(page).send(to_or_to_not, have_link(dance.title, href: dance_path(dance)))
+      end
     end
   end
 end

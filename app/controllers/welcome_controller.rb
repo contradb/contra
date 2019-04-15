@@ -8,11 +8,4 @@ class WelcomeController < ApplicationController
   def search
     @dialect_json = dialect.to_json
   end
-
-  def vue
-    @dialect_json = dialect.to_json
-  end
-
-  def check_box_boss                       # CheckBoxBoss
-  end
 end
