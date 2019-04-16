@@ -63,7 +63,7 @@ export default {
       }
     },
       ...SearchEx.allProps().reduce(function(acc, prop) {
-        const mutationName = mutationNameForProp(prop);
+        const mutationName = SearchEx.mutationNameForProp(prop);
         if (prop !== 'subexpressions') {
           acc[prop] = {
             get: function() { return this.searchEx[prop]; },
@@ -76,14 +76,6 @@ export default {
         }
         return acc;
       }, {})
-  }
-}
-
-function mutationNameForProp(propertyName) {
-  if (propertyName.length >= 1) {
-    return 'set' + propertyName.charAt(0).toUpperCase() + propertyName.slice(1);
-  } else {
-    throw new Error("propertyName is too short");
   }
 }
 

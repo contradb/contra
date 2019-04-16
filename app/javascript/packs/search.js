@@ -17,20 +17,29 @@ const store = new Vuex.Store({
   getters: {
     searchEx: state => SearchEx.fromLisp(state.lisp)
   },
-  mutations: {
-    // set_color(state, {color, value}) {
-    //   state[color] = !state[color];
-    // }
+  mutations:
+  // here's what a mutation looked like before it was made generic with the reduce:
+  // setFormation(state, {path, formation}) {
+  //   const searchEx = SearchEx.fromLisp(state.lisp);
+  //   getSearchExAtPath(searchEx, path).formation = formation; // destructive!
+  //   state.lisp = searchEx.toLisp();
+  // }
+  SearchEx.allProps().reduce((hash, prop) => {
+    if (prop !== 'op') {
+      hash[SearchEx.mutationNameForProp(prop)] = function(state, payload) {
+        const searchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
+        getSearchExAtPath(searchEx, payload.path)[prop] = payload[prop]; // destructive!
+        state.lisp = searchEx.toLisp();
+      };
+    }
+    return hash;
+  }, {
     setOp(state, {path, op}) {
-      const searchEx = SearchEx.fromLisp(state.lisp); // argh! no getter access in mutations because ... reasons
+      const searchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
       state.lisp = setSearchExAtPath(getSearchExAtPath(searchEx, path).castTo(op), searchEx, path).toLisp();
-    },
-    setFormation(state, {path, formation}) {
-      const searchEx = SearchEx.fromLisp(state.lisp);
-      getSearchExAtPath(searchEx, path).formation = formation; // destructive!
-      state.lisp = searchEx.toLisp();
     }
   }
+  )
 });
 
 function getSearchExAtPath(rootSearchEx, path) {

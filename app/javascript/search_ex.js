@@ -37,6 +37,14 @@ class  SearchEx {
     // all properties held by any subclass.
     return allProps;
   }
+
+  static mutationNameForProp(propertyName) {
+    if (propertyName.length >= 1) {
+      return 'set' + propertyName.charAt(0).toUpperCase() + propertyName.slice(1);
+    } else {
+      throw new Error("propertyName is too short");
+    }
+  }
 };
 
 function registerSearchEx(className, ...props) {
