@@ -13,16 +13,25 @@
       <option>all</option>
       <option value='count'>number of</option>
     </select>
-    <div v-if="formation">
-      <select v-model="formation" class='figure-filter-formation form-control'>
-        <option>improper</option>
-        <option>Becket *</option>
-        <option>Becket cw</option>
-        <option>Becket ccw</option>
-        <option>proper</option>
-        <option>everything else</option>
-      </select>
-    </div>
+    <select v-if="comparison !== undefined" v-model="comparison" class="figure-filter-count-comparison form-control">
+      <option>≥</option>
+      <option>≤</option>
+      <option>&gt;</option>
+      <option>&lt;</option>
+      <option>=</option>
+      <option>≠</option>
+    </select>
+    <select v-if="number !== undefined" v-model="number" class="figure-filter-count-number form-control">
+      <option v-for="i in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]">{{ i }}</option>
+    </select>
+    <select v-if="formation !== undefined" v-model="formation" class='figure-filter-formation form-control'>
+      <option>improper</option>
+      <option>Becket *</option>
+      <option>Becket cw</option>
+      <option>Becket ccw</option>
+      <option>proper</option>
+      <option>everything else</option>
+    </select>
     <ul v-if="searchEx.subexpressions.length">
       <li v-for="(subEx, index) in searchEx.subexpressions"><SearchExEditor v-bind:path='path.concat(index)' v-bind:lisp='subEx.toLisp()' /></li>
     </ul>
