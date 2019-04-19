@@ -6,13 +6,15 @@
 import Vue from 'vue/dist/vue.esm';
 import Vuex from 'vuex/dist/vuex.esm';
 import { SearchEx } from '../search_ex.js';
+import { defaultDialect } from '../libfigure/util.js';
 import SearchExEditor from '../search_ex_editor.vue';
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    lisp: ['and', ['figure', '*'], ['progression']]
+    lisp: ['and', ['figure', '*'], ['progression']],
+    dialect: defaultDialect
   },
   getters: {
     searchEx: state => SearchEx.fromLisp(state.lisp)
@@ -65,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     el: '#search-app',
     store,
     data: {},
-    template: `<div><SearchExEditor v-bind:lisp="$store.state.lisp" v-bind:path="[]" /><hr><p>state: {{$store.state.lisp}}</p></div>`,
+    template: `<div><SearchExEditor v-bind:lisp="$store.state.lisp" v-bind:path="[]" /><hr><p>state.lisp: {{$store.state.lisp}}</p><p>state.dialect: {{$store.state.dialect}}</p></div>`,
     components: {
       SearchExEditor
     },
@@ -75,7 +77,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+////////////////////////////////////////////////////////////////
+// init
 
+$(() => store.state.dialect = JSON.parse($('#dialect-json').text()));
 /////////////////////////////////////////////////////////////////
 // stuff ripped from welcome.js
 
@@ -83,9 +88,6 @@ $(document).ready(function() {
   if (0 === $('#dances-table-vue').length) {
     return;                     // don't do any of this stuff if we're not on a page with a query.
   }
-
-  var dialect = JSON.parse($('#dialect-json').text());
-
 
   ////////////////////// VIS TOGGLES
   // For each column in the datatable, add a corresponding button that

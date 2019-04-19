@@ -18,7 +18,7 @@
 /***/ }
 /***/ 
 /***/ // text_in_dialect: <bool> property can still be missing...
-/***/ var defaultDialect = {moves: {}, dancers: {}};
+/***/ const defaultDialect = {moves: {}, dancers: {}};
 /***/ 
 /***/ var testDialect = {moves: {gyre: 'darcy',
 /***/                            allemande: 'almond',

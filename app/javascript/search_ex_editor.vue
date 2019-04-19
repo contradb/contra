@@ -13,6 +13,9 @@
       <option>all</option>
       <option value='count'>number of</option>
     </select>
+    <select v-if="move !== undefined" v-model="move" class="figure-filter-move form-control">
+      <option v-for="{term, substitution} in moveMenu" v-bind:value="term">{{substitution}}</option>
+    </select>
     <select v-if="comparison !== undefined" v-model="comparison" class="figure-filter-count-comparison form-control">
       <option>≥</option>
       <option>≤</option>
@@ -56,12 +59,14 @@ export default {
     }
   },
   data: function() {
-    return {
-    };
+    return {};
   },
   computed: {
     searchEx: function() {
       return SearchEx.fromLisp(this.lisp);
+    },
+    moveMenu: function() {
+      return [{term: '*', substitution: 'any figure'}].concat(moveTermsAndSubstitutionsForSelectMenu(this.$store.state.dialect));
     },
     op: {
       get: function() {

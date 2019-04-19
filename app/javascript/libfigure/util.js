@@ -17,7 +17,7 @@ function indefiniteArticleFor(w) {
 }
 
 // text_in_dialect: <bool> property can still be missing...
-var defaultDialect = {moves: {}, dancers: {}};
+export const defaultDialect = {moves: {}, dancers: {}};
 
 var testDialect = {moves: {gyre: 'darcy',
                            allemande: 'almond',
