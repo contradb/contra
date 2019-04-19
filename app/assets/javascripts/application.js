@@ -34,5 +34,3 @@
 //= require libfigure/dance
 //= require dances
 //= require_tree .
-
-console.log('hello application.js asset pipeline');

@@ -1,9 +1,0 @@
-PLAN FOR VUE
-
-- keep asset pipeline as-is for now
-- install webpack 4
-- host es6 import/export libfigure in webpack land
-- write a import/export stripping compiler script that writes the same source
-  files out to asset pipeline
-- (optional) see if there's a way to auto-run the script every time a
-  source file changes
