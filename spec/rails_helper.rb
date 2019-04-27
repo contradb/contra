@@ -1,5 +1,6 @@
 require 'devise'
 require 'support/controller_macros'
+require 'support/capybara'
 require 'retries'
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'

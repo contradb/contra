@@ -981,8 +981,4 @@ describe 'Welcome page', js: true do
   def exactly(string)
     /\A#{string}\z/
   end
-
-  def blur
-    page.find('body').click
-  end
 end

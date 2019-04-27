@@ -93,6 +93,7 @@ $(document).ready(function() {
   // For each column in the datatable, add a corresponding button that
   // changes color and toggles column visibility when clicked.
 
+  // duplicated code in welcome.js
   function insertVisToggles(dataTable) {
     var visToggles = $('.table-column-vis-toggles');
     visToggles.empty();
@@ -114,11 +115,13 @@ $(document).ready(function() {
     });
   }
 
+  // duplicated code in welcome.js
   var tinyScreenColumns = ['Title', 'Choreographer'];
   var narrowScreenColumns = tinyScreenColumns.concat(['Hook']);
   var wideScreenColumns = narrowScreenColumns.concat(['Formation', 'User', 'Entered']);
   var recentlySeenColumns = null;
 
+  // duplicated code in welcome.js
   function toggleColumnVisForResolution(dataTable, width) {
     var screenColumns = (width < 400) ? tinyScreenColumns : ((width < 768) ? narrowScreenColumns : wideScreenColumns);
     if (recentlySeenColumns === screenColumns) { return; }
@@ -148,6 +151,7 @@ $(document).ready(function() {
   store.watch(state => state.lisp, updateQuery, {deep: true});
 
 
+  // duplicated code in welcome.js
   // oh, I can't use arrays in params? Fine, I'll create hashes with indexes as keys
   function arrayToIntHash (a) {
     if (Array.isArray(a)) {
@@ -161,6 +165,7 @@ $(document).ready(function() {
     }
   }
 
+  // duplicated code in welcome.js
   var dataTable =
         $('#dances-table-vue').DataTable({
           "processing": true,
@@ -192,14 +197,15 @@ $(document).ready(function() {
           "order": [[ 5, "desc" ]] // 5 should = index of 'created_at' in the array above
         });
 
+  // duplicated code in welcome.js
   if (0===$('.table-column-vis-wrap label').length) {
     $('.table-column-vis-wrap').prepend($('<label>Show columns </label>'));
   }
   insertVisToggles(dataTable);
+  // This pasted code doesn't work here - TODO
   var resizeFn = function () {
     toggleColumnVisForResolution(dataTable, $(window).width());
   };
   $(window).resize(resizeFn);
   resizeFn();
-
 });

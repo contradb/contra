@@ -3,27 +3,29 @@
 require 'rails_helper'
 
 describe 'Search page', js: true do
-  it 'changing first child filter to "formation", then changing formation, changes state' do
-    visit '/s'
-    page.assert_selector('.figure-filter-op', count: 3)
-    all('.figure-filter-op')[1].select('formation')
-    select('proper')
-    expect(page).to have_text('state: [ "and", [ "formation", "proper" ], [ "progression" ] ]')
-  end
-
-  describe 'casts' do
-    it "cast from 'and' to 'or'" do
+  describe 'updating state.lisp' do
+    it 'exercise formation filter' do
       visit '/s'
       page.assert_selector('.figure-filter-op', count: 3)
-      first('.figure-filter-op').select('or')
-      expect(page).to have_text('state: [ "or", [ "figure", "*" ], [ "progression" ] ]')
+      all('.figure-filter-op')[1].select('formation')
+      select('proper')
+      expect(page).to have_text('state.lisp: [ "and", [ "formation", "proper" ], [ "progression" ] ]')
     end
 
-    it "cast to 'not'" do
-      visit '/s'
-      page.assert_selector('.figure-filter-op', count: 3)
-      first('.figure-filter-op').select('not')
-      expect(page).to have_text('state: [ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]')
+    describe 'casts' do
+      it "cast from 'and' to 'or'" do
+        visit '/s'
+        page.assert_selector('.figure-filter-op', count: 3)
+        first('.figure-filter-op').select('or')
+        expect(page).to have_text('state.lisp: [ "or", [ "figure", "*" ], [ "progression" ] ]')
+      end
+
+      it "cast to 'not'" do
+        visit '/s'
+        page.assert_selector('.figure-filter-op', count: 3)
+        first('.figure-filter-op').select('not')
+        expect(page).to have_text('state.lisp: [ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]')
+      end
     end
   end
 
@@ -60,6 +62,32 @@ describe 'Search page', js: true do
         expect(page).send(to_or_to_not, have_link(dance.title, href: dance_path(dance)))
       end
       expect(matches).to eq(1)
+    end
+
+    it '& filter' do
+      dances
+      visit '/s'
+      page.assert_selector('.figure-filter-op', count: 3)
+      first('.figure-filter-op').select('&')
+      select('chain')
+      expect(page).to have_text('state.lisp: [ "&", [ "figure", "chain" ], [ "progression" ] ]')
+      expect(page).to_not have_link('The Rendevouz')
+      expect(page).to_not have_link('Call Me')
+      expect(page).to_not have_link("You Can't Get There From Here")
+      expect(page).to have_link('Box the Gnat Contra')
+    end
+
+    describe 'figure filter' do
+      it 'move works' do
+        dances
+        visit '/s'
+        select 'chain'
+        expect(page).to_not have_link('The Rendevouz')
+        page.save_screenshot('/tmp/foo.png')
+        expect(page).to have_link('Call Me')
+        expect(page).to have_link('Box the Gnat Contra')
+        expect(page).to_not have_link("You Can't Get There From Here")
+      end
     end
   end
 end

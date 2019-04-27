@@ -6,7 +6,7 @@
       <option>progression</option>
       <option>or</option>
       <option>and</option>
-      <option>&</option>
+      <option>&amp;</option>
       <option>then</option>
       <option>no</option>
       <option>not</option>

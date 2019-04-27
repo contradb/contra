@@ -1,8 +1,7 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  # TODO: remove next line once js gets robust again -dm 02-01-2019
-  config.assets.debug = true
+  config.assets.debug = false
 
   # The test environment is used exclusively to run your application's
   # test suite. You never need to work with it otherwise. Remember that

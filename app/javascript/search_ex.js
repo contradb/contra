@@ -48,7 +48,7 @@ class  SearchEx {
 };
 
 function registerSearchEx(className, ...props) {
-  const op = className.replace(/SearchEx$/, '').toLowerCase().replace(/ampersand/g, '&');
+  const op = className.replace(/SearchEx$/, '').replace(/FigurewiseAnd/g, '&').toLowerCase();
   constructorNameToOp[className] = op;
   opToConstructor[op] = eval(className);
   if (!opToConstructor[op]) {
@@ -181,7 +181,7 @@ class AllSearchEx extends SimpleUnarySearchEx {}; registerSearchEx('AllSearchEx'
 
 class AndSearchEx extends SimpleBinaryishSearchEx {}; registerSearchEx('AndSearchEx');
 class OrSearchEx extends SimpleBinaryishSearchEx {}; registerSearchEx('OrSearchEx');
-class AmpersandSearchEx extends SimpleBinaryishSearchEx {}; registerSearchEx('AmpersandSearchEx');
+class FigurewiseAndSearchEx extends SimpleBinaryishSearchEx {}; registerSearchEx('FigurewiseAndSearchEx');
 class ThenSearchEx extends SimpleBinaryishSearchEx {}; registerSearchEx('ThenSearchEx');
 
 class CountSearchEx extends unaryMixin(SearchEx) {

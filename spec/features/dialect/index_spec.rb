@@ -364,10 +364,6 @@ describe 'Dialect page', js: true do
     FactoryGirl.create(:dancer_idiom, user: user, term: 'second ladle', substitution: 'second raven')
   end
 
-  def blur
-    page.find('body').click
-  end
-
   def expect_ladle_substitution_to_have_glyphicon_ok
     expect(page).to have_css('#ladle-substitution + span .glyphicon-ok')
   end

@@ -25,9 +25,6 @@ Rails.application.routes.draw do
 
   get 'about' => 'about#index'
   get '/help' => 'help#index'
-  get '/vue' => 'welcome#vue'
-  get '/cbb' => 'welcome#check_box_boss'
-  get '/tree' => 'welcome#tree'
   get '/s' => 'welcome#search'
   root 'welcome#index'
 
