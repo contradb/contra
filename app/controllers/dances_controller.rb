@@ -130,7 +130,7 @@ class DancesController < ApplicationController
       move, parameter_values, note = JSLibFigure.figure_unpack(figure)
       formals = move ? JSLibFigure.formal_parameters(move) : []
       pv2 = parameter_values.each_with_index.map do |parameter_value, i|
-        if parameter_value.present? && JSLibFigure.parameter_uses_chooser(formals[i], 'chooser_text')
+        if parameter_value.present? && JSLibFigure.parameter_uses_chooser(formals[i], JSLibFigure.chooser('chooser_text'))
           dialect_reverser.reverse(parameter_value)
         else
           parameter_value

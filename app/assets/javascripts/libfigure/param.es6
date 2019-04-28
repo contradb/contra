@@ -1,3 +1,4 @@
+// GENERATED FILE - source is in "/home/dm/contra/app/javascript/libfigure/param.js" - regenerate this with bin/rake libfigure:compile
 //     ____   _    ____      _    __  __
 //    |  _ \ / \  |  _ \    / \  |  \/  |
 //    | |_) / _ \ | |_) |  / _ \ | |\/| |
@@ -8,8 +9,7 @@
 // Though some patterns have emerged. Patterns like:
 // figures have a subject telling who's acted on by the figure.
 //
-
-import { throw_up } from './util';
+// strip_import_clumsily: import { throw_up } from './util';
 
 const __params = {};
 
@@ -19,8 +19,7 @@ function defineParam(codeName, hash) {
     h.ui = chooser(h.ui);
   }
 }
-
-export const param = (codeName) => {
+const param = (codeName) => {
   return __params[codeName] || throw_up('attempt to find non param: '+codeName);
 }
 

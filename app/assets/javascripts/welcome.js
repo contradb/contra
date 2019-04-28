@@ -240,8 +240,8 @@ $(document).ready(function() {
   // ================================================================
 
 
-  var chooserWidgetType = {};
-  var chooserToFilterHtml = {};
+  var chooserNameWidgetType = {};   // chooser_names to widget types
+  var chooserNameToFilterHtml = {}; // chooser_names keys
 
   if (!Array.isArray) {
     Array.isArray = function(arg) {
@@ -249,13 +249,13 @@ $(document).ready(function() {
     };
   }
 
-  function chooserRadioButtons(chooser, options, opt_inline) {
+  function chooserRadioButtons(chooser_name, options, opt_inline) {
     if (opt_inline === undefined) {opt_inline = options.length <= 3;}
-    chooserWidgetType[chooser] = 'radio';
+    chooserNameWidgetType[chooser_name] = 'radio';
     var div_start = opt_inline ? "" : "<div class=radio>";
     var div_end = opt_inline ? "" : '</div>';
     var label_class = opt_inline ? 'radio-inline' : '';
-    chooserToFilterHtml[chooser] = function(move) {
+    chooserNameToFilterHtml[chooser_name] = function(move) {
       var name = generateUniqueNameForRadio();
       var first_time = true;
       var radios = options.map(function(dancer){
@@ -269,9 +269,9 @@ $(document).ready(function() {
     };
   }
 
-  function chooserSelect(chooser, options) {
-    chooserWidgetType[chooser] = 'select';
-    chooserToFilterHtml[chooser] = function (move) {
+  function chooserSelect(chooser_name, options) {
+    chooserNameWidgetType[chooser_name] = 'select';
+    chooserNameToFilterHtml[chooser_name] = function (move) {
       var htmls = options.map(function(b) {
         var b_value = Array.isArray(b) ? b[0] : b;
         var b_label = Array.isArray(b) ? b[1] : b;
@@ -281,11 +281,11 @@ $(document).ready(function() {
     };
   }
 
-  chooserWidgetType[chooser_revolutions] = 'select';
-  chooserWidgetType[chooser_places] = 'select';
+  chooserNameWidgetType['chooser_revolutions'] = 'select';
+  chooserNameWidgetType['chooser_places'] = 'select';
 
-  chooserToFilterHtml[chooser_revolutions] =
-    chooserToFilterHtml[chooser_places] = function(move) {
+  chooserNameToFilterHtml['chooser_revolutions'] =
+    chooserNameToFilterHtml['chooser_places'] = function(move) {
       var options = ['<option value="*">*</option>'].concat(
         anglesForMove(move).map(function(angle) {
           return '<option value="'+angle.toString()+'">'+degreesToWords(angle,move)+'</option>';
@@ -293,47 +293,47 @@ $(document).ready(function() {
       return '<select class="form-control chooser-argument">'+options.join()+'</select>';
     };
 
-  chooserSelect(chooser_beats, ['*',8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]);
+  chooserSelect('chooser_beats', ['*',8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64]);
 
-  chooserRadioButtons(chooser_boolean, ['*',[true, 'yes'], [false, 'no']]);
+  chooserRadioButtons('chooser_boolean', ['*',[true, 'yes'], [false, 'no']]);
 
   { // dancer chooser menus
-    var dcs = dancerChoosers();
+    var dcs = dancerChooserNames();
     for (var i=0; i < dcs.length; i++) {
       var substituter = function(dancers) { return [dancers, dancerMenuLabel(dancers, dialect)]; };
-      chooserSelect(dcs[i], ['*'].concat(dancerCategoryMenuForChooser(dcs[i]).map(substituter)));
+      chooserSelect(dcs[i], ['*'].concat(dancerCategoryMenuForChooser(chooser(dcs[i])).map(substituter)));
     }
   }
 
-  chooserRadioButtons(chooser_spin, ['*',[true, 'clockwise'], [false, 'ccw']]);
-  chooserRadioButtons(chooser_left_right_spin, ['*',[true, 'left'], [false, 'right']]);
-  chooserRadioButtons(chooser_right_left_hand, ['*',[false, 'left'], [true, 'right']]);
-  chooserRadioButtons(chooser_right_left_shoulder, ['*',[false, 'left'], [true, 'right']]);
+  chooserRadioButtons('chooser_spin', ['*',[true, 'clockwise'], [false, 'ccw']]);
+  chooserRadioButtons('chooser_left_right_spin', ['*',[true, 'left'], [false, 'right']]);
+  chooserRadioButtons('chooser_right_left_hand', ['*',[false, 'left'], [true, 'right']]);
+  chooserRadioButtons('chooser_right_left_shoulder', ['*',[false, 'left'], [true, 'right']]);
 
-  chooserToFilterHtml[chooser_text] = function(move) {
+  chooserNameToFilterHtml['chooser_text'] = function(move) {
     return '<input class="form-control chooser-argument" type="string" placeholder="words...">';
   };
 
   // Below splicing ugliness is because we take values from JSLibFigure varaible 'wristGrips' rather than
   // just saying what we mean. At time of writing the following two lines are equivalent.
-  // chooserSelect(chooser_star_grip, ['*',['', 'unspecified'],'wrist grip','hands across']);
-  chooserSelect(chooser_star_grip, ['*'].concat(wristGrips.map(function(grip) { return (grip === '') ? ['', 'unspecified'] : grip; })));
+  // chooserSelect('chooser_star_grip', ['*',['', 'unspecified'],'wrist grip','hands across']);
+  chooserSelect('chooser_star_grip', ['*'].concat(wristGrips.map(function(grip) { return (grip === '') ? ['', 'unspecified'] : grip; })));
 
-  chooserSelect(chooser_march_facing, ['*','forward','backward','forward then backward']);
+  chooserSelect('chooser_march_facing', ['*','forward','backward','forward then backward']);
 
-  chooserRadioButtons(chooser_slide, ['*',[true, 'left'], [false, 'right']]);
-  chooserSelect(chooser_set_direction, ['*',['along', 'along the set'], ['across', 'across the set'], 'right diagonal', 'left diagonal']);
-  chooserSelect(chooser_set_direction_acrossish, ['*', ['across', 'across the set'], 'right diagonal', 'left diagonal']);
-  chooserSelect(chooser_set_direction_grid, ['*',['along', 'along the set'], ['across', 'across the set']]);
-  chooserSelect(chooser_set_direction_figure_8, ['*','','above','below','across']);
+  chooserRadioButtons('chooser_slide', ['*',[true, 'left'], [false, 'right']]);
+  chooserSelect('chooser_set_direction', ['*',['along', 'along the set'], ['across', 'across the set'], 'right diagonal', 'left diagonal']);
+  chooserSelect('chooser_set_direction_acrossish', ['*', ['across', 'across the set'], 'right diagonal', 'left diagonal']);
+  chooserSelect('chooser_set_direction_grid', ['*',['along', 'along the set'], ['across', 'across the set']]);
+  chooserSelect('chooser_set_direction_figure_8', ['*','','above','below','across']);
 
-  chooserSelect(chooser_gate_direction, ['*',['up', 'up the set'], ['down', 'down the set'], ['in', 'into the set'], ['out', 'out of the set']]);
-  chooserSelect(chooser_slice_return, ['*', ['straight', 'straight back'], ['diagonal', 'diagonal back'], 'none']);
-  chooserRadioButtons(chooser_slice_increment, ['*', 'couple', 'dancer']);
+  chooserSelect('chooser_gate_direction', ['*',['up', 'up the set'], ['down', 'down the set'], ['in', 'into the set'], ['out', 'out of the set']]);
+  chooserSelect('chooser_slice_return', ['*', ['straight', 'straight back'], ['diagonal', 'diagonal back'], 'none']);
+  chooserRadioButtons('chooser_slice_increment', ['*', 'couple', 'dancer']);
 
-  chooserSelect(chooser_all_or_center_or_outsides, ['*', 'all', 'center', 'outsides']);
+  chooserSelect('chooser_all_or_center_or_outsides', ['*', 'all', 'center', 'outsides']);
 
-  chooserSelect(chooser_down_the_hall_ender,
+  chooserSelect('chooser_down_the_hall_ender',
                 ['*',
                  ['turn-alone', 'turn alone'],
                  ['turn-couple', 'turn as a couple'],
@@ -345,13 +345,13 @@ $(document).ready(function() {
                  ['sliding-doors', 'sliding doors'],
                  ['', 'unspecified']]);
 
-  chooserSelect(chooser_zig_zag_ender, ['*', ['', 'none'], ['ring', 'into a ring'], ['allemande', 'training two catch hands']]);
+  chooserSelect('chooser_zig_zag_ender', ['*', ['', 'none'], ['ring', 'into a ring'], ['allemande', 'training two catch hands']]);
 
-  chooserRadioButtons(chooser_go_back, ['*', [true, 'forward &amp; back'], [false, 'forward']]);
-  chooserRadioButtons(chooser_give, ['*', [true,'give &amp; take'], [false,'take']]);
-  chooserRadioButtons(chooser_half_or_full, ['*', [0.5,'half'], [1.0,'full']]);
+  chooserRadioButtons('chooser_go_back', ['*', [true, 'forward &amp; back'], [false, 'forward']]);
+  chooserRadioButtons('chooser_give', ['*', [true,'give &amp; take'], [false,'take']]);
+  chooserRadioButtons('chooser_half_or_full', ['*', [0.5,'half'], [1.0,'full']]);
 
-  chooserSelect(chooser_hey_length,
+  chooserSelect('chooser_hey_length',
                 ['*',
                  'full',
                  'half',
@@ -360,18 +360,22 @@ $(document).ready(function() {
 
   // additional choosers go here -dm 11-24-2017
   if ($(window).width() < 768) {
-    chooserSelect(chooser_swing_prefix, ['*', 'none', 'balance', 'meltdown']);
+    chooserSelect('chooser_swing_prefix', ['*', 'none', 'balance', 'meltdown']);
   } else {
-    chooserRadioButtons(chooser_swing_prefix, ['*', 'none', 'balance', 'meltdown'], 'inline');
+    chooserRadioButtons('chooser_swing_prefix', ['*', 'none', 'balance', 'meltdown'], 'inline');
   }
 
 
   function doesChooserFilterUseSelect(chooser) {
-    return 'select' === chooserWidgetType[chooser];
+    if (!chooser.name) { throw_up('expected a chooser, got ' + JSON.stringify(chooser)); }
+    const answer = 'select' === chooserNameWidgetType[chooser.name];
+    // console.log(`doesChooserFilterUseSelect(${JSON.stringify(chooser)}) => ${answer}`);
+    return answer;
   }
 
   function doesChooserFilterUseRadio(chooser) {
-    return 'radio' === chooserWidgetType[chooser];
+    if (!chooser.name) { throw_up('expected a chooser, got ' + JSON.stringify(chooser)); }
+    return 'radio' === chooserNameWidgetType[chooser.name];
   }
 
   var _uniqueNameForRadioCounter = 9000;
@@ -384,19 +388,19 @@ $(document).ready(function() {
     accordion.children().remove();
     var formals = isMove(move) ? parameters(move) : [];
     formals.forEach(function(formal, index) {
-      var html_fn = chooserToFilterHtml[formal.ui] || function() {return '<div>'+formal.name+'</div>';};
-      var chooser = $(html_fn(move));
+      var html_fn = chooserNameToFilterHtml[formal.ui.name] || function() {return '<div>'+formal.name+'</div>';};
+      var $chooser = $(html_fn(move));
       if (index < optionalParameterValues.length) {
         var v = optionalParameterValues[index];
-        if (chooserWidgetType[formal.ui] === 'radio') {
-          chooser.find("[value='"+v+"']").prop('checked', true);
+        if (chooserNameWidgetType[formal.ui.name] === 'radio') {
+          $chooser.find("[value='"+v+"']").prop('checked', true);
         } else {
-          chooser.val(v);
+          $chooser.val(v);
         }
       }
-      chooser.change(updateAlias).change(updateQuery); // note the order
+      $chooser.change(updateAlias).change(updateQuery); // note the order
       var chooser_td = $('<td></td>');
-      chooser_td.append(chooser);
+      chooser_td.append($chooser);
       var label = $('<tr class="chooser-row"><td class="chooser-label-text">'+ parameterLabel(move, index) +'</td></tr>');
       label.append(chooser_td);
       accordion.append(label);
@@ -454,15 +458,15 @@ $(document).ready(function() {
       }
       var formals = isMove(move) ? parameters(move) : [];
       formals.forEach(function(formal, i) {
-        var chooser = $(figure_filter.children('.figure-filter-accordion').find('.chooser-row')[i]).find('.chooser-argument');
+        const $chooser = $(figure_filter.children('.figure-filter-accordion').find('.chooser-row')[i]).find('.chooser-argument');
         if (doesChooserFilterUseSelect(formal.ui)) {
-          var val = chooser.val();
+          var val = $chooser.val();
           a.push(val);
         } else if (doesChooserFilterUseRadio(formal.ui)) {
-          var val = chooser.find('input:checked').val();
+          var val = $chooser.find('input:checked').val();
           a.push(val);
-        } else if (chooser_text === formal.ui) {
-          var text = chooser.val();
+        } else if (chooser('chooser_text') === formal.ui) {
+          var text = $chooser.val();
           a.push(text);
         } else { // add complicated choosers here
           a.push('*');

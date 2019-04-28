@@ -1,3 +1,4 @@
+// GENERATED FILE - source is in "/home/dm/contra/app/javascript/libfigure/define-figure.js" - regenerate this with bin/rake libfigure:compile
 //  ____  _____ _____ ___ _   _ _____      _____ ___ ____ _   _ ____  _____ 
 // |  _ \| ____|  ___|_ _| \ | | ____|    |  ___|_ _/ ___| | | |  _ \| ____|
 // | | | |  _| | |_   | ||  \| |  _| _____| |_   | | |  _| | | | |_) |  _|  
@@ -6,8 +7,7 @@
 //
 // language construct for defining dance moves
 // and related support functions for dealing with figures
-
-import { libfigureObjectCopy, throw_up } from './util';
+// strip_import_clumsily: import { libfigureObjectCopy, throw_up } from './util';
 
 // always freshly allocated
 function newFigure (optional_progression) {
@@ -33,8 +33,7 @@ function sumBeats(figures,optional_limit) {
   }
   return acc;
 }
-
-export const figureToHtml = (f, dialect) => {
+const figureToHtml = (f, dialect) => {
   return figureFlatten(f, dialect, FLATTEN_FORMAT_HTML);
 }
 
@@ -203,8 +202,7 @@ function defineRelatedMove1Way(from, to) {
   _relatedMoves[from] = _relatedMoves[from] || [];
   _relatedMoves[from].push(to);
 }
-
-export const defineRelatedMove2Way = (from, to) => {
+const defineRelatedMove2Way = (from, to) => {
   defineRelatedMove1Way(from, to);
   defineRelatedMove1Way(to, from);
 }
@@ -218,8 +216,7 @@ var defined_events = {};
 ////////////////////////////////////////////////
 // defineFigure                               //
 ////////////////////////////////////////////////
-
-export const defineFigure = (name, parameters, props) => {
+const defineFigure = (name, parameters, props) => {
   var props2 = libfigureObjectCopy(props || {});
   if (!props2.goodBeats) {
     var beats_index = find_parameter_index_by_name("beats", parameters);
@@ -230,8 +227,7 @@ export const defineFigure = (name, parameters, props) => {
   }
   defined_events[name] = {name: name, parameters: parameters, props: props2};
 }
-
-export const defineFigureAlias = (alias_name, canonical_name, parameter_defaults) => {
+const defineFigureAlias = (alias_name, canonical_name, parameter_defaults) => {
   "string" == typeof alias_name || throw_up("first argument isn't a string");
   "string" == typeof canonical_name || throw_up("second argument isn't a string");
   Array.isArray(parameter_defaults) || throw_up("third argument isn't an array aliasing "+alias_name);
@@ -290,7 +286,7 @@ function aliasFilter(move_alias_string) {
 
 // List all the moves known to contradb.
 // See also: moveTermsAndSubstitutions
-export const moves = () => {
+const moves = () => {
   return Object.keys(defined_events);
 }
 
@@ -307,8 +303,7 @@ function moveTermsAndSubstitutions(dialect) {
   });
   return ms;
 }
-
-export const moveTermsAndSubstitutionsForSelectMenu = (dialect) => {
+const moveTermsAndSubstitutionsForSelectMenu = (dialect) => {
   if (!dialect) { throw_up('must specify dialect to moveTermsAndSubstitutionsForSelectMenu'); }
   var mtas = moveTermsAndSubstitutions(dialect);
   var swing_index = mtas.findIndex(function (e) { return 'swing' === e.term;});
@@ -325,7 +320,7 @@ function isMove(string) {
 var issued_parameter_warning = false;
 
 // consider renaming to formalParameters
-export const parameters = (move) => {
+const parameters = (move) => {
   var fig = defined_events[move];
   if (fig) {
     return fig.parameters;
@@ -451,26 +446,22 @@ function goodBeats(figure) {
   var fn = moveProp(figure.move, 'goodBeats', defaultGoodBeats);
   return fn(figure);
 }
-
-export const goodBeatsMinMaxFn = (min, max) => {
+const goodBeatsMinMaxFn = (min, max) => {
   return function(figure) {
     var beats = figureBeats(figure);
     return (min <= beats) && (beats <= max);
   };
 }
-
-export const goodBeatsMinFn = (min) => {
+const goodBeatsMinFn = (min) => {
   return function(figure) {
     var beats = figureBeats(figure);
     return min <= beats;
   };
 }
-
-export const goodBeatsEqualFn = (beats) => {
+const goodBeatsEqualFn = (beats) => {
   return function(figure) {
     return beats === figureBeats(figure);
   };
 }
-
-export const defaultGoodBeats = goodBeatsEqualFn(8);
+const defaultGoodBeats = goodBeatsEqualFn(8);
 

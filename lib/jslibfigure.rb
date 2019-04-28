@@ -2,6 +2,10 @@
 
 module JSLibFigure
 
+  def self.chooser(chooser_name)
+    self.eval("chooser(#{chooser_name.inspect})")
+  end
+
   def self.figure_to_html(figure_ruby_hash, dialect)
     self.eval("figureToHtml(#{figure_ruby_hash.to_json},#{dialect.to_json})")
   end
@@ -135,8 +139,8 @@ module JSLibFigure
     self.eval("wristGrips;")
   end
 
-  def self.parameter_uses_chooser(formal_parameter, chooser_name_string)
-    formal_parameter['ui'] == chooser_name_string; # 'should' be compared with address-equals in javascript land, but this is faster
+  def self.parameter_uses_chooser(formal_parameter, chooser)
+    formal_parameter['ui'] === chooser;
   end
 
   def self.test_dialect
@@ -215,7 +219,7 @@ module JSLibFigure
       figure
         .merge(note.present? ? {'note' => string_in_dialect(note, dialect)} : {})
         .merge('parameter_values' => parameter_values.each_with_index.map do |parameter_value, i|
-                 if parameter_value.present? && parameter_uses_chooser(formals[i], 'chooser_text')
+                 if parameter_value.present? && parameter_uses_chooser(formals[i], chooser('chooser_text'))
                    string_in_dialect(parameter_value, dialect)
                  else
                    parameter_value
@@ -227,7 +231,7 @@ module JSLibFigure
   JSLIBFIGURE_FILES = %w(polyfill.js util.js words.js move.js chooser.js param.js define-figure.js figure.js after-figure.js dance.js module.js)
 
   # exported to hack es6 into es5
-  def self.translate_to_es5(src)
+  def self.strip_import_and_export(src)
     strip_import_clumsily(strip_export_clumsily(src))
   end
 
@@ -246,9 +250,9 @@ module JSLibFigure
     context
   end
 
-  def self.context_load(context, pathname, translate_to_es5: true)
+  def self.context_load(context, pathname, strip_import_and_export: true)
     src = File.read(pathname)
-    src = translate_to_es5(src) if translate_to_es5
+    src = strip_import_and_export(src) if strip_import_and_export
     context.eval(src, filename: pathname.to_s)
   end
 

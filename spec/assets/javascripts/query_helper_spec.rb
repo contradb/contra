@@ -56,7 +56,7 @@ RSpec.describe 'query-helper' do
 
   def new_context
     context = JSLibFigure.send(:new_context)
-    JSLibFigure.send(:context_load, context, Rails.root.join('app/assets/javascripts/query_helper.js'), translate_to_es5: false)
+    JSLibFigure.send(:context_load, context, Rails.root.join('app/assets/javascripts/query_helper.js'), strip_import_and_export: false)
     context
   end
 

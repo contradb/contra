@@ -1,3 +1,4 @@
+// GENERATED FILE - source is in "/home/dm/contra/app/javascript/libfigure/util.js" - regenerate this with bin/rake libfigure:compile
 var PUNCTUATION_CHARSET_STRING = '[\u2000-\u206F\u2E00-\u2E7F\'!"#$%&()*+,/:;<=>?@\\[\\]^_`{|}~\\.-]';
 
 function set_if_unset (dict, key, value) {
@@ -6,7 +7,7 @@ function set_if_unset (dict, key, value) {
 }
 
 // throw is a keyword and can't be in expressions, but function calls can be, so wrap throw.
-export const throw_up = (str) => {
+const throw_up = (str) => {
   throw new Error(str);
 }
 
@@ -17,7 +18,7 @@ function indefiniteArticleFor(w) {
 }
 
 // text_in_dialect: <bool> property can still be missing...
-export const defaultDialect = {moves: {}, dancers: {}};
+const defaultDialect = {moves: {}, dancers: {}};
 
 var testDialect = {moves: {gyre: 'darcy',
                            allemande: 'almond',
@@ -99,7 +100,7 @@ function textInDialect(dialect) {
 }
 
 // I just called this function 'copy', but then I got scared and changed it.
-export const libfigureObjectCopy = (hash) => {
+const libfigureObjectCopy = (hash) => {
   var o = {};
   Object.keys(hash).forEach(function(key) {
     o[key] = hash[key];

@@ -236,7 +236,7 @@ function menuMoveLabel(from,to) {
     $scope.parameters = parameters;
     $scope.degreesToRotations = degreesToRotations;
     $scope.degreesToPlaces = degreesToPlaces;
-    setChoosers($scope);
+    $scope.chooser = chooser;
     $scope.wristGrips = wristGrips;
     $scope.dialect = dialect;
     $scope.figureToHtml = figureToHtml;

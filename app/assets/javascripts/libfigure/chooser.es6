@@ -1,3 +1,4 @@
+// GENERATED FILE - source is in "/home/dm/contra/app/javascript/libfigure/chooser.js" - regenerate this with bin/rake libfigure:compile
 //        ____ _   _  ___   ___  ____  _____ ____  
 //       / ___| | | |/ _ \ / _ \/ ___|| ____|  _ \ 
 //      | |   | |_| | | | | | | \___ \|  _| | |_) |
@@ -9,11 +10,10 @@
 // who are given semantic ties by figures.
 // So a figure could have two chooser_booleans
 // or two chooser_dancers (e.g. GENTS roll away the NEIGHBORS)
-// Choosers are obtained by calling, for example, `chooser('chooser_boolean')`
-// You can read back a chooser's name property:
-// `chooser('chooser_boolean').name => 'chooser_boolean'`
-// Choosers can be compared with ===
-
+// Choosers are referenced by global variables, e.g. chooser_boolean evaluates to a chooser object.
+// Choosers can be compared with == in this file and in angular controller scopey thing.
+// They are basically a big enum with all the functionality in a giant case statement in dances/_form.erb
+// They also have to define dance filter UI in app/assets/javascripts/welcome.js
 
 var defined_choosers = {};
 
@@ -22,12 +22,12 @@ function defineChooser(name){
   "chooser_" == name.slice(0,8) || throw_up("first argument doesn't begin with 'chooser_'");
   defined_choosers[name] = {name: name};
 }
-
-export const chooser = (name) => {
+const chooser = (name) => {
   const chooser = defined_choosers[name];
   if (chooser) {
     return chooser;
   } else {
+    console.trace();
     throw_up(JSON.stringify(name) + " is not the name of a chooser");
   }
 }
