@@ -1,3 +1,4 @@
+# coding: utf-8
 
 
 require 'rails_helper'
@@ -50,15 +51,12 @@ RSpec.describe 'query-helper' do
   end
 
   def context
-    @context || (@context = new_context)
+    @context ||= new_context
   end
 
   def new_context
-    context = MiniRacer::Context.new
-    JSLibFigure::JSLIBFIGURE_FILES.each do |file|
-      context.load(Rails.root.join('app','assets','javascripts','libfigure',file))
-    end
-    context.load(Rails.root.join('app','assets','javascripts','query_helper.js'))
+    context = JSLibFigure.send(:new_context)
+    JSLibFigure.send(:context_load, context, Rails.root.join('app/assets/javascripts/query_helper.js'), strip_import_and_export: false)
     context
   end
 

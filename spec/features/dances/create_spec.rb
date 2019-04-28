@@ -77,8 +77,9 @@ describe 'Creating dances', js: true do
           find('#figure-menu-3').click
           expect(page).to have_content('Add ⁋rogression') # js wait
           expect(page).to_not have_content('Remove ⁋rogression')
-          page.find('body').send_keys(:escape)                  # wave off menu
-          expect(page).to_not have_content('Remove ⁋rogression') # js wait
+          # page.find('body').send_keys(:escape) # wave off menu - doesn't work in headless chrome
+          find('#dance_title').click # wave off menu - headless chrome version
+          expect(page).to_not have_content('Add ⁋rogression') # js wait
           find('#figure-menu-7').click
           click_on('Remove ⁋rogression')
           expect(page).to_not have_content('⁋')
@@ -158,9 +159,9 @@ describe 'Creating dances', js: true do
         find('#figure-0').click
         select('chain')
         click_button('Add')
-        expect(page).to have_words("A1 8 ladles chain 8 stand still move beats note")
+        expect(page).to have_words("A1 8 ladles chain 8 stand still move")
         click_button('Add')
-        expect(page).to have_words("A1 8 ladles chain 8 stand still A2 8 stand still move beats note")
+        expect(page).to have_words("A1 8 ladles chain 8 stand still A2 8 stand still move")
       end
     end
 
@@ -171,7 +172,8 @@ describe 'Creating dances', js: true do
         select('chain')
         click_link('ladles chain')
         click_button('Add')
-        expect(page).to have_words("A1 8 stand still move beats note 8 ladles chain")
+        expect(page).to have_words("A1 8 stand still move")
+        expect(page).to have_words("note 8 ladles chain")
       end
     end
   end
@@ -199,7 +201,7 @@ describe 'Creating dances', js: true do
         expect(page).to have_words('A1 8 ladles chain')
         click_button('Remove')
         expect(page).to_not have_content('ladies chain')
-        expect(page).to have_words('A1 8 ____ do si do once move who')
+        expect(page).to have_words('A1 8 ____ do si do once move')
       end
     end
 
@@ -210,8 +212,9 @@ describe 'Creating dances', js: true do
         find('#figure-7').click
         select('do si do')
         expect(page).to have_words('B2 8 stand still 8 ____ do si do')
+        expect(page).to have_css('.figure-view', text: 'do si do')
         click_button('Remove')
-        expect(page).to_not have_words('do si do')
+        expect(page).to_not have_css('.figure-view', text: 'do si do')
         expect(page).to have_words('B2 8 stand still move')
       end
     end

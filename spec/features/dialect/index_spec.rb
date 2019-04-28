@@ -71,7 +71,7 @@ describe 'Dialect page', js: true do
       with_login do |user|
         FactoryGirl.create(:dancer_idiom, user: user, term: 'ladle', substitution: 'ladle chicken')
         visit '/dialect'
-        expect_pressed_radios # none
+        expect_no_pressed_radios
       end
     end
 
@@ -86,12 +86,12 @@ describe 'Dialect page', js: true do
 
         select 'ladle', exact: true
         fill_in 'ladle-substitution', with: 'T-Rex'
-
-        expect(page).to have_css('.glyphicon-ok') # js wait (this was a flake elsewhere in this file, and I ended up doing a sleep there)
-        expect_pressed_radios
+        blur
+        expect_ladle_substitution_to_have_glyphicon_ok
+        expect_no_pressed_radios
 
         click_on 'delete-ladle'
-        expect(page).to_not have_css('#delete-ladle') # js wait (this was a flake elsewhere in this file, and I ended up doing a sleep there)
+        expect(page).to_not have_css('#delete-ladle')
         expect_pressed_radios(gentlespoons_ladles: true)
       end
     end
@@ -105,23 +105,24 @@ describe 'Dialect page', js: true do
         show_advanced_options
 
         # near as I can tell, there's no way to do a waiting-expect a radio button to be checked.
-        # I REALLY tried to find something like: expect(page).to have_css('#larks-ravens[checked]')
+        # I REALLY tried to find something like: expect(page).to have_css('#larks-ravens[checked]') -dm, earlier
+        # JS has to check these radios after the page loads, I think -dm 02-02-2019
         sleep(0.5)
         expect_pressed_radios(larks_ravens: true)
 
         fill_in 'ladle-substitution', with: 'crow'
-        sleep(0.5)
-        expect(page).to have_css('.glyphicon-ok') # js wait
-        expect_pressed_radios
+        blur
+        expect_ladle_substitution_to_have_glyphicon_ok
+        expect_no_pressed_radios
 
         fill_in 'ladle-substitution', with: 'raven'
-        sleep(0.5)
-        expect(page).to have_css('.glyphicon-ok') # js wait
+        blur
+        expect_ladle_substitution_to_have_glyphicon_ok
         expect_pressed_radios(larks_ravens: true)
 
         click_on 'delete-ladle'
         expect(page).to_not have_css('#delete-ladle') # js wait
-        expect_pressed_radios
+        expect_no_pressed_radios
       end
     end
   end
@@ -152,6 +153,7 @@ describe 'Dialect page', js: true do
         show_advanced_options
         select 'swing'
         fill_in 'swing-substitution', with: 'swong' # js wait
+        blur
         expect(find('.new-move-idiom').value).to eq('') # select box doesn't stick on 'swing'
         expect(page).to have_css('.glyphicon-ok')
         user.reload
@@ -167,6 +169,7 @@ describe 'Dialect page', js: true do
         show_advanced_options
         select 'neighbors'
         fill_in 'neighbors-substitution', with: 'buddies' # js wait
+        blur
         expect(find('.new-dancers-idiom').value).to eq('') # select box doesn't stick on 'neighbors'
         expect(page).to have_css('.glyphicon-ok')
         user.reload
@@ -256,8 +259,9 @@ describe 'Dialect page', js: true do
       visit '/dialect'
       show_advanced_options
 
-      click_button('Restore Default Dialect')
-      # automatically clicks confirm!?
+      accept_alert do
+        click_button('Restore Default Dialect')
+      end
 
       expect(page).to_not have_field('gentlespoons-substitution', with: 'brontosauruses') # js wait, masking mysterious bug
       expect(page).to_not have_idiom(dancer_idiom)
@@ -308,6 +312,10 @@ describe 'Dialect page', js: true do
     expect(page).to have_css('.dialect-advanced-toggle-button.btn-primary') # js wait for completion
   end
 
+  def expect_no_pressed_radios
+    expect_pressed_radios # calling this with no argument true means expect all false
+  end
+
   def expect_pressed_radios(gentlespoons_ladles: false,
                             gents_ladies: false,
                             larks_ravens: false,
@@ -354,5 +362,9 @@ describe 'Dialect page', js: true do
     FactoryGirl.create(:dancer_idiom, user: user, term: 'ladles', substitution: 'ravens')
     FactoryGirl.create(:dancer_idiom, user: user, term: 'first ladle', substitution: 'first raven')
     FactoryGirl.create(:dancer_idiom, user: user, term: 'second ladle', substitution: 'second raven')
+  end
+
+  def expect_ladle_substitution_to_have_glyphicon_ok
+    expect(page).to have_css('#ladle-substitution + span .glyphicon-ok')
   end
 end

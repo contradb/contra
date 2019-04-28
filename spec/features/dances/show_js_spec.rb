@@ -51,7 +51,7 @@ describe 'Showing dances', js: true do
           expect(page).to have_text(tag.off_sentence)
           expect(Dut.find_by(dance: dance, user: user, tag: tag)).to eq(nil)
 
-          toggle_tag(tag)
+          toggle_tag(tag, to_on: true)
 
           expect(page).to_not have_css('glyphicon-time');
           expect(page).to have_css(".#{tag.glyphicon}")
@@ -93,7 +93,7 @@ describe 'Showing dances', js: true do
           expect(page).to have_text("2 users have called this transcription")
           expect(page).to_not have_text("3 users have called this transcription")
 
-          toggle_tag(tag)
+          toggle_tag(tag, to_on: true)
 
           expect(page).to_not have_css('glyphicon-time')
           expect(page).to have_css(".#{tag.glyphicon}")
@@ -144,7 +144,7 @@ describe 'Showing dances', js: true do
             duts_controller.toggle
           end
         end
-        toggle_tag(tag)
+        toggle_tag(tag, to_on: true)
         expect(page).to have_css('.glyphicon-time')
       end
     end
@@ -152,7 +152,7 @@ describe 'Showing dances', js: true do
     it 'without login, prompts for login, then returns them to the dance' do
       tag
       visit dance_path(dance)
-      toggle_tag(tag)
+      toggle_tag(tag, to_on: true)
       expect(page).to have_content('Login to tag dances')
       expect(page).to have_button('Login')
       expect(page).to have_current_path(new_user_session_path)
@@ -164,8 +164,20 @@ describe 'Showing dances', js: true do
       expect(current_path).to eq(dance_path(dance))
     end
 
-    def toggle_tag(tag)
-      page.find(".tag-constellation[data-tag-id='#{tag.id}'] .toggle-handle").click
+    def toggle_tag(tag, to_off: false, to_on: false)
+      # it used to be that this worked regardless of the state of the
+      # button, but that technique stopped working with headless
+      # chrome, so now we have to pass in an argument telling it what
+      # state we want to aim for. If you don't pass either to_off or
+      # to_on, you'll maybe get an error: "Element...is not clickable
+      # at point ... Other element would recieve the click".
+      # Happens especially when clicking to_on, not so far with to_off.
+      # -dm 02-02-2019
+      raise if to_off && to_on
+      thing_to_click = 'handle'
+      thing_to_click = 'on' if to_off
+      thing_to_click = 'off' if to_on
+      page.find(".tag-constellation[data-tag-id='#{tag.id}'] .toggle-#{thing_to_click}").click
     end
   end
 end

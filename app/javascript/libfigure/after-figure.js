@@ -5,11 +5,13 @@
 // /_/   \_\_|     |_| |_____|_| \_\    |_|   |___\____|\___/|_| \_\_____(_)/ |___/
 //                                                                        |__/     
 
+import { moves, parameters, defineRelatedMove2Way } from './define-figure';
+import { param } from './param';
 
 // all moves with a balance are related to the move 'balance'
 moves().forEach(function (move) {
-  parameters(move).forEach(function(param) {
-    if (param.name === param_balance_true.name) {
+  parameters(move).forEach(function(the_param) {
+    if (the_param.name === param('balance_true').name || the_param.name === param('balance_false').name) {
       defineRelatedMove2Way(move, 'balance');
     }
   });

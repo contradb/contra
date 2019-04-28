@@ -7,6 +7,8 @@
 // language construct for defining dance moves
 // and related support functions for dealing with figures
 
+import { libfigureObjectCopy, throw_up } from './util';
+
 // always freshly allocated
 function newFigure (optional_progression) {
   var m = { move: 'stand still', parameter_values: [8] };
@@ -25,14 +27,14 @@ function figureBeats (f) {
 
 function sumBeats(figures,optional_limit) {
   var acc = 0;
-  var n = isInteger(optional_limit) ? optional_limit : figures.length;
+  var n = Number.isInteger(optional_limit) ? optional_limit : figures.length;
   for (var i = 0; i < n; i++) {
     acc += figureBeats(figures[i]);
   }
   return acc;
 }
 
-function figureToHtml(f, dialect) {
+export const figureToHtml = (f, dialect) => {
   return figureFlatten(f, dialect, FLATTEN_FORMAT_HTML);
 }
 
@@ -202,7 +204,7 @@ function defineRelatedMove1Way(from, to) {
   _relatedMoves[from].push(to);
 }
 
-function defineRelatedMove2Way(from, to) {
+export const defineRelatedMove2Way = (from, to) => {
   defineRelatedMove1Way(from, to);
   defineRelatedMove1Way(to, from);
 }
@@ -217,19 +219,19 @@ var defined_events = {};
 // defineFigure                               //
 ////////////////////////////////////////////////
 
-function defineFigure(name, parameters, props) {
+export const defineFigure = (name, parameters, props) => {
   var props2 = libfigureObjectCopy(props || {});
   if (!props2.goodBeats) {
-    var beats_index = find_parameter_index_by_name("beats",parameters);
-    var beats_default = parameters[beats_index].value;
-    if (beats_default !== undefined) {
+    var beats_index = find_parameter_index_by_name("beats", parameters);
+    var beats_default = beats_index >= 0 && parameters[beats_index].value;
+    if (beats_default || beats_default===0) {
       props2.goodBeats = goodBeatsEqualFn(beats_default);
     }
   }
   defined_events[name] = {name: name, parameters: parameters, props: props2};
 }
 
-function defineFigureAlias(alias_name, canonical_name, parameter_defaults) {
+export const defineFigureAlias = (alias_name, canonical_name, parameter_defaults) => {
   "string" == typeof alias_name || throw_up("first argument isn't a string");
   "string" == typeof canonical_name || throw_up("second argument isn't a string");
   Array.isArray(parameter_defaults) || throw_up("third argument isn't an array aliasing "+alias_name);
@@ -288,7 +290,7 @@ function aliasFilter(move_alias_string) {
 
 // List all the moves known to contradb.
 // See also: moveTermsAndSubstitutions
-function moves() {
+export const moves = () => {
   return Object.keys(defined_events);
 }
 
@@ -306,7 +308,7 @@ function moveTermsAndSubstitutions(dialect) {
   return ms;
 }
 
-function moveTermsAndSubstitutionsForSelectMenu(dialect) {
+export const moveTermsAndSubstitutionsForSelectMenu = (dialect) => {
   if (!dialect) { throw_up('must specify dialect to moveTermsAndSubstitutionsForSelectMenu'); }
   var mtas = moveTermsAndSubstitutions(dialect);
   var swing_index = mtas.findIndex(function (e) { return 'swing' === e.term;});
@@ -323,7 +325,7 @@ function isMove(string) {
 var issued_parameter_warning = false;
 
 // consider renaming to formalParameters
-function parameters(move){
+export const parameters = (move) => {
   var fig = defined_events[move];
   if (fig) {
     return fig.parameters;
@@ -450,24 +452,25 @@ function goodBeats(figure) {
   return fn(figure);
 }
 
-function goodBeatsMinMaxFn(min, max) {
+export const goodBeatsMinMaxFn = (min, max) => {
   return function(figure) {
     var beats = figureBeats(figure);
     return (min <= beats) && (beats <= max);
   };
 }
 
-function goodBeatsMinFn(min) {
+export const goodBeatsMinFn = (min) => {
   return function(figure) {
     var beats = figureBeats(figure);
     return min <= beats;
   };
 }
 
-function goodBeatsEqualFn(beats) {
+export const goodBeatsEqualFn = (beats) => {
   return function(figure) {
     return beats === figureBeats(figure);
   };
 }
 
-var defaultGoodBeats = goodBeatsEqualFn(8);
+export const defaultGoodBeats = goodBeatsEqualFn(8);
+

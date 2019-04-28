@@ -10,6 +10,10 @@ RSpec.describe JSLibFigure do
     expect(JSLibFigure.beats(JSLibFigure.new)).to eql(8)
   end
 
+  it 'chooser' do
+    expect(JSLibFigure.chooser('chooser_boolean')).to eq({'name' => 'chooser_boolean'})
+  end
+
   describe 'de_alias_move' do
     it 'see saw => do si do' do
       expect(JSLibFigure.de_alias_move('see saw')).to eql('do si do')
@@ -157,6 +161,7 @@ RSpec.describe JSLibFigure do
     beats = params.first
     expect(beats['name']).to eq 'beats'
     expect(beats['value']).to eq 4
+    expect(beats['ui']).to be_present
   end
 
   describe 'is_move?' do
@@ -230,8 +235,8 @@ RSpec.describe JSLibFigure do
 
   it 'parameter_uses_chooser' do
     formal_parameter = JSLibFigure.formal_parameters('swing').first
-    expect(JSLibFigure.parameter_uses_chooser(formal_parameter, 'chooser_pairz')).to be(true)
-    expect(JSLibFigure.parameter_uses_chooser(formal_parameter, 'chooser_half_or_full')).to be(false)
+    expect(JSLibFigure.parameter_uses_chooser(formal_parameter, JSLibFigure.chooser('chooser_pairz'))).to be(true)
+    expect(JSLibFigure.parameter_uses_chooser(formal_parameter, JSLibFigure.chooser('chooser_half_or_full'))).to be(false)
   end
 
   it 'default_dialect' do
@@ -277,8 +282,8 @@ RSpec.describe JSLibFigure do
 
   it 'formal_param_is_dancers works' do
     # representative samplings:
-    nopes = %w(param_balance_false param_beats_8 param_spin_ccw param_left_shoulders_spin param_four_places param_star_grip)
-    yerps = %w(param_subject param_subject_pairz param_object_pairs_or_ones_or_twos)
+    nopes = %w(balance_false beats_8 spin_ccw left_shoulders_spin four_places star_grip).map {|s| "param('#{s}')"}
+    yerps = %w(subject subject_pairz object_pairs_or_ones_or_twos).map {|s| "param('#{s}')"}
     nopes.each do |nope|
       expect(JSLibFigure.formal_param_is_dancers(jseval(nope))).to be(false)
     end

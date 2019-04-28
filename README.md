@@ -40,9 +40,9 @@ Sketch only and not tested - ask for help on any of this
 - get a replica database from contradb.com
 
 Then:
-- bundle exec rspec [runs all tests]
-- bundle exec rails s [runs server on http://localhost:3000]
-- bundle exec rails c [runs repl loop]
+- bin/rspec [runs all tests]
+- bin/rails s [runs server on http://localhost:3000]
+- bin/rails c [runs repl loop]
 
 ## Deployment
 
@@ -51,6 +51,6 @@ Then:
 ## Testing
 
 ```
-bundle exec rspec
+bin/rspec
 ```
 will run all tests. 

@@ -16,8 +16,6 @@ gem 'sassc-rails'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer'
 gem 'mini_racer'
 
 # Use jquery as the JavaScript library
@@ -43,8 +41,9 @@ group :production do
 end
 
 group :development do
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console'
+  gem 'web-console' # Access an IRB console on exception pages or by using <%= console %> in views
+  gem "spring"
+  gem 'spring-commands-rspec'
 end
 
 group :development, :test do
@@ -52,13 +51,12 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'pry'
   gem 'pry-doc'
-  gem 'pry-stack_explorer'
+  gem 'pry-stack_explorer', '~> 0.4.9.3'
 end
 
 group :test do
   gem 'capybara'
-  gem 'poltergeist'
-  gem 'phantomjs', require: 'phantomjs/poltergeist'
+  gem 'capybara-selenium'
 end
 
 
@@ -85,3 +83,5 @@ gem 'jquery-datatables-rails', git: 'https://github.com/contradb/jquery-datatabl
 gem 'ajax-datatables-rails'
 
 gem 'actionview-encoded_mail_to'
+
+gem 'webpacker', '>= 4.0.x'
