@@ -1,10 +1,10 @@
-                <div ng-if="p.ui == chooser_boolean">
+                <div ng-if="p.ui.name === 'chooser_boolean'">
                   <input type="checkbox" class="balance_edit"
                          ng-model="figure.parameter_values[$index]"
                          ng-change="userChangedParameter(figure,$index)"
                          class='form-control'/>
                 </div>
-                <div ng-if="p.ui == chooser_beats">
+                <div ng-if="p.ui.name === 'chooser_beats'">
                   <select
                      ng-model="figure.parameter_values[$index]"
                      ng-options="b for b in [8,16,0,1,2,3,4,5,6,7,8,10,12,14,16,20,24,32,48,64]"
@@ -12,143 +12,143 @@
                      class='form-control'>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_spin">
+                <div ng-if="p.ui.name === 'chooser_spin'">
                   <label class='radio-tweaks form-check-label'>clockwise <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="userChangedParameter(figure,$index)" class="form-check-inline"/></label>
                   <label class='radio-tweaks'>ccw <input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="userChangedParameter(figure,$index)"/></label>
                 </div>
-                <div ng-if="p.ui == chooser_left_right_spin">
+                <div ng-if="p.ui.name === 'chooser_left_right_spin'">
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="userChangedParameter(figure,$index)" />left</label>
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="userChangedParameter(figure,$index)" />right</label>
                 </div>
-                <div ng-if="p.ui == chooser_right_left_hand">
+                <div ng-if="p.ui.name === 'chooser_right_left_hand'">
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="userChangedParameter(figure,$index)"/>left</label>
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="userChangedParameter(figure,$index)" />right</label>
                 </div>
-                <div ng-if="p.ui == chooser_right_left_shoulder">
+                <div ng-if="p.ui.name === 'chooser_right_left_shoulder'">
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="userChangedParameter(figure,$index)"/>left</label>
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="userChangedParameter(figure,$index)" />right</label>
                 </div>
 
-                <div ng-if="p.ui == chooser_revolutions">
+                <div ng-if="p.ui.name === 'chooser_revolutions'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-options="degreesToRotations(a) for a in anglesForMove(figure.move)"
                           ng-change="userChangedParameter(figure,$index)"
                           class='form-control'>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_places">
+                <div ng-if="p.ui.name === 'chooser_places'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-options="degreesToPlaces(a) for a in anglesForMove(figure.move)"
                           ng-change="userChangedParameter(figure,$index)"
                           class='form-control'>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_dancers">
+                <div ng-if="p.ui.name === 'chooser_dancers'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_dancers')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser(chooser('chooser_dancers'))"
                           class='form-control'>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_pair">
+                <div ng-if="p.ui.name === 'chooser_pair'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pair')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser(chooser('chooser_pair'))"
                           class='form-control'>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_pair_or_everyone">
+                <div ng-if="p.ui.name === 'chooser_pair_or_everyone'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pair_or_everyone')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser(chooser('chooser_pair_or_everyone'))"
                           class='form-control'>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_pairc_or_everyone">
+                <div ng-if="p.ui.name === 'chooser_pairc_or_everyone'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pairc_or_everyone')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser(chooser('chooser_pairc_or_everyone'))"
                           class='form-control'>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_pairz">
+                <div ng-if="p.ui.name === 'chooser_pairz'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pairz')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser(chooser('chooser_pairz'))"
                           class="form-control">
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_pairz_or_unspecified">
+                <div ng-if="p.ui.name === 'chooser_pairz_or_unspecified'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pairz_or_unspecified')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser(chooser('chooser_pairz_or_unspecified'))"
                           class="form-control">
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_pairs">
+                <div ng-if="p.ui.name === 'chooser_pairs'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pairs')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser(chooser('chooser_pairs'))"
                           class='form-control'>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_pairs_or_ones_or_twos">
+                <div ng-if="p.ui.name === 'chooser_pairs_or_ones_or_twos'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pairs_or_ones_or_twos')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser(chooser('chooser_pairs_or_ones_or_twos'))"
                           class='form-control'>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_pairs_or_everyone">
+                <div ng-if="p.ui.name === 'chooser_pairs_or_everyone'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_pairs_or_everyone')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser(chooser('chooser_pairs_or_everyone'))"
                           class='form-control'>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_dancer">
+                <div ng-if="p.ui.name === 'chooser_dancer'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_dancer')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser(chooser('chooser_dancer'))"
                           class='form-control'>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_role">
+                <div ng-if="p.ui.name === 'chooser_role'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_role')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser(chooser('chooser_role'))"
                           class='form-control'>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_hetero">
+                <div ng-if="p.ui.name === 'chooser_hetero'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
-                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser('chooser_hetero')"
+                          ng-options="dancers as dancerMenuLabel(dancers, dialectForFigures(dialect, figures.arr)) for dancers in dancerMenuForChooser(chooser('chooser_hetero'))"
                           class='form-control'>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_text">
+                <div ng-if="p.ui.name === 'chooser_text'">
                   <input type="text" ng-model="figure.parameter_values[$index]"
                          ng-change="userChangedParameter(figure,$index)"
                          class='form-control'/>
                 </div>
-                <div ng-if="p.ui == chooser_star_grip">
+                <div ng-if="p.ui.name === 'chooser_star_grip'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
                           class='form-control'>
                     <option ng-repeat="grip in wristGrips" ng-value='grip'>{{grip}}</option>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_march_facing">
+                <div ng-if="p.ui.name === 'chooser_march_facing'">
                   <label class='radio-tweaks figure-multiline-radio'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'forward'" ng-change="userChangedParameter(figure,$index)"/> forward</label>
                   <label class='radio-tweaks figure-multiline-radio'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'forward then backward'" ng-change="userChangedParameter(figure,$index)"/> forward then backward</label>
                   <label class='radio-tweaks figure-multiline-radio'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'backward'" ng-change="userChangedParameter(figure,$index)"/> backward</label>
                 </div>
-                <div ng-if="p.ui == chooser_slide">
+                <div ng-if="p.ui.name === 'chooser_slide'">
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="userChangedParameter(figure,$index)"/> left</label>
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="userChangedParameter(figure,$index)"/> right</label>
                 </div>
-                <div ng-if="p.ui == chooser_set_direction">
+                <div ng-if="p.ui.name === 'chooser_set_direction'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
                           class='form-control'>
@@ -158,7 +158,7 @@
                     <option value="left diagonal">left diagonal</option>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_set_direction_acrossish">
+                <div ng-if="p.ui.name === 'chooser_set_direction_acrossish'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
                           class='form-control'>
@@ -167,7 +167,7 @@
                     <option value="left diagonal">left diagonal</option>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_set_direction_grid">
+                <div ng-if="p.ui.name === 'chooser_set_direction_grid'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
                           class='form-control'>
@@ -175,7 +175,7 @@
                     <option value="across">across the set</option>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_set_direction_figure_8">
+                <div ng-if="p.ui.name === 'chooser_set_direction_figure_8'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
                           class='form-control'>
@@ -185,7 +185,7 @@
                     <option>across</option>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_gate_direction">
+                <div ng-if="p.ui.name === 'chooser_gate_direction'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
                           class='form-control'>
@@ -195,7 +195,7 @@
                     <option value="out">out of the set</option>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_slice_return">
+                <div ng-if="p.ui.name === 'chooser_slice_return'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
                           class='form-control'>
@@ -204,11 +204,11 @@
                     <option value='none'>none</option>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_slice_increment">
+                <div ng-if="p.ui.name === 'chooser_slice_increment'">
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'couple'" ng-change="userChangedParameter(figure,$index)"/> couple</label>
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'dancer'" ng-change="userChangedParameter(figure,$index)"/> dancer</label>
                 </div>
-                <div ng-if="p.ui == chooser_all_or_center_or_outsides">
+                <div ng-if="p.ui.name === 'chooser_all_or_center_or_outsides'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
                           class='form-control'>
@@ -217,7 +217,7 @@
                     <option value='outsides'>outsides</option>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_down_the_hall_ender">
+                <div ng-if="p.ui.name === 'chooser_down_the_hall_ender'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
                           class='form-control'>
@@ -232,7 +232,7 @@
                     <option value='sliding-doors'>sliding doors</option>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_zig_zag_ender">
+                <div ng-if="p.ui.name === 'chooser_zig_zag_ender'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
                           class='form-control'>
@@ -241,24 +241,24 @@
                     <option value='allemande'>trailing two catch hands</option>
                   </select>
                 </div>
-                <div ng-if="p.ui == chooser_give">
+                <div ng-if="p.ui.name === 'chooser_give'">
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="userChangedParameter(figure,$index)"/> give &amp; take</label>
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="userChangedParameter(figure,$index)"/> take</label>
                 </div>
-                <div ng-if="p.ui == chooser_go_back">
+                <div ng-if="p.ui.name === 'chooser_go_back'">
                   <label class='radio-tweaks figure-multiline-radio'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="true" ng-change="userChangedParameter(figure,$index)"/> forward &amp; back</label>
                   <label class='radio-tweaks figure-multiline-radio'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="false" ng-change="userChangedParameter(figure,$index)"/> forward</label>
                 </div>
-                <div ng-if="p.ui == chooser_half_or_full">
+                <div ng-if="p.ui.name === 'chooser_half_or_full'">
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="0.5" ng-change="userChangedParameter(figure,$index)"/> half</label>
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="1.0" ng-change="userChangedParameter(figure,$index)"/> full</label>
                 </div>
-                <div ng-if="p.ui == chooser_swing_prefix">
+                <div ng-if="p.ui.name === 'chooser_swing_prefix'">
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'none'" ng-change="userChangedParameter(figure,$index)"/> none</label>
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'balance'" ng-change="userChangedParameter(figure,$index)"/> balance</label>
                   <label class='radio-tweaks'><input type="radio" ng-model="figure.parameter_values[$index]" ng-value="'meltdown'" ng-change="userChangedParameter(figure,$index)"/> meltdown</label>
                 </div>
-                <div ng-if="p.ui == chooser_hey_length">
+                <div ng-if="p.ui.name === 'chooser_hey_length'">
                   <select ng-model="figure.parameter_values[$index]"
                           ng-change="userChangedParameter(figure,$index)"
                           ng-options="hey_lengths as heyLengthSubstitution(hey_lengths, dialectForFigures(dialect, figures.arr)) for hey_lengths in heyLengthMenu"

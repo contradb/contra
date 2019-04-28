@@ -110,8 +110,8 @@ describe 'Welcome page', js: true do
       select 'improper'
       expect(Set.new(dances2.map(&:start_type))).to eq(Set['improper', 'Becket ccw', 'Becket', 'square dance'])
       expect(page).to_not have_text('Call Me')
-      expect(page).to_not have_text('Becket')
-      expect(page).to_not have_text('sqaure')
+      expect(page).to_not have_css('#dances-table', text: 'Becket')
+      expect(page).to_not have_css('#dances-table', text: 'sqaure')
       dances2.each do |dance|
         expect(page).to have_link(dance.title) if dance.start_type == 'improper'
       end
@@ -420,8 +420,10 @@ describe 'Welcome page', js: true do
 
         it 'pops forth when clicked' do
           visit '/'
+          select('chain')
+          expect(page).to have_css('.figure-filter-accordion', visible: false)
           click_button('...')
-          expect(page).to have_css('.figure-filter-accordion', visible: true)
+          expect(page).to have_css('.figure-filter-accordion')
         end
 
         it "circle 4 places finds only 'The Rendevouz'" do
@@ -634,7 +636,7 @@ describe 'Welcome page', js: true do
             select('custom')
             click_button('...')
             find(:css, "input.chooser-argument[type=string]").set('apple orange')
-
+            blur
             dances.each do |dance|
               expect(page).to_not have_content(dance.title)
             end

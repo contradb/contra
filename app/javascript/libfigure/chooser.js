@@ -7,26 +7,29 @@
 //
 // Choosers are UI elements without semantic ties to other choosers,
 // who are given semantic ties by figures.
-// So a figure could have two chooser_booleans 
+// So a figure could have two chooser_booleans
 // or two chooser_dancers (e.g. GENTS roll away the NEIGHBORS)
-// Choosers are referenced by global variables, e.g. chooser_boolean evaluates to a chooser object. 
-// Choosers can be compared with == in this file and in angular controller scopey thing.
-// They are basically a big enum with all the functionality in a giant case statement in dances/_form.erb
-// They also have to define dance filter UI in app/assets/javascripts/welcome.js
+// Choosers are obtained by calling, for example, `chooser('chooser_boolean')`
+// You can read back a chooser's name property:
+// `chooser('chooser_boolean').name => 'chooser_boolean'`
+// Choosers can be compared with ===
+
 
 var defined_choosers = {};
 
 function defineChooser(name){
   "string" == typeof name || throw_up("first argument isn't a string");
   "chooser_" == name.slice(0,8) || throw_up("first argument doesn't begin with 'chooser_'");
-  defined_choosers[name] = defined_choosers[name] || name;
-  eval(name+"='"+name+"'");
+  defined_choosers[name] = {name: name};
 }
 
-function setChoosers(hash){
-  Object.keys(defined_choosers).forEach(function(key) {
-    hash[key] = defined_choosers[key];
-  });
+export const chooser = (name) => {
+  const chooser = defined_choosers[name];
+  if (chooser) {
+    return chooser;
+  } else {
+    throw_up(JSON.stringify(name) + " is not the name of a chooser");
+  }
 }
 
 defineChooser("chooser_boolean");
@@ -64,15 +67,15 @@ function defineDancerChooser(name, dancers){
   _dancerMenuForChooser[name] = dancers;
 }
 
-function dancerMenuForChooser(chooser) {
-  return _dancerMenuForChooser[chooser];
+function dancerMenuForChooser(chooser) { // chooser object
+  return _dancerMenuForChooser[chooser.name];
 }
 
 function dancerCategoryMenuForChooser(chooser) {
   return libfigureUniq(dancerMenuForChooser(chooser).map(dancersCategory));
 }
 
-function dancerChoosers() {
+function dancerChooserNames() {
   return Object.keys(_dancerMenuForChooser);
 }
 
@@ -109,7 +112,7 @@ defineDancerChooser("chooser_pair",     // 1 pair of dancers
                      'first corners',
                      'second corners']);
 defineDancerChooser("chooser_pair_or_everyone", // 1 pair or everyone
-                    ['everyone'].concat(dancerMenuForChooser('chooser_pair')));
+                    ['everyone'].concat(dancerMenuForChooser(chooser('chooser_pair'))));
 defineDancerChooser("chooser_pairc_or_everyone", // 1 pair or centers or everyone
                     ['everyone', 
                      'gentlespoons',
@@ -131,13 +134,13 @@ defineDancerChooser("chooser_pairz",    // 1-2 pairs of dancers
                      'second corners'
                     ].concat(outOfSetDancers));
 defineDancerChooser("chooser_pairz_or_unspecified",
-                    [''].concat(dancerMenuForChooser('chooser_pairz')));
+                    [''].concat(dancerMenuForChooser(chooser('chooser_pairz'))));
 defineDancerChooser("chooser_pairs",     // 2 pairs of dancers
                     ['partners', 'neighbors', 'same roles'].concat(outOfSetDancers));
 defineDancerChooser("chooser_pairs_or_ones_or_twos",
                     ['partners', 'neighbors', 'same roles','ones','twos'].concat(outOfSetDancers));
 defineDancerChooser("chooser_pairs_or_everyone",
-                   ['everyone'].concat(dancerMenuForChooser('chooser_pairs')));
+                    ['everyone'].concat(dancerMenuForChooser(chooser('chooser_pairs'))));
 defineDancerChooser("chooser_dancer",  // one dancer
                     ['first gentlespoon',
                      'first ladle',
@@ -164,11 +167,11 @@ function dancersCategory(chooser) {
 }
 
 function dancers() {
-  return dancerMenuForChooser(chooser_dancers);
+  return dancerMenuForChooser(chooser('chooser_dancers'));
 }
 
 var heyLengthMenu = (function () {
-  var pairz = dancerMenuForChooser("chooser_pairz");
+  var pairz = dancerMenuForChooser(chooser("chooser_pairz"));
   var acc = ['full', 'half'];
   for (var i=0; i<pairz.length; i++) {
     acc.push(pairz[i]+'%%1');

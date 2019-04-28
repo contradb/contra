@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'set'
 require 'search_match'
 
@@ -131,18 +132,18 @@ class DanceDatatable < AjaxDatatablesRails::Base
   end
 
   def self.param_passes_filter?(formal_param, dance_param, param_filter)
-    if JSLibFigure.parameter_uses_chooser(formal_param, 'chooser_text')
+    if JSLibFigure.parameter_uses_chooser(formal_param, JSLibFigure.chooser('chooser_text'))
       # substring search
       keywords = param_filter.split(' ')
       keywords.any? {|keyword| dance_param.include?(keyword)}
-    elsif JSLibFigure.parameter_uses_chooser(formal_param, 'chooser_half_or_full')
+    elsif JSLibFigure.parameter_uses_chooser(formal_param, JSLibFigure.chooser('chooser_half_or_full'))
       param_filter == '*' || param_filter.to_f === dance_param.to_f
     elsif JSLibFigure.formal_param_is_dancers(formal_param)
       param_filter == '*' || JSLibFigure.dancers_category(dance_param) === param_filter
     elsif param_filter == '*' || param_filter.to_s === dance_param.to_s
       # DEFUALT CASE: asterisk always matches, or exact match
       true
-    elsif JSLibFigure.parameter_uses_chooser(formal_param, 'chooser_hey_length')
+    elsif JSLibFigure.parameter_uses_chooser(formal_param, JSLibFigure.chooser('chooser_hey_length'))
       # some easy hey length cases - half/full exact match - are already handled above.
       meet_times = JSLibFigure.hey_length_meet_times(dance_param)
       if dance_param.in?(%w(half full))

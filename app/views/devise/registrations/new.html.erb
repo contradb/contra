@@ -19,7 +19,7 @@
 
     <div class="form-group">
       <div class="col-sm-2 contra-label control-label">Password</div> 
-      <div class=col-sm-6><%= f.password_field :password, autocomplete: "off", class: "form-control", placeholder: @minimum_password_length && "minimum #{@minimum_password_length} characters", autocomplete: "new-password" %></div>
+      <div class=col-sm-6><%= f.password_field :password, class: "form-control", placeholder: @minimum_password_length && "minimum #{@minimum_password_length} characters", autocomplete: "new-password" %></div>
     </div>
 
     <div class="form-group">

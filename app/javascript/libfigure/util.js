@@ -5,16 +5,8 @@ function set_if_unset (dict, key, value) {
         dict[key] = value;
 }
 
-
-// Patch to support current IE, source http://stackoverflow.com/questions/31720269/internet-explorer-11-object-doesnt-support-property-or-method-isinteger
-isInteger = Number.isInteger || function(value) {
-    return typeof value === "number" && 
-           isFinite(value) && 
-           Math.floor(value) === value;
-};
-
 // throw is a keyword and can't be in expressions, but function calls can be, so wrap throw.
-function throw_up(str) {
+export const throw_up = (str) => {
   throw new Error(str);
 }
 
@@ -25,7 +17,7 @@ function indefiniteArticleFor(w) {
 }
 
 // text_in_dialect: <bool> property can still be missing...
-var defaultDialect = {moves: {}, dancers: {}};
+export const defaultDialect = {moves: {}, dancers: {}};
 
 var testDialect = {moves: {gyre: 'darcy',
                            allemande: 'almond',
@@ -107,7 +99,7 @@ function textInDialect(dialect) {
 }
 
 // I just called this function 'copy', but then I got scared and changed it.
-function libfigureObjectCopy(hash) {
+export const libfigureObjectCopy = (hash) => {
   var o = {};
   Object.keys(hash).forEach(function(key) {
     o[key] = hash[key];
@@ -179,7 +171,7 @@ function heyLengthMeetTimes(hey_length) {
 }
 
 function dancerIsPair(dancer) {
-  return dancerMenuForChooser('chooser_pair').indexOf(dancer) >= 0;
+  return dancerMenuForChooser(chooser('chooser_pair')).indexOf(dancer) >= 0;
 }
 
 // see also the similar ruby-side function slugify_move
