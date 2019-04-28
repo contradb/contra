@@ -6,10 +6,12 @@
 
 # Run this from the project root directory...
 
+git pull
 # update rbenv
 cd /home/rails/.rbenv/plugins/ruby-build && git pull && cd -
 rbenv install --skip-existing `cat .ruby-version`
 gem install bundler
+bundle install --deployment --without development test
 # side trip to install yarn from ppa
 # side trip to install node via nvm
 # try to precompile, and fail, with a miniracer error. 
