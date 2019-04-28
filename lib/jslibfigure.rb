@@ -230,7 +230,6 @@ module JSLibFigure
 
   JSLIBFIGURE_FILES = %w(polyfill.js util.js words.js move.js chooser.js param.js define-figure.js figure.js after-figure.js dance.js module.js)
 
-  # exported to hack es6 into es5
   def self.strip_import_and_export(src)
     strip_import_clumsily(strip_export_clumsily(src))
   end

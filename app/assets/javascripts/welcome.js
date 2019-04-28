@@ -368,9 +368,7 @@ $(document).ready(function() {
 
   function doesChooserFilterUseSelect(chooser) {
     if (!chooser.name) { throw_up('expected a chooser, got ' + JSON.stringify(chooser)); }
-    const answer = 'select' === chooserNameWidgetType[chooser.name];
-    // console.log(`doesChooserFilterUseSelect(${JSON.stringify(chooser)}) => ${answer}`);
-    return answer;
+    return 'select' === chooserNameWidgetType[chooser.name];
   }
 
   function doesChooserFilterUseRadio(chooser) {
