@@ -11,7 +11,10 @@ class  SearchEx {
   // static maxSubexpressions()
   // static minUsefulSubexpressions()
   op() {
-    return constructorNameToOp[this.constructor.name];
+    // Why use `this.constructor.name2` instead of just using `this.constructor.name`?
+    // Because the minimizer used in production strips `this.constructor.name`, and it's faster
+    // to just set name2 than to figure out how to turn off webpack or babel or whatever it is.
+    return constructorNameToOp[this.constructor.name2];
   }
   static fromLisp(lisp) {
     const constructor = opToConstructor[lisp[0]];
@@ -50,7 +53,9 @@ class  SearchEx {
 function registerSearchEx(className, ...props) {
   const op = className.replace(/SearchEx$/, '').replace(/FigurewiseAnd/g, '&').toLowerCase();
   constructorNameToOp[className] = op;
-  opToConstructor[op] = eval(className);
+  const constructor = eval(className);
+  opToConstructor[op] = constructor;
+  constructor.name2 = className;
   if (!opToConstructor[op]) {
     throw new Error('class name ' + className + ' not found');
   }
@@ -276,7 +281,7 @@ function test2() {
   }
 }
 
-// test1();
-// test2();
+test1();
+test2();
 
 export { SearchEx };
