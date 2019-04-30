@@ -45,6 +45,7 @@
 <script>
 
 import { SearchEx } from 'search_ex.js';
+import LibFigure from 'libfigure/libfigure.js';
 
 export default {
   name: 'SearchExEditor',
@@ -66,7 +67,7 @@ export default {
       return SearchEx.fromLisp(this.lisp);
     },
     moveMenu: function() {
-      return [{term: '*', substitution: 'any figure'}].concat(moveTermsAndSubstitutionsForSelectMenu(this.$store.state.dialect));
+      return [{term: '*', substitution: 'any figure'}].concat(LibFigure.moveTermsAndSubstitutionsForSelectMenu(this.$store.state.dialect));
     },
     op: {
       get: function() {

@@ -7,7 +7,7 @@ import Vue from 'vue/dist/vue.esm';
 import Vuex from 'vuex/dist/vuex.esm';
 import BootstrapToggle from 'vue-bootstrap-toggle';
 import { SearchEx } from '../search_ex.js';
-import { defaultDialect } from '../libfigure/util.js';
+import LibFigure from '../libfigure/libfigure.js';
 import SearchExEditor from '../search_ex_editor.vue';
 
 Vue.use(Vuex);
@@ -16,7 +16,7 @@ Vue.use(BootstrapToggle);
 const store = new Vuex.Store({
   state: {
     lisp: ['and', ['figure', '*'], ['progression']],
-    dialect: defaultDialect
+    dialect: LibFigure.defaultDialect
   },
   getters: {
     searchEx: state => SearchEx.fromLisp(state.lisp)

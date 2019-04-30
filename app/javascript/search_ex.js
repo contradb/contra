@@ -1,3 +1,5 @@
+import LibFigure from 'libfigure/libfigure.js';
+
 // search node class heirarchy goes here
 class  SearchEx {
   constructor({subexpressions = []} = {}) {
@@ -120,9 +122,14 @@ class FigureSearchEx extends nullaryMixin(SearchEx) {
     const {move, parameters = []} = args;
     this.move = move || errorMissingParameter('move');
     this.parameters = parameters;
+    this._ellipsis = parameters && parameters.length > 0;
   };
   toLisp() {
-    return [this.op(), this.move, ...this.parameters];
+    if (this.ellipsis) {
+      return [this.op(), this.move, ...this.parameters];
+    } else {
+      return [this.op(), this.move];
+    }
   }
   static fromLispHelper(constructor, lisp) {
     return new constructor({move: lisp[1], parameters: lisp.slice(2)});
@@ -130,8 +137,19 @@ class FigureSearchEx extends nullaryMixin(SearchEx) {
   static castFrom(searchEx) {
     return new this({move: '*'});
   }
+  get ellipsis() {
+    return this._ellipsis;
+  }
+  set ellipsis(expanded) {
+    this._ellipsis = expanded;
+    if (expanded) {
+      const formals_length = LibFigure.parameters(this.move).length;
+      while (this.parameters.length < formals_length)
+        this.parameters.push('*');
+    }
+  }
 };
-registerSearchEx('FigureSearchEx', 'move', 'parameters');
+registerSearchEx('FigureSearchEx', 'move', 'parameters', 'ellipsis');
 
 class FormationSearchEx extends nullaryMixin(SearchEx) {
   constructor(args) {
@@ -281,7 +299,37 @@ function test2() {
   }
 }
 
+function testEllipsis1() {
+  const searchEx = new FigureSearchEx({move: 'swing', parameters: ['*', '*', 8]});
+  const bigLisp = ['figure', 'swing', '*', '*', 8];
+  const shortLisp = ['figure', 'swing'];
+  if (!lispEquals(searchEx.toLisp(), bigLisp)) throw new Error('testEllipsis failure');
+  if (!searchEx.ellipsis) throw new Error('testEllipsis failure');
+  searchEx.ellipsis = false;
+  if (searchEx.ellipsis) throw new Error('testEllipsis failure');
+  if (!lispEquals(searchEx.toLisp(), shortLisp)) throw new Error('testEllipsis failure');
+  searchEx.ellipsis = true;
+  if (!searchEx.ellipsis) throw new Error('testEllipsis failure');
+  if (!lispEquals(searchEx.toLisp(), bigLisp)) throw new Error('testEllipsis failure');
+}
+
+function testEllipsis2() {
+  const searchEx = new FigureSearchEx({move: 'swing'});
+  const bigLisp = ['figure', 'swing', '*', '*', '*'];
+  const shortLisp = ['figure', 'swing'];
+  if (searchEx.ellipsis) throw new Error('testEllipsis failure');
+  if (!lispEquals(searchEx.toLisp(), shortLisp)) throw new Error('testEllipsis failure');
+  searchEx.ellipsis = true;
+  if (!searchEx.ellipsis) throw new Error('testEllipsis failure');
+  if (!lispEquals(searchEx.toLisp(), bigLisp)) throw new Error('testEllipsis failure');
+  searchEx.ellipsis = false;
+  if (searchEx.ellipsis) throw new Error('testEllipsis failure');
+  if (!lispEquals(searchEx.toLisp(), shortLisp)) throw new Error('testEllipsis failure');
+}
+
 test1();
 test2();
+testEllipsis1();
+testEllipsis2();
 
 export { SearchEx };
