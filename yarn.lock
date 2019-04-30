@@ -1224,6 +1224,11 @@ boolbase@^1.0.0, boolbase@~1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
+bootstrap-toggle@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/bootstrap-toggle/-/bootstrap-toggle-2.2.2.tgz#2b88534fc1b998674f877f98ba0d8b5b743e96fe"
+  integrity sha1-K4hTT8G5mGdPh3+Yug2LW3Q+lv4=
+
 brace-expansion@^1.1.7:
   version "1.1.11"
   resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.11.tgz#3c7fcbf529d87226f3d2f52b966ff5271eb441dd"
@@ -4010,6 +4015,11 @@ merge-source-map@^1.1.0:
   integrity sha512-Qkcp7P2ygktpMPh2mCQZaf3jhN6D3Z/qVZHSdWvQ+2Ef5HgRAPBO57A77+ENm0CPx2+1Ce/MYKi3ymqdfuqibw==
   dependencies:
     source-map "^0.6.1"
+
+merge@^1.2.0:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/merge/-/merge-1.2.1.tgz#38bebf80c3220a8a487b6fcfb3941bb11720c145"
+  integrity sha512-VjFo4P5Whtj4vsLzsYBu5ayHhoHJ0UqNm7ibvShmbmoz7tGi0vXaoJbGdB+GmDMLUdg8DpQXEIeVDAe8MaABvQ==
 
 methods@~1.1.2:
   version "1.1.2"
@@ -6827,6 +6837,14 @@ vm-browserify@0.0.4:
   integrity sha1-XX6kW7755Kb/ZflUOOCofDV9WnM=
   dependencies:
     indexof "0.0.1"
+
+vue-bootstrap-toggle@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/vue-bootstrap-toggle/-/vue-bootstrap-toggle-1.1.4.tgz#7be9bee0c84397b1281828e1a69d64f930ebe2e0"
+  integrity sha512-ds5jhFEAJ6HUJwpZq6p+mr9ER3eoPXRXnuOCUNhq4mTdzpd/k+GiNhbz5spNfXxTjb69oxsnjp20dEAejn782A==
+  dependencies:
+    bootstrap-toggle "^2.2.2"
+    merge "^1.2.0"
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.1"
