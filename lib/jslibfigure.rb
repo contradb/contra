@@ -228,7 +228,7 @@ module JSLibFigure
     end
   end
 
-  JSLIBFIGURE_FILES = %w(polyfill.js util.js words.js move.js chooser.js param.js define-figure.js figure.js after-figure.js dance.js module.js)
+  JSLIBFIGURE_FILES = %w(polyfill.js util.js words.js move.js chooser.js param.js define-figure.js figure.js after-figure.js dance.js)
 
   def self.strip_import_and_export(src)
     strip_import_clumsily(strip_export_clumsily(src))

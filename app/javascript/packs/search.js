@@ -5,16 +5,18 @@
 
 import Vue from 'vue/dist/vue.esm';
 import Vuex from 'vuex/dist/vuex.esm';
+import BootstrapToggle from 'vue-bootstrap-toggle';
 import { SearchEx } from '../search_ex.js';
-import { defaultDialect } from '../libfigure/util.js';
+import LibFigure from '../libfigure/libfigure.js';
 import SearchExEditor from '../search_ex_editor.vue';
 
 Vue.use(Vuex);
+Vue.use(BootstrapToggle);
 
 const store = new Vuex.Store({
   state: {
     lisp: ['and', ['figure', '*'], ['progression']],
-    dialect: defaultDialect
+    dialect: LibFigure.defaultDialect
   },
   getters: {
     searchEx: state => SearchEx.fromLisp(state.lisp)
@@ -67,9 +69,10 @@ document.addEventListener('DOMContentLoaded', () => {
     el: '#search-app',
     store,
     data: {},
-    template: `<div><SearchExEditor v-bind:lisp="$store.state.lisp" v-bind:path="[]" /><hr><p>state.lisp: {{$store.state.lisp}}</p><p>state.dialect: {{$store.state.dialect}}</p></div>`,
+    template: `<div><SearchExEditor v-bind:lisp="$store.state.lisp" v-bind:path="[]" /><hr><p>state.lisp: {{$store.state.lisp}}</p><p>state.dialect: {{$store.state.dialect}}</p><bootstrap-toggle :options="{ on: 'Yes', off: 'No' }" /></div>`,
     components: {
-      SearchExEditor
+      SearchExEditor,
+      BootstrapToggle
     },
     methods: {
       // wrap() {this.$store.commit('wrap', {name: 'wrap'});}

@@ -2,11 +2,12 @@
 
 ## ContraDB
 
-This is an online database for managing contra dances. The intended
-users are dance callers, dance choreographers, and opinionated
-dancers. Users create, edit, update, and delete dances, as well as
-copying and viewing other users' dances. Users can create programs of
-dances and call them from their phone or print outs. 
+This is the source code for [contradb.com](https://contradb.com), an
+online database for managing contra dances. The intended users are
+dance callers, dance choreographers, and opinionated dancers. Users
+create, edit, update, and delete dances, as well as copying and
+viewing other users' dances. Users can create programs of dances and
+call them from their phone or print outs.
 
 ## COPYING
 
