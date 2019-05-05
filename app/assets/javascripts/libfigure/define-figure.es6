@@ -319,7 +319,7 @@
 /***/ 
 /***/ var issued_parameter_warning = false;
 /***/ 
-/***/ // consider renaming to formalParameters
+/***/ // TODO: complete renaming to formalParameters
 /***/ const parameters = (move) => {
 /***/   var fig = defined_events[move];
 /***/   if (fig) {
@@ -330,7 +330,8 @@
 /***/     throw_up("could not find a figure definition for '"+move+"'. ");
 /***/   }
 /***/   return [];
-/***/ }
+/***/ };
+/***/ const formalParameters = parameters;
 /***/ 
 /***/ function aliasParameters(move){
 /***/   var fig = defined_events[move];

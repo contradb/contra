@@ -143,7 +143,7 @@ class FigureSearchEx extends nullaryMixin(SearchEx) {
   set ellipsis(expanded) {
     this._ellipsis = expanded;
     if (expanded) {
-      const formals_length = LibFigure.parameters(this.move).length;
+      const formals_length = LibFigure.formalParameters(this.move).length;
       while (this.parameters.length < formals_length)
         this.parameters.push('*');
     }

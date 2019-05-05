@@ -4,7 +4,7 @@
 
 import {param} from './param.js';
 import {chooser} from './chooser.js';
-import {moves, moveTermsAndSubstitutionsForSelectMenu, parameters} from './define-figure.js';
+import {moves, moveTermsAndSubstitutionsForSelectMenu, formalParameters} from './define-figure.js';
 import {} from './figure.js';       // for side effect!
 import {} from './after-figure.js'; // for ... side effect?
 import {} from './dance.js';        // ?? for side effect??
@@ -14,5 +14,5 @@ export default {
   chooser,
   moves,
   moveTermsAndSubstitutionsForSelectMenu,
-  parameters
+  formalParameters
 };

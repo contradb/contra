@@ -13,7 +13,6 @@
 /***/ // ALLEMANDE                                  //
 /***/ ////////////////////////////////////////////////
 /***/ 
-/***/ 
 /***/ function allemandeGoodBeats(figure) {
 /***/   var [who,dir,angle,beats] = figure.parameter_values;
 /***/   var angle_over_beats = angle/beats;

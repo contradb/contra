@@ -324,7 +324,7 @@ function isMove(string) {
 
 var issued_parameter_warning = false;
 
-// consider renaming to formalParameters
+// TODO: complete renaming to formalParameters
 export const parameters = (move) => {
   var fig = defined_events[move];
   if (fig) {
@@ -335,7 +335,9 @@ export const parameters = (move) => {
     throw_up("could not find a figure definition for '"+move+"'. ");
   }
   return [];
-}
+};
+
+export const formalParameters = parameters;
 
 function aliasParameters(move){
   var fig = defined_events[move];
