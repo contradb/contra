@@ -16,6 +16,7 @@
     <select v-if="move !== undefined" v-model="move" class="figure-filter-move form-control">
       <option v-for="{term, substitution} in moveMenu" v-bind:value="term">{{substitution}}</option>
     </select>
+    <bootstrap-toggle v-if="move !== undefined" v-model="ellipsis" :options="{ on: 'more', off: 'less' }" />
     <select v-if="comparison !== undefined" v-model="comparison" class="figure-filter-count-comparison form-control">
       <option>≥</option>
       <option>≤</option>
@@ -44,6 +45,7 @@
 
 <script>
 
+import BootstrapToggle from 'vue-bootstrap-toggle';
 import { SearchEx } from 'search_ex.js';
 import LibFigure from 'libfigure/libfigure.js';
 
@@ -91,6 +93,9 @@ export default {
         }
         return acc;
       }, {})
+  },
+  components: {
+    BootstrapToggle
   }
 }
 

@@ -5,13 +5,11 @@
 
 import Vue from 'vue/dist/vue.esm';
 import Vuex from 'vuex/dist/vuex.esm';
-import BootstrapToggle from 'vue-bootstrap-toggle';
 import { SearchEx } from '../search_ex.js';
 import LibFigure from '../libfigure/libfigure.js';
 import SearchExEditor from '../search_ex_editor.vue';
 
 Vue.use(Vuex);
-Vue.use(BootstrapToggle);
 
 const store = new Vuex.Store({
   state: {
@@ -69,10 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
     el: '#search-app',
     store,
     data: {},
-    template: `<div><SearchExEditor v-bind:lisp="$store.state.lisp" v-bind:path="[]" /><hr><p>state.lisp: {{$store.state.lisp}}</p><p>state.dialect: {{$store.state.dialect}}</p><bootstrap-toggle :options="{ on: 'Yes', off: 'No' }" /></div>`,
+    template: `<div><SearchExEditor v-bind:lisp="$store.state.lisp" v-bind:path="[]" /><hr><p>state.lisp: {{$store.state.lisp}}</p><p>state.dialect: {{$store.state.dialect}}</p></div>`,
     components: {
-      SearchExEditor,
-      BootstrapToggle
+      SearchExEditor
     },
     methods: {
       // wrap() {this.$store.commit('wrap', {name: 'wrap'});}
