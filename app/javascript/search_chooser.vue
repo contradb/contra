@@ -1,5 +1,11 @@
 <template>
-  <div>chooser</div>
+  <div>
+    <select v-if='selectChooserOptions[chooserName]' class='form-control chooser-argument'>
+      <option v-for="option in selectChooserOptions[chooserName]" :value="Array.isArray(option) ? option[0] : option">
+        {{Array.isArray(option) ? option[1] : option}}
+      </option>
+    </select>
+  </div>
 </template>
 <script>
 
@@ -8,11 +14,27 @@ import LibFigure from 'libfigure/libfigure.js';
 export default {
   name: 'SearchChooser',
   props: {
+    formalParameter: {
+      type: Object,
+      required: true
+    },
+    path: {
+      type: Array,
+      required: true
+    },
+    parameterIndex: {
+      type: Number,
+      required: true
+    }
   },
   data: function() {
-    return {};
+    return {
+      selectChooserOptions
+    };
   },
   computed: {
+    chooser: function() {return this.formalParameter.ui;},
+    chooserName: function() {return this.formalParameter.ui.name;}
   },
   methods: {
   },
@@ -20,8 +42,37 @@ export default {
   }
 }
 
-
-
+const selectChooserOptions = {
+  chooser_beats: ['*',8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64],
+  chooser_boolean: ['*',[true, 'yes'], [false, 'no']],
+  chooser_star_grip: ['*'].concat(wristGrips.map(function(grip) { return (grip === '') ? ['', 'unspecified'] : grip; })),
+  chooser_march_facing: ['*','forward','backward','forward then backward'],
+  chooser_set_direction: ['*',['along', 'along the set'], ['across', 'across the set'], 'right diagonal', 'left diagonal'],
+  chooser_set_direction_acrossish: ['*', ['across', 'across the set'], 'right diagonal', 'left diagonal'],
+  chooser_set_direction_grid: ['*',['along', 'along the set'], ['across', 'across the set']],
+  chooser_set_direction_figure_8: ['*','','above','below','across'],
+  chooser_gate_direction: ['*',['up', 'up the set'], ['down', 'down the set'], ['in', 'into the set'], ['out', 'out of the set']],
+  chooser_slice_return: ['*', ['straight', 'straight back'], ['diagonal', 'diagonal back'], 'none'],
+  chooser_all_or_center_or_outsides: ['*', 'all', 'center', 'outsides'],
+  chooser_down_the_hall_ender: ['*',
+                                ['turn-alone', 'turn alone'],
+                                ['turn-couple', 'turn as a couple'],
+                                ['circle', 'bend into a ring'],
+                                ['cozy', 'form a cozy line'],
+                                ['cloverleaf', 'bend into a cloverleaf'],
+                                ['thread-needle', 'thread the needle'],
+                                ['right-high', 'right hand high, left hand low'],
+                                ['sliding-doors', 'sliding doors'],
+                                ['', 'unspecified']],
+  chooser_zig_zag_ender: ['*', ['', 'none'], ['ring', 'into a ring'], ['allemande', 'training two catch hands']],
+  chooser_hey_length: ['*',
+                       'full',
+                       'half',
+                       'less than half',
+                       'between half and full'],
+  chooser_swing_prefix: ['*', 'none', 'balance', 'meltdown']
+  // all the dancerChoosers
+}
 
 
 
