@@ -316,6 +316,12 @@
 /***/ function isMove(string) {
 /***/   return !!defined_events[string];
 /***/ }
+/***/ const parameterLabel = (move, index) => {
+/***/   var fig_def = defined_events[move];
+/***/   var ps = parameters(move);
+/***/   return (fig_def && fig_def.props && fig_def.props.labels && fig_def.props.labels[index]) ||
+/***/     (ps[index] && ps[index].name);
+/***/ }
 /***/ 
 /***/ var issued_parameter_warning = false;
 /***/ 
