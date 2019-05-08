@@ -67,7 +67,7 @@ function defineDancerChooser(name, dancers){
   _dancerMenuForChooser[name] = dancers;
 }
 
-function dancerMenuForChooser(chooser) { // chooser object
+export const dancerMenuForChooser = function(chooser) { // chooser object
   return _dancerMenuForChooser[chooser.name];
 }
 
@@ -75,7 +75,7 @@ function dancerCategoryMenuForChooser(chooser) {
   return libfigureUniq(dancerMenuForChooser(chooser).map(dancersCategory));
 }
 
-function dancerChooserNames() {
+export const dancerChooserNames = function() {
   return Object.keys(_dancerMenuForChooser);
 }
 

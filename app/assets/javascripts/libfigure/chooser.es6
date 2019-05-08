@@ -66,16 +66,14 @@
 /***/   defineChooser(name);
 /***/   _dancerMenuForChooser[name] = dancers;
 /***/ }
-/***/ 
-/***/ function dancerMenuForChooser(chooser) { // chooser object
+/***/ const dancerMenuForChooser = function(chooser) { // chooser object
 /***/   return _dancerMenuForChooser[chooser.name];
 /***/ }
 /***/ 
 /***/ function dancerCategoryMenuForChooser(chooser) {
 /***/   return libfigureUniq(dancerMenuForChooser(chooser).map(dancersCategory));
 /***/ }
-/***/ 
-/***/ function dancerChooserNames() {
+/***/ const dancerChooserNames = function() {
 /***/   return Object.keys(_dancerMenuForChooser);
 /***/ }
 /***/ 

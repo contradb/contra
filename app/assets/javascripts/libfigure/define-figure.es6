@@ -131,8 +131,7 @@
 /***/ function dancerSubstitution(dancer_term, dialect) {
 /***/   return dialect.dancers[dancer_term] || dancer_term;
 /***/ }
-/***/ 
-/***/ function dancerMenuLabel(dancer_term, dialect) {
+/***/ const dancerMenuLabel = function (dancer_term, dialect) {
 /***/   if (dancer_term) {
 /***/     return dancerSubstitution(dancer_term, dialect);
 /***/   } else {
