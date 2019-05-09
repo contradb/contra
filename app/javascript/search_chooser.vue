@@ -11,6 +11,9 @@
         {{Array.isArray(option) ? option[1] : option}}
       </label>
     </div>
+    <div v-if="chooserName === 'chooser_text'">
+      <input class="form-control chooser-argument" type="string" placeholder="words...">
+    </div>
   </div>
 </template>
 <script>
