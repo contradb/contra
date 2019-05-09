@@ -3,6 +3,7 @@
 // in.
 
 import {param} from './param.js';
+import {degreesToWords, anglesForMove} from './move.js';
 import {chooser, dancerMenuForChooser, dancerChooserNames} from './chooser.js';
 import {moves, moveTermsAndSubstitutionsForSelectMenu, formalParameters, parameterLabel, dancerMenuLabel} from './define-figure.js';
 import {} from './figure.js';       // for side effect!
@@ -11,6 +12,7 @@ import {} from './dance.js';        // ?? for side effect??
 
 export default {
   param,
+  degreesToWords, anglesForMove,
   chooser, dancerMenuForChooser, dancerChooserNames,
   moves, moveTermsAndSubstitutionsForSelectMenu, formalParameters, parameterLabel, dancerMenuLabel,
 };

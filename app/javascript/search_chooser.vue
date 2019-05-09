@@ -48,7 +48,10 @@ export default {
   },
   methods: {
     chooserSelectOptions: function() {
-      return this.$store.getters.selectChooserNameOptions[this.chooserName];
+      if (this.chooserName === 'chooser_revolutions' || this.chooserName === 'chooser_places')
+        return ['*',...LibFigure.anglesForMove(this.move).map(angle => [angle.toString(), LibFigure.degreesToWords(angle, this.move)])]
+      else
+        return this.$store.getters.selectChooserNameOptions[this.chooserName];
     },
     chooserRadioOptions: function() {
       return this.$store.state.radioChooserNameOptions[this.chooserName];
