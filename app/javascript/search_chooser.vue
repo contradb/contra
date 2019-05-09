@@ -47,11 +47,9 @@ export default {
   computed: {
     value: {
       get: function() {
-        console.log('GET');
         return this.lisp[this.parameterIndex+2];
       },
       set: function(value) {
-        console.log('SET', value);
         this.$store.commit('setParameter', {path: this.path, index: this.parameterIndex, value: value});
       }
     },

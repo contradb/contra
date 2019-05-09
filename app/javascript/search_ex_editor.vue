@@ -16,7 +16,7 @@
     <select v-if="move !== undefined" v-model="move" class="figure-filter-move form-control">
       <option v-for="{term, substitution} in moveMenu" v-bind:value="term">{{substitution}}</option>
     </select>
-    <bootstrap-toggle v-if="move !== undefined && move !== '*'" v-model="ellipsis" :options="{ on: 'more', off: 'less' }" />
+    <span v-if="op==='figure' && move !== '*'"><bootstrap-toggle v-model="ellipsis" :options="{ on: 'more', off: 'less' }" /></span>
     <select v-if="comparison !== undefined" v-model="comparison" class="figure-filter-count-comparison form-control">
       <option>≥</option>
       <option>≤</option>
