@@ -11,40 +11,6 @@ import SearchExEditor from '../search_ex_editor.vue';
 
 Vue.use(Vuex);
 
-const store = new Vuex.Store({
-  state: {
-    lisp: ['and', ['figure', '*'], ['progression']],
-    dialect: LibFigure.defaultDialect,
-  },
-  getters: {
-    searchEx: state => SearchEx.fromLisp(state.lisp),
-    selectChooserNameOptions: state => selectChooserNameOptions(state.dialect),
-  },
-  mutations:
-  // here's what a mutation looked like before it was made generic with the reduce:
-  // setFormation(state, {path, formation}) {
-  //   const searchEx = SearchEx.fromLisp(state.lisp);
-  //   getSearchExAtPath(searchEx, path).formation = formation; // destructive!
-  //   state.lisp = searchEx.toLisp();
-  // }
-  SearchEx.allProps().reduce((hash, prop) => {
-    if (prop !== 'op') {
-      hash[SearchEx.mutationNameForProp(prop)] = function(state, payload) {
-        const searchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
-        getSearchExAtPath(searchEx, payload.path)[prop] = payload[prop]; // destructive!
-        state.lisp = searchEx.toLisp();
-      };
-    }
-    return hash;
-  }, {
-    setOp(state, {path, op}) {
-      const searchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
-      state.lisp = setSearchExAtPath(getSearchExAtPath(searchEx, path).castTo(op), searchEx, path).toLisp();
-    }
-  }
-  )
-});
-
 function selectChooserNameOptions(dialect) {
   return {
     chooser_beats: ['*',8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64],
@@ -86,6 +52,53 @@ function selectChooserNameOptions(dialect) {
   };
 }
 
+const radioChooserNameOptions = {
+  chooser_boolean: ['*',[true, 'yes'], [false, 'no']],
+  chooser_spin: ['*',[true, 'clockwise'], [false, 'ccw']],
+  chooser_left_right_spin: ['*',[true, 'left'], [false, 'right']],
+  chooser_right_left_hand: ['*',[false, 'left'], [true, 'right']],
+  chooser_right_left_shoulder: ['*',[false, 'left'], [true, 'right']],
+  chooser_slide: ['*',[true, 'left'], [false, 'right']],
+  chooser_slice_increment: ['*', 'couple', 'dancer'],
+  chooser_go_back: ['*', [true, 'forward &amp; back'], [false, 'forward']],
+  chooser_give: ['*', [true,'give &amp; take'], [false,'take']],
+  chooser_half_or_full: ['*', [0.5,'half'], [1.0,'full']],
+};
+
+const store = new Vuex.Store({
+  state: {
+    lisp: ['and', ['figure', '*'], ['progression']],
+    dialect: LibFigure.defaultDialect,
+    radioChooserNameOptions: Object.freeze(radioChooserNameOptions),
+  },
+  getters: {
+    searchEx: state => SearchEx.fromLisp(state.lisp),
+    selectChooserNameOptions: state => selectChooserNameOptions(state.dialect),
+  },
+  mutations:
+  // here's what a mutation looked like before it was made generic with the reduce:
+  // setFormation(state, {path, formation}) {
+  //   const searchEx = SearchEx.fromLisp(state.lisp);
+  //   getSearchExAtPath(searchEx, path).formation = formation; // destructive!
+  //   state.lisp = searchEx.toLisp();
+  // }
+  SearchEx.allProps().reduce((hash, prop) => {
+    if (prop !== 'op') {
+      hash[SearchEx.mutationNameForProp(prop)] = function(state, payload) {
+        const searchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
+        getSearchExAtPath(searchEx, payload.path)[prop] = payload[prop]; // destructive!
+        state.lisp = searchEx.toLisp();
+      };
+    }
+    return hash;
+  }, {
+    setOp(state, {path, op}) {
+      const searchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
+      state.lisp = setSearchExAtPath(getSearchExAtPath(searchEx, path).castTo(op), searchEx, path).toLisp();
+    }
+  }
+  )
+});
 
 function getSearchExAtPath(rootSearchEx, path) {
   return path.reduce((searchEx, subExIndex) => searchEx.subexpressions[subExIndex], rootSearchEx);

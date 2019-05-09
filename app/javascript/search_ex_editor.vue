@@ -42,7 +42,7 @@
           {{ parameterLabel(move, parameterIndex) }}
         </td>
         <td>
-          <SearchChooser v-bind:formal-parameter='formalParameter' v-bind:path='path' v-bind:parameterIndex='parameterIndex'/>
+          <SearchChooser :formal-parameter='formalParameter' :path='path' :parameterIndex='parameterIndex' :move='searchEx.move'/>
         </td>
       </tr>
     </table>
