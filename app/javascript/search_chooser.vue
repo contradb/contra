@@ -1,18 +1,18 @@
 <template>
   <div>
-    <select v-if='chooserSelectOptions()' class='form-control chooser-argument'>
+    <select v-if='chooserSelectOptions()' v-model='value' class='form-control chooser-argument'>
       <option v-for="option in chooserSelectOptions()" :value="Array.isArray(option) ? option[0] : option">
         {{Array.isArray(option) ? option[1] : option}}
       </option>
     </select>
     <div v-if='chooserRadioOptions()' class='chooser-argument'>
       <label v-for="option in chooserRadioOptions()" class='radio-inline'>
-        <input type="radio" :name="uniqueName" :value="Array.isArray(option) ? option[0] : option">
+        <input type="radio" :name="uniqueName" v-model='value' :value="Array.isArray(option) ? option[0] : option">
         {{Array.isArray(option) ? option[1] : option}}
       </label>
     </div>
     <div v-if="chooserName === 'chooser_text'">
-      <input class="form-control chooser-argument" type="string" placeholder="words...">
+      <input v-model='value' class="form-control chooser-argument" type="string" placeholder="words...">
     </div>
   </div>
 </template>
@@ -35,16 +35,27 @@ export default {
       type: Number,
       required: true
     },
-    move: {
-      type: String,
+    lisp: {
+      type: Array,
       required: true
-    }
+    },
   },
   data: function() {
     return {
     };
   },
   computed: {
+    value: {
+      get: function() {
+        console.log('GET');
+        return this.lisp[this.parameterIndex+2];
+      },
+      set: function(value) {
+        console.log('SET', value);
+        this.$store.commit('setParameter', {path: this.path, index: this.parameterIndex, value: value});
+      }
+    },
+    move: function() {return this.lisp[1];},
     chooser: function() {return this.formalParameter.ui;},
     chooserName: function() {return this.formalParameter.ui.name;},
     uniqueName: function() {return 'cb-' + this.path.join('-') + '-' + this.parameterIndex;},

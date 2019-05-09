@@ -42,7 +42,7 @@
           {{ parameterLabel(move, parameterIndex) }}
         </td>
         <td>
-          <SearchChooser :formal-parameter='formalParameter' :path='path' :parameterIndex='parameterIndex' :move='searchEx.move'/>
+          <SearchChooser :formal-parameter='formalParameter' :path='path' :parameterIndex='parameterIndex' :lisp='lisp'/>
         </td>
       </tr>
     </table>
