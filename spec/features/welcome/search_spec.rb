@@ -98,6 +98,16 @@ describe 'Search page', js: true do
         expect(page).to have_content('The Rendevouz') # has circle left 3 & 4 places
         expect(page).to_not have_content('Box the Gnat Contra') # no circles
         expect(page).to_not have_content('Call Me') # has circle left 3 places
+
+        select('do si do')
+        open_ellipsis
+        select('neighbors')
+
+        expect(page).to have_content('[ "figure", "do si do", "neighbors", "*", "*", "*" ]')
+        expect(page).to_not have_content('The Rendevouz')
+        expect(page).to_not have_content('Box the Gnat Contra')
+        expect(page).to_not have_content('Call Me')
+        expect(page).to have_content("You Can't Get There From Here")
       end
 
       def open_ellipsis

@@ -482,4 +482,3 @@ export const goodBeatsEqualFn = (beats) => {
 }
 
 export const defaultGoodBeats = goodBeatsEqualFn(8);
-

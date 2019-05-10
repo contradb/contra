@@ -83,7 +83,7 @@ const store = new Vuex.Store({
   //   state.lisp = searchEx.toLisp();
   // }
   SearchEx.allProps().reduce((hash, prop) => {
-    if (prop !== 'op') {
+    if (prop !== 'op' && prop !== 'move') {
       hash[SearchEx.mutationNameForProp(prop)] = function(state, payload) {
         const searchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
         getSearchExAtPath(searchEx, payload.path)[prop] = payload[prop]; // destructive!
@@ -93,8 +93,17 @@ const store = new Vuex.Store({
     return hash;
   }, {
     setOp(state, {path, op}) {
-      const searchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
-      state.lisp = setSearchExAtPath(getSearchExAtPath(searchEx, path).castTo(op), searchEx, path).toLisp();
+      const rootSearchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
+      const newSearchEx = getSearchExAtPath(rootSearchEx, path).castTo(op);
+      state.lisp = setSearchExAtPath(newSearchEx, rootSearchEx, path).toLisp();
+    },
+    setMove(state, payload) {
+      const rootSearchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
+      const searchEx = getSearchExAtPath(rootSearchEx, payload.path);
+      searchEx.move = payload.move; // destructive!
+      searchEx.ellipsis = false;
+      searchEx.parameters = [];
+      state.lisp = rootSearchEx.toLisp();
     },
     setParameter(state, {path, index, value}) {
       const rootSearchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
