@@ -2,6 +2,10 @@
 
 module JSLibFigure
 
+  def self.chooser(chooser_name)
+    self.eval("chooser(#{chooser_name.inspect})")
+  end
+
   def self.figure_to_html(figure_ruby_hash, dialect)
     self.eval("figureToHtml(#{figure_ruby_hash.to_json},#{dialect.to_json})")
   end
@@ -135,8 +139,8 @@ module JSLibFigure
     self.eval("wristGrips;")
   end
 
-  def self.parameter_uses_chooser(formal_parameter, chooser_name_string)
-    formal_parameter['ui'] == chooser_name_string; # 'should' be compared with address-equals in javascript land, but this is faster
+  def self.parameter_uses_chooser(formal_parameter, chooser)
+    formal_parameter['ui'] === chooser;
   end
 
   def self.test_dialect
@@ -215,7 +219,7 @@ module JSLibFigure
       figure
         .merge(note.present? ? {'note' => string_in_dialect(note, dialect)} : {})
         .merge('parameter_values' => parameter_values.each_with_index.map do |parameter_value, i|
-                 if parameter_value.present? && parameter_uses_chooser(formals[i], 'chooser_text')
+                 if parameter_value.present? && parameter_uses_chooser(formals[i], chooser('chooser_text'))
                    string_in_dialect(parameter_value, dialect)
                  else
                    parameter_value
@@ -224,7 +228,11 @@ module JSLibFigure
     end
   end
 
-  JSLIBFIGURE_FILES = %w(polyfill.js util.js words.js move.js chooser.js param.js define-figure.js figure.es6 after-figure.js dance.js)
+  JSLIBFIGURE_FILES = %w(polyfill.js util.js words.js move.js chooser.js param.js define-figure.js figure.js after-figure.js dance.js)
+
+  def self.strip_import_and_export(src)
+    strip_import_clumsily(strip_export_clumsily(src))
+  end
 
   private
   def self.eval(string_of_javascript)
@@ -237,16 +245,20 @@ module JSLibFigure
 
   def self.new_context
     context = MiniRacer::Context.new
-    JSLIBFIGURE_FILES.each do |file|
-      context.load(Rails.root.join('app','assets','javascripts','libfigure',file))
-    end
+    JSLIBFIGURE_FILES.each {|file| context_load(context, Rails.root.join('app/javascript/libfigure',file)) }
     context
+  end
+
+  def self.context_load(context, pathname, strip_import_and_export: true)
+    src = File.read(pathname)
+    src = strip_import_and_export(src) if strip_import_and_export
+    context.eval(src, filename: pathname.to_s)
   end
 
   def self.eval_with_tests_loaded(string_of_javascript)
     unless @test_context
       @test_context = self.new_context
-      @test_context.load(Rails.root.join('app','assets','javascripts','libfigure','test.js'))
+      context_load(@test_context, Rails.root.join('app/javascript/libfigure/test.js'))
     end
     @test_context.eval(string_of_javascript)
   end
@@ -278,5 +290,13 @@ module JSLibFigure
     if s.instance_of?(String) then s
     else raise 'client submitted json was unexpectedly not string'
     end
+  end
+
+  def self.strip_import_clumsily(src)
+    src.gsub(/^\s*(import.*)\n/, "// strip_import_clumsily: \\1\n")
+  end
+
+  def self.strip_export_clumsily(src)
+    src.gsub(/^\s*export\s/,'')
   end
 end

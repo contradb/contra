@@ -15,8 +15,11 @@ cd $HOME/contra
 sudo service nginx stop
 sudo service unicorn_contra stop; 
 git pull
+# cd ~/.rbenv/plugins/ruby-build && git pull && cd -
+# rbenv install --skip-existing `cat .ruby-version`
+# gem install bundler
 bundle install --deployment --without development test
-bundle exec rake assets:precompile
+EXECJS_RUNTIME=Node bundle exec rake assets:precompile
 bin/rake db:migrate
 sudo service unicorn_contra start
 sudo service nginx start

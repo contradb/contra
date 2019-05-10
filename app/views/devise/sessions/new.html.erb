@@ -13,12 +13,12 @@
 
   <p class="row field">
     <p class="col-sm-4 contra-label">Email:</p> 
-    <%= f.email_field :email, autofocus: true, class: "col-sm-8" %>
+    <%= f.email_field :email, autofocus: true, class: "col-sm-8", autocomplete: "email" %>
   </p>
 
   <p class="row field">
     <p class="col-sm-4 contra-label">Password:</p> 
-    <%= f.password_field :password, autocomplete: "off", class:"col-sm-8" %>
+    <%= f.password_field :password, class:"col-sm-8", autocomplete: "current-password" %>
   </p>
 
   <p class="row">

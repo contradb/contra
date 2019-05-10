@@ -36,7 +36,7 @@
   </div>
 
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: {method: :put, class: 'form-horizontal margin-bottom-30'}) do |f| %>
-    <%= devise_error_messages! %>
+    <%= render "devise/shared/error_messages", resource: resource %>
 
     <div class="form-group">
       <div class="col-sm-2 contra-label control-label">Email</div>
@@ -56,18 +56,18 @@
 
     <div class="form-group">
       <div class="col-sm-2 contra-label control-label">Current Password</div>
-      <div class='col-sm-6'><%= f.password_field :current_password, autocomplete: "off", class: "form-control" %></div>
+      <div class='col-sm-6'><%= f.password_field :current_password, autocomplete: "current-password", class: "form-control" %></div>
       <div class="col-sm-4 understated control-label" style='text-align: left'>* required</div>
     </div>
 
     <div class="form-group">
       <div class="col-sm-2 contra-label control-label">New Password</div>
-      <div class='col-sm-6'><%= f.password_field :password, autocomplete: "off", class: "form-control" %></div>
+      <div class='col-sm-6'><%= f.password_field :password, autocomplete: "new-password", class: "form-control" %></div>
     </div>
 
     <div class="form-group">
       <div class="col-sm-2 contra-label control-label">Retype New Password</div>
-      <div class='col-sm-6'><%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %></div>
+      <div class='col-sm-6'><%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %></div>
     </div>
 
 

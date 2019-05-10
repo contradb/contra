@@ -2,11 +2,12 @@
 
 ## ContraDB
 
-This is an online database for managing contra dances. The intended
-users are dance callers, dance choreographers, and opinionated
-dancers. Users create, edit, update, and delete dances, as well as
-copying and viewing other users' dances. Users can create programs of
-dances and call them from their phone or print outs. 
+This is the source code for [contradb.com](https://contradb.com), an
+online database for managing contra dances. The intended users are
+dance callers, dance choreographers, and opinionated dancers. Users
+create, edit, update, and delete dances, as well as copying and
+viewing other users' dances. Users can create programs of dances and
+call them from their phone or print outs.
 
 ## COPYING
 
@@ -40,9 +41,9 @@ Sketch only and not tested - ask for help on any of this
 - get a replica database from contradb.com
 
 Then:
-- bundle exec rspec [runs all tests]
-- bundle exec rails s [runs server on http://localhost:3000]
-- bundle exec rails c [runs repl loop]
+- bin/rspec [runs all tests]
+- bin/rails s [runs server on http://localhost:3000]
+- bin/rails c [runs repl loop]
 
 ## Deployment
 
@@ -51,6 +52,6 @@ Then:
 ## Testing
 
 ```
-bundle exec rspec
+bin/rspec
 ```
 will run all tests. 
