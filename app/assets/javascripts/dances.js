@@ -196,13 +196,6 @@ function userChangedMove (figure) {
   }
 }
 
-function parameterLabel (movestring, index) {
-  var fig_def = defined_events[movestring];
-  var ps = parameters(movestring);
-  return (fig_def && fig_def.props && fig_def.props.labels && fig_def.props.labels[index]) ||
-    (ps[index] && ps[index].name);
-}
-
 // =====================================================================================
 
 function menuMoveLabel(from,to) {

@@ -16,6 +16,7 @@
     <select v-if="move !== undefined" v-model="move" class="figure-filter-move form-control">
       <option v-for="{term, substitution} in moveMenu" v-bind:value="term">{{substitution}}</option>
     </select>
+    <span v-if="op==='figure' && move !== '*'"><bootstrap-toggle v-model="ellipsis" :options="{ on: 'more', off: 'less' }" /></span>
     <select v-if="comparison !== undefined" v-model="comparison" class="figure-filter-count-comparison form-control">
       <option>≥</option>
       <option>≤</option>
@@ -35,6 +36,16 @@
       <option>proper</option>
       <option>everything else</option>
     </select>
+    <table v-if="ellipsis" class='figure-filter-accordion'>
+      <tr v-for="(formalParameter, parameterIndex) in formalParameters(move)" class='chooser-row'>
+        <td class="chooser-label-text">
+          {{ parameterLabel(move, parameterIndex) }}
+        </td>
+        <td>
+          <SearchChooser :formal-parameter='formalParameter' :path='path' :parameterIndex='parameterIndex' :lisp='lisp'/>
+        </td>
+      </tr>
+    </table>
     <ul v-if="searchEx.subexpressions.length">
       <li v-for="(subEx, index) in searchEx.subexpressions"><SearchExEditor v-bind:path='path.concat(index)' v-bind:lisp='subEx.toLisp()' /></li>
     </ul>
@@ -44,8 +55,11 @@
 
 <script>
 
-import { SearchEx } from 'search_ex.js';
 import LibFigure from 'libfigure/libfigure.js';
+import { SearchEx } from 'search_ex.js';
+import SearchChooser from 'search_chooser.vue'
+import BootstrapToggle from 'vue-bootstrap-toggle';
+
 
 export default {
   name: 'SearchExEditor',
@@ -91,6 +105,14 @@ export default {
         }
         return acc;
       }, {})
+  },
+  methods: {
+    formalParameters: LibFigure.formalParameters,
+    parameterLabel: LibFigure.parameterLabel
+  },
+  components: {
+    BootstrapToggle,
+    SearchChooser,
   }
 }
 
