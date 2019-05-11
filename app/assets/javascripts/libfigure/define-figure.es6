@@ -131,8 +131,7 @@
 /***/ function dancerSubstitution(dancer_term, dialect) {
 /***/   return dialect.dancers[dancer_term] || dancer_term;
 /***/ }
-/***/ 
-/***/ function dancerMenuLabel(dancer_term, dialect) {
+/***/ const dancerMenuLabel = function (dancer_term, dialect) {
 /***/   if (dancer_term) {
 /***/     return dancerSubstitution(dancer_term, dialect);
 /***/   } else {
@@ -316,10 +315,16 @@
 /***/ function isMove(string) {
 /***/   return !!defined_events[string];
 /***/ }
+/***/ const parameterLabel = (move, index) => {
+/***/   var fig_def = defined_events[move];
+/***/   var ps = parameters(move);
+/***/   return (fig_def && fig_def.props && fig_def.props.labels && fig_def.props.labels[index]) ||
+/***/     (ps[index] && ps[index].name);
+/***/ }
 /***/ 
 /***/ var issued_parameter_warning = false;
 /***/ 
-/***/ // consider renaming to formalParameters
+/***/ // TODO: complete renaming to formalParameters
 /***/ const parameters = (move) => {
 /***/   var fig = defined_events[move];
 /***/   if (fig) {
@@ -330,7 +335,8 @@
 /***/     throw_up("could not find a figure definition for '"+move+"'. ");
 /***/   }
 /***/   return [];
-/***/ }
+/***/ };
+/***/ const formalParameters = parameters;
 /***/ 
 /***/ function aliasParameters(move){
 /***/   var fig = defined_events[move];
@@ -464,4 +470,3 @@
 /***/   };
 /***/ }
 /***/ const defaultGoodBeats = goodBeatsEqualFn(8);
-/***/ 

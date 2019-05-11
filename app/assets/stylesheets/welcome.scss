@@ -142,3 +142,9 @@ select.chooser-argument {
   background-color: $contra-grey;
   @extend .btn-default;
 }
+
+// Position radios and checkboxes better
+.chooser-argument input[type="radio"],
+.chooser-argument input[type="checkbox"] {
+  margin-top: 0px;              /* override 4px in bootstrap */
+}

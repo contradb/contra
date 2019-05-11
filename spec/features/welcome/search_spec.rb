@@ -83,10 +83,35 @@ describe 'Search page', js: true do
         visit '/s'
         select 'chain'
         expect(page).to_not have_link('The Rendevouz')
-        page.save_screenshot('/tmp/foo.png')
         expect(page).to have_link('Call Me')
         expect(page).to have_link('Box the Gnat Contra')
         expect(page).to_not have_link("You Can't Get There From Here")
+      end
+
+      it 'parameters' do
+        dances
+        visit '/s'
+        select 'circle'
+        open_ellipsis
+        select('4 places')
+
+        expect(page).to_not have_content('Box the Gnat Contra') # no circles
+        expect(page).to_not have_content('Call Me') # has circle left 3 places
+        expect(page).to have_content('The Rendevouz') # has circle left 3 & 4 places
+        expect(page).to_not have_content("You Can't Get There From Here") # circles 3 places
+
+        select('do si do')
+        select('neighbors')
+
+        expect(page).to have_content('[ "figure", "do si do", "neighbors", "*", "*", "*" ]')
+        expect(page).to_not have_content('The Rendevouz')
+        expect(page).to_not have_content('Box the Gnat Contra')
+        expect(page).to_not have_content('Call Me')
+        expect(page).to have_content("You Can't Get There From Here")
+      end
+
+      def open_ellipsis
+        find('.toggle-off').click
       end
     end
   end

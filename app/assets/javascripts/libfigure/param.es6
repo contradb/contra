@@ -6,7 +6,8 @@
 /***/ //    |_| /_/   \_\_| \_\/_/   \_\_|  |_|
 /***/ //
 /***/ // Params have semantic value specific to each figure.
-/***/ // Though some patterns have emerged. Patterns like:
+/***/ // Params are returned by calls like "formalParameters('swing')".
+/***/ // Some param patterns have emerged. Patterns like:
 /***/ // figures have a subject telling who's acted on by the figure.
 /***/ //
 /***/ // strip_import_clumsily: import { throw_up } from './util';

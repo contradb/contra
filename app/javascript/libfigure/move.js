@@ -59,7 +59,7 @@ var degrees2places = { 90: "1 place",
                       '*': "* places"
                      };
 
-function degreesToWords (degrees,optional_move) {
+export const degreesToWords = function(degrees,optional_move) {
   if (optional_move) {
     if (moveCaresAboutRotations(optional_move) && degrees2rotations[degrees]) {
       return degrees2rotations[degrees];
@@ -88,7 +88,7 @@ function degreesToPlaces(degrees) {
 
 var anglesForMoveArr = [90,180,270,360,450,540,630,720,810,900];
 
-function anglesForMove (move) {
+export const anglesForMove = function(move) {
   if (move === 'square through') {
     return [180, 270, 360];
   } else if (move === 'box circulate') {

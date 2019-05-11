@@ -5,21 +5,75 @@
 
 import Vue from 'vue/dist/vue.esm';
 import Vuex from 'vuex/dist/vuex.esm';
-import BootstrapToggle from 'vue-bootstrap-toggle';
 import { SearchEx } from '../search_ex.js';
 import LibFigure from '../libfigure/libfigure.js';
 import SearchExEditor from '../search_ex_editor.vue';
 
 Vue.use(Vuex);
-Vue.use(BootstrapToggle);
+
+function selectChooserNameOptions(dialect) {
+  return {
+    chooser_beats: ['*',8,16,0,1,2,3,4,6,8,10,12,14,16,20,24,32,48,64],
+    chooser_boolean: ['*',[true, 'yes'], [false, 'no']],
+    chooser_star_grip: ['*'].concat(wristGrips.map(function(grip) { return (grip === '') ? ['', 'unspecified'] : grip; })),
+    chooser_march_facing: ['*','forward','backward','forward then backward'],
+    chooser_set_direction: ['*',['along', 'along the set'], ['across', 'across the set'], 'right diagonal', 'left diagonal'],
+    chooser_set_direction_acrossish: ['*', ['across', 'across the set'], 'right diagonal', 'left diagonal'],
+    chooser_set_direction_grid: ['*',['along', 'along the set'], ['across', 'across the set']],
+    chooser_set_direction_figure_8: ['*','','above','below','across'],
+    chooser_gate_direction: ['*',['up', 'up the set'], ['down', 'down the set'], ['in', 'into the set'], ['out', 'out of the set']],
+    chooser_slice_return: ['*', ['straight', 'straight back'], ['diagonal', 'diagonal back'], 'none'],
+    chooser_all_or_center_or_outsides: ['*', 'all', 'center', 'outsides'],
+    chooser_down_the_hall_ender: ['*',
+                                  ['turn-alone', 'turn alone'],
+                                  ['turn-couple', 'turn as a couple'],
+                                  ['circle', 'bend into a ring'],
+                                  ['cozy', 'form a cozy line'],
+                                  ['cloverleaf', 'bend into a cloverleaf'],
+                                  ['thread-needle', 'thread the needle'],
+                                  ['right-high', 'right hand high, left hand low'],
+                                  ['sliding-doors', 'sliding doors'],
+                                  ['', 'unspecified']],
+    chooser_zig_zag_ender: ['*', ['', 'none'], ['ring', 'into a ring'], ['allemande', 'training two catch hands']],
+    chooser_hey_length: ['*',
+                         'full',
+                         'half',
+                         'less than half',
+                         'between half and full'],
+    chooser_swing_prefix: ['*', 'none', 'balance', 'meltdown'],
+    ...LibFigure.dancerChooserNames().reduce(
+      (acc, chooserName) => {
+        acc[chooserName] =
+          ['*'].concat(LibFigure.dancerMenuForChooser(LibFigure.chooser(chooserName)).map(dancers => [dancers, LibFigure.dancerMenuLabel(dancers, dialect)]));
+        return acc;
+      },
+      {}
+    )
+  };
+}
+
+const radioChooserNameOptions = {
+  chooser_boolean: ['*',[true, 'yes'], [false, 'no']],
+  chooser_spin: ['*',[true, 'clockwise'], [false, 'ccw']],
+  chooser_left_right_spin: ['*',[true, 'left'], [false, 'right']],
+  chooser_right_left_hand: ['*',[false, 'left'], [true, 'right']],
+  chooser_right_left_shoulder: ['*',[false, 'left'], [true, 'right']],
+  chooser_slide: ['*',[true, 'left'], [false, 'right']],
+  chooser_slice_increment: ['*', 'couple', 'dancer'],
+  chooser_go_back: ['*', [true, 'forward &amp; back'], [false, 'forward']],
+  chooser_give: ['*', [true,'give &amp; take'], [false,'take']],
+  chooser_half_or_full: ['*', [0.5,'half'], [1.0,'full']],
+};
 
 const store = new Vuex.Store({
   state: {
     lisp: ['and', ['figure', '*'], ['progression']],
-    dialect: LibFigure.defaultDialect
+    dialect: LibFigure.defaultDialect,
+    radioChooserNameOptions: Object.freeze(radioChooserNameOptions),
   },
   getters: {
-    searchEx: state => SearchEx.fromLisp(state.lisp)
+    searchEx: state => SearchEx.fromLisp(state.lisp),
+    selectChooserNameOptions: state => selectChooserNameOptions(state.dialect),
   },
   mutations:
   // here's what a mutation looked like before it was made generic with the reduce:
@@ -29,7 +83,7 @@ const store = new Vuex.Store({
   //   state.lisp = searchEx.toLisp();
   // }
   SearchEx.allProps().reduce((hash, prop) => {
-    if (prop !== 'op') {
+    if (prop !== 'op' && prop !== 'move') {
       hash[SearchEx.mutationNameForProp(prop)] = function(state, payload) {
         const searchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
         getSearchExAtPath(searchEx, payload.path)[prop] = payload[prop]; // destructive!
@@ -39,8 +93,21 @@ const store = new Vuex.Store({
     return hash;
   }, {
     setOp(state, {path, op}) {
-      const searchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
-      state.lisp = setSearchExAtPath(getSearchExAtPath(searchEx, path).castTo(op), searchEx, path).toLisp();
+      const rootSearchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
+      const newSearchEx = getSearchExAtPath(rootSearchEx, path).castTo(op);
+      state.lisp = setSearchExAtPath(newSearchEx, rootSearchEx, path).toLisp();
+    },
+    setMove(state, payload) {
+      const rootSearchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
+      const searchEx = getSearchExAtPath(rootSearchEx, payload.path);
+      searchEx.move = payload.move; // destructive!
+      state.lisp = rootSearchEx.toLisp();
+    },
+    setParameter(state, {path, index, value}) {
+      const rootSearchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
+      let searchEx = getSearchExAtPath(rootSearchEx, path);
+      searchEx.parameters[index] = value; // destructive!
+      state.lisp = setSearchExAtPath(searchEx, rootSearchEx, path).toLisp();
     }
   }
   )
@@ -69,10 +136,9 @@ document.addEventListener('DOMContentLoaded', () => {
     el: '#search-app',
     store,
     data: {},
-    template: `<div><SearchExEditor v-bind:lisp="$store.state.lisp" v-bind:path="[]" /><hr><p>state.lisp: {{$store.state.lisp}}</p><p>state.dialect: {{$store.state.dialect}}</p><bootstrap-toggle :options="{ on: 'Yes', off: 'No' }" /></div>`,
+    template: `<div><SearchExEditor v-bind:lisp="$store.state.lisp" v-bind:path="[]" /><hr><p>state.lisp: {{$store.state.lisp}}</p><p>state.dialect: {{$store.state.dialect}}</p></div>`,
     components: {
-      SearchExEditor,
-      BootstrapToggle
+      SearchExEditor
     },
     methods: {
       // wrap() {this.$store.commit('wrap', {name: 'wrap'});}
