@@ -120,7 +120,7 @@ class FigureSearchEx extends nullaryMixin(SearchEx) {
   constructor(args) {
     super(args);
     const {move, parameters = []} = args;
-    this.move = move || errorMissingParameter('move');
+    this._move = move || errorMissingParameter('move');
     this.parameters = parameters;
     this._ellipsis = parameters && parameters.length > 0;
   };
@@ -137,12 +137,23 @@ class FigureSearchEx extends nullaryMixin(SearchEx) {
   static castFrom(searchEx) {
     return new this({move: '*'});
   }
+  get move() {
+    return this._move;
+  }
+  set move(moveString) {
+    this._move = moveString;
+    this.parameters.length = 0;
+    this.padMissingParametersWithAsterisks();
+  }
   get ellipsis() {
     return this._ellipsis;
   }
   set ellipsis(expanded) {
     this._ellipsis = expanded;
-    if (expanded) {
+    this.padMissingParametersWithAsterisks();
+  }
+  padMissingParametersWithAsterisks() {
+    if (this.ellipsis) {
       const formals_length = LibFigure.formalParameters(this.move).length;
       while (this.parameters.length < formals_length)
         this.parameters.push('*');

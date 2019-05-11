@@ -101,8 +101,6 @@ const store = new Vuex.Store({
       const rootSearchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
       const searchEx = getSearchExAtPath(rootSearchEx, payload.path);
       searchEx.move = payload.move; // destructive!
-      searchEx.ellipsis = false;
-      searchEx.parameters = [];
       state.lisp = rootSearchEx.toLisp();
     },
     setParameter(state, {path, index, value}) {

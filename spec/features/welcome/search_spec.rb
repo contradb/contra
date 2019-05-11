@@ -100,7 +100,6 @@ describe 'Search page', js: true do
         expect(page).to_not have_content('Call Me') # has circle left 3 places
 
         select('do si do')
-        open_ellipsis
         select('neighbors')
 
         expect(page).to have_content('[ "figure", "do si do", "neighbors", "*", "*", "*" ]')

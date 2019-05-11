@@ -47,16 +47,15 @@ export default {
   computed: {
     value: {
       get: function() {
-        return this.lisp[this.parameterIndex+2];
+        return this.lisp[this.parameterIndex+2]; // knows an awful lot about lisp format. :(
       },
       set: function(value) {
         this.$store.commit('setParameter', {path: this.path, index: this.parameterIndex, value: value});
       }
     },
     move: function() {return this.lisp[1];},
-    chooser: function() {return this.formalParameter.ui;},
     chooserName: function() {return this.formalParameter.ui.name;},
-    uniqueName: function() {return 'cb-' + this.path.join('-') + '-' + this.parameterIndex;},
+    uniqueName: function() {return 'cb-' + this.path.join('-') + '-' + this.parameterIndex;}, // assumes only 1 of these per page
   },
   methods: {
     chooserSelectOptions: function() {
@@ -68,8 +67,6 @@ export default {
     chooserRadioOptions: function() {
       return this.$store.state.radioChooserNameOptions[this.chooserName];
     },
-  },
-  components: {
   }
 }
 </script>

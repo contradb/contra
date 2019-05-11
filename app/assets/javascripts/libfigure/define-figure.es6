@@ -470,4 +470,3 @@
 /***/   };
 /***/ }
 /***/ const defaultGoodBeats = goodBeatsEqualFn(8);
-/***/ 
