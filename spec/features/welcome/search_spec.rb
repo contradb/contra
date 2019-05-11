@@ -95,9 +95,10 @@ describe 'Search page', js: true do
         open_ellipsis
         select('4 places')
 
-        expect(page).to have_content('The Rendevouz') # has circle left 3 & 4 places
         expect(page).to_not have_content('Box the Gnat Contra') # no circles
         expect(page).to_not have_content('Call Me') # has circle left 3 places
+        expect(page).to have_content('The Rendevouz') # has circle left 3 & 4 places
+        expect(page).to_not have_content("You Can't Get There From Here") # circles 3 places
 
         select('do si do')
         select('neighbors')
