@@ -46,6 +46,17 @@
         </td>
       </tr>
     </table>
+    <div class="btn-group">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="glyphicon glyphicon-option-vertical" aria-label="expression actions"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a href="#">Action</a></li>
+        <li><a href="#">Another action</a></li>
+        <li><a href="#">Something else here</a></li>
+        <li v-if="deleteEnabled()"><a v-on:click="clickDelete()">X</a></li>
+      </ul>
+    </div>
     <ul v-if="searchEx.subexpressions.length">
       <li v-for="(subEx, index) in searchEx.subexpressions"><SearchExEditor v-bind:path='path.concat(index)' v-bind:lisp='subEx.toLisp()' /></li>
     </ul>
@@ -80,6 +91,16 @@ export default {
     searchEx: function() {
       return SearchEx.fromLisp(this.lisp);
     },
+    parentSearchEx: function() {
+      if (0 === this.path.length)
+        return null;
+      else {
+        let ancestor = this.$store.getters.searchEx;
+        for (let i=0; i<this.path.length-1; i++)
+          ancestor = ancestor.subexpressions[this.path[i]];
+        return ancestor;
+      }
+    },
     moveMenu: function() {
       return [{term: '*', substitution: 'any figure'}].concat(LibFigure.moveTermsAndSubstitutionsForSelectMenu(this.$store.state.dialect));
     },
@@ -108,7 +129,13 @@ export default {
   },
   methods: {
     formalParameters: LibFigure.formalParameters,
-    parameterLabel: LibFigure.parameterLabel
+    parameterLabel: LibFigure.parameterLabel,
+    clickDelete: function() {
+      this.$store.commit('deleteSearchEx', {path: this.path});
+    },
+    deleteEnabled: function() {
+      return this.path.length && this.parentSearchEx.subexpressions.length > this.parentSearchEx.minSubexpressions();
+    }
   },
   components: {
     BootstrapToggle,

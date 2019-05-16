@@ -108,9 +108,19 @@ const store = new Vuex.Store({
       let searchEx = getSearchExAtPath(rootSearchEx, path);
       searchEx.parameters[index] = value; // destructive!
       state.lisp = setSearchExAtPath(searchEx, rootSearchEx, path).toLisp();
+    },
+    deleteSearchEx(state, {path}) {
+      const rootSearchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
+      if (path.length) {
+        let searchEx = rootSearchEx;
+        for (let i=0; i<path.length-1; i++)
+          searchEx = searchEx.subexpressions[path[i]];
+        searchEx.subexpressions.splice(path[path.length-1], 1);
+        state.lisp = rootSearchEx.toLisp();
+      } else
+        ; // can't delete root node.
     }
-  }
-  )
+  })
 });
 
 function getSearchExAtPath(rootSearchEx, path) {
