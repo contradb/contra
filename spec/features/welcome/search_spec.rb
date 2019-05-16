@@ -5,7 +5,7 @@ require 'rails_helper'
 describe 'Search page', js: true do
   it 'exercise formation filter' do
     visit '/s'
-    page.assert_selector('.figure-filter-op', count: 3)
+    expect(page).to have_css('.figure-filter-op', count: 3)
     all('.figure-filter-op')[1].select('formation')
     select('proper')
     expect(page).to have_text('state.lisp: [ "and", [ "formation", "proper" ], [ "progression" ] ]')
@@ -14,14 +14,14 @@ describe 'Search page', js: true do
   describe 'casts' do
     it "cast from 'and' to 'or'" do
       visit '/s'
-      page.assert_selector('.figure-filter-op', count: 3)
+      expect(page).to have_css('.figure-filter-op', count: 3)
       first('.figure-filter-op').select('or')
       expect(page).to have_text('state.lisp: [ "or", [ "figure", "*" ], [ "progression" ] ]')
     end
 
     it "cast to 'not'" do
       visit '/s'
-      page.assert_selector('.figure-filter-op', count: 3)
+      expect(page).to have_css('.figure-filter-op', count: 3)
       first('.figure-filter-op').select('not')
       expect(page).to have_text('state.lisp: [ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]')
     end
@@ -42,7 +42,7 @@ describe 'Search page', js: true do
       dances.each {|dance|
         expect(page).to have_link(dance.title, href: dance_path(dance))
       }
-      page.assert_selector('.figure-filter-op', count: 3)
+      expect(page).to have_css('.figure-filter-op', count: 3)
       all('.figure-filter-op')[1].select('formation')
       select('Becket *')
       dances.each do |dance|
@@ -71,7 +71,7 @@ describe 'Search page', js: true do
     it '& filter' do
       dances
       visit '/s'
-      page.assert_selector('.figure-filter-op', count: 3)
+      expect(page).to have_css('.figure-filter-op', count: 3)
       first('.figure-filter-op').select('&')
       select('chain')
       expect(page).to have_text('state.lisp: [ "&", [ "figure", "chain" ], [ "progression" ] ]')
