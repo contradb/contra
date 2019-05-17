@@ -24,13 +24,37 @@ describe 'Search page', js: true do
       expect(page).to have_css('.figure-filter-op', count: 3)
       first('.figure-filter-op').select('not')
       expect(page).to have_text('state.lisp: [ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]')
+      expect(page).to have_css('.figure-filter-op', count: 4)
     end
   end
 
   describe 'deletion' do
-    it "works"
-    it "menu item isn't visible for the root node"
-    it "menu item isn't visible for a subexpression that's required"
+    it "works" do
+      visit '/s'
+      expect(page).to have_css('.figure-filter-op', count: 3)
+      all('.figure-filter-menu-hamburger')[-1].click
+      find('a.figure-filter-menu-delete').click
+      expect(page).to have_text('[ "and", [ "figure", "*" ] ]')
+    end
+
+    it "menu item isn't visible for the root node" do
+      visit '/s'
+      expect(page).to have_css('.figure-filter-op', count: 3)
+      first('.figure-filter-menu-hamburger').click
+      expect(page).to_not have_css('.figure-filter-menu-delete')
+    end
+
+    it "menu item isn't visible for a subexpression that's required" do
+      visit '/s'
+      expect(page).to have_css('.figure-filter-op', count: 3)
+      first('.figure-filter-op').select('not')
+      expect(page).to have_css('.figure-filter-op', count: 4)
+      expect(page).to have_text('state.lisp: [ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]')
+      all('.figure-filter-menu-hamburger')[1].click
+      expect(page).to have_css('.figure-filter-menu')
+      expect(page).to_not have_css('.figure-filter-menu-delete')
+      page.save_screenshot('/tmp/bar.png')
+    end
   end
 
   describe 'datatable' do

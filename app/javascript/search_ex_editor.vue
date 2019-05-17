@@ -47,14 +47,14 @@
       </tr>
     </table>
     <div class="btn-group">
-      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <button type="button" class="btn btn-default dropdown-toggle figure-filter-menu-hamburger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="glyphicon glyphicon-option-vertical" aria-label="expression actions"></span>
       </button>
-      <ul class="dropdown-menu">
+      <ul class="dropdown-menu figure-filter-menu">
         <li><a href="#">Action</a></li>
         <li><a href="#">Another action</a></li>
         <li><a href="#">Something else here</a></li>
-        <li v-if="deleteEnabled()"><a v-on:click="clickDelete()">X</a></li>
+        <li v-if="deleteEnabled()"><a class='figure-filter-menu-delete'v-on:click="clickDelete()">X</a></li>
       </ul>
     </div>
     <ul v-if="searchEx.subexpressions.length">
