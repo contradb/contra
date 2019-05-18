@@ -38,6 +38,11 @@ class  SearchEx {
   maxSubexpressions() {return this.constructor.maxSubexpressions();}
   minUsefulSubexpressions() {return this.constructor.minUsefulSubexpressions();}
 
+  copy() {
+    // deeeep copy
+    return SearchEx.fromLisp(this.toLisp());
+  }
+
   static allProps() {
     // all properties held by any subclass.
     return allProps;
@@ -338,9 +343,21 @@ function testEllipsis2() {
   if (!lispEquals(searchEx.toLisp(), shortLisp)) throw new Error('testEllipsis failure');
 }
 
+function testCopy() {
+  const originalLisp = ['and', ['figure', 'do si do'], ['figure', 'swing']];
+  const original = SearchEx.fromLisp(originalLisp);
+  const copy = original.copy();
+  copy.subexpressions[0].move = 'circle';
+  if (!lispEquals(copy.toLisp(), ['and', ['figure', 'circle'], ['figure', 'swing']]))
+    throw new Error('testCopy failure modifying substructure');
+  if (!lispEquals(original.toLisp(), originalLisp))
+    throw new Error('testCopy failure - the original was modified');
+}
+
 test1();
 test2();
 testEllipsis1();
 testEllipsis2();
+testCopy();
 
 export { SearchEx };
