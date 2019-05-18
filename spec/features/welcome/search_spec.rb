@@ -53,7 +53,6 @@ describe 'Search page', js: true do
       all('.figure-filter-menu-hamburger')[1].click
       expect(page).to have_css('.figure-filter-menu')
       expect(page).to_not have_css('.figure-filter-menu-delete')
-      page.save_screenshot('/tmp/bar.png')
     end
   end
 
