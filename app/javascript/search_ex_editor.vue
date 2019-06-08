@@ -118,7 +118,6 @@ export default {
           acc[prop] = {
             get: function() { return this.searchEx[prop]; },
             set: function(value) {
-              console.log(`dispatching ${mutationName}`);
               const h = {path: this.path};
               h[prop] = value;
               this.$store.dispatch(mutationName, h);
@@ -132,7 +131,7 @@ export default {
     formalParameters: LibFigure.formalParameters,
     parameterLabel: LibFigure.parameterLabel,
     clickDelete: function() {
-      this.$store.commit('deleteSearchEx', {path: this.path});
+      this.$store.dispatch('deleteSearchEx', {path: this.path});
     },
     deleteEnabled: function() {
       return this.path.length && this.parentSearchEx.subexpressions.length > this.parentSearchEx.minSubexpressions();
