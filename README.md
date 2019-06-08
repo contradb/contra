@@ -41,7 +41,7 @@ Sketch only and not tested - ask for help on any of this
 - get a replica database from contradb.com
 
 Then:
-- bin/rspec [runs all tests]
+- bin/rspec [runs ruby tests]
 - bin/rails s [runs server on http://localhost:3000]
 - bin/rails c [runs repl loop]
 
@@ -54,4 +54,8 @@ Then:
 ```
 bin/rspec
 ```
-will run all tests. 
+will run ruby tests.
+```
+yarn test
+```
+will run js tests

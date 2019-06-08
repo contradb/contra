@@ -55,6 +55,10 @@ class  SearchEx {
       throw new Error("propertyName is too short");
     }
   }
+
+  toString() {
+    return `#<${this.constructor.name2} ${JSON.stringify(this.toLisp())}>`;
+  }
 };
 
 function registerSearchEx(className, ...props) {
@@ -244,120 +248,4 @@ class CountSearchEx extends unaryMixin(SearchEx) {
 }
 registerSearchEx('CountSearchEx', 'comparison', 'number');
 
-function lispEquals(lisp1, lisp2) {
-  return JSON.stringify(lisp1) === JSON.stringify(lisp2);
-}
-
-function test1() {
-  let errors = [];
-
-  [['figure', 'do si do'],
-   ['figure', 'swing', 'partners', '*', 8],
-   ['formation', 'improper'],
-   ['progression'],
-   ['or', ['figure', 'do si do'], ['figure', 'swing']],
-   ['and', ['figure', 'do si do'], ['figure', 'swing']],
-   ['&', ['progression'], ['figure', 'star']],
-   ['then', ['figure', 'do si do'], ['figure', 'swing']],
-   ['no', ['progression']],
-   ['not', ['figure', 'do si do']],
-   ['all', ['figure', 'do si do']],
-   ['count', ['progression'], '>', 0]
-  ].forEach(function(lisp, i) {
-    if (!lispEquals(lisp, SearchEx.fromLisp(lisp).toLisp())) {
-      errors.push(i);
-    }
-  });
-
-  if (errors.length > 0) {
-    throw new Error('test1 tests ' + JSON.stringify(errors) + ' failed');
-  } else {
-    return 'tests pass';
-  }
-}
-
-function test2() {
-  let errors = [];
-
-  [{op: 'then', from: ['progression'], expect: ['then', ['progression'], ['figure', '*']]},
-   {op: 'then', from: ['not', ['progression']], expect: ['then', ['not', ['progression']], ['figure', '*']]},
-   {op: 'then', from: ['and'], expect: ['then']},
-   {op: 'then', from: ['and', ['progression']], expect: ['then', ['progression']]},
-   {op: 'then', from: ['and', ['progression'], ['figure', 'chain']], expect: ['then', ['progression'], ['figure', 'chain']]},
-   {op: 'and', from: ['figure', 'swing'], expect: ['and', ['figure', 'swing'], ['figure', '*']]},
-   {op: 'figure', from: ['and'], expect: ['figure', '*']},
-   {op: 'formation', from: ['and'], expect: ['formation', 'improper']},
-   {op: 'progression', from: ['and'], expect: ['progression']},
-   {op: 'no', from: ['and'], expect: ['no', ['and']]},
-   {op: 'no', from: ['not', ['figure', '*']], expect: ['no', ['figure', '*']]},
-   {op: 'no', from: ['or', ['figure', 'swing'], ['figure', 'chain']], expect: ['no', ['or', ['figure', 'swing'], ['figure', 'chain']]]},
-   {op: 'not', from: ['and'], expect: ['not', ['and']]},
-   {op: 'not', from: ['no', ['figure', '*']], expect: ['not', ['figure', '*']]},
-   {op: 'not', from: ['or', ['figure', 'swing'], ['figure', 'chain']], expect: ['not', ['or', ['figure', 'swing'], ['figure', 'chain']]]},
-   {op: 'all', from: ['and'], expect: ['all', ['and']]},
-   {op: 'all', from: ['no', ['figure', '*']], expect: ['all', ['figure', '*']]},
-   {op: 'all', from: ['or', ['figure', 'swing'], ['figure', 'chain']], expect: ['all', ['or', ['figure', 'swing'], ['figure', 'chain']]]},
-   {op: 'count', from: ['and'], expect: ['count', ['and'], '>', 0]},
-   {op: 'count', from: ['no', ['figure', '*']], expect: ['count', ['figure', '*'], '>', 0]},
-   {op: 'count', from: ['or', ['figure', 'swing'], ['figure', 'chain']], expect: ['count', ['or', ['figure', 'swing'], ['figure', 'chain']], '>', 0]},
-  ].forEach(function({from, op, expect}, i) {
-    const got = SearchEx.fromLisp(from).castTo(op).toLisp();
-    if (!lispEquals(expect, got)) {
-      console.log('got ', got, 'expected ', expect);
-      errors.push(i);
-    }
-  });
-
-  if (errors.length > 0) {
-    throw new Error('test2 tests ' + JSON.stringify(errors) + ' failed');
-  } else {
-    return 'tests pass';
-  }
-}
-
-function testEllipsis1() {
-  const searchEx = new FigureSearchEx({move: 'swing', parameters: ['*', '*', 8]});
-  const bigLisp = ['figure', 'swing', '*', '*', 8];
-  const shortLisp = ['figure', 'swing'];
-  if (!lispEquals(searchEx.toLisp(), bigLisp)) throw new Error('testEllipsis failure');
-  if (!searchEx.ellipsis) throw new Error('testEllipsis failure');
-  searchEx.ellipsis = false;
-  if (searchEx.ellipsis) throw new Error('testEllipsis failure');
-  if (!lispEquals(searchEx.toLisp(), shortLisp)) throw new Error('testEllipsis failure');
-  searchEx.ellipsis = true;
-  if (!searchEx.ellipsis) throw new Error('testEllipsis failure');
-  if (!lispEquals(searchEx.toLisp(), bigLisp)) throw new Error('testEllipsis failure');
-}
-
-function testEllipsis2() {
-  const searchEx = new FigureSearchEx({move: 'swing'});
-  const bigLisp = ['figure', 'swing', '*', '*', '*'];
-  const shortLisp = ['figure', 'swing'];
-  if (searchEx.ellipsis) throw new Error('testEllipsis failure');
-  if (!lispEquals(searchEx.toLisp(), shortLisp)) throw new Error('testEllipsis failure');
-  searchEx.ellipsis = true;
-  if (!searchEx.ellipsis) throw new Error('testEllipsis failure');
-  if (!lispEquals(searchEx.toLisp(), bigLisp)) throw new Error('testEllipsis failure');
-  searchEx.ellipsis = false;
-  if (searchEx.ellipsis) throw new Error('testEllipsis failure');
-  if (!lispEquals(searchEx.toLisp(), shortLisp)) throw new Error('testEllipsis failure');
-}
-
-function testCopy() {
-  const originalLisp = ['and', ['figure', 'do si do'], ['figure', 'swing']];
-  const original = SearchEx.fromLisp(originalLisp);
-  const copy = original.copy();
-  copy.subexpressions[0].move = 'circle';
-  if (!lispEquals(copy.toLisp(), ['and', ['figure', 'circle'], ['figure', 'swing']]))
-    throw new Error('testCopy failure modifying substructure');
-  if (!lispEquals(original.toLisp(), originalLisp))
-    throw new Error('testCopy failure - the original was modified');
-}
-
-test1();
-test2();
-testEllipsis1();
-testEllipsis2();
-testCopy();
-
-export { SearchEx };
+export { SearchEx, FigureSearchEx };

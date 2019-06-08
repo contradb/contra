@@ -11,6 +11,7 @@
 //
 
 import { throw_up } from './util';
+import { chooser } from './chooser';
 
 const __params = {};
 
