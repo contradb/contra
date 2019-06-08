@@ -75,6 +75,46 @@ const store = new Vuex.Store({
     searchEx: state => SearchEx.fromLisp(state.lisp),
     selectChooserNameOptions: state => selectChooserNameOptions(state.dialect),
   },
+  actions:
+  SearchEx.allProps().reduce((hash, prop) => {
+    if (prop !== 'op' && prop !== 'move') {
+      const propName = SearchEx.mutationNameForProp(prop);
+      hash[propName] = function({commit,state,getters}, payload) {
+        let searchEx = getters.searchEx.copy();
+        getSearchExAtPath(searchEx, payload.path)[prop] = payload[prop];
+        commit('setRootSearchEx', searchEx);
+      };
+    }
+    return hash;
+  }, {
+    setOp({commit, state, getters}, {path, op}) {
+      const rootSearchEx = getters.searchEx.copy();
+      const newSearchEx = getSearchExAtPath(rootSearchEx, path).castTo(op);
+      commit('setRootSearchEx', setSearchExAtPath(newSearchEx, rootSearchEx, path));
+    },
+    setMove({commit, state, getters}, payload) {
+      const rootSearchEx = getters.searchEx;
+      const searchEx = getSearchExAtPath(rootSearchEx, payload.path);
+      searchEx.move = payload.move; // destructive!
+      state.lisp = rootSearchEx.toLisp();
+    },
+    // setParameter(state, {path, index, value}) {
+    //   const rootSearchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
+    //   let searchEx = getSearchExAtPath(rootSearchEx, path);
+    //   searchEx.parameters[index] = value; // destructive!
+    //   state.lisp = setSearchExAtPath(searchEx, rootSearchEx, path).toLisp();
+    // },
+    // deleteSearchEx(state, {path}) {
+    //   const rootSearchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
+    //   if (path.length) {
+    //     let searchEx = rootSearchEx;
+    //     for (let i=0; i<path.length-1; i++)
+    //       searchEx = searchEx.subexpressions[path[i]];
+    //     searchEx.subexpressions.splice(path[path.length-1], 1);
+    //     state.lisp = rootSearchEx.toLisp();
+    //   } else
+    //     ; // can't delete root node.
+  }),
   mutations:
   // here's what a mutation looked like before it was made generic with the reduce:
   // setFormation(state, {path, formation}) {
@@ -119,7 +159,10 @@ const store = new Vuex.Store({
         state.lisp = rootSearchEx.toLisp();
       } else
         ; // can't delete root node.
-    }
+    },
+    setRootSearchEx(state, rootSearchEx) {
+      state.lisp = rootSearchEx.toLisp();
+    },
   })
 });
 

@@ -36,16 +36,6 @@
       <option>proper</option>
       <option>everything else</option>
     </select>
-    <table v-if="ellipsis" class='figure-filter-accordion'>
-      <tr v-for="(formalParameter, parameterIndex) in formalParameters(move)" class='chooser-row'>
-        <td class="chooser-label-text">
-          {{ parameterLabel(move, parameterIndex) }}
-        </td>
-        <td>
-          <SearchChooser :formal-parameter='formalParameter' :path='path' :parameterIndex='parameterIndex' :lisp='lisp'/>
-        </td>
-      </tr>
-    </table>
     <div class="btn-group">
       <button type="button" class="btn btn-default dropdown-toggle figure-filter-menu-hamburger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="glyphicon glyphicon-option-vertical" aria-label="expression actions"></span>
@@ -57,6 +47,16 @@
         <li v-if="deleteEnabled()"><a class='figure-filter-menu-delete'v-on:click="clickDelete()">X</a></li>
       </ul>
     </div>
+    <table v-if="ellipsis" class='figure-filter-accordion'>
+      <tr v-for="(formalParameter, parameterIndex) in formalParameters(move)" class='chooser-row'>
+        <td class="chooser-label-text">
+          {{ parameterLabel(move, parameterIndex) }}
+        </td>
+        <td>
+          <SearchChooser :formal-parameter='formalParameter' :path='path' :parameterIndex='parameterIndex' :lisp='lisp'/>
+        </td>
+      </tr>
+    </table>
     <ul v-if="searchEx.subexpressions.length">
       <li v-for="(subEx, index) in searchEx.subexpressions"><SearchExEditor v-bind:path='path.concat(index)' v-bind:lisp='subEx.toLisp()' /></li>
     </ul>
@@ -109,7 +109,7 @@ export default {
         return this.searchEx.op();
       },
       set: function(value) {
-        this.$store.commit('setOp', {path: this.path, op: value});
+        this.$store.dispatch('setOp', {path: this.path, op: value});
       }
     },
       ...SearchEx.allProps().reduce(function(acc, prop) {
@@ -118,9 +118,10 @@ export default {
           acc[prop] = {
             get: function() { return this.searchEx[prop]; },
             set: function(value) {
+              console.log(`dispatching ${mutationName}`);
               const h = {path: this.path};
               h[prop] = value;
-              this.$store.commit(mutationName, h);
+              this.$store.dispatch(mutationName, h);
             }
           };
         }
