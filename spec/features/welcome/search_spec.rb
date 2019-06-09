@@ -3,29 +3,56 @@
 require 'rails_helper'
 
 describe 'Search page', js: true do
-  describe 'updating state.lisp' do
-    it 'exercise formation filter' do
+  it 'exercise formation filter' do
+    visit '/s'
+    expect(page).to have_css('.figure-filter-op', count: 3)
+    all('.figure-filter-op')[1].select('formation')
+    select('proper')
+    expect(page).to have_text('state.lisp: [ "and", [ "formation", "proper" ], [ "progression" ] ]')
+  end
+
+  describe 'casts' do
+    it "cast from 'and' to 'or'" do
       visit '/s'
-      page.assert_selector('.figure-filter-op', count: 3)
-      all('.figure-filter-op')[1].select('formation')
-      select('proper')
-      expect(page).to have_text('state.lisp: [ "and", [ "formation", "proper" ], [ "progression" ] ]')
+      expect(page).to have_css('.figure-filter-op', count: 3)
+      first('.figure-filter-op').select('or')
+      expect(page).to have_text('state.lisp: [ "or", [ "figure", "*" ], [ "progression" ] ]')
     end
 
-    describe 'casts' do
-      it "cast from 'and' to 'or'" do
-        visit '/s'
-        page.assert_selector('.figure-filter-op', count: 3)
-        first('.figure-filter-op').select('or')
-        expect(page).to have_text('state.lisp: [ "or", [ "figure", "*" ], [ "progression" ] ]')
-      end
+    it "cast to 'not'" do
+      visit '/s'
+      expect(page).to have_css('.figure-filter-op', count: 3)
+      first('.figure-filter-op').select('not')
+      expect(page).to have_text('state.lisp: [ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]')
+      expect(page).to have_css('.figure-filter-op', count: 4)
+    end
+  end
 
-      it "cast to 'not'" do
-        visit '/s'
-        page.assert_selector('.figure-filter-op', count: 3)
-        first('.figure-filter-op').select('not')
-        expect(page).to have_text('state.lisp: [ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]')
-      end
+  describe 'deletion' do
+    it "works" do
+      visit '/s'
+      expect(page).to have_css('.figure-filter-op', count: 3)
+      all('.figure-filter-menu-hamburger')[-1].click
+      find('a.figure-filter-menu-delete').click
+      expect(page).to have_text('[ "and", [ "figure", "*" ] ]')
+    end
+
+    it "menu item isn't visible for the root node" do
+      visit '/s'
+      expect(page).to have_css('.figure-filter-op', count: 3)
+      first('.figure-filter-menu-hamburger').click
+      expect(page).to_not have_css('.figure-filter-menu-delete')
+    end
+
+    it "menu item isn't visible for a subexpression that's required" do
+      visit '/s'
+      expect(page).to have_css('.figure-filter-op', count: 3)
+      first('.figure-filter-op').select('not')
+      expect(page).to have_css('.figure-filter-op', count: 4)
+      expect(page).to have_text('state.lisp: [ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]')
+      all('.figure-filter-menu-hamburger')[1].click
+      expect(page).to have_css('.figure-filter-menu')
+      expect(page).to_not have_css('.figure-filter-menu-delete')
     end
   end
 
@@ -38,7 +65,7 @@ describe 'Search page', js: true do
       dances.each {|dance|
         expect(page).to have_link(dance.title, href: dance_path(dance))
       }
-      page.assert_selector('.figure-filter-op', count: 3)
+      expect(page).to have_css('.figure-filter-op', count: 3)
       all('.figure-filter-op')[1].select('formation')
       select('Becket *')
       dances.each do |dance|
@@ -67,7 +94,7 @@ describe 'Search page', js: true do
     it '& filter' do
       dances
       visit '/s'
-      page.assert_selector('.figure-filter-op', count: 3)
+      expect(page).to have_css('.figure-filter-op', count: 3)
       first('.figure-filter-op').select('&')
       select('chain')
       expect(page).to have_text('state.lisp: [ "&", [ "figure", "chain" ], [ "progression" ] ]')
@@ -109,10 +136,10 @@ describe 'Search page', js: true do
         expect(page).to_not have_content('Call Me')
         expect(page).to have_content("You Can't Get There From Here")
       end
-
-      def open_ellipsis
-        find('.toggle-off').click
-      end
     end
+  end
+
+  def open_ellipsis
+    find('.toggle-off').click
   end
 end

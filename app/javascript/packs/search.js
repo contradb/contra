@@ -75,42 +75,54 @@ const store = new Vuex.Store({
     searchEx: state => SearchEx.fromLisp(state.lisp),
     selectChooserNameOptions: state => selectChooserNameOptions(state.dialect),
   },
-  mutations:
-  // here's what a mutation looked like before it was made generic with the reduce:
-  // setFormation(state, {path, formation}) {
-  //   const searchEx = SearchEx.fromLisp(state.lisp);
-  //   getSearchExAtPath(searchEx, path).formation = formation; // destructive!
-  //   state.lisp = searchEx.toLisp();
-  // }
+  actions:
   SearchEx.allProps().reduce((hash, prop) => {
     if (prop !== 'op' && prop !== 'move') {
-      hash[SearchEx.mutationNameForProp(prop)] = function(state, payload) {
-        const searchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
-        getSearchExAtPath(searchEx, payload.path)[prop] = payload[prop]; // destructive!
-        state.lisp = searchEx.toLisp();
+      const propName = SearchEx.mutationNameForProp(prop);
+      hash[propName] = function({commit,state,getters}, payload) {
+        let searchEx = getters.searchEx.copy();
+        getSearchExAtPath(searchEx, payload.path)[prop] = payload[prop];
+        commit('setRootSearchEx', searchEx);
       };
     }
     return hash;
   }, {
-    setOp(state, {path, op}) {
-      const rootSearchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
+    setOp({commit, state, getters}, {path, op}) {
+      const rootSearchEx = getters.searchEx.copy();
       const newSearchEx = getSearchExAtPath(rootSearchEx, path).castTo(op);
-      state.lisp = setSearchExAtPath(newSearchEx, rootSearchEx, path).toLisp();
+      commit('setRootSearchEx', setSearchExAtPath(newSearchEx, rootSearchEx, path));
     },
-    setMove(state, payload) {
-      const rootSearchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
+    setMove({commit, state, getters}, payload) {
+      const rootSearchEx = getters.searchEx;
       const searchEx = getSearchExAtPath(rootSearchEx, payload.path);
       searchEx.move = payload.move; // destructive!
-      state.lisp = rootSearchEx.toLisp();
+      commit('setRootSearchEx', rootSearchEx); // should I be calling some other, more fine-grained mutation?
     },
-    setParameter(state, {path, index, value}) {
-      const rootSearchEx = SearchEx.fromLisp(state.lisp); // wish had getter access
+    setParameter({commit, state, getters}, {path, index, value}) {
+      const rootSearchEx = getters.searchEx;
       let searchEx = getSearchExAtPath(rootSearchEx, path);
       searchEx.parameters[index] = value; // destructive!
-      state.lisp = setSearchExAtPath(searchEx, rootSearchEx, path).toLisp();
+      commit('setRootSearchEx', rootSearchEx); // should I be calling some other, more fine-grained mutation?
+    },
+    deleteSearchEx({commit, state, getters}, {path}) {
+      const rootSearchEx = getters.searchEx;
+      if (path.length) {
+        let searchEx = rootSearchEx;
+        for (let i=0; i<path.length-1; i++)
+          searchEx = searchEx.subexpressions[path[i]];
+        searchEx.subexpressions.splice(path[path.length-1], 1);
+        commit('setRootSearchEx', rootSearchEx); // should I be calling some other, more fine-grained mutation?
+      } else {
+        // silently fail to delete root node. It shouldn't be an option anyway.
+      }
+    }
+  }),
+  mutations:
+  {
+    setRootSearchEx(state, rootSearchEx) {
+      state.lisp = rootSearchEx.toLisp();
     }
   }
-  )
 });
 
 function getSearchExAtPath(rootSearchEx, path) {

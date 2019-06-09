@@ -36,6 +36,17 @@
       <option>proper</option>
       <option>everything else</option>
     </select>
+    <div class="btn-group">
+      <button type="button" class="btn btn-default dropdown-toggle figure-filter-menu-hamburger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="glyphicon glyphicon-option-vertical" aria-label="expression actions"></span>
+      </button>
+      <ul class="dropdown-menu figure-filter-menu">
+        <li><a href="#">Action</a></li>
+        <li><a href="#">Another action</a></li>
+        <li><a href="#">Something else here</a></li>
+        <li v-if="deleteEnabled()"><a class='figure-filter-menu-delete'v-on:click="clickDelete()">X</a></li>
+      </ul>
+    </div>
     <table v-if="ellipsis" class='figure-filter-accordion'>
       <tr v-for="(formalParameter, parameterIndex) in formalParameters(move)" class='chooser-row'>
         <td class="chooser-label-text">
@@ -80,6 +91,16 @@ export default {
     searchEx: function() {
       return SearchEx.fromLisp(this.lisp);
     },
+    parentSearchEx: function() {
+      if (0 === this.path.length)
+        return null;
+      else {
+        let ancestor = this.$store.getters.searchEx;
+        for (let i=0; i<this.path.length-1; i++)
+          ancestor = ancestor.subexpressions[this.path[i]];
+        return ancestor;
+      }
+    },
     moveMenu: function() {
       return [{term: '*', substitution: 'any figure'}].concat(LibFigure.moveTermsAndSubstitutionsForSelectMenu(this.$store.state.dialect));
     },
@@ -88,7 +109,7 @@ export default {
         return this.searchEx.op();
       },
       set: function(value) {
-        this.$store.commit('setOp', {path: this.path, op: value});
+        this.$store.dispatch('setOp', {path: this.path, op: value});
       }
     },
       ...SearchEx.allProps().reduce(function(acc, prop) {
@@ -99,7 +120,7 @@ export default {
             set: function(value) {
               const h = {path: this.path};
               h[prop] = value;
-              this.$store.commit(mutationName, h);
+              this.$store.dispatch(mutationName, h);
             }
           };
         }
@@ -108,7 +129,13 @@ export default {
   },
   methods: {
     formalParameters: LibFigure.formalParameters,
-    parameterLabel: LibFigure.parameterLabel
+    parameterLabel: LibFigure.parameterLabel,
+    clickDelete: function() {
+      this.$store.dispatch('deleteSearchEx', {path: this.path});
+    },
+    deleteEnabled: function() {
+      return this.path.length && this.parentSearchEx.subexpressions.length > this.parentSearchEx.minSubexpressions();
+    }
   },
   components: {
     BootstrapToggle,

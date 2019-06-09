@@ -50,7 +50,7 @@ export default {
         return this.lisp[this.parameterIndex+2]; // knows an awful lot about lisp format. :(
       },
       set: function(value) {
-        this.$store.commit('setParameter', {path: this.path, index: this.parameterIndex, value: value});
+        this.$store.dispatch('setParameter', {path: this.path, index: this.parameterIndex, value: value});
       }
     },
     move: function() {return this.lisp[1];},

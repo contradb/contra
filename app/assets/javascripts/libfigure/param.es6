@@ -11,6 +11,7 @@
 /***/ // figures have a subject telling who's acted on by the figure.
 /***/ //
 /***/ // strip_import_clumsily: import { throw_up } from './util';
+/***/ // strip_import_clumsily: import { chooser } from './chooser';
 /***/ 
 /***/ const __params = {};
 /***/ 
