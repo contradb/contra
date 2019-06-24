@@ -1,10 +1,6 @@
 // run with `yarn test`
 import { SearchEx, FigureSearchEx } from 'search_ex.js';
 
-function lispEquals(lisp1, lisp2) {
-  return JSON.stringify(lisp1) === JSON.stringify(lisp2);
-}
-
 describe('x = toLisp of fromLisp of x', () => {
   [['figure', 'do si do'],
    ['figure', 'swing', 'partners', '*', 8],
@@ -20,7 +16,7 @@ describe('x = toLisp of fromLisp of x', () => {
    ['count', ['progression'], '>', 0]
   ].forEach(function(lisp, i) {
     test(JSON.stringify(lisp), () =>
-         expect(lispEquals(lisp, SearchEx.fromLisp(lisp).toLisp())).toEqual(true)
+         expect(SearchEx.fromLisp(lisp).toLisp()).toEqual(lisp)
         );
   });
 });
@@ -51,7 +47,7 @@ describe('cast', () => {
     const fromEx = SearchEx.fromLisp(from);
     const got = fromEx.castTo(op).toLisp();
     test(`${fromEx}.castTo('${op}') ≈> ${JSON.stringify(want)}`, () => {
-      expect(lispEquals(want, got)).toEqual(true);
+      expect(got).toEqual(want);
     });
   });
 });
@@ -65,14 +61,14 @@ describe('ellipsis', () => {
     const searchEx = new FigureSearchEx({move: 'swing', parameters: ['*', '*', 8]});
     const bigLisp = ['figure', 'swing', '*', '*', 8];
     const shortLisp = ['figure', 'swing'];
-    expect(lispEquals(searchEx.toLisp(), bigLisp)).toEqual(true);
+    expect(searchEx.toLisp()).toEqual(bigLisp);
     expect(searchEx.ellipsis).toEqual(true);
     searchEx.ellipsis = false;
     expect(searchEx.ellipsis).toEqual(false);
-    expect(lispEquals(searchEx.toLisp(), shortLisp)).toEqual(true);
+    expect(searchEx.toLisp()).toEqual(shortLisp);
     searchEx.ellipsis = true;
     expect(searchEx.ellipsis).toEqual(true);
-    expect(lispEquals(searchEx.toLisp(), bigLisp)).toEqual(true);
+    expect(searchEx.toLisp()).toEqual(bigLisp);
   });
 
   test('without parameters left off', () => {
@@ -80,13 +76,13 @@ describe('ellipsis', () => {
     const bigLisp = ['figure', 'swing', '*', '*', '*'];
     const shortLisp = ['figure', 'swing'];
     expect(searchEx.ellipsis).toEqual(false);
-    expect(lispEquals(searchEx.toLisp(), shortLisp)).toEqual(true);
+    expect(searchEx.toLisp()).toEqual(shortLisp);
     searchEx.ellipsis = true;
     expect(searchEx.ellipsis).toEqual(true);
-    expect(lispEquals(searchEx.toLisp(), bigLisp)).toEqual(true);
+    expect(searchEx.toLisp()).toEqual(bigLisp);
     searchEx.ellipsis = false;
     expect(searchEx.ellipsis).toEqual(false);
-    expect(lispEquals(searchEx.toLisp(), shortLisp)).toEqual(true);
+    expect(searchEx.toLisp()).toEqual(shortLisp);
   });
 });
 test('copy', () => {
@@ -94,6 +90,6 @@ test('copy', () => {
   const original = SearchEx.fromLisp(originalLisp);
   const copy = original.copy();
   copy.subexpressions[0].move = 'circle';
-  expect(lispEquals(copy.toLisp(), ['and', ['figure', 'circle'], ['figure', 'swing']])).toEqual(true);
-  expect(lispEquals(original.toLisp(), originalLisp)).toEqual(true);
+  expect(copy.toLisp()).toEqual(['and', ['figure', 'circle'], ['figure', 'swing']]);
+  expect(original.toLisp()).toEqual(originalLisp);
 });
