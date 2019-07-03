@@ -1,5 +1,5 @@
 // run with `yarn test`
-import { SearchEx, FigureSearchEx } from 'search_ex.js';
+import { SearchEx, FigureSearchEx, camelToKebabCase } from 'search_ex.js';
 
 describe('x = toLisp of fromLisp of x', () => {
   [['figure', 'do si do'],
@@ -13,7 +13,9 @@ describe('x = toLisp of fromLisp of x', () => {
    ['no', ['progression']],
    ['not', ['figure', 'do si do']],
    ['all', ['figure', 'do si do']],
-   ['count', ['progression'], '>', 0]
+   ['count', ['progression'], '>', 0],
+   ['compare', 6, '<', 8],
+   ['compare', 6, '<', ['figure-count', ['figure', 'do si do']]]
   ].forEach(function(lisp, i) {
     test(JSON.stringify(lisp), () =>
          expect(SearchEx.fromLisp(lisp).toLisp()).toEqual(lisp)
@@ -52,10 +54,6 @@ describe('cast', () => {
   });
 });
 
-test('casts', () => {
-  ;
-})
-
 describe('ellipsis', () => {
   test('with parameters specified', () => {
     const searchEx = new FigureSearchEx({move: 'swing', parameters: ['*', '*', 8]});
@@ -85,6 +83,7 @@ describe('ellipsis', () => {
     expect(searchEx.toLisp()).toEqual(shortLisp);
   });
 });
+
 test('copy', () => {
   const originalLisp = ['and', ['figure', 'do si do'], ['figure', 'swing']];
   const original = SearchEx.fromLisp(originalLisp);
@@ -92,4 +91,16 @@ test('copy', () => {
   copy.subexpressions[0].move = 'circle';
   expect(copy.toLisp()).toEqual(['and', ['figure', 'circle'], ['figure', 'swing']]);
   expect(original.toLisp()).toEqual(originalLisp);
+});
+
+describe('camelToKebabCase', () => {
+  test('WorksForThis', () => {
+    expect(camelToKebabCase('BeltAndSuspenders')).toEqual('belt-and-suspenders');
+  });
+  test('worksForThis', () => {
+    expect(camelToKebabCase('beltAndSuspenders')).toEqual('belt-and-suspenders');
+  });
+  test('null string', () => {
+    expect(camelToKebabCase('')).toEqual('');
+  });
 });

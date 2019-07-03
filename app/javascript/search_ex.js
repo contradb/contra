@@ -19,13 +19,17 @@ class  SearchEx {
     return constructorNameToOp[this.constructor.name2];
   }
   static fromLisp(lisp) {
-    const constructor = opToConstructor[lisp[0]];
-    if (!constructor) {
-      throw new Error("lisp doesn't appear to start with an op: "+JSON.stringify(lisp));
-    } else if (!constructor.fromLispHelper) {
-      throw new Error("must go implement fromLispHelper for some superclass of '" + lisp[0] + "'");
+    if (Number.isInteger(lisp)) {
+      return new ConstantNumericEx({number: lisp});
     } else {
-      return constructor.fromLispHelper(constructor, lisp);
+      const constructor = opToConstructor[lisp[0]];
+      if (!constructor) {
+        throw new Error("lisp doesn't appear to start with an op " + JSON.stringify(lisp[0]) +" in "+JSON.stringify(lisp));
+      } else if (!constructor.fromLispHelper) {
+        throw new Error("must go implement fromLispHelper for some superclass of '" + lisp[0] + "'");
+      } else {
+        return constructor.fromLispHelper(constructor, lisp);
+      }
     }
   }
   castTo(op) {
@@ -62,7 +66,7 @@ class  SearchEx {
 };
 
 function registerSearchEx(className, ...props) {
-  const op = className.replace(/SearchEx$/, '').replace(/FigurewiseAnd/g, '&').toLowerCase();
+  const op = camelToKebabCase(className.replace(/SearchEx$/, '').replace(/FigurewiseAnd/g, '&'));
   constructorNameToOp[className] = op;
   const constructor = eval(className);
   opToConstructor[op] = constructor;
@@ -75,6 +79,22 @@ function registerSearchEx(className, ...props) {
       allProps.push(prop);
     }
   }
+}
+
+function camelToKebabCase(s) {
+  if (s.length === 0) {
+    return '';
+  }
+  let acc = [s[0].toLowerCase()];
+  for (let i=1; i<s.length; i++) {
+    let ss = s[i];
+    let sl = ss.toLowerCase();
+    if (ss !== sl) {
+      acc.push('-');
+    }
+    acc.push(sl);
+  }
+  return acc.join('');
 }
 
 const opToConstructor = {};
@@ -227,6 +247,7 @@ class OrSearchEx extends SimpleBinaryishSearchEx {}; registerSearchEx('OrSearchE
 class FigurewiseAndSearchEx extends SimpleBinaryishSearchEx {}; registerSearchEx('FigurewiseAndSearchEx');
 class ThenSearchEx extends SimpleBinaryishSearchEx {}; registerSearchEx('ThenSearchEx');
 
+// count matching figures
 class CountSearchEx extends unaryMixin(SearchEx) {
   constructor(args) {
     super(args);
@@ -248,4 +269,46 @@ class CountSearchEx extends unaryMixin(SearchEx) {
 }
 registerSearchEx('CountSearchEx', 'comparison', 'number');
 
-export { SearchEx, FigureSearchEx };
+let NumericMixin = Base => class extends Base {
+};
+
+class ConstantNumericEx extends NumericMixin(SearchEx) {
+  constructor(args) {
+    super(args);
+    const {number} = args;
+    this.number = number || errorMissingParameter('number');
+  }
+  toLisp() {
+    return this.number;
+  }
+}
+
+// class AdjacentFiguresNumericEx extends NumericEx and SimpleUnarySearchEx {
+
+
+class FigureCountSearchEx extends NumericMixin(SimpleUnarySearchEx) {};
+registerSearchEx('FigureCountSearchEx');
+class AdjacentFigureCountSearchEx extends NumericMixin(SimpleUnarySearchEx) {};
+
+class CompareSearchEx extends SearchEx {
+  constructor(args) {
+    super(args);
+    const {comparison, left, right} = args;
+    this.comparison = comparison || errorMissingParameter('comparison');
+    this.left = left || errorMissingParameter('left');
+    this.right = right || errorMissingParameter('right');
+  }
+  toLisp() {
+    return [this.op(), this.left.toLisp(), this.comparison, this.right.toLisp()];
+  }
+  static fromLispHelper(constructor, lisp) {
+    const [_op, left, comparison, right] = lisp;
+    return new constructor({left: SearchEx.fromLisp(left), comparison: comparison, right: SearchEx.fromLisp(right)});
+  }
+  static castConstructorDefaults(searchEx) {
+    return {left: 0, comparison: '>', right: 0, ...super.castConstructorDefaults(searchEx)};
+  }
+}
+registerSearchEx('CompareSearchEx', 'left', 'comparison', 'right');
+
+export { SearchEx, FigureSearchEx, camelToKebabCase };
