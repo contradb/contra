@@ -15,7 +15,8 @@ describe('x = toLisp of fromLisp of x', () => {
    ['all', ['figure', 'do si do']],
    ['count', ['progression'], '>', 0],
    ['compare', 6, '<', 8],
-   ['compare', 6, '<', ['figure-count', ['figure', 'do si do']]]
+   ['compare', 6, '<', ['figure-count', ['figure', 'do si do']]],
+   ['compare', 6, '<', ['adjacent-figure-count', ['figure', 'do si do']]],
   ].forEach(function(lisp, i) {
     test(JSON.stringify(lisp), () =>
          expect(SearchEx.fromLisp(lisp).toLisp()).toEqual(lisp)

@@ -1,7 +1,7 @@
 import LibFigure from 'libfigure/libfigure.js';
 
 // search node class heirarchy goes here
-class  SearchEx {
+class SearchEx {
   constructor({subexpressions = []} = {}) {
     this.subexpressions = subexpressions;
   }
@@ -19,17 +19,13 @@ class  SearchEx {
     return constructorNameToOp[this.constructor.name2];
   }
   static fromLisp(lisp) {
-    if (Number.isInteger(lisp)) {
-      return new ConstantNumericEx({number: lisp});
+    const constructor = opToConstructor[lisp[0]];
+    if (!constructor) {
+      throw new Error("lisp doesn't appear to start with an op " + JSON.stringify(lisp[0]) +" in "+JSON.stringify(lisp));
+    } else if (!constructor.fromLispHelper) {
+      throw new Error("must go implement fromLispHelper for some superclass of '" + lisp[0] + "'");
     } else {
-      const constructor = opToConstructor[lisp[0]];
-      if (!constructor) {
-        throw new Error("lisp doesn't appear to start with an op " + JSON.stringify(lisp[0]) +" in "+JSON.stringify(lisp));
-      } else if (!constructor.fromLispHelper) {
-        throw new Error("must go implement fromLispHelper for some superclass of '" + lisp[0] + "'");
-      } else {
-        return constructor.fromLispHelper(constructor, lisp);
-      }
+      return constructor.fromLispHelper(constructor, lisp);
     }
   }
   castTo(op) {
@@ -67,13 +63,22 @@ class  SearchEx {
 
 function registerSearchEx(className, ...props) {
   const op = camelToKebabCase(className.replace(/SearchEx$/, '').replace(/FigurewiseAnd/g, '&'));
+  return registerSearchEx1(className, op, props, [opToConstructor]);
+}
+
+function registerNumericEx({className, opName, props=[]}) {
+  let opToConstructorTables = [numericOpToConstructor];
+  return registerSearchEx1(className, opName, props, opToConstructorTables);
+}
+
+function registerSearchEx1(className, op, props, opToConstructorTables) {
   constructorNameToOp[className] = op;
   const constructor = eval(className);
-  opToConstructor[op] = constructor;
-  constructor.name2 = className;
-  if (!opToConstructor[op]) {
+  if (!constructor)
     throw new Error('class name ' + className + ' not found');
-  }
+  for (let i=0; i < opToConstructorTables.length; i++)
+    opToConstructorTables[i][op] = constructor;
+  constructor.name2 = className;
   for (let prop of props) {
     if (!allProps.includes(prop)) {
       allProps.push(prop);
@@ -98,6 +103,7 @@ function camelToKebabCase(s) {
 }
 
 const opToConstructor = {};
+const numericOpToConstructor = {};
 const constructorNameToOp = {};
 const allProps = [];
 
@@ -270,9 +276,28 @@ class CountSearchEx extends unaryMixin(SearchEx) {
 registerSearchEx('CountSearchEx', 'comparison', 'number');
 
 let NumericMixin = Base => class extends Base {
+  static fromNumericLisp(lisp) {
+    if (Number.isInteger(lisp)) {
+      return new ConstantNumericEx({number: lisp});
+    } else {
+      const constructor = numericOpToConstructor[lisp[0]];
+      if (!constructor) {
+        throw new Error("lisp doesn't appear to start with a numeric op " + JSON.stringify(lisp[0]) +" in "+JSON.stringify(lisp));
+      } else if (!constructor.fromNumericLispHelper) {
+        throw new Error("must go implement fromNumericLispHelper for some superclass of '" + lisp[0] + "'");
+      } else {
+        return constructor.fromNumericLispHelper(constructor, lisp);
+      }
+    }
+  }
 };
 
-class ConstantNumericEx extends NumericMixin(SearchEx) {
+class UrNumericEx {}; // don't use except for NumericEx ancestor because of object system plubming I don't understand. 
+
+class NumericEx extends NumericMixin(UrNumericEx) {
+};
+
+class ConstantNumericEx extends NumericEx {
   constructor(args) {
     super(args);
     const {number} = args;
@@ -286,9 +311,16 @@ class ConstantNumericEx extends NumericMixin(SearchEx) {
 // class AdjacentFiguresNumericEx extends NumericEx and SimpleUnarySearchEx {
 
 
-class FigureCountSearchEx extends NumericMixin(SimpleUnarySearchEx) {};
-registerSearchEx('FigureCountSearchEx');
-class AdjacentFigureCountSearchEx extends NumericMixin(SimpleUnarySearchEx) {};
+class SimpleNumericUnarySearchEx extends NumericMixin(SimpleUnarySearchEx) {
+  static fromNumericLispHelper(constructor, lisp) {
+    return this.fromLispHelper(constructor, lisp);
+  }
+}
+
+class FigureCountSearchEx extends SimpleNumericUnarySearchEx {};
+registerNumericEx({className: 'FigureCountSearchEx', opName: 'figure-count'});
+class AdjacentFigureCountSearchEx extends SimpleNumericUnarySearchEx {};
+registerNumericEx({className: 'AdjacentFigureCountSearchEx', opName: 'adjacent-figure-count'});
 
 class CompareSearchEx extends SearchEx {
   constructor(args) {
@@ -303,7 +335,7 @@ class CompareSearchEx extends SearchEx {
   }
   static fromLispHelper(constructor, lisp) {
     const [_op, left, comparison, right] = lisp;
-    return new constructor({left: SearchEx.fromLisp(left), comparison: comparison, right: SearchEx.fromLisp(right)});
+    return new constructor({left: NumericEx.fromNumericLisp(left), comparison: comparison, right: NumericEx.fromNumericLisp(right)});
   }
   static castConstructorDefaults(searchEx) {
     return {left: 0, comparison: '>', right: 0, ...super.castConstructorDefaults(searchEx)};
