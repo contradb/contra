@@ -599,7 +599,11 @@ function giveAndTakeChange(figure,index) {
 
 function giveAndTakeGoodBeats(figure) {
   var [who, whom, give, beats] = figure.parameter_values;
-  return beats === (give ? 8 : 4);
+  if (give) {
+    return 4 <= beats && beats <= 8;
+  } else {
+    return 2 <= beats && beats <= 4;
+  }
 }
 
 function giveAndTakeWords(move, pvs, dialect) {
