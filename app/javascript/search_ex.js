@@ -62,7 +62,7 @@ class  SearchEx {
 };
 
 function registerSearchEx(className, ...props) {
-  const op = className.replace(/SearchEx$/, '').replace(/FigurewiseAnd/g, '&').toLowerCase();
+  const op = className.replace(/SearchEx$/, '').replace(/NumericEx$/, '').replace(/FigurewiseAnd/g, '&').toLowerCase();
   constructorNameToOp[className] = op;
   const constructor = eval(className);
   opToConstructor[op] = constructor;
@@ -248,4 +248,57 @@ class CountSearchEx extends unaryMixin(SearchEx) {
 }
 registerSearchEx('CountSearchEx', 'comparison', 'number');
 
-export { SearchEx, FigureSearchEx };
+class CompareSearchEx extends SearchEx {
+  constructor(args) {
+    super(args);
+    const {comparison} = args;
+    this.comparison = comparison || errorMissingParameter('comparison');
+    if (this.subexpressions.length !== 2) {
+      throw new Error(`new CompareSearchEx wants exactly 2 subexpressions, but got ${JSON.stringify(this.subexpressions)}`);
+    }
+  }
+  get left() { return this.subexpressions[0]; }
+  get right() { return this.subexpressions[1]; }
+  toLisp() {
+    console.log(this.subexpressions);
+    return [this.op(), this.left.toLisp(), this.comparison, this.right.toLisp()];
+  }
+  static fromLispHelper(constructor, lisp) {
+    const [_op, left, comparison, right] = lisp;
+    return new constructor({comparison: comparison,
+                            subexpressions: [SearchEx.fromLisp(left),
+                                             SearchEx.fromLisp(right)]});
+  }
+  static castFrom(searchEx) {
+    return new this({comparison: searchEx.comparison || '>',
+                     subexpressions: [new ConstantNumericEx({int: 0}),
+                                      new ConstantNumericEx({int: 0})]}); // TODO
+  }
+  static minSubexpressions() { return 2; }
+  static maxSubexpressions() { return 2; }
+  static minUsefulSubexpressions() { return 2; }
+}
+registerSearchEx('CompareSearchEx', 'comparison');
+
+
+class NumericEx extends SearchEx {};
+
+class ConstantNumericEx extends NumericEx {
+  constructor(args) {
+    super(args);
+    let int = args.int;
+    if (!int && 0!==int) errorMissingParameter('int');
+    this.int = int;
+  }
+  static fromLispHelper(constructor, lisp) {
+    return new constructor({int: lisp[1]});
+  }
+  toLisp() {
+    return [this.op(), this.int];
+  }
+  static minSubexpressions() { return 0; }
+  static maxSubexpressions() { return 0; }
+  static minUsefulSubexpressions() { return 0; }
+};
+registerSearchEx('ConstantNumericEx', 'int');
+export { SearchEx, NumericEx, FigureSearchEx };
