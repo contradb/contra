@@ -285,7 +285,10 @@ class DanceDatatable < AjaxDatatablesRails::Base
   def self.eval_numeric_ex(nex, dance)
     case nex.first
     when 'constant'
-      nex.second
+      Integer(nex.second)           # Hm, is THIS the place to parse this string?
+    when 'tag'
+      tag_id = Tag.where(name: nex.second).pluck(:id).first
+      tag_id ? Dut.where(tag_id: tag_id, dance_id: dance.id).count : 0
     else
       raise "I do not know how to evaluate #{nex.first} expressions."
     end

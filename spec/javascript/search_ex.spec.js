@@ -15,6 +15,9 @@ describe('x = toLisp of fromLisp of x', () => {
    ['all', ['figure', 'do si do']],
    ['count', ['progression'], '>', 0],
    ['compare', ['constant', 4], '<', ['constant', 6]],
+   ['constant', 5],
+   ['constant', 0],
+   ['tag', 'verified'],
   ].forEach(function(lisp, i) {
     test(JSON.stringify(lisp), () =>
          expect(SearchEx.fromLisp(lisp).toLisp()).toEqual(lisp)
@@ -44,7 +47,9 @@ describe('cast', () => {
    {op: 'count', from: ['and'], want: ['count', ['and'], '>', 0]},
    {op: 'count', from: ['no', ['figure', '*']], want: ['count', ['figure', '*'], '>', 0]},
    {op: 'count', from: ['or', ['figure', 'swing'], ['figure', 'chain']], want: ['count', ['or', ['figure', 'swing'], ['figure', 'chain']], '>', 0]},
-   {op: 'compare', from: ['progression'], want: ['compare', ['constant', 0], '>', ['constant', 0]]}
+   {op: 'compare', from: ['progression'], want: ['compare', ['constant', 0], '>', ['constant', 0]]},
+   {op: 'constant', from: ['tag', 'verified'], want: ['constant', 0]},
+   {op: 'tag', from: ['constant', 7], want: ['tag', 'verified']},
   ].forEach(function({from, op, want}, i) {
     const fromEx = SearchEx.fromLisp(from);
     const got = fromEx.castTo(op).toLisp();

@@ -91,6 +91,33 @@ describe 'Search page', js: true do
       expect(matches).to eq(1)
     end
 
+    it 'tag and compare filters' do
+      verified = FactoryGirl.create(:tag, :verified)
+      broken = FactoryGirl.create(:tag, :broken)
+      call_me = dances.find {|dance| dance.title == "Call Me"}
+      the_rendevouz = dances.find {|dance| dance.title == "The Rendevouz"}
+      FactoryGirl.create(:dut, tag: verified, dance: call_me)
+      FactoryGirl.create(:dut, tag: broken, dance: the_rendevouz)
+      visit '/s'
+      first('.figure-filter-op').select('compare')
+      find_all('.figure-filter-op', count: 3)[1].select('tag')
+      dances.each do |dance|
+        if dance.id == call_me.id
+          expect(page).to have_link(dance.title)
+        else
+          expect(page).to_not have_link(dance.title)
+        end
+      end
+      select 'broken'
+      dances.each do |dance|
+        if dance.id == the_rendevouz.id
+          expect(page).to have_link(dance.title)
+        else
+          expect(page).to_not have_link(dance.title)
+        end
+      end
+    end
+
     it '& filter' do
       dances
       visit '/s'

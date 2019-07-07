@@ -260,7 +260,6 @@ class CompareSearchEx extends SearchEx {
   get left() { return this.subexpressions[0]; }
   get right() { return this.subexpressions[1]; }
   toLisp() {
-    console.log(this.subexpressions);
     return [this.op(), this.left.toLisp(), this.comparison, this.right.toLisp()];
   }
   static fromLispHelper(constructor, lisp) {
@@ -296,9 +295,35 @@ class ConstantNumericEx extends NumericEx {
   toLisp() {
     return [this.op(), this.int];
   }
+  static castFrom(searchEx) {
+    return new this({int: 0});
+  }
   static minSubexpressions() { return 0; }
   static maxSubexpressions() { return 0; }
   static minUsefulSubexpressions() { return 0; }
 };
 registerSearchEx('ConstantNumericEx', 'int');
+
+class TagNumericEx extends NumericEx {
+  constructor(args) {
+    super(args);
+    let tag = args.tag;
+    if (!tag) errorMissingParameter('tag');
+    this.tag = tag;
+  }
+  static fromLispHelper(constructor, lisp) {
+    return new constructor({tag: lisp[1]});
+  }
+  toLisp() {
+    return [this.op(), this.tag];
+  }
+  static castFrom(searchEx) {
+    return new this({tag: 'verified'});
+  }
+  static minSubexpressions() { return 0; }
+  static maxSubexpressions() { return 0; }
+  static minUsefulSubexpressions() { return 0; }
+}
+registerSearchEx('TagNumericEx', 'tag');
+
 export { SearchEx, NumericEx, FigureSearchEx };

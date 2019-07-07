@@ -2,6 +2,7 @@
   <div class='figure-filter'>
     <select v-if='isNumeric' class='figure-filter-op form-control' v-model='op'>
       <option>constant</option>
+      <option>tag</option>
     </select>
     <select v-else class='figure-filter-op form-control' v-model='op'>
       <option>figure</option>
