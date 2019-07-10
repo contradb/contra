@@ -96,8 +96,8 @@ describe 'Search page', js: true do
       broken = FactoryGirl.create(:tag, :please_review)
       call_me = dances.find {|dance| dance.title == "Call Me"}
       the_rendevouz = dances.find {|dance| dance.title == "The Rendevouz"}
-      FactoryGirl.create(:dut, tag: verified, dance: call_me)
-      FactoryGirl.create(:dut, tag: broken, dance: the_rendevouz)
+      1.times { FactoryGirl.create(:dut, tag: verified, dance: call_me) }
+      2.times { FactoryGirl.create(:dut, tag: broken, dance: the_rendevouz) }
       visit '/s'
       first('.figure-filter-op').select('compare')
       find_all('.figure-filter-op', count: 3)[1].select('tag')
@@ -107,6 +107,10 @@ describe 'Search page', js: true do
         else
           expect(page).to_not have_link(dance.title)
         end
+      end
+      select '1'
+      dances.each do |dance|
+        expect(page).to_not have_link(dance.title)
       end
       select 'please review'
       dances.each do |dance|

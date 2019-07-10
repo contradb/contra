@@ -270,8 +270,8 @@ class CompareSearchEx extends SearchEx {
   }
   static castFrom(searchEx) {
     return new this({comparison: searchEx.comparison || '>',
-                     subexpressions: [new ConstantNumericEx({int: 0}),
-                                      new ConstantNumericEx({int: 0})]}); // TODO
+                     subexpressions: [new ConstantNumericEx({number: 0}),
+                                      new ConstantNumericEx({number: 0})]});
   }
   static minSubexpressions() { return 2; }
   static maxSubexpressions() { return 2; }
@@ -285,24 +285,24 @@ class NumericEx extends SearchEx {};
 class ConstantNumericEx extends NumericEx {
   constructor(args) {
     super(args);
-    let int = args.int;
-    if (!int && 0!==int) errorMissingParameter('int');
-    this.int = int;
+    let number = args.number;
+    if (!number && 0!==number) errorMissingParameter('number');
+    this.number = number;
   }
   static fromLispHelper(constructor, lisp) {
-    return new constructor({int: lisp[1]});
+    return new constructor({number: lisp[1]});
   }
   toLisp() {
-    return [this.op(), this.int];
+    return [this.op(), this.number];
   }
   static castFrom(searchEx) {
-    return new this({int: 0});
+    return new this({number: 0});
   }
   static minSubexpressions() { return 0; }
   static maxSubexpressions() { return 0; }
   static minUsefulSubexpressions() { return 0; }
 };
-registerSearchEx('ConstantNumericEx', 'int');
+registerSearchEx('ConstantNumericEx', 'number');
 
 class TagNumericEx extends NumericEx {
   constructor(args) {

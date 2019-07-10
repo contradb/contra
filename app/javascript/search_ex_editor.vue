@@ -37,7 +37,7 @@
     <span v-if="right !== undefined"><SearchExEditor v-bind:path='path.concat(1)' v-bind:lisp='right.toLisp()' /></span>
 
     <select v-if="number !== undefined" v-model="number" class="figure-filter-count-number form-control">
-      <option v-for="i in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]">{{ i }}</option>
+      <option v-for="i in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,18,20,22,24,26,28,30,32,40,48,56,64,80,96]">{{ i }}</option>
     </select>
 
     <select v-if="op==='tag'" v-model="tag" class="figure-filter-count-number form-control">
