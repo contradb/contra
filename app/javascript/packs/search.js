@@ -69,6 +69,7 @@ const store = new Vuex.Store({
   state: {
     lisp: ['and', ['figure', '*'], ['progression']],
     dialect: LibFigure.defaultDialect,
+    tagNames: [],
     radioChooserNameOptions: Object.freeze(radioChooserNameOptions),
   },
   getters: {
@@ -161,7 +162,13 @@ document.addEventListener('DOMContentLoaded', () => {
 ////////////////////////////////////////////////////////////////
 // init
 
-$(() => store.state.dialect = JSON.parse($('#dialect-json').text()));
+function initFromDom() {
+  store.state.dialect = JSON.parse($('#dialect-json').text());
+  store.state.tagNames = JSON.parse($('#tag-names-json').text());
+}
+
+$(initFromDom);
+
 /////////////////////////////////////////////////////////////////
 // stuff ripped from welcome.js
 

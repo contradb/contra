@@ -7,5 +7,6 @@ class WelcomeController < ApplicationController
 
   def search
     @dialect_json = dialect.to_json
+    @tag_names_json = Tag.all.pluck(:name)
   end
 end

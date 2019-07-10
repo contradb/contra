@@ -93,7 +93,7 @@ describe 'Search page', js: true do
 
     it 'tag and compare filters' do
       verified = FactoryGirl.create(:tag, :verified)
-      broken = FactoryGirl.create(:tag, :broken)
+      broken = FactoryGirl.create(:tag, :please_review)
       call_me = dances.find {|dance| dance.title == "Call Me"}
       the_rendevouz = dances.find {|dance| dance.title == "The Rendevouz"}
       FactoryGirl.create(:dut, tag: verified, dance: call_me)
@@ -108,7 +108,7 @@ describe 'Search page', js: true do
           expect(page).to_not have_link(dance.title)
         end
       end
-      select 'broken'
+      select 'please review'
       dances.each do |dance|
         if dance.id == the_rendevouz.id
           expect(page).to have_link(dance.title)

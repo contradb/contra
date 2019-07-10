@@ -39,6 +39,11 @@
     <select v-if="number !== undefined" v-model="number" class="figure-filter-count-number form-control">
       <option v-for="i in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]">{{ i }}</option>
     </select>
+
+    <select v-if="op==='tag'" v-model="tag" class="figure-filter-count-number form-control">
+      <option v-for="tagName in this.$store.state.tagNames">{{ tagName }}</option>
+    </select>
+
     <select v-if="formation !== undefined" v-model="formation" class='figure-filter-formation form-control'>
       <option>improper</option>
       <option>Becket *</option>
