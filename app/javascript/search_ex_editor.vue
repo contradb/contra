@@ -3,6 +3,7 @@
     <select v-if='isNumeric' class='figure-filter-op form-control' v-model='op'>
       <option>constant</option>
       <option>tag</option>
+      <option value='count-matches'>count matches</option>
     </select>
     <select v-else class='figure-filter-op form-control' v-model='op'>
       <option>figure</option>

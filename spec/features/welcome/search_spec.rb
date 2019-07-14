@@ -122,6 +122,23 @@ describe 'Search page', js: true do
       end
     end
 
+    it 'count-matches and compare filters' do
+      dances
+      visit '/s'
+      first('.figure-filter-op').select('compare')
+      find_all('.figure-filter-op', count: 3)[1].select('count matches')
+      select('≠')
+      select('7')
+      matches = 0
+      dances.each do |dance|
+        not_seven = dance.figures.length != 7
+        matches += 1 if not_seven
+        to_or_to_not = not_seven ? :to : :to_not
+        expect(page).send(to_or_to_not, have_link(dance.title, href: dance_path(dance)))
+      end
+      expect(matches).to eq(1)
+    end
+
     it '& filter' do
       dances
       visit '/s'

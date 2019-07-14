@@ -289,6 +289,10 @@ class DanceDatatable < AjaxDatatablesRails::Base
     when 'tag'
       tag_id = Tag.where(name: nex.second).pluck(:id).first
       tag_id ? Dut.where(tag_id: tag_id, dance_id: dance.id).count : 0
+    when 'count-matches'
+      subfilter = nex.second
+      matches = matching_figures(subfilter, dance)
+      matches ? matches.length : 0
     else
       raise "I do not know how to evaluate #{nex.first} expressions."
     end

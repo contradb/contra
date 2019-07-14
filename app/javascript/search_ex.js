@@ -62,7 +62,12 @@ class  SearchEx {
 };
 
 function registerSearchEx(className, ...props) {
-  const op = className.replace(/SearchEx$/, '').replace(/NumericEx$/, '').replace(/FigurewiseAnd/g, '&').toLowerCase();
+  var op = className;
+  op = op.replace(/SearchEx$/, '');
+  op = op.replace(/NumericEx$/, '');
+  op = op.replace(/FigurewiseAnd/g, '&');
+  op = op.replace(/CountMatches/, 'count-matches');
+  op = op.toLowerCase();
   constructorNameToOp[className] = op;
   const constructor = eval(className);
   opToConstructor[op] = constructor;
@@ -325,5 +330,18 @@ class TagNumericEx extends NumericEx {
   static minUsefulSubexpressions() { return 0; }
 }
 registerSearchEx('TagNumericEx', 'tag');
+
+class CountMatchesNumericEx extends unaryMixin(NumericEx) {
+  static fromLispHelper(constructor, lisp) {
+    return new constructor({subexpressions: [SearchEx.fromLisp(lisp[1])]});
+  }
+  toLisp() {
+    return [this.op(), this.subexpressions[0].toLisp()];
+  }
+  static castFrom(searchEx) {
+    return new this({subexpressions: [SearchEx.default()]});
+  }
+}
+registerSearchEx('CountMatchesNumericEx');
 
 export { SearchEx, NumericEx, FigureSearchEx };
