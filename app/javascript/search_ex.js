@@ -62,7 +62,12 @@ class  SearchEx {
 };
 
 function registerSearchEx(className, ...props) {
-  const op = className.replace(/SearchEx$/, '').replace(/FigurewiseAnd/g, '&').toLowerCase();
+  var op = className;
+  op = op.replace(/SearchEx$/, '');
+  op = op.replace(/NumericEx$/, '');
+  op = op.replace(/FigurewiseAnd/g, '&');
+  op = op.replace(/CountMatches/, 'count-matches');
+  op = op.toLowerCase();
   constructorNameToOp[className] = op;
   const constructor = eval(className);
   opToConstructor[op] = constructor;
@@ -248,4 +253,95 @@ class CountSearchEx extends unaryMixin(SearchEx) {
 }
 registerSearchEx('CountSearchEx', 'comparison', 'number');
 
-export { SearchEx, FigureSearchEx };
+class CompareSearchEx extends SearchEx {
+  constructor(args) {
+    super(args);
+    const {comparison} = args;
+    this.comparison = comparison || errorMissingParameter('comparison');
+    if (this.subexpressions.length !== 2) {
+      throw new Error(`new CompareSearchEx wants exactly 2 subexpressions, but got ${JSON.stringify(this.subexpressions)}`);
+    }
+  }
+  get left() { return this.subexpressions[0]; }
+  get right() { return this.subexpressions[1]; }
+  toLisp() {
+    return [this.op(), this.left.toLisp(), this.comparison, this.right.toLisp()];
+  }
+  static fromLispHelper(constructor, lisp) {
+    const [_op, left, comparison, right] = lisp;
+    return new constructor({comparison: comparison,
+                            subexpressions: [SearchEx.fromLisp(left),
+                                             SearchEx.fromLisp(right)]});
+  }
+  static castFrom(searchEx) {
+    return new this({comparison: searchEx.comparison || '>',
+                     subexpressions: [new ConstantNumericEx({number: 0}),
+                                      new ConstantNumericEx({number: 0})]});
+  }
+  static minSubexpressions() { return 2; }
+  static maxSubexpressions() { return 2; }
+  static minUsefulSubexpressions() { return 2; }
+}
+registerSearchEx('CompareSearchEx', 'comparison');
+
+
+class NumericEx extends SearchEx {};
+
+class ConstantNumericEx extends NumericEx {
+  constructor(args) {
+    super(args);
+    let number = args.number;
+    if (!number && 0!==number) errorMissingParameter('number');
+    this.number = number;
+  }
+  static fromLispHelper(constructor, lisp) {
+    return new constructor({number: lisp[1]});
+  }
+  toLisp() {
+    return [this.op(), this.number];
+  }
+  static castFrom(searchEx) {
+    return new this({number: 0});
+  }
+  static minSubexpressions() { return 0; }
+  static maxSubexpressions() { return 0; }
+  static minUsefulSubexpressions() { return 0; }
+};
+registerSearchEx('ConstantNumericEx', 'number');
+
+class TagNumericEx extends NumericEx {
+  constructor(args) {
+    super(args);
+    let tag = args.tag;
+    if (!tag) errorMissingParameter('tag');
+    this.tag = tag;
+  }
+  static fromLispHelper(constructor, lisp) {
+    return new constructor({tag: lisp[1]});
+  }
+  toLisp() {
+    return [this.op(), this.tag];
+  }
+  static castFrom(searchEx) {
+    return new this({tag: 'verified'});
+  }
+  static minSubexpressions() { return 0; }
+  static maxSubexpressions() { return 0; }
+  static minUsefulSubexpressions() { return 0; }
+}
+registerSearchEx('TagNumericEx', 'tag');
+
+class CountMatchesNumericEx extends unaryMixin(NumericEx) {
+  static fromLispHelper(constructor, lisp) {
+    return new constructor({subexpressions: [SearchEx.fromLisp(lisp[1])]});
+  }
+  toLisp() {
+    return [this.op(), this.subexpressions[0].toLisp()];
+  }
+  static castFrom(searchEx) {
+    return new this({subexpressions: [SearchEx.default()]});
+  }
+}
+registerSearchEx('CountMatchesNumericEx');
+
+export { SearchEx, NumericEx, FigureSearchEx };

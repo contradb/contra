@@ -255,14 +255,6 @@ module JSLibFigure
     context.eval(src, filename: pathname.to_s)
   end
 
-  def self.eval_with_tests_loaded(string_of_javascript)
-    unless @test_context
-      @test_context = self.new_context
-      context_load(@test_context, Rails.root.join('app/javascript/libfigure/test.js'))
-    end
-    @test_context.eval(string_of_javascript)
-  end
-
   def self.ensure_array_of_terminal(ary)
     case ary
     when Array

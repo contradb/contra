@@ -153,17 +153,33 @@ describe DanceDatatable do
       end
 
     end
+
+    describe 'compare' do
+      let (:all_titles) { dances.map(&:title) }
+
+      def filtered_titles(comparison, number)
+        DanceDatatable.send(:filter_dances, dances, ['compare', ['constant', 0], comparison, ['constant', number]]).map(&:title)
+      end
+
+      it "0 = 0" do
+        expect(filtered_titles('=', 0)).to eq(all_titles)
+      end
+
+      it "0 > 0" do
+        expect(filtered_titles('>', 0)).to eq([])
+      end
+    end
   end
 
-    it '.matching_figures_for_progression only works on figures with progressions' do
-      dance = FactoryGirl.create(:box_the_gnat_contra)
-      f = dance.figures
-      f[3]['progression'] = 1
-      dance.figures = f
-      nfigures = dance.figures.length
-      search_matches = DanceDatatable.matching_figures(['progression'], dance)
-      expect(search_matches).to eq(Set[SearchMatch.new(nfigures-1, nfigures),SearchMatch.new(3, nfigures)])
-    end
+  it '.matching_figures_for_progression only works on figures with progressions' do
+    dance = FactoryGirl.create(:box_the_gnat_contra)
+    f = dance.figures
+    f[3]['progression'] = 1
+    dance.figures = f
+    nfigures = dance.figures.length
+    search_matches = DanceDatatable.matching_figures(['progression'], dance)
+    expect(search_matches).to eq(Set[SearchMatch.new(nfigures-1, nfigures),SearchMatch.new(3, nfigures)])
+  end
 
   describe '.matching_figures_for_then' do
     it 'basically works' do

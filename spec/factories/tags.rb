@@ -13,7 +13,8 @@ FactoryGirl.define do
     end
 
     # not currently mirrored in production
-    trait :broken do
+    # Tag.create!(name: 'please review', glyphicon: 'glyphicon-fire', bootstrap_color: 'danger', on_verb: 'have reported', on_verb_3rd_person_singular: 'has reported', on_phrase: 'this', off_sentence: 'no reports of issues')
+    trait :please_review do
       name 'please review'
       glyphicon 'glyphicon-fire'
       bootstrap_color 'danger'

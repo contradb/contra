@@ -1,4 +1,4 @@
-var PUNCTUATION_CHARSET_STRING = '[\u2000-\u206F\u2E00-\u2E7F\'!"#$%&()*+,/:;<=>?@\\[\\]^_`{|}~\\.-]';
+export const PUNCTUATION_CHARSET_STRING = '[\u2000-\u206F\u2E00-\u2E7F\'!"#$%&()*+,/:;<=>?@\\[\\]^_`{|}~\\.-]';
 
 function set_if_unset (dict, key, value) {
     if (!(key in dict))
@@ -19,19 +19,19 @@ function indefiniteArticleFor(w) {
 // text_in_dialect: <bool> property can still be missing...
 export const defaultDialect = {moves: {}, dancers: {}};
 
-var testDialect = {moves: {gyre: 'darcy',
-                           allemande: 'almond',
-                           'see saw': 'do si do left shoulder',
-                           'form an ocean wave': 'form a short wavy line',
-                           "Rory O'More": 'sliding doors'},
-                   dancers: {ladle: 'raven',
-                             ladles: 'ravens',
-                             gentlespoon: 'lark',
-                             gentlespoons: 'larks',
-                             'first ladle': 'first raven',
-                             'second ladle': 'second raven',
-                             'first gentlespoon': 'first lark',
-                             'second gentlespoon': 'second lark'}};
+export const testDialect = {moves: {gyre: 'darcy',
+                                    allemande: 'almond',
+                                    'see saw': 'do si do left shoulder',
+                                    'form an ocean wave': 'form a short wavy line',
+                                    "Rory O'More": 'sliding doors'},
+                            dancers: {ladle: 'raven',
+                                      ladles: 'ravens',
+                                      gentlespoon: 'lark',
+                                      gentlespoons: 'larks',
+                                      'first ladle': 'first raven',
+                                      'second ladle': 'second raven',
+                                      'first gentlespoon': 'first lark',
+                                      'second gentlespoon': 'second lark'}};
 
 // ________________________________________________________________
 
@@ -69,7 +69,7 @@ function dialectOverloadedSubstitutions(dialect) {
 
 // ________________________________________________________________
 
-function longestFirstSortFn(a,b) {
+export const longestFirstSortFn = function(a,b) {
   return b.length - a.length;
 };
 
@@ -181,8 +181,8 @@ function slugifyTerm(term) {
 
 // ________________________________________________________________
 
-var regExpEscape_regexp = /[-\/\\^$*+?.()|[\]{}]/g;
-function regExpEscape(s) {
+const regExpEscape_regexp = /[-\/\\^$*+?.()|[\]{}]/g;
+export const regExpEscape = function (s) {
   return s.replace(regExpEscape_regexp, '\\$&');
 };
 // source https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript/3561711#3561711
