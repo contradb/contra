@@ -91,6 +91,54 @@ describe 'Search page', js: true do
       expect(matches).to eq(1)
     end
 
+    it 'tag and compare filters' do
+      verified = FactoryGirl.create(:tag, :verified)
+      broken = FactoryGirl.create(:tag, :please_review)
+      call_me = dances.find {|dance| dance.title == "Call Me"}
+      the_rendevouz = dances.find {|dance| dance.title == "The Rendevouz"}
+      1.times { FactoryGirl.create(:dut, tag: verified, dance: call_me) }
+      2.times { FactoryGirl.create(:dut, tag: broken, dance: the_rendevouz) }
+      visit '/s'
+      first('.figure-filter-op').select('compare')
+      find_all('.figure-filter-op', count: 3)[1].select('tag')
+      dances.each do |dance|
+        if dance.id == call_me.id
+          expect(page).to have_link(dance.title)
+        else
+          expect(page).to_not have_link(dance.title)
+        end
+      end
+      select '1'
+      dances.each do |dance|
+        expect(page).to_not have_link(dance.title)
+      end
+      select 'please review'
+      dances.each do |dance|
+        if dance.id == the_rendevouz.id
+          expect(page).to have_link(dance.title)
+        else
+          expect(page).to_not have_link(dance.title)
+        end
+      end
+    end
+
+    it 'count-matches and compare filters' do
+      dances
+      visit '/s'
+      first('.figure-filter-op').select('compare')
+      find_all('.figure-filter-op', count: 3)[1].select('count matches')
+      select('≠')
+      select('7')
+      matches = 0
+      dances.each do |dance|
+        not_seven = dance.figures.length != 7
+        matches += 1 if not_seven
+        to_or_to_not = not_seven ? :to : :to_not
+        expect(page).send(to_or_to_not, have_link(dance.title, href: dance_path(dance)))
+      end
+      expect(matches).to eq(1)
+    end
+
     it '& filter' do
       dances
       visit '/s'

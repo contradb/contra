@@ -492,30 +492,4 @@ RSpec.describe JSLibFigure do
     expect(jseval("isEmpty({})")).to eq(true)
     expect(jseval("isEmpty({x: 5})")).to eq(false)
   end
-
-  def js_test_eval(string)
-    JSLibFigure.send(:eval_with_tests_loaded, string) # hacking in
-  end
-
-  describe 'ad-hoc js unit tests' do
-    it 'testTrimButLeaveNewlines' do
-      expect(js_test_eval('testTrimButLeaveNewlines();')).to be_truthy
-    end
-
-    it 'test_words_toHtml' do
-      expect(js_test_eval('test_words_toHtml();')).to be_truthy
-    end
-
-    it 'test_words_toMarkdown' do
-      expect(js_test_eval('test_words_toMarkdown();')).to be_truthy
-    end
-
-    it 'test_peek' do
-      expect(js_test_eval('test_peek();')).to be_truthy
-    end
-
-    it 'testLingoLineWords' do
-      expect(js_test_eval('testLingoLineWords();')).to be_truthy
-    end
-  end
 end

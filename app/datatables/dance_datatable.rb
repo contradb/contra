@@ -274,6 +274,30 @@ class DanceDatatable < AjaxDatatablesRails::Base
     end
   end
 
+  def self.matching_figures_for_compare(filter, dance)
+    _filter, left, comparison_str, right = filter
+    l = eval_numeric_ex(left, dance)
+    r = eval_numeric_ex(right, dance)
+    comparison = COMPARISON_STRING_TO_RUBY_OP.fetch(comparison_str)
+    l.public_send(comparison, r) ? Set[] : nil
+  end
+
+  def self.eval_numeric_ex(nex, dance)
+    case nex.first
+    when 'constant'
+      Integer(nex.second)           # Hm, is THIS the place to parse this string?
+    when 'tag'
+      tag_id = Tag.where(name: nex.second).pluck(:id).first
+      tag_id ? Dut.where(tag_id: tag_id, dance_id: dance.id).count : 0
+    when 'count-matches'
+      subfilter = nex.second
+      matches = matching_figures(subfilter, dance)
+      matches ? matches.length : 0
+    else
+      raise "I do not know how to evaluate #{nex.first} expressions."
+    end
+  end
+
   def self.all_empty_matches(nfigures)
     Set.new(nfigures.times.map{|i| SearchMatch.new(i, nfigures, count: 0)})
   end

@@ -1,8 +1,12 @@
+import { longestFirstSortFn, PUNCTUATION_CHARSET_STRING, regExpEscape } from './util';
+import { dancers } from './chooser';
+import { moves } from './define-figure';
+
 function Words(arr) {
   this.arr = arr;
 }
 
-function words () {
+export const words = function() {
   return new Words(Array.prototype.slice.call(arguments));
 }
 
@@ -25,10 +29,10 @@ ScrunchedWords.prototype.scrunched = function() {return true;};
 
 var wants_no_space_before = [false, null, ',', '.', ';'];
 
-var FLATTEN_FORMAT_MARKDOWN = 1001;
-var FLATTEN_FORMAT_HTML = 1002;
-var FLATTEN_FORMAT_UNSAFE_TEXT = 1003;
-var FLATTEN_FORMAT_SAFE_TEXT = 1004;
+export const FLATTEN_FORMAT_MARKDOWN = 1001;
+export const FLATTEN_FORMAT_HTML = 1002;
+export const FLATTEN_FORMAT_UNSAFE_TEXT = 1003;
+export const FLATTEN_FORMAT_SAFE_TEXT = 1004;
 
 // returns *sanitized* html
 Words.prototype.toHtml = function() {
@@ -79,13 +83,13 @@ Words.prototype.peek = function() {
   return null;
 }
 
-function Tag(tag, attrs, body) {
+export const Tag = function(tag, attrs, body) {
   this.tag = tag;
   this.attrs = attrs;
   this.body = body;
 }
 
-function tag(tag, body) {
+export const tag = function(tag, body) {
   return new Tag(tag, {}, body);
 }
 
@@ -139,7 +143,7 @@ function flattenWordNode(s, format) {
 }
 
 // returns first non-whitespace character
-function peek(thing) {
+export const peek = function(thing) {
   var m;
   if (thing.peek) {
     return thing.peek();
@@ -154,7 +158,7 @@ function peek(thing) {
   }
 }
 
-function trimButLeaveNewlines(s) {
+export const trimButLeaveNewlines = function(s) {
   var start;
   var end;
   for (start=0; start<s.length; start++) {
@@ -172,12 +176,12 @@ function trimButLeaveNewlines(s) {
 
 ////////////////////////////////////////////////////////////////
 
-var comma = ['comma'];
+export const comma = Object.freeze([Object.freeze('comma')]);
 
 ////////////////////////////////////////////////////////////////
 
 // clamp words in <s> or <u> - string is already in-dialect at the point when this proceess it
-function lingoLineWords(string, dialect) {
+export const lingoLineWords = function(string, dialect) {
   // lookbehind doesn't work in all versions of js, so we've got to use capture groups for word boundaries, sigh
   var underlines_and_strikes = underlinesAndStrikes(dialect);
   var all_lingo_lines = underlines_and_strikes.underlines.concat(underlines_and_strikes.strikes).sort(longestFirstSortFn);

@@ -166,7 +166,7 @@ function dancersCategory(chooser) {
   return dancersCategoryHash[chooser] || chooser;
 }
 
-function dancers() {
+export const dancers = function() {
   return dancerMenuForChooser(chooser('chooser_dancers'));
 }
 

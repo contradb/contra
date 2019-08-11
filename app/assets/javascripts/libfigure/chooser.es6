@@ -163,8 +163,7 @@
 /***/ function dancersCategory(chooser) {
 /***/   return dancersCategoryHash[chooser] || chooser;
 /***/ }
-/***/ 
-/***/ function dancers() {
+/***/ const dancers = function() {
 /***/   return dancerMenuForChooser(chooser('chooser_dancers'));
 /***/ }
 /***/ 
