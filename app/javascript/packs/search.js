@@ -3,13 +3,8 @@
 // to the head of your layout file,
 // like app/views/layouts/application.html.erb.
 
-import Vue from 'vue/dist/vue.esm';
-import Vuex from 'vuex/dist/vuex.esm';
 import { SearchEx } from '../search_ex.js';
 import LibFigure from '../libfigure/libfigure.js';
-import SearchExEditor from '../search_ex_editor.vue';
-
-Vue.use(Vuex);
 
 function selectChooserNameOptions(dialect) {
   return {
@@ -65,106 +60,17 @@ const radioChooserNameOptions = {
   chooser_half_or_full: ['*', [0.5,'half'], [1.0,'full']],
 };
 
-const store = new Vuex.Store({
-  state: {
-    lisp: ['and', ['figure', '*'], ['progression']],
-    dialect: LibFigure.defaultDialect,
-    tagNames: [],
-    radioChooserNameOptions: Object.freeze(radioChooserNameOptions),
-  },
-  getters: {
-    searchEx: state => SearchEx.fromLisp(state.lisp),
-    selectChooserNameOptions: state => selectChooserNameOptions(state.dialect),
-  },
-  actions:
-  SearchEx.allProps().reduce((hash, prop) => {
-    if (prop !== 'op' && prop !== 'move') {
-      const propName = SearchEx.mutationNameForProp(prop);
-      hash[propName] = function({commit,state,getters}, payload) {
-        let searchEx = getters.searchEx.copy();
-        getSearchExAtPath(searchEx, payload.path)[prop] = payload[prop];
-        commit('setRootSearchEx', searchEx);
-      };
-    }
-    return hash;
-  }, {
-    setOp({commit, state, getters}, {path, op}) {
-      const rootSearchEx = getters.searchEx.copy();
-      const newSearchEx = getSearchExAtPath(rootSearchEx, path).castTo(op);
-      commit('setRootSearchEx', setSearchExAtPath(newSearchEx, rootSearchEx, path));
-    },
-    setMove({commit, state, getters}, payload) {
-      const rootSearchEx = getters.searchEx;
-      const searchEx = getSearchExAtPath(rootSearchEx, payload.path);
-      searchEx.move = payload.move; // destructive!
-      commit('setRootSearchEx', rootSearchEx); // should I be calling some other, more fine-grained mutation?
-    },
-    setParameter({commit, state, getters}, {path, index, value}) {
-      const rootSearchEx = getters.searchEx;
-      let searchEx = getSearchExAtPath(rootSearchEx, path);
-      searchEx.parameters[index] = value; // destructive!
-      commit('setRootSearchEx', rootSearchEx); // should I be calling some other, more fine-grained mutation?
-    },
-    deleteSearchEx({commit, state, getters}, {path}) {
-      const rootSearchEx = getters.searchEx;
-      if (path.length) {
-        let searchEx = rootSearchEx;
-        for (let i=0; i<path.length-1; i++)
-          searchEx = searchEx.subexpressions[path[i]];
-        searchEx.subexpressions.splice(path[path.length-1], 1);
-        commit('setRootSearchEx', rootSearchEx); // should I be calling some other, more fine-grained mutation?
-      } else {
-        // silently fail to delete root node. It shouldn't be an option anyway.
-      }
-    }
-  }),
-  mutations:
-  {
-    setRootSearchEx(state, rootSearchEx) {
-      state.lisp = rootSearchEx.toLisp();
-    }
-  }
-});
-
 function getSearchExAtPath(rootSearchEx, path) {
   return path.reduce((searchEx, subExIndex) => searchEx.subexpressions[subExIndex], rootSearchEx);
 }
 
-// modifies substructure, AND you have to pay attention to the return value.
-function setSearchExAtPath(valueSearchEx, rootSearchEx, path) {
-  if (path.length) {
-    let searchEx = rootSearchEx;
-    for (let i=0; i<path.length-1; i++) {
-      searchEx = searchEx.subexpressions[path[i]];
-    }
-    searchEx.subexpressions[path[path.length-1]] = valueSearchEx;
-    return rootSearchEx;
-  } else {
-    return valueSearchEx;
-  }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  var search = new Vue({
-    el: '#search-app',
-    store,
-    data: {},
-    template: `<div><SearchExEditor v-bind:lisp="$store.state.lisp" v-bind:path="[]" /><hr><p>state.lisp: {{$store.state.lisp}}</p><p>state.dialect: {{$store.state.dialect}}</p></div>`,
-    components: {
-      SearchExEditor
-    },
-    methods: {
-      // wrap() {this.$store.commit('wrap', {name: 'wrap'});}
-    }
-  });
-});
 
 ////////////////////////////////////////////////////////////////
 // init
 
 function initFromDom() {
-  store.state.dialect = JSON.parse($('#dialect-json').text());
-  store.state.tagNames = JSON.parse($('#tag-names-json').text());
+  // store.state.dialect = JSON.parse($('#dialect-json').text());
+  // store.state.tagNames = JSON.parse($('#tag-names-json').text());
 }
 
 $(initFromDom);
