@@ -4,11 +4,15 @@
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
     "@rails/webpacker": "^4.0.0-rc.7",
+    "@types/react": "^16.9.5",
+    "@types/react-dom": "^16.9.1",
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "prop-types": "^15.7.2",
     "react": "^16.10.2",
-    "react-dom": "^16.10.2"
+    "react-dom": "^16.10.2",
+    "ts-loader": "^6.2.0",
+    "typescript": "^3.6.3"
   },
   "devDependencies": {
     "jest": "^24.8.0",
