@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
-import {Demo} from '../demo.jsx'
+import {Demo} from '../demo.tsx'
 
 
 
