@@ -11,6 +11,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
+    "react-table": "^6.10.3",
     "ts-loader": "^6.2.0",
     "typescript": "^3.6.3"
   },
