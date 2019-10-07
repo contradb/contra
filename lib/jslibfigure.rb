@@ -285,7 +285,7 @@ module JSLibFigure
   end
 
   def self.strip_import_clumsily(src)
-    src.gsub(/^\s*(import.*)\n/, "// strip_import_clumsily: \\1\n")
+    src.gsub(/^\s*import \{[^}]*?\} from.*$/, "")
   end
 
   def self.strip_export_clumsily(src)
