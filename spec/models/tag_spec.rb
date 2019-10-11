@@ -37,5 +37,21 @@ describe Tag do
         expect(tag.documentation(me: true, other_count: 1)).to eq("2 users #{tag.on_verb} #{tag.on_phrase}")
       end
     end
+
+    describe "special behavior for 'experimental' tag" do
+      let (:tag) {FactoryGirl.build(:tag, :experimental)}
+
+      it 'nobody → off_sentence' do
+        expect(tag.documentation(me: false)).to eq(tag.off_sentence)
+      end
+
+      it 'one other person → "choreography in progress"' do
+        expect(tag.documentation(other_count: 1)).to eq(tag.on_phrase)
+      end
+
+      it 'this person → "choreography in progress"' do
+        expect(tag.documentation(me: true)).to eq(tag.on_phrase)
+      end
+    end
   end
 end

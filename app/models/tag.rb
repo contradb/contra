@@ -5,6 +5,7 @@ class Tag < ApplicationRecord
 
   # returns a string (or nil if the db doesn't have full information)
   def documentation(me: false, other_count: 0)
+    return experimental_documentation(me, other_count) if 'experimental' == name
     off_sentence && on_verb && on_phrase or return nil
     count = other_count + (me ? 1 : 0)
     if count.zero?
@@ -21,5 +22,10 @@ class Tag < ApplicationRecord
 
   def on_verb_3rd_person_singular
     super || on_verb
+  end
+
+  def experimental_documentation(me, other_count)
+    is_on = me || other_count > 0
+    return is_on ? on_phrase : off_sentence
   end
 end
