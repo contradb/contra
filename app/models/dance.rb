@@ -19,6 +19,15 @@ class Dance < ApplicationRecord
       where(publish: true).or(where(user_id: user.id))
     end
   }
+  scope :unexperimental, ->() {
+    tag = Tag.find_by(name: 'experimental')
+    if tag
+      # TODO: see if adding a duts.tag_id index helps or hurts.
+      joins("LEFT OUTER JOIN (SELECT * FROM duts WHERE duts.tag_id = #{tag.id}) AS duts ON duts.dance_id = dances.id").where("duts.dance_id IS NULL")
+    else
+      all
+    end
+  }
 
   def readable?(user=nil)
     publish || user_id == user&.id || user&.admin? || false

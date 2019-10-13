@@ -146,31 +146,30 @@ RSpec.describe Dance, type: :model do
     end
   end
 
-#   it "#to_s_dump" do
-#     choreographer = FactoryGirl.build(:choreographer, name: 'Bob')
-#     s = FactoryGirl.build(:dance, choreographer: choreographer).to_s_dump
-#     expected = <<-HEREDOC
-#
-# Nate Rockstraw
-# The Rendevouz
-# Bob
-# improper
-# notes: ""
-#   0. neighbors balance &amp; swing
-#   1. long lines forward &amp; back
-#   2. ladles do si do 1½
-#   3. partners balance &amp; swing
-#   4. circle left 4 places
-#   5. slide left along set to new neighbors
-#   6. circle left 3 places
-# published
-# preamble: "a preamble appears here"
-# hook: "pioneered slide progression"
-# HEREDOC
-#     (0...(s.length/10)).each do |i|
-#       # if the strings aren't equal, this helpfully localizes it to be more specific than a 340 character string
-#       expect(s[i*10,10]).to eq(expected[i*10,10])
-#     end
-#     expect(s.strip).to eq(expected.strip)
-#   end
+  describe "'unexperimental' scope" do
+    it "selects only dances without an 'experimental' tag" do
+      experimental_tag = FactoryGirl.create(:tag, :experimental)
+
+      experimental_dance = FactoryGirl.create(:dance, title: 'experimental')
+      other_tagged_dance = FactoryGirl.create(:dance, title: 'other_tagged')
+      multi_tagged_dance = FactoryGirl.create(:dance, title: 'multi_tagged')
+      untagged_dance = FactoryGirl.create(:dance, title: 'untagged')
+
+      FactoryGirl.create(:dut, user: experimental_dance.user, dance: experimental_dance, tag: experimental_tag)
+      FactoryGirl.create(:dut, user: other_tagged_dance.user, dance: other_tagged_dance)
+      FactoryGirl.create(:dut, user: multi_tagged_dance.user, dance: multi_tagged_dance, tag: experimental_tag)
+      FactoryGirl.create(:dut, user: multi_tagged_dance.user, dance: multi_tagged_dance)
+
+      actual_titles = Dance.unexperimental.map(&:title).sort
+      expected_titles = [untagged_dance, other_tagged_dance].map(&:title).sort
+
+      expect(actual_titles).to eq(expected_titles)
+    end
+
+    it "works even if there is no 'experimental' tag in the db" do # e.g. in tests
+      expect(Tag.find_by(name: 'experimental')).to be(nil)
+      dance = FactoryGirl.create(:dance)
+      expect(Dance.unexperimental.pluck(:title)).to eq([dance.title])
+    end
+  end
 end

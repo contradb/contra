@@ -9,6 +9,22 @@ describe DanceDatatable do
     let (:zero) { dances.last }
     let (:dance_titles_without_zero) { dances.map(&:title) - [dances.last.title]}
 
+    describe 'get_raw_records_first_pass' do
+      describe 'experimental tag' do
+        it 'hides experimental dances' do
+          call_me = FactoryGirl.create(:call_me)
+          experimental = FactoryGirl.create(:tag, :experimental)
+          dance_datatable = DanceDatatable.new('fake context')
+
+          filtered = dance_datatable.send(:get_raw_records_first_pass)
+          expect(filtered.map(&:title)).to eq([call_me.title])
+          FactoryGirl.create(:dut, dance: call_me, tag: experimental)
+          filtered = dance_datatable.send(:get_raw_records_first_pass)
+          expect(filtered.map(&:title)).to eq([])
+        end
+      end
+    end
+
     describe 'figure' do
       it 'works' do
         filtered = DanceDatatable.send(:filter_dances, dances, ['figure', 'hey'])
