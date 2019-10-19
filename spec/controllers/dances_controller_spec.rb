@@ -10,7 +10,7 @@ RSpec.describe DancesController, type: :controller do
      choreographer_name: 'Albacore Tuner',
      start_type: 'improper',
      figures_json: "[]",
-     publish: true}
+     publish: 'all'}
   }
 
   let(:invalid_attributes) {
