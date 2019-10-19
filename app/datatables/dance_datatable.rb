@@ -43,7 +43,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
 
   def get_raw_records
     filter = DanceDatatable.hash_to_array(figure_query)
-    dances = Dance.readable_by(user).to_a
+    dances = Dance.searchable_by(user).to_a
     dances = DanceDatatable.filter_dances(dances, filter)
     Dance.where(id: dances.map(&:id)).includes(:choreographer, :user).references(:choreographer, :user)
   end

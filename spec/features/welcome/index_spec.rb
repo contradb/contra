@@ -39,8 +39,8 @@ describe 'Welcome page', js: true do
 
     it 'shows only dances visible to current user' do
       with_login do |user|
-        dance2 = FactoryGirl.create(:box_the_gnat_contra, title: "this dance should be visible", publish: false, user: user)
-        dance3 = FactoryGirl.create(:box_the_gnat_contra, title: "this dance should be invisible", publish: false)
+        dance2 = FactoryGirl.create(:box_the_gnat_contra, title: "this dance should be visible", publish: :off, user: user)
+        dance3 = FactoryGirl.create(:box_the_gnat_contra, title: "this dance should be invisible", publish: :link)
         visit '/'
         expect(page).to have_content(dance2.title)
         expect(page).to_not have_content(dance3.title)
