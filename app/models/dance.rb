@@ -10,6 +10,9 @@ class Dance < ApplicationRecord
   has_many :tags, through: :duts
 
   scope :alphabetical, ->() { order "LOWER(title)" }
+
+  enum publish: [ :off, :link, :all ], _prefix: true
+
   scope :readable_by, ->(user=nil) {
     if user.nil?
       where.not(publish: :off)
@@ -17,6 +20,16 @@ class Dance < ApplicationRecord
       all
     else
       where.not(publish: :off).or(where(user_id: user.id))
+    end
+  }
+
+  scope :searchable_by, ->(user=nil) {
+    if user.nil?
+      where(publish: :all)
+    elsif user.admin?
+      all
+    else
+      where(publish: :all).or(where(user_id: user.id))
     end
   }
 
@@ -30,7 +43,15 @@ class Dance < ApplicationRecord
     end
   end
 
-  enum publish: [ :off, :link, :all ], _prefix: true
+  def searchable?(user=nil)
+    if publish_all?
+      true
+    elsif user
+      user_id == user.id || user.admin?
+    else
+      false
+    end
+  end
 
   # beware of nils in the array for empty moves
   def aliases

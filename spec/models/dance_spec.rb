@@ -66,6 +66,20 @@ RSpec.describe Dance, type: :model do
       end
     end
 
+    describe '#searchable?' do
+      it "with nil returns published_all? dances" do
+        expect(dances.map(&:searchable?)).to eq([false,false,true,false,false,true])
+      end
+
+      it "with user returns their dances and published_all dances" do
+        expect(dances.map {|d| d.searchable?(user_a)}).to eq([true,true,true,false,false,true])
+      end
+
+      it "with admin returns all dances" do
+        expect(dances.map {|d| d.searchable?(admonsterator)}).to eq(Array.new(6, true))
+      end
+    end
+
     describe "'readable_by' scope" do
       it "if not passed a user just returns published_link and published_all dances" do
         expect(Dance.readable_by(nil).pluck(:title)).to eq(['dance a1', 'dance a2', 'dance b1', 'dance b2'])
@@ -77,6 +91,20 @@ RSpec.describe Dance, type: :model do
 
       it "if passed an admin, returns all dances" do
         expect(Dance.readable_by(admonsterator).pluck(:title)).to eq(dances.map(&:title))
+      end
+    end
+
+    describe "'searchable_by' scope" do
+      it "if not passed a user returns published_all dances" do
+        expect(Dance.searchable_by(nil).pluck(:title)).to eq(['dance a2', 'dance b2'])
+      end
+
+      it "if passed a user, only returns published_all dances, or dances of that user" do
+        expect(Dance.searchable_by(user_b).pluck(:title)).to eq(['dance a2', 'dance b0', 'dance b1', 'dance b2'])
+      end
+
+      it "if passed an admin, returns all dances" do
+        expect(Dance.searchable_by(admonsterator).pluck(:title)).to eq(dances.map(&:title))
       end
     end
   end
