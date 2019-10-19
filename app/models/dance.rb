@@ -12,16 +12,22 @@ class Dance < ApplicationRecord
   scope :alphabetical, ->() { order "LOWER(title)" }
   scope :readable_by, ->(user=nil) {
     if user.nil?
-      where(publish: true)
+      where.not(publish: :off)
     elsif user.admin?
       all
     else
-      where(publish: true).or(where(user_id: user.id))
+      where.not(publish: :off).or(where(user_id: user.id))
     end
   }
 
   def readable?(user=nil)
-    publish || user_id == user&.id || user&.admin? || false
+    if !publish_off?
+      true
+    elsif user
+      user_id == user.id || user.admin?
+    else
+      false
+    end
   end
 
   enum publish: [ :off, :link, :all ], _prefix: true
