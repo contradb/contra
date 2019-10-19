@@ -15,9 +15,9 @@ describe 'Choreographer index' do
   it "Displays dance count visible to this user only" do
     with_login do |user|
       choreographer = FactoryGirl.create(:friendly_choreographer)
-      FactoryGirl.create(:dance, publish: true, choreographer: choreographer, user: user) # visible #1
-      FactoryGirl.create(:dance, publish: false, choreographer: choreographer, user: user) # visible #2
-      FactoryGirl.create(:dance, publish: false, choreographer: choreographer) # invisible
+      FactoryGirl.create(:dance, publish: :all, choreographer: choreographer, user: user) # visible #1
+      FactoryGirl.create(:dance, publish: :off, choreographer: choreographer, user: user) # visible #2
+      FactoryGirl.create(:dance, publish: :off, choreographer: choreographer) # invisible
 
       visit choreographers_path
 
