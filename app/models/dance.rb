@@ -24,6 +24,8 @@ class Dance < ApplicationRecord
     publish || user_id == user&.id || user&.admin? || false
   end
 
+  enum publish: [ :off, :link, :all ], _prefix: true
+
   # beware of nils in the array for empty moves
   def aliases
     figures.map {|f| JSLibFigure.move(f) && JSLibFigure.alias(f)}
