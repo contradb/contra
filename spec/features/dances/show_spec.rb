@@ -131,7 +131,7 @@ describe 'Showing dances' do
     user = FactoryGirl.create(:user, password: 'abc%123%ABC')
     dance = FactoryGirl.create(:dance, publish: :off, user: user)
     visit dance_path(dance)
-    expect(page).to have_content("that dance has not been published - maybe it's yours and you could see it if you logged in?")
+    expect(page).to have_content("the link to that dance is not shared - maybe it's yours and you could see it if you logged in?")
     expect(page).to have_current_path(new_user_session_path)
     fill_in('user_email', with: user.email)
     fill_in('user_password', with: user.password)
@@ -144,7 +144,7 @@ describe 'Showing dances' do
     dance = FactoryGirl.create(:dance, publish: :off)
     with_login do |user|
       visit dance_path(dance)
-      expect(page).to have_content("that dance has not been published so you can't see it")
+      expect(page).to have_content("the link to that dance is not shared, so you can't see it")
       expect(page).to have_current_path(root_path)
     end
   end
