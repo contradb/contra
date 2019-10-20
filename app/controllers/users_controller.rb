@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    @dances = @user.dances.readable_by(current_user).alphabetical
+    @dances = @user.dances.searchable_by(current_user).alphabetical
     @programs = @user.programs
   end
 

@@ -21,6 +21,7 @@ class DancesController < ApplicationController
     @dialect = dialect
     @show_validation = @show_moderation = current_user&.admin?
     @tags = Tag.all
+    response.set_header('X-Robots-Tag', 'noindex') unless @dance.searchable?
   end
 
   def new
@@ -86,7 +87,7 @@ class DancesController < ApplicationController
 
     def authenticate_dance_readable!
       unless @dance.readable?(current_user)
-        deny_or_login!(deny_notice: "that dance has not been published so you can't see it", login_notice: "that dance has not been published - maybe it's yours and you could see it if you logged in?")
+        deny_or_login!(deny_notice: "the link to that dance is not shared, so you can't see it", login_notice: "the link to that dance is not shared - maybe it's yours and you could see it if you logged in?")
       end
     end
 

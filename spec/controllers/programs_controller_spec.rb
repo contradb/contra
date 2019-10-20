@@ -20,8 +20,10 @@ require 'fake_user_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe ProgramsController, type: :controller do
-  let (:dances) {[FactoryGirl.create(:dance), FactoryGirl.create(:box_the_gnat_contra, publish: false)]}
-  let (:program) {FactoryGirl.create(:program, dances: dances)}
+  let (:dances) { [FactoryGirl.create(:dance, publish: :all),
+                   FactoryGirl.create(:box_the_gnat_contra, publish: :link),
+                   FactoryGirl.create(:call_me, publish: :off)] }
+  let (:program) { FactoryGirl.create(:program, dances: dances) }
 
   describe "GET #index" do
     it "assigns all programs as @programs" do
@@ -56,7 +58,7 @@ RSpec.describe ProgramsController, type: :controller do
       get :new, params: {}
       expect(assigns(:program)).to be_a_new(Program)
       json = JSON.parse(assigns(:dance_autocomplete_hash_json))
-      expect(json.map {|d| d['title']}).to eq(dances.select(&:publish).map(&:title))
+      expect(json.map {|d| d['title']}).to eq(dances.select(&:searchable?).map(&:title))
     end
   end
 
@@ -66,7 +68,7 @@ RSpec.describe ProgramsController, type: :controller do
       get :edit, params: {:id => program.to_param}
       expect(assigns(:program)).to eq(program)
       json = JSON.parse(assigns(:dance_autocomplete_hash_json))
-      expect(json.map {|d| d['title']}).to eq(dances.select(&:publish).map(&:title))
+      expect(json.map {|d| d['title']}).to eq(dances.select(&:searchable?).map(&:title))
     end
 
     it "If not logged in as program owner, refuses to show page" do
