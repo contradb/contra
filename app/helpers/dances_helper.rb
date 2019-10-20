@@ -43,11 +43,11 @@ module DancesHelper
   def publish_string(publish_enum)
     case publish_enum.to_s
     when 'off'
-      'private'
+      'shared with nobody'
     when 'link'
-      'sharable link but not searchable'
+      'shared to people with this link'
     when 'all'
-      'sharable link and searchable'
+      'shared with everybody'
     else
       raise 'fell through enum case'
     end

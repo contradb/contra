@@ -13,7 +13,7 @@ describe 'Creating dances', js: true do
       fill_in 'dance[start_type]', with: 'improper'
       fill_in 'dance[preamble]', with: 'long wavy lines gents out'
       fill_in 'dance[hook]', with: 'spin to your partner'
-      choose 'off'
+      choose 'nobody'
       click_button 'Save Dance'
 
       expect(page).to have_css('h1', text: 'Call Me')

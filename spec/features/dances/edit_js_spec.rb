@@ -46,7 +46,7 @@ describe 'Editing dances', js: true do
       fill_in 'dance[hook]', with: 'wombatty'
       fill_in 'dance[preamble]', with: 'prerambling'
       fill_in 'dance[notes]', with: 'notey'
-      choose 'link only'
+      choose 'people with link'
       click_button 'Save Dance'
       expect(page).to have_content('Dance was successfully updated.')
       dance.reload

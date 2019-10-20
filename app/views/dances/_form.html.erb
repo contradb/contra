@@ -200,19 +200,19 @@
     </section>
 
     <section>
-      <%= f.label :publish %>
+      <label>Share With</label>
       <div class='publish-edit'>
-        <%= f.label :publish, value: 'off' do %>
-          <%= f.radio_button :publish, 'off' %>
-          off
+        <%= f.label :publish, value: 'all' do %>
+          <%= f.radio_button :publish, 'all' %>
+          everybody
         <% end %>
         <%= f.label :publish, value: 'link' do %>
           <%= f.radio_button :publish, 'link' %>
-          link only
+          people with link
         <% end %>
-        <%= f.label :publish, value: 'all' do %>
-          <%= f.radio_button :publish, 'all' %>
-          searchable
+        <%= f.label :publish, value: 'off' do %>
+          <%= f.radio_button :publish, 'off' %>
+          nobody
         <% end %>
       </div>
 
