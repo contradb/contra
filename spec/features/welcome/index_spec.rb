@@ -10,7 +10,7 @@ describe 'Welcome page', js: true do
   end
 
   context 'datatable' do
-    let (:dance) {FactoryGirl.create(:box_the_gnat_contra, created_at: DateTime.now - 10.years, updated_at: DateTime.now - 1.week)}
+    let (:dance) {FactoryGirl.create(:box_the_gnat_contra, created_at: DateTime.now - 10.years, updated_at: DateTime.now - 1.week, publish: :all)}
     it 'displays dance columns' do
       dance
       visit '/'
@@ -21,7 +21,7 @@ describe 'Welcome page', js: true do
       expect(page).to have_link(dance.user.name, href: user_path(dance.user))
       expect(page).to have_text(dance.created_at.strftime('%Y-%m-%d'))
       expect(page).to_not have_text(dance.updated_at.strftime('%Y-%m-%d')) # column invisible by default, it's not hidden, it's simply not there
-      expect(page).to_not have_css('td', text: 'Published') # column invisible by default, it's not hidden, it's simply not there
+      expect(page).to_not have_css('th', text: 'Published') # column invisible by default, it's not hidden, it's simply not there
       expect(page).to_not have_css('td', text: 'whole dance') # column invisible by default, it's not hidden, it's simply not there
     end
 
@@ -961,6 +961,18 @@ describe 'Welcome page', js: true do
           expect(page).to_not have_css('#dances-table th', text: col)
           expect(page).to have_css('button.toggle-vis-inactive', text: col)
           expect(page).to_not have_css('button.toggle-vis-active', text: col)
+        end
+      end
+
+      it 'published column cells' do
+        with_login do |user|
+          dances.each_with_index do |dance, i|
+            publish = [:off, :link, :all][i]
+            dance.update!(publish: publish, user: user)
+            visit '/'
+            click_button 'Published'
+            expect(page).to have_css('tr', text: /#{dance.title}.*#{publish}/)
+          end
         end
       end
 
