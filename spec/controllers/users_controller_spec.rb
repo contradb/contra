@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
   describe "GET #show" do
-    let! (:user_admin) { FactoryGirl.create(:user, admin: true) }
+    let! (:admin) { FactoryGirl.create(:user, admin: true) }
     let! (:creator) { FactoryGirl.create(:user) }
     let (:other_user) { FactoryGirl.create(:user) }
     let! (:dance0) { FactoryGirl.create(:dance, user: creator, title: "dance0", publish: :off) }
@@ -24,7 +24,7 @@ RSpec.describe UsersController, type: :controller do
       end
     end
 
-    context "with other user login" do
+    context "with user-who-is-not-creator login" do
       it "renderer gets @dances with searchable dances in alphabetical order" do
         sign_in other_user
         get :show, params: {id: creator.to_param}
@@ -34,7 +34,7 @@ RSpec.describe UsersController, type: :controller do
 
     context "with admin login" do
       it "renderer gets @dances with visible dances in alphabetical order" do
-        sign_in user_admin
+        sign_in admin
         get :show, params: {id: creator.to_param}
         expect(assigns(:dances).to_a).to eq([dance0, dance1, dance2])
       end
