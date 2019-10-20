@@ -159,7 +159,8 @@
 /***/   var [who,balance,hand,beats] = pvs;
 /***/   var [swho,sbalance,shand,sbeats] = parameter_strings(move, pvs, dialect);
 /***/   var smove = moveSubstitution(move, dialect);
-/***/   return words(swho, sbalance, smove);
+/***/   var thand = (true===balance) && (hand!==!hand) && (shand + ' hand');
+/***/   return words(swho, thand, sbalance, smove);
 /***/ }
 /***/ 
 /***/ defineFigure("box the gnat",
@@ -599,7 +600,11 @@
 /***/ 
 /***/ function giveAndTakeGoodBeats(figure) {
 /***/   var [who, whom, give, beats] = figure.parameter_values;
-/***/   return beats === (give ? 8 : 4);
+/***/   if (give) {
+/***/     return 4 <= beats && beats <= 8;
+/***/   } else {
+/***/     return 2 <= beats && beats <= 4;
+/***/   }
 /***/ }
 /***/ 
 /***/ function giveAndTakeWords(move, pvs, dialect) {

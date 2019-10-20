@@ -159,7 +159,8 @@ function boxTheGnatWords(move, pvs, dialect) {
   var [who,balance,hand,beats] = pvs;
   var [swho,sbalance,shand,sbeats] = parameter_strings(move, pvs, dialect);
   var smove = moveSubstitution(move, dialect);
-  return words(swho, sbalance, smove);
+  var thand = (true===balance) && (hand!==!hand) && (shand + ' hand');
+  return words(swho, thand, sbalance, smove);
 }
 
 defineFigure("box the gnat",
