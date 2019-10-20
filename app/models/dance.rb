@@ -120,7 +120,7 @@ class Dance < ApplicationRecord
   #         buf << "  #{i}. #{JSLibFigure.figure_to_unsafe_text(figure, dialect)}"
   #       end
   #     elsif attr == 'publish'
-  #       buf << (publish ? 'published' : 'private')
+  #       buf << (publish ? 'published' : 'private') # this line is obsolete
   #     elsif attr.in? %w(hook preamble notes)
   #       buf << "#{attr}: #{JSLibFigure.string_in_dialect(value, dialect).inspect}"
   #     elsif not attr.in? %w(created_at updated_at)

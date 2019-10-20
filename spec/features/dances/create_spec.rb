@@ -21,9 +21,9 @@ describe 'Creating dances', js: true do
       expect(page).to have_content('improper')
       expect(page).to have_content('long wavy lines gents out') # preamble
       expect(page).to have_content('spin to your partner') # hook
-      expect(page).to have_content(publish_string(:off))
-      expect(page).to_not have_content(publish_string(:link))
-      expect(page).to_not have_content(publish_string(:all))
+      expect(page).to have_content(dance_publish_string(:off))
+      expect(page).to_not have_content(dance_publish_string(:link))
+      expect(page).to_not have_content(dance_publish_string(:all))
     end
   end
 

@@ -15,9 +15,9 @@ describe 'Showing dances' do
     expect(page).to have_text ('neighbors balance & swing')
     expect(page).to have_text ('ladles allemande right 1½')
     expect(page).to have_content(dance.notes)
-    expect(page).to_not have_text(publish_string(:off))
-    expect(page).to_not have_text(publish_string(:all))
-    expect(page).to have_text(publish_string(:link))
+    expect(page).to_not have_text(dance_publish_string(:off))
+    expect(page).to_not have_text(dance_publish_string(:all))
+    expect(page).to have_text(dance_publish_string(:link))
   end
 
   it 'displays moderation link' do

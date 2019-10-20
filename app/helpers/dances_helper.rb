@@ -40,7 +40,7 @@ module DancesHelper
     end
   end
 
-  def publish_string(publish_enum)
+  def dance_publish_string(publish_enum)
     case publish_enum.to_s
     when 'off'
       'shared with nobody'
