@@ -46,7 +46,7 @@ describe 'Editing dances', js: true do
       fill_in 'dance[hook]', with: 'wombatty'
       fill_in 'dance[preamble]', with: 'prerambling'
       fill_in 'dance[notes]', with: 'notey'
-      choose 'Publish'
+      choose 'link only'
       click_button 'Save Dance'
       expect(page).to have_content('Dance was successfully updated.')
       dance.reload
@@ -57,6 +57,7 @@ describe 'Editing dances', js: true do
       expect(dance.hook).to eq('wombatty')
       expect(dance.preamble).to eq('prerambling')
       expect(dance.notes).to eq('notey')
+      expect(dance.publish_link?).to eq(true)
     end
   end
 

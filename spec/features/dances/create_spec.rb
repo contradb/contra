@@ -3,6 +3,7 @@ require 'rails_helper'
 require 'support/scrutinize_layout'
 
 describe 'Creating dances', js: true do
+  include DancesHelper
   it 'creates a new dance with non-javascript data' do
     with_login do
       visit '/dances/new'
@@ -12,7 +13,7 @@ describe 'Creating dances', js: true do
       fill_in 'dance[start_type]', with: 'improper'
       fill_in 'dance[preamble]', with: 'long wavy lines gents out'
       fill_in 'dance[hook]', with: 'spin to your partner'
-      choose 'Private'
+      choose 'off'
       click_button 'Save Dance'
 
       expect(page).to have_css('h1', text: 'Call Me')
@@ -20,8 +21,9 @@ describe 'Creating dances', js: true do
       expect(page).to have_content('improper')
       expect(page).to have_content('long wavy lines gents out') # preamble
       expect(page).to have_content('spin to your partner') # hook
-      expect(page).to have_content('private')
-      expect(page).to_not have_content('Published')
+      expect(page).to have_content(publish_string(:off))
+      expect(page).to_not have_content(publish_string(:link))
+      expect(page).to_not have_content(publish_string(:all))
     end
   end
 

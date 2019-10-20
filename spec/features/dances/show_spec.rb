@@ -2,9 +2,10 @@
 require 'rails_helper'
 
 describe 'Showing dances' do
+  include DancesHelper
   it 'displays fields' do
     user = FactoryGirl.create(:user, moderation: :collaborative)
-    dance = FactoryGirl.create(:box_the_gnat_contra, publish: true, user: user)
+    dance = FactoryGirl.create(:box_the_gnat_contra, publish: :link, user: user)
     visit dance_path dance.id
     expect(page).to have_css('h1', text: dance.title)
     expect(page).to have_content(dance.hook)
@@ -14,8 +15,9 @@ describe 'Showing dances' do
     expect(page).to have_text ('neighbors balance & swing')
     expect(page).to have_text ('ladles allemande right 1½')
     expect(page).to have_content(dance.notes)
-    expect(page).to have_text('published')
-    expect(page).to_not have_text(/collaborative/i)
+    expect(page).to_not have_text(publish_string(:off))
+    expect(page).to_not have_text(publish_string(:all))
+    expect(page).to have_text(publish_string(:link))
   end
 
   it 'displays moderation link' do
@@ -127,7 +129,7 @@ describe 'Showing dances' do
 
   it "gives helpful feedback to users seeking to access their private dance" do
     user = FactoryGirl.create(:user, password: 'abc%123%ABC')
-    dance = FactoryGirl.create(:dance, publish: false, user: user)
+    dance = FactoryGirl.create(:dance, publish: :off, user: user)
     visit dance_path(dance)
     expect(page).to have_content("that dance has not been published - maybe it's yours and you could see it if you logged in?")
     expect(page).to have_current_path(new_user_session_path)
@@ -139,7 +141,7 @@ describe 'Showing dances' do
   end
 
   it "gives helpful feedback to users seeking to access someone else's private dance" do
-    dance = FactoryGirl.create(:dance, publish: false)
+    dance = FactoryGirl.create(:dance, publish: :off)
     with_login do |user|
       visit dance_path(dance)
       expect(page).to have_content("that dance has not been published so you can't see it")

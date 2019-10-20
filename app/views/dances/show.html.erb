@@ -20,7 +20,9 @@
         </div>
         <div class='panel-body'>
           <p class="dance-show-user">user: <%= link_to @dance.user.name, @dance.user %></p>
-          <p class="dance-show-publish"><%= @dance.publish ? 'published' : 'private' %></p>
+          <p class="dance-show-publish">
+            <%= publish_string(@dance.publish) %>
+          </p>
           <div class="btn-group">
             <%= copy_dance_button_html(@dance, label: "Copy") %>
             <% if (signed_in? && (current_user.admin? || (current_user.id == @dance.user_id))) %>

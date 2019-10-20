@@ -200,17 +200,25 @@
     </section>
 
     <section>
-      <div>
-        <%= f.label :publish, value: 'true' do %>
-        <%= f.radio_button :publish, 'true' %> 
-        Publish
+      <%= f.label :publish %>
+      <div class='publish-edit'>
+        <%= f.label :publish, value: 'off' do %>
+          <%= f.radio_button :publish, 'off' %>
+          off
         <% end %>
-        <%= f.label :publish, value: 'false' do %>
-        <%= f.radio_button :publish, 'false' %> 
-        Private
+        <%= f.label :publish, value: 'link' do %>
+          <%= f.radio_button :publish, 'link' %>
+          link only
+        <% end %>
+        <%= f.label :publish, value: 'all' do %>
+          <%= f.radio_button :publish, 'all' %>
+          searchable
         <% end %>
       </div>
 
+    </section>
+
+    <section>
       <div class="actions">
         <%= save_submit_button_html "Save Dance", {class: "update-dance"} %>
       </div>
