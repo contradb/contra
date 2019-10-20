@@ -39,4 +39,17 @@ module DancesHelper
       raise "unexpected user moderation #{user.moderation.inspect}"
     end
   end
+
+  def dance_publish_string(publish_enum)
+    case publish_enum.to_s
+    when 'off'
+      'shared with myself'
+    when 'link'
+      'shared to people with this link'
+    when 'all'
+      'shared with everyone'
+    else
+      raise 'fell through enum case'
+    end
+  end
 end

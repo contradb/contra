@@ -10,18 +10,47 @@ class Dance < ApplicationRecord
   has_many :tags, through: :duts
 
   scope :alphabetical, ->() { order "LOWER(title)" }
+
+  enum publish: [ :off, :link, :all ], _prefix: true
+
   scope :readable_by, ->(user=nil) {
     if user.nil?
-      where(publish: true)
+      where.not(publish: :off)
     elsif user.admin?
       all
     else
-      where(publish: true).or(where(user_id: user.id))
+      where.not(publish: :off).or(where(user_id: user.id))
+    end
+  }
+
+  scope :searchable_by, ->(user=nil) {
+    if user.nil?
+      where(publish: :all)
+    elsif user.admin?
+      all
+    else
+      where(publish: :all).or(where(user_id: user.id))
     end
   }
 
   def readable?(user=nil)
-    publish || user_id == user&.id || user&.admin? || false
+    if !publish_off?
+      true
+    elsif user
+      user_id == user.id || user.admin?
+    else
+      false
+    end
+  end
+
+  def searchable?(user=nil)
+    if publish_all?
+      true
+    elsif user
+      user_id == user.id || user.admin?
+    else
+      false
+    end
   end
 
   # beware of nils in the array for empty moves
@@ -91,7 +120,7 @@ class Dance < ApplicationRecord
   #         buf << "  #{i}. #{JSLibFigure.figure_to_unsafe_text(figure, dialect)}"
   #       end
   #     elsif attr == 'publish'
-  #       buf << (publish ? 'published' : 'private')
+  #       buf << (publish ? 'published' : 'private') # this line is obsolete
   #     elsif attr.in? %w(hook preamble notes)
   #       buf << "#{attr}: #{JSLibFigure.string_in_dialect(value, dialect).inspect}"
   #     elsif not attr.in? %w(created_at updated_at)
