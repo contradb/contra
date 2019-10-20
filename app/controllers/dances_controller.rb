@@ -21,6 +21,7 @@ class DancesController < ApplicationController
     @dialect = dialect
     @show_validation = @show_moderation = current_user&.admin?
     @tags = Tag.all
+    response.set_header('X-Robots-Tag', 'noindex') unless @dance.searchable?
   end
 
   def new

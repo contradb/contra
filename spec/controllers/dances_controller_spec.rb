@@ -27,6 +27,22 @@ RSpec.describe DancesController, type: :controller do
       get :show, params: {:id => dance.to_param}
       expect(assigns(:dance)).to eq(dance)
     end
+
+    describe "Dance#searchable?" do
+      let!(:dance) { FactoryGirl.create(:dance) }
+
+      it "false - then it has the robots-noindex header" do
+        expect_any_instance_of(Dance).to receive(:searchable?).and_return(false)
+        get :show, params: {:id => dance.to_param}
+        expect(response.headers['X-Robots-Tag']).to eq('noindex')
+      end
+
+      it "true - then it does not have the robots-noindex header" do
+        expect_any_instance_of(Dance).to receive(:searchable?).and_return(true)
+        get :show, params: {:id => dance.to_param}
+        expect(response.headers.key?('X-Robots-Tag')).to eq(false)
+      end
+    end
   end
 
   describe "GET #new" do
