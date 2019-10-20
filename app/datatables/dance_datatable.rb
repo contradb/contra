@@ -33,7 +33,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
         user_name: link_to(dance.user.name, user_path(dance.user)),
         created_at: dance.created_at.strftime('%Y-%m-%d'),
         updated_at: dance.updated_at.strftime('%Y-%m-%d'),
-        published: dance.publish ? 'Published' : nil,
+        published: dance_publish_cell(dance.publish),
         figures: figures_html(filter, dance)
       }
     end
@@ -43,7 +43,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
 
   def get_raw_records
     filter = DanceDatatable.hash_to_array(figure_query)
-    dances = Dance.readable_by(user).to_a
+    dances = Dance.searchable_by(user).to_a
     dances = DanceDatatable.filter_dances(dances, filter)
     Dance.where(id: dances.map(&:id)).includes(:choreographer, :user).references(:choreographer, :user)
   end
@@ -326,6 +326,19 @@ class DanceDatatable < AjaxDatatablesRails::Base
         i += 1
       end
       arr
+    end
+  end
+
+  def dance_publish_cell(enum_value)
+    case enum_value.to_s
+    when 'all'
+      'everyone'
+    when 'link'
+      'link'
+    when 'off'
+      'myself'
+    else
+      raise 'Fell through enum case statement'
     end
   end
 end
