@@ -46,7 +46,7 @@ describe 'Editing dances', js: true do
       fill_in 'dance[hook]', with: 'wombatty'
       fill_in 'dance[preamble]', with: 'prerambling'
       fill_in 'dance[notes]', with: 'notey'
-      choose 'Publish'
+      choose 'people with link'
       click_button 'Save Dance'
       expect(page).to have_content('Dance was successfully updated.')
       dance.reload
@@ -57,6 +57,7 @@ describe 'Editing dances', js: true do
       expect(dance.hook).to eq('wombatty')
       expect(dance.preamble).to eq('prerambling')
       expect(dance.notes).to eq('notey')
+      expect(dance.publish_link?).to eq(true)
     end
   end
 
@@ -116,14 +117,14 @@ describe 'Editing dances', js: true do
     with_login do |user|
       dance = FactoryGirl.create(:box_the_gnat_contra, user: user)
       visit edit_dance_path dance.id
-      expect(page).to have_words('A1 8 neighbors balance & box the gnat 8 partners balance & swat the flea')
+      expect(page).to have_words('A1 8 neighbors right hand balance & box the gnat 8 partners left hand balance & swat the flea')
       expect(page).to have_words('A2 16 neighbors balance & swing')
       expect(page).to have_words('B1 8 ladles allemande right 1½ 8 partners swing')
       expect(page).to have_words('B2 8 right left through 8 ladles chain')
       expect(page).to_not have_css('.beats-column-danger')
-      click_on('neighbors balance & box the gnat')
+      click_on('neighbors right hand balance & box the gnat')
       select('10')
-      expect(page).to have_words('A1 10 neighbors balance & box the gnat')
+      expect(page).to have_words('A1 10 neighbors right hand balance & box the gnat')
       expect(page).to have_css('.beats-column-danger', text: '10')
     end
   end

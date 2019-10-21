@@ -9,7 +9,7 @@ class ChoreographersController < ApplicationController
   end
 
   def show
-    @dances = @choreographer.dances.readable_by(current_user).alphabetical
+    @dances = @choreographer.dances.searchable_by(current_user).alphabetical
     @show_admin_actions = current_user&.admin?
   end
 

@@ -2,9 +2,10 @@
 require 'rails_helper'
 
 describe 'Showing dances' do
+  include DancesHelper
   it 'displays fields' do
     user = FactoryGirl.create(:user, moderation: :collaborative)
-    dance = FactoryGirl.create(:box_the_gnat_contra, publish: true, user: user)
+    dance = FactoryGirl.create(:box_the_gnat_contra, publish: :link, user: user)
     visit dance_path dance.id
     expect(page).to have_css('h1', text: dance.title)
     expect(page).to have_content(dance.hook)
@@ -14,8 +15,9 @@ describe 'Showing dances' do
     expect(page).to have_text ('neighbors balance & swing')
     expect(page).to have_text ('ladles allemande right 1½')
     expect(page).to have_content(dance.notes)
-    expect(page).to have_text('published')
-    expect(page).to_not have_text(/collaborative/i)
+    expect(page).to_not have_text(dance_publish_string(:off))
+    expect(page).to_not have_text(dance_publish_string(:all))
+    expect(page).to have_text(dance_publish_string(:link))
   end
 
   it 'displays moderation link' do
@@ -31,7 +33,7 @@ describe 'Showing dances' do
   it 'shows appropriate A1B2 and beat labels' do
     dance = FactoryGirl.create(:box_the_gnat_contra)
     visit dance_path dance.id
-    expect(page).to have_words('A1 8 neighbors balance & box the gnat 8 partners balance & swat the flea')
+    expect(page).to have_words('A1 8 neighbors right hand balance & box the gnat 8 partners left hand balance & swat the flea')
     expect(page).to have_words('A2 16 neighbors balance & swing')
     expect(page).to have_words('B1 8 ladles allemande right 1½ 8 partners swing')
     expect(page).to have_words('B2 8 right left through 8 ladles chain')
@@ -127,9 +129,9 @@ describe 'Showing dances' do
 
   it "gives helpful feedback to users seeking to access their private dance" do
     user = FactoryGirl.create(:user, password: 'abc%123%ABC')
-    dance = FactoryGirl.create(:dance, publish: false, user: user)
+    dance = FactoryGirl.create(:dance, publish: :off, user: user)
     visit dance_path(dance)
-    expect(page).to have_content("that dance has not been published - maybe it's yours and you could see it if you logged in?")
+    expect(page).to have_content("the link to that dance is not shared - maybe it's yours and you could see it if you logged in?")
     expect(page).to have_current_path(new_user_session_path)
     fill_in('user_email', with: user.email)
     fill_in('user_password', with: user.password)
@@ -139,10 +141,10 @@ describe 'Showing dances' do
   end
 
   it "gives helpful feedback to users seeking to access someone else's private dance" do
-    dance = FactoryGirl.create(:dance, publish: false)
+    dance = FactoryGirl.create(:dance, publish: :off)
     with_login do |user|
       visit dance_path(dance)
-      expect(page).to have_content("that dance has not been published so you can't see it")
+      expect(page).to have_content("the link to that dance is not shared, so you can't see it")
       expect(page).to have_current_path(root_path)
     end
   end

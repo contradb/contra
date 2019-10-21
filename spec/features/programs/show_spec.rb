@@ -8,8 +8,8 @@ describe 'Showing programs' do
   let (:owner) {FactoryGirl.create(:user) }
   let (:user) {FactoryGirl.create(:user)}
   let (:admin) {FactoryGirl.create(:user, admin: true)}
-  let (:dance_private) {FactoryGirl.create(:dance, publish: false, user: owner, title: "Hopscotch")}
-  let (:dance) {FactoryGirl.create(:dance, title: "Awendigo")}
+  let (:dance_private) {FactoryGirl.create(:dance, publish: :off, user: owner, title: "Hopscotch")}
+  let (:dance) {FactoryGirl.create(:dance, title: "Awendigo", publish: :link)} # :link is good enough to include figures
   let (:program) {FactoryGirl.create(:program, title: "New Years Eve 2015")}
 
   it "renders stored values" do

@@ -3,6 +3,7 @@ require 'rails_helper'
 require 'support/scrutinize_layout'
 
 describe 'Creating dances', js: true do
+  include DancesHelper
   it 'creates a new dance with non-javascript data' do
     with_login do
       visit '/dances/new'
@@ -12,7 +13,7 @@ describe 'Creating dances', js: true do
       fill_in 'dance[start_type]', with: 'improper'
       fill_in 'dance[preamble]', with: 'long wavy lines gents out'
       fill_in 'dance[hook]', with: 'spin to your partner'
-      choose 'Private'
+      choose 'myself'
       click_button 'Save Dance'
 
       expect(page).to have_css('h1', text: 'Call Me')
@@ -20,8 +21,9 @@ describe 'Creating dances', js: true do
       expect(page).to have_content('improper')
       expect(page).to have_content('long wavy lines gents out') # preamble
       expect(page).to have_content('spin to your partner') # hook
-      expect(page).to have_content('private')
-      expect(page).to_not have_content('Published')
+      expect(page).to have_content(dance_publish_string(:off))
+      expect(page).to_not have_content(dance_publish_string(:link))
+      expect(page).to_not have_content(dance_publish_string(:all))
     end
   end
 
@@ -44,7 +46,7 @@ describe 'Creating dances', js: true do
       # 'right' hand is default
       #  8 beats is default
       fill_in('note', with: 'hastily')
-      expect(page).to have_content('partners balance & box the gnat hastily')
+      expect(page).to have_content('partners right hand balance & box the gnat hastily')
       click_on 'Save Dance'
 
       dance = Dance.last
@@ -52,7 +54,7 @@ describe 'Creating dances', js: true do
       expect(dance.title).to eql('Rover McGrover')
       expect(current_path).to eq dance_path(dance.id)
       expect(page).to have_content('Dance was successfully created')
-      expect(page).to have_content('partners balance & box the gnat hastily')
+      expect(page).to have_content('partners right hand balance & box the gnat hastily')
     end
   end
 

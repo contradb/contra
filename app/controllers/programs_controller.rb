@@ -106,7 +106,7 @@ class ProgramsController < ApplicationController
     end
 
     def dance_autocomplete_hash_json
-      JSON.generate(Dance.readable_by(current_user).map do |dance|
+      JSON.generate(Dance.searchable_by(current_user).map do |dance|
                       {"title" => dance.title,
                        "choreographer" => dance.choreographer.name,
                        "id" => dance.id}
