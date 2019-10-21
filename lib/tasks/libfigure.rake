@@ -10,7 +10,7 @@ namespace :libfigure do
         basename_es6 = basename_js.delete_suffix('.js') + '.es6'
         text = File.read(javascript_src)
         text = JSLibFigure.strip_import_and_export(text)
-        text = text.gsub(/^/,'/***/ ')
+        # text = text.gsub(/^/,'/***/ ') # prettier hates this
         File.open(Rails.root.join('app/assets/javascripts/libfigure/', basename_es6), 'w') do |f|
           f.write("// GENERATED FILE - source is in #{javascript_src.inspect} - regenerate this with bin/rake libfigure:compile\n")
           f.write(text)

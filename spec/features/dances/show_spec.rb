@@ -33,7 +33,7 @@ describe 'Showing dances' do
   it 'shows appropriate A1B2 and beat labels' do
     dance = FactoryGirl.create(:box_the_gnat_contra)
     visit dance_path dance.id
-    expect(page).to have_words('A1 8 neighbors balance & box the gnat 8 partners balance & swat the flea')
+    expect(page).to have_words('A1 8 neighbors right hand balance & box the gnat 8 partners left hand balance & swat the flea')
     expect(page).to have_words('A2 16 neighbors balance & swing')
     expect(page).to have_words('B1 8 ladles allemande right 1½ 8 partners swing')
     expect(page).to have_words('B2 8 right left through 8 ladles chain')
