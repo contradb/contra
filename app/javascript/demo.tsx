@@ -1,9 +1,9 @@
-import React from "react"
+import { Component } from "react"
+import * as React from "react"
 import ReactTable from "react-table"
 import "react-table/react-table.css"
-import { foo } from "./foo.ts"
 
-export class Demo extends React.Component {
+export class Demo extends Component {
   render() {
     const data = [
       {
@@ -19,7 +19,7 @@ export class Demo extends React.Component {
         age: 22,
         friend: {
           name: "Jason Maurer",
-          age: foo(22, [17]),
+          age: 22,
         },
       },
       {
@@ -40,15 +40,15 @@ export class Demo extends React.Component {
       {
         Header: "Age",
         accessor: "age",
-        Cell: props => <span className="number">{props.value}</span>, // Custom cell components!
+        Cell: (props: {value: number}) => <span className="number">{props.value}</span>, // Custom cell components!
       },
       {
         id: "friendName", // Required because our accessor is not a string
         Header: "Friend Name",
-        accessor: d => d.friend.name, // Custom value accessors!
+        accessor: (d: {friend: {name: string}}) => d.friend.name, // Custom value accessors!
       },
       {
-        Header: props => <span>Friend Age</span>, // Custom header components!
+        Header: (props: any) => <span>Friend Age</span>, // Custom header components!
         accessor: "friend.age",
       },
     ]
