@@ -1,6 +1,7 @@
 import React from "react"
 import ReactTable from "react-table"
 import "react-table/react-table.css"
+import { foo } from "./foo.ts"
 
 export class Demo extends React.Component {
   render() {
@@ -18,7 +19,7 @@ export class Demo extends React.Component {
         age: 22,
         friend: {
           name: "Jason Maurer",
-          age: 23,
+          age: foo(22, [17]),
         },
       },
       {
