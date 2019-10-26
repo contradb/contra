@@ -1,6 +1,6 @@
 
-export const foo = (x: integer, y: string) {
-  const z: integer [] = x+y;
+export const foo = (x: string, y: string) => {
+  const z: string = x+y;
   return z;
 }
 
