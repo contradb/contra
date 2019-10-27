@@ -21,6 +21,7 @@ describe 'Creating user from welcome page' do
     expect(page).to have_content("Email")
     expect(page).to have_content("Name")
     expect(page).to have_content("Password")
+    expect(find_field("user_moderation_collaborative")).to be_checked
     fill_in "user_email",                 with: user_attrs[:email]
     fill_in "user_name",                  with: user_attrs[:name]
     fill_in "user_password",              with: user_attrs[:password]

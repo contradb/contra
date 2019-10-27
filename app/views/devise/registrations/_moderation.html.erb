@@ -1,0 +1,5 @@
+<% check_collaborative_hash = local_assigns.has_key?(:check_collaborative) && local_assigns[:check_collaborative] ? {checked: true} : {} %>
+<div class="control-label" style="text-align: left">If an issue is noticed in a dance I have shared, moderators should...</div>
+<div class=radio><label><%= f.radio_button(:moderation, "collaborative", check_collaborative_hash) %>collaborative - edit or reduce sharing permissions for the dance, emailing me the original text</label></div>
+<div class=radio><label><%= f.radio_button(:moderation, "owner") %>owner - email me, then if I don't repsond within 2 weeks reduce sharing permissions for the dance</label></div>
+<div class=radio><label><%= f.radio_button(:moderation, "hermit") %>hermit - reduce sharing permissions for the dance, don't contact me</label></div>
