@@ -28,8 +28,10 @@ describe 'Editing user' do
   end
 
   it 'editing Notifications works' do
-    with_login do |user|
+    user = FactoryGirl.create(:user, moderation: :owner)
+    with_login(user: user) do
       visit edit_user_registration_path
+      expect(find_field("user_moderation_owner")).to be_checked
       choose "user_moderation_hermit"
       choose "user_news_email_false"
       click_button('Update Notifications')
