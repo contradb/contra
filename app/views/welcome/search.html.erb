@@ -1,8 +1,11 @@
-<%= javascript_pack_tag 'hello_react' %>
+<%= javascript_pack_tag 'hello_react', defer: true %>
 <%= stylesheet_pack_tag 'hello_react' %>
 
 <section>
   <h2>Find Dances</h2>
+
+  <div id="root">
+  </div>
 </section>
 
 <div id='dialect-json'><%= @dialect_json %></div>
