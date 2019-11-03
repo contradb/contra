@@ -1,4 +1,4 @@
-import namor from 'namor'
+import namor from "namor"
 
 const range = len => {
   const arr = []
@@ -14,12 +14,12 @@ const newDance = () => {
     title: namor.generate({ words: 1, numbers: 0 }),
     choreographer: namor.generate({ words: 2, numbers: 0 }),
     hook: namor.generate({ words: 3, numbers: 0 }),
-    formation: 'improper',
+    formation: "improper",
     user: namor.generate({ words: 2, numbers: 0 }),
     entered: namor.generate({ numbers: 1 }),
     updated: namor.generate({ numbers: 1 }),
-    sharing: 'everyone',
-    figures: 'whole dance',
+    sharing: "everyone",
+    figures: "whole dance",
   }
 }
 
