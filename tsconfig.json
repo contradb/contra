@@ -7,7 +7,7 @@
     "module": "es6",
     "moduleResolution": "node",
     "sourceMap": true,
-    "strict": true,
+    "strict": false,
     "target": "es5",
     "jsx": "react"
   },

@@ -1,4 +1,4 @@
-import namor from "namor"
+import * as namor from "namor"
 
 const range = len => {
   const arr = []
