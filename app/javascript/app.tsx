@@ -1,9 +1,9 @@
-import React from "react"
+import * as React from "react"
 import { useTable } from "react-table"
 
 import makeData from "./makeData"
 
-function Table({ columns, data }) {
+function Table({ columns, data }: { columns: any; data: any }) {
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -29,16 +29,16 @@ function Table({ columns, data }) {
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
-        {rows.map(
-          (row, i) =>
-            prepareRow(row) || (
-              <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                })}
-              </tr>
-            )
-        )}
+        {rows.map((row, i) => {
+          prepareRow(row)
+          return (
+            <tr {...row.getRowProps()}>
+              {row.cells.map(cell => {
+                return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+              })}
+            </tr>
+          )
+        })}
       </tbody>
     </table>
   )
