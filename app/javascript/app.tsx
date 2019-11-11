@@ -1,4 +1,5 @@
 import * as React from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useTable } from "react-table"
 
 import makeData from "./makeData"
@@ -45,30 +46,38 @@ function Table({ columns, data }: { columns: any; data: any }) {
 }
 
 function App() {
-  const columns = React.useMemo(
-    () =>
-      [
-        "Title",
-        "Choreographer",
-        "Hook",
-        "Formation",
-        "User",
-        "Entered",
-        "Updated",
-        "Sharing",
-        "Figures",
-      ].map(x => {
-        return {
-          Header: x,
-          accessor: x.toLowerCase(),
-        }
-      }),
+  const [dances, setDances] = useState([])
+
+  useEffect(() => {
+    let used = true
+    async function fetchData() {
+      if (used) {
+        const r = await fetch("/api/v1/dances")
+        const json = await r.json()
+        setDances(json)
+      }
+    }
+    fetchData()
+    return () => {
+      used = false
+    }
+  }, [])
+
+  const columns = useMemo(
+    () => [
+      { Header: "Title", accessor: "title" },
+      { Header: "Choreographer", accessor: "choreographer_name" },
+      { Header: "Hook", accessor: "hook" },
+      { Header: "Formation", accessor: "formation" },
+      { Header: "User", accessor: "user_name" },
+      { Header: "Entered", accessor: "created_at" },
+      { Header: "Updated", accessor: "updated_at" },
+      { Header: "Sharing", accessor: "publish" },
+    ],
     []
   )
 
-  const data = React.useMemo(() => makeData(20), [])
-
-  return <Table columns={columns} data={data} />
+  return <Table columns={columns} data={dances} />
 }
 
 export default App
