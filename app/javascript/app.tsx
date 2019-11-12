@@ -45,6 +45,34 @@ function Table({ columns, data }: { columns: any; data: any }) {
   )
 }
 
+interface DanceSearchResult {
+  id: number
+  title: string
+  choreographer_id: number
+  choreographer_name: string
+  formation: string
+  hook: string
+  user_id: number
+  user_name: string
+  created_at: string
+  updated_at: string
+  figures?: string
+}
+
+// TODO: use rails route helpers
+const choreographerPath = (cid: number) => {
+  return "/choreographers/" + cid
+}
+
+const ChoreographerCell = props => {
+  const values: DanceSearchResult = props.row.original // shouldn't I be looking at props.row.values? It only has the accessor'd field in the column definition.
+  return (
+    <a href={choreographerPath(values.choreographer_id)}>
+      {values.choreographer_name}
+    </a>
+  )
+}
+
 function App() {
   const [dances, setDances] = useState([])
 
@@ -66,7 +94,11 @@ function App() {
   const columns = useMemo(
     () => [
       { Header: "Title", accessor: "title" },
-      { Header: "Choreographer", accessor: "choreographer_name" },
+      {
+        Header: "Choreographer",
+        accessor: "choreographer_name",
+        Cell: ChoreographerCell,
+      },
       { Header: "Hook", accessor: "hook" },
       { Header: "Formation", accessor: "formation" },
       { Header: "User", accessor: "user_name" },
