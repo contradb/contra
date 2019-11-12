@@ -7,11 +7,9 @@ describe 'Search page', js: true do
     dances = 12.times.map {|i| FactoryGirl.create(:dance, title: "Dance #{i}.")}
     visit(s_path)
     dances.each_with_index do |dance, i|
-      if i < 10
-        expect(page).to have_text(dance.title)
-      else
-        expect(page).to_not have_text(dance.title)
-      end
+      to_probably = i < 10 ? :to : :to_not
+      expect(page).send to_probably, have_text(dance.title)
+      expect(page).send to_probably, have_link(dance.choreographer.name, href: choreographer_path(dance.choreographer_id))
     end
   end
 end
