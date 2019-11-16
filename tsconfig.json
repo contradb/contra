@@ -9,7 +9,7 @@
     "sourceMap": true,
     "strict": true,
     "target": "es5",
-    "jsx": "react"
+    "jsx": "react",
   },
   "exclude": [
     "**/*.spec.ts",
