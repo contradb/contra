@@ -8,7 +8,7 @@ describe 'Search page', js: true do
     visit(s_path)
     dances.each_with_index do |dance, i|
       to_probably = i < 10 ? :to : :to_not
-      expect(page).send to_probably, have_text(dance.title)
+      expect(page).send to_probably, have_link(dance.title, href: dance_path(dance))
       expect(page).send to_probably, have_link(dance.choreographer.name, href: choreographer_path(dance.choreographer_id))
     end
   end
