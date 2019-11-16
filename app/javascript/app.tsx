@@ -17,7 +17,10 @@ function Table({ columns, data }: { columns: any; data: any }) {
 
   // Render the UI for your table
   return (
-    <table {...getTableProps()}>
+    <table
+      {...getTableProps()}
+      className="table table-bordered table-hover table-condensed dances-table-react"
+    >
       <thead>
         {headerGroups.map(headerGroup => (
           <tr {...headerGroup.getHeaderGroupProps()}>
