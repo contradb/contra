@@ -84,7 +84,7 @@ const DanceTitleCell = (props: any) => {
   return <a href={dancePath(values.id)}>{values.title}</a>
 }
 
-function App() {
+function DanceTable() {
   const [dances, setDances] = useState([])
 
   useEffect(() => {
@@ -123,4 +123,4 @@ function App() {
   return <Table columns={columns} data={dances} />
 }
 
-export default App
+export default DanceTable
