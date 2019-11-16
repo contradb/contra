@@ -111,9 +111,9 @@ function App() {
       { Header: "Hook", accessor: "hook" },
       { Header: "Formation", accessor: "formation" },
       { Header: "User", accessor: "user_name" },
-      { Header: "Entered", accessor: "created_at" },
-      { Header: "Updated", accessor: "updated_at" },
-      { Header: "Sharing", accessor: "publish" },
+      { Header: "Entered", accessor: "created_at", show: false },
+      { Header: "Updated", accessor: "updated_at", show: false },
+      { Header: "Sharing", accessor: "publish", show: false },
     ],
     []
   )
