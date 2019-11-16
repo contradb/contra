@@ -2,8 +2,6 @@ import * as React from "react"
 import { useState, useEffect, useMemo } from "react"
 import { useTable } from "react-table"
 
-import makeData from "./makeData"
-
 function Table({ columns, data }: { columns: any; data: any }) {
   // Use the state and functions returned from useTable to build your UI
   const {
@@ -64,7 +62,7 @@ const choreographerPath = (cid: number) => {
   return "/choreographers/" + cid
 }
 
-const ChoreographerCell = props => {
+const ChoreographerCell = (props: any) => {
   const values: DanceSearchResult = props.row.original // shouldn't I be looking at props.row.values? It only has the accessor'd field in the column definition.
   return (
     <a href={choreographerPath(values.choreographer_id)}>
