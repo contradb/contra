@@ -61,6 +61,9 @@ interface DanceSearchResult {
 const choreographerPath = (cid: number) => {
   return "/choreographers/" + cid
 }
+const dancePath = (dance_id: number) => {
+  return "/dances/" + dance_id
+}
 
 const ChoreographerCell = (props: any) => {
   const values: DanceSearchResult = props.row.original // shouldn't I be looking at props.row.values? It only has the accessor'd field in the column definition.
@@ -69,6 +72,11 @@ const ChoreographerCell = (props: any) => {
       {values.choreographer_name}
     </a>
   )
+}
+
+const DanceTitleCell = (props: any) => {
+  const values: DanceSearchResult = props.row.original // shouldn't I be looking at props.row.values? It only has the accessor'd field in the column definition.
+  return <a href={dancePath(values.id)}>{values.title}</a>
 }
 
 function App() {
@@ -91,7 +99,7 @@ function App() {
 
   const columns = useMemo(
     () => [
-      { Header: "Title", accessor: "title" },
+      { Header: "Title", accessor: "title", Cell: DanceTitleCell },
       {
         Header: "Choreographer",
         accessor: "choreographer_name",
