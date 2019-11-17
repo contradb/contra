@@ -17,34 +17,32 @@ function Table({ columns, data }: { columns: any; data: any }) {
 
   // Render the UI for your table
   return (
-    <>
-      <table
-        {...getTableProps()}
-        className="table table-bordered table-hover table-condensed dances-table-react"
-      >
-        <thead>
-          {headerGroups.map(headerGroup => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
-              ))}
+    <table
+      {...getTableProps()}
+      className="table table-bordered table-hover table-condensed dances-table-react"
+    >
+      <thead>
+        {headerGroups.map(headerGroup => (
+          <tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map(column => (
+              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+      <tbody {...getTableBodyProps()}>
+        {rows.map((row, i) => {
+          prepareRow(row)
+          return (
+            <tr {...row.getRowProps()}>
+              {row.cells.map(cell => {
+                return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+              })}
             </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row, i) => {
-            prepareRow(row)
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                })}
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-    </>
+          )
+        })}
+      </tbody>
+    </table>
   )
 }
 
@@ -86,13 +84,17 @@ const DanceTitleCell = (props: any) => {
 
 function DanceTable() {
   const [dances, setDances] = useState([])
+  const [titleVisible, setTitleVisible] = useState(true)
+  const toggleTitleVisible = () => setTitleVisible(!titleVisible)
 
+  // download data from web api
   useEffect(() => {
     let used = true
     async function fetchData() {
       if (used) {
         const r = await fetch("/api/v1/dances")
         const json = await r.json()
+        console.log('fetch("/api/v1/dances")')
         setDances(json)
       }
     }
@@ -104,7 +106,12 @@ function DanceTable() {
 
   const columns = useMemo(
     () => [
-      { Header: "Title", accessor: "title", Cell: DanceTitleCell },
+      {
+        Header: "Title",
+        accessor: "title",
+        Cell: DanceTitleCell,
+        show: () => titleVisible,
+      },
       {
         Header: "Choreographer",
         accessor: "choreographer_name",
@@ -117,10 +124,15 @@ function DanceTable() {
       { Header: "Updated", accessor: "updated_at", show: false },
       { Header: "Sharing", accessor: "publish", show: false },
     ],
-    []
+    [titleVisible]
   )
 
-  return <Table columns={columns} data={dances} />
+  return (
+    <>
+      <button onClick={toggleTitleVisible}>Title Visible</button>
+      <Table columns={columns} data={dances} />
+    </>
+  )
 }
 
 export default DanceTable
