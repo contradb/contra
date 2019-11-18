@@ -136,11 +136,12 @@ select.chooser-argument {
 
 .toggle-vis-active {
   @extend .btn-default;
+  background-color: white !important;
 }
 
 .toggle-vis-inactive {
-  background-color: $contra-grey;
   @extend .btn-default;
+  background-color: $contra-grey;
 }
 
 // Position radios and checkboxes better
