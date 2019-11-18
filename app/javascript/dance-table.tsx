@@ -84,8 +84,6 @@ const DanceTitleCell = (props: any) => {
 
 function DanceTable() {
   const [dances, setDances] = useState([])
-  const [titleVisible, setTitleVisible] = useState(true)
-  const toggleTitleVisible = () => setTitleVisible(!titleVisible)
 
   // download data from web api
   useEffect(() => {
@@ -104,32 +102,55 @@ function DanceTable() {
     }
   }, [])
 
+  const columnsArr = [
+    {
+      Header: "Title",
+      accessor: "title",
+      Cell: DanceTitleCell,
+      // show: () => titleVisible,
+    },
+    {
+      Header: "Choreographer",
+      accessor: "choreographer_name",
+      Cell: ChoreographerCell,
+    },
+    { Header: "Hook", accessor: "hook" },
+    { Header: "Formation", accessor: "formation" },
+    { Header: "User", accessor: "user_name" },
+    { Header: "Entered", accessor: "created_at" },
+    { Header: "Updated", accessor: "updated_at", show: false },
+    { Header: "Sharing", accessor: "publish", show: false },
+  ]
+  const [visibleToggles, setVisibleToggles] = useState(
+    columnsArr.map(ca => ca.show || !ca.hasOwnProperty("show"))
+  )
+  // const toggleTitleVisible = () => setTitleVisible(!titleVisible)
   const columns = useMemo(
-    () => [
-      {
-        Header: "Title",
-        accessor: "title",
-        Cell: DanceTitleCell,
-        show: () => titleVisible,
-      },
-      {
-        Header: "Choreographer",
-        accessor: "choreographer_name",
-        Cell: ChoreographerCell,
-      },
-      { Header: "Hook", accessor: "hook" },
-      { Header: "Formation", accessor: "formation" },
-      { Header: "User", accessor: "user_name" },
-      { Header: "Entered", accessor: "created_at", show: false },
-      { Header: "Updated", accessor: "updated_at", show: false },
-      { Header: "Sharing", accessor: "publish", show: false },
-    ],
-    [titleVisible]
+    () =>
+      columnsArr.map((ca, i) => {
+        return { ...ca, show: () => visibleToggles[i] }
+      }),
+    visibleToggles
   )
 
   return (
     <>
-      <button onClick={toggleTitleVisible}>Title Visible</button>
+      {columnsArr.map((ca, i) => {
+        const toggleVisFn = () =>
+          setVisibleToggles(visibleToggles.map((vis, j) => (i === j) !== vis))
+        const toggleVisClass = visibleToggles[i]
+          ? "toggle-vis-active"
+          : "toggle-vis-inactive"
+        return (
+          <button
+            key={i}
+            className={"btn btn-xs " + toggleVisClass}
+            onClick={toggleVisFn}
+          >
+            {ca.Header}
+          </button>
+        )
+      })}
       <Table columns={columns} data={dances} />
     </>
   )
