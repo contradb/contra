@@ -18,7 +18,6 @@ describe 'Search page', js: true do
       dances
       visit(s_path)
       %w[Title Choreographer Formation Hook User Entered].each do |col|
-        puts col
         expect(page).to have_css('.dances-table-react th', text: col)
         expect(page).to have_css('button.toggle-vis-active', text: col)
         expect(page).to_not have_css('button.toggle-vis-inactive', text: col)
@@ -31,7 +30,7 @@ describe 'Search page', js: true do
         expect(page).to have_css('button.toggle-vis-active', text: col)
         expect(page).to_not have_css('button.toggle-vis-inactive', text: col)
       end
-      %w[Updated Sharing].each do |col|
+      %w[Updated Sharing Figures].each do |col|
         expect(page).to_not have_css('.dances-table-react th', text: col)
         expect(page).to_not have_css('button.toggle-vis-active', text: col)
         expect(page).to  have_css('button.toggle-vis-inactive', text: col)
@@ -46,7 +45,6 @@ describe 'Search page', js: true do
       end
     end
 
-
     it 'published column cells' do
       with_login do |user|
         dances.each_with_index do |dance, i|
@@ -60,16 +58,26 @@ describe 'Search page', js: true do
       end
     end
 
-    it 'figures column' do
-      dances
-      visit(s_path)
-      expect(page).to_not have_content('whole dance')
-      click_button 'Figures'
-      expect(page).to have_content('whole dance', count: 3)
-      select('circle')
-      expect(page).to have_css('tr', text: /The Rendevouz.*circle left 4 places\ncircle left 3 places/)
-      expect(page).to have_css('tr', text: /Call Me.*circle left 3 places/)
+    describe 'figures column' do
+      it 'whole dance' do
+        dances
+        visit(s_path)
+        expect(page).to_not have_css(:th, text: "Figures")
+        expect(page).to_not have_content('whole dance')
+        click_button 'Figures'
+        expect(page).to have_css(:th, text: "Figures") # js wait
+        expect(page).to have_content('whole dance', count: 3)
+      end
+
+      it 'some matches prints figures' do
+        expect_any_instance_of(Api::V1::DancesController).to receive(:filter).and_return(['figure', 'circle'])
+        # mock
+        dances
+        visit(s_path)
+        click_button 'Figures'
+        expect(page).to have_css('tr', text: /The Rendevouz.*\n?circle left 4 places\ncircle left 3 places/)
+        expect(page).to have_css('tr', text: /Call Me.*\n?circle left 3 places/)
+      end
     end
   end
-
 end
