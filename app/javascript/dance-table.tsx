@@ -82,6 +82,14 @@ const DanceTitleCell = (props: any) => {
   return <a href={dancePath(values.id)}>{values.title}</a>
 }
 
+const MatchingFiguresHtmlCell = (props: any) => (
+  <div
+    dangerouslySetInnerHTML={{
+      __html: props.row.values.matching_figures_html,
+    }}
+  />
+)
+
 function DanceTable() {
   const [dances, setDances] = useState([])
 
@@ -120,6 +128,12 @@ function DanceTable() {
     { Header: "Entered", accessor: "created_at" },
     { Header: "Updated", accessor: "updated_at", show: false },
     { Header: "Sharing", accessor: "publish", show: false },
+    {
+      Header: "Figures",
+      accessor: "matching_figures_html",
+      show: false,
+      Cell: MatchingFiguresHtmlCell,
+    },
   ]
   const [visibleToggles, setVisibleToggles] = useState(
     columnsArr.map(ca => ca.show || !ca.hasOwnProperty("show"))

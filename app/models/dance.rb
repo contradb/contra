@@ -134,20 +134,4 @@ class Dance < ApplicationRecord
   # def fsnapshot(dir, tag)
   #   File.open("#{dir}/#{id}-#{tag}.txt", 'w') {|f| f.write(to_s_dump)}
   # end
-
-  def to_search_result
-    {
-      "id" => id,
-      "title" => title,
-      "choreographer_id" => choreographer_id,
-      "choreographer_name" => choreographer.name,
-      "formation" => start_type,
-      "hook" => hook,
-      "user_id" => user_id,
-      "user_name" => user.name,
-      "created_at" => created_at.as_json,
-      "updated_at" => updated_at.as_json,
-      "publish" => publish,
-    }
-  end
 end
