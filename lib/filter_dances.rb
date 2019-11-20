@@ -6,19 +6,39 @@ FilterResult = Struct.new(:dance, :matching_figures_html)
 
 module FilterDances
   def self.filter_dances_to_json(count, filter, dialect)
-    arr = Dance.all.limit(count)
-    filter_dances(arr, filter, dialect).map do |filter_result|
+    filter_dances(count, filter, dialect).map do |filter_result|
       filter_result_to_json(filter_result.dance,
                             filter_result.matching_figures_html)
     end
   end
 
-  def self.filter_dances(dances, filter, dialect)
+  # into is destructively appended!
+  def self.filter_dances(desired_match_count, filter, dialect, offset: 0, into: [])
     filter.is_a?(Array) or raise "filter must be an array, but got #{filter.inspect} of class #{filter.class}"
-    dances.reduce([]) do |acc, dance|
+    query = Dance.all.offset(offset)
+    if desired_match_count.finite?
+      query_size = (2 * desired_match_count / estimated_matchiness(filter)).ceil
+      query = query.limit(query_size)
+    end
+    query.reduce(into) do |acc, dance|
+      return acc if acc.length >= desired_match_count
       mf = matching_figures(filter, dance)
-      acc << FilterResult.new(dance, matching_figures_html(mf, dance, dialect))
+      acc << FilterResult.new(dance, matching_figures_html(mf, dance, dialect)) if mf
       acc
+    end
+    if into.length >= desired_match_count || desired_match_count.infinite?
+      into
+    else
+      query_size.is_a?(Integer) or raise "This should not happen"
+      filter_dances(Float::INFINITY, filter, dialect, offset: query_size, into: into)
+    end
+  end
+
+  def self.estimated_matchiness(filter)
+    if filter == ['figure', '*'] # a very common and very matchy filter
+      1.0
+    else
+      0.1
     end
   end
 
