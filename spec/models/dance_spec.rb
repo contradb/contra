@@ -183,22 +183,4 @@ RSpec.describe Dance, type: :model do
       expect(dut.dance.tags.to_a).to eq([dut.tag])
     end
   end
-
-  it '#to_search_result' do
-    dance = FactoryGirl.create(:dance)
-    result = {
-      id: dance.id,
-      title: dance.title,
-      choreographer_id: dance.choreographer_id,
-      choreographer_name: dance.choreographer.name,
-      formation: dance.start_type,
-      hook: dance.hook,
-      user_id: dance.user_id,
-      user_name: dance.user.name,
-      created_at: dance.created_at.as_json,
-      updated_at: dance.updated_at.as_json,
-      publish: dance.publish,
-    }.stringify_keys
-    expect(dance.to_search_result).to eq(result)
-  end
 end
