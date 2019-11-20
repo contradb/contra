@@ -3,6 +3,43 @@ require 'filter_dances'
 
 
 describe FilterDances do
+  # describe 'filter_dances_to_json' do
+
+  describe "filter_dances" do
+    it 'works with a matchy filter and plenty of dances' do
+      dances = 20.times.map { FactoryGirl.create(:dance) }
+      filter_results = FilterDances.filter_dances(10, ['figure', '*'], JSLibFigure.default_dialect)
+      expect(filter_results.length).to eq(10)
+      filter_results.each_with_index do |filter_result, i|
+        dance = dances[i]
+        expect(filter_result.dance.id).to eq(dance.id)
+      end
+    end
+
+    it 'works with an unexpectedly unmatchy filter and not enough dances' do
+      dance1 = FactoryGirl.create(:dance)
+      30.times.each { FactoryGirl.create(:dance_with_zero_figures) }
+      dance2 = FactoryGirl.create(:dance)
+      dances = [dance1, dance2]
+      filter_results = FilterDances.filter_dances(10, ['figure', '*'], JSLibFigure.default_dialect)
+      expect(filter_results.length).to eq(2)
+      filter_results.each_with_index do |filter_result, i|
+        dance = dances[i]
+        expect(filter_result.dance.id).to eq(dance.id)
+      end
+    end
+
+    it 'works with an unexpectedly matchy filter' do
+      dances = 30.times.map { FactoryGirl.create(:dance_with_a_swing) }
+      filter_results = FilterDances.filter_dances(10, ['figure', 'swing'], JSLibFigure.default_dialect)
+      expect(filter_results.length).to eq(10)
+      filter_results.each_with_index do |filter_result, i|
+        dance = dances[i]
+        expect(filter_result.dance.id).to eq(dance.id)
+      end
+    end
+  end
+
   it 'filter_result_to_json' do
     dance = FactoryGirl.build(:dance)
     result = {
