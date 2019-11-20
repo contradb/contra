@@ -5,6 +5,14 @@ require 'search_match'
 FilterResult = Struct.new(:dance, :matching_figures_html)
 
 module FilterDances
+  def self.filter_dances_to_json(count, filter, dialect)
+    arr = Dance.all.limit(count)
+    filter_dances(arr, filter, dialect).map do |filter_result|
+      filter_result_to_json(filter_result.dance,
+                            filter_result.matching_figures_html)
+    end
+  end
+
   def self.filter_dances(dances, filter, dialect)
     filter.is_a?(Array) or raise "filter must be an array, but got #{filter.inspect} of class #{filter.class}"
     dances.reduce([]) do |acc, dance|
@@ -14,13 +22,43 @@ module FilterDances
     end
   end
 
-  # TODO: render this client-side. Send JSON of matching figures
   def self.matching_figures_html(matching_figures, dance, dialect)
     matching_indicies = SearchMatch.flatten_set_to_index_a(matching_figures)
     if matching_indicies.length === dance.figures.length
       'whole dance'
     else
       matching_indicies.map {|i| JSLibFigure.figure_to_html(dance.figures[i], dialect)}.join('<br>').html_safe
+    end
+  end
+
+  def self.filter_result_to_json(dance, matching_figures_html)
+    {
+      "id" => dance.id,
+      "title" => dance.title,
+      "choreographer_id" => dance.choreographer_id,
+      "choreographer_name" => dance.choreographer.name,
+      "formation" => dance.start_type,
+      "hook" => dance.hook,
+      "user_id" => dance.user_id,
+      "user_name" => dance.user.name,
+      "created_at" => dance.created_at.as_json,
+      "updated_at" => dance.updated_at.as_json,
+      "publish" => dance_publish_cell(dance.publish),
+      # TODO: render this client-side. Send JSON of matching figures:
+      "matching_figures_html" => matching_figures_html
+    }
+  end
+
+  def self.dance_publish_cell(enum_value)
+    case enum_value.to_s
+    when 'all'
+      'everyone'
+    when 'link'
+      'link'
+    when 'off'
+      'myself'
+    else
+      raise 'Fell through enum case statement'
     end
   end
 
