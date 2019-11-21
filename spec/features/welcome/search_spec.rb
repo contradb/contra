@@ -80,4 +80,11 @@ describe 'Search page', js: true do
       end
     end
   end
+
+  it "entries count displays how many search results match" do
+    dbsize = 12
+    dbsize.times.map {FactoryGirl.create(:dance)}
+    visit(s_path)
+    expect(page).to have_content("Showing 1 to 10 of #{dbsize} entries")
+  end
 end
