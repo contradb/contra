@@ -149,22 +149,29 @@ function DanceTable() {
 
   return (
     <>
-      {columnsArr.map((ca, i) => {
-        const toggleVisFn = () =>
-          setVisibleToggles(visibleToggles.map((vis, j) => (i === j) !== vis))
-        const toggleVisClass = visibleToggles[i]
-          ? "toggle-vis-active"
-          : "toggle-vis-inactive"
-        return (
-          <button
-            key={i}
-            className={"btn btn-xs " + toggleVisClass}
-            onClick={toggleVisFn}
-          >
-            {ca.Header}
-          </button>
-        )
-      })}
+      <div className="table-column-vis-wrap">
+        <label>Show columns </label>
+        <div className="table-column-vis-toggles">
+          {columnsArr.map((ca, i) => {
+            const toggleVisFn = () =>
+              setVisibleToggles(
+                visibleToggles.map((vis, j) => (i === j) !== vis)
+              )
+            const toggleVisClass = visibleToggles[i]
+              ? "toggle-vis-active"
+              : "toggle-vis-inactive"
+            return (
+              <button
+                key={i}
+                className={"btn btn-xs " + toggleVisClass}
+                onClick={toggleVisFn}
+              >
+                {ca.Header}
+              </button>
+            )
+          })}
+        </div>
+      </div>
       <Table columns={columns} data={dances} />
     </>
   )

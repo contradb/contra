@@ -3,8 +3,6 @@ require 'filter_dances'
 
 
 describe FilterDances do
-  # describe 'filter_dances_to_json' do
-
   describe "filter_dances" do
     it 'works with a matchy filter and plenty of dances' do
       dances = 20.times.map { FactoryGirl.create(:dance) }
