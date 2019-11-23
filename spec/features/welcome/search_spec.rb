@@ -84,7 +84,7 @@ describe 'Search page', js: true do
 
   it "entries count displays how many search results match" do
     dbsize = 12
-    dbsize.times.map {FactoryGirl.create(:dance)}
+    dbsize.times.map {|i| FactoryGirl.create(:dance, created_at: now - i.hours)}
     visit(s_path)
     expect(page).to have_content("Showing 1 to 10 of #{dbsize} entries")
   end

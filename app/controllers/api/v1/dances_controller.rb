@@ -2,8 +2,7 @@ require 'filter_dances'
 
 class Api::V1::DancesController < ApplicationController
   def index
-    json = FilterDances.filter_dances_to_json(10, filter, dialect)
-    render json: json
+    render json: FilterDances.filter_dances(filter, count: 10, offset: 0, dialect: dialect)
   end
 
   private

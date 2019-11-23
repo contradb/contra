@@ -5,13 +5,14 @@ require 'filter_dances'
 describe FilterDances do
   describe "filter_dances" do
     let (:now) { DateTime.now }
+    let (:dialect) { JSLibFigure.default_dialect }
     it 'works with a matchy filter and plenty of dances' do
       dances = 20.times.map {|i| FactoryGirl.create(:dance, created_at: now - i.hours) }
-      filter_results = FilterDances.filter_dances(10, ['figure', '*'], JSLibFigure.default_dialect)
+      filter_results = FilterDances.filter_dances(['figure', '*'], count: 10, dialect: dialect)[:dances]
       expect(filter_results.length).to eq(10)
       filter_results.each_with_index do |filter_result, i|
         dance = dances[i]
-        expect(filter_result.dance.id).to eq(dance.id)
+        expect(filter_result['id']).to eq(dance.id)
       end
     end
 
@@ -20,11 +21,11 @@ describe FilterDances do
       30.times.each {|i| FactoryGirl.create(:dance_with_zero_figures, created_at: now - i.hours) }
       dance2 = FactoryGirl.create(:dance, created_at: now - 100.hours)
       dances = [dance1, dance2]
-      filter_results = FilterDances.filter_dances(10, ['figure', '*'], JSLibFigure.default_dialect)
+      filter_results = FilterDances.filter_dances(['figure', '*'], count: 10, dialect: dialect)[:dances]
       expect(filter_results.length).to eq(2)
       filter_results.each_with_index do |filter_result, i|
         dance = dances[i]
-        expect(filter_result.dance.id).to eq(dance.id)
+        expect(filter_result['id']).to eq(dance.id)
       end
     end
 
@@ -33,11 +34,11 @@ describe FilterDances do
         t = now - i.hours
         FactoryGirl.create(:dance_with_a_swing, created_at: t, updated_at: t)
       end
-      filter_results = FilterDances.filter_dances(10, ['figure', 'swing'], JSLibFigure.default_dialect)
+      filter_results = FilterDances.filter_dances(['figure', 'swing'], count: 10, dialect: dialect)[:dances]
       expect(filter_results.length).to eq(10)
       filter_results.each_with_index do |filter_result, i|
         dance = dances[i]
-        expect(filter_result.dance.id).to eq(dance.id)
+        expect(filter_result['id']).to eq(dance.id)
       end
     end
 
@@ -47,14 +48,16 @@ describe FilterDances do
         t = now - random.rand(100).hours
         FactoryGirl.create(:dance, created_at: t)
       end
-      filter_results = FilterDances.filter_dances(10, ['figure', '*'], JSLibFigure.default_dialect)
+      filter_results = FilterDances.filter_dances(['figure', '*'], count: 10, dialect: dialect)[:dances]
       dances_sorted = dances.sort_by(&:created_at).reverse
       filter_results.each_with_index do |filter_result, i|
         dance = dances_sorted[i]
-        expect(filter_result.dance.id).to eq(dance.id)
+        expect(filter_result['id']).to eq(dance.id)
       end
-
     end
+
+    it 'honors count and offset'
+    it 'checks the numberSearched and numberMatching fields'
   end
 
   it 'filter_result_to_json' do

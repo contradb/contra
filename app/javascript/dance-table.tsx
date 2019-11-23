@@ -62,6 +62,12 @@ interface DanceSearchResult {
   figures?: string
 }
 
+interface DancesGetJson {
+  numberSearched: number
+  numberMatching: number
+  dances: Array<DanceSearchResult>
+}
+
 // TODO: use rails route helpers
 const choreographerPath = (cid: number) => {
   return "/choreographers/" + cid
@@ -93,7 +99,17 @@ const MatchingFiguresHtmlCell = (props: any) => (
 )
 
 function DanceTable() {
-  const [dances, setDances] = useState([])
+  const nullDances: DanceSearchResult[] = []
+  const [dancesGetJson, setDancesGetJson] = useState({
+    dances: nullDances,
+    numberSearched: 0,
+    numberMatching: 0,
+  })
+  const {
+    dances,
+    numberSearched,
+    numberMatching,
+  }: DancesGetJson = dancesGetJson
 
   // download data from web api
   useEffect(() => {
@@ -101,9 +117,9 @@ function DanceTable() {
     async function fetchData() {
       if (used) {
         const r = await fetch("/api/v1/dances")
-        const json = await r.json()
+        const json: DancesGetJson = await r.json()
         console.log('fetch("/api/v1/dances")')
-        setDances(json)
+        setDancesGetJson(json)
       }
     }
     fetchData()
