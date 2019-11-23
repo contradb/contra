@@ -15,7 +15,7 @@ module FilterDances
   # into is destructively appended!
   def self.filter_dances(desired_match_count, filter, dialect, offset: 0, into: [])
     filter.is_a?(Array) or raise "filter must be an array, but got #{filter.inspect} of class #{filter.class}"
-    query = Dance.includes(:choreographer, :user).references(:choreographer, :user).offset(offset)
+    query = Dance.includes(:choreographer, :user).references(:choreographer, :user).order('dances.created_at DESC').offset(offset)
     if desired_match_count.finite?
       query_size = (2 * desired_match_count / estimated_matchiness(filter)).ceil
       query = query.limit(query_size)
