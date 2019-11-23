@@ -7,18 +7,23 @@ RSpec.describe Api::V1::DancesController do
       dance.reload
       get api_v1_dances_path
       expect(response).to have_http_status(200)
-      expect(JSON.parse(response.body)).to eq([{"id"=>dance.id,
-                                                "title"=>dance.title,
-                                                "choreographer_id"=>dance.choreographer_id,
-                                                "choreographer_name"=>dance.choreographer.name,
-                                                "formation" => dance.start_type,
-                                                "hook" => dance.hook,
-                                                "user_id" => dance.user_id,
-                                                "user_name" => dance.user.name,
-                                                "created_at"=>dance.created_at.as_json,
-                                                "updated_at"=>dance.updated_at.as_json,
-                                                "publish"=>"everyone",
-                                                "matching_figures_html"=>"whole dance"}])
+      expect(JSON.parse(response.body)).to eq({
+                                                "numberSearched" => 1,
+                                                "numberMatching" => 1,
+                                                "dances" =>
+                                                [{"id"=>dance.id,
+                                                  "title"=>dance.title,
+                                                  "choreographer_id"=>dance.choreographer_id,
+                                                  "choreographer_name"=>dance.choreographer.name,
+                                                  "formation" => dance.start_type,
+                                                  "hook" => dance.hook,
+                                                  "user_id" => dance.user_id,
+                                                  "user_name" => dance.user.name,
+                                                  "created_at"=>dance.created_at.as_json,
+                                                  "updated_at"=>dance.updated_at.as_json,
+                                                  "publish"=>"everyone",
+                                                  "matching_figures_html"=>"whole dance"}]
+                                              })
     end
 
     it 'only performs one query'
