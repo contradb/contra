@@ -3,8 +3,9 @@
 require 'rails_helper'
 
 describe 'Search page', js: true do
+  let (:now) { DateTime.now }
   it "works" do
-    dances = 12.times.map {|i| FactoryGirl.create(:dance, title: "Dance #{i}.")}
+    dances = 12.times.map {|i| FactoryGirl.create(:dance, title: "Dance #{i}.", created_at: now - i.hours)}
     visit(s_path)
     dances.each_with_index do |dance, i|
       to_probably = i < 10 ? :to : :to_not

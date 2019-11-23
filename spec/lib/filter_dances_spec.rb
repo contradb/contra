@@ -4,8 +4,9 @@ require 'filter_dances'
 
 describe FilterDances do
   describe "filter_dances" do
+    let (:now) { DateTime.now }
     it 'works with a matchy filter and plenty of dances' do
-      dances = 20.times.map { FactoryGirl.create(:dance) }
+      dances = 20.times.map {|i| FactoryGirl.create(:dance, created_at: now - i.hours) }
       filter_results = FilterDances.filter_dances(10, ['figure', '*'], JSLibFigure.default_dialect)
       expect(filter_results.length).to eq(10)
       filter_results.each_with_index do |filter_result, i|
@@ -16,8 +17,8 @@ describe FilterDances do
 
     it 'works with an unexpectedly unmatchy filter and not enough dances' do
       dance1 = FactoryGirl.create(:dance)
-      30.times.each { FactoryGirl.create(:dance_with_zero_figures) }
-      dance2 = FactoryGirl.create(:dance)
+      30.times.each {|i| FactoryGirl.create(:dance_with_zero_figures, created_at: now - i.hours) }
+      dance2 = FactoryGirl.create(:dance, created_at: now - 100.hours)
       dances = [dance1, dance2]
       filter_results = FilterDances.filter_dances(10, ['figure', '*'], JSLibFigure.default_dialect)
       expect(filter_results.length).to eq(2)
@@ -28,13 +29,31 @@ describe FilterDances do
     end
 
     it 'works with an unexpectedly matchy filter' do
-      dances = 30.times.map { FactoryGirl.create(:dance_with_a_swing) }
+      dances = 30.times.map do |i|
+        t = now - i.hours
+        FactoryGirl.create(:dance_with_a_swing, created_at: t, updated_at: t)
+      end
       filter_results = FilterDances.filter_dances(10, ['figure', 'swing'], JSLibFigure.default_dialect)
       expect(filter_results.length).to eq(10)
       filter_results.each_with_index do |filter_result, i|
         dance = dances[i]
         expect(filter_result.dance.id).to eq(dance.id)
       end
+    end
+
+    it 'returns dances in most-recently-created order' do
+      random = Random.new(1000) # repeatable seed.
+      dances = 10.times.map do |i|
+        t = now - random.rand(100).hours
+        FactoryGirl.create(:dance, created_at: t)
+      end
+      filter_results = FilterDances.filter_dances(10, ['figure', '*'], JSLibFigure.default_dialect)
+      dances_sorted = dances.sort_by(&:created_at).reverse
+      filter_results.each_with_index do |filter_result, i|
+        dance = dances_sorted[i]
+        expect(filter_result.dance.id).to eq(dance.id)
+      end
+
     end
   end
 
