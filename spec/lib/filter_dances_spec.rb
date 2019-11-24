@@ -6,6 +6,7 @@ describe FilterDances do
   describe "filter_dances" do
     let (:now) { DateTime.now }
     let (:dialect) { JSLibFigure.default_dialect }
+
     it 'works with a matchy filter and plenty of dances' do
       dances = 20.times.map {|i| FactoryGirl.create(:dance, created_at: now - i.hours) }
       filter_results = FilterDances.filter_dances(['figure', '*'], count: 10, dialect: dialect)[:dances]
@@ -29,19 +30,6 @@ describe FilterDances do
       end
     end
 
-    it 'works with an unexpectedly matchy filter' do
-      dances = 30.times.map do |i|
-        t = now - i.hours
-        FactoryGirl.create(:dance_with_a_swing, created_at: t, updated_at: t)
-      end
-      filter_results = FilterDances.filter_dances(['figure', 'swing'], count: 10, dialect: dialect)[:dances]
-      expect(filter_results.length).to eq(10)
-      filter_results.each_with_index do |filter_result, i|
-        dance = dances[i]
-        expect(filter_result['id']).to eq(dance.id)
-      end
-    end
-
     it 'returns dances in most-recently-created order' do
       random = Random.new(1000) # repeatable seed.
       dances = 10.times.map do |i|
@@ -56,7 +44,13 @@ describe FilterDances do
       end
     end
 
-    it 'honors count and offset'
+    it 'honors count and offset' do
+      dances = 3.times.map {|i| FactoryGirl.create(:dance, created_at: now - i.hours) }
+      filter_results = FilterDances.filter_dances(['figure', '*'], count: 1, offset: 1, dialect: dialect)[:dances]
+      expect(filter_results.length).to eq(1)
+      expect(filter_results.first['id']).to eq(dances.second.id)
+    end
+
     it 'checks the numberSearched and numberMatching fields'
   end
 
