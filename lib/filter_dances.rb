@@ -3,7 +3,6 @@ require 'set'
 require 'search_match'
 
 module FilterDances
-  # into is destructively appended!
   def self.filter_dances(filter, dialect:, count: 10, offset: 0)
     filter.is_a?(Array) or raise "filter must be an array, but got #{filter.inspect} of class #{filter.class}"
     query = Dance.includes(:choreographer, :user).references(:choreographer, :user).order('dances.created_at DESC')
@@ -16,8 +15,10 @@ module FilterDances
       if mf
         number_matching += 1
         send_this_dance = offset < number_matching && number_matching <= offset + count
-        dance_json = filter_result_to_json(dance, matching_figures_html(mf, dance, dialect))
-        filter_results << dance_json if send_this_dance
+        if send_this_dance
+          mf_html = matching_figures_html(mf, dance, dialect)
+          filter_results << filter_result_to_json(dance, mf_html)
+        end
       end
     end
     {
