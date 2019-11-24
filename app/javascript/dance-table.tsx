@@ -1,19 +1,43 @@
 import * as React from "react"
-import { useState, useEffect, useMemo } from "react"
-import { useTable } from "react-table"
+import { useState, useEffect, useMemo, useCallback } from "react"
+import { useTable, usePagination } from "react-table"
 
-function Table({ columns, data }: { columns: any; data: any }) {
-  // Use the state and functions returned from useTable to build your UI
+function Table({
+  columns,
+  data,
+  fetchData,
+  loading,
+  pageCount: controlledPageCount,
+}: {
+  columns: any
+  data: any
+  fetchData: Function
+  loading: boolean
+  pageCount: number
+}) {
+  // const tableState = useTableState({ pageIndex: 0 })
+  // const [{ pageIndex, pageSize }] = tableState
+
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
     prepareRow,
+    pageIndex,
+    pageSize,
   } = useTable({
     columns,
     data,
+    manualPagination: true,
+    pageCount: controlledPageCount,
   })
+
+  useEffect(() => fetchData({ pageIndex, pageSize }), [
+    fetchData,
+    pageIndex,
+    pageSize,
+  ])
 
   // Render the UI for your table
   return (
@@ -112,22 +136,37 @@ function DanceTable() {
     numberMatching,
   }: DancesGetJson = dancesGetJson
 
-  // download data from web api
-  useEffect(() => {
-    let used = true
+  const [pageCount, setPageCount] = React.useState(0)
+  const [loading, setLoading] = React.useState(false)
+  const fetchData = useCallback(({ pageSize, pageIndex }) => {
+    setLoading(true)
     async function fetchData() {
-      if (used) {
-        const r = await fetch("/api/v1/dances")
-        const json: DancesGetJson = await r.json()
-        console.log('fetch("/api/v1/dances")')
-        setDancesGetJson(json)
-      }
+      console.log('fetch("/api/v1/dances")')
+      const response = await fetch("/api/v1/dances")
+      const json: DancesGetJson = await response.json()
+      setDancesGetJson(json)
+      setPageCount(Math.ceil(json.numberMatching / pageSize))
+      setLoading(false)
     }
     fetchData()
-    return () => {
-      used = false
-    }
+    // maybe return in-use-ness to prevent a memory leak here?
   }, [])
+
+  // useEffect(() => {
+  //   let used = true
+  //   async function fetchData() {
+  //     if (used) {
+  //       const r = await fetch("/api/v1/dances")
+  //       const json: DancesGetJson = await r.json()
+  //       console.log('fetch("/api/v1/dances")')
+  //       setDancesGetJson(json)
+  //     }
+  //   }
+  //   fetchData()
+  //   return () => {
+  //     used = false
+  //   }
+  // }, [])
 
   const columnsArr = [
     {
@@ -191,7 +230,13 @@ function DanceTable() {
           })}
         </div>
       </div>
-      <Table columns={columns} data={dances} />
+      <Table
+        columns={columns}
+        data={dances}
+        fetchData={fetchData}
+        loading={loading}
+        pageCount={pageCount}
+      />
       <div>
         Showing {offset + 1} to {offset + dances.length} of
         {" " + numberMatching + " "}
