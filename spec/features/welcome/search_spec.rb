@@ -82,10 +82,11 @@ describe 'Search page', js: true do
     end
   end
 
-  it "entries count displays how many search results match" do
+  it "sentence displays how many search results match" do
     dbsize = 12
     dbsize.times.map {|i| FactoryGirl.create(:dance, created_at: now - i.hours)}
     visit(s_path)
-    expect(page).to have_content("Showing 1 to 10 of #{dbsize} entries")
+    expect(page).to have_content("Showing 1 to 10 of #{dbsize} dances.")
+    # TODO add more tests around changing the offset and count
   end
 end

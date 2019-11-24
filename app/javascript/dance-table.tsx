@@ -99,6 +99,7 @@ const MatchingFiguresHtmlCell = (props: any) => (
 )
 
 function DanceTable() {
+  const offset = 0
   const nullDances: DanceSearchResult[] = []
   const [dancesGetJson, setDancesGetJson] = useState({
     dances: nullDances,
@@ -191,6 +192,11 @@ function DanceTable() {
         </div>
       </div>
       <Table columns={columns} data={dances} />
+      <div>
+        Showing {offset + 1} to {offset + dances.length} of
+        {" " + numberMatching + " "}
+        {numberMatching === numberSearched || "filtered"} dances.
+      </div>
     </>
   )
 }
