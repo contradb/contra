@@ -103,6 +103,7 @@ function Table({
         <span>
           | Go to page:{" "}
           <input
+            className="page-number-entry"
             type="number"
             defaultValue={pageIndex + 1}
             onChange={e => {
@@ -181,9 +182,8 @@ const MatchingFiguresHtmlCell = (props: any) => (
 
 function DanceTable() {
   const offset = 0
-  const nullDances: DanceSearchResult[] = []
   const [dancesGetJson, setDancesGetJson] = useState({
-    dances: nullDances,
+    dances: [] as DanceSearchResult[],
     numberSearched: 0,
     numberMatching: 0,
   })
@@ -198,8 +198,10 @@ function DanceTable() {
   const fetchData = useCallback(({ pageSize, pageIndex }) => {
     setLoading(true)
     async function fetchData() {
-      console.log('fetch("/api/v1/dances")')
-      const response = await fetch("/api/v1/dances")
+      const url = `/api/v1/dances?count=${pageSize}&offset=${pageIndex *
+        pageSize}`
+      console.log(`fetch("${url}")`)
+      const response = await fetch(url)
       const json: DancesGetJson = await response.json()
       setDancesGetJson(json)
       setPageCount(Math.ceil(json.numberMatching / pageSize))

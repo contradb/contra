@@ -13,6 +13,65 @@ describe 'Search page', js: true do
       expect(page).send to_probably, have_link(dance.choreographer.name, href: choreographer_path(dance.choreographer_id))
     end
   end
+
+  describe 'pagination' do
+    let! (:dances) { 52.times.map {|i| FactoryGirl.create(:dance, title: "dance-#{i}.", created_at: now - i.hours)} }
+    it "turning pages" do
+      visit(s_path)
+      # first page
+      10.times {|i| expect(page).to have_link("dance-#{i}.")}
+      expect(page).to have_button('<<', disabled: true)
+      expect(page).to have_button('<', disabled: true)
+      expect(page).to have_button('>')
+      expect(page).to have_button('>>')
+      click_on '>'
+      # second page
+      10.times {|i| expect(page).to have_link("dance-#{i+10}.")}
+      expect(page).to have_button('<<')
+      expect(page).to have_button('<')
+      expect(page).to have_button('>')
+      expect(page).to have_button('>>')
+      click_on '<'
+      # first page
+      10.times {|i| expect(page).to have_link("dance-#{i}.")}
+      expect(page).to have_button('<<', disabled: true)
+      expect(page).to have_button('<', disabled: true)
+      expect(page).to have_button('>')
+      expect(page).to have_button('>>')
+      find('.page-number-entry').fill_in(with: '3') # third page
+      10.times {|i| expect(page).to have_link("dance-#{i+20}.")}
+      expect(page).to have_button('<<')
+      expect(page).to have_button('<')
+      expect(page).to have_button('>')
+      expect(page).to have_button('>>')
+      click_on '>>'
+      # last (partial) page
+      2.times {|i| expect(page).to have_link("dance-#{i+50}.")}
+      expect(page).to have_button('<<')
+      expect(page).to have_button('<')
+      expect(page).to have_button('>', disabled: true)
+      expect(page).to have_button('>>', disabled: true)
+      click_on '<<'
+      # first page
+      10.times {|i| expect(page).to have_link("dance-#{i}.")}
+      expect(page).to have_button('<<', disabled: true)
+      expect(page).to have_button('<', disabled: true)
+      expect(page).to have_button('>')
+      expect(page).to have_button('>>')
+    end
+
+    it "page size select menu" do
+      visit(s_path)
+      expect(page).to have_text("Page 1 of 6")
+      select('30')
+      expect(page).to have_text("Page 1 of 2")
+      click_on '>'
+      (dances.length-30).times do |i|
+        expect(page).to have_link("dance-#{i+30}.")
+      end
+    end
+  end
+
   describe 'columns' do
     let (:dances) {[:dance, :box_the_gnat_contra, :call_me].map {|d| FactoryGirl.create(d)}}
     it "Clicking vis toggles buttons cause columns to disappear" do
