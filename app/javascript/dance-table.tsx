@@ -2,15 +2,34 @@ import * as React from "react"
 import { useState, useEffect, useMemo, useCallback } from "react"
 import { useTable, usePagination } from "react-table"
 
+function PaginationSentence({
+  pageOffset,
+  pageCount,
+  matchCount,
+  isFiltered,
+}: {
+  pageOffset: number
+  pageCount: number
+  matchCount: number
+  isFiltered: boolean
+}) {
+  return (
+    <div>
+      Showing {pageOffset + 1} to {pageOffset + pageCount} of {matchCount}{" "}
+      {isFiltered && "filtered"} dances.
+    </div>
+  )
+}
+
 function Table({
   columns,
-  data,
+  dancesGetJson,
   fetchData,
   loading,
   pageCount: controlledPageCount,
 }: {
   columns: any
-  data: any
+  dancesGetJson: DancesGetJson
   fetchData: Function
   loading: boolean
   pageCount: number
@@ -38,7 +57,7 @@ function Table({
   } = useTable(
     {
       columns,
-      data,
+      data: dancesGetJson.dances,
       manualPagination: true,
       pageCount: controlledPageCount,
     },
@@ -81,6 +100,14 @@ function Table({
           })}
         </tbody>
       </table>
+      <PaginationSentence
+        pageOffset={pageIndex * pageSize}
+        pageCount={dancesGetJson.dances.length}
+        matchCount={dancesGetJson.numberMatching}
+        isFiltered={
+          dancesGetJson.numberMatching !== dancesGetJson.numberSearched
+        }
+      />
       <div className="pagination">
         <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {"<<"}
@@ -291,16 +318,11 @@ function DanceTable() {
       </div>
       <Table
         columns={columns}
-        data={dances}
+        dancesGetJson={dancesGetJson}
         fetchData={fetchData}
         loading={loading}
         pageCount={pageCount}
       />
-      <div>
-        Showing {offset + 1} to {offset + dances.length} of
-        {" " + numberMatching + " "}
-        {numberMatching === numberSearched || "filtered"} dances.
-      </div>
     </>
   )
 }

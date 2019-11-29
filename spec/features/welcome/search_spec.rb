@@ -20,6 +20,7 @@ describe 'Search page', js: true do
       visit(s_path)
       # first page
       10.times {|i| expect(page).to have_link("dance-#{i}.")}
+      expect(page).to have_text('Showing 1 to 10 of 52 dances')
       expect(page).to have_button('<<', disabled: true)
       expect(page).to have_button('<', disabled: true)
       expect(page).to have_button('>')
@@ -27,6 +28,7 @@ describe 'Search page', js: true do
       click_on '>'
       # second page
       10.times {|i| expect(page).to have_link("dance-#{i+10}.")}
+      expect(page).to have_text('Showing 11 to 20 of 52 dances')
       expect(page).to have_button('<<')
       expect(page).to have_button('<')
       expect(page).to have_button('>')
@@ -34,12 +36,14 @@ describe 'Search page', js: true do
       click_on '<'
       # first page
       10.times {|i| expect(page).to have_link("dance-#{i}.")}
+      expect(page).to have_text('Showing 1 to 10 of 52 dances')
       expect(page).to have_button('<<', disabled: true)
       expect(page).to have_button('<', disabled: true)
       expect(page).to have_button('>')
       expect(page).to have_button('>>')
       find('.page-number-entry').fill_in(with: '3') # third page
       10.times {|i| expect(page).to have_link("dance-#{i+20}.")}
+      expect(page).to have_text('Showing 21 to 30 of 52 dances')
       expect(page).to have_button('<<')
       expect(page).to have_button('<')
       expect(page).to have_button('>')
@@ -47,6 +51,7 @@ describe 'Search page', js: true do
       click_on '>>'
       # last (partial) page
       2.times {|i| expect(page).to have_link("dance-#{i+50}.")}
+      expect(page).to have_text('Showing 51 to 52 of 52 dances')
       expect(page).to have_button('<<')
       expect(page).to have_button('<')
       expect(page).to have_button('>', disabled: true)
@@ -54,6 +59,7 @@ describe 'Search page', js: true do
       click_on '<<'
       # first page
       10.times {|i| expect(page).to have_link("dance-#{i}.")}
+      expect(page).to have_text('Showing 1 to 10 of 52 dances')
       expect(page).to have_button('<<', disabled: true)
       expect(page).to have_button('<', disabled: true)
       expect(page).to have_button('>')
