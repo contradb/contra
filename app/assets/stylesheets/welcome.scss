@@ -149,3 +149,11 @@ select.chooser-argument {
 .chooser-argument input[type="checkbox"] {
   margin-top: 0px;              /* override 4px in bootstrap */
 }
+
+.pagination {
+  @extend .btn-group;
+}
+
+.flipped-glyphicon {
+  transform: scaleX(-1);
+}
