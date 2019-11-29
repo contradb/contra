@@ -109,26 +109,33 @@ function Table({
         }
       />
       <div className="pagination">
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          {"<<"}
-        </button>{" "}
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          {"<"}
-        </button>{" "}
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
-          {">"}
-        </button>{" "}
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          {">>"}
-        </button>{" "}
+        <TurnPageButton
+          onClick={() => {
+            gotoPage(0)
+          }}
+          isDisabled={!canPreviousPage}
+          glyphicon="glyphicon-fast-backward"
+        />{" "}
+        <TurnPageButton
+          onClick={previousPage}
+          isDisabled={!canPreviousPage}
+          glyphicon="glyphicon-play"
+          iconIsFlipped={true}
+        />{" "}
+        <TurnPageButton
+          onClick={nextPage}
+          isDisabled={!canNextPage}
+          glyphicon="glyphicon-play"
+        />{" "}
+        <TurnPageButton
+          onClick={() => {
+            gotoPage(pageCount - 1)
+          }}
+          isDisabled={!canNextPage}
+          glyphicon="glyphicon-fast-forward"
+        />{" "}
         <span>
-          Page{" "}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>{" "}
-        </span>
-        <span>
-          | Go to page:{" "}
+          Go to page:{" "}
           <input
             className="page-number-entry"
             type="number"
@@ -154,6 +161,25 @@ function Table({
         </select>
       </div>
     </>
+  )
+}
+
+function TurnPageButton({
+  onClick,
+  isDisabled = false,
+  glyphicon,
+  iconIsFlipped = false,
+}: {
+  onClick: () => void
+  isDisabled?: boolean
+  glyphicon: string
+  iconIsFlipped?: boolean
+}) {
+  const flipClass: string | false = iconIsFlipped && "flipped-glyphicon"
+  return (
+    <button className="btn btn-default" onClick={onClick} disabled={isDisabled}>
+      <span className={`glyphicon ${glyphicon} ${flipClass}`}></span>
+    </button>
   )
 }
 
@@ -237,22 +263,6 @@ function DanceTable() {
     fetchData()
     // maybe return in-use-ness to prevent a memory leak here?
   }, [])
-
-  // useEffect(() => {
-  //   let used = true
-  //   async function fetchData() {
-  //     if (used) {
-  //       const r = await fetch("/api/v1/dances")
-  //       const json: DancesGetJson = await r.json()
-  //       console.log('fetch("/api/v1/dances")')
-  //       setDancesGetJson(json)
-  //     }
-  //   }
-  //   fetchData()
-  //   return () => {
-  //     used = false
-  //   }
-  // }, [])
 
   const columnsArr = [
     {
