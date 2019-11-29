@@ -41,6 +41,7 @@ describe 'Search page', js: true do
       expect(page).to have_button('<', disabled: true)
       expect(page).to have_button('>')
       expect(page).to have_button('>>')
+      # third page via numeric input
       find('.page-number-entry').fill_in(with: '3') # third page
       10.times {|i| expect(page).to have_link("dance-#{i+20}.")}
       expect(page).to have_text('Showing 21 to 30 of 52 dances')

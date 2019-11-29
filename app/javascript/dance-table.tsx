@@ -1,6 +1,7 @@
 import * as React from "react"
 import { useState, useEffect, useMemo, useCallback } from "react"
 import { useTable, usePagination } from "react-table"
+import { NaturalNumberEditor } from "./natural-number-editor"
 
 function PaginationSentence({
   pageOffset,
@@ -71,7 +72,8 @@ function Table({
     pageSize,
   ])
 
-  // Render the UI for your table
+  console.log("render table")
+
   return (
     <>
       <table
@@ -136,15 +138,13 @@ function Table({
         />{" "}
         <span>
           Go to page:{" "}
-          <input
-            className="page-number-entry"
-            type="number"
-            defaultValue={pageIndex + 1}
-            onChange={e => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0
-              gotoPage(page)
+          <NaturalNumberEditor
+            value={pageIndex + 1}
+            setValue={n => gotoPage(n - 1)}
+            inputProperties={{
+              className: "page-number-entry",
+              style: { width: "100px" },
             }}
-            style={{ width: "100px" }}
           />
         </span>{" "}
         <select
