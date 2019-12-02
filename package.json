@@ -14,8 +14,12 @@
     "typescript": "^3.6.4"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@types/jest": "^24.0.23",
     "jest": "^24.8.0",
     "prettier": "1.18.2",
+    "ts-jest": "^24.2.0",
     "webpack-dev-server": "^3.1.14"
   },
   "scripts": {
@@ -23,12 +27,20 @@
     "test": "jest"
   },
   "jest": {
+    "preset": "ts-jest",
     "roots": [
       "spec/javascript"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest",
+      "^.+\\.(js|jsx)$": "babel-jest"
+    },
+    "testMatch": [
+      "**/*.spec.(ts|tsx|js|jsx)"
     ],
     "moduleDirectories": [
       "node_modules",
       "app/javascript"
-    ]
+    ]   
   }
 }
