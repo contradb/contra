@@ -10,7 +10,7 @@ export function NaturalNumberEditor({
 }: {
   value: number
   setValue: (n: number) => void
-  inputProperties: object
+  inputProperties?: object
 }) {
   const [stringValue, setStringValue] = useState(value.toString())
   return (
