@@ -38,9 +38,12 @@
     "testMatch": [
       "**/*.spec.(ts|tsx|js|jsx)"
     ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/spec/jest-setup.ts"
+    ],
     "moduleDirectories": [
       "node_modules",
       "app/javascript"
-    ]   
+    ]
   }
 }
