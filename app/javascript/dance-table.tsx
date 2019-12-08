@@ -116,25 +116,24 @@ function Table({
             gotoPage(0)
           }}
           isDisabled={!canPreviousPage}
-          glyphicon="glyphicon-fast-backward"
+          label="<<"
         />{" "}
         <TurnPageButton
           onClick={previousPage}
           isDisabled={!canPreviousPage}
-          glyphicon="glyphicon-play"
-          iconIsFlipped={true}
+          label="<"
         />{" "}
         <TurnPageButton
           onClick={nextPage}
           isDisabled={!canNextPage}
-          glyphicon="glyphicon-play"
+          label=">"
         />{" "}
         <TurnPageButton
           onClick={() => {
             gotoPage(pageCount - 1)
           }}
           isDisabled={!canNextPage}
-          glyphicon="glyphicon-fast-forward"
+          label=">>"
         />{" "}
         <span>
           Go to page:{" "}
@@ -152,8 +151,9 @@ function Table({
           onChange={e => {
             setPageSize(Number(e.target.value))
           }}
+          className="form-control"
         >
-          {[10, 20, 30, 40, 50].map(pageSize => (
+          {[10, 30, 100].map(pageSize => (
             <option key={pageSize} value={pageSize}>
               Show {pageSize}
             </option>
@@ -165,20 +165,33 @@ function Table({
 }
 
 function TurnPageButton({
+  label,
   onClick,
   isDisabled = false,
-  glyphicon,
-  iconIsFlipped = false,
-}: {
+}: // glyphicon,
+// iconIsFlipped = false,
+{
+  label: "<<" | "<" | ">" | ">>"
   onClick: () => void
   isDisabled?: boolean
-  glyphicon: string
-  iconIsFlipped?: boolean
+  // glyphicon: string
+  // iconIsFlipped?: boolean
 }) {
-  const flipClass: string | false = iconIsFlipped && "flipped-glyphicon"
+  let glyphicon: string
+  if (label === "<<") glyphicon = "glyphicon-fast-backward"
+  else if (label === "<" || label === ">") glyphicon = "glyphicon-play"
+  else if (label === ">>") glyphicon = "glyphicon-fast-forward"
+  else throw new Error("unexpected label " + label)
+  const flipClass: string = label === "<" ? " flipped-glyphicon" : ""
+
   return (
-    <button className="btn btn-default" onClick={onClick} disabled={isDisabled}>
-      <span className={`glyphicon ${glyphicon} ${flipClass}`}></span>
+    <button
+      className="btn btn-default"
+      onClick={onClick}
+      disabled={isDisabled}
+      data-testid={label}
+    >
+      <span className={`glyphicon ${glyphicon}${flipClass}`}></span>
     </button>
   )
 }
