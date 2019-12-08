@@ -15,64 +15,73 @@ describe 'Search page', js: true do
   end
 
   describe 'pagination' do
+    def have_turn_page_button(*args)
+      have_css(turn_page_button_css(*args))
+    end
+
+    def turn_page_button_css(label, disabled=false)
+      "button[data-testid=#{label.inspect}]#{disabled ? '[disabled]' : ''}"
+    end
+
     let! (:dances) { 52.times.map {|i| FactoryGirl.create(:dance, title: "dance-#{i}.", created_at: now - i.hours)} }
     it "turning pages" do
       visit(s_path)
       # first page
       10.times {|i| expect(page).to have_link("dance-#{i}.")}
       expect(page).to have_text('Showing 1 to 10 of 52 dances')
-      expect(page).to have_button('<<', disabled: true)
-      expect(page).to have_button('<', disabled: true)
-      expect(page).to have_button('>')
-      expect(page).to have_button('>>')
-      click_on '>'
+      expect(page).to have_turn_page_button('<<', disabled: true)# have_css('button[data-testid="<<"][disabled]')
+      expect(page).to have_turn_page_button('<', disabled: true)
+      expect(page).to have_turn_page_button('>')
+      expect(page).to have_turn_page_button('>>')
+      page.find(turn_page_button_css('>')).click
       # second page
       10.times {|i| expect(page).to have_link("dance-#{i+10}.")}
       expect(page).to have_text('Showing 11 to 20 of 52 dances')
-      expect(page).to have_button('<<')
-      expect(page).to have_button('<')
-      expect(page).to have_button('>')
-      expect(page).to have_button('>>')
-      click_on '<'
+      expect(page).to have_turn_page_button('<<')
+      expect(page).to have_turn_page_button('<')
+      expect(page).to have_turn_page_button('>')
+      expect(page).to have_turn_page_button('>>')
+      page.find(turn_page_button_css('<')).click
       # first page
       10.times {|i| expect(page).to have_link("dance-#{i}.")}
       expect(page).to have_text('Showing 1 to 10 of 52 dances')
-      expect(page).to have_button('<<', disabled: true)
-      expect(page).to have_button('<', disabled: true)
-      expect(page).to have_button('>')
-      expect(page).to have_button('>>')
+      expect(page).to have_turn_page_button('<<', disabled: true)
+      expect(page).to have_turn_page_button('<', disabled: true)
+      expect(page).to have_turn_page_button('>')
+      expect(page).to have_turn_page_button('>>')
       # third page via numeric input
       find('.page-number-entry').fill_in(with: '3') # third page
       10.times {|i| expect(page).to have_link("dance-#{i+20}.")}
       expect(page).to have_text('Showing 21 to 30 of 52 dances')
-      expect(page).to have_button('<<')
-      expect(page).to have_button('<')
-      expect(page).to have_button('>')
-      expect(page).to have_button('>>')
-      click_on '>>'
+      expect(page).to have_turn_page_button('<<')
+      expect(page).to have_turn_page_button('<')
+      expect(page).to have_turn_page_button('>')
+      expect(page).to have_turn_page_button('>>')
+      page.find(turn_page_button_css('>>')).click
       # last (partial) page
       2.times {|i| expect(page).to have_link("dance-#{i+50}.")}
       expect(page).to have_text('Showing 51 to 52 of 52 dances')
-      expect(page).to have_button('<<')
-      expect(page).to have_button('<')
-      expect(page).to have_button('>', disabled: true)
-      expect(page).to have_button('>>', disabled: true)
-      click_on '<<'
+      expect(page).to have_turn_page_button('<<')
+      expect(page).to have_turn_page_button('<')
+      expect(page).to have_turn_page_button('>', disabled: true)
+      expect(page).to have_turn_page_button('>>', disabled: true)
+      page.find(turn_page_button_css('<<')).click
       # first page
       10.times {|i| expect(page).to have_link("dance-#{i}.")}
       expect(page).to have_text('Showing 1 to 10 of 52 dances')
-      expect(page).to have_button('<<', disabled: true)
-      expect(page).to have_button('<', disabled: true)
-      expect(page).to have_button('>')
-      expect(page).to have_button('>>')
+      expect(page).to have_turn_page_button('<<', disabled: true)
+      expect(page).to have_turn_page_button('<', disabled: true)
+      expect(page).to have_turn_page_button('>')
+      expect(page).to have_turn_page_button('>>')
     end
 
     it "page size select menu" do
       visit(s_path)
-      expect(page).to have_text("Page 1 of 6")
+      expect(page).to have_text("Showing 1 to 10 of 52 dances.")
       select('30')
-      expect(page).to have_text("Page 1 of 2")
-      click_on '>'
+      expect(page).to have_text("Showing 1 to 30 of 52 dances.")
+      page.find(turn_page_button_css('>')).click
+      expect(page).to have_text("Showing 31 to 52 of 52 dances.")
       (dances.length-30).times do |i|
         expect(page).to have_link("dance-#{i+30}.")
       end
