@@ -6,13 +6,24 @@ import { useState } from "react"
 export function NaturalNumberEditor({
   value,
   setValue,
-  inputProperties,
+  inputProperties = {},
 }: {
   value: number
   setValue: (n: number) => void
-  inputProperties?: object
+  inputProperties?: { className?: string; [others: string]: any }
 }) {
   const [stringValue, setStringValue] = useState(value.toString())
+  let className: string
+  let inputPropertiesWithoutClassName
+  if (inputProperties.className) {
+    className = inputProperties.className + " form-control"
+    inputPropertiesWithoutClassName = { ...inputProperties }
+    delete inputPropertiesWithoutClassName.className
+  } else {
+    className = "form-control"
+    inputPropertiesWithoutClassName = inputProperties
+  }
+
   return (
     <input
       type="text"
@@ -22,7 +33,8 @@ export function NaturalNumberEditor({
         setStringValue(sv)
         if (sv) setValue(Number(sv))
       }}
-      {...inputProperties}
+      className={className}
+      {...inputPropertiesWithoutClassName}
     />
   )
 }
