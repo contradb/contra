@@ -15,10 +15,10 @@ function PaginationSentence({
   isFiltered: boolean
 }) {
   return (
-    <div>
+    <span>
       Showing {pageOffset + 1} to {pageOffset + pageCount} of {matchCount}{" "}
       {isFiltered && "filtered"} dances.
-    </div>
+    </span>
   )
 }
 
@@ -102,63 +102,78 @@ function Table({
           })}
         </tbody>
       </table>
-      <PaginationSentence
-        pageOffset={pageIndex * pageSize}
-        pageCount={dancesGetJson.dances.length}
-        matchCount={dancesGetJson.numberMatching}
-        isFiltered={
-          dancesGetJson.numberMatching !== dancesGetJson.numberSearched
-        }
-      />
-      <div className="pagination">
-        <TurnPageButton
-          onClick={() => {
-            gotoPage(0)
-          }}
-          isDisabled={!canPreviousPage}
-          label="<<"
-        />{" "}
-        <TurnPageButton
-          onClick={previousPage}
-          isDisabled={!canPreviousPage}
-          label="<"
-        />{" "}
-        <TurnPageButton
-          onClick={nextPage}
-          isDisabled={!canNextPage}
-          label=">"
-        />{" "}
-        <TurnPageButton
-          onClick={() => {
-            gotoPage(pageCount - 1)
-          }}
-          isDisabled={!canNextPage}
-          label=">>"
-        />{" "}
-        <span>
-          Go to page:{" "}
-          <NaturalNumberEditor
-            value={pageIndex + 1}
-            setValue={n => gotoPage(n - 1)}
-            inputProperties={{
-              className: "page-number-entry",
-              style: { width: "100px" },
-            }}
+      <div className="row">
+        <div className="col-sm-3">
+          <PaginationSentence
+            pageOffset={pageIndex * pageSize}
+            pageCount={dancesGetJson.dances.length}
+            matchCount={dancesGetJson.numberMatching}
+            isFiltered={
+              dancesGetJson.numberMatching !== dancesGetJson.numberSearched
+            }
           />
-        </span>{" "}
-        <select
-          value={pageSize}
-          onChange={e => {
-            setPageSize(Number(e.target.value))
-          }}
-          className="form-control"
-        >
-          {[10, 30, 100].map(pageSize => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select>
+        </div>
+        <div className="col-sm-3">
+          <div className="form-inline">
+            <label>
+              Results per page:{" "}
+              <select
+                value={pageSize}
+                onChange={e => {
+                  setPageSize(Number(e.target.value))
+                }}
+                className="form-control"
+              >
+                {[10, 30, 100].map(pageSize => (
+                  <option key={pageSize}>{pageSize}</option>
+                ))}
+              </select>
+            </label>
+          </div>
+        </div>
+        <div className="col-sm-3">
+          <div className="form-inline">
+            <label>
+              Go to page:{" "}
+              <NaturalNumberEditor
+                value={pageIndex + 1}
+                setValue={n => gotoPage(n - 1)}
+                inputProperties={{
+                  className: "page-number-entry",
+                  style: { width: "100px" },
+                }}
+              />
+            </label>{" "}
+          </div>
+        </div>
+        <div className="col-sm-3">
+          <div className="pagination">
+            <TurnPageButton
+              onClick={() => {
+                gotoPage(0)
+              }}
+              isDisabled={!canPreviousPage}
+              label="<<"
+            />{" "}
+            <TurnPageButton
+              onClick={previousPage}
+              isDisabled={!canPreviousPage}
+              label="<"
+            />{" "}
+            <TurnPageButton
+              onClick={nextPage}
+              isDisabled={!canNextPage}
+              label=">"
+            />{" "}
+            <TurnPageButton
+              onClick={() => {
+                gotoPage(pageCount - 1)
+              }}
+              isDisabled={!canNextPage}
+              label=">>"
+            />
+          </div>
+        </div>
       </div>
     </>
   )
