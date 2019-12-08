@@ -152,6 +152,8 @@ select.chooser-argument {
 
 .pagination {
   @extend .btn-group;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .flipped-glyphicon {
