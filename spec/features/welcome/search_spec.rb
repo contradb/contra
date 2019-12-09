@@ -162,6 +162,22 @@ describe 'Search page', js: true do
     dbsize.times.map {|i| FactoryGirl.create(:dance, created_at: now - i.hours)}
     visit(s_path)
     expect(page).to have_content("Showing 1 to 10 of #{dbsize} dances.")
-    # TODO add more tests around changing the offset and count
+  end
+
+  describe "sorting" do
+    let (:shuffled_ints) { [7, 0, 10, 8, 9, 2, 11, 6, 3, 5, 1, 4] }
+    let (:dances) { shuffled_ints.map.with_index {|shuffled_int, i| FactoryGirl.create(:dance, title: "dance-#{shuffled_int.to_s.rjust(2, '0')}", created_at: now - i.hours)} }
+    let (:dances_sorted) { dances.dup.sort_by(&:title) }
+    it "clicking a header displays that column in descending order" do
+      dances
+      visit(s_path)
+      find('th', text: 'Title').click
+      dances_sorted.drop(10).each do |dance|
+        expect(page).to_not have_text(dance.title)
+      end
+      # have the dances in order dance-00, dance-01, ... dance-09
+      first_ten_dances_titles_regex = Regexp.new(dances_sorted.take(10).map(&:title).join('[^..]*'))
+      expect(page).to have_text(first_ten_dances_titles_regex)
+    end
   end
 end
