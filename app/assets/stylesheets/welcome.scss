@@ -159,3 +159,10 @@ select.chooser-argument {
 .flipped-glyphicon {
   transform: scaleX(-1);
 }
+
+.dance-table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+}

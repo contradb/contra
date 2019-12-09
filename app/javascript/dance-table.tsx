@@ -102,8 +102,8 @@ function Table({
           })}
         </tbody>
       </table>
-      <div className="row">
-        <div className="col-sm-3">
+      <div className="dance-table-footer">
+        <div className="form-inline">
           <PaginationSentence
             pageOffset={pageIndex * pageSize}
             pageCount={dancesGetJson.dances.length}
@@ -113,40 +113,36 @@ function Table({
             }
           />
         </div>
-        <div className="col-sm-3">
-          <div className="form-inline">
-            <label>
-              Results per page:{" "}
-              <select
-                value={pageSize}
-                onChange={e => {
-                  setPageSize(Number(e.target.value))
-                }}
-                className="form-control"
-              >
-                {[10, 30, 100].map(pageSize => (
-                  <option key={pageSize}>{pageSize}</option>
-                ))}
-              </select>
-            </label>
-          </div>
+        <div className="form-inline">
+          <label>
+            Results per page:{" "}
+            <select
+              value={pageSize}
+              onChange={e => {
+                setPageSize(Number(e.target.value))
+              }}
+              className="form-control"
+            >
+              {[10, 30, 100].map(pageSize => (
+                <option key={pageSize}>{pageSize}</option>
+              ))}
+            </select>
+          </label>
         </div>
-        <div className="col-sm-3">
-          <div className="form-inline">
-            <label>
-              Go to page:{" "}
-              <NaturalNumberEditor
-                value={pageIndex + 1}
-                setValue={n => gotoPage(n - 1)}
-                inputProperties={{
-                  className: "page-number-entry",
-                  style: { width: "100px" },
-                }}
-              />
-            </label>{" "}
-          </div>
+        <div className="form-inline">
+          <label>
+            Go to page:{" "}
+            <NaturalNumberEditor
+              value={pageIndex + 1}
+              setValue={n => gotoPage(n - 1)}
+              inputProperties={{
+                className: "page-number-entry",
+                style: { width: "100px" },
+              }}
+            />
+          </label>{" "}
         </div>
-        <div className="col-sm-3">
+        <div className="">
           <div className="pagination">
             <TurnPageButton
               onClick={() => {
