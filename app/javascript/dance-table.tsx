@@ -1,6 +1,6 @@
 import * as React from "react"
 import { useState, useEffect, useMemo, useCallback } from "react"
-import { useTable, usePagination } from "react-table"
+import { useTable, usePagination, useSortBy } from "react-table"
 import { NaturalNumberEditor } from "./natural-number-editor"
 
 function PaginationSentence({
@@ -22,22 +22,42 @@ function PaginationSentence({
   )
 }
 
+type SortByElement =
+  | "title"
+  | "choreographer_name"
+  | "user_name"
+  | "created_at"
+  | "updated_at"
+
+type SortBy = SortByElement
+
 function Table({
   columns,
   dancesGetJson,
   fetchData,
   loading,
   pageCount: controlledPageCount,
+  initialSortBy, //  = 'title'
+  onSortByChange,
 }: {
   columns: any
   dancesGetJson: DancesGetJson
   fetchData: Function
   loading: boolean
   pageCount: number
+  initialSortBy: any // SortBy
+  onSortByChange: (sortBy: any) => void
 }) {
   // const tableState = useTableState({ pageIndex: 0 })
   // const [{ pageIndex, pageSize }] = tableState
 
+  const tableOptions = {
+    columns,
+    data: dancesGetJson.dances,
+    manualPagination: true,
+    pageCount: controlledPageCount,
+    initialState: { sortBy: initialSortBy },
+  }
   const {
     getTableProps,
     headerGroups,
@@ -55,15 +75,8 @@ function Table({
     rows,
     pageIndex,
     pageSize,
-  } = useTable(
-    {
-      columns,
-      data: dancesGetJson.dances,
-      manualPagination: true,
-      pageCount: controlledPageCount,
-    },
-    usePagination
-  )
+    state: { sortBy },
+  } = useTable(tableOptions, useSortBy, usePagination)
 
   // again, need to worry about the return value of this first arg to useEffect
   useEffect(() => fetchData({ pageIndex, pageSize }), [
@@ -84,7 +97,17 @@ function Table({
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  {column.render("Header")}
+                  {/* Add a sort direction indicator */}
+                  <span>
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? " 🔽"
+                        : " 🔼"
+                      : ""}
+                  </span>
+                </th>
               ))}
             </tr>
           ))}
@@ -356,6 +379,8 @@ function DanceTable() {
         fetchData={fetchData}
         loading={loading}
         pageCount={pageCount}
+        initialSortBy={["title"]}
+        onSortByChange={x => console.log(x)}
       />
     </>
   )
