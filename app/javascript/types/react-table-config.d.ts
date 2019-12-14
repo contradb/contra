@@ -42,10 +42,8 @@ import {} from "react-table"
 declare module "react-table" {
   // take this file as-is, or comment out the sections that don't apply to your plugin configuration
 
-  export interface TableOptions<D extends object>  // UseExpandedOptions<D>, // UseFiltersOptions<D>, // UseGroupByOptions<D>, // UsePaginationOptions<D>,
-    extends // UseRowSelectOptions<D>,
-    // UseSortByOptions<D>,
-    // UseFiltersOptions<D>,
+  export interface TableOptions<D extends object>  // UseExpandedOptions<D>, // UseFiltersOptions<D>, // UseGroupByOptions<D>, // UsePaginationOptions<D>, // UseRowSelectOptions<D>, // UseSortByOptions<D>,
+    extends // UseFiltersOptions<D>,
     // UseResizeColumnsOptions<D>,
     // note that having Record here allows you to add anything to the options, this matches the spirit of the
     // underlying js library, but might be cleaner if it's replaced by a more specific type that matches your
@@ -62,14 +60,14 @@ declare module "react-table" {
   // UseRowStateInstanceProps<D>,
   // UseSortByInstanceProps<D>
 
-  export interface TableState<D extends object = {}> {}
-  // UseColumnOrderState<D>,
-  // UseExpandedState<D>,
-  // UseFiltersState<D>,
+  export interface TableState<D extends object = {}>
+    extends UseSortByState<D> {}
   // UseGroupByState<D>,
+  // UseFiltersState<D>,
+  // UseExpandedState<D>,
+  // UseColumnOrderState<D>,
   // UsePaginationState<D>,
-  // UseRowSelectState<D>,
-  // UseSortByState<D> {}
+  // UseRowSelectState<D>
 
   export interface Column<D extends object = {}> {}
   // UseFiltersColumnOptions<D>,
@@ -77,11 +75,11 @@ declare module "react-table" {
   // UseSortByColumnOptions<D>,
   // UseResizeColumnsColumnOptions<D> {}
 
-  export interface ColumnInstance<D extends object = {}> {}
+  export interface ColumnInstance<D extends object = {}>
+    extends UseSortByColumnProps<D> {}
   // UseFiltersColumnProps<D>,
   // UseGroupByColumnProps<D>,
-  // UseSortByColumnProps<D>,
-  // UseResizeColumnsHeaderProps<D> {}
+  // UseResizeColumnsHeaderProps<D>,
 
   export interface Cell<D extends object = {}> {}
   // UseTableCellProps<D>,
