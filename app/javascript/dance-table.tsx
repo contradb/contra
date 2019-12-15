@@ -98,15 +98,32 @@ function Table({
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render("Header")}
-                  {/* Add a sort direction indicator */}
-                  <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? " 🔽"
-                        : " 🔼"
-                      : ""}
-                  </span>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    {column.render("Header")}{" "}
+                    {/* Add a sort direction indicator */}
+                    {column.isSorted ? (
+                      <span
+                        className={
+                          "glyphicon " +
+                          (column.isSortedDesc
+                            ? "glyphicon-sort-by-attributes-alt"
+                            : "glyphicon-sort-by-attributes")
+                        }
+                        style={{ opacity: 0.5 }}
+                      ></span>
+                    ) : (
+                      <span
+                        className="glyphicon glyphicon-sort"
+                        style={{ opacity: 0.2 }}
+                      ></span>
+                    )}
+                  </div>
                 </th>
               ))}
             </tr>
