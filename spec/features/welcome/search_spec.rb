@@ -166,18 +166,52 @@ describe 'Search page', js: true do
 
   describe "sorting" do
     let (:shuffled_ints) { [7, 0, 10, 8, 9, 2, 11, 6, 3, 5, 1, 4] }
-    let (:dances) { shuffled_ints.map.with_index {|shuffled_int, i| FactoryGirl.create(:dance, title: "dance-#{shuffled_int.to_s.rjust(2, '0')}", created_at: now - i.hours)} }
+    let (:dances) { shuffled_ints.map.with_index {|shuffled_int, i|
+                      FactoryGirl.create(:dance, title: "dance-#{shuffled_int.to_s.rjust(2, '0')}", created_at: now - i.hours)
+                    }}
     let (:dances_sorted) { dances.dup.sort_by(&:title) }
     it "clicking a header displays that column in descending order" do
       dances
       visit(s_path)
-      find('th', text: 'Title').click
-      dances_sorted.drop(10).each do |dance|
-        expect(page).to_not have_text(dance.title)
+      dances.each_with_index do |dance, i|
+        expect(page).send(i < 10 ? :to : :to_not, have_text(dance.title))
       end
-      # have the dances in order dance-00, dance-01, ... dance-09
-      first_ten_dances_titles_regex = Regexp.new(dances_sorted.take(10).map(&:title).join('[^..]*'))
+      expect(page).to_not have_css('th .glyphicon-sort-by-attributes')
+      expect(page).to_not have_css('th .glyphicon-sort-by-attributes-alt')
+      unsorted_dances_titles_regex = Regexp.new(dances.take(10).map(&:title).join('.*\n'))
+      expect(page).to have_text(unsorted_dances_titles_regex)
+
+      # first click makes it sort descending
+      find('th', text: 'Title').click
+      expect(page).to have_css('th .glyphicon-sort-by-attributes')
+      expect(page).to_not have_css('th .glyphicon-sort-by-attributes-alt')
+      dances_sorted.each_with_index do |dance, i|
+        expect(page).send(i < 10 ? :to : :to_not, have_text(dance.title))
+      end
+      # we see we have the dances, but do we have them in order? dance-00, dance-01, ... dance-09
+      first_ten_dances_titles_regex = Regexp.new(dances_sorted.take(10).map(&:title).join('.*\n'))
       expect(page).to have_text(first_ten_dances_titles_regex)
+
+      # second click makes it sort ascending
+      find('th', text: 'Title').click
+      expect(page).to have_css('th .glyphicon-sort-by-attributes-alt')
+      expect(page).to_not have_css('th .glyphicon-sort-by-attributes')
+      dances_sorted.each_with_index do |dance, i|
+        expect(page).send(i >= dances.length-10 ? :to : :to_not, have_text(dance.title))
+      end
+      # we see we have the dances, but do we have them in order? dance-12, dance-11, ... dance-02
+      last_ten_dances_titles_regex = Regexp.new(dances_sorted.reverse.take(10).map(&:title).join('.*\n'))
+      expect(page).to have_text(last_ten_dances_titles_regex)
+
+      # third click returns to default sort (which is by descending created_at)
+      find('th', text: 'Title').click
+      expect(page).to_not have_css('th .glyphicon-sort-by-attributes-alt')
+      expect(page).to_not have_css('th .glyphicon-sort-by-attributes')
+      page.save_screenshot('/tmp/foo.png')
+      dances.each_with_index do |dance, i|
+        expect(page).send(i < 10 ? :to : :to_not, have_text(dance.title))
+      end
+      expect(page).to have_text(unsorted_dances_titles_regex)
     end
   end
 end

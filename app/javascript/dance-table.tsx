@@ -22,14 +22,20 @@ function PaginationSentence({
   )
 }
 
-type SortByElement =
-  | "title"
-  | "choreographer_name"
-  | "user_name"
-  | "created_at"
-  | "updated_at"
+// see allso the type SortingRule<D>
+type SortByElement = {
+  id: string // "title" | "choreographer_name" | "hook" | "formation" | "user_name" | "created_at" | "updated_at"
+  desc?: boolean
+}
+export type SortBy = Array<SortByElement>
 
-type SortBy = SortByElement
+export const sortByParam = (sortBy: SortBy): string => {
+  const x = sortBy
+    .map(sbe => (sbe.id ? sbe.id + (sbe.desc ? "D" : "A") : sbe + "A"))
+    .join("")
+  console.log(`sortByParam`, sortBy, " => ", x)
+  return x
+}
 
 function Table({
   columns,
@@ -37,7 +43,7 @@ function Table({
   fetchData,
   loading,
   pageCount: controlledPageCount,
-  initialSortBy, //  = 'title'
+  initialSortBy,
   onSortByChange,
 }: {
   columns: any
@@ -46,7 +52,7 @@ function Table({
   loading: boolean
   pageCount: number
   initialSortBy: any // SortBy
-  onSortByChange: (sortBy: any) => void
+  onSortByChange: (sortBy: SortBy) => void
 }) {
   // const tableState = useTableState({ pageIndex: 0 })
   // const [{ pageIndex, pageSize }] = tableState
@@ -62,15 +68,15 @@ function Table({
     getTableProps,
     headerGroups,
     prepareRow,
-    page, // new
-    canPreviousPage, // new
-    canNextPage, // new
-    pageOptions, // new
-    pageCount, // new
-    gotoPage, // new
-    nextPage, // new
-    previousPage, // new
-    setPageSize, // new
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
     getTableBodyProps,
     rows,
     pageIndex,
@@ -79,10 +85,11 @@ function Table({
   } = useTable(tableOptions, useSortBy, usePagination)
 
   // again, need to worry about the return value of this first arg to useEffect
-  useEffect(() => fetchData({ pageIndex, pageSize }), [
+  useEffect(() => fetchData({ pageIndex, pageSize, sortBy }), [
     fetchData,
     pageIndex,
     pageSize,
+    sortBy,
   ])
 
   console.log("render table")
@@ -258,7 +265,8 @@ interface DanceSearchResult {
   user_name: string
   created_at: string
   updated_at: string
-  figures?: string
+  publish: string //  "myself" | "everyone" | "link"
+  figures: string
 }
 
 interface DancesGetJson {
@@ -312,11 +320,12 @@ function DanceTable() {
 
   const [pageCount, setPageCount] = React.useState(0)
   const [loading, setLoading] = React.useState(false)
-  const fetchData = useCallback(({ pageSize, pageIndex }) => {
+  const fetchData = useCallback(({ pageSize, pageIndex, sortBy }) => {
     setLoading(true)
     async function fetchData() {
-      const url = `/api/v1/dances?count=${pageSize}&offset=${pageIndex *
-        pageSize}`
+      const offset = pageIndex * pageSize
+      const sort = sortByParam(sortBy)
+      const url = `/api/v1/dances?count=${pageSize}&offset=${offset}&sort_by=${sort}`
       console.log(`fetch("${url}")`)
       const response = await fetch(url)
       const json: DancesGetJson = await response.json()
@@ -396,7 +405,7 @@ function DanceTable() {
         fetchData={fetchData}
         loading={loading}
         pageCount={pageCount}
-        initialSortBy={["title"]}
+        initialSortBy={[]}
         onSortByChange={x => console.log(x)}
       />
     </>

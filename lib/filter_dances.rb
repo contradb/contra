@@ -1,11 +1,16 @@
 # coding: utf-8
 require 'set'
 require 'search_match'
+require 'sort_parser'
 
 module FilterDances
-  def self.filter_dances(filter, dialect:, count: 10, offset: 0)
+  def self.filter_dances(filter,
+                         dialect:,
+                         count: 10,
+                         offset: 0,
+                         sort_by: "")
     filter.is_a?(Array) or raise "filter must be an array, but got #{filter.inspect} of class #{filter.class}"
-    query = Dance.includes(:choreographer, :user).references(:choreographer, :user).order('dances.created_at DESC')
+    query = Dance.includes(:choreographer, :user).references(:choreographer, :user).order(*SortParser.parse(sort_by))
     number_searched = 0
     number_matching = 0
     filter_results = []

@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::DancesController do
   describe "GET #index" do
+    let (:now) { DateTime.now }
     it "returns json of all dances" do
       dance = FactoryGirl.create(:call_me)
       dance.reload
@@ -30,8 +31,9 @@ RSpec.describe Api::V1::DancesController do
     it 'understands count and offset' do
       pageSize = 4
       pages = 3
-      now = DateTime.now
-      dances = (pages*pageSize).times.map {|i| FactoryGirl.create(:dance, title: "dance-#{i}", created_at: now - i.hours)}
+      dances = (pages*pageSize).times.map do |i|
+        FactoryGirl.create(:dance, title: "dance-#{i}", created_at: now - i.hours)
+      end
       pages.times do |pageIndex|
         pageSize.times do |rowIndex|
           get api_v1_dances_path(count: pageSize, offset: pageIndex*pageSize)
@@ -46,6 +48,14 @@ RSpec.describe Api::V1::DancesController do
       end
     end
 
+    it 'understands sort' do
+      dances = "cab".chars.each_with_index.map do |char, i|
+        FactoryGirl.create(:dance, title: char*3, created_at: now - i.hours)
+      end
+      get api_v1_dances_path(sort_by: 'titleA')
+      dances_received = JSON.parse(response.body)['dances']
+      expect(dances_received.map{|json| json['title']}).to eq(dances.dup.sort_by(&:title).map(&:title))
+    end
 
     it 'only performs one query'
 
