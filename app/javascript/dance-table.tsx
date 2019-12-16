@@ -29,13 +29,10 @@ type SortByElement = {
 }
 export type SortBy = Array<SortByElement>
 
-export const sortByParam = (sortBy: SortBy): string => {
-  const x = sortBy
+export const sortByParam = (sortBy: SortBy): string =>
+  sortBy
     .map(sbe => (sbe.id ? sbe.id + (sbe.desc ? "D" : "A") : sbe + "A"))
     .join("")
-  console.log(`sortByParam`, sortBy, " => ", x)
-  return x
-}
 
 function Table({
   columns,
@@ -44,7 +41,6 @@ function Table({
   loading,
   pageCount: controlledPageCount,
   initialSortBy,
-  onSortByChange,
 }: {
   columns: any
   dancesGetJson: DancesGetJson
@@ -52,7 +48,6 @@ function Table({
   loading: boolean
   pageCount: number
   initialSortBy: any // SortBy
-  onSortByChange: (sortBy: SortBy) => void
 }) {
   // const tableState = useTableState({ pageIndex: 0 })
   // const [{ pageIndex, pageSize }] = tableState
@@ -326,7 +321,7 @@ function DanceTable() {
       const offset = pageIndex * pageSize
       const sort = sortByParam(sortBy)
       const url = `/api/v1/dances?count=${pageSize}&offset=${offset}&sort_by=${sort}`
-      console.log(`fetch("${url}")`)
+      console.log(`fetch("${url}")`, pageSize, pageIndex, sortBy)
       const response = await fetch(url)
       const json: DancesGetJson = await response.json()
       setDancesGetJson(json)
@@ -406,7 +401,6 @@ function DanceTable() {
         loading={loading}
         pageCount={pageCount}
         initialSortBy={[]}
-        onSortByChange={x => console.log(x)}
       />
     </>
   )
