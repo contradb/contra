@@ -147,9 +147,9 @@ function Table(args: {
             prepareRow(row)
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                })}
+                {row.cells.map(cell => (
+                  <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                ))}
               </tr>
             )
           })}
@@ -311,6 +311,38 @@ const MatchingFiguresHtmlCell = (props: any): JSX.Element => (
   />
 )
 
+const columnsArr: Array<{
+  Header: string
+  accessor: string
+  Cell?: (props: any) => JSX.Element
+  show: boolean
+}> = [
+  {
+    Header: "Title",
+    accessor: "title",
+    Cell: DanceTitleCell,
+    show: true,
+  },
+  {
+    Header: "Choreographer",
+    accessor: "choreographer_name",
+    Cell: ChoreographerCell,
+    show: true,
+  },
+  { Header: "Hook", accessor: "hook", show: true },
+  { Header: "Formation", accessor: "formation", show: true },
+  { Header: "User", accessor: "user_name", show: true },
+  { Header: "Entered", accessor: "created_at", show: true },
+  { Header: "Updated", accessor: "updated_at", show: false },
+  { Header: "Sharing", accessor: "publish", show: false },
+  {
+    Header: "Figures",
+    accessor: "matching_figures_html",
+    show: false,
+    Cell: MatchingFiguresHtmlCell,
+  },
+]
+
 function DanceTable(): JSX.Element {
   const [dancesGetJson, setDancesGetJson] = useState({
     dances: [] as DanceSearchResult[],
@@ -337,35 +369,8 @@ function DanceTable(): JSX.Element {
     // maybe return in-use-ness to prevent a memory leak here?
   }, [])
 
-  const columnsArr = [
-    {
-      Header: "Title",
-      accessor: "title",
-      Cell: DanceTitleCell,
-      // show: () => titleVisible,
-    },
-    {
-      Header: "Choreographer",
-      accessor: "choreographer_name",
-      Cell: ChoreographerCell,
-    },
-    { Header: "Hook", accessor: "hook" },
-    { Header: "Formation", accessor: "formation" },
-    { Header: "User", accessor: "user_name" },
-    { Header: "Entered", accessor: "created_at" },
-    { Header: "Updated", accessor: "updated_at", show: false },
-    { Header: "Sharing", accessor: "publish", show: false },
-    {
-      Header: "Figures",
-      accessor: "matching_figures_html",
-      show: false,
-      Cell: MatchingFiguresHtmlCell,
-    },
-  ]
   const [visibleToggles, setVisibleToggles] = useState(
-    columnsArr.map(
-      ca => ca.show || !Object.prototype.hasOwnProperty.call(ca, "show")
-    )
+    columnsArr.map(ca => ca.show)
   )
   // const toggleTitleVisible = () => setTitleVisible(!titleVisible)
   const columns = useMemo(
