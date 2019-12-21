@@ -34,14 +34,7 @@ export const sortByParam = (sortBy: SortBy): string =>
     .map(sbe => (sbe.id ? sbe.id + (sbe.desc ? "D" : "A") : sbe + "A"))
     .join("")
 
-function Table({
-  columns,
-  dancesGetJson,
-  fetchData,
-  loading,
-  pageCount: controlledPageCount,
-  initialSortBy,
-}: {
+function Table(args: {
   columns: any
   dancesGetJson: DancesGetJson
   fetchData: Function
@@ -49,6 +42,14 @@ function Table({
   pageCount: number
   initialSortBy: any // SortBy
 }) {
+  const {
+    columns,
+    dancesGetJson,
+    fetchData,
+    loading,
+    pageCount: controlledPageCount,
+    initialSortBy,
+  } = args
   // const tableState = useTableState({ pageIndex: 0 })
   // const [{ pageIndex, pageSize }] = tableState
 
@@ -87,7 +88,10 @@ function Table({
     sortBy,
   ])
 
-  console.log("render table")
+  console.log("render table", args)
+  if (dancesGetJson.numberMatching > 100) {
+    // debugger
+  }
 
   return (
     <>
@@ -317,7 +321,7 @@ function DanceTable() {
   const [loading, setLoading] = React.useState(false)
   const fetchData = useCallback(({ pageSize, pageIndex, sortBy }) => {
     setLoading(true)
-    async function fetchData() {
+    async function fetchData1() {
       const offset = pageIndex * pageSize
       const sort = sortByParam(sortBy)
       const url = `/api/v1/dances?count=${pageSize}&offset=${offset}&sort_by=${sort}`
@@ -328,7 +332,7 @@ function DanceTable() {
       setPageCount(Math.ceil(json.numberMatching / pageSize))
       setLoading(false)
     }
-    fetchData()
+    fetchData1()
     // maybe return in-use-ness to prevent a memory leak here?
   }, [])
 
@@ -362,11 +366,8 @@ function DanceTable() {
   )
   // const toggleTitleVisible = () => setTitleVisible(!titleVisible)
   const columns = useMemo(
-    () =>
-      columnsArr.map((ca, i) => {
-        return { ...ca, show: () => visibleToggles[i] }
-      }),
-    visibleToggles
+    () => columnsArr.map((ca, i) => ({ ...ca, show: () => visibleToggles[i] })),
+    [visibleToggles]
   )
 
   return (
