@@ -1,6 +1,12 @@
 import * as React from "react"
 import { useState, useEffect, useMemo, useCallback } from "react"
-import { useTable, usePagination, useSortBy, ColumnInstance } from "react-table"
+import {
+  useTable,
+  usePagination,
+  useSortBy,
+  ColumnInstance,
+  Cell,
+} from "react-table"
 import { NaturalNumberEditor } from "./natural-number-editor"
 
 function PaginationSentence({
@@ -304,7 +310,18 @@ const DanceTitleCell = (props: any): JSX.Element => {
   return <a href={dancePath(values.id)}>{values.title}</a>
 }
 
-const MatchingFiguresHtmlCell = (props: any): JSX.Element => (
+const CreatedAtDateCell = (props: Cell): JSX.Element =>
+  DateCell(props.row.values.created_at)
+
+const UpdatedAtDateCell = (props: Cell): JSX.Element => {
+  return DateCell(props.row.values.updated_at)
+}
+// time looks like: '2019-10-13T06:22:08.818Z'
+const DateCell = (time: string): JSX.Element => (
+  <>{new Date(time).toLocaleDateString()}</>
+)
+
+const MatchingFiguresHtmlCell = (props: Cell): JSX.Element => (
   <div
     dangerouslySetInnerHTML={{
       __html: props.row.values.matching_figures_html,
@@ -333,8 +350,18 @@ const columnsArr: Array<{
   { Header: "Hook", accessor: "hook", show: true },
   { Header: "Formation", accessor: "formation", show: true },
   { Header: "User", accessor: "user_name", show: true },
-  { Header: "Entered", accessor: "created_at", show: true },
-  { Header: "Updated", accessor: "updated_at", show: false },
+  {
+    Header: "Entered",
+    accessor: "created_at",
+    Cell: CreatedAtDateCell,
+    show: true,
+  },
+  {
+    Header: "Updated",
+    accessor: "updated_at",
+    Cell: UpdatedAtDateCell,
+    show: false,
+  },
   { Header: "Sharing", accessor: "publish", show: false },
   {
     Header: "Figures",
