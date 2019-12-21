@@ -13,7 +13,7 @@ function PaginationSentence({
   pageCount: number
   matchCount: number
   isFiltered: boolean
-}) {
+}): JSX.Element {
   return (
     <span>
       Showing {pageOffset + 1} to {pageOffset + pageCount} of {matchCount}{" "}
@@ -41,7 +41,7 @@ function Table(args: {
   loading: boolean
   pageCount: number
   initialSortBy: any // SortBy
-}) {
+}): JSX.Element {
   const {
     columns,
     dancesGetJson,
@@ -64,10 +64,8 @@ function Table(args: {
     getTableProps,
     headerGroups,
     prepareRow,
-    page,
     canPreviousPage,
     canNextPage,
-    pageOptions,
     pageCount,
     gotoPage,
     nextPage,
@@ -136,7 +134,7 @@ function Table(args: {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row, i) => {
+          {rows.map(row => {
             prepareRow(row)
             return (
               <tr {...row.getRowProps()}>
@@ -233,7 +231,7 @@ function TurnPageButton({
   isDisabled?: boolean
   // glyphicon: string
   // iconIsFlipped?: boolean
-}) {
+}): JSX.Element {
   let glyphicon: string
   if (label === "<<") glyphicon = "glyphicon-fast-backward"
   else if (label === "<" || label === ">") glyphicon = "glyphicon-play"
@@ -275,14 +273,14 @@ interface DancesGetJson {
 }
 
 // TODO: use rails route helpers
-const choreographerPath = (cid: number) => {
+const choreographerPath = (cid: number): string => {
   return "/choreographers/" + cid
 }
-const dancePath = (dance_id: number) => {
-  return "/dances/" + dance_id
+const dancePath = (danceId: number): string => {
+  return "/dances/" + danceId
 }
 
-const ChoreographerCell = (props: any) => {
+const ChoreographerCell = (props: any): JSX.Element => {
   const values: DanceSearchResult = props.row.original // shouldn't I be looking at props.row.values? It only has the accessor'd field in the column definition.
   return (
     <a href={choreographerPath(values.choreographer_id)}>
@@ -291,12 +289,12 @@ const ChoreographerCell = (props: any) => {
   )
 }
 
-const DanceTitleCell = (props: any) => {
+const DanceTitleCell = (props: any): JSX.Element => {
   const values: DanceSearchResult = props.row.original // shouldn't I be looking at props.row.values? It only has the accessor'd field in the column definition.
   return <a href={dancePath(values.id)}>{values.title}</a>
 }
 
-const MatchingFiguresHtmlCell = (props: any) => (
+const MatchingFiguresHtmlCell = (props: any): JSX.Element => (
   <div
     dangerouslySetInnerHTML={{
       __html: props.row.values.matching_figures_html,
@@ -304,24 +302,18 @@ const MatchingFiguresHtmlCell = (props: any) => (
   />
 )
 
-function DanceTable() {
-  const offset = 0
+function DanceTable(): JSX.Element {
   const [dancesGetJson, setDancesGetJson] = useState({
     dances: [] as DanceSearchResult[],
     numberSearched: 0,
     numberMatching: 0,
   })
-  const {
-    dances,
-    numberSearched,
-    numberMatching,
-  }: DancesGetJson = dancesGetJson
 
   const [pageCount, setPageCount] = React.useState(0)
   const [loading, setLoading] = React.useState(false)
   const fetchData = useCallback(({ pageSize, pageIndex, sortBy }) => {
     setLoading(true)
-    async function fetchData1() {
+    async function fetchData1(): Promise<void> {
       const offset = pageIndex * pageSize
       const sort = sortByParam(sortBy)
       const url = `/api/v1/dances?count=${pageSize}&offset=${offset}&sort_by=${sort}`
@@ -362,7 +354,9 @@ function DanceTable() {
     },
   ]
   const [visibleToggles, setVisibleToggles] = useState(
-    columnsArr.map(ca => ca.show || !ca.hasOwnProperty("show"))
+    columnsArr.map(
+      ca => ca.show || !Object.prototype.hasOwnProperty.call(ca, "show")
+    )
   )
   // const toggleTitleVisible = () => setTitleVisible(!titleVisible)
   const columns = useMemo(
@@ -376,10 +370,11 @@ function DanceTable() {
         <label>Show columns </label>
         <div className="table-column-vis-toggles">
           {columnsArr.map((ca, i) => {
-            const toggleVisFn = () =>
+            const toggleVisFn = (): void => {
               setVisibleToggles(
                 visibleToggles.map((vis, j) => (i === j) !== vis)
               )
+            }
             const toggleVisClass = visibleToggles[i]
               ? "toggle-vis-active"
               : "toggle-vis-inactive"

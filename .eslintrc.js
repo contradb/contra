@@ -1,9 +1,17 @@
 module.exports = {
   root: true,
   parser: "@typescript-eslint/parser",
+  parserOptions: {
+    ecmaVersion: 2018,
+    sourceType: "module",
+    ecmaFeatures: {
+      jsx: true,
+    },
+  },
   plugins: ["@typescript-eslint"],
   extends: [
     "eslint:recommended",
+    "plugin:react/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier",
@@ -22,5 +30,26 @@ module.exports = {
         },
       },
     ],
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+  },
+  overrides: [
+    {
+      files: ["*.ts", "*.tsx"],
+      rules: {
+        "@typescript-eslint/explicit-function-return-type": [
+          "error",
+          {
+            allowExpressions: true,
+            allowTypedFunctionExpressions: true,
+          },
+        ],
+      },
+    },
+  ],
+  settings: {
+    react: {
+      version: "detect",
+    },
   },
 }
