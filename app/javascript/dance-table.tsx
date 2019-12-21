@@ -1,6 +1,6 @@
 import * as React from "react"
 import { useState, useEffect, useMemo, useCallback } from "react"
-import { useTable, usePagination, useSortBy } from "react-table"
+import { useTable, usePagination, useSortBy, ColumnInstance } from "react-table"
 import { NaturalNumberEditor } from "./natural-number-editor"
 
 function PaginationSentence({
@@ -19,6 +19,40 @@ function PaginationSentence({
       Showing {pageOffset + 1} to {pageOffset + pageCount} of {matchCount}{" "}
       {isFiltered && "filtered"} dances.
     </span>
+  )
+}
+
+function DanceTableThLabel({
+  column,
+}: {
+  column: ColumnInstance<DanceSearchResult>
+}): JSX.Element {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
+      {column.render("Header")} {/* Add a sort direction indicator */}
+      {column.isSorted ? (
+        <span
+          className={
+            "glyphicon " +
+            (column.isSortedDesc
+              ? "glyphicon-sort-by-attributes-alt"
+              : "glyphicon-sort-by-attributes")
+          }
+          style={{ opacity: 0.5 }}
+        ></span>
+      ) : (
+        <span
+          className="glyphicon glyphicon-sort"
+          style={{ opacity: 0.2 }}
+        ></span>
+      )}
+    </div>
   )
 }
 
@@ -102,32 +136,7 @@ function Table(args: {
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    {column.render("Header")}{" "}
-                    {/* Add a sort direction indicator */}
-                    {column.isSorted ? (
-                      <span
-                        className={
-                          "glyphicon " +
-                          (column.isSortedDesc
-                            ? "glyphicon-sort-by-attributes-alt"
-                            : "glyphicon-sort-by-attributes")
-                        }
-                        style={{ opacity: 0.5 }}
-                      ></span>
-                    ) : (
-                      <span
-                        className="glyphicon glyphicon-sort"
-                        style={{ opacity: 0.2 }}
-                      ></span>
-                    )}
-                  </div>
+                  <DanceTableThLabel column={column} />
                 </th>
               ))}
             </tr>
