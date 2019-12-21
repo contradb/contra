@@ -54,8 +54,23 @@ Then:
 ```
 bin/rspec
 ```
-will run ruby tests.
+will run lots of ruby tests.
+
+
 ```
 yarn test
 ```
-will run js tests
+will run a few js tests.
+
+
+```
+yarn eslint app/javascript/dance-table.tsx
+```
+will run the js linter on `app/javascript/dance-table.tsx`. This is currently the only file that is even remotely lintable.
+
+
+```
+yarn run tsc --watch
+```
+This will run the typescript compiler - for some reason ts compile errors don't stop the main build, so I keep an eye on this.
+Unfortunately, it barfs compilation artifacts in the soruce tree. If those are the only new files, I carefully clean them with `git clean -fd`.
