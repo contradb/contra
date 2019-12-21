@@ -8,7 +8,7 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ["@typescript-eslint"],
+  plugins: ["@typescript-eslint", "react-hooks"],
   extends: [
     "eslint:recommended",
     "plugin:react/recommended",
@@ -32,6 +32,8 @@ module.exports = {
     ],
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
   },
   overrides: [
     {
