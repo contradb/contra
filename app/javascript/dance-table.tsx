@@ -127,6 +127,7 @@ function Table(args: {
 
   return (
     <>
+      {loading && <div className="floating-loading-indicator">loading...</div>}
       <table
         {...getTableProps()}
         className="table table-bordered table-hover table-condensed dances-table-react"
