@@ -26,6 +26,8 @@ module SortParser
       when 'created_at', 'updated_at'
         is_ascending ? "dances.#{column}" : Dance.arel_table[column.to_sym].desc
       else
+        # is_ascending ? User.arel_table[:name].lower.asc : User.arel_table[:name].lower.desc
+
         is_ascending ? column : {column => :desc}
       end
     end
