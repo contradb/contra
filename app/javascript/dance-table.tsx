@@ -74,7 +74,14 @@ export const sortByParam = (sortBy: SortBy): string =>
     .map(sbe => (sbe.id ? sbe.id + (sbe.desc ? "D" : "A") : sbe + "A"))
     .join("")
 
-function Table(args: {
+function Table({
+  columns,
+  dancesGetJson,
+  fetchData,
+  loading,
+  pageCount: controlledPageCount,
+  initialSortBy,
+}: {
   columns: any
   dancesGetJson: DancesGetJson
   fetchData: Function
@@ -82,14 +89,6 @@ function Table(args: {
   pageCount: number
   initialSortBy: any // SortBy
 }): JSX.Element {
-  const {
-    columns,
-    dancesGetJson,
-    fetchData,
-    loading,
-    pageCount: controlledPageCount,
-    initialSortBy,
-  } = args
   // const tableState = useTableState({ pageIndex: 0 })
   // const [{ pageIndex, pageSize }] = tableState
 
@@ -128,7 +127,6 @@ function Table(args: {
     sortBy,
   ])
 
-  console.log("render table", args)
   if (dancesGetJson.numberMatching > 100) {
     // debugger
   }
@@ -388,7 +386,6 @@ function DanceTable(): JSX.Element {
       const offset = pageIndex * pageSize
       const sort = sortByParam(sortBy)
       const url = `/api/v1/dances?count=${pageSize}&offset=${offset}&sort_by=${sort}`
-      console.log(`fetch("${url}")`, pageSize, pageIndex, sortBy)
       const response = await fetch(url)
       const json: DancesGetJson = await response.json()
       setDancesGetJson(json)
