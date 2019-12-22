@@ -97,6 +97,8 @@ function Table(args: {
     columns,
     data: dancesGetJson.dances,
     manualPagination: true,
+    manualSortBy: true, // after 7.0.0-rc2
+    manualSorting: true, // before 7.0.0-rc2
     pageCount: controlledPageCount,
     initialState: { sortBy: initialSortBy },
   }
