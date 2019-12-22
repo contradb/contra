@@ -48,17 +48,17 @@ RSpec.describe Api::V1::DancesController do
       end
     end
 
-    it 'understands sort' do
-      dances = "cab".chars.each_with_index.map do |char, i|
+    it 'heeds sorting' do
+      dances = "caB".chars.each_with_index.map do |char, i|
         FactoryGirl.create(:dance, title: char*3, created_at: now - i.hours)
       end
       get api_v1_dances_path(sort_by: 'titleA')
       dances_received = JSON.parse(response.body)['dances']
-      expect(dances_received.map{|json| json['title']}).to eq(dances.dup.sort_by(&:title).map(&:title))
+      aaaBBBccc = ['aaa', 'BBB', 'ccc']
+      expect(aaaBBBccc).to eq(dances.dup.sort_by {|d| d.title.downcase }.map(&:title))
+      expect(dances_received.map{|json| json['title']}).to eq(aaaBBBccc)
     end
 
     it 'only performs one query'
-
-    it 'takes other dance search parameters'
   end
 end

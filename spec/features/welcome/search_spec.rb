@@ -166,13 +166,12 @@ describe 'Search page', js: true do
   end
 
   describe "sorting" do
-    let (:shuffled_ints) { [7, 0, 10, 8, 9, 2, 11, 6, 3, 5, 1, 4] }
-    let (:dances) { shuffled_ints.map.with_index {|shuffled_int, i|
-                      FactoryGirl.create(:dance, title: "dance-#{shuffled_int.to_s.rjust(2, '0')}", created_at: now - i.hours)
-                    }}
-    let (:dances_sorted) { dances.dup.sort_by(&:title) }
     it "clicking a header displays that column in descending order" do
-      dances
+      shuffled_ints = [7, 0, 10, 8, 9, 2, 11, 6, 3, 5, 1, 4]
+      dances = shuffled_ints.map.with_index {|shuffled_int, i|
+        FactoryGirl.create(:dance, title: "dance-#{shuffled_int.to_s.rjust(2, '0')}", created_at: now - i.hours)
+      }
+      dances_sorted = dances.dup.sort_by(&:title)
       visit(s_path)
       dances.each_with_index do |dance, i|
         expect(page).send(i < 10 ? :to : :to_not, have_text(dance.title))
@@ -213,6 +212,15 @@ describe 'Search page', js: true do
         expect(page).send(i < 10 ? :to : :to_not, have_text(dance.title))
       end
       expect(page).to have_text(unsorted_dances_titles_regex)
+    end
+
+    it "no weird monkey business with client side sorting" do
+      titles = ['40 Years of Penguin Pam', "A Crafty Wave", "24th of June"]
+      dances = titles.map {|title| FactoryGirl.create(:dance, title: title)}
+      titles_sorted = titles.dup.sort
+      visit(s_path)
+      find('th', text: 'Title').click
+      expect(page).to have_text(Regexp.new(titles_sorted.join('.*\n')))
     end
   end
 end
