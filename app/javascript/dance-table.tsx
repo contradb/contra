@@ -50,6 +50,7 @@ type ColumnDefinition = {
   accessor: string
   Cell?: (props: any) => JSX.Element
   show: boolean
+  disableSortBy?: boolean
 }
 
 const columnDefinitions: Array<ColumnDefinition> = [
@@ -86,6 +87,7 @@ const columnDefinitions: Array<ColumnDefinition> = [
     accessor: "matching_figures_html",
     show: false,
     Cell: MatchingFiguresHtmlCell,
+    disableSortBy: true,
   },
 ]
 
