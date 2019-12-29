@@ -193,9 +193,7 @@ function Table({
     setPageSize,
     getTableBodyProps,
     rows,
-    pageIndex,
-    pageSize,
-    state: { sortBy },
+    state: { sortBy, pageIndex, pageSize },
   } = useTable(tableOptions, useSortBy, usePagination)
 
   useEffect(() => {
