@@ -1,13 +1,93 @@
 import * as React from "react"
-import { useState, useEffect, useMemo, useCallback } from "react"
-import {
-  useTable,
-  usePagination,
-  useSortBy,
-  ColumnInstance,
-  Cell,
-} from "react-table"
+import { useState, useEffect, useCallback } from "react"
+import { useTable, usePagination, useSortBy } from "react-table"
 import { NaturalNumberEditor } from "./natural-number-editor"
+
+// TODO: use rails route helpers
+const choreographerPath = (cid: number): string => {
+  return "/choreographers/" + cid
+}
+const dancePath = (danceId: number): string => {
+  return "/dances/" + danceId
+}
+
+const ChoreographerCell = (props: any): JSX.Element => {
+  const values: DanceSearchResult = props.row.original // shouldn't I be looking at props.row.values? It only has the accessor'd field in the column definition.
+  return (
+    <a href={choreographerPath(values.choreographer_id)}>
+      {values.choreographer_name}
+    </a>
+  )
+}
+
+const DanceTitleCell = (props: any): JSX.Element => {
+  const values: DanceSearchResult = props.row.original // shouldn't I be looking at props.row.values? It only has the accessor'd field in the column definition.
+  return <a href={dancePath(values.id)}>{values.title}</a>
+}
+
+// time looks like: '2019-10-13T06:22:08.818Z'
+const DateCell = (time: string): JSX.Element => (
+  <>{new Date(time).toLocaleDateString()}</>
+)
+
+const CreatedAtDateCell = (props: any /* Cell */): JSX.Element =>
+  DateCell(props.row.values.created_at)
+
+const UpdatedAtDateCell = (props: any /* Cell */): JSX.Element => {
+  return DateCell(props.row.values.updated_at)
+}
+
+const MatchingFiguresHtmlCell = (props: any /* Cell */): JSX.Element => (
+  <div
+    dangerouslySetInnerHTML={{
+      __html: props.row.values.matching_figures_html,
+    }}
+  />
+)
+
+type ColumnDefinition = {
+  Header: string
+  accessor: string
+  Cell?: (props: any) => JSX.Element
+  show: boolean
+}
+
+const columnDefinitions: Array<ColumnDefinition> = [
+  {
+    Header: "Title",
+    accessor: "title",
+    Cell: DanceTitleCell,
+    show: true,
+  },
+  {
+    Header: "Choreographer",
+    accessor: "choreographer_name",
+    Cell: ChoreographerCell,
+    show: true,
+  },
+  { Header: "Hook", accessor: "hook", show: true },
+  { Header: "Formation", accessor: "formation", show: true },
+  { Header: "User", accessor: "user_name", show: true },
+  {
+    Header: "Entered",
+    accessor: "created_at",
+    Cell: CreatedAtDateCell,
+    show: true,
+  },
+  {
+    Header: "Updated",
+    accessor: "updated_at",
+    Cell: UpdatedAtDateCell,
+    show: false,
+  },
+  { Header: "Sharing", accessor: "publish", show: false },
+  {
+    Header: "Figures",
+    accessor: "matching_figures_html",
+    show: false,
+    Cell: MatchingFiguresHtmlCell,
+  },
+]
 
 function PaginationSentence({
   pageOffset,
@@ -31,7 +111,7 @@ function PaginationSentence({
 function DanceTableThLabel({
   column,
 }: {
-  column: ColumnInstance<DanceSearchResult>
+  column: any // ColumnInstance<DanceSearchResult>
 }): JSX.Element {
   return (
     <div
@@ -75,14 +155,12 @@ export const sortByParam = (sortBy: SortBy): string =>
     .join("")
 
 function Table({
-  columns,
   dancesGetJson,
   fetchData,
   loading,
   pageCount: controlledPageCount,
   initialSortBy,
 }: {
-  columns: any
   dancesGetJson: DancesGetJson
   fetchData: Function
   loading: boolean
@@ -93,7 +171,7 @@ function Table({
   // const [{ pageIndex, pageSize }] = tableState
 
   const tableOptions = {
-    columns,
+    columns: columnDefinitions,
     data: dancesGetJson.dances,
     manualPagination: true,
     manualSortBy: true, // after 7.0.0-rc2
@@ -102,6 +180,7 @@ function Table({
     initialState: { sortBy: initialSortBy },
   }
   const {
+    flatColumns: columns,
     getTableProps,
     headerGroups,
     prepareRow,
@@ -119,6 +198,20 @@ function Table({
     state: { sortBy },
   } = useTable(tableOptions, useSortBy, usePagination)
 
+  useEffect(() => {
+    if (columnDefinitions.length !== columns.length)
+      throw new Error("columns and columnDefinitions are not the same length")
+    // first time through hide the columns that should be born hidden
+    for (let i = 0; i < columns.length; i++) {
+      const columnDefinition = columnDefinitions[i]
+      const column = columns[i]
+      if (!columnDefinition.show) {
+        column.toggleHidden(true)
+        console.log("hiding " + columnDefinition.Header)
+      }
+    }
+  }, [columns])
+
   // again, need to worry about the return value of this first arg to useEffect
   useEffect(() => fetchData({ pageIndex, pageSize, sortBy }), [
     fetchData,
@@ -127,21 +220,18 @@ function Table({
     sortBy,
   ])
 
-  if (dancesGetJson.numberMatching > 100) {
-    // debugger
-  }
-
   return (
     <>
       {loading && <div className="floating-loading-indicator">loading...</div>}
+      <ColumnVisToggles columns={columns} />
       <table
         {...getTableProps()}
         className="table table-bordered table-hover table-condensed dances-table-react"
       >
         <thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup: any) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
+              {headerGroup.headers.map((column: any) => (
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   <DanceTableThLabel column={column} />
                 </th>
@@ -150,11 +240,11 @@ function Table({
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map(row => {
+          {rows.map((row: any) => {
             prepareRow(row)
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.map(cell => (
+                {row.cells.map((cell: any) => (
                   <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                 ))}
               </tr>
@@ -288,88 +378,44 @@ interface DancesGetJson {
   dances: Array<DanceSearchResult>
 }
 
-// TODO: use rails route helpers
-const choreographerPath = (cid: number): string => {
-  return "/choreographers/" + cid
-}
-const dancePath = (danceId: number): string => {
-  return "/dances/" + danceId
-}
-
-const ChoreographerCell = (props: any): JSX.Element => {
-  const values: DanceSearchResult = props.row.original // shouldn't I be looking at props.row.values? It only has the accessor'd field in the column definition.
+const ColumnVisToggles = ({ columns }: { columns: any[] }): JSX.Element => {
   return (
-    <a href={choreographerPath(values.choreographer_id)}>
-      {values.choreographer_name}
-    </a>
+    <div className="table-column-vis-wrap">
+      <label>Show columns </label>
+      <div className="table-column-vis-toggles">
+        {columns.map((column, i) => (
+          <ColumnVisToggle
+            column={column}
+            columnDefinition={columnDefinitions[i]}
+            key={i}
+          />
+        ))}
+      </div>
+    </div>
   )
 }
 
-const DanceTitleCell = (props: any): JSX.Element => {
-  const values: DanceSearchResult = props.row.original // shouldn't I be looking at props.row.values? It only has the accessor'd field in the column definition.
-  return <a href={dancePath(values.id)}>{values.title}</a>
+const ColumnVisToggle = ({
+  column,
+  columnDefinition,
+}: {
+  column: any
+  columnDefinition: ColumnDefinition
+}): JSX.Element => {
+  const [vis, setVis] = useState(columnDefinition.show)
+  const toggleVisClass = vis ? "toggle-vis-active" : "toggle-vis-inactive"
+  const className = "btn btn-xs " + toggleVisClass
+  const onChange = (e: any): void => {
+    const e2 = { ...e, target: { checked: !vis } }
+    setVis(!vis)
+    return column.getToggleHiddenProps().onChange(e2)
+  }
+  return (
+    <button className={className} onClick={onChange}>
+      {column.Header}
+    </button>
+  )
 }
-
-const CreatedAtDateCell = (props: Cell): JSX.Element =>
-  DateCell(props.row.values.created_at)
-
-const UpdatedAtDateCell = (props: Cell): JSX.Element => {
-  return DateCell(props.row.values.updated_at)
-}
-// time looks like: '2019-10-13T06:22:08.818Z'
-const DateCell = (time: string): JSX.Element => (
-  <>{new Date(time).toLocaleDateString()}</>
-)
-
-const MatchingFiguresHtmlCell = (props: Cell): JSX.Element => (
-  <div
-    dangerouslySetInnerHTML={{
-      __html: props.row.values.matching_figures_html,
-    }}
-  />
-)
-
-const columnsArr: Array<{
-  Header: string
-  accessor: string
-  Cell?: (props: any) => JSX.Element
-  show: boolean
-}> = [
-  {
-    Header: "Title",
-    accessor: "title",
-    Cell: DanceTitleCell,
-    show: true,
-  },
-  {
-    Header: "Choreographer",
-    accessor: "choreographer_name",
-    Cell: ChoreographerCell,
-    show: true,
-  },
-  { Header: "Hook", accessor: "hook", show: true },
-  { Header: "Formation", accessor: "formation", show: true },
-  { Header: "User", accessor: "user_name", show: true },
-  {
-    Header: "Entered",
-    accessor: "created_at",
-    Cell: CreatedAtDateCell,
-    show: true,
-  },
-  {
-    Header: "Updated",
-    accessor: "updated_at",
-    Cell: UpdatedAtDateCell,
-    show: false,
-  },
-  { Header: "Sharing", accessor: "publish", show: false },
-  {
-    Header: "Figures",
-    accessor: "matching_figures_html",
-    show: false,
-    Cell: MatchingFiguresHtmlCell,
-  },
-]
 
 function DanceTable(): JSX.Element {
   const [dancesGetJson, setDancesGetJson] = useState({
@@ -396,50 +442,26 @@ function DanceTable(): JSX.Element {
     // maybe return in-use-ness to prevent a memory leak here?
   }, [])
 
-  const [visibleToggles, setVisibleToggles] = useState(
-    columnsArr.map(ca => ca.show)
-  )
-  // const toggleTitleVisible = () => setTitleVisible(!titleVisible)
-  const columns = useMemo(
-    () => columnsArr.map((ca, i) => ({ ...ca, show: () => visibleToggles[i] })),
-    [visibleToggles]
-  )
+  // const [visibleToggles, setVisibleToggles] = useState(
+  //   columnDefinitions.map(ca => ca.show)
+  // )
+
+  // // const toggleTitleVisible = () => setTitleVisible(!titleVisible)
+  // const columns = useMemo(
+  //   () =>
+  //     columnDefinitions.map((cd, i) => ({ ...cd, show: visibleToggles[i] })),
+  //   [visibleToggles]
+  // )
+  // console.log(columns)
 
   return (
-    <>
-      <div className="table-column-vis-wrap">
-        <label>Show columns </label>
-        <div className="table-column-vis-toggles">
-          {columnsArr.map((ca, i) => {
-            const toggleVisFn = (): void => {
-              setVisibleToggles(
-                visibleToggles.map((vis, j) => (i === j) !== vis)
-              )
-            }
-            const toggleVisClass = visibleToggles[i]
-              ? "toggle-vis-active"
-              : "toggle-vis-inactive"
-            return (
-              <button
-                key={i}
-                className={"btn btn-xs " + toggleVisClass}
-                onClick={toggleVisFn}
-              >
-                {ca.Header}
-              </button>
-            )
-          })}
-        </div>
-      </div>
-      <Table
-        columns={columns}
-        dancesGetJson={dancesGetJson}
-        fetchData={fetchData}
-        loading={loading}
-        pageCount={pageCount}
-        initialSortBy={[]}
-      />
-    </>
+    <Table
+      dancesGetJson={dancesGetJson}
+      fetchData={fetchData}
+      loading={loading}
+      pageCount={pageCount}
+      initialSortBy={[]}
+    />
   )
 }
 
