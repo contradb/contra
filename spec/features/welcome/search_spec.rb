@@ -222,5 +222,19 @@ describe 'Search page', js: true do
       find('th', text: 'Title').click
       expect(page).to have_text(Regexp.new(titles_sorted.join('.*\n')))
     end
+
+    it "you can't sort by matching figures" do
+      dances = [:dance, :box_the_gnat_contra, :call_me].each_with_index.map do |t, i|
+        FactoryGirl.create(t, created_at: now - i.hours)
+      end
+      the_ordered_regexp = Regexp.new(dances.map(&:title).join('(?:.*\n)+'))
+      visit(s_path)
+      click_button 'Figures'
+      expect(page).to have_content(the_ordered_regexp) # order is time-sorted
+      find('th', text: 'Figures').click
+      expect(page).to_not have_css('th .glyphicon-sort-by-attributes')
+      expect(page).to_not have_css('th .glyphicon-sort-by-attributes-alt')
+      expect(page).to have_content(the_ordered_regexp) # order is still time-sorted
+    end
   end
 end
