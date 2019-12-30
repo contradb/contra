@@ -110,37 +110,36 @@ function PaginationSentence({
   )
 }
 
-function DanceTableThLabel({
+function DanceTableTh({
   column,
 }: {
   column: any // ColumnInstance<DanceSearchResult>
 }): JSX.Element {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
+    <th
+      {...column.getHeaderProps(column.getSortByToggleProps())}
+      className={"dance-table-th"}
     >
-      {column.render("Header")} {/* Add a sort direction indicator */}
-      {column.isSorted ? (
-        <span
-          className={
-            "glyphicon " +
-            (column.isSortedDesc
-              ? "glyphicon-sort-by-attributes-alt"
-              : "glyphicon-sort-by-attributes")
-          }
-          style={{ opacity: 0.5 }}
-        ></span>
-      ) : (
-        <span
-          className="glyphicon glyphicon-sort"
-          style={{ opacity: 0.2 }}
-        ></span>
-      )}
-    </div>
+      <div>
+        {column.render("Header")} {/* Add a sort direction indicator */}
+        {column.isSorted ? (
+          <span
+            className={
+              "glyphicon " +
+              (column.isSortedDesc
+                ? "glyphicon-sort-by-attributes-alt"
+                : "glyphicon-sort-by-attributes")
+            }
+            style={{ opacity: 0.5 }}
+          ></span>
+        ) : (
+          <span
+            className="glyphicon glyphicon-sort"
+            style={{ opacity: 0.2 }}
+          ></span>
+        )}
+      </div>
+    </th>
   )
 }
 
@@ -202,14 +201,8 @@ function Table({
     if (columnDefinitions.length !== columns.length)
       throw new Error("columns and columnDefinitions are not the same length")
     // first time through hide the columns that should be born hidden
-    for (let i = 0; i < columns.length; i++) {
-      const columnDefinition = columnDefinitions[i]
-      const column = columns[i]
-      if (!columnDefinition.show) {
-        column.toggleHidden(true)
-        console.log("hiding " + columnDefinition.Header)
-      }
-    }
+    for (let i = 0; i < columns.length; i++)
+      if (!columnDefinitions[i].show) columns[i].toggleHidden(true)
   }, [columns])
 
   // again, need to worry about the return value of this first arg to useEffect
@@ -232,9 +225,7 @@ function Table({
           {headerGroups.map((headerGroup: any) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column: any) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  <DanceTableThLabel column={column} />
-                </th>
+                <DanceTableTh column={column} key={column.index} />
               ))}
             </tr>
           ))}
