@@ -178,3 +178,9 @@ select.chooser-argument {
   border-radius: 0.5em;
   border: 3px dashed black;
 }
+
+.dance-table-th div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

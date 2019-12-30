@@ -236,5 +236,37 @@ describe 'Search page', js: true do
       expect(page).to_not have_css('th .glyphicon-sort-by-attributes-alt')
       expect(page).to have_content(the_ordered_regexp) # order is still time-sorted
     end
+
+    it "sorting all columns (except matching figure) does not give error" do
+      dances = [:dance, :box_the_gnat_contra, :call_me].each_with_index.map do |t, i|
+        FactoryGirl.create(t, created_at: now - i.hours)
+      end
+      visit(s_path)
+      columns = page.find_all(".toggle-vis-active").to_a + page.find_all(".toggle-vis-inactive").to_a
+      column_names = columns.map(&:text)
+      column_names_not_to_check = ['Figures']
+      column_names_checked = column_names - column_names_not_to_check
+      column_names_checked.each do |column_name|
+        unless has_css?('.toggle-vis-active', text: column_name)
+          click_button(column_name)
+        end
+        th = find('.dance-table-th', text: column_name)
+        expect(th).to have_css('.glyphicon-sort')
+        expect(th).to_not have_css('.glyphicon-sort-by-attributes')
+        expect(th).to_not have_css('.glyphicon-sort-by-attributes-alt')
+        th.click
+        expect(th).to have_css('.glyphicon-sort-by-attributes')
+        expect(th).to_not have_css('.glyphicon-sort')
+        expect(th).to_not have_css('.glyphicon-sort-by-attributes-alt')
+        th.click
+        expect(th).to have_css('.glyphicon-sort-by-attributes-alt')
+        expect(th).to_not have_css('.glyphicon-sort')
+        expect(th).to_not have_css('.glyphicon-sort-by-attributes')
+        th.click
+        expect(th).to have_css('.glyphicon-sort')
+        expect(th).to_not have_css('.glyphicon-sort-by-attributes')
+        expect(th).to_not have_css('.glyphicon-sort-by-attributes-alt')
+      end
+    end
   end
 end

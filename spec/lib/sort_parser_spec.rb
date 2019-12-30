@@ -5,12 +5,13 @@ require 'sort_parser'
 describe SortParser do
   describe 'parse' do
     it 'works part 1' do
-      input = "titleAhookDchoreographer_nameAuser_nameD"
+      input = "titleAhookDchoreographer_nameAuser_nameDpublishA"
       expected = [
         "title",
         {"hook" => :desc},
         "choreographers.name",
-        User.arel_table[:name].desc
+        User.arel_table[:name].desc,
+        "dances.publish"
       ]
       expect(SortParser.parse(input)).to eq(expected)
     end
@@ -21,7 +22,7 @@ describe SortParser do
         {"start_type" => :desc},
         Choreographer.arel_table[:name].desc,
         "users.name",
-        {"publish" => :desc}
+        Dance.arel_table[:publish].desc
       ]
       expect(SortParser.parse(input)).to eq(expected)
     end
