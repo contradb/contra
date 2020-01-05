@@ -23,13 +23,14 @@ class Dance < ApplicationRecord
     end
   }
 
-  scope :searchable_by, ->(user=nil) {
+  scope :searchable_by, ->(user, personal_page: false) {
+    dances_for_page_type = personal_page ? where.not(publish: :off) : where(publish: :all)
     if user.nil?
-      where(publish: :all)
+      dances_for_page_type
     elsif user.admin?
       all
     else
-      where(publish: :all).or(where(user_id: user.id))
+      dances_for_page_type.or(where(user_id: user.id))
     end
   }
 

@@ -95,16 +95,20 @@ RSpec.describe Dance, type: :model do
     end
 
     describe "'searchable_by' scope" do
-      it "if not passed a user returns published_all dances" do
+      it "if not passed a user returns published: all dances" do
         expect(Dance.searchable_by(nil).pluck(:title)).to eq(['dance a2', 'dance b2'])
       end
 
-      it "if passed a user, only returns published_all dances, or dances of that user" do
+      it "if passed a user, only returns published: all dances, or dances of that user" do
         expect(Dance.searchable_by(user_b).pluck(:title)).to eq(['dance a2', 'dance b0', 'dance b1', 'dance b2'])
       end
 
       it "if passed an admin, returns all dances" do
         expect(Dance.searchable_by(admonsterator).pluck(:title)).to eq(dances.map(&:title))
+      end
+
+      it "if passed the optional personal_page: true argument, returns published: :link/:all dances" do
+        expect(Dance.searchable_by(nil, personal_page: true).pluck(:title)).to eq(['dance a1', 'dance a2', 'dance b1', 'dance b2'])
       end
     end
   end
