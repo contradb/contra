@@ -14,9 +14,11 @@
 %>
 
 
-<%= render partial: "dances/showtable", object: @dances, 
-    locals: {user: false} %>
+<%= render partial: "dances/showtable", object: @featured_dances, 
+    locals: {user: false, classes: "featured"} %>
 
+<%= render partial: "dances/showtable", object: @reclusive_dances, 
+    locals: {user: false, classes: "reclusive"} %>
 
 <h2>Programs</h2>
 <%= if user_signed_in? && (current_user.id == @user.id)

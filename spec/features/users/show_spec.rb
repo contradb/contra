@@ -8,8 +8,8 @@ describe "user show" do
                   FactoryGirl.create(:dance, publish: publishyness, user: user, title: "dance-#{publishyness}.")})
     end
     visit user_path(user)
-    expect(page).to_not have_link(dances.fetch(:off).title)
-    expect(page).to have_link(dances.fetch(:link).title)
-    expect(page).to have_link(dances.fetch(:all).title)
+    expect(page).to_not have_css("table a", text: dances[:off].title)
+    expect(page).to have_css("table.reclusive a", text: dances[:link].title)
+    expect(page).to have_css("table.featured a", text: dances[:all].title)
   end
 end

@@ -10,7 +10,8 @@ class UsersController < ApplicationController
   end
 
   def show
-    @dances = @user.dances.searchable_by(current_user, personal_page: true).alphabetical
+    @featured_dances = @user.dances.searchable_by(current_user).where(publish: :all).alphabetical
+    @reclusive_dances = @user.dances.searchable_by(current_user, personal_page: true).where(publish: :link).alphabetical
     @programs = @user.programs
   end
 
