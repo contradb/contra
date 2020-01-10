@@ -14,11 +14,19 @@
 %>
 
 
-<%= render partial: "dances/showtable", object: @featured_dances, 
-    locals: {user: false, classes: "featured"} %>
+<div class='public-dances'>
+  <%= render partial: "dances/showtable", object: @featured_dances, 
+      locals: {user: false} %>
+</div>
 
-<%= render partial: "dances/showtable", object: @reclusive_dances, 
-    locals: {user: false, classes: "reclusive"} %>
+<% if @reclusive_dances.length.positive? %>
+  <div class='sketchbook-dances'>
+    <h3>Sketchbook</h3>
+    <p>This is for dances that aren't ready to call. They're not discoverable from the main dance search page.</p>
+    <%= render partial: "dances/showtable", object: @reclusive_dances, 
+        locals: {user: false} %>
+  </div>
+<% end %>
 
 <h2>Programs</h2>
 <%= if user_signed_in? && (current_user.id == @user.id)
