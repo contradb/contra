@@ -15,15 +15,15 @@
 
 
 <div class='public-dances'>
-  <%= render partial: "dances/showtable", object: @featured_dances, 
+  <%= render partial: "dances/showtable", object: @public_dances, 
       locals: {user: false} %>
 </div>
 
-<% if @reclusive_dances.length.positive? %>
+<% if @sketchbook_dances.length.positive? %>
   <div class='sketchbook-dances'>
     <h3>Sketchbook</h3>
     <p>This is for dances that aren't ready to call. They're not discoverable from the main dance search page.</p>
-    <%= render partial: "dances/showtable", object: @reclusive_dances, 
+    <%= render partial: "dances/showtable", object: @sketchbook_dances, 
         locals: {user: false} %>
   </div>
 <% end %>
