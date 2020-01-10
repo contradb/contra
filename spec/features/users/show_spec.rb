@@ -1,12 +1,14 @@
 require 'rails_helper'
 
 describe "user show" do
-  it "shows dances pubished as :all and :link but not :off" do
-    user = FactoryGirl.create(:user)
-    dances = [:off, :link, :all].reduce({}) do |dances, publishyness|
-      dances.merge({publishyness =>
-                  FactoryGirl.create(:dance, publish: publishyness, user: user, title: "dance-#{publishyness}.")})
-    end
+  let (:user) { FactoryGirl.create(:user) }
+  let (:dances) do 
+    [:off, :link, :all].reduce({}) {|dances, publishyness|
+      dances.merge({publishyness => FactoryGirl.create(:dance, publish: publishyness, user: user, title: "dance-#{publishyness}.")})
+    }
+  end
+  it "shows dances split into two tables, based on :all and :link, but does not show :off" do
+    dances
     visit user_path(user)
     expect(page).to_not have_css("table a", text: dances[:off].title)
     expect(page).to have_css(".public-dances table a", text: dances[:all].title)
@@ -18,9 +20,35 @@ describe "user show" do
   end
 
   it "doesn't show the sketchbook if the user doesn't have one" do
-    user = FactoryGirl.create(:user)
     visit user_path(user)
     expect(page).to_not have_text("Sketchbook")
     expect(page).to_not have_css(".sketchbook-dances")
+  end
+
+  describe "private dances" do
+    it "when logged in shows private dances" do
+      dances
+      with_login(user: user) do
+        visit user_path(user)
+        expect(page).to have_css('.private-dances h3', text: 'Private Dances')
+        expect(page).to have_css(".private-dances table a", text: dances[:off].title)
+      end
+    end
+
+    it "doesn't show table if there are none" do
+      visit user_path(user)
+      expect(page).to_not have_text("Private Dances")
+      expect(page).to_not have_css(".private-dances")
+    end
+
+    it "when logged in but have nonone, don't show table" do
+      dances
+      dances[:off].destroy!
+      with_login(user: user) do
+        visit user_path(user)
+        expect(page).to_not have_css('.private-dances h3', text: 'Private Dances')
+        expect(page).to_not have_css(".private-dances table a")
+      end
+    end
   end
 end
