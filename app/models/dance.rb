@@ -34,7 +34,7 @@ class Dance < ApplicationRecord
     end
   }
 
-  def readable?(user=nil)
+  def readable?(user: nil)
     if !publish_off?
       true
     elsif user
@@ -44,8 +44,10 @@ class Dance < ApplicationRecord
     end
   end
 
-  def searchable?(user=nil)
+  def searchable?(user: nil, sketchbook: false)
     if publish_all?
+      true
+    elsif sketchbook && publish_sketchbook?
       true
     elsif user
       user_id == user.id || user.admin?

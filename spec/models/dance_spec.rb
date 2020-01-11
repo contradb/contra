@@ -53,30 +53,34 @@ RSpec.describe Dance, type: :model do
     let (:dances) { [dance_a0, dance_a1, dance_a2, dance_b0, dance_b1, dance_b2] }
 
     describe '#readable?' do
-      it "with nil returns published_sketchbook or published_all dances" do
+      it "with unspecified user returns published_sketchbook or published_all dances" do
         expect(dances.map(&:readable?)).to eq([false,true,true,false,true,true])
       end
 
       it "with user returns their dances and published_sketchbook/published_all dances" do
-        expect(dances.map {|d| d.readable?(user_a)}).to eq([true,true,true,false,true,true])
+        expect(dances.map {|d| d.readable?(user: user_a)}).to eq([true,true,true,false,true,true])
       end
 
       it "with admin returns all dances" do
-        expect(dances.map {|d| d.readable?(admonsterator)}).to eq(Array.new(6, true))
+        expect(dances.map {|d| d.readable?(user: admonsterator)}).to eq(Array.new(6, true))
       end
     end
 
     describe '#searchable?' do
-      it "with nil returns published_all? dances" do
+      it "with user unspecified returns published_all? dances" do
         expect(dances.map(&:searchable?)).to eq([false,false,true,false,false,true])
       end
 
       it "with user returns their dances and published_all dances" do
-        expect(dances.map {|d| d.searchable?(user_a)}).to eq([true,true,true,false,false,true])
+        expect(dances.map {|d| d.searchable?(user: user_a)}).to eq([true,true,true,false,false,true])
       end
 
       it "with admin returns all dances" do
-        expect(dances.map {|d| d.searchable?(admonsterator)}).to eq(Array.new(6, true))
+        expect(dances.map {|d| d.searchable?(user: admonsterator)}).to eq(Array.new(6, true))
+      end
+
+      it "with no user but sketchbook: true returns published_all? & published_sketchbook? dances" do
+        expect(dances.map {|d| d.searchable?(sketchbook: true)}).to eq([false,true,true,false,true,true])
       end
     end
 

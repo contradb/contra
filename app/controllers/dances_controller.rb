@@ -86,7 +86,7 @@ class DancesController < ApplicationController
     end
 
     def authenticate_dance_readable!
-      unless @dance.readable?(current_user)
+      unless @dance.readable?(user: current_user)
         deny_or_login!(deny_notice: "the link to that dance is not shared, so you can't see it", login_notice: "the link to that dance is not shared - maybe it's yours and you could see it if you logged in?")
       end
     end
