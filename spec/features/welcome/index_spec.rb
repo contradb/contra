@@ -963,13 +963,12 @@ describe 'Welcome page', js: true do
           expect(page).to_not have_css('button.toggle-vis-active', text: col)
         end
       end
-
-
+      include DancesHelper
       it 'published column cells' do
         with_login do |user|
           dances.each_with_index do |dance, i|
             publish = [:off, :link, :all][i]
-            publish_string = ['myself', 'link', 'everyone'][i]
+            publish_string = dance_publish_word(publish)
             dance.update!(publish: publish, user: user)
             visit '/'
             click_button 'Sharing'

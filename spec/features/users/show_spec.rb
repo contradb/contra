@@ -15,8 +15,6 @@ describe "user show" do
     expect(page).to have_css('.sketchbook-dances h3', text: 'Sketchbook')
     expect(page).to have_css('.sketchbook-dances p', text: "This is for dances that aren't ready to call. They're not discoverable from the main dance search page.")
     expect(page).to have_css(".sketchbook-dances table a", text: dances[:link].title)
-    # TODO: show headers to explain why 2 types of dance tables
-    # TODO: only show 2nd table & header if it is non-empty
   end
 
   it "doesn't show the sketchbook if the user doesn't have one" do

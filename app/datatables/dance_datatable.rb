@@ -3,6 +3,7 @@ require 'set'
 require 'search_match'
 
 class DanceDatatable < AjaxDatatablesRails::Base
+  include DancesHelper
 
   def_delegators :@view, :link_to, :dance_path, :choreographer_path, :user_path
 
@@ -33,7 +34,7 @@ class DanceDatatable < AjaxDatatablesRails::Base
         user_name: link_to(dance.user.name, user_path(dance.user)),
         created_at: dance.created_at.strftime('%Y-%m-%d'),
         updated_at: dance.updated_at.strftime('%Y-%m-%d'),
-        published: dance_publish_cell(dance.publish),
+        published: dance_publish_word(dance.publish),
         figures: figures_html(filter, dance)
       }
     end
@@ -326,19 +327,6 @@ class DanceDatatable < AjaxDatatablesRails::Base
         i += 1
       end
       arr
-    end
-  end
-
-  def dance_publish_cell(enum_value)
-    case enum_value.to_s
-    when 'all'
-      'everyone'
-    when 'link'
-      'link'
-    when 'off'
-      'myself'
-    else
-      raise 'Fell through enum case statement'
     end
   end
 end
