@@ -47,7 +47,7 @@ module DancesHelper
     when 'link'
       'shared to sketchbook'
     when 'all'
-      'shared'
+      'shared everywhere'
     else
       raise 'fell through enum case'
     end
@@ -60,7 +60,7 @@ module DancesHelper
     when 'link'
       'sketchbook'
     when 'all'
-      'shared'
+      'everywhere'
     else
       raise 'fell through enum case'
     end
