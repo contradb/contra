@@ -82,33 +82,33 @@ RSpec.describe Dance, type: :model do
 
     describe "'readable_by' scope" do
       it "if not passed a user just returns published_link and published_all dances" do
-        expect(Dance.readable_by(nil).pluck(:title)).to eq(['dance a1', 'dance a2', 'dance b1', 'dance b2'])
+        expect(Dance.readable_by(nil).pluck(:title).sort).to eq(['dance a1', 'dance a2', 'dance b1', 'dance b2'])
       end
 
       it "if passed a user, only returns published_link dances, or published_all dances, or dances of that user" do
-        expect(Dance.readable_by(user_b).pluck(:title)).to eq(['dance a1', 'dance a2', 'dance b0', 'dance b1', 'dance b2'])
+        expect(Dance.readable_by(user_b).pluck(:title).sort).to eq(['dance a1', 'dance a2', 'dance b0', 'dance b1', 'dance b2'])
       end
 
       it "if passed an admin, returns all dances" do
-        expect(Dance.readable_by(admonsterator).pluck(:title)).to eq(dances.map(&:title))
+        expect(Dance.readable_by(admonsterator).pluck(:title).sort).to eq(dances.map(&:title))
       end
     end
 
     describe "'searchable_by' scope" do
       it "if not passed a user returns published: all dances" do
-        expect(Dance.searchable_by(nil).pluck(:title)).to eq(['dance a2', 'dance b2'])
+        expect(Dance.searchable_by(nil).pluck(:title).sort).to eq(['dance a2', 'dance b2'])
       end
 
       it "if passed a user, only returns published: all dances, or dances of that user" do
-        expect(Dance.searchable_by(user_b).pluck(:title)).to eq(['dance a2', 'dance b0', 'dance b1', 'dance b2'])
+        expect(Dance.searchable_by(user_b).pluck(:title).sort).to eq(['dance a2', 'dance b0', 'dance b1', 'dance b2'])
       end
 
       it "if passed an admin, returns all dances" do
-        expect(Dance.searchable_by(admonsterator).pluck(:title)).to eq(dances.map(&:title))
+        expect(Dance.searchable_by(admonsterator).pluck(:title).sort).to eq(dances.map(&:title))
       end
 
       it "if passed the optional sketchbook: true argument, returns published: :link dances" do
-        expect(Dance.searchable_by(nil, sketchbook: true).pluck(:title)).to eq(['dance a1', 'dance b1'])
+        expect(Dance.searchable_by(nil, sketchbook: true).pluck(:title).sort).to eq(['dance a1', 'dance b1'])
       end
     end
   end
