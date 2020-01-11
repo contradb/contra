@@ -57,7 +57,7 @@ describe 'Editing dances', js: true do
       expect(dance.hook).to eq('wombatty')
       expect(dance.preamble).to eq('prerambling')
       expect(dance.notes).to eq('notey')
-      expect(dance.publish_link?).to eq(true)
+      expect(dance.publish_sketchbook?).to eq(true)
     end
   end
 

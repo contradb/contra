@@ -6,7 +6,7 @@ RSpec.describe UsersController, type: :controller do
     let! (:creator) { FactoryGirl.create(:user) }
     let (:other_user) { FactoryGirl.create(:user) }
     let! (:dance0) { FactoryGirl.create(:dance, user: creator, title: "dance0", publish: :off) }
-    let! (:dance1) { FactoryGirl.create(:dance, user: creator, title: "dance1", publish: :link) }
+    let! (:dance1) { FactoryGirl.create(:dance, user: creator, title: "dance1", publish: :sketchbook) }
     let! (:dance2) { FactoryGirl.create(:dance, user: creator, title: "dance2", publish: :all) }
 
 

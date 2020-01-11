@@ -44,7 +44,7 @@ module DancesHelper
     case publish_enum.to_s
     when 'off'
       'private'
-    when 'link'
+    when 'sketchbook'
       'shared to sketchbook'
     when 'all'
       'shared everywhere'
@@ -57,7 +57,7 @@ module DancesHelper
     case publish_enum.to_s
     when 'off'
       'private'
-    when 'link'
+    when 'sketchbook'
       'sketchbook'
     when 'all'
       'everywhere'

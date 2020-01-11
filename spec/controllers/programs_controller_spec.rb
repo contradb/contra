@@ -21,7 +21,7 @@ require 'fake_user_helper'
 
 RSpec.describe ProgramsController, type: :controller do
   let (:dances) { [FactoryGirl.create(:dance, publish: :all),
-                   FactoryGirl.create(:box_the_gnat_contra, publish: :link),
+                   FactoryGirl.create(:box_the_gnat_contra, publish: :sketchbook),
                    FactoryGirl.create(:call_me, publish: :off)] }
   let (:program) { FactoryGirl.create(:program, dances: dances) }
 

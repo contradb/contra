@@ -3,19 +3,19 @@ require 'rails_helper'
 describe "user show" do
   let (:user) { FactoryGirl.create(:user) }
   let (:dances) do 
-    [:off, :link, :all].reduce({}) {|dances, publishyness|
+    [:off, :sketchbook, :all].reduce({}) {|dances, publishyness|
       dances.merge({publishyness => FactoryGirl.create(:dance, publish: publishyness, user: user, title: "dance-#{publishyness}.")})
     }
   end
 
-  it "shows dances split into two tables, based on :all and :link" do
+  it "shows dances split into two tables, based on :all and :sketchbook" do
     dances
     visit user_path(user)
     expect(page).to_not have_css("table a", text: dances[:off].title)
     expect(page).to have_css(".public-dances table a", text: dances[:all].title)
     expect(page).to have_css('.sketchbook-dances h3', text: 'Sketchbook')
     expect(page).to have_css('.sketchbook-dances p', text: "This is for dances that aren't ready to call. They're not discoverable from the main dance search page.")
-    expect(page).to have_css(".sketchbook-dances table a", text: dances[:link].title)
+    expect(page).to have_css(".sketchbook-dances table a", text: dances[:sketchbook].title)
   end
 
   it "doesn't show the sketchbook table if the user doesn't have one" do

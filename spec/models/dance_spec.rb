@@ -45,19 +45,19 @@ RSpec.describe Dance, type: :model do
     let (:user_a) { FactoryGirl.create(:user) }
     let (:user_b) { FactoryGirl.create(:user) }
     let! (:dance_a0) { FactoryGirl.create(:dance, user: user_a, title: "dance a0", publish: :off) }
-    let! (:dance_a1) { FactoryGirl.create(:dance, user: user_a, title: "dance a1", publish: :link) }
+    let! (:dance_a1) { FactoryGirl.create(:dance, user: user_a, title: "dance a1", publish: :sketchbook) }
     let! (:dance_a2) { FactoryGirl.create(:dance, user: user_a, title: "dance a2", publish: :all) }
     let! (:dance_b0) { FactoryGirl.create(:dance, user: user_b, title: "dance b0", publish: :off) }
-    let! (:dance_b1) { FactoryGirl.create(:dance, user: user_b, title: "dance b1", publish: :link) }
+    let! (:dance_b1) { FactoryGirl.create(:dance, user: user_b, title: "dance b1", publish: :sketchbook) }
     let! (:dance_b2) { FactoryGirl.create(:dance, user: user_b, title: "dance b2", publish: :all) }
     let (:dances) { [dance_a0, dance_a1, dance_a2, dance_b0, dance_b1, dance_b2] }
 
     describe '#readable?' do
-      it "with nil returns published_link or published_all dances" do
+      it "with nil returns published_sketchbook or published_all dances" do
         expect(dances.map(&:readable?)).to eq([false,true,true,false,true,true])
       end
 
-      it "with user returns their dances and published_link/published_all dances" do
+      it "with user returns their dances and published_sketchbook/published_all dances" do
         expect(dances.map {|d| d.readable?(user_a)}).to eq([true,true,true,false,true,true])
       end
 
@@ -81,11 +81,11 @@ RSpec.describe Dance, type: :model do
     end
 
     describe "'readable_by' scope" do
-      it "if not passed a user just returns published_link and published_all dances" do
+      it "if not passed a user just returns published_sketchbook and published_all dances" do
         expect(Dance.readable_by(nil).pluck(:title).sort).to eq(['dance a1', 'dance a2', 'dance b1', 'dance b2'])
       end
 
-      it "if passed a user, only returns published_link dances, or published_all dances, or dances of that user" do
+      it "if passed a user, only returns published_sketchbook dances, or published_all dances, or dances of that user" do
         expect(Dance.readable_by(user_b).pluck(:title).sort).to eq(['dance a1', 'dance a2', 'dance b0', 'dance b1', 'dance b2'])
       end
 
@@ -107,7 +107,7 @@ RSpec.describe Dance, type: :model do
         expect(Dance.searchable_by(admonsterator).pluck(:title).sort).to eq(dances.map(&:title))
       end
 
-      it "if passed the optional sketchbook: true argument, returns published: :link dances" do
+      it "if passed the optional sketchbook: true argument, returns published: :sketchbook dances" do
         expect(Dance.searchable_by(nil, sketchbook: true).pluck(:title).sort).to eq(['dance a1', 'dance b1'])
       end
     end
