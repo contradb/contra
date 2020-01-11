@@ -107,8 +107,8 @@ RSpec.describe Dance, type: :model do
         expect(Dance.searchable_by(admonsterator).pluck(:title)).to eq(dances.map(&:title))
       end
 
-      it "if passed the optional personal_page: true argument, returns published: :link/:all dances" do
-        expect(Dance.searchable_by(nil, personal_page: true).pluck(:title)).to eq(['dance a1', 'dance a2', 'dance b1', 'dance b2'])
+      it "if passed the optional sketchbook: true argument, returns published: :link dances" do
+        expect(Dance.searchable_by(nil, sketchbook: true).pluck(:title)).to eq(['dance a1', 'dance b1'])
       end
     end
   end
