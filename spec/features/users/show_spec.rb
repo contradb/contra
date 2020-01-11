@@ -7,7 +7,8 @@ describe "user show" do
       dances.merge({publishyness => FactoryGirl.create(:dance, publish: publishyness, user: user, title: "dance-#{publishyness}.")})
     }
   end
-  it "shows dances split into two tables, based on :all and :link, but does not show :off" do
+
+  it "shows dances split into two tables, based on :all and :link" do
     dances
     visit user_path(user)
     expect(page).to_not have_css("table a", text: dances[:off].title)
@@ -17,7 +18,7 @@ describe "user show" do
     expect(page).to have_css(".sketchbook-dances table a", text: dances[:link].title)
   end
 
-  it "doesn't show the sketchbook if the user doesn't have one" do
+  it "doesn't show the sketchbook table if the user doesn't have one" do
     visit user_path(user)
     expect(page).to_not have_text("Sketchbook")
     expect(page).to_not have_css(".sketchbook-dances")

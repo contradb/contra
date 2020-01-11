@@ -11,28 +11,31 @@ RSpec.describe UsersController, type: :controller do
 
 
     context "without login" do
-      it "renderer gets @public_dances and @sketchbook_dances with searchable dances" do
+      it "populates @public_/@private_/@sketchbook_dances with searchable dances" do
         get :show, params: {id: creator.to_param}
         expect(assigns(:public_dances).to_a).to eq([dance2])
         expect(assigns(:sketchbook_dances).to_a).to eq([dance1])
+        expect(assigns(:private_dances).to_a).to eq([])
       end
     end
 
     context "with creator login" do
-      it "renderer gets @dances with searchable dances in alphabetical order" do
-        dance3 = FactoryGirl.create(:dance, user: creator, title: "dance3", publish: :all)
-        adance4 = FactoryGirl.create(:dance, user: creator, title: "adance4", publish: :all)
+      it "populates @public_/@private_/@sketchbook_dances with searchable dances" do
         sign_in creator
         get :show, params: {id: creator.to_param}
-        expect(assigns(:public_dances).to_a).to eq([adance4, dance2, dance3])
+        expect(assigns(:public_dances).to_a).to eq([dance2])
+        expect(assigns(:sketchbook_dances).to_a).to eq([dance1])
+        expect(assigns(:private_dances).to_a).to eq([dance0])
       end
     end
 
     context "with user-who-is-not-creator login" do
-      it "renderer gets @dances with searchable dances" do
+      it "populates @public_/@private_/@sketchbook_dances with searchable dances" do
         sign_in other_user
         get :show, params: {id: creator.to_param}
         expect(assigns(:public_dances).to_a).to eq([dance2])
+        expect(assigns(:sketchbook_dances).to_a).to eq([dance1])
+        expect(assigns(:private_dances).to_a).to eq([])
       end
     end
 
@@ -41,6 +44,18 @@ RSpec.describe UsersController, type: :controller do
         sign_in admin
         get :show, params: {id: creator.to_param}
         expect(assigns(:public_dances).to_a).to eq([dance2])
+        expect(assigns(:sketchbook_dances).to_a).to eq([dance1])
+        expect(assigns(:private_dances).to_a).to eq([dance0])
+      end
+    end
+
+    context "sorting" do
+      # did not bother to test that @private_dances and @sketchbook_dances are also sorted
+      it "populates @public_dances with searchable dances in alphabetical order" do
+        dance3 = FactoryGirl.create(:dance, user: creator, title: "dance3", publish: :all)
+        adance4 = FactoryGirl.create(:dance, user: creator, title: "adance4", publish: :all)
+        get :show, params: {id: creator.to_param}
+        expect(assigns(:public_dances).to_a).to eq([adance4, dance2, dance3])
       end
     end
   end
