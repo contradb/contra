@@ -5,7 +5,7 @@ describe 'Showing dances' do
   include DancesHelper
   it 'displays fields' do
     user = FactoryGirl.create(:user, moderation: :collaborative)
-    dance = FactoryGirl.create(:box_the_gnat_contra, publish: :link, user: user)
+    dance = FactoryGirl.create(:box_the_gnat_contra, publish: :sketchbook, user: user)
     visit dance_path dance.id
     expect(page).to have_css('h1', text: dance.title)
     expect(page).to have_content(dance.hook)
@@ -15,9 +15,13 @@ describe 'Showing dances' do
     expect(page).to have_text ('neighbors balance & swing')
     expect(page).to have_text ('ladles allemande right 1½')
     expect(page).to have_content(dance.notes)
-    expect(page).to_not have_text(dance_publish_string(:off))
-    expect(page).to_not have_text(dance_publish_string(:all))
-    expect(page).to have_text(dance_publish_string(:link))
+    expect(page).to_not have_css('.dance-show-publish', text: only(dance_publish_string(:off)))
+    expect(page).to_not have_css('.dance-show-publish', text: only(dance_publish_string(:all)))
+    expect(page).to have_css('.dance-show-publish', text: only(dance_publish_string(:sketchbook)))
+  end
+
+  def only(string)
+    /\A#{string}\z/
   end
 
   it 'displays moderation link' do

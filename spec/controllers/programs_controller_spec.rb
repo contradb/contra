@@ -21,7 +21,7 @@ require 'fake_user_helper'
 
 RSpec.describe ProgramsController, type: :controller do
   let (:dances) { [FactoryGirl.create(:dance, publish: :all),
-                   FactoryGirl.create(:box_the_gnat_contra, publish: :link),
+                   FactoryGirl.create(:box_the_gnat_contra, publish: :sketchbook),
                    FactoryGirl.create(:call_me, publish: :off)] }
   let (:program) { FactoryGirl.create(:program, dances: dances) }
 
@@ -58,7 +58,7 @@ RSpec.describe ProgramsController, type: :controller do
       get :new, params: {}
       expect(assigns(:program)).to be_a_new(Program)
       json = JSON.parse(assigns(:dance_autocomplete_hash_json))
-      expect(json.map {|d| d['title']}).to eq(dances.select(&:searchable?).map(&:title))
+      expect(json.map {|d| d['title']}).to eq(dances.select{|d| d.searchable?(sketchbook: true)}.map(&:title))
     end
   end
 
@@ -68,7 +68,7 @@ RSpec.describe ProgramsController, type: :controller do
       get :edit, params: {:id => program.to_param}
       expect(assigns(:program)).to eq(program)
       json = JSON.parse(assigns(:dance_autocomplete_hash_json))
-      expect(json.map {|d| d['title']}).to eq(dances.select(&:searchable?).map(&:title))
+      expect(json.map {|d| d['title']}).to eq(dances.select{|d| d.searchable?(sketchbook: true)}.map(&:title))
     end
 
     it "If not logged in as program owner, refuses to show page" do

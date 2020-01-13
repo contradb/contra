@@ -43,11 +43,24 @@ module DancesHelper
   def dance_publish_string(publish_enum)
     case publish_enum.to_s
     when 'off'
-      'shared with myself'
-    when 'link'
-      'shared to people with this link'
+      'private'
+    when 'sketchbook'
+      'shared to sketchbook'
     when 'all'
-      'shared with everyone'
+      'shared everywhere'
+    else
+      raise 'fell through enum case'
+    end
+  end
+
+  def dance_publish_word(publish_enum)
+    case publish_enum.to_s
+    when 'off'
+      'private'
+    when 'sketchbook'
+      'sketchbook'
+    when 'all'
+      'everywhere'
     else
       raise 'fell through enum case'
     end

@@ -200,19 +200,19 @@
     </section>
 
     <section>
-      <label>Share With</label>
+      <label>Share</label>
       <div class='publish-edit'>
         <%= f.label :publish, value: 'all' do %>
           <%= f.radio_button :publish, 'all' %>
-          everyone
+          everywhere
         <% end %>
-        <%= f.label :publish, value: 'link' do %>
-          <%= f.radio_button :publish, 'link' %>
-          people with link
+        <%= f.label :publish, value: 'sketchbook' do %>
+          <%= f.radio_button :publish, 'sketchbook' %>
+          sketchbook
         <% end %>
         <%= f.label :publish, value: 'off' do %>
           <%= f.radio_button :publish, 'off' %>
-          myself
+          private
         <% end %>
       </div>
 
