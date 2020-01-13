@@ -40,7 +40,7 @@ describe 'Welcome page', js: true do
     it 'shows only dances visible to current user' do
       with_login do |user|
         dance2 = FactoryGirl.create(:box_the_gnat_contra, title: "this dance should be visible", publish: :off, user: user)
-        dance3 = FactoryGirl.create(:box_the_gnat_contra, title: "this dance should be invisible", publish: :link)
+        dance3 = FactoryGirl.create(:box_the_gnat_contra, title: "this dance should be invisible", publish: :sketchbook)
         visit '/'
         expect(page).to have_content(dance2.title)
         expect(page).to_not have_content(dance3.title)
@@ -963,13 +963,12 @@ describe 'Welcome page', js: true do
           expect(page).to_not have_css('button.toggle-vis-active', text: col)
         end
       end
-
-
+      include DancesHelper
       it 'published column cells' do
         with_login do |user|
           dances.each_with_index do |dance, i|
-            publish = [:off, :link, :all][i]
-            publish_string = ['myself', 'link', 'everyone'][i]
+            publish = [:off, :sketchbook, :all][i]
+            publish_string = dance_publish_word(publish)
             dance.update!(publish: publish, user: user)
             visit '/'
             click_button 'Sharing'

@@ -61,7 +61,7 @@
           then content_tag(:p, renderMarkdown(activity.text), class: "activity-breakdown-text")
           end %>
 
-      <%= if activity.dance&.readable?(current_user)
+      <%= if activity.dance&.readable?(user: current_user)
             introduce_moves = []
             activity.dance.figures.each do |figure|
               move = JSLibFigure.alias(figure)
@@ -79,7 +79,7 @@
             end
           end %>
 
-      <% if activity.dance&.readable?(current_user) %>
+      <% if activity.dance&.readable?(user: current_user) %>
         <div class='dance-body-in-program'>
           <%= render partial: 'dances/bodyshow', locals: {dance: activity.dance, dialect: @dialect} %>
         </div>

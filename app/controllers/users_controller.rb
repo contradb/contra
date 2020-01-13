@@ -10,7 +10,9 @@ class UsersController < ApplicationController
   end
 
   def show
-    @dances = @user.dances.searchable_by(current_user).alphabetical
+    @public_dances = @user.dances.searchable_by(current_user).where(publish: :all).alphabetical
+    @sketchbook_dances = @user.dances.searchable_by(current_user, sketchbook: true).where(publish: :sketchbook).alphabetical
+    @private_dances = @user.dances.searchable_by(current_user).where(publish: :off).alphabetical
     @programs = @user.programs
   end
 

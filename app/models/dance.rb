@@ -11,7 +11,7 @@ class Dance < ApplicationRecord
 
   scope :alphabetical, ->() { order "LOWER(title)" }
 
-  enum publish: [ :off, :link, :all ], _prefix: true
+  enum publish: [ :off, :sketchbook, :all ], _prefix: true
 
   scope :readable_by, ->(user=nil) {
     if user.nil?
@@ -23,17 +23,18 @@ class Dance < ApplicationRecord
     end
   }
 
-  scope :searchable_by, ->(user=nil) {
+  scope :searchable_by, ->(user, sketchbook: false) {
+    published_and_maybe_sketchbook_dances = sketchbook ? where.not(publish: :off) : where(publish: :all)
     if user.nil?
-      where(publish: :all)
+      published_and_maybe_sketchbook_dances
     elsif user.admin?
       all
     else
-      where(publish: :all).or(where(user_id: user.id))
+      published_and_maybe_sketchbook_dances.or(where(user_id: user.id))
     end
   }
 
-  def readable?(user=nil)
+  def readable?(user: nil)
     if !publish_off?
       true
     elsif user
@@ -43,8 +44,10 @@ class Dance < ApplicationRecord
     end
   end
 
-  def searchable?(user=nil)
+  def searchable?(user: nil, sketchbook: false)
     if publish_all?
+      true
+    elsif sketchbook && publish_sketchbook?
       true
     elsif user
       user_id == user.id || user.admin?
