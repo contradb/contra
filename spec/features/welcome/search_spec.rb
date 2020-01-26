@@ -277,8 +277,7 @@ describe 'Search page', js: true do
       it "works" do
         dances
         visit(s_path)
-        fill_in("ez-choroeographer-filter", with: dances.last.choreographer)
-
+        find('.ez-choreographer-filter').fill_in(with: dances.last.choreographer)
       end
     end
   end
