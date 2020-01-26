@@ -269,4 +269,17 @@ describe 'Search page', js: true do
       end
     end
   end
+
+  describe "filters" do
+    describe "choreographer" do
+      let(:dances) { [:dance, :box_the_gnat_contra, :call_me].map {|name| FactoryGirl.create(name)} }
+
+      it "works" do
+        dances
+        visit(s_path)
+        fill_in("ez-choroeographer-filter", with: dances.last.choreographer)
+
+      end
+    end
+  end
 end
