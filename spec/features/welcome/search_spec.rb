@@ -275,9 +275,13 @@ describe 'Search page', js: true do
       let(:dances) { [:dance, :box_the_gnat_contra, :call_me].map {|name| FactoryGirl.create(name)} }
 
       it "works" do
-        dances
+        call_me = dances.last
+        dont_call_me = dances[0, dances.length-2]
         visit(s_path)
-        find('.ez-choreographer-filter').fill_in(with: dances.last.choreographer)
+        find('.ez-choreographer-filter').fill_in(with: call_me.choreographer)
+        dont_call_me.each do |dance|
+          expect(page).to_not have_content(dance.title)
+        end
       end
     end
   end
