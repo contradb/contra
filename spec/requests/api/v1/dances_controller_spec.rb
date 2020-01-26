@@ -5,7 +5,6 @@ RSpec.describe Api::V1::DancesController do
     let (:now) { DateTime.now }
     it "returns json of all dances" do
       dance = FactoryGirl.create(:call_me)
-      dance.reload
       get api_v1_dances_path
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body))
@@ -59,6 +58,6 @@ RSpec.describe Api::V1::DancesController do
       expect(dances_received.map{|json| json['title']}).to eq(aaaBBBccc)
     end
 
-    it 'only performs one query'
+    it 'only performs one sql query'
   end
 end
