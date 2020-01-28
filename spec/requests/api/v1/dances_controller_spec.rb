@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::DancesController do
-  describe "GET #index" do
+  describe "POST #index" do
     let (:now) { DateTime.now }
     it "returns json of all dances" do
       dance = FactoryGirl.create(:call_me)
-      get api_v1_dances_path
+      post api_v1_dances_path
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body))
         .to eq({
@@ -35,7 +35,9 @@ RSpec.describe Api::V1::DancesController do
       end
       pages.times do |pageIndex|
         pageSize.times do |rowIndex|
-          get api_v1_dances_path(count: pageSize, offset: pageIndex*pageSize)
+          headers = { "content_type" => "application/json" }
+          params = {count: pageSize, offset: pageIndex*pageSize}
+          post(api_v1_dances_path, params: params, headers: headers)
           expect(response).to have_http_status(200)
           rendered = JSON.parse(response.body)
           expect(rendered['numberMatching']).to eq(12)
@@ -51,7 +53,7 @@ RSpec.describe Api::V1::DancesController do
       dances = "caB".chars.each_with_index.map do |char, i|
         FactoryGirl.create(:dance, title: char*3, created_at: now - i.hours)
       end
-      get api_v1_dances_path(sort_by: 'titleA')
+      post api_v1_dances_path(sort_by: 'titleA')
       dances_received = JSON.parse(response.body)['dances']
       aaaBBBccc = ['aaa', 'BBB', 'ccc']
       expect(aaaBBBccc).to eq(dances.dup.sort_by {|d| d.title.downcase }.map(&:title))

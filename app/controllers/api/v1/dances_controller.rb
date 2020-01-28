@@ -2,6 +2,9 @@ require 'filter_dances'
 require 'sort_parser'
 
 class Api::V1::DancesController < ApplicationController
+  # small security risk: dialetcs are snoopable with this
+  skip_before_action :verify_authenticity_token
+
   def index
     render json:FilterDances.filter_dances(filter,
                                            count: count,
@@ -20,14 +23,22 @@ class Api::V1::DancesController < ApplicationController
   end
 
   def count
-    parseIntWithDefault(params[:count], 10)
+    default_integer_param(:count, 10)
   end
 
   def offset
-    parseIntWithDefault(params[:offset], 0)
+    default_integer_param(:offset, 0)
   end
 
-  def parseIntWithDefault(s, default)
-    s =~ /^[0-9]+$/ ? Integer(s) : default
+  def default_integer_param(s, default)
+    p = params[s]
+    case p
+    when Integer                # path in production
+      p
+    when String                 # path for request specs, because: frustration!
+      Integer(p)
+    else
+      default
+    end
   end
 end

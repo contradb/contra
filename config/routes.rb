@@ -75,7 +75,7 @@ Rails.application.routes.draw do
   #   end
   namespace :api do
     namespace :v1 do
-      resources :dances, only: [:index]
+      post 'dances' => "dances#index"
     end
   end
 end

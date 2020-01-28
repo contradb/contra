@@ -422,8 +422,14 @@ function DanceTable(): JSX.Element {
     async function fetchData1(): Promise<void> {
       const offset = pageIndex * pageSize
       const sort = sortByParam(sortBy)
-      const url = `/api/v1/dances?count=${pageSize}&offset=${offset}&sort_by=${sort}`
-      const response = await fetch(url)
+      const url = "/api/v1/dances"
+      const headers = { "Content-type": "application/json" }
+      const body = JSON.stringify({
+        count: pageSize,
+        offset: offset,
+        sort_by: sort,
+      })
+      const response = await fetch(url, { method: "POST", headers, body })
       const json: DancesGetJson = await response.json()
       setDancesGetJson(json)
       setPageCount(Math.ceil(json.numberMatching / pageSize))
