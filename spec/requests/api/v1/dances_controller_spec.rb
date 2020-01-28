@@ -3,9 +3,10 @@ require 'rails_helper'
 RSpec.describe Api::V1::DancesController do
   describe "POST #index" do
     let (:now) { DateTime.now }
+    let (:headers) { { "content_type" => "application/json" } }
     it "returns json of all dances" do
       dance = FactoryGirl.create(:call_me)
-      post api_v1_dances_path
+      post(api_v1_dances_path, params: {}, headers: headers)
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body))
         .to eq({
@@ -35,7 +36,6 @@ RSpec.describe Api::V1::DancesController do
       end
       pages.times do |pageIndex|
         pageSize.times do |rowIndex|
-          headers = { "content_type" => "application/json" }
           params = {count: pageSize, offset: pageIndex*pageSize}
           post(api_v1_dances_path, params: params, headers: headers)
           expect(response).to have_http_status(200)
@@ -53,7 +53,7 @@ RSpec.describe Api::V1::DancesController do
       dances = "caB".chars.each_with_index.map do |char, i|
         FactoryGirl.create(:dance, title: char*3, created_at: now - i.hours)
       end
-      post api_v1_dances_path(sort_by: 'titleA')
+      post(api_v1_dances_path, params: {sort_by: 'titleA'}, headers: headers)
       dances_received = JSON.parse(response.body)['dances']
       aaaBBBccc = ['aaa', 'BBB', 'ccc']
       expect(aaaBBBccc).to eq(dances.dup.sort_by {|d| d.title.downcase }.map(&:title))
