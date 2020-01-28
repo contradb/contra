@@ -60,6 +60,14 @@ RSpec.describe Api::V1::DancesController do
       expect(dances_received.map{|json| json['title']}).to eq(aaaBBBccc)
     end
 
+    it 'heeds filter' do
+      dances = [:box_the_gnat_contra, :dance].map {|name| FactoryGirl.create(name)}
+      box_the_gnat = dances.first
+      post(api_v1_dances_path, params: {filter: ['figure', 'box the gnat']}, headers: headers)
+      dances_received = JSON.parse(response.body)['dances']
+      expect(dances_received.map {|d| d['title']}).to eq([box_the_gnat.title])
+    end
+
     it 'only performs one sql query'
   end
 end

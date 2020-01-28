@@ -15,7 +15,7 @@ class Api::V1::DancesController < ApplicationController
 
   private
   def filter
-    ['figure', '*']
+    params[:filter] || ['figure', '*']
   end
 
   def sort_by
