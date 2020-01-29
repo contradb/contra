@@ -222,6 +222,17 @@ describe FilterDances do
         expect(filtered_titles('>', 0)).to eq([])
       end
     end
+
+    describe 'choreographer' do
+      it "works case-insensitively" do
+        filtered = FilterDances.filter_dances(['choreographer', dances.first.choreographer.name.upcase], dialect: dialect)
+        expect(titles(filtered)).to eq([dances.first.title])
+      end
+    end
+
+    describe 'when' do
+      it "returns the dances of the 2nd argument iff 1st argument"
+    end
   end
 
   it 'filter_result_to_json' do
