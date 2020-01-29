@@ -211,10 +211,10 @@ function Table({
   const debouncedFilter = useDebounce(filter, 800)
 
   // again, need to worry about the return value of this first arg to useEffect
-  useEffect(() => {
-    console.log("fire", debouncedFilter)
-    return fetchData({ pageIndex, pageSize, sortBy, filter: debouncedFilter })
-  }, [fetchData, pageIndex, pageSize, sortBy, debouncedFilter])
+  useEffect(
+    () => fetchData({ pageIndex, pageSize, sortBy, filter: debouncedFilter }),
+    [fetchData, pageIndex, pageSize, sortBy, debouncedFilter]
+  )
 
   return (
     <>
