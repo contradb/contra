@@ -239,6 +239,11 @@ module FilterDances
     going_concerns
   end
 
+  def self.matching_figures_for_choreographer(filter, dance)
+    choreographer = filter[1]
+    dance.choreographer.name.include?(choreographer) ? Set[] : nil
+  end
+
   COMPARISON_STRING_TO_RUBY_OP = {'≥' => :'>=',
                                   '≤' => :'<=',
                                   '≠' => :'!=',

@@ -160,12 +160,14 @@ function Table({
   fetchData,
   loading,
   pageCount: controlledPageCount,
+  filter,
   initialSortBy,
 }: {
   dancesGetJson: DancesGetJson
   fetchData: Function
   loading: boolean
   pageCount: number
+  filter: any
   initialSortBy: any // SortBy
 }): JSX.Element {
   // const tableState = useTableState({ pageIndex: 0 })
@@ -206,11 +208,12 @@ function Table({
   }, [columns])
 
   // again, need to worry about the return value of this first arg to useEffect
-  useEffect(() => fetchData({ pageIndex, pageSize, sortBy }), [
+  useEffect(() => fetchData({ pageIndex, pageSize, sortBy, filter }), [
     fetchData,
     pageIndex,
     pageSize,
     sortBy,
+    filter,
   ])
 
   return (
@@ -408,7 +411,7 @@ const ColumnVisToggle = ({
   )
 }
 
-function DanceTable(): JSX.Element {
+function DanceTable({ filter }: { filter: any }): JSX.Element {
   const [dancesGetJson, setDancesGetJson] = useState({
     dances: [] as DanceSearchResult[],
     numberSearched: 0,
@@ -417,7 +420,7 @@ function DanceTable(): JSX.Element {
 
   const [pageCount, setPageCount] = React.useState(0)
   const [loading, setLoading] = React.useState(false)
-  const fetchData = useCallback(({ pageSize, pageIndex, sortBy }) => {
+  const fetchData = useCallback(({ pageSize, pageIndex, sortBy, filter }) => {
     setLoading(true)
     async function fetchData1(): Promise<void> {
       const offset = pageIndex * pageSize
@@ -428,6 +431,7 @@ function DanceTable(): JSX.Element {
         count: pageSize,
         offset: offset,
         sort_by: sort,
+        filter: filter,
       })
       const response = await fetch(url, { method: "POST", headers, body })
       const json: DancesGetJson = await response.json()
@@ -457,6 +461,7 @@ function DanceTable(): JSX.Element {
       fetchData={fetchData}
       loading={loading}
       pageCount={pageCount}
+      filter={filter}
       initialSortBy={[]}
     />
   )
