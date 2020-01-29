@@ -213,6 +213,12 @@ module FilterDances
     a.present? ? a : nil
   end
 
+  # 2nd argument gets its return value passed through intact iff the 1st argment is truthy
+  def self.matching_figures_for_when(filter, dance)
+    _op, when_, expression = filter
+    matching_figures(when_, dance) ? matching_figures(expression, dance) : nil
+  end
+
   # figurewise_not
   def self.matching_figures_for_not(filter, dance)
     subfilter = filter[1]
