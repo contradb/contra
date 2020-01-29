@@ -246,8 +246,8 @@ module FilterDances
   end
 
   def self.matching_figures_for_choreographer(filter, dance)
-    choreographer = filter[1]
-    dance.choreographer.name.include?(choreographer) ? Set[] : nil
+    choreographer = filter[1].downcase
+    dance.choreographer.name.downcase.include?(choreographer) ? Set[] : nil
   end
 
   COMPARISON_STRING_TO_RUBY_OP = {'≥' => :'>=',
