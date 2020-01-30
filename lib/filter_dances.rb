@@ -166,6 +166,17 @@ module FilterDances
     s.present? ? s : nil
   end
 
+  def self.matching_figures_for_if(filter, dance)
+    _op, if_, then_, else_ = filter
+    if matching_figures(if_, dance)
+      matching_figures(then_, dance)
+    elsif else_
+      matching_figures(else_, dance)
+    else
+      nil
+    end
+  end
+
   def self.matching_figures_for_no(filter, dance)
     subfilter = filter[1]
     if matching_figures(subfilter, dance)
@@ -211,12 +222,6 @@ module FilterDances
   def self.matching_figures_for_figurewise_and(filter, dance)
     a = matching_figures_for_and(filter, dance)
     a.present? ? a : nil
-  end
-
-  # 2nd argument gets its return value passed through intact iff the 1st argment is truthy
-  def self.matching_figures_for_when(filter, dance)
-    _op, when_, expression = filter
-    matching_figures(when_, dance) ? matching_figures(expression, dance) : nil
   end
 
   # figurewise_not
