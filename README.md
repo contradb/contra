@@ -70,7 +70,6 @@ will run the js linter on `app/javascript/dance-table.tsx`. This is currently th
 
 
 ```
-yarn run tsc --watch
+bin/webpack-dev-server
 ```
-This will run the typescript compiler - for some reason ts compile errors don't stop the main build, so I keep an eye on this.
-Unfortunately, it barfs compilation artifacts in the soruce tree. If those are the only new files, I carefully clean them with `git clean -fd`.
+This will indirectly run the typescript compiler in watch mode - for some reason ts compile errors don't stop the ruby, so I keep an eye on this terminal.
