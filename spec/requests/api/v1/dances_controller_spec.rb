@@ -23,7 +23,7 @@ RSpec.describe Api::V1::DancesController do
                    "user_name" => dance.user.name,
                    "created_at"=>dance.created_at.as_json,
                    "updated_at"=>dance.updated_at.as_json,
-                   "publish"=>"everyone",
+                   "publish"=>"everywhere",
                    "matching_figures_html"=>"whole dance"}
                  ]})
     end
