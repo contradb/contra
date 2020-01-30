@@ -125,8 +125,8 @@ describe 'Search page', js: true do
     it 'published column cells' do
       with_login do |user|
         dances.each_with_index do |dance, i|
-          publish = [:off, :link, :all][i]
-          publish_string = ['myself', 'link', 'everyone'][i]
+          publish = [:off, :sketchbook, :all][i]
+          publish_string = ['private', 'sketchbook', 'everywhere'][i]
           dance.update!(publish: publish, user: user)
           visit(s_path)
           click_button 'Sharing'
