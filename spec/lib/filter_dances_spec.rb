@@ -230,8 +230,26 @@ describe FilterDances do
       end
     end
 
-    describe 'when' do
-      it "returns the dances of the 2nd argument iff 1st argument"
+    describe 'if' do
+      it "only with the then" do
+        filter = ['if', ['choreographer', dances.first.choreographer.name],
+                  ['figure', 'do si do']]
+        filtered = FilterDances.filter_dances(filter, dialect: dialect)
+        expect(titles(filtered)).to eq([dances.first.title])
+        expect(filtered.dig(:dances, 0, 'matching_figures_html')).to eq('ladles do si do 1½')
+      end
+
+      it "with both then and else" do
+        filter = ['if', ['choreographer', dances.first.choreographer.name],
+                  ['figure', 'do si do'],
+                  ['progression']]
+        filtered = FilterDances.filter_dances(filter, dialect: dialect)
+        titles_with_a_progression = dances.select {|d| d.figures.length > 0}.map(&:title)
+        expect(titles(filtered)).to contain_exactly(*titles_with_a_progression)
+        expect(filtered[:dances].map {|d| d['matching_figures_html']}).to(
+          contain_exactly("ladles do si do 1½", "ladles chain ⁋", "partners balance &amp; swing ⁋")
+        )
+      end
     end
   end
 
