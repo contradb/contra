@@ -60,16 +60,17 @@ module FilterDances
     }
   end
 
+  # this code is duplicated in dance_helper, but I can't figure out how to cleanly import it.
   def self.dance_publish_cell(enum_value)
-    case enum_value.to_s
-    when 'all'
-      'everyone'
-    when 'link'
-      'link'
+    case enum_value
     when 'off'
-      'myself'
+      'private'
+    when 'sketchbook'
+      'sketchbook'
+    when 'all'
+      'everywhere'
     else
-      raise 'Fell through enum case statement'
+      raise 'fell through enum case'
     end
   end
 
