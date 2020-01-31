@@ -207,7 +207,10 @@ function Table({
       if (!columnDefinitions[i].show) columns[i].toggleHidden(true)
   }, [columns])
 
-  const debouncedFilter = useDebounce(filter, 800)
+  const debouncedFilter = useDebounce(filter, {
+    delay: 800,
+    bouncyFirstRun: true,
+  })
 
   // again, need to worry about the return value of this first arg to useEffect
   useEffect(
