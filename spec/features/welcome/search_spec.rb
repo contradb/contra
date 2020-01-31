@@ -147,6 +147,8 @@ describe 'Search page', js: true do
       end
 
       it 'some matches prints figures' do
+        # TODO: update how we pass the filter when there's a user-facing way to send figure queries
+        # 4NOW: stub the controller, heh heh -dm 01-30-2020
         expect_any_instance_of(Api::V1::DancesController).to receive(:filter).and_return(['figure', 'circle'])
         # mock
         dances
@@ -207,7 +209,6 @@ describe 'Search page', js: true do
       find('th', text: 'Title').click
       expect(page).to_not have_css('th .glyphicon-sort-by-attributes-alt')
       expect(page).to_not have_css('th .glyphicon-sort-by-attributes')
-      page.save_screenshot('/tmp/foo.png')
       dances.each_with_index do |dance, i|
         expect(page).send(i < 10 ? :to : :to_not, have_text(dance.title))
       end

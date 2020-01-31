@@ -34,9 +34,8 @@ const DateCell = (time: string): JSX.Element => (
 const CreatedAtDateCell = (props: any /* Cell */): JSX.Element =>
   DateCell(props.row.values.created_at)
 
-const UpdatedAtDateCell = (props: any /* Cell */): JSX.Element => {
-  return DateCell(props.row.values.updated_at)
-}
+const UpdatedAtDateCell = (props: any /* Cell */): JSX.Element =>
+  DateCell(props.row.values.updated_at)
 
 const MatchingFiguresHtmlCell = (props: any /* Cell */): JSX.Element => (
   <div
@@ -362,7 +361,7 @@ interface DanceSearchResult {
   user_name: string
   created_at: string
   updated_at: string
-  publish: string //  "myself" | "everyone" | "link"
+  publish: string
   figures: string
 }
 
@@ -442,18 +441,6 @@ function DanceTable({ filter }: { filter: any }): JSX.Element {
     fetchData1()
     // maybe return in-use-ness to prevent a memory leak here?
   }, [])
-
-  // const [visibleToggles, setVisibleToggles] = useState(
-  //   columnDefinitions.map(ca => ca.show)
-  // )
-
-  // // const toggleTitleVisible = () => setTitleVisible(!titleVisible)
-  // const columns = useMemo(
-  //   () =>
-  //     columnDefinitions.map((cd, i) => ({ ...cd, show: visibleToggles[i] })),
-  //   [visibleToggles]
-  // )
-  // console.log(columns)
 
   return (
     <Table

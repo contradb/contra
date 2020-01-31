@@ -266,7 +266,7 @@ describe FilterDances do
       user_name: dance.user.name,
       created_at: dance.created_at.as_json,
       updated_at: dance.updated_at.as_json,
-      publish: dance.publish == 'all' && 'everywhere',
+      publish: (dance.publish == 'all') && 'everywhere',
       matching_figures_html: 'whole dance',
     }.stringify_keys
     expect(FilterDances.filter_result_to_json(dance, 'whole dance')).to eq(result)

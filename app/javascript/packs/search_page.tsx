@@ -7,7 +7,6 @@ import AdvancedSearch from "../advanced-search"
 // import * as serviceWorker from './serviceWorker';
 const root = document.getElementById("root")
 
-console.log("root = ", root)
 ReactDOM.render(<AdvancedSearch />, root)
 
 // If you want your app to work offline and load faster, you can change

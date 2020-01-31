@@ -313,21 +313,4 @@ module FilterDances
     Set.new(
       set.map {|search_match| search_match.map {|i| SearchMatch.new(i, search_match.nfigures)}}.flatten)
   end
-
-  def self.hash_to_array(h)
-    h = h.to_h if h.instance_of?(ActionController::Parameters)
-    if !(h.instance_of?(Hash) || h.instance_of?(ActiveSupport::HashWithIndifferentAccess))
-      h
-    elsif !h['faux_array']
-      h
-    else
-      i = 0
-      arr = []
-      while h.key?(i.to_s)
-        arr << hash_to_array(h[i.to_s])
-        i += 1
-      end
-      arr
-    end
-  end
 end

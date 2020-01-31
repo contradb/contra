@@ -1,9 +1,9 @@
 module SortParser
   def self.parse(p)
-    raise "unpossible" if p == ['title']
-    if p.match?(/\A((?:title|choreographer_name|hook|formation|user_name|created_at|updated_at|publish)[AD])*\z/)
-      a = parse_valid(p)
-      a.empty? ? DEFAULT : a
+    p_is_valid = p.match?(/\A((?:title|choreographer_name|hook|formation|user_name|created_at|updated_at|publish)[AD])*\z/)
+    if p_is_valid
+      a = parse_valid_string(p)
+      a.empty? ? DEFAULT_SORT : a
     else
       raise "SortParser could not read #{p.inspect}"
     end
@@ -12,7 +12,7 @@ module SortParser
   # {hook: :desc},
   # Choreographer.arel_table[:name].desc
   private
-  def self.parse_valid(p)
+  def self.parse_valid_string(p)
     p.split(/(?<=[AD])/).map do |s|
       column, a_or_d = s.match(/^([a-z_]*)([AD])$/).to_a.drop(1)
       is_ascending = a_or_d == 'A'
@@ -26,12 +26,10 @@ module SortParser
       when 'created_at', 'updated_at', 'publish'
         is_ascending ? "dances.#{column}" : Dance.arel_table[column.to_sym].desc
       else
-        # is_ascending ? User.arel_table[:name].lower.asc : User.arel_table[:name].lower.desc
-
         is_ascending ? column : {column => :desc}
       end
     end
   end
 
-  DEFAULT = [{created_at: :desc}]
+  DEFAULT_SORT = [{created_at: :desc}]
 end
