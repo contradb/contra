@@ -183,32 +183,4 @@ RSpec.describe Dance, type: :model do
       expect(dut.dance.tags.to_a).to eq([dut.tag])
     end
   end
-
-#   it "#to_s_dump" do
-#     choreographer = FactoryGirl.build(:choreographer, name: 'Bob')
-#     s = FactoryGirl.build(:dance, choreographer: choreographer).to_s_dump
-#     expected = <<-HEREDOC
-#
-# Nate Rockstraw
-# The Rendevouz
-# Bob
-# improper
-# notes: ""
-#   0. neighbors balance &amp; swing
-#   1. long lines forward &amp; back
-#   2. ladles do si do 1½
-#   3. partners balance &amp; swing
-#   4. circle left 4 places
-#   5. slide left along set to new neighbors
-#   6. circle left 3 places
-# published
-# preamble: "a preamble appears here"
-# hook: "pioneered slide progression"
-# HEREDOC
-#     (0...(s.length/10)).each do |i|
-#       # if the strings aren't equal, this helpfully localizes it to be more specific than a 340 character string
-#       expect(s[i*10,10]).to eq(expected[i*10,10])
-#     end
-#     expect(s.strip).to eq(expected.strip)
-#   end
 end

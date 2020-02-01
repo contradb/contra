@@ -54,8 +54,22 @@ Then:
 ```
 bin/rspec
 ```
-will run ruby tests.
+will run lots of ruby tests.
+
+
 ```
 yarn test
 ```
-will run js tests
+will run a few js tests.
+
+
+```
+yarn eslint app/javascript/dance-table.tsx
+```
+will run the js linter on `app/javascript/dance-table.tsx`. This is currently the only file that is even remotely lintable.
+
+
+```
+bin/webpack-dev-server
+```
+This will indirectly run the typescript compiler in watch mode - for some reason ts compile errors don't stop the ruby, so I keep an eye on this terminal.

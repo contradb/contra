@@ -136,15 +136,51 @@ select.chooser-argument {
 
 .toggle-vis-active {
   @extend .btn-default;
+  background-color: white !important;
 }
 
 .toggle-vis-inactive {
-  background-color: $contra-grey;
   @extend .btn-default;
+  background-color: $contra-grey;
 }
 
 // Position radios and checkboxes better
 .chooser-argument input[type="radio"],
 .chooser-argument input[type="checkbox"] {
   margin-top: 0px;              /* override 4px in bootstrap */
+}
+
+.pagination {
+  @extend .btn-group;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.flipped-glyphicon {
+  transform: scaleX(-1);
+}
+
+.dance-table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.floating-loading-indicator {
+  background-color: rgba(255, 255, 255, 0.5);
+  font-size: 300%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0.5em;
+  border-radius: 0.5em;
+  border: 3px dashed black;
+}
+
+.dance-table-th div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

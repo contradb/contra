@@ -34,7 +34,9 @@ default: &default
     - .woff2
 
   extensions:
-    - .vue
+    - .tsx
+    - .ts
+    - .jsx
     - .mjs
     - .js
     - .sass
@@ -53,7 +55,7 @@ development:
   <<: *default
   compile: true
 
-  # Verifies that versions and hashed value of the package contents in the project's package.json
+  # Verifies that correct packages and versions are installed by inspecting package.json, yarn.lock, and node_modules
   check_yarn_integrity: true
 
   # Reference: https://webpack.js.org/configuration/dev-server/
