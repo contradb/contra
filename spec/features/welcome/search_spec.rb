@@ -11,6 +11,7 @@ describe 'Search page', js: true do
       to_probably = i < 10 ? :to : :to_not
       expect(page).send to_probably, have_link(dance.title, href: dance_path(dance))
       expect(page).send to_probably, have_link(dance.choreographer.name, href: choreographer_path(dance.choreographer_id))
+      expect(page).send to_probably, have_link(dance.user.name, href: user_path(dance.user_id))
       expect(page).send to_probably, have_text(dance.created_at.localtime.strftime("%-m/%-d/%Y"))
     end
   end

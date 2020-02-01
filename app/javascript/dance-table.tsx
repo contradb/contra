@@ -8,6 +8,9 @@ import useDebounce from "./use-debounce"
 const choreographerPath = (cid: number): string => {
   return "/choreographers/" + cid
 }
+const userPath = (cid: number): string => {
+  return "/users/" + cid
+}
 const dancePath = (danceId: number): string => {
   return "/dances/" + danceId
 }
@@ -19,6 +22,11 @@ const ChoreographerCell = (props: any): JSX.Element => {
       {values.choreographer_name}
     </a>
   )
+}
+
+const UserCell = (props: any): JSX.Element => {
+  const values: DanceSearchResult = props.row.original // shouldn't I be looking at props.row.values? It only has the accessor'd field in the column definition.
+  return <a href={userPath(values.user_id)}>{values.user_name}</a>
 }
 
 const DanceTitleCell = (props: any): JSX.Element => {
@@ -68,7 +76,7 @@ const columnDefinitions: Array<ColumnDefinition> = [
   },
   { Header: "Hook", accessor: "hook", show: true },
   { Header: "Formation", accessor: "formation", show: true },
-  { Header: "User", accessor: "user_name", show: true },
+  { Header: "User", accessor: "user_name", Cell: UserCell, show: true },
   {
     Header: "Entered",
     accessor: "created_at",
