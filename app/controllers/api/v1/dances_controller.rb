@@ -10,7 +10,8 @@ class Api::V1::DancesController < ApplicationController
                                            count: count,
                                            offset: offset,
                                            dialect: dialect,
-                                           sort_by: sort_by)
+                                           sort_by: sort_by,
+                                           user: current_user)
   end
 
   private

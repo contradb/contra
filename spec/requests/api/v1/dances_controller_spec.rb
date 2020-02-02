@@ -68,6 +68,13 @@ RSpec.describe Api::V1::DancesController do
       expect(dances_received.map {|d| d['title']}).to eq([box_the_gnat.title])
     end
 
+    it 'calls FilterDances.filter_dances the currently logged in user' do
+      with_login do |user|
+        expect(FilterDances).to receive(:filter_dances).with(anything, hash_including(user: user))
+        post(api_v1_dances_path, params: {}, headers: headers)
+      end
+    end
+
     it 'only performs one sql query'
   end
 end

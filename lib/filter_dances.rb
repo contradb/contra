@@ -8,9 +8,10 @@ module FilterDances
                          dialect:,
                          count: 10,
                          offset: 0,
-                         sort_by: "")
+                         sort_by: "",
+                         user: nil)
     filter.is_a?(Array) or raise "filter must be an array, but got #{filter.inspect} of class #{filter.class}"
-    query = Dance.includes(:choreographer, :user).references(:choreographer, :user).order(*SortParser.parse(sort_by))
+    query = Dance.includes(:choreographer, :user).references(:choreographer, :user).searchable_by(user).order(*SortParser.parse(sort_by))
     number_searched = 0
     number_matching = 0
     filter_results = []

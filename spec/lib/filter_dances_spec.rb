@@ -53,6 +53,22 @@ describe FilterDances do
       expect(filter_results.first['id']).to eq(dances.second.id)
     end
 
+    describe "only finds dances searchable to the provided user" do
+      let (:user) { FactoryGirl.create(:user) }
+
+      it 'with user unspecified, it displays only public dances' do
+        dances = [ :off, :sketchbook, :all ].map {|publish| FactoryGirl.create(:dance, publish: publish)}
+        filter_results = FilterDances.filter_dances(['figure', '*'], dialect: dialect)[:dances]
+        expect(filter_results.map{|d| d['id']}).to eq([dances.last.id])
+      end
+
+      it "with user, displays all that users' dances" do
+        dances = [ :off, :sketchbook, :all ].map {|publish| FactoryGirl.create(:dance, publish: publish, user: user)}
+        filter_results = FilterDances.filter_dances(['figure', '*'], dialect: dialect, user: user)[:dances]
+        expect(filter_results.map{|d| d['id']}).to contain_exactly(*dances.map(&:id))
+      end
+    end
+
     it 'checks the numberSearched and numberMatching fields'
   end
 
