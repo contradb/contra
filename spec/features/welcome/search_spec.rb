@@ -295,12 +295,23 @@ describe 'Search page', js: true do
 
       it "only display verified dances by default" do
         visit(s_path)
+        expect_dances(verified: true)
+      end
+
+      it "'not verified' checkbox works" do
+        visit(s_path)
+        check 'not verified'
+        expect_dances(verified: true, not_verified: true)
+        uncheck 'not verified'
+        expect_dances(verified: true, not_verified: false)
+      end
+
+      def expect_dances(verified: false, not_verified: false)
         dances.each do |dance|
-          if dance == verified_dance
-            expect(page).to have_content(dance.title)
-          else
-            expect(page).to_not have_content(dance.title)
-          end
+          to = dance == verified_dance ?
+                 (verified ? :to : :to_not) :
+                 (not_verified ? :to : :to_not)
+          expect(page).send(to, have_content(dance.title))
         end
       end
     end

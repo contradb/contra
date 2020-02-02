@@ -2,6 +2,7 @@ import * as React from "react"
 import { useState, useEffect, useCallback } from "react"
 import { useTable, usePagination, useSortBy } from "react-table"
 import { NaturalNumberEditor } from "./natural-number-editor"
+import Filter from "./filter"
 import useDebounce from "./use-debounce"
 
 // TODO: use rails route helpers
@@ -175,7 +176,7 @@ function Table({
   fetchData: Function
   loading: boolean
   pageCount: number
-  filter: any
+  filter: Filter
   initialSortBy: any // SortBy
 }): JSX.Element {
   // const tableState = useTableState({ pageIndex: 0 })
@@ -215,7 +216,7 @@ function Table({
       if (!columnDefinitions[i].show) columns[i].toggleHidden(true)
   }, [columns])
 
-  const debouncedFilter = useDebounce(filter, {
+  const debouncedFilter: Filter = useDebounce(filter, {
     delay: 800,
     bouncyFirstRun: true,
   })
@@ -421,7 +422,7 @@ const ColumnVisToggle = ({
   )
 }
 
-function DanceTable({ filter }: { filter: any }): JSX.Element {
+function DanceTable({ filter }: { filter: Filter }): JSX.Element {
   const [dancesGetJson, setDancesGetJson] = useState({
     dances: [] as DanceSearchResult[],
     numberSearched: 0,
