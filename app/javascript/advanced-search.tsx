@@ -3,11 +3,28 @@ import { useState } from "react"
 import DanceTable from "./dance-table"
 import Filter from "./filter"
 
+const match_nothing: Filter = ["or"] //  kinda non-obvious how to express tihs in filters, eh?
+
 export const AdvancedSearch = () => {
   const [choreographer, setChoreographer] = useState("")
+  const [verifiedChecked, setVerifiedChecked] = useState(true)
   const [notVerifiedChecked, setNotVerifiedChecked] = useState(false)
   const ezFilter: Filter = ["and"]
   choreographer && ezFilter.push(["choreographer", choreographer])
+  if (verifiedChecked) {
+    if (notVerifiedChecked) {
+      // do nothing
+    } else {
+      ezFilter.push(["compare", ["constant", 0], "<", ["tag", "verified"]])
+    }
+  } else {
+    if (notVerifiedChecked) {
+      ezFilter.push(["compare", ["constant", 0], "=", ["tag", "verified"]])
+    } else {
+      ezFilter.push(match_nothing)
+    }
+  }
+
   !notVerifiedChecked &&
     ezFilter.push(["compare", ["constant", 0], "<", ["tag", "verified"]])
   const filter = ["if", ezFilter, ["figure", "*"]]
@@ -26,6 +43,17 @@ export const AdvancedSearch = () => {
       <br />
       <label>
         <input
+          id="ez-verified"
+          type="checkbox"
+          checked={verifiedChecked}
+          onChange={e => setVerifiedChecked(e.target.checked)}
+        />
+        &nbsp; verified
+      </label>
+      <br />
+      <label>
+        <input
+          id="ez-not-verified"
           type="checkbox"
           checked={notVerifiedChecked}
           onChange={e => setNotVerifiedChecked(e.target.checked)}

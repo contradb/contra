@@ -288,31 +288,48 @@ describe 'Search page', js: true do
     end
 
     describe "verified" do
-      let! (:dances) { 2.times.map {|i| FactoryGirl.create(:dance, title: "Dance#{i}")}}
-      let (:verified_dance) { dances[1] }
+      let! (:dances) { 3.times.map {|i| FactoryGirl.create(:dance, title: "Dance#{i}")}}
+      let (:user) { FactoryGirl.create(:user) }
       let (:verified) { FactoryGirl.create(:tag, :verified) }
-      let! (:dut) { FactoryGirl.create(:dut, tag: verified, dance: verified_dance) }
+      let! (:dut_somebody_else) { FactoryGirl.create(:dut, tag: verified, dance: dances[1]) }
+      let! (:dut_by_me) { FactoryGirl.create(:dut, tag: verified, dance: dances[2]) }
+      let (:unverified_dance) { dances[0] }
+      let (:verified_dance) { dances[1] }
+      let (:verified_by_me_dance) { dances[2] }
 
-      it "only display verified dances by default" do
+      it "'verified' and 'not verified' checkboxes work" do
         visit(s_path)
-        expect_dances(verified: true)
-      end
-
-      it "'not verified' checkbox works" do
-        visit(s_path)
-        check 'not verified'
+        expect_dances(verified: true, not_verified: false) # the default
+        check 'ez-not-verified'
         expect_dances(verified: true, not_verified: true)
-        uncheck 'not verified'
+        uncheck 'ez-verified'
+        expect_dances(verified: false, not_verified: true)
+        uncheck 'ez-not-verified'
+        expect_dances(verified: false, not_verified: false)
+        check 'ez-verified'
         expect_dances(verified: true, not_verified: false)
       end
 
-      def expect_dances(verified: false, not_verified: false)
-        dances.each do |dance|
-          to = dance == verified_dance ?
-                 (verified ? :to : :to_not) :
-                 (not_verified ? :to : :to_not)
-          expect(page).send(to, have_content(dance.title))
-        end
+      # it "'verified by me' and 'not verified by me' checkboxes work" do
+      #   visit(s_path)
+      #   expect_dances(verified: true, not_verified: false) # the default
+      #   check 'ez-not-verified-by-me'
+      #   expect_dances(verified: true, not_verified: true)
+      #   check 'ez-verified'
+      #   expect_dances(verified: false, not_verified: true)
+      #   uncheck 'ez-not-verified'
+      #   expect_dances(verified: false, not_verified: false)
+      #   check 'ez-verified'
+      #   expect_dances(verified: true, not_verified: false)
+      # end
+
+      def expect_dances(verified: false,
+                        not_verified: false,
+                        verified_by_me: false,
+                        not_verified_by_me: false)
+        expect(page).send(not_verified || not_verified_by_me ? :to : :to_not, have_content(unverified_dance.title))
+        expect(page).send(verified || not_verified_by_me ? :to : :to_not, have_content(verified_dance.title))
+        expect(page).send(verified || verified_by_me ? :to : :to_not, have_content(verified_by_me_dance.title))
       end
     end
   end
