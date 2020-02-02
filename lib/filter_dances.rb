@@ -11,7 +11,11 @@ module FilterDances
                          sort_by: "",
                          user: nil)
     filter.is_a?(Array) or raise "filter must be an array, but got #{filter.inspect} of class #{filter.class}"
-    query = Dance.includes(:choreographer, :user).references(:choreographer, :user).searchable_by(user).order(*SortParser.parse(sort_by))
+    query = Dance
+              .includes(:choreographer, :user, :duts, :tags)
+              .references(:choreographer, :user, :duts, :tags)
+              .searchable_by(user)
+              .order(*SortParser.parse(sort_by))
     number_searched = 0
     number_matching = 0
     filter_results = []
@@ -290,8 +294,9 @@ module FilterDances
     when 'constant'
       Integer(nex.second)           # Hm, is THIS the place to parse this string?
     when 'tag'
-      tag_id = Tag.where(name: nex.second).pluck(:id).first
-      tag_id ? Dut.where(tag_id: tag_id, dance_id: dance.id).count : 0
+      tag_name = nex.second         # Hm, is THIS the place to lookup this tag?
+      tag = dance.tags.find {|tag| tag.name == tag_name}
+      tag ? dance.duts.count {|dut| dut.tag_id == tag.id} : 0
     when 'count-matches'
       subfilter = nex.second
       matches = matching_figures(subfilter, dance)

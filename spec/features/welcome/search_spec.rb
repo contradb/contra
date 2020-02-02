@@ -272,7 +272,7 @@ describe 'Search page', js: true do
     end
   end
 
-  describe "filters" do
+  describe "ez-filters" do
     describe "choreographer" do
       let(:dances) { [:dance, :box_the_gnat_contra, :call_me].map {|name| FactoryGirl.create(name)} }
 
@@ -283,6 +283,24 @@ describe 'Search page', js: true do
         find('.ez-choreographer-filter').fill_in(with: call_me.choreographer)
         dont_call_me.each do |dance|
           expect(page).to_not have_content(dance.title)
+        end
+      end
+    end
+
+    describe "verified" do
+      let! (:dances) { 2.times.map {|i| FactoryGirl.create(:dance, title: "Dance#{i}")}}
+      let (:verified_dance) { dances[1] }
+      let (:verified) { FactoryGirl.create(:tag, :verified) }
+      let! (:dut) { FactoryGirl.create(:dut, tag: verified, dance: verified_dance) }
+
+      it "only display verified dances by default" do
+        visit(s_path)
+        dances.each do |dance|
+          if dance == verified_dance
+            expect(page).to have_content(dance.title)
+          else
+            expect(page).to_not have_content(dance.title)
+          end
         end
       end
     end

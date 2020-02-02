@@ -4,7 +4,15 @@ import DanceTable from "./dance-table"
 
 export const AdvancedSearch = () => {
   const [choreographer, setChoreographer] = useState("")
-  const filter = ["if", ["choreographer", choreographer], ["figure", "*"]]
+  const filter = [
+    "if",
+    [
+      "and",
+      ["choreographer", choreographer],
+      ["compare", ["constant", 0], "<", ["tag", "verified"]],
+    ],
+    ["figure", "*"],
+  ]
 
   return (
     <div>
