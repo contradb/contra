@@ -11,7 +11,7 @@
     "react-dom": "^16.11.0",
     "react-table": "^7.0.0-rc.15",
     "ts-loader": "^6.2.1",
-    "typescript": "^3.6.4"
+    "typescript": "^3.7.5"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
