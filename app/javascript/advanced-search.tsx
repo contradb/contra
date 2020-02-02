@@ -1,6 +1,7 @@
 import * as React from "react"
 import { useState } from "react"
 import DanceTable from "./dance-table"
+import EzCheckboxFilter from "./ez-checkbox-filter"
 import Filter from "./filter"
 
 const match_nothing: Filter = ["or"] //  kinda non-obvious how to express tihs in filters, eh?
@@ -41,25 +42,18 @@ export const AdvancedSearch = () => {
         />
       </label>
       <br />
-      <label>
-        <input
-          id="ez-verified"
-          type="checkbox"
-          checked={verifiedChecked}
-          onChange={e => setVerifiedChecked(e.target.checked)}
-        />
-        &nbsp; verified
-      </label>
-      <br />
-      <label>
-        <input
-          id="ez-not-verified"
-          type="checkbox"
-          checked={notVerifiedChecked}
-          onChange={e => setNotVerifiedChecked(e.target.checked)}
-        />
-        &nbsp; not verified
-      </label>
+      <EzCheckboxFilter
+        checked={verifiedChecked}
+        setChecked={setVerifiedChecked}
+        label="verified"
+        inputId="ez-verified"
+      />
+      <EzCheckboxFilter
+        checked={notVerifiedChecked}
+        setChecked={setNotVerifiedChecked}
+        label="not verified"
+        inputId="ez-not-verified"
+      />
       <br />
       <br />
       <br />
