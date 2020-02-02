@@ -3,14 +3,15 @@ import * as React from "react"
 export const EzCheckboxFilter = ({
   checked,
   setChecked,
-  label,
-  inputId,
+  name,
 }: {
   checked: boolean
   setChecked: (x: boolean) => void
-  label: string
-  inputId: string
+  name: string
 }) => {
+  const label = name
+  const inputId = "ez-" + name.replace(/ /g, "-")
+
   return (
     <div>
       <label>

@@ -45,14 +45,12 @@ export const AdvancedSearch = () => {
       <EzCheckboxFilter
         checked={verifiedChecked}
         setChecked={setVerifiedChecked}
-        label="verified"
-        inputId="ez-verified"
+        name="verified"
       />
       <EzCheckboxFilter
         checked={notVerifiedChecked}
         setChecked={setNotVerifiedChecked}
-        label="not verified"
-        inputId="ez-not-verified"
+        name="not verified"
       />
       <br />
       <br />
