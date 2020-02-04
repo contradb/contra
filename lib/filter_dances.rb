@@ -244,7 +244,7 @@ module FilterDances
   # figurewise_not
   def self.matching_figures_for_not(filter, dance, filter_env)
     subfilter = filter[1]
-    matches = all_figures_match(dance.figures.length) - dice_search_matches(matching_figures(subfilter, dance) || Set[])
+    matches = all_figures_match(dance.figures.length) - dice_search_matches(matching_figures(subfilter, dance, filter_env) || Set[])
     matches.present? ? matches : nil
   end
 
