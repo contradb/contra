@@ -288,11 +288,13 @@ describe 'Search page', js: true do
     end
 
     describe "verified" do
-      let! (:dances) { 3.times.map {|i| FactoryGirl.create(:dance, title: "Dance#{i}")}}
+      let! (:dances) do
+        %w(unverified yaverified verified-by-me).map {|s| FactoryGirl.create(:dance, title: s)}
+      end
       let (:user) { FactoryGirl.create(:user) }
       let (:verified) { FactoryGirl.create(:tag, :verified) }
       let! (:dut_somebody_else) { FactoryGirl.create(:dut, tag: verified, dance: dances[1]) }
-      let! (:dut_by_me) { FactoryGirl.create(:dut, tag: verified, dance: dances[2]) }
+      let! (:dut_by_me) { FactoryGirl.create(:dut, tag: verified, dance: dances[2], user: user) }
       let (:unverified_dance) { dances[0] }
       let (:verified_dance) { dances[1] }
       let (:verified_by_me_dance) { dances[2] }
@@ -302,27 +304,29 @@ describe 'Search page', js: true do
         expect_dances(verified: true, not_verified: false) # the default
         check 'ez-not-verified'
         expect_dances(verified: true, not_verified: true)
-        uncheck 'ez-verified'
+        uncheck 'ez-verified', match: :prefer_exact
         expect_dances(verified: false, not_verified: true)
         uncheck 'ez-not-verified'
         expect_dances(verified: false, not_verified: false)
-        check 'ez-verified'
+        check 'ez-verified', match: :prefer_exact
         expect_dances(verified: true, not_verified: false)
       end
 
       it "'verified by me' and 'not verified by me' checkboxes work" do
-        visit(s_path)
-        expect_dances(verified: true) # the default
-        uncheck 'ez-verified', match: :prefer_exact
-        expect_dances()
-        check 'ez-not-verified-by-me'
-        expect_dances(not_verified_by_me: true)
-        check 'ez-verified-by-me'
-        expect_dances(verified_by_me: true, not_verified_by_me: true)
-        uncheck 'ez-not-verified-by-me'
-        expect_dances(verified_by_me: true)
-        uncheck 'ez-verified-by-me'
-        expect_dances()
+        with_login(user: user) do
+          visit(s_path)
+          expect_dances(verified: true) # the default
+          uncheck 'ez-verified', match: :prefer_exact
+          expect_dances()
+          check 'ez-not-verified-by-me'
+          expect_dances(not_verified_by_me: true)
+          check 'ez-verified-by-me'
+          expect_dances(verified_by_me: true, not_verified_by_me: true)
+          uncheck 'ez-not-verified-by-me'
+          expect_dances(verified_by_me: true)
+          uncheck 'ez-verified-by-me'
+          expect_dances()
+        end
       end
 
       def expect_dances(verified: false,
@@ -333,6 +337,8 @@ describe 'Search page', js: true do
         expect(page).send(verified || not_verified_by_me ? :to : :to_not, have_content(verified_dance.title))
         expect(page).send(verified || verified_by_me ? :to : :to_not, have_content(verified_by_me_dance.title))
       end
+
+      it "verified by me and not verified by me are disabled when not logged in"
     end
   end
 end
