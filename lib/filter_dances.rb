@@ -311,6 +311,16 @@ module FilterDances
     end
   end
 
+  def self.matching_figures_for_my_tag(filter, dance)
+    tag_name = filter.second
+    tag = dance.tags.find {|tag| tag.name == tag_name}
+    if tag && dance.duts.find {|dut| dut.tag_id == tag.id} # argh need user. Also pass tags. 
+      Set[]
+    else
+      nil
+    end
+  end
+
   def self.all_empty_matches(nfigures)
     Set.new(nfigures.times.map{|i| SearchMatch.new(i, nfigures, count: 0)})
   end

@@ -310,18 +310,20 @@ describe 'Search page', js: true do
         expect_dances(verified: true, not_verified: false)
       end
 
-      # it "'verified by me' and 'not verified by me' checkboxes work" do
-      #   visit(s_path)
-      #   expect_dances(verified: true, not_verified: false) # the default
-      #   check 'ez-not-verified-by-me'
-      #   expect_dances(verified: true, not_verified: true)
-      #   check 'ez-verified'
-      #   expect_dances(verified: false, not_verified: true)
-      #   uncheck 'ez-not-verified'
-      #   expect_dances(verified: false, not_verified: false)
-      #   check 'ez-verified'
-      #   expect_dances(verified: true, not_verified: false)
-      # end
+      it "'verified by me' and 'not verified by me' checkboxes work" do
+        visit(s_path)
+        expect_dances(verified: true) # the default
+        uncheck 'ez-verified', match: :prefer_exact
+        expect_dances()
+        check 'ez-not-verified-by-me'
+        expect_dances(not_verified_by_me: true)
+        check 'ez-verified-by-me'
+        expect_dances(verified_by_me: true, not_verified_by_me: true)
+        uncheck 'ez-not-verified-by-me'
+        expect_dances(verified_by_me: true)
+        uncheck 'ez-verified-by-me'
+        expect_dances()
+      end
 
       def expect_dances(verified: false,
                         not_verified: false,

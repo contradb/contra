@@ -4,30 +4,23 @@ import DanceTable from "./dance-table"
 import EzCheckboxFilter from "./ez-checkbox-filter"
 import Filter from "./filter"
 
-const match_nothing: Filter = ["or"] //  kinda non-obvious how to express tihs in filters, eh?
+const matchNothing: Filter = ["or"] //  kinda non-obvious how to express tihs in filters, eh?
+const matchEverything: Filter = ["and"] //  kinda non-obvious how to express tihs in filters, eh?
 
 export const AdvancedSearch = () => {
   const [choreographer, setChoreographer] = useState("")
   const [verifiedChecked, setVerifiedChecked] = useState(true)
   const [notVerifiedChecked, setNotVerifiedChecked] = useState(false)
-  const ezFilter: Filter = ["and"]
+  const [verifiedCheckedByMe, setVerifiedCheckedByMe] = useState(false)
+  const [notVerifiedCheckedByMe, setNotVerifiedCheckedByMe] = useState(false)
+  const vFilter: Filter = verifiedFilter({
+    v: verifiedChecked,
+    nv: notVerifiedChecked,
+    vbm: verifiedCheckedByMe,
+    nvbm: notVerifiedCheckedByMe,
+  })
+  const ezFilter: Filter = ["and", vFilter]
   choreographer && ezFilter.push(["choreographer", choreographer])
-  if (verifiedChecked) {
-    if (notVerifiedChecked) {
-      // do nothing
-    } else {
-      ezFilter.push(["compare", ["constant", 0], "<", ["tag", "verified"]])
-    }
-  } else {
-    if (notVerifiedChecked) {
-      ezFilter.push(["compare", ["constant", 0], "=", ["tag", "verified"]])
-    } else {
-      ezFilter.push(match_nothing)
-    }
-  }
-
-  !notVerifiedChecked &&
-    ezFilter.push(["compare", ["constant", 0], "<", ["tag", "verified"]])
   const filter = ["if", ezFilter, ["figure", "*"]]
 
   return (
@@ -52,6 +45,16 @@ export const AdvancedSearch = () => {
         setChecked={setNotVerifiedChecked}
         name="not verified"
       />
+      <EzCheckboxFilter
+        checked={verifiedCheckedByMe}
+        setChecked={setVerifiedCheckedByMe}
+        name="verified by me"
+      />
+      <EzCheckboxFilter
+        checked={notVerifiedCheckedByMe}
+        setChecked={setNotVerifiedCheckedByMe}
+        name="not verified by me"
+      />
       <br />
       <br />
       <br />
@@ -59,4 +62,46 @@ export const AdvancedSearch = () => {
     </div>
   )
 }
+
+const verifiedFilter = ({
+  v,
+  nv,
+  vbm,
+  nvbm,
+}: {
+  v: boolean
+  nv: boolean
+  vbm: boolean
+  nvbm: boolean
+}): Filter => {
+  const r: Filter = ["or"]
+  if (v) {
+    if (nv) {
+      return matchEverything
+    } else {
+      r.push(["compare", ["constant", 0], "<", ["tag", "verified"]])
+    }
+  } else {
+    if (nv) {
+      r.push(["compare", ["constant", 0], "=", ["tag", "verified"]])
+    } else {
+      // do nothing
+    }
+  }
+  if (vbm) {
+    if (nvbm) {
+      return matchEverything
+    } else {
+      v || r.push(["my tag", "verified"])
+    }
+  } else {
+    if (nvbm) {
+      nv || r.push(["no", ["my tag", "verified"]])
+    } else {
+      // do nothing
+    }
+  }
+  return r
+}
+
 export default AdvancedSearch
