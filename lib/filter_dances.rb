@@ -207,10 +207,15 @@ module FilterDances
   def self.matching_figures_for_or(filter, dance)
     subfilters = filter.drop(1)
     matches = Set[]
+    found_one = false
     subfilters.each do |subfilter|
-      matches |= matching_figures(subfilter, dance) || Set[]
+      mf = matching_figures(subfilter, dance)
+      if mf
+        matches |= mf
+        found_one = true
+      end
     end
-    matches.present? ? matches : nil
+    found_one ? matches : nil
   end
 
   def self.matching_figures_for_and(filter, dance)
