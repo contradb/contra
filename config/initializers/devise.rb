@@ -258,9 +258,12 @@ Devise.setup do |config|
   #   manager.intercept_401 = false
   #   manager.default_strategies(scope: :user).unshift :some_external_strategy
 
-    # this cookie is used from react to figure out if the user is logged in or not
+    # This cookie is used from react to figure out if the user is logged in or not.
+    # I couldn't figure out how to test this from a controller | request spec, so
+    # it's tested indirectly by the react feature that uses it:
+    # "'verified by me' and 'not verified by me' checkboxes are disabled when not logged in"
     Warden::Manager.after_set_user do |user,auth,opts|
-      auth.cookies[:signed_in] = user.admin ? 'admin' : 'user'
+      auth.cookies[:signed_in] = user.admin? ? 'admin' : 'user'
     end
 
     Warden::Manager.before_logout do |user,auth,opts|
