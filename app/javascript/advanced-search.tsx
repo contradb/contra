@@ -69,7 +69,7 @@ export const AdvancedSearch = () => {
   )
 }
 
-const getVerifiedFilter = ({
+export const getVerifiedFilter = ({
   v,
   nv,
   vbm,
@@ -89,7 +89,7 @@ const getVerifiedFilter = ({
     }
   } else {
     if (nv) {
-      r.push(["compare", ["constant", 0], "=", ["tag", "verified"]])
+      nvbm || r.push(["compare", ["constant", 0], "=", ["tag", "verified"]])
     } else {
       // do nothing
     }
@@ -102,7 +102,7 @@ const getVerifiedFilter = ({
     }
   } else {
     if (nvbm) {
-      nv || r.push(["no", ["my tag", "verified"]])
+      r.push(["no", ["my tag", "verified"]])
     } else {
       // do nothing
     }
