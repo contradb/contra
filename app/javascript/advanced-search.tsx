@@ -21,20 +21,20 @@ export const AdvancedSearch = () => {
   })
   const ezFilter: Filter = ["and", vFilter]
   choreographer && ezFilter.push(["choreographer", choreographer])
-  const filter = ["if", ezFilter, ["figure", "*"]]
+  const filter: Filter = ["if", ezFilter, ["figure", "*"]]
 
   return (
     <div>
-      <label>
-        Choreographer:
-        <input
-          type="text"
-          className="ez-choreographer-filter form-control"
-          value={choreographer}
-          onChange={e => setChoreographer(e.target.value)}
-        />
-      </label>
+      <h4>Choreographer:</h4>
+      <input
+        type="text"
+        className="ez-choreographer-filter form-control"
+        value={choreographer}
+        onChange={e => setChoreographer(e.target.value)}
+      />
       <br />
+      <br />
+      <h4>Verified:</h4>
       <EzCheckboxFilter
         checked={verifiedChecked}
         setChecked={setVerifiedChecked}

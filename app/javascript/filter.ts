@@ -3,11 +3,11 @@ type FigureFilterParameter = number | string | boolean // a guess definition, ha
 export type Comparison = "≥" | "≤" | "≠" | "=" | ">" | "<"
 
 export type Filter =
-  | ["figure", string, ...FigureFilterParameter]
-  | ["&", ...Filter]
-  | ["and", ...Filter]
-  | ["or", ...Filter]
-  | ["then", ...Filter]
+  | ["figure", string, ...FigureFilterParameter[]]
+  | ["&", ...Filter[]]
+  | ["and", ...Filter[]]
+  | ["or", ...Filter[]]
+  | ["then", ...Filter[]]
   | ["not", Filter]
   | ["no", Filter]
   | ["formation", string]
@@ -18,6 +18,7 @@ export type Filter =
   | ["choreographer", string]
   | ["count", Filter, Comparison, number]
   | ["compare", NumericFilter, Comparison, NumericFilter]
+  | ["my tag", string]
 
 export type NumericFilter =
   | ["constant", number]
