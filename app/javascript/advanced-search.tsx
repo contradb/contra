@@ -50,13 +50,13 @@ export const AdvancedSearch = () => {
       <EzCheckboxFilter
         checked={verifiedCheckedByMe}
         setChecked={setVerifiedCheckedByMe}
-        disabled={!signedIn}
+        disabledReason={signedIn ? null : "must be logged in"}
         name="verified by me"
       />
       <EzCheckboxFilter
         checked={notVerifiedCheckedByMe}
         setChecked={setNotVerifiedCheckedByMe}
-        disabled={!signedIn}
+        disabledReason={signedIn ? null : "must be logged in"}
         name="not verified by me"
       />
       <br />
