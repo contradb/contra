@@ -4,6 +4,11 @@ require 'search_match'
 require 'sort_parser'
 
 module FilterDances
+
+  FilterEnv = Struct.new(:user, # may be null
+                         keyword_init: true)
+
+
   def self.filter_dances(filter,
                          dialect:,
                          count: 10,
@@ -11,13 +16,18 @@ module FilterDances
                          sort_by: "",
                          user: nil)
     filter.is_a?(Array) or raise "filter must be an array, but got #{filter.inspect} of class #{filter.class}"
-    query = Dance.includes(:choreographer, :user).references(:choreographer, :user).searchable_by(user).order(*SortParser.parse(sort_by))
+    query = Dance
+              .includes(:choreographer, :user, :duts, :tags)
+              .references(:choreographer, :user, :duts, :tags)
+              .searchable_by(user)
+              .order(*SortParser.parse(sort_by))
     number_searched = 0
     number_matching = 0
+    filter_env = FilterEnv.new(user: user)
     filter_results = []
     query.map do |dance|
       number_searched += 1
-      mf = matching_figures(filter, dance)
+      mf = matching_figures(filter, dance, filter_env)
       if mf
         number_matching += 1
         send_this_dance = offset < number_matching && number_matching <= offset + count
@@ -81,7 +91,7 @@ module FilterDances
   # To see an example of that, think of the dance (and (figure 'chain') (figure 'right left through')), which can
   # match because it has a chain, and a right left through, but no figure satisfies both of those exactly.
 
-  def self.matching_figures(filter, dance)
+  def self.matching_figures(filter, dance, filter_env)
     operator = filter.first
     nm = case operator
          when '&'
@@ -91,12 +101,12 @@ module FilterDances
          end
     fn = :"matching_figures_for_#{nm}"
     raise "#{operator.inspect} is not a valid operator in #{filter.inspect}" unless self.respond_to?(fn, true)
-    matches = send(fn, filter, dance)
+    matches = send(fn, filter, dance, filter_env)
     # puts "matching_figures #{dance.title} #{filter.inspect} = #{matches.inspect}"
     matches
   end
 
-  def self.matching_figures_for_figure(filter, dance)
+  def self.matching_figures_for_figure(filter, dance, filter_env)
     filter_move = filter[1]
     nfigures = dance.figures.length
     if '*' == filter_move              # wildcard
@@ -144,7 +154,7 @@ module FilterDances
     end
   end
 
-  def self.matching_figures_for_formation(filter, dance)
+  def self.matching_figures_for_formation(filter, dance, filter_env)
     filter_formation = filter[1]
     if filter_formation == 'everything else'
       FILTER_FORMATION_TO_RE.values.none? {|re| re =~ dance.start_type} ? Set[] : nil
@@ -161,36 +171,36 @@ module FilterDances
                             'Becket ccw' => /Becket ccw/i,
                             'proper' => /^proper/i}
 
-  def self.matching_figures_for_progression(filter, dance)
+  def self.matching_figures_for_progression(filter, dance, filter_env)
     nfigures = dance.figures.length
     s = Set[]
     dance.figures.each_with_index {|f,i| s << SearchMatch.new(i, nfigures) if JSLibFigure.progression(f)}
     s.present? ? s : nil
   end
 
-  def self.matching_figures_for_if(filter, dance)
+  def self.matching_figures_for_if(filter, dance, filter_env)
     _op, if_, then_, else_ = filter
-    if matching_figures(if_, dance)
-      matching_figures(then_, dance)
+    if matching_figures(if_, dance, filter_env)
+      matching_figures(then_, dance, filter_env)
     elsif else_
-      matching_figures(else_, dance)
+      matching_figures(else_, dance, filter_env)
     else
       nil
     end
   end
 
-  def self.matching_figures_for_no(filter, dance)
+  def self.matching_figures_for_no(filter, dance, filter_env)
     subfilter = filter[1]
-    if matching_figures(subfilter, dance)
+    if matching_figures(subfilter, dance, filter_env)
       nil
     else
       all_figures_match(dance.figures.length)
     end
   end
 
-  def self.matching_figures_for_all(filter, dance)
+  def self.matching_figures_for_all(filter, dance, filter_env)
     subfilter = filter[1]
-    matches = matching_figures(subfilter, dance)
+    matches = matching_figures(subfilter, dance, filter_env)
     if dance.figures.length == 0
       Set[]
     elsif matches && dance.figures.length.times.all? {|i| matches.any? {|search_match| search_match.include?(i)}}
@@ -200,44 +210,49 @@ module FilterDances
     end
   end
 
-  def self.matching_figures_for_or(filter, dance)
+  def self.matching_figures_for_or(filter, dance, filter_env)
     subfilters = filter.drop(1)
     matches = Set[]
+    found_none = true
     subfilters.each do |subfilter|
-      matches |= matching_figures(subfilter, dance) || Set[]
+      mf = matching_figures(subfilter, dance, filter_env)
+      if mf
+        matches |= mf
+        found_none = false
+      end
     end
-    matches.present? ? matches : nil
+    found_none ? nil : matches
   end
 
-  def self.matching_figures_for_and(filter, dance)
+  def self.matching_figures_for_and(filter, dance, filter_env)
     subfilters = filter.drop(1)
     if subfilters.empty?
       Set[] # should arguably return the infinitely large set of all searchmatches instead
     else
-      matches = subfilters.map {|subfilter| matching_figures(subfilter, dance) or return nil}
+      matches = subfilters.map {|subfilter| matching_figures(subfilter, dance, filter_env) or return nil}
       m = matches.first
       matches.drop(1).each {|x| m &= x} # naive intersection, treating SearchMatch(1,8) as not intersecting with SearchMatch(1,8, count: 2)
       m
     end
   end
 
-  def self.matching_figures_for_figurewise_and(filter, dance)
-    a = matching_figures_for_and(filter, dance)
+  def self.matching_figures_for_figurewise_and(filter, dance, filter_env)
+    a = matching_figures_for_and(filter, dance, filter_env)
     a.present? ? a : nil
   end
 
   # figurewise_not
-  def self.matching_figures_for_not(filter, dance)
+  def self.matching_figures_for_not(filter, dance, filter_env)
     subfilter = filter[1]
-    matches = all_figures_match(dance.figures.length) - dice_search_matches(matching_figures(subfilter, dance) || Set[])
+    matches = all_figures_match(dance.figures.length) - dice_search_matches(matching_figures(subfilter, dance, filter_env) || Set[])
     matches.present? ? matches : nil
   end
 
-  def self.matching_figures_for_then(filter, dance)
+  def self.matching_figures_for_then(filter, dance, filter_env)
     going_concerns = all_empty_matches(dance.figures.length)
     subfilters = filter.drop(1)
     subfilters.each do |subfilter|
-      m = matching_figures(subfilter, dance)
+      m = matching_figures(subfilter, dance, filter_env)
       m or return nil
       new_concerns = Set[]
       going_concerns.each do |search_match_head|
@@ -252,7 +267,7 @@ module FilterDances
     going_concerns
   end
 
-  def self.matching_figures_for_choreographer(filter, dance)
+  def self.matching_figures_for_choreographer(filter, dance, filter_env)
     choreographer = filter[1].downcase
     dance.choreographer.name.downcase.include?(choreographer) ? Set[] : nil
   end
@@ -264,9 +279,9 @@ module FilterDances
                                   '>' => :'>',
                                   '<' => :'<'}.freeze
 
-  def self.matching_figures_for_count(filter, dance)
+  def self.matching_figures_for_count(filter, dance, filter_env)
     _filter, subfilter, comparison_str, number_string = filter
-    m = matching_figures(subfilter, dance)
+    m = matching_figures(subfilter, dance, filter_env)
     m_count = m.nil? ? 0 : m.length
     comparison = COMPARISON_STRING_TO_RUBY_OP.fetch(comparison_str)
     number = number_string.to_i
@@ -277,27 +292,39 @@ module FilterDances
     end
   end
 
-  def self.matching_figures_for_compare(filter, dance)
+  def self.matching_figures_for_compare(filter, dance, filter_env)
     _filter, left, comparison_str, right = filter
-    l = eval_numeric_ex(left, dance)
-    r = eval_numeric_ex(right, dance)
+    l = eval_numeric_ex(left, dance, filter_env)
+    r = eval_numeric_ex(right, dance, filter_env)
     comparison = COMPARISON_STRING_TO_RUBY_OP.fetch(comparison_str)
     l.public_send(comparison, r) ? Set[] : nil
   end
 
-  def self.eval_numeric_ex(nex, dance)
+  def self.eval_numeric_ex(nex, dance, filter_env)
     case nex.first
     when 'constant'
       Integer(nex.second)           # Hm, is THIS the place to parse this string?
     when 'tag'
-      tag_id = Tag.where(name: nex.second).pluck(:id).first
-      tag_id ? Dut.where(tag_id: tag_id, dance_id: dance.id).count : 0
+      tag_name = nex.second         # Hm, is THIS the place to lookup this tag?
+      tag = dance.tags.find {|tag| tag.name == tag_name} # option: put tags in filter_env...
+      tag ? dance.duts.count {|dut| dut.tag_id == tag.id} : 0
     when 'count-matches'
       subfilter = nex.second
-      matches = matching_figures(subfilter, dance)
+      matches = matching_figures(subfilter, dance, filter_env)
       matches ? matches.length : 0
     else
       raise "I do not know how to evaluate #{nex.first} expressions."
+    end
+  end
+
+  def self.matching_figures_for_my_tag(filter, dance, filter_env)
+    tag_name = filter.second
+    user = filter_env.user
+    tag = dance.tags.find {|tag| tag.name == tag_name}
+    if tag && user && dance.duts.find {|dut| dut.tag_id == tag.id && user.id == dut.user_id }
+      Set[]
+    else
+      nil
     end
   end
 

@@ -76,5 +76,6 @@ RSpec.describe Api::V1::DancesController do
     end
 
     it 'only performs one sql query'
+    # see https://spin.atomicobject.com/2017/07/07/rails-n1-queries-rspec-matcher/
   end
 end

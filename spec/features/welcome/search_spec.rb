@@ -6,6 +6,7 @@ describe 'Search page', js: true do
   let (:now) { DateTime.now }
   it "works" do
     dances = 12.times.map {|i| FactoryGirl.create(:dance, title: "Dance #{i}.", created_at: now - i.days)}
+    tag_all_dances
     visit(s_path)
     dances.each_with_index do |dance, i|
       to_probably = i < 10 ? :to : :to_not
@@ -26,6 +27,7 @@ describe 'Search page', js: true do
     end
 
     let! (:dances) { 52.times.map {|i| FactoryGirl.create(:dance, title: "dance-#{i}.", created_at: now - i.hours)} }
+    before { tag_all_dances }
     it "turning pages" do
       visit(s_path)
       # first page
@@ -94,6 +96,7 @@ describe 'Search page', js: true do
     let (:dances) {[:dance, :box_the_gnat_contra, :call_me].map {|d| FactoryGirl.create(d)}}
     it "Clicking vis toggles buttons cause columns to disappear" do
       dances
+      tag_all_dances
       visit(s_path)
       %w[Title Choreographer Formation Hook User Entered].each do |col|
         expect(page).to have_css('.dances-table-react th', text: col)
@@ -124,6 +127,8 @@ describe 'Search page', js: true do
     end
 
     it 'published column cells' do
+      dances
+      tag_all_dances
       with_login do |user|
         dances.each_with_index do |dance, i|
           publish = [:off, :sketchbook, :all][i]
@@ -139,6 +144,7 @@ describe 'Search page', js: true do
     describe 'matching figures column' do
       it 'whole dance' do
         dances
+        tag_all_dances
         visit(s_path)
         expect(page).to_not have_css(:th, text: "Figures")
         expect(page).to_not have_content('whole dance')
@@ -153,6 +159,7 @@ describe 'Search page', js: true do
         expect_any_instance_of(Api::V1::DancesController).to receive(:filter).and_return(['figure', 'circle'])
         # mock
         dances
+        tag_all_dances
         visit(s_path)
         click_button 'Figures'
         expect(page).to have_css('tr', text: /The Rendevouz.*\n?circle left 4 places\ncircle left 3 places/)
@@ -164,6 +171,7 @@ describe 'Search page', js: true do
   it "sentence displays how many search results match" do
     dbsize = 12
     dbsize.times.map {|i| FactoryGirl.create(:dance, created_at: now - i.hours)}
+    tag_all_dances
     visit(s_path)
     expect(page).to have_content("Showing 1 to 10 of #{dbsize} dances.")
   end
@@ -175,6 +183,7 @@ describe 'Search page', js: true do
         FactoryGirl.create(:dance, title: "dance-#{shuffled_int.to_s.rjust(2, '0')}", created_at: now - i.hours)
       }
       dances_sorted = dances.dup.sort_by(&:title)
+      tag_all_dances
       visit(s_path)
       dances.each_with_index do |dance, i|
         expect(page).send(i < 10 ? :to : :to_not, have_text(dance.title))
@@ -220,6 +229,7 @@ describe 'Search page', js: true do
       titles = ['40 Years of Penguin Pam', "A Crafty Wave", "24th of June"]
       dances = titles.map {|title| FactoryGirl.create(:dance, title: title)}
       titles_sorted = titles.dup.sort
+      tag_all_dances
       visit(s_path)
       find('th', text: 'Title').click
       expect(page).to have_text(Regexp.new(titles_sorted.join('.*\n')))
@@ -230,6 +240,7 @@ describe 'Search page', js: true do
         FactoryGirl.create(t, created_at: now - i.hours)
       end
       the_ordered_regexp = Regexp.new(dances.map(&:title).join('(?:.*\n)+'))
+      tag_all_dances
       visit(s_path)
       click_button 'Figures'
       expect(page).to have_content(the_ordered_regexp) # order is time-sorted
@@ -243,6 +254,7 @@ describe 'Search page', js: true do
       dances = [:dance, :box_the_gnat_contra, :call_me].each_with_index.map do |t, i|
         FactoryGirl.create(t, created_at: now - i.hours)
       end
+      tag_all_dances
       visit(s_path)
       columns = page.find_all(".toggle-vis-active").to_a + page.find_all(".toggle-vis-inactive").to_a
       column_names = columns.map(&:text)
@@ -272,7 +284,7 @@ describe 'Search page', js: true do
     end
   end
 
-  describe "filters" do
+  describe "ez-filters" do
     describe "choreographer" do
       let(:dances) { [:dance, :box_the_gnat_contra, :call_me].map {|name| FactoryGirl.create(name)} }
 
@@ -285,6 +297,72 @@ describe 'Search page', js: true do
           expect(page).to_not have_content(dance.title)
         end
       end
+    end
+
+    describe "verified" do
+      let! (:dances) do
+        %w(unverified yaverified verified-by-me).map {|s| FactoryGirl.create(:dance, title: s)}
+      end
+      let (:user) { FactoryGirl.create(:user) }
+      let (:verified) { FactoryGirl.create(:tag, :verified) }
+      let! (:dut_somebody_else) { FactoryGirl.create(:dut, tag: verified, dance: dances[1]) }
+      let! (:dut_by_me) { FactoryGirl.create(:dut, tag: verified, dance: dances[2], user: user) }
+      let (:unverified_dance) { dances[0] }
+      let (:verified_dance) { dances[1] }
+      let (:verified_by_me_dance) { dances[2] }
+
+      it "'verified' and 'not verified' checkboxes work" do
+        visit(s_path)
+        expect_dances(verified: true, not_verified: false) # the default
+        check 'ez-not-verified'
+        expect_dances(verified: true, not_verified: true)
+        uncheck 'ez-verified', match: :prefer_exact
+        expect_dances(verified: false, not_verified: true)
+        uncheck 'ez-not-verified'
+        expect_dances(verified: false, not_verified: false)
+        check 'ez-verified', match: :prefer_exact
+        expect_dances(verified: true, not_verified: false)
+      end
+
+      it "'verified by me' and 'not verified by me' checkboxes work" do
+        with_login(user: user) do
+          visit(s_path)
+          expect_dances(verified: true) # the default
+          uncheck 'ez-verified', match: :prefer_exact
+          expect_dances()
+          check 'ez-not-verified-by-me'
+          expect_dances(not_verified_by_me: true)
+          check 'ez-verified-by-me'
+          expect_dances(verified_by_me: true, not_verified_by_me: true)
+          uncheck 'ez-not-verified-by-me'
+          expect_dances(verified_by_me: true)
+          uncheck 'ez-verified-by-me'
+          expect_dances()
+        end
+      end
+
+      it "'verified by me' and 'not verified by me' checkboxes are disabled when not logged in" do
+        visit(s_path)
+        expect(page.find("#ez-verified-by-me")).to be_disabled
+        expect(page.find("#ez-not-verified-by-me")).to be_disabled
+      end
+
+      it "'verified by me' and 'not verified by me' checkboxes are hidden when not logged in on phones"
+
+      def expect_dances(verified: false,
+                        not_verified: false,
+                        verified_by_me: false,
+                        not_verified_by_me: false)
+        expect(page).send(not_verified || not_verified_by_me ? :to : :to_not, have_content(unverified_dance.title))
+        expect(page).send(verified || not_verified_by_me ? :to : :to_not, have_content(verified_dance.title))
+        expect(page).send(verified || verified_by_me ? :to : :to_not, have_content(verified_by_me_dance.title))
+      end
+    end
+  end
+
+  def tag_all_dances(tag: FactoryGirl.create(:tag, :verified), user: FactoryGirl.create(:user))
+    Dance.all.each do |dance|
+      FactoryGirl.create(:dut, dance: dance, tag: tag, user: user)
     end
   end
 end

@@ -6,12 +6,13 @@ class Api::V1::DancesController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    render json:FilterDances.filter_dances(filter,
-                                           count: count,
-                                           offset: offset,
-                                           dialect: dialect,
-                                           sort_by: sort_by,
-                                           user: current_user)
+    json = FilterDances.filter_dances(filter,
+                                      count: count,
+                                      offset: offset,
+                                      dialect: dialect,
+                                      sort_by: sort_by,
+                                      user: current_user)
+    render json: json
   end
 
   private

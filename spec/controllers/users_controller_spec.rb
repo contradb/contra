@@ -9,7 +9,6 @@ RSpec.describe UsersController, type: :controller do
     let! (:dance1) { FactoryGirl.create(:dance, user: creator, title: "dance1", publish: :sketchbook) }
     let! (:dance2) { FactoryGirl.create(:dance, user: creator, title: "dance2", publish: :all) }
 
-
     context "without login" do
       it "populates @public_/@private_/@sketchbook_dances with searchable dances" do
         get :show, params: {id: creator.to_param}
