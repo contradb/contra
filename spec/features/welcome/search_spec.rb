@@ -357,8 +357,6 @@ describe 'Search page', js: true do
         expect(page).send(verified || not_verified_by_me ? :to : :to_not, have_content(verified_dance.title))
         expect(page).send(verified || verified_by_me ? :to : :to_not, have_content(verified_by_me_dance.title))
       end
-
-      it "verified by me and not verified by me are disabled when not logged in"
     end
   end
 
