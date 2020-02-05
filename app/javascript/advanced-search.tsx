@@ -15,15 +15,17 @@ export const AdvancedSearch = () => {
   const [notVerifiedChecked, setNotVerifiedChecked] = useState(false)
   const [verifiedCheckedByMe, setVerifiedCheckedByMe] = useState(false)
   const [notVerifiedCheckedByMe, setNotVerifiedCheckedByMe] = useState(false)
-  const vFilter: Filter = verifiedFilter({
+  const verifiedFilter: Filter = getVerifiedFilter({
     v: verifiedChecked,
     nv: notVerifiedChecked,
     vbm: verifiedCheckedByMe,
     nvbm: notVerifiedCheckedByMe,
   })
-  const ezFilter: Filter = ["and", vFilter]
-  choreographer && ezFilter.push(["choreographer", choreographer])
-  const filter: Filter = ["if", ezFilter, ["figure", "*"]]
+  const choreographerFilters: Filter[] = choreographer
+    ? [["choreographer", choreographer]]
+    : []
+  const ezFilter: Filter = ["and", verifiedFilter, ...choreographerFilters]
+  const grandFilter: Filter = ["if", ezFilter, ["figure", "*"]]
 
   return (
     <div>
@@ -62,12 +64,12 @@ export const AdvancedSearch = () => {
       <br />
       <br />
       <br />
-      <DanceTable filter={filter} />
+      <DanceTable filter={grandFilter} />
     </div>
   )
 }
 
-const verifiedFilter = ({
+const getVerifiedFilter = ({
   v,
   nv,
   vbm,
