@@ -1,5 +1,6 @@
 import * as React from "react"
 import { useState } from "react"
+import Cookie from "js-cookie"
 import DanceTable from "./dance-table"
 import EzCheckboxFilter from "./ez-checkbox-filter"
 import Filter from "./filter"
