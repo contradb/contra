@@ -341,6 +341,12 @@ describe 'Search page', js: true do
         end
       end
 
+      it "'verified by me' and 'not verified by me' checkboxes are disabled when not logged in" do
+        visit(s_path)
+        expect(page.find("#ez-verified-by-me")).to be_disabled
+        expect(page.find("#ez-not-verified-by-me")).to be_disabled
+      end
+
       def expect_dances(verified: false,
                         not_verified: false,
                         verified_by_me: false,

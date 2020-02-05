@@ -9,6 +9,7 @@ const matchNothing: Filter = ["or"] //  kinda non-obvious how to express tihs in
 const matchEverything: Filter = ["and"] //  kinda non-obvious how to express tihs in filters, eh?
 
 export const AdvancedSearch = () => {
+  const [signedIn] = useState(() => Cookie.get("signed_in"))
   const [choreographer, setChoreographer] = useState("")
   const [verifiedChecked, setVerifiedChecked] = useState(true)
   const [notVerifiedChecked, setNotVerifiedChecked] = useState(false)
@@ -49,11 +50,13 @@ export const AdvancedSearch = () => {
       <EzCheckboxFilter
         checked={verifiedCheckedByMe}
         setChecked={setVerifiedCheckedByMe}
+        disabled={!signedIn}
         name="verified by me"
       />
       <EzCheckboxFilter
         checked={notVerifiedCheckedByMe}
         setChecked={setNotVerifiedCheckedByMe}
+        disabled={!signedIn}
         name="not verified by me"
       />
       <br />
