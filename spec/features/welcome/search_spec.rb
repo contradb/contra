@@ -285,6 +285,8 @@ describe 'Search page', js: true do
   end
 
   describe "ez-filters" do
+    let(:user) { FactoryGirl.create(:user) }
+
     describe "choreographer" do
       let(:dances) { [:dance, :box_the_gnat_contra, :call_me].map {|name| FactoryGirl.create(name)} }
 
@@ -303,7 +305,6 @@ describe 'Search page', js: true do
       let! (:dances) do
         %w(unverified yaverified verified-by-me).map {|s| FactoryGirl.create(:dance, title: s)}
       end
-      let (:user) { FactoryGirl.create(:user) }
       let (:verified) { FactoryGirl.create(:tag, :verified) }
       let! (:dut_somebody_else) { FactoryGirl.create(:dut, tag: verified, dance: dances[1]) }
       let! (:dut_by_me) { FactoryGirl.create(:dut, tag: verified, dance: dances[2], user: user) }
@@ -356,6 +357,27 @@ describe 'Search page', js: true do
         expect(page).send(not_verified || not_verified_by_me ? :to : :to_not, have_content(unverified_dance.title))
         expect(page).send(verified || not_verified_by_me ? :to : :to_not, have_content(verified_dance.title))
         expect(page).send(verified || verified_by_me ? :to : :to_not, have_content(verified_by_me_dance.title))
+      end
+    end
+
+    describe "shared" do
+      let(:user2) { FactoryGirl.create(:user) }
+      let!(:dances) { [{user: user2, publish: :off},
+                       {user: user2, publish: :sketchbook},
+                       {user: user2, publish: :all},
+                       {user: user, publish: :off},
+                       {user: user, publish: :sketchbook},
+                       {user: user, publish: :all}
+                      ].each_with_index.map {|props, i| FactoryGirl.create(:dance, title: "Dance-#{i}", **props)}}
+      before { tag_all_dances }
+      
+      it "works" do
+        with_login(user: user) do
+          visit(s_path)
+          6.times {|i| expect(page).send( i < 2 ? :to_not : :to, have_content(dances[i].title))}
+          check 'ez-sketchbooks'
+          6.times {|i| expect(page).send( i < 1 ? :to_not : :to, have_content(dances[i].title))}
+        end
       end
     end
   end

@@ -15,6 +15,7 @@ export const AdvancedSearch = () => {
   const [notVerifiedChecked, setNotVerifiedChecked] = useState(false)
   const [verifiedCheckedByMe, setVerifiedCheckedByMe] = useState(false)
   const [notVerifiedCheckedByMe, setNotVerifiedCheckedByMe] = useState(false)
+  const [sketchbooks, setSketchbooks] = useState(false)
   const verifiedFilter: Filter = getVerifiedFilter({
     v: verifiedChecked,
     nv: notVerifiedChecked,
@@ -24,7 +25,17 @@ export const AdvancedSearch = () => {
   const choreographerFilters: Filter[] = choreographer
     ? [["choreographer", choreographer]]
     : []
-  const ezFilter: Filter = ["and", verifiedFilter, ...choreographerFilters]
+  const publishFilter: Filter = getPublishFilter({
+    all: true,
+    sketchbook: sketchbooks,
+    off: false,
+  })
+  const ezFilter: Filter = [
+    "and",
+    verifiedFilter,
+    publishFilter,
+    ...choreographerFilters,
+  ]
   const grandFilter: Filter = ["if", ezFilter, ["figure", "*"]]
 
   return (
@@ -60,6 +71,14 @@ export const AdvancedSearch = () => {
         setChecked={setNotVerifiedCheckedByMe}
         disabledReason={signedIn ? null : "must be logged in"}
         name="not verified by me"
+      />
+      <br />
+      <br />
+      <h4>Shared:</h4>
+      <EzCheckboxFilter
+        checked={sketchbooks}
+        setChecked={setSketchbooks}
+        name="sketchbooks"
       />
       <br />
       <br />
@@ -108,6 +127,35 @@ export const getVerifiedFilter = ({
     }
   }
   return r
+}
+
+export const getPublishFilter = ({
+  all,
+  sketchbook,
+  off,
+}: {
+  all: boolean
+  sketchbook: boolean
+  off: boolean
+}): Filter => {
+  const allFilters: Filter[] = all ? [["publish", "all"]] : []
+  const offFilters: Filter[] = off ? [["publish", "off"]] : []
+  const sketchbookFilters: Filter[] = sketchbook
+    ? [["publish", "sketchbook"]]
+    : []
+  const filters: Filter[] = [...allFilters, ...sketchbookFilters, ...offFilters]
+  switch (filters.length) {
+    case 0:
+      return matchNothing
+    case 1:
+      return filters[0]
+    case 2:
+      return ["or", ...filters]
+    case 3:
+      return matchEverything
+    default:
+      throw new Error("fell through case statement")
+  }
 }
 
 export default AdvancedSearch

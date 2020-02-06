@@ -1,10 +1,17 @@
 import React from "react"
 // import { render, fireEvent } from "@testing-library/react"
 
-import { getVerifiedFilter } from "../../app/javascript/advanced-search"
+import {
+  getVerifiedFilter,
+  getPublishFilter,
+} from "../../app/javascript/advanced-search"
 
 describe("getVerifiedFilter", () => {
   const offs = { v: false, nv: false, vbm: false, nvbm: false }
+
+  it("nothing => match nothing", () => {
+    expect(getVerifiedFilter({ ...offs })).toEqual(["or"])
+  })
 
   it("v => 0 < tag", () => {
     expect(getVerifiedFilter({ ...offs, v: true })).toEqual([
@@ -54,5 +61,39 @@ describe("getVerifiedFilter", () => {
     expect(getVerifiedFilter({ ...offs, nv: true, nvbm: true })).toEqual(
       getVerifiedFilter({ ...offs, nvbm: true })
     )
+  })
+})
+
+describe("getPublishFilter", () => {
+  const empty = { all: false, sketchbook: false, off: false }
+
+  it("nothing => match nothing", () => {
+    expect(getPublishFilter({ ...empty })).toEqual(["or"])
+  })
+
+  it("all => [publish, all]", () => {
+    expect(getPublishFilter({ ...empty, all: true })).toEqual([
+      "publish",
+      "all",
+    ])
+  })
+
+  it("sketchbook => [publish, sketchbook]", () => {
+    expect(getPublishFilter({ ...empty, sketchbook: true })).toEqual([
+      "publish",
+      "sketchbook",
+    ])
+  })
+
+  it("all & sketchbook => [or [publish all] [publish sketchbook]]", () => {
+    expect(getPublishFilter({ ...empty, all: true, sketchbook: true })).toEqual(
+      ["or", ["publish", "all"], ["publish", "sketchbook"]]
+    )
+  })
+
+  it("all & sketchbook & off => match everything", () => {
+    expect(
+      getPublishFilter({ ...empty, all: true, sketchbook: true, off: true })
+    ).toEqual(["and"])
   })
 })
