@@ -1,10 +1,7 @@
-import React from "react"
-// import { render, fireEvent } from "@testing-library/react"
-
 import {
   getVerifiedFilter,
   getPublishFilter,
-} from "../../app/javascript/advanced-search"
+} from "../../app/javascript/ez-query-helpers"
 
 describe("getVerifiedFilter", () => {
   const offs = { v: false, nv: false, vbm: false, nvbm: false }
