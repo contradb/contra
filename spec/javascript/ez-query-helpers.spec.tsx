@@ -1,6 +1,8 @@
 import {
   getVerifiedFilter,
   getPublishFilter,
+  matchNothing,
+  matchEverything,
 } from "../../app/javascript/ez-query-helpers"
 
 describe("getVerifiedFilter", () => {
@@ -62,35 +64,32 @@ describe("getVerifiedFilter", () => {
 })
 
 describe("getPublishFilter", () => {
-  const empty = { all: false, sketchbook: false, off: false }
-
   it("nothing => match nothing", () => {
-    expect(getPublishFilter({ ...empty })).toEqual(["or"])
+    expect(getPublishFilter({})).toEqual(["or"])
   })
 
   it("all => [publish, all]", () => {
-    expect(getPublishFilter({ ...empty, all: true })).toEqual([
-      "publish",
-      "all",
-    ])
+    expect(getPublishFilter({ all: true })).toEqual(["publish", "all"])
   })
 
   it("sketchbook => [publish, sketchbook]", () => {
-    expect(getPublishFilter({ ...empty, sketchbook: true })).toEqual([
+    expect(getPublishFilter({ sketchbook: true })).toEqual([
       "publish",
       "sketchbook",
     ])
   })
 
   it("all & sketchbook => [or [publish all] [publish sketchbook]]", () => {
-    expect(getPublishFilter({ ...empty, all: true, sketchbook: true })).toEqual(
-      ["or", ["publish", "all"], ["publish", "sketchbook"]]
-    )
+    expect(getPublishFilter({ all: true, sketchbook: true })).toEqual([
+      "or",
+      ["publish", "all"],
+      ["publish", "sketchbook"],
+    ])
   })
 
   it("all & sketchbook & off => match everything", () => {
     expect(
-      getPublishFilter({ ...empty, all: true, sketchbook: true, off: true })
+      getPublishFilter({ all: true, sketchbook: true, off: true })
     ).toEqual(["and"])
   })
 })
