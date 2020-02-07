@@ -130,20 +130,19 @@ export const getVerifiedFilter = ({
 }
 
 export const getPublishFilter = ({
-  all,
-  sketchbook,
-  off,
+  all = false,
+  sketchbook = false,
+  off = false,
 }: {
-  all: boolean
-  sketchbook: boolean
-  off: boolean
+  all?: boolean
+  sketchbook?: boolean
+  off?: boolean
 }): Filter => {
+  const sbk = sketchbook
   const allFilters: Filter[] = all ? [["publish", "all"]] : []
   const offFilters: Filter[] = off ? [["publish", "off"]] : []
-  const sketchbookFilters: Filter[] = sketchbook
-    ? [["publish", "sketchbook"]]
-    : []
-  const filters: Filter[] = [...allFilters, ...sketchbookFilters, ...offFilters]
+  const sbkFilters: Filter[] = sbk ? [["publish", "sketchbook"]] : []
+  const filters: Filter[] = [...allFilters, ...sbkFilters, ...offFilters]
   switch (filters.length) {
     case 0:
       return matchNothing
