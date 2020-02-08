@@ -87,7 +87,7 @@ describe("getPublishFilter", () => {
     ])
   })
 
-  it("all & sketchbook & byMe => [or [publish all] [publish sketchbook] [by me]]", () => {
+  it("all & sketchbook & byMe => [or [by me] [publish all] [publish sketchbook]]", () => {
     expect(
       getPublishFilter({ all: true, sketchbook: true, byMe: true })
     ).toEqual(["or", ["by me"], ["publish", "all"], ["publish", "sketchbook"]])
@@ -97,7 +97,7 @@ describe("getPublishFilter", () => {
     expect(getPublishFilter({ byMe: true })).toEqual(["by me"])
   })
 
-  it("all & byMe => [or [publish all] [by me]]", () => {
+  it("all & byMe => [or [by me] [publish all]]", () => {
     expect(getPublishFilter({ all: true, byMe: true })).toEqual([
       "or",
       ["by me"],

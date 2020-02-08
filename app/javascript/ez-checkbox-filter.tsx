@@ -12,7 +12,7 @@ export const EzCheckboxFilter = ({
   disabledReason?: null | string
   name: string
   title?: string
-}) => {
+}): JSX.Element => {
   const label = name
   const inputId = "ez-" + name.replace(/ /g, "-")
   const disabled = !!disabledReason

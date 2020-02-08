@@ -47,29 +47,30 @@ export const getVerifiedFilter = ({
 export const getPublishFilter = ({
   all = false,
   sketchbook = false,
-  byMe = false,
   off = false,
+  byMe = false,
 }: {
   all?: boolean
   sketchbook?: boolean
-  byMe?: boolean
   off?: boolean
+  byMe?: boolean
 }): Filter => {
   const sbk = sketchbook
   const allFilters: Filter[] = all ? [["publish", "all"]] : []
   const sbkFilters: Filter[] = sbk ? [["publish", "sketchbook"]] : []
   const offFilters: Filter[] = off ? [["publish", "off"]] : []
-  const filters: Filter[] = [...allFilters, ...sbkFilters, ...offFilters]
-  switch (filters.length) {
-    case 0:
-      return byMe ? ["by me"] : matchNothing
-    case 1:
-      return byMe ? ["or", ["by me"], ...filters] : filters[0]
-    case 2:
-      return byMe ? ["or", ["by me"], ...filters] : ["or", ...filters]
-    case 3:
-      return matchEverything
-    default:
-      throw new Error("fell through case statement")
+  const byMeFilters: Filter[] = byMe ? [["by me"]] : []
+  const filters: Filter[] = [
+    ...byMeFilters,
+    ...allFilters,
+    ...sbkFilters,
+    ...offFilters,
+  ]
+  if (3 == allFilters.length + sbkFilters.length + offFilters.length) {
+    return matchEverything
+  } else if (1 == filters.length) {
+    return filters[0]
+  } else {
+    return ["or", ...filters]
   }
 }

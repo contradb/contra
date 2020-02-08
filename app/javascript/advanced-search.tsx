@@ -6,7 +6,7 @@ import EzCheckboxFilter from "./ez-checkbox-filter"
 import Filter from "./filter"
 import { getVerifiedFilter, getPublishFilter } from "./ez-query-helpers"
 
-export const AdvancedSearch = () => {
+export const AdvancedSearch = (): JSX.Element => {
   const [signedIn] = useState(() => Cookie.get("signed_in"))
   const isAdmin = signedIn === "admin"
   const [choreographer, setChoreographer] = useState("")
@@ -15,7 +15,7 @@ export const AdvancedSearch = () => {
   const [verifiedCheckedByMe, setVerifiedCheckedByMe] = useState(false)
   const [notVerifiedCheckedByMe, setNotVerifiedCheckedByMe] = useState(false)
   const [publishAll, setPublishAll] = useState(true)
-  const [publishSketchBook, setPublishSketchbook] = useState(false)
+  const [publishSketchbook, setPublishSketchbook] = useState(false)
   const [publishOff, setPublishOff] = useState(false)
   const [enteredByMe, setEnteredByMe] = useState(false)
   const verifiedFilter: Filter = getVerifiedFilter({
@@ -29,7 +29,7 @@ export const AdvancedSearch = () => {
     : []
   const publishFilter: Filter = getPublishFilter({
     all: publishAll,
-    sketchbook: publishSketchBook,
+    sketchbook: publishSketchbook,
     off: publishOff,
     byMe: enteredByMe,
   })
@@ -43,6 +43,7 @@ export const AdvancedSearch = () => {
 
   return (
     <div>
+      <br />
       <h4>Choreographer:</h4>
       <input
         type="text"
@@ -85,20 +86,13 @@ export const AdvancedSearch = () => {
       <br />
       <h4>Shared:</h4>
       <EzCheckboxFilter
-        checked={enteredByMe}
-        setChecked={setEnteredByMe}
-        disabledReason={signedIn ? null : "must be logged in"}
-        name="entered by me"
-        title="search among dances you have entered"
-      />
-      <EzCheckboxFilter
         checked={publishAll}
         setChecked={setPublishAll}
         name="shared"
         title="search among dances shared to all"
       />
       <EzCheckboxFilter
-        checked={publishSketchBook}
+        checked={publishSketchbook}
         setChecked={setPublishSketchbook}
         name="sketchbooks"
         title="search among dances shared to sketchbooks - the person entering them does not think they should be called"
@@ -111,6 +105,13 @@ export const AdvancedSearch = () => {
           title="search among dances that have sharing off"
         />
       )}
+      <EzCheckboxFilter
+        checked={enteredByMe}
+        setChecked={setEnteredByMe}
+        disabledReason={signedIn ? null : "must be logged in"}
+        name="entered by me"
+        title="search among dances you have entered"
+      />
       <br />
       <br />
       <br />
