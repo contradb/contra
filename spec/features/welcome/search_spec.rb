@@ -132,10 +132,13 @@ describe 'Search page', js: true do
       with_login do |user|
         dances.each_with_index do |dance, i|
           publish = [:off, :sketchbook, :all][i]
-          publish_string = ['private', 'sketchbook', 'everywhere'][i]
           dance.update!(publish: publish, user: user)
-          visit(s_path)
-          click_button 'Sharing'
+        end
+        visit(s_path)
+        check 'ez-entered-by-me'
+        click_button 'Sharing'
+        dances.each_with_index do |dance, i|
+          publish_string = ['private', 'sketchbook', 'everywhere'][i]
           expect(page).to have_css('tr', text: /#{dance.title}.*#{publish_string}/)
         end
       end
@@ -372,7 +375,7 @@ describe 'Search page', js: true do
       before { tag_all_dances }
       let(:private_checkbox_css) { "#ez-private" }
       
-      it "shared, sketchbooks, and anything-by-me checkboxes work" do
+      it "shared, sketchbooks, and entered-by-me checkboxes work" do
         with_login(user: user) do
           visit(s_path)
           6.times {|i| expect(page).send(i.in?([2,5]) ? :to : :to_not, have_content(dances[i].title))}
@@ -380,7 +383,7 @@ describe 'Search page', js: true do
           6.times {|i| expect(page).send(i.in?([1,2,4,5]) ? :to : :to_not, have_content(dances[i].title))}
           uncheck 'ez-shared'
           6.times {|i| expect(page).send(i.in?([1,4]) ? :to : :to_not, have_content(dances[i].title))}
-          check 'ez-anything-by-me'
+          check 'ez-entered-by-me'
           6.times {|i| expect(page).send(i.in?([1,3,4,5]) ? :to : :to_not, have_content(dances[i].title))}
           uncheck 'ez-sketchbooks'
           6.times {|i| expect(page).send(i.in?([3,4,5]) ? :to : :to_not, have_content(dances[i].title))}
@@ -404,6 +407,11 @@ describe 'Search page', js: true do
           6.times {|i| expect(page).send(i.in?([2,5]) ? :to : :to_not, have_content(dances[i].title))} # js wait
           expect(page).to_not have_css(private_checkbox_css)
         end
+      end
+
+      it "'entered by me' checkbox is disabled when not logged in" do
+        visit(s_path)
+        expect(page.find("#ez-entered-by-me")).to be_disabled
       end
     end
   end

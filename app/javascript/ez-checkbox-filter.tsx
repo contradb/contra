@@ -5,11 +5,13 @@ export const EzCheckboxFilter = ({
   setChecked,
   disabledReason = null,
   name,
+  title,
 }: {
   checked: boolean
   setChecked: (x: boolean) => void
   disabledReason?: null | string
   name: string
+  title?: string
 }) => {
   const label = name
   const inputId = "ez-" + name.replace(/ /g, "-")
@@ -19,7 +21,7 @@ export const EzCheckboxFilter = ({
     <div className={disabled ? "hidden-xs" : ""}>
       <label
         className={disabled ? "text-muted" : ""}
-        title={disabledReason ? disabledReason : undefined}
+        title={disabledReason || title}
       >
         <input
           id={inputId}

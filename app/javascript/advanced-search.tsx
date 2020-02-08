@@ -17,7 +17,7 @@ export const AdvancedSearch = () => {
   const [publishAll, setPublishAll] = useState(true)
   const [publishSketchBook, setPublishSketchbook] = useState(false)
   const [publishOff, setPublishOff] = useState(false)
-  const [byMe, setByMe] = useState(false)
+  const [enteredByMe, setEnteredByMe] = useState(false)
   const verifiedFilter: Filter = getVerifiedFilter({
     v: verifiedChecked,
     nv: notVerifiedChecked,
@@ -31,7 +31,7 @@ export const AdvancedSearch = () => {
     all: publishAll,
     sketchbook: publishSketchBook,
     off: publishOff,
-    byMe,
+    byMe: enteredByMe,
   })
   const ezFilter: Filter = [
     "and",
@@ -47,8 +47,10 @@ export const AdvancedSearch = () => {
       <input
         type="text"
         className="ez-choreographer-filter form-control"
+        style={{ maxWidth: "15em" }}
         value={choreographer}
         onChange={e => setChoreographer(e.target.value)}
+        title="optional"
       />
       <br />
       <br />
@@ -57,47 +59,56 @@ export const AdvancedSearch = () => {
         checked={verifiedChecked}
         setChecked={setVerifiedChecked}
         name="verified"
+        title="search among dances that have been called"
       />
       <EzCheckboxFilter
         checked={notVerifiedChecked}
         setChecked={setNotVerifiedChecked}
         name="not verified"
+        title="search among dances that have not been called "
       />
       <EzCheckboxFilter
         checked={verifiedCheckedByMe}
         setChecked={setVerifiedCheckedByMe}
         disabledReason={signedIn ? null : "must be logged in"}
         name="verified by me"
+        title="search among dances that you have called"
       />
       <EzCheckboxFilter
         checked={notVerifiedCheckedByMe}
         setChecked={setNotVerifiedCheckedByMe}
         disabledReason={signedIn ? null : "must be logged in"}
         name="not verified by me"
+        title="search among dances you have not called"
       />
       <br />
       <br />
       <h4>Shared:</h4>
       <EzCheckboxFilter
-        checked={byMe}
-        setChecked={setByMe}
-        name="anything by me"
+        checked={enteredByMe}
+        setChecked={setEnteredByMe}
+        disabledReason={signedIn ? null : "must be logged in"}
+        name="entered by me"
+        title="search among dances you have entered"
       />
       <EzCheckboxFilter
         checked={publishAll}
         setChecked={setPublishAll}
         name="shared"
+        title="search among dances shared to all"
       />
       <EzCheckboxFilter
         checked={publishSketchBook}
         setChecked={setPublishSketchbook}
         name="sketchbooks"
+        title="search among dances shared to sketchbooks - the person entering them does not think they should be called"
       />
       {isAdmin && (
         <EzCheckboxFilter
           checked={publishOff}
           setChecked={setPublishOff}
           name="private"
+          title="search among dances that have sharing off"
         />
       )}
       <br />
