@@ -10,6 +10,7 @@ export const AdvancedSearch = (): JSX.Element => {
   const [signedIn] = useState(() => Cookie.get("signed_in"))
   const isAdmin = signedIn === "admin"
   const [choreographer, setChoreographer] = useState("")
+  const [hook, setHook] = useState("")
   const [verifiedChecked, setVerifiedChecked] = useState(true)
   const [notVerifiedChecked, setNotVerifiedChecked] = useState(false)
   const [verifiedCheckedByMe, setVerifiedCheckedByMe] = useState(false)
@@ -27,6 +28,7 @@ export const AdvancedSearch = (): JSX.Element => {
   const choreographerFilters: Filter[] = choreographer
     ? [["choreographer", choreographer]]
     : []
+  const hookFilters: Filter[] = hook ? [["hook", hook]] : []
   const publishFilter: Filter = getPublishFilter({
     all: publishAll,
     sketchbook: publishSketchbook,
@@ -37,7 +39,7 @@ export const AdvancedSearch = (): JSX.Element => {
     "and",
     verifiedFilter,
     publishFilter,
-    ...choreographerFilters,
+    ...[...choreographerFilters, ...hookFilters], // ts being grumpy!
   ]
   const grandFilter: Filter = ["if", ezFilter, ["figure", "*"]]
 
@@ -51,7 +53,17 @@ export const AdvancedSearch = (): JSX.Element => {
         style={{ maxWidth: "15em" }}
         value={choreographer}
         onChange={e => setChoreographer(e.target.value)}
-        title="optional"
+        title="the person who wrote the dance - optional"
+      />
+      <br />
+      <h4>Hook:</h4>
+      <input
+        type="text"
+        className="ez-hook-filter form-control"
+        style={{ maxWidth: "15em" }}
+        value={hook}
+        onChange={e => setHook(e.target.value)}
+        title="search for words in reason the dance is interesting - optional"
       />
       <br />
       <br />

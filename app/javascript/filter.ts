@@ -16,6 +16,7 @@ export type Filter =
   | ["if", Filter, Filter, Filter]
   | ["all", Filter]
   | ["choreographer", string]
+  | ["hook", string]
   | ["count", Filter, Comparison, number]
   | ["compare", NumericFilter, Comparison, NumericFilter]
   | ["my tag", string]

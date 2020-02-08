@@ -72,7 +72,11 @@ describe FilterDances do
   end
 
   describe "search operators (kinda filter_dances again)" do
-    let! (:dances) { [:dance, :box_the_gnat_contra, :call_me, :dance_with_zero_figures].map {|name| FactoryGirl.create(name)} }
+    let! (:dances) do
+      [:dance, :box_the_gnat_contra, :call_me, :dance_with_zero_figures].map.each_with_index do |name, i|
+        FactoryGirl.create(name, hook: "#{i.to_s*10} hook")
+      end
+    end
     let (:zero) { dances.last }
     let (:dance_titles_without_zero) { dances.map(&:title) - [dances.last.title]}
 
@@ -242,6 +246,20 @@ describe FilterDances do
       it "works case-insensitively" do
         filtered = FilterDances.filter_dances(['choreographer', dances.first.choreographer.name.upcase], dialect: dialect)
         expect(titles(filtered)).to eq([dances.first.title])
+      end
+    end
+
+    describe 'hook' do
+      it "works case-insensitively" do
+        expect(dances.second.hook).to eq("1111111111 hook")
+        filtered = FilterDances.filter_dances(['hook', dances.second.hook.upcase], dialect: dialect)
+        expect(titles(filtered)).to eq([dances.second.title])
+      end
+
+      it "works with dialect" do
+        dances.second.update!(hook: 'so many gyre moves!')
+        filtered = FilterDances.filter_dances(['hook', 'darcy'], dialect: JSLibFigure.test_dialect)
+        expect(titles(filtered)).to eq([dances.second.title])
       end
     end
 
