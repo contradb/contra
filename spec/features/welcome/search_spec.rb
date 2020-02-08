@@ -304,6 +304,31 @@ describe 'Search page', js: true do
       end
     end
 
+    describe "hook" do
+      it "works on the word 'easy'" do
+        easy_dance = FactoryGirl.create(:dance, hook: "so easy-peazy", title: "Mr. Toad's Wild Ride")
+        hard_dance = FactoryGirl.create(:dance, hook: "complicated", title: "hard mcguard" )
+        tag_all_dances
+        visit(s_path)
+        find('.ez-hook-filter').fill_in(with: "easy")
+        expect(page).to_not have_content(hard_dance.title)
+        expect(page).to have_content(easy_dance.title)
+      end
+
+      it "works with dialect" do
+        lark_dance = FactoryGirl.create(:dance, hook: "gentlespoons can go fish", title: "abcde")
+        wombat_dance = FactoryGirl.create(:dance, hook: "wombats can go fish", title: "tuvwxyz")
+        tag_all_dances
+        allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
+        with_login(user: user) do
+          visit(s_path)
+          find('.ez-hook-filter').fill_in(with: "larks")
+          expect(page).to_not have_content(wombat_dance.title)
+          expect(page).to have_content(lark_dance.title)
+        end
+      end
+    end
+
     describe "verified" do
       let! (:dances) do
         %w(unverified yaverified verified-by-me).map {|s| FactoryGirl.create(:dance, title: s)}

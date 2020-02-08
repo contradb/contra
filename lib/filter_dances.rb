@@ -6,6 +6,7 @@ require 'sort_parser'
 module FilterDances
 
   FilterEnv = Struct.new(:user, # may be null
+                         :dialect,
                          keyword_init: true)
 
 
@@ -23,9 +24,9 @@ module FilterDances
               .order(*SortParser.parse(sort_by))
     number_searched = 0
     number_matching = 0
-    filter_env = FilterEnv.new(user: user)
+    filter_env = FilterEnv.new(user: user, dialect: dialect)
     filter_results = []
-    query.map do |dance|
+    query.each do |dance|
       number_searched += 1
       mf = matching_figures(filter, dance, filter_env)
       if mf
@@ -268,6 +269,11 @@ module FilterDances
   def self.matching_figures_for_choreographer(filter, dance, filter_env)
     choreographer = filter[1].downcase
     dance.choreographer.name.downcase.include?(choreographer) ? Set[] : nil
+  end
+
+  def self.matching_figures_for_hook(filter, dance, filter_env)
+    hook = filter[1].downcase
+    JSLibFigure.string_in_dialect(dance.hook, filter_env.dialect).downcase.include?(hook) ? Set[] : nil
   end
 
   def self.matching_figures_for_publish(filter, dance, filter_env)
