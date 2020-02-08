@@ -5,6 +5,7 @@ require 'filter_dances'
 
 describe FilterDances do
   let (:dialect) { JSLibFigure.default_dialect }
+  let (:user) { FactoryGirl.create(:user) }
 
   describe "filter_dances" do
     let (:now) { DateTime.now }
@@ -54,12 +55,10 @@ describe FilterDances do
     end
 
     describe "only finds dances searchable to the provided user" do
-      let (:user) { FactoryGirl.create(:user) }
-
-      it 'with user unspecified, it displays only public dances' do
+      it 'with user unspecified, it displays only public & sketchbook dances' do
         dances = [ :off, :sketchbook, :all ].map {|publish| FactoryGirl.create(:dance, publish: publish)}
         filter_results = FilterDances.filter_dances(['figure', '*'], dialect: dialect)[:dances]
-        expect(filter_results.map{|d| d['id']}).to eq([dances.last.id])
+        expect(filter_results.map{|d| d['id']}).to contain_exactly(*dances.drop(1).map(&:id))
       end
 
       it "with user, displays all that users' dances" do
@@ -265,6 +264,43 @@ describe FilterDances do
         expect(filtered[:dances].map {|d| d['matching_figures_html']}).to(
           contain_exactly("ladles do si do 1½", "ladles chain ⁋", "partners balance &amp; swing ⁋")
         )
+      end
+    end
+
+    describe 'publish' do
+      before do
+        dances[0].update!(user: user, publish: :all)
+        dances[1].update!(user: user, publish: :sketchbook)
+        dances[2].update!(user: user, publish: :off)
+        dances[3].update!(user: user, publish: :all)
+      end
+
+      it "'all' does not return all dances, rather it returns dances with publish: :all" do
+        filter = ['publish', 'all']
+        filtered = FilterDances.filter_dances(filter, dialect: dialect, user: user)
+        expect(titles(filtered)).to contain_exactly(dances[0].title, dances[3].title)
+      end
+
+      it "'sketchbook' returns only publish: :sketchbook dances" do
+        filter = ['publish', 'sketchbook']
+        filtered = FilterDances.filter_dances(filter, dialect: dialect, user: user)
+        expect(titles(filtered)).to eq([dances[1].title])
+      end
+
+      it "'off' returns only publish: :off dances" do
+        filter = ['publish', 'off']
+        filtered = FilterDances.filter_dances(filter, dialect: dialect, user: user)
+        expect(titles(filtered)).to eq([dances[2].title])
+      end
+    end
+
+    describe 'by me' do
+      it 'works' do
+        dances = [ :off, :sketchbook, :all ].map.each_with_index {|publish, i| FactoryGirl.create(:dance, publish: publish, user: user, title: "Dance-#{i}")}
+        dances << FactoryGirl.create(:dance)
+        filter = ['by me']
+        filtered = FilterDances.filter_dances(filter, dialect: dialect, user: user)
+        expect(titles(filtered)).to contain_exactly(*dances.select {|d| d.user_id == user.id}.map(&:title))
       end
     end
   end

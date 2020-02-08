@@ -19,6 +19,8 @@ export type Filter =
   | ["count", Filter, Comparison, number]
   | ["compare", NumericFilter, Comparison, NumericFilter]
   | ["my tag", string]
+  | ["publish", "all" | "sketchbook" | "off"]
+  | ["by me"]
 
 export type NumericFilter =
   | ["constant", number]

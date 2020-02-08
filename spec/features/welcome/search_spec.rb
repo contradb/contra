@@ -132,10 +132,13 @@ describe 'Search page', js: true do
       with_login do |user|
         dances.each_with_index do |dance, i|
           publish = [:off, :sketchbook, :all][i]
-          publish_string = ['private', 'sketchbook', 'everywhere'][i]
           dance.update!(publish: publish, user: user)
-          visit(s_path)
-          click_button 'Sharing'
+        end
+        visit(s_path)
+        check 'ez-entered-by-me'
+        click_button 'Sharing'
+        dances.each_with_index do |dance, i|
+          publish_string = ['private', 'sketchbook', 'everywhere'][i]
           expect(page).to have_css('tr', text: /#{dance.title}.*#{publish_string}/)
         end
       end
@@ -285,6 +288,8 @@ describe 'Search page', js: true do
   end
 
   describe "ez-filters" do
+    let(:user) { FactoryGirl.create(:user) }
+
     describe "choreographer" do
       let(:dances) { [:dance, :box_the_gnat_contra, :call_me].map {|name| FactoryGirl.create(name)} }
 
@@ -303,7 +308,6 @@ describe 'Search page', js: true do
       let! (:dances) do
         %w(unverified yaverified verified-by-me).map {|s| FactoryGirl.create(:dance, title: s)}
       end
-      let (:user) { FactoryGirl.create(:user) }
       let (:verified) { FactoryGirl.create(:tag, :verified) }
       let! (:dut_somebody_else) { FactoryGirl.create(:dut, tag: verified, dance: dances[1]) }
       let! (:dut_by_me) { FactoryGirl.create(:dut, tag: verified, dance: dances[2], user: user) }
@@ -356,6 +360,58 @@ describe 'Search page', js: true do
         expect(page).send(not_verified || not_verified_by_me ? :to : :to_not, have_content(unverified_dance.title))
         expect(page).send(verified || not_verified_by_me ? :to : :to_not, have_content(verified_dance.title))
         expect(page).send(verified || verified_by_me ? :to : :to_not, have_content(verified_by_me_dance.title))
+      end
+    end
+
+    describe "shared" do
+      let(:user2) { FactoryGirl.create(:user) }
+      let!(:dances) { [{user: user2, publish: :off},
+                       {user: user2, publish: :sketchbook},
+                       {user: user2, publish: :all},
+                       {user: user, publish: :off},
+                       {user: user, publish: :sketchbook},
+                       {user: user, publish: :all}
+                      ].each_with_index.map {|props, i| FactoryGirl.create(:dance, title: "Dance-#{i}", **props)}}
+      before { tag_all_dances }
+      let(:private_checkbox_css) { "#ez-private" }
+      
+      it "shared, sketchbooks, and entered-by-me checkboxes work" do
+        with_login(user: user) do
+          visit(s_path)
+          6.times {|i| expect(page).send(i.in?([2,5]) ? :to : :to_not, have_content(dances[i].title))}
+          check 'ez-sketchbooks'
+          6.times {|i| expect(page).send(i.in?([1,2,4,5]) ? :to : :to_not, have_content(dances[i].title))}
+          uncheck 'ez-shared'
+          6.times {|i| expect(page).send(i.in?([1,4]) ? :to : :to_not, have_content(dances[i].title))}
+          check 'ez-entered-by-me'
+          6.times {|i| expect(page).send(i.in?([1,3,4,5]) ? :to : :to_not, have_content(dances[i].title))}
+          uncheck 'ez-sketchbooks'
+          6.times {|i| expect(page).send(i.in?([3,4,5]) ? :to : :to_not, have_content(dances[i].title))}
+          check 'ez-shared'
+          6.times {|i| expect(page).send(i.in?([2,3,4,5]) ? :to : :to_not, have_content(dances[i].title))}
+        end
+      end
+
+      it "Admins can use the 'private' checkbox" do
+        with_login(admin: true) do
+          visit(s_path)
+          expect(page).to have_css(private_checkbox_css)
+          check 'ez-private'
+          6.times {|i| expect(page).send(i.in?([0,2,3,5]) ? :to : :to_not, have_content(dances[i].title))}
+        end
+      end
+
+      it "Doesn't clutter the interface with 'private' for regular users" do
+        with_login(user: user) do
+          visit(s_path)
+          6.times {|i| expect(page).send(i.in?([2,5]) ? :to : :to_not, have_content(dances[i].title))} # js wait
+          expect(page).to_not have_css(private_checkbox_css)
+        end
+      end
+
+      it "'entered by me' checkbox is disabled when not logged in" do
+        visit(s_path)
+        expect(page.find("#ez-entered-by-me")).to be_disabled
       end
     end
   end
