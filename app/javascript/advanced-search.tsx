@@ -8,12 +8,16 @@ import { getVerifiedFilter, getPublishFilter } from "./ez-query-helpers"
 
 export const AdvancedSearch = () => {
   const [signedIn] = useState(() => Cookie.get("signed_in"))
+  const isAdmin = signedIn === "admin"
   const [choreographer, setChoreographer] = useState("")
   const [verifiedChecked, setVerifiedChecked] = useState(true)
   const [notVerifiedChecked, setNotVerifiedChecked] = useState(false)
   const [verifiedCheckedByMe, setVerifiedCheckedByMe] = useState(false)
   const [notVerifiedCheckedByMe, setNotVerifiedCheckedByMe] = useState(false)
-  const [sketchbooks, setSketchbooks] = useState(false)
+  const [publishAll, setPublishAll] = useState(true)
+  const [publishSketchBook, setPublishSketchbook] = useState(false)
+  const [byMe, setByMe] = useState(false)
+  const [omniscient, setOmniscient] = useState(isAdmin)
   const verifiedFilter: Filter = getVerifiedFilter({
     v: verifiedChecked,
     nv: notVerifiedChecked,
@@ -24,9 +28,10 @@ export const AdvancedSearch = () => {
     ? [["choreographer", choreographer]]
     : []
   const publishFilter: Filter = getPublishFilter({
-    all: true,
-    sketchbook: sketchbooks,
-    off: false,
+    all: publishAll,
+    sketchbook: publishSketchBook,
+    byMe,
+    omniscient,
   })
   const ezFilter: Filter = [
     "and",
@@ -74,10 +79,32 @@ export const AdvancedSearch = () => {
       <br />
       <h4>Shared:</h4>
       <EzCheckboxFilter
-        checked={sketchbooks}
-        setChecked={setSketchbooks}
+        checked={publishAll}
+        setChecked={setPublishAll}
+        name="shared"
+      />
+      <EzCheckboxFilter
+        checked={publishSketchBook}
+        setChecked={setPublishSketchbook}
         name="sketchbooks"
       />
+      _______
+      <EzCheckboxFilter
+        checked={byMe}
+        setChecked={setByMe}
+        name="anything by me"
+      />
+      {isAdmin && (
+        <>
+          {" "}
+          _______
+          <EzCheckboxFilter
+            checked={omniscient}
+            setChecked={setOmniscient}
+            name="omniscient"
+          />
+        </>
+      )}
       <br />
       <br />
       <br />

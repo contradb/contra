@@ -374,9 +374,9 @@ describe 'Search page', js: true do
       it "works" do
         with_login(user: user) do
           visit(s_path)
-          6.times {|i| expect(page).send( i < 2 ? :to_not : :to, have_content(dances[i].title))}
+          6.times {|i| expect(page).send(i.in?([2,5]) ? :to : :to_not, have_content(dances[i].title))}
           check 'ez-sketchbooks'
-          6.times {|i| expect(page).send( i < 1 ? :to_not : :to, have_content(dances[i].title))}
+          6.times {|i| expect(page).send(i.in?([1,2,4,5]) ? :to : :to_not, have_content(dances[i].title))}
         end
       end
     end

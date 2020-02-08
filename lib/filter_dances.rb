@@ -19,7 +19,7 @@ module FilterDances
     query = Dance
               .includes(:choreographer, :user, :duts, :tags)
               .references(:choreographer, :user, :duts, :tags)
-              .searchable_by(user)
+              .searchable_by(user, sketchbook: true)
               .order(*SortParser.parse(sort_by))
     number_searched = 0
     number_matching = 0
@@ -101,9 +101,7 @@ module FilterDances
          end
     fn = :"matching_figures_for_#{nm}"
     raise "#{operator.inspect} is not a valid operator in #{filter.inspect}" unless self.respond_to?(fn, true)
-    matches = send(fn, filter, dance, filter_env)
-    # puts "matching_figures #{dance.title} #{filter.inspect} = #{matches.inspect}"
-    matches
+    send(fn, filter, dance, filter_env)
   end
 
   def self.matching_figures_for_figure(filter, dance, filter_env)
@@ -270,6 +268,14 @@ module FilterDances
   def self.matching_figures_for_choreographer(filter, dance, filter_env)
     choreographer = filter[1].downcase
     dance.choreographer.name.downcase.include?(choreographer) ? Set[] : nil
+  end
+
+  def self.matching_figures_for_publish(filter, dance, filter_env)
+    dance.publish == filter.second ? Set[] : nil
+  end
+
+  def self.matching_figures_for_by_me(filter, dance, filter_env)
+    dance.user_id == filter_env.user&.id ? Set[] : nil
   end
 
   COMPARISON_STRING_TO_RUBY_OP = {'≥' => :'>=',
