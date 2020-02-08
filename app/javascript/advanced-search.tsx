@@ -16,8 +16,8 @@ export const AdvancedSearch = () => {
   const [notVerifiedCheckedByMe, setNotVerifiedCheckedByMe] = useState(false)
   const [publishAll, setPublishAll] = useState(true)
   const [publishSketchBook, setPublishSketchbook] = useState(false)
+  const [publishOff, setPublishOff] = useState(false)
   const [byMe, setByMe] = useState(false)
-  const [omniscient, setOmniscient] = useState(isAdmin)
   const verifiedFilter: Filter = getVerifiedFilter({
     v: verifiedChecked,
     nv: notVerifiedChecked,
@@ -30,8 +30,8 @@ export const AdvancedSearch = () => {
   const publishFilter: Filter = getPublishFilter({
     all: publishAll,
     sketchbook: publishSketchBook,
+    off: publishOff,
     byMe,
-    omniscient,
   })
   const ezFilter: Filter = [
     "and",
@@ -79,6 +79,11 @@ export const AdvancedSearch = () => {
       <br />
       <h4>Shared:</h4>
       <EzCheckboxFilter
+        checked={byMe}
+        setChecked={setByMe}
+        name="anything by me"
+      />
+      <EzCheckboxFilter
         checked={publishAll}
         setChecked={setPublishAll}
         name="shared"
@@ -88,22 +93,12 @@ export const AdvancedSearch = () => {
         setChecked={setPublishSketchbook}
         name="sketchbooks"
       />
-      _______
-      <EzCheckboxFilter
-        checked={byMe}
-        setChecked={setByMe}
-        name="anything by me"
-      />
       {isAdmin && (
-        <>
-          {" "}
-          _______
-          <EzCheckboxFilter
-            checked={omniscient}
-            setChecked={setOmniscient}
-            name="omniscient"
-          />
-        </>
+        <EzCheckboxFilter
+          checked={publishOff}
+          setChecked={setPublishOff}
+          name="private"
+        />
       )}
       <br />
       <br />

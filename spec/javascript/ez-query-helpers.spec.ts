@@ -65,7 +65,7 @@ describe("getVerifiedFilter", () => {
 
 describe("getPublishFilter", () => {
   it("nothing => match nothing", () => {
-    expect(getPublishFilter({})).toEqual(["or"])
+    expect(getPublishFilter({})).toEqual(matchNothing)
   })
 
   it("all => [publish, all]", () => {
@@ -87,17 +87,17 @@ describe("getPublishFilter", () => {
     ])
   })
 
-  it("all & sketchbook & byMe => match everything", () => {
+  it("all & sketchbook & byMe => [or [publish all] [publish sketchbook] [by me]]", () => {
     expect(
       getPublishFilter({ all: true, sketchbook: true, byMe: true })
-    ).toEqual(matchEverything)
+    ).toEqual(["or", ["by me"], ["publish", "all"], ["publish", "sketchbook"]])
   })
 
   it("byMe => [by me]", () => {
     expect(getPublishFilter({ byMe: true })).toEqual(["by me"])
   })
 
-  it("all & byMe => [or [publish all] [by me]] (yes I mean 'or')", () => {
+  it("all & byMe => [or [publish all] [by me]]", () => {
     expect(getPublishFilter({ all: true, byMe: true })).toEqual([
       "or",
       ["by me"],
@@ -105,15 +105,12 @@ describe("getPublishFilter", () => {
     ])
   })
 
-  it("omnicient & whatever => match everything", () => {
-    ;[false, true].map(all =>
-      [false, true].map(sketchbook =>
-        [false, true].map(byMe =>
-          expect(
-            getPublishFilter({ omniscient: true, all, sketchbook, byMe })
-          ).toEqual(matchEverything)
-        )
-      )
-    )
+  it("off & sketchbook & all => match everything", () => {
+    expect(
+      getPublishFilter({ all: true, sketchbook: true, off: true, byMe: false })
+    ).toEqual(matchEverything)
+    expect(
+      getPublishFilter({ all: true, sketchbook: true, off: true, byMe: true })
+    ).toEqual(matchEverything)
   })
 })

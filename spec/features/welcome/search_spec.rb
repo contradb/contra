@@ -370,13 +370,39 @@ describe 'Search page', js: true do
                        {user: user, publish: :all}
                       ].each_with_index.map {|props, i| FactoryGirl.create(:dance, title: "Dance-#{i}", **props)}}
       before { tag_all_dances }
+      let(:private_checkbox_css) { "#ez-private" }
       
-      it "works" do
+      it "shared, sketchbooks, and anything-by-me checkboxes work" do
         with_login(user: user) do
           visit(s_path)
           6.times {|i| expect(page).send(i.in?([2,5]) ? :to : :to_not, have_content(dances[i].title))}
           check 'ez-sketchbooks'
           6.times {|i| expect(page).send(i.in?([1,2,4,5]) ? :to : :to_not, have_content(dances[i].title))}
+          uncheck 'ez-shared'
+          6.times {|i| expect(page).send(i.in?([1,4]) ? :to : :to_not, have_content(dances[i].title))}
+          check 'ez-anything-by-me'
+          6.times {|i| expect(page).send(i.in?([1,3,4,5]) ? :to : :to_not, have_content(dances[i].title))}
+          uncheck 'ez-sketchbooks'
+          6.times {|i| expect(page).send(i.in?([3,4,5]) ? :to : :to_not, have_content(dances[i].title))}
+          check 'ez-shared'
+          6.times {|i| expect(page).send(i.in?([2,3,4,5]) ? :to : :to_not, have_content(dances[i].title))}
+        end
+      end
+
+      it "Admins can use the 'private' checkbox" do
+        with_login(admin: true) do
+          visit(s_path)
+          expect(page).to have_css(private_checkbox_css)
+          check 'ez-private'
+          6.times {|i| expect(page).send(i.in?([0,2,3,5]) ? :to : :to_not, have_content(dances[i].title))}
+        end
+      end
+
+      it "Doesn't clutter the interface with 'private' for regular users" do
+        with_login(user: user) do
+          visit(s_path)
+          6.times {|i| expect(page).send(i.in?([2,5]) ? :to : :to_not, have_content(dances[i].title))} # js wait
+          expect(page).to_not have_css(private_checkbox_css)
         end
       end
     end
