@@ -324,14 +324,16 @@ describe FilterDances do
   end
 
   it 'filter_result_to_json' do
-    dance = FactoryGirl.build(:dance)
+    dance = FactoryGirl.build(:dance, hook: "gentlespoons to the left")
+    dialect = JSLibFigure.test_dialect
+    hook_in_dialect = JSLibFigure.string_in_dialect(dance.hook, dialect)
     result = {
       id: dance.id,
       title: dance.title,
       choreographer_id: dance.choreographer_id,
       choreographer_name: dance.choreographer.name,
       formation: dance.start_type,
-      hook: dance.hook,
+      hook: hook_in_dialect,
       user_id: dance.user_id,
       user_name: dance.user.name,
       created_at: dance.created_at.as_json,
@@ -339,6 +341,6 @@ describe FilterDances do
       publish: (dance.publish == 'all') && 'everywhere',
       matching_figures_html: 'whole dance',
     }.stringify_keys
-    expect(FilterDances.filter_result_to_json(dance, 'whole dance')).to eq(result)
+    expect(FilterDances.filter_result_to_json(dance, 'whole dance', dialect)).to eq(result)
   end
 end

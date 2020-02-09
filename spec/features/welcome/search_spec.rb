@@ -169,6 +169,17 @@ describe 'Search page', js: true do
         expect(page).to have_css('tr', text: /Call Me.*\n?circle left 3 places/)
       end
     end
+
+    it "hook column is in dialect" do
+      with_login do
+        allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
+        dances
+        dances.first.update!(hook: 'dreary gyre daytime')
+        tag_all_dances
+        visit(s_path)
+        expect(page).to have_content('dreary darcy daytime')
+      end
+    end
   end
 
   it "sentence displays how many search results match" do

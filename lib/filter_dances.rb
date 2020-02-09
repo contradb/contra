@@ -34,7 +34,7 @@ module FilterDances
         send_this_dance = offset < number_matching && number_matching <= offset + count
         if send_this_dance
           mf_html = matching_figures_html(mf, dance, dialect)
-          filter_results << filter_result_to_json(dance, mf_html)
+          filter_results << filter_result_to_json(dance, mf_html, dialect)
         end
       end
     end
@@ -54,14 +54,14 @@ module FilterDances
     end
   end
 
-  def self.filter_result_to_json(dance, matching_figures_html)
+  def self.filter_result_to_json(dance, matching_figures_html, dialect)
     {
       "id" => dance.id,
       "title" => dance.title,
       "choreographer_id" => dance.choreographer_id,
       "choreographer_name" => dance.choreographer.name,
       "formation" => dance.start_type,
-      "hook" => dance.hook,
+      "hook" => JSLibFigure.string_in_dialect(dance.hook, dialect),
       "user_id" => dance.user_id,
       "user_name" => dance.user.name,
       "created_at" => dance.created_at.as_json,
