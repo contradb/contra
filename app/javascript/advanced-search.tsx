@@ -4,7 +4,11 @@ import Cookie from "js-cookie"
 import DanceTable from "./dance-table"
 import EzCheckboxFilter from "./ez-checkbox-filter"
 import Filter from "./filter"
-import { getVerifiedFilter, getPublishFilter } from "./ez-query-helpers"
+import {
+  getVerifiedFilter,
+  getPublishFilter,
+  getFormationFilters,
+} from "./ez-query-helpers"
 
 export const AdvancedSearch = (): JSX.Element => {
   const [signedIn] = useState(() => Cookie.get("signed_in"))
@@ -19,6 +23,10 @@ export const AdvancedSearch = (): JSX.Element => {
   const [publishSketchbook, setPublishSketchbook] = useState(false)
   const [publishOff, setPublishOff] = useState(false)
   const [enteredByMe, setEnteredByMe] = useState(false)
+  const [improper, setImproper] = useState(true)
+  const [becket, setBecket] = useState(true)
+  const [proper, setProper] = useState(true)
+  const [otherFormation, setOtherFormation] = useState(true)
   const verifiedFilter: Filter = getVerifiedFilter({
     v: verifiedChecked,
     nv: notVerifiedChecked,
@@ -35,11 +43,17 @@ export const AdvancedSearch = (): JSX.Element => {
     off: publishOff,
     byMe: enteredByMe,
   })
+  const formationFilters: Filter[] = getFormationFilters({
+    improper,
+    becket,
+    proper,
+    otherFormation,
+  })
   const ezFilter: Filter = [
     "and",
     verifiedFilter,
     publishFilter,
-    ...[...choreographerFilters, ...hookFilters], // ts being grumpy!
+    ...[...choreographerFilters, ...hookFilters, ...formationFilters], // ts being grumpy!
   ]
   const grandFilter: Filter = ["if", ezFilter, ["figure", "*"]]
 
@@ -123,6 +137,33 @@ export const AdvancedSearch = (): JSX.Element => {
         disabledReason={signedIn ? null : "must be logged in"}
         name="entered by me"
         title="search among dances you have entered"
+      />
+      <br />
+      <br />
+      <h4>Formation:</h4>
+      <EzCheckboxFilter
+        checked={improper}
+        setChecked={setImproper}
+        name="improper"
+        title="search among duple improper contras"
+      />
+      <EzCheckboxFilter
+        checked={becket}
+        setChecked={setBecket}
+        name="becket"
+        title="search among Becket contras"
+      />
+      <EzCheckboxFilter
+        checked={proper}
+        setChecked={setProper}
+        name="proper"
+        title="search among duple proper contras"
+      />
+      <EzCheckboxFilter
+        checked={otherFormation}
+        setChecked={setOtherFormation}
+        name="everything else"
+        title="search among all the other formations"
       />
       <br />
       <br />

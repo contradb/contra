@@ -74,3 +74,22 @@ export const getPublishFilter = ({
     return ["or", ...filters]
   }
 }
+
+export const getFormationFilters = ({
+  improper = false,
+  becket = false,
+  proper = false,
+  otherFormation = false,
+}: {
+  improper?: boolean
+  becket?: boolean
+  proper?: boolean
+  otherFormation?: boolean
+}): Filter[] => {
+  const filters: Filter[] = []
+  improper && filters.push(["formation", "improper"])
+  becket && filters.push(["formation", "Becket *"])
+  proper && filters.push(["formation", "proper"])
+  otherFormation && filters.push(["formation", "everything else"])
+  return [filters.length == 4 ? matchEverything : ["or", ...filters]]
+}

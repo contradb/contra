@@ -439,6 +439,40 @@ describe 'Search page', js: true do
         expect(page.find("#ez-entered-by-me")).to be_disabled
       end
     end
+
+    describe "formation" do
+      it "works" do
+        becket = FactoryGirl.create(:call_me)
+        improper = FactoryGirl.create(:box_the_gnat_contra)
+        wingnut = FactoryGirl.create(:dance, start_type: "I'm a user. Guess I'll make up something for this one dance! Durdee dur dur!")
+        tag_all_dances
+        expect(becket.start_type).to eq('Becket ccw')
+        expect(improper.start_type).to eq('improper')
+        visit(s_path)
+        expect(page).to have_content(becket.title)
+        expect(page).to have_content(improper.title)
+        expect(page).to have_content(wingnut.title)
+        uncheck 'ez-improper'
+        expect(page).to_not have_content(improper.title)
+        expect(page).to have_content(becket.title)
+        expect(page).to have_content(wingnut.title)
+        uncheck 'ez-becket'
+        expect(page).to_not have_content(improper.title)
+        expect(page).to_not have_content(becket.title)
+        expect(page).to have_content(wingnut.title)
+        check 'ez-improper'
+        expect(page).to have_content(improper.title)
+        expect(page).to_not have_content(becket.title)
+        expect(page).to have_content(wingnut.title)
+        check 'ez-becket'
+        expect(page).to have_content(improper.title)
+        expect(page).to_not have_content(becket.title)
+        uncheck 'ez-everything-else'
+        expect(page).to_not have_content(wingnut.title)
+        expect(page).to have_content(improper.title)
+        expect(page).to have_content(becket.title)
+      end
+    end
   end
 
   def tag_all_dances(tag: FactoryGirl.create(:tag, :verified), user: FactoryGirl.create(:user))
