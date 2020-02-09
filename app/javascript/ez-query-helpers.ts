@@ -91,5 +91,5 @@ export const getFormationFilters = ({
   becket && filters.push(["formation", "Becket *"])
   proper && filters.push(["formation", "proper"])
   otherFormation && filters.push(["formation", "everything else"])
-  return [filters.length == 4 ? matchEverything : ["or", ...filters]]
+  return filters.length == 4 ? [] : [["or", ...filters]]
 }
