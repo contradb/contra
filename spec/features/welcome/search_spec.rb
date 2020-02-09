@@ -168,6 +168,16 @@ describe 'Search page', js: true do
         expect(page).to have_css('tr', text: /The Rendevouz.*\n?circle left 4 places\ncircle left 3 places/)
         expect(page).to have_css('tr', text: /Call Me.*\n?circle left 3 places/)
       end
+
+      it 'matches print in dialect' do
+        expect_any_instance_of(Api::V1::DancesController).to receive(:filter).and_return(['figure', 'do si do'])
+        allow_any_instance_of(Api::V1::DancesController).to receive(:dialect).and_return(JSLibFigure.test_dialect)
+        dances
+        tag_all_dances
+        visit(s_path)
+        click_button 'Figures'
+        expect(page).to have_css('tr', text: /The Rendevouz.*\n?ravens do si do 1½/)
+      end
     end
 
     it "hook column is in dialect" do
