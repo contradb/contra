@@ -274,6 +274,8 @@ RSpec.describe DancesHelper, type: :helper do
    ['larks arch ravens dive', 'arch & dive','gentlespoons',4],
    ['____ arch others dive', 'arch & dive',nil,4],
    ['<u>ravens</u> <u>almond</u> <u>darcy</u> <u>first lark</u>', 'custom','ladles allemande gyre first gentlespoon', 8],
+   ['ones contra corners <u>ravens</u>', 'contra corners', 'ones', 'ladles', 16],
+   ['ones turn alone <u>ravens</u>', 'turn alone', 'ones', 'ladles', 4],
   ].each do |arr|
     render, move, *pvalues = arr
     it "renders #{move} as '#{render}' with dialect" do

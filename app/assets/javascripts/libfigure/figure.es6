@@ -1882,7 +1882,7 @@ defineFigureAlias("meltdown swing", "swing", [
 
 function turnAloneWords(move, pvs, dialect) {
   var [who, custom, beats] = pvs
-  var [swho, scustom, sbeats] = parameter_strings(move, pvs, dialect)
+  var [swho, scustom, sbeats] = parameter_words(move, pvs, dialect)
   var smove = moveSubstitution(move, dialect)
   return words("everyone" !== who && swho, smove, scustom)
 }
