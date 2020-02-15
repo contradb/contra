@@ -37,10 +37,19 @@
           <% end %>
         </div>
         <div class="panel-heading panel-heading-mid-panel-hack">
-          <h3 class='panel-title'>Tags</h3>
+          <h3 class='panel-title'>Feedback</h3>
         </div>
         <div class='panel-body'>
           <%= render partial: "dut", collection: @tags, as: :_tag, locals: {dance: @dance, user: current_user} %>
+          <% if @dance.publish_all? && @dance.user_id != current_user&.id %>
+            <hr class='panel-hr-contra'>
+            please report problems to
+            <%= mail_to(Rails.application.secrets.admin_data_maven_mail,
+                        Rails.application.secrets.admin_data_maven_mail,
+                        encode: 'hex',
+                        subject: "contradb dance problem",
+                        body: "Dear #{Rails.application.secrets.admin_data_maven_name}, I see a problem with '#{@dance.title}' (#{dance_url(@dance)}) transcribed by #{@dance.user.name}. The problem is ") %>.
+          <% end %>
         </div>
         <div class="panel-heading panel-heading-mid-panel-hack">
           <h3 class='panel-title'>Validation</h3>

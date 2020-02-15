@@ -8,12 +8,13 @@ RSpec.describe "dances/show", type: :view do
                       :title => "Clever Pun",
                       :start_type => "Complicated Formation",
                       :choreographer => FactoryGirl.build_stubbed(:choreographer, name: "Becky Hill"),
-                      :user => FactoryGirl.build_stubbed(:user),
+                      :user => FactoryGirl.build_stubbed(:user, id: 123),
                       :preamble => "Some Premable Text www.slashdot.org mumble mumble _italic_ mumble preamble gyre ladles preamble",
                       :figures_json => '[{"parameter_values":["partners","balance",16],"move":"swing", "note":"the quick brown fox <script>alert(\'no dialog pops up\');</script>"}, {"parameter_values":["ladles",true,540,8],"move":"allemande","note":"figure note gyre gentlespoons allemande figure note"}]',
 
                       :notes => "My Note Text www.yahoo.com blah blah **bold** blah notes gyre ladles notes",
-                      :hook => 'hook allemande do si do hook'
+                      :hook => 'hook allemande do si do hook',
+                      id: 345
                      )}
   before(:each) do
     assign(:dance, dance)

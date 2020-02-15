@@ -34,6 +34,50 @@ describe 'Showing dances' do
     end
   end
 
+  describe "displays data integrity curator email" do
+    let (:email) { Rails.application.secrets.admin_data_maven_mail }
+    let (:link_href) { /^mailto:#{hex_encode(email)}/ }
+    let (:email_sentence) { "please report problems to #{Rails.application.secrets.admin_data_maven_mail}." }
+
+    it 'on the page' do
+      dance = FactoryGirl.create(:dance)
+      visit dance_path(dance)
+      expect(page).to have_link(email, href: link_href)
+      # does not test that the body of the message looks like this:
+      # Dear adminisaur, I see a problem with 'New Dance' (http://localhost:3000/dances/1568) transcribed by Allison Jonjak. The problem is 
+      expect(page).to have_text(email_sentence)
+    end
+
+    it 'except when logged in as the owner' do
+      with_login do |user|
+        dance = FactoryGirl.create(:dance, user: user)
+        visit dance_path(dance)
+        expect(page).to_not have_link(email, href: link_href)
+        expect(page).to_not have_text(email_sentence)
+      end
+    end
+
+    it 'except when not shared' do
+      dance = FactoryGirl.create(:dance, publish: :sketchbook)
+      visit dance_path(dance)
+      expect(page).to_not have_link(email, href: link_href)
+      expect(page).to_not have_text(email_sentence)
+    end
+
+
+    def hex_encode(s)
+      # This tries to emulate the 'hex' encoding on rails mailto helper.
+      # It probably won't work for some strings.
+      s.each_char.map { |c|
+        if c =~ /[a-z]/i
+          '%' + c.ord.to_s(16)
+        else
+          c
+        end
+      }.join
+    end
+  end
+
   it 'shows appropriate A1B2 and beat labels' do
     dance = FactoryGirl.create(:box_the_gnat_contra)
     visit dance_path dance.id

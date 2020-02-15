@@ -214,13 +214,19 @@ $a1b2beats-selected-border-color: #888;
   text-decoration: line-through;
 }
 
-.tag-constellation .tag-icon-td {
-  vertical-align: top;
-  padding-right: 1em;
-}
+.tag-constellation {
+  &~.tag-constellation {
+    margin-top: 1em;
+  }
 
-.tag-constellation .tag-main-td {
-  width: 100%;
+  .tag-icon-td {
+    vertical-align: top;
+    padding-right: 1em;
+  }
+
+  .tag-main-td {
+    width: 100%;
+  }
 }
 
 .tag-toggle-container {
@@ -229,4 +235,10 @@ $a1b2beats-selected-border-color: #888;
 
 .tag-documentation-container {
   margin-top: 0.5em;
+}
+
+.panel-hr-contra {
+  border-top: thin solid;
+  margin-top: 0.85em;
+  margin-bottom: 0.85em;
 }
