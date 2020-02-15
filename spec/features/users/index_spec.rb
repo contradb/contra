@@ -24,7 +24,7 @@ describe 'Creating user from welcome page' do
       user2 = FactoryGirl.create(:user, news_email: true)
       _private_user = FactoryGirl.create(:user, news_email: false)
       with_login(admin: true) do |admin|
-        bccs = [user, user2, admin].map(&:email).join('%2C').gsub('@','%40')
+        bccs = User.where(news_email: true).map(&:email).join('%2C').gsub('@','%40')
         visit users_path
         expect(page).to have_link('write a newsletter...', href: "mailto:#{admin.email}?bcc=#{bccs}")
       end
