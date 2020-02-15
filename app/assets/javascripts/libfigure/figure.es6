@@ -1359,7 +1359,7 @@ defineFigure(
 function pullByDancersGoodBeats(figure) {
   var [who, bal, spin, beats] = figure.parameter_values
   var b = beats - (bal ? 4 : 0)
-  return 0 <= b && b <= 4
+  return 0 < b && b <= 4
 }
 
 function pullByDancersWords(move, pvs, dialect) {
@@ -1404,7 +1404,8 @@ defineFigure(
 
 function pullByDirectionGoodBeats(figure) {
   var [bal, dir, spin, beats] = figure.parameter_values
-  return beats === (bal ? 8 : 2)
+  var b = beats - (bal ? 4 : 0)
+  return 0 < b && b <= 4
 }
 
 function pullByDirectionWords(move, pvs, dialect) {
