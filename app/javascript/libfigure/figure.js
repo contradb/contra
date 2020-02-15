@@ -1410,7 +1410,8 @@ defineFigure(
 
 function pullByDirectionGoodBeats(figure) {
   var [bal, dir, spin, beats] = figure.parameter_values
-  return beats === (bal ? 8 : 2)
+  var b = beats - (bal ? 4 : 0)
+  return 0 < b && b <= 4
 }
 
 function pullByDirectionWords(move, pvs, dialect) {
