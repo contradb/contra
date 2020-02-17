@@ -184,3 +184,42 @@ select.chooser-argument {
   justify-content: space-between;
   align-items: center;
 }
+
+
+// zero out the size of everything between the menubar and the content
+body.welcome-search-body {
+  .navbar {
+    margin-bottom: 0px;
+  }
+
+  #notice, #alert {
+    padding: 0px;
+    margin-bottom: 0px;
+  }
+}
+
+.search-tabs {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  background-color: #F5F5F5;
+
+  a {
+    padding: 10px 0px;
+    border: thin solid #DDD;
+    flex-grow: 1;
+    display: block;
+    text-align: center;
+    border-top-left-radius: 0.7em;
+    border-top-right-radius: 0.7em;
+    color: black;
+    font-weight: bold;
+
+    &.selected {
+      background-color: $contra-bg;
+      border-bottom: none;
+    }
+
+    // I can't make &:hover work! :(
+  }
+}

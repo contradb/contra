@@ -10,7 +10,7 @@
   <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<%= content_tag(:body, class: "rails-env-#{Rails.env}") do %>
+<%= content_tag(:body, class: "rails-env-#{Rails.env} #{controller_name}-#{action_name}-body") do %>
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
