@@ -199,6 +199,9 @@ body.welcome-search-body {
 }
 
 .search-tabs {
+  position: sticky;
+  top: 0px;
+  z-index: 1;                   // fix undesired overlapping behavior with react-table's sorting indicators
   display: flex;
   width: 100%;
   justify-content: space-between;
