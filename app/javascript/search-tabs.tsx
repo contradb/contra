@@ -15,13 +15,13 @@ export const SearchTabs = ({
     <>
       <div className="search-tabs">
         {tabs.map((tab, index) => (
-          <a
+          <button
             onClick={() => setSelectedIndex(index)}
             className={index === selectedIndex ? "selected" : ""}
             key={index}
           >
             {tab.name}
-          </a>
+          </button>
         ))}
       </div>
       {tabs.map((tab, index) => {

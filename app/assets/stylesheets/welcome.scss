@@ -205,11 +205,19 @@ body.welcome-search-body {
   display: flex;
   width: 100%;
   justify-content: space-between;
-  background-color: #F5F5F5;
+  background-color: $contra-grey;
 
-  a {
+  button {
+
+    // unstyle button begin
+    font-family: inherit;
+    font-size: 100%;
+    line-height: 1.15;
+    margin: 0;
+    // unstyle button end
+
     padding: 10px 0px;
-    border: thin solid #DDD;
+    border: thin solid #BBB;
     flex-grow: 1;
     display: block;
     text-align: center;
@@ -217,12 +225,13 @@ body.welcome-search-body {
     border-top-right-radius: 0.7em;
     color: black;
     font-weight: bold;
-
+    &:hover {
+      background-color: white;
+      text-decoration: underline;
+    }
     &.selected {
       background-color: $contra-bg;
       border-bottom: none;
     }
-
-    // I can't make &:hover work! :(
   }
 }

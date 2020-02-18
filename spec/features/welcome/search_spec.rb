@@ -507,9 +507,9 @@ describe 'Search page', js: true do
   end
 
   def with_filters_excursion(&block)
-    find("a", text: 'filters').click
+    click_on 'filters'
     block.call
-    find("a", text: 'results').click
+    click_on 'results'
     expect(page).to have_css('.dances-table-react') # wait for table to pop in before, say, testing for the absence of an element
   end
 
