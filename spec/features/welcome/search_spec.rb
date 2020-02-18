@@ -500,6 +500,46 @@ describe 'Search page', js: true do
     end
   end
 
+  describe 'tabs' do
+    it 'work' do
+      visit(s_path)
+      expect(page).to have_css('.search-tabs button.selected', text: 'results')
+      expect(page).to have_css('.search-tabs button.selected', count: 1)
+      expect(page).to have_css('.dances-table-react')           # results page
+      expect(page).to_not have_css('h4', text: 'Choreographer') # filter page
+      expect(page).to_not have_content('Coming Soon!')          # query page
+      expect(page).to_not have_content('Coming Eventually!')    # program page
+      click_on 'filters'
+      expect(page).to have_css('.search-tabs button.selected', text: 'filters')
+      expect(page).to have_css('.search-tabs button.selected', count: 1)
+      expect(page).to_not have_css('.dances-table-react')       # results page
+      expect(page).to have_css('h4', text: 'Choreographer')     # filter page
+      expect(page).to_not have_content('Coming Soon!')          # query page
+      expect(page).to_not have_content('Coming Eventually!')    # program page
+      click_on 'query'
+      expect(page).to have_css('.search-tabs button.selected', text: 'query')
+      expect(page).to have_css('.search-tabs button.selected', count: 1)
+      expect(page).to_not have_css('.dances-table-react')       # results page
+      expect(page).to_not have_css('h4', text: 'Choreographer') # filter page
+      expect(page).to have_content('Coming Soon!')              # query page
+      expect(page).to_not have_content('Coming Eventually!')    # program page
+      click_on 'results'
+      expect(page).to have_css('.search-tabs button.selected', text: 'results')
+      expect(page).to have_css('.search-tabs button.selected', count: 1)
+      expect(page).to have_css('.dances-table-react')           # results page
+      expect(page).to_not have_css('h4', text: 'Choreographer') # filter page
+      expect(page).to_not have_content('Coming Soon!')          # query page
+      expect(page).to_not have_content('Coming Eventually!')    # program page
+      click_on 'program'
+      expect(page).to have_css('.search-tabs button.selected', text: 'program')
+      expect(page).to have_css('.search-tabs button.selected', count: 1)
+      expect(page).to_not have_css('.dances-table-react')       # results page
+      expect(page).to_not have_css('h4', text: 'Choreographer') # filter page
+      expect(page).to_not have_content('Coming Soon!')          # query page
+      expect(page).to have_content('Coming Eventually!')        # program page
+    end
+  end
+
   def tag_all_dances(tag: FactoryGirl.create(:tag, :verified), user: FactoryGirl.create(:user))
     Dance.all.each do |dance|
       FactoryGirl.create(:dut, dance: dance, tag: tag, user: user)
