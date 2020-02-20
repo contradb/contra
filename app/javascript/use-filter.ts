@@ -19,46 +19,19 @@ export default function useFilter(): { filter: Filter; dictionary: object } {
     d[setterName(name)] = setter
   }
   rememberState("choreographer", useState(""))
-  // const [choreographer, setChoreographer] = useState("")
-
   rememberState("hook", useState(""))
-  // const [hook, setHook] = useState("")
-
   rememberState("verifiedChecked", useState(true))
-  // const [verifiedChecked, setVerifiedChecked] = useState(true)
-
   rememberState("notVerifiedChecked", useState(false))
-  // const [notVerifiedChecked, setNotVerifiedChecked] = useState(false)
-
   rememberState("verifiedCheckedByMe", useState(false))
-  // const [verifiedCheckedByMe, setVerifiedCheckedByMe] = useState(false)
-
   rememberState("notVerifiedCheckedByMe", useState(false))
-  // const [notVerifiedCheckedByMe, setNotVerifiedCheckedByMe] = useState(false)
-
   rememberState("publishAll", useState(true))
-  // const [publishAll, setPublishAll] = useState(true)
-
   rememberState("publishSketchbook", useState(false))
-  // const [publishSketchbook, setPublishSketchbook] = useState(false)
-
   rememberState("publishOff", useState(false))
-  // const [publishOff, setPublishOff] = useState(false)
-
   rememberState("enteredByMe", useState(false))
-  // const [enteredByMe, setEnteredByMe] = useState(false)
-
   rememberState("improper", useState(true))
-  // const [improper, setImproper] = useState(true)
-
   rememberState("becket", useState(true))
-  // const [becket, setBecket] = useState(true)
-
   rememberState("proper", useState(true))
-  // const [proper, setProper] = useState(true)
-
   rememberState("otherFormation", useState(true))
-  // const [otherFormation, setOtherFormation] = useState(true)
 
   const verifiedFilter: Filter = useMemo(
     () =>
