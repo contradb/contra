@@ -23,12 +23,12 @@ export const AdvancedSearch = (): JSX.Element => {
     numberMatching: 0,
   })
 
-  // const [loading, setLoading] = React.useState(false)
+  const [loading, setLoading] = React.useState(false)
   const [pageCount, setPageCount] = React.useState(0)
 
   const fetchDataFn: FetchDataFn = useCallback(
     ({ pageSize, pageIndex, sortBy, filter }) => {
-      // setLoading(true)
+      setLoading(true)
       async function fetchData1(): Promise<void> {
         const offset = pageIndex * pageSize
         const sort = sortByParam(sortBy)
@@ -44,7 +44,7 @@ export const AdvancedSearch = (): JSX.Element => {
         const json: SearchDancesJson = await response.json()
         setSearchDancesJson(json)
         setPageCount(Math.ceil(json.numberMatching / pageSize))
-        // setLoading(false)
+        setLoading(false)
       }
       fetchData1()
       // maybe return in-use-ness to prevent a memory leak here?
@@ -174,23 +174,19 @@ export const AdvancedSearch = (): JSX.Element => {
           {
             name: "results",
             body: (
-              <DanceTable
-                filter={filter}
-                fetchDataFn={fetchDataFn}
-                searchDancesJson={searchDancesJson}
-                pageCount={pageCount}
-              />
+              <>
+                {loading && (
+                  <div className="floating-loading-indicator">loading...</div>
+                )}
+
+                <DanceTable
+                  filter={filter}
+                  fetchDataFn={fetchDataFn}
+                  searchDancesJson={searchDancesJson}
+                  pageCount={pageCount}
+                />
+              </>
             ),
-            // React.memo(
-            //   ({ filter, fetchDataFn, searchDancesJson, pageCount }) => (
-            //     <DanceTable
-            //       filter={filter}
-            //       fetchDataFn={fetchDataFn}
-            //       searchDancesJson={searchDancesJson}
-            //       pageCount={pageCount}
-            //     />
-            //   )
-            // )
           },
           { name: "program", body: <div>Coming Eventually!</div> },
         ]}
