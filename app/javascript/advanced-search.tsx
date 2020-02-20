@@ -10,65 +10,19 @@ import {
 } from "./dance-table"
 import EzCheckboxFilter from "./ez-checkbox-filter"
 import Filter from "./filter"
+import useFilter from "use-filter"
 import SearchTabs from "./search-tabs"
-import {
-  getVerifiedFilter,
-  getPublishFilter,
-  getFormationFilters,
-} from "./ez-query-helpers"
 
 export const AdvancedSearch = (): JSX.Element => {
   const [signedIn] = useState(() => Cookie.get("signed_in"))
   const isAdmin = signedIn === "admin"
-  const [choreographer, setChoreographer] = useState("")
-  const [hook, setHook] = useState("")
-  const [verifiedChecked, setVerifiedChecked] = useState(true)
-  const [notVerifiedChecked, setNotVerifiedChecked] = useState(false)
-  const [verifiedCheckedByMe, setVerifiedCheckedByMe] = useState(false)
-  const [notVerifiedCheckedByMe, setNotVerifiedCheckedByMe] = useState(false)
-  const [publishAll, setPublishAll] = useState(true)
-  const [publishSketchbook, setPublishSketchbook] = useState(false)
-  const [publishOff, setPublishOff] = useState(false)
-  const [enteredByMe, setEnteredByMe] = useState(false)
-  const [improper, setImproper] = useState(true)
-  const [becket, setBecket] = useState(true)
-  const [proper, setProper] = useState(true)
-  const [otherFormation, setOtherFormation] = useState(true)
-  const verifiedFilter: Filter = getVerifiedFilter({
-    v: verifiedChecked,
-    nv: notVerifiedChecked,
-    vbm: verifiedCheckedByMe,
-    nvbm: notVerifiedCheckedByMe,
-  })
-  const choreographerFilters: Filter[] = choreographer
-    ? [["choreographer", choreographer]]
-    : []
-  const hookFilters: Filter[] = hook ? [["hook", hook]] : []
-  const publishFilter: Filter = getPublishFilter({
-    all: publishAll,
-    sketchbook: publishSketchbook,
-    off: publishOff,
-    byMe: enteredByMe,
-  })
-  const formationFilters: Filter[] = getFormationFilters({
-    improper,
-    becket,
-    proper,
-    otherFormation,
-  })
-  const ezFilter: Filter = [
-    "and",
-    verifiedFilter,
-    publishFilter,
-    ...[...choreographerFilters, ...hookFilters, ...formationFilters], // ts being grumpy!
-  ]
-  const grandFilter: Filter = ["if", ezFilter, ["figure", "*"]]
 
   const [searchDancesJson, setSearchDancesJson] = useState({
     dances: [] as SearchDancesDanceJson[],
     numberSearched: 0,
     numberMatching: 0,
   })
+
   // const [loading, setLoading] = React.useState(false)
   const [pageCount, setPageCount] = React.useState(0)
 
@@ -97,7 +51,8 @@ export const AdvancedSearch = (): JSX.Element => {
     },
     []
   )
-
+  const { filter, dictionary } = useFilter()
+  const d: any = dictionary
   return (
     <div>
       <SearchTabs
@@ -112,8 +67,8 @@ export const AdvancedSearch = (): JSX.Element => {
                   type="text"
                   className="ez-choreographer-filter form-control"
                   style={{ maxWidth: "15em" }}
-                  value={choreographer}
-                  onChange={e => setChoreographer(e.target.value)}
+                  value={d.choreographer}
+                  onChange={e => d.setChoreographer(e.target.value)}
                   title="the person who wrote the dance - optional"
                 />
                 <br />
@@ -122,35 +77,35 @@ export const AdvancedSearch = (): JSX.Element => {
                   type="text"
                   className="ez-hook-filter form-control"
                   style={{ maxWidth: "15em" }}
-                  value={hook}
-                  onChange={e => setHook(e.target.value)}
+                  value={d.hook}
+                  onChange={e => d.setHook(e.target.value)}
                   title="search for words in reason the dance is interesting - optional"
                 />
                 <br />
                 <br />
                 <h4>Verified:</h4>
                 <EzCheckboxFilter
-                  checked={verifiedChecked}
-                  setChecked={setVerifiedChecked}
+                  checked={d.verifiedChecked}
+                  setChecked={d.setVerifiedChecked}
                   name="verified"
                   title="search among dances that have been called"
                 />
                 <EzCheckboxFilter
-                  checked={notVerifiedChecked}
-                  setChecked={setNotVerifiedChecked}
+                  checked={d.notVerifiedChecked}
+                  setChecked={d.setNotVerifiedChecked}
                   name="not verified"
                   title="search among dances that have not been called "
                 />
                 <EzCheckboxFilter
-                  checked={verifiedCheckedByMe}
-                  setChecked={setVerifiedCheckedByMe}
+                  checked={d.verifiedCheckedByMe}
+                  setChecked={d.setVerifiedCheckedByMe}
                   disabledReason={signedIn ? null : "must be logged in"}
                   name="verified by me"
                   title="search among dances that you have called"
                 />
                 <EzCheckboxFilter
-                  checked={notVerifiedCheckedByMe}
-                  setChecked={setNotVerifiedCheckedByMe}
+                  checked={d.notVerifiedCheckedByMe}
+                  setChecked={d.setNotVerifiedCheckedByMe}
                   disabledReason={signedIn ? null : "must be logged in"}
                   name="not verified by me"
                   title="search among dances you have not called"
@@ -159,28 +114,28 @@ export const AdvancedSearch = (): JSX.Element => {
                 <br />
                 <h4>Shared:</h4>
                 <EzCheckboxFilter
-                  checked={publishAll}
-                  setChecked={setPublishAll}
+                  checked={d.publishAll}
+                  setChecked={d.setPublishAll}
                   name="shared"
                   title="search among dances shared to all"
                 />
                 <EzCheckboxFilter
-                  checked={publishSketchbook}
-                  setChecked={setPublishSketchbook}
+                  checked={d.publishSketchbook}
+                  setChecked={d.setPublishSketchbook}
                   name="sketchbooks"
                   title="search among dances shared to sketchbooks - the person entering them does not think they should be called"
                 />
                 {isAdmin && (
                   <EzCheckboxFilter
-                    checked={publishOff}
-                    setChecked={setPublishOff}
+                    checked={d.publishOff}
+                    setChecked={d.setPublishOff}
                     name="private"
                     title="search among dances that have sharing off"
                   />
                 )}
                 <EzCheckboxFilter
-                  checked={enteredByMe}
-                  setChecked={setEnteredByMe}
+                  checked={d.enteredByMe}
+                  setChecked={d.setEnteredByMe}
                   disabledReason={signedIn ? null : "must be logged in"}
                   name="entered by me"
                   title="search among dances you have entered"
@@ -189,26 +144,26 @@ export const AdvancedSearch = (): JSX.Element => {
                 <br />
                 <h4>Formation:</h4>
                 <EzCheckboxFilter
-                  checked={improper}
-                  setChecked={setImproper}
+                  checked={d.improper}
+                  setChecked={d.setImproper}
                   name="improper"
                   title="search among duple improper contras"
                 />
                 <EzCheckboxFilter
-                  checked={becket}
-                  setChecked={setBecket}
+                  checked={d.becket}
+                  setChecked={d.setBecket}
                   name="becket"
                   title="search among Becket contras"
                 />
                 <EzCheckboxFilter
-                  checked={proper}
-                  setChecked={setProper}
+                  checked={d.proper}
+                  setChecked={d.setProper}
                   name="proper"
                   title="search among duple proper contras"
                 />
                 <EzCheckboxFilter
-                  checked={otherFormation}
-                  setChecked={setOtherFormation}
+                  checked={d.otherFormation}
+                  setChecked={d.setOtherFormation}
                   name="everything else"
                   title="search among all the other formations"
                 />
@@ -220,7 +175,7 @@ export const AdvancedSearch = (): JSX.Element => {
             name: "results",
             body: (
               <DanceTable
-                filter={grandFilter}
+                filter={filter}
                 fetchDataFn={fetchDataFn}
                 searchDancesJson={searchDancesJson}
                 pageCount={pageCount}
@@ -229,7 +184,7 @@ export const AdvancedSearch = (): JSX.Element => {
             // React.memo(
             //   ({ filter, fetchDataFn, searchDancesJson, pageCount }) => (
             //     <DanceTable
-            //       filter={grandFilter}
+            //       filter={filter}
             //       fetchDataFn={fetchDataFn}
             //       searchDancesJson={searchDancesJson}
             //       pageCount={pageCount}
