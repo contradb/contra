@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import Filter from "./filter"
 import {
   getVerifiedFilter,
@@ -60,35 +60,68 @@ export default function useFilter(): { filter: Filter; dictionary: object } {
   rememberState("otherFormation", useState(true))
   // const [otherFormation, setOtherFormation] = useState(true)
 
-  const verifiedFilter: Filter = getVerifiedFilter({
-    v: d.verifiedChecked,
-    nv: d.notVerifiedChecked,
-    vbm: d.verifiedCheckedByMe,
-    nvbm: d.notVerifiedCheckedByMe,
-  })
-  const choreographerFilters: Filter[] = d.choreographer
-    ? [["choreographer", d.choreographer]]
-    : []
-  const hookFilters: Filter[] = d.hook ? [["hook", d.hook]] : []
-  const publishFilter: Filter = getPublishFilter({
-    all: d.publishAll,
-    sketchbook: d.publishSketchbook,
-    off: d.publishOff,
-    byMe: d.enteredByMe,
-  })
-  const formationFilters: Filter[] = getFormationFilters({
-    improper: d.improper,
-    becket: d.becket,
-    proper: d.proper,
-    otherFormation: d.otherFormation,
-  })
-  const ezFilter: Filter = [
-    "and",
-    verifiedFilter,
-    publishFilter,
-    ...[...choreographerFilters, ...hookFilters, ...formationFilters], // ts being grumpy!
-  ]
-  const grandFilter: Filter = ["if", ezFilter, ["figure", "*"]]
+  const verifiedFilter: Filter = useMemo(
+    () =>
+      getVerifiedFilter({
+        v: d.verifiedChecked,
+        nv: d.notVerifiedChecked,
+        vbm: d.verifiedCheckedByMe,
+        nvbm: d.notVerifiedCheckedByMe,
+      }),
+    [
+      d.verifiedChecked,
+      d.notVerifiedChecked,
+      d.verifiedCheckedByMe,
+      d.notVerifiedCheckedByMe,
+    ]
+  )
+
+  const choreographerFilters: Filter[] = useMemo(
+    () => (d.choreographer ? [["choreographer", d.choreographer]] : []),
+    [d.choreographer]
+  )
+  const hookFilters: Filter[] = useMemo(
+    () => (d.hook ? [["hook", d.hook]] : []),
+    [d.hook]
+  )
+  const publishFilter: Filter = useMemo(
+    () =>
+      getPublishFilter({
+        all: d.publishAll,
+        sketchbook: d.publishSketchbook,
+        off: d.publishOff,
+        byMe: d.enteredByMe,
+      }),
+    [d.publishAll, d.publishSketchbook, d.publishOff, d.enteredByMe]
+  )
+  const formationFilters: Filter[] = useMemo(
+    () =>
+      getFormationFilters({
+        improper: d.improper,
+        becket: d.becket,
+        proper: d.proper,
+        otherFormation: d.otherFormation,
+      }),
+    [d.improper, d.becket, d.proper, d.otherFormation]
+  )
+  const ezFilter: Filter = useMemo(
+    () => [
+      "and",
+      verifiedFilter,
+      publishFilter,
+      ...[...choreographerFilters, ...hookFilters, ...formationFilters], // ts being grumpy!
+    ],
+    [
+      verifiedFilter,
+      publishFilter,
+      choreographerFilters,
+      hookFilters,
+      formationFilters,
+    ]
+  )
+  const grandFilter: Filter = useMemo(() => ["if", ezFilter, ["figure", "*"]], [
+    ezFilter,
+  ])
 
   return { filter: grandFilter, dictionary: d }
 }
