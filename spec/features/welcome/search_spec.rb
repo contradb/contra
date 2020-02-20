@@ -502,8 +502,9 @@ describe 'Search page', js: true do
 
   describe 'tabs' do
     it 'work' do
+      results_tab_label = /0 dances/i
       visit(s_path)
-      expect(page).to have_css('.search-tabs button.selected', text: 'results')
+      expect(page).to have_css('.search-tabs button.selected', text: results_tab_label)
       expect(page).to have_css('.search-tabs button.selected', count: 1)
       expect(page).to have_css('.dances-table-react')           # results page
       expect(page).to_not have_css('h4', text: 'Choreographer') # filter page
@@ -523,8 +524,8 @@ describe 'Search page', js: true do
       expect(page).to_not have_css('h4', text: 'Choreographer') # filter page
       expect(page).to have_content('Coming Soon!')              # query page
       expect(page).to_not have_content('Coming Eventually!')    # program page
-      click_on 'results'
-      expect(page).to have_css('.search-tabs button.selected', text: 'results')
+      click_on_results_tab
+      expect(page).to have_css('.search-tabs button.selected', text: results_tab_label)
       expect(page).to have_css('.search-tabs button.selected', count: 1)
       expect(page).to have_css('.dances-table-react')           # results page
       expect(page).to_not have_css('h4', text: 'Choreographer') # filter page
@@ -538,6 +539,13 @@ describe 'Search page', js: true do
       expect(page).to_not have_content('Coming Soon!')          # query page
       expect(page).to have_content('Coming Eventually!')        # program page
     end
+
+    it 'result tab displays number of matches' do
+      %i(dance call_me box_the_gnat_contra).each {|d| FactoryGirl.create(d)}
+      tag_all_dances
+      visit(s_path)
+      expect(page).to have_css('.search-tabs button', text: /3 dances/i)
+    end
   end
 
   def tag_all_dances(tag: FactoryGirl.create(:tag, :verified), user: FactoryGirl.create(:user))
@@ -549,8 +557,12 @@ describe 'Search page', js: true do
   def with_filters_excursion(&block)
     click_on 'filters'
     block.call
-    click_on 'results'
+    click_on_results_tab
     expect(page).to have_css('.dances-table-react') # wait for table to pop in before, say, testing for the absence of an element
+  end
+
+  def click_on_results_tab
+    find('.search-tabs button', text: /[0-9]+ dances?/i).click
   end
 
   def check_filter(*check_args)
