@@ -6,10 +6,10 @@ export default function useDebounce<T>(
   value: T,
   {
     delay = 500,
-    bouncyFirstRun = false,
+    bouncyFirstRun = true,
   }: { delay?: number; bouncyFirstRun?: boolean } = {
-    delay: 800,
-    bouncyFirstRun: false,
+    delay: 500,
+    bouncyFirstRun: true,
   }
 ): T {
   const [debouncedValue, setDebouncedValue] = useState(value)

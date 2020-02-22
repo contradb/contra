@@ -50,9 +50,7 @@ export default function useFilter(): { filter: Filter; dictionary: object } {
     ]
   )
 
-  const debouncedChoreographer = useDebounce(d.choreographer, {
-    bouncyFirstRun: true,
-  })
+  const debouncedChoreographer = useDebounce(d.choreographer)
 
   const choreographerFilters: Filter[] = useMemo(
     () =>
@@ -60,9 +58,7 @@ export default function useFilter(): { filter: Filter; dictionary: object } {
     [debouncedChoreographer]
   )
 
-  const debouncedHook = useDebounce(d.hook, {
-    bouncyFirstRun: true,
-  })
+  const debouncedHook = useDebounce(d.hook)
 
   const hookFilters: Filter[] = useMemo(
     () => (debouncedHook ? [["hook", debouncedHook]] : []),
