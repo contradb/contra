@@ -5,6 +5,7 @@ import {
   getPublishFilter,
   getFormationFilters,
 } from "./ez-query-helpers"
+import useDebounce from "./use-debounce"
 
 const setterName = (s: string): string => {
   const first = s.charAt(0).toUpperCase()
@@ -49,14 +50,25 @@ export default function useFilter(): { filter: Filter; dictionary: object } {
     ]
   )
 
+  const debouncedChoreographer = useDebounce(d.choreographer, {
+    bouncyFirstRun: true,
+  })
+
   const choreographerFilters: Filter[] = useMemo(
-    () => (d.choreographer ? [["choreographer", d.choreographer]] : []),
-    [d.choreographer]
+    () =>
+      debouncedChoreographer ? [["choreographer", debouncedChoreographer]] : [],
+    [debouncedChoreographer]
   )
+
+  const debouncedHook = useDebounce(d.hook, {
+    bouncyFirstRun: true,
+  })
+
   const hookFilters: Filter[] = useMemo(
-    () => (d.hook ? [["hook", d.hook]] : []),
-    [d.hook]
+    () => (debouncedHook ? [["hook", debouncedHook]] : []),
+    [debouncedHook]
   )
+
   const publishFilter: Filter = useMemo(
     () =>
       getPublishFilter({

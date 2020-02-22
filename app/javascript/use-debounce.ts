@@ -5,9 +5,9 @@ import React, { useState, useEffect, useRef } from "react"
 export default function useDebounce<T>(
   value: T,
   {
-    delay = 800,
+    delay = 500,
     bouncyFirstRun = false,
-  }: { delay: number; bouncyFirstRun: boolean } = {
+  }: { delay?: number; bouncyFirstRun?: boolean } = {
     delay: 800,
     bouncyFirstRun: false,
   }

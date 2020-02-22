@@ -3,7 +3,6 @@ import { useState, useEffect } from "react"
 import { useTable, usePagination, useSortBy } from "react-table"
 import { NaturalNumberEditor } from "./natural-number-editor"
 import Filter from "./filter"
-import useDebounce from "./use-debounce"
 
 // TODO: use rails route helpers
 const choreographerPath = (cid: number): string => {
@@ -226,16 +225,14 @@ function Table({
       if (!columnDefinitions[i].show) columns[i].toggleHidden(true)
   }, [columns])
 
-  const debouncedFilter: Filter = useDebounce(filter, {
-    delay: 800,
-    bouncyFirstRun: true,
-  })
-
   // again, need to worry about the return value of this first arg to useEffect
-  useEffect(
-    () => fetchDataFn({ pageIndex, pageSize, sortBy, filter: debouncedFilter }),
-    [fetchDataFn, pageIndex, pageSize, sortBy, debouncedFilter]
-  )
+  useEffect(() => fetchDataFn({ pageIndex, pageSize, sortBy, filter }), [
+    fetchDataFn,
+    pageIndex,
+    pageSize,
+    sortBy,
+    filter,
+  ])
 
   return (
     <>
