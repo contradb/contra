@@ -233,5 +233,15 @@ body.welcome-search-body {
       background-color: $contra-bg;
       border-bottom: none;
     }
+
+
+    position: relative;
+    .photobomb {
+      position: absolute;
+      left: 50%;
+      margin-left: -0.5em;
+      top: 50%;
+      margin-top: -0.5em;
+    }
   }
 }

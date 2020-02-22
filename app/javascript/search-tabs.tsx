@@ -1,7 +1,7 @@
 import * as React from "react"
 import { useState } from "react"
 
-export type SearchTab = { name: string; body: JSX.Element }
+export type SearchTab = { name: string; loading?: boolean; body: JSX.Element }
 
 export const SearchTabs = ({
   tabs,
@@ -20,7 +20,14 @@ export const SearchTabs = ({
             className={index === selectedIndex ? "selected" : ""}
             key={index}
           >
-            {tab.name}
+            <span className={tab.loading ? "very-understated" : ""}>
+              {tab.name}
+            </span>
+            {tab.loading ? (
+              <span className="glyphicon glyphicon-repeat glyphicon-spin photobomb"></span>
+            ) : (
+              ""
+            )}
           </button>
         ))}
       </div>

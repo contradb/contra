@@ -170,11 +170,12 @@ export const AdvancedSearch = (): JSX.Element => {
               </div>
             ),
           },
-          { name: "query", body: <div>Coming Soon!</div> },
+          { name: "figures", body: <div>Coming Soon!</div> },
           {
             name: `${searchDancesJson.numberMatching} dance${
               1 === searchDancesJson.numberMatching ? "" : "s"
             }`,
+            loading: loading,
             body: (
               <>
                 {loading && (
