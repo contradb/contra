@@ -18,10 +18,13 @@ Capybara.register_driver :chrome do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome)
 end
 
+STANDARD_SCREEN_WIDTH = 2048
+STANDARD_SCREEN_HEIGHT = 1400
+
 Capybara.register_driver :headless_chrome do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
     chromeOptions: {
-      args: %w[window-size=2048,1400 headless],
+      args: ["window-size=#{STANDARD_SCREEN_WIDTH},#{STANDARD_SCREEN_HEIGHT}", "headless"],
       w3c: false,
     }
   )
@@ -32,6 +35,22 @@ end
 
 Capybara.javascript_driver = :headless_chrome
 # Capybara.javascript_driver = :chrome
+
+# this only kinda works in headed mode, because of minimum sized chrome restrictions.
+def with_phone_screen(&block)
+  handle = Capybara.page.driver.current_window_handle
+  Capybara.page.driver.resize_window_to(handle, 375, 667)
+  Thread.current[:screen_mode] = :phone
+  block.call
+ensure
+  Capybara.page.driver.resize_window_to(handle, STANDARD_SCREEN_WIDTH, STANDARD_SCREEN_HEIGHT)
+  Thread.current[:screen_mode] = nil
+end
+
+def phone_screen?
+  :phone == Thread.current[:screen_mode]
+end
+
 
 Capybara.server = :webrick
 

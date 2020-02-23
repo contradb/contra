@@ -49,6 +49,8 @@ export const AdvancedSearch = (): JSX.Element => {
     []
   )
   const { filter, dictionary } = useFilter()
+  const windowSize = useWindowSize()
+
   const dancesTabName: string = `${searchDancesJson.numberMatching} dance${
     1 === searchDancesJson.numberMatching ? "" : "s"
   }`
