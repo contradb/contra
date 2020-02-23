@@ -491,7 +491,8 @@ describe 'Search page', js: true do
         expect(page).to have_content(wingnut.title)
         check_filter 'ez-becket'
         expect(page).to have_content(improper.title)
-        expect(page).to_not have_content(becket.title)
+        expect(page).to have_content(becket.title)
+        expect(page).to have_content(wingnut.title)
         uncheck_filter 'ez-everything-else'
         expect(page).to_not have_content(wingnut.title)
         expect(page).to have_content(improper.title)
