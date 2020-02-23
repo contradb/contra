@@ -52,30 +52,27 @@ export const AdvancedSearch = (): JSX.Element => {
   const dancesTabName: string = `${searchDancesJson.numberMatching} dance${
     1 === searchDancesJson.numberMatching ? "" : "s"
   }`
+  const filtersTab = <FiltersTab dictionary={dictionary} />
+  const figuresTab = <FiguresTab />
+  const dancesTab = (
+    <DancesTab
+      loading={loading}
+      filter={filter}
+      fetchDataFn={fetchDataFn}
+      searchDancesJson={searchDancesJson}
+      pageCount={pageCount}
+    />
+  )
+  const programTab = <ProgramTab />
   return (
     <div>
       <SearchTabs
         initialIndex={2}
         tabs={[
-          {
-            name: "filters",
-            body: <FiltersTab dictionary={dictionary} />,
-          },
-          { name: "figures", body: <FiguresTab /> },
-          {
-            name: dancesTabName,
-            loading: loading,
-            body: (
-              <DancesTab
-                loading={loading}
-                filter={filter}
-                fetchDataFn={fetchDataFn}
-                searchDancesJson={searchDancesJson}
-                pageCount={pageCount}
-              />
-            ),
-          },
-          { name: "program", body: <ProgramTab /> },
+          { name: "filters", body: filtersTab },
+          { name: "figures", body: figuresTab },
+          { name: dancesTabName, body: dancesTab, loading: loading },
+          { name: "program", body: programTab },
         ]}
       />
     </div>
