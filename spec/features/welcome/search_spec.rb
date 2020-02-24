@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe 'Search page', js: true do
   let (:now) { DateTime.now }
+
   it "works" do
     dances = 12.times.map {|i| FactoryGirl.create(:dance, title: "Dance #{i}.", created_at: now - i.days)}
     tag_all_dances
@@ -391,16 +392,26 @@ describe 'Search page', js: true do
         end
       end
 
-      it "'verified by me' and 'not verified by me' checkboxes are disabled when not logged in" do
-        visit(s_path)
-        with_filters_excursion do
-          expect(page.find("#ez-verified-by-me")).to be_disabled
-          expect(page.find("#ez-not-verified-by-me")).to be_disabled
+      describe "when not logged in, 'verified by me' and 'not verified by me' checkboxes" do
+        it "are disabled on desktop" do
+          visit(s_path)
+          with_filters_excursion do
+            expect(page.find("#ez-verified-by-me")).to be_disabled
+            expect(page.find("#ez-not-verified-by-me")).to be_disabled
+          end
+        end
+
+        it "are hidden on phones" do
+          with_phone_screen do
+            visit(s_path)
+            with_filters_excursion do
+              expect(page).to have_css("#ez-verified")
+              expect(page).to_not have_css("#ez-verified-by-me")
+              expect(page).to_not have_css("#ez-not-verified-by-me")
+            end
+          end
         end
       end
-
-      it "'verified by me' and 'not verified by me' checkboxes are hidden when not logged in on phones"
-
       def expect_dances(verified: false,
                         not_verified: false,
                         verified_by_me: false,
@@ -459,9 +470,21 @@ describe 'Search page', js: true do
         end
       end
 
-      it "'entered by me' checkbox is disabled when not logged in" do
-        visit(s_path)
-        with_filters_excursion { expect(page.find("#ez-entered-by-me")).to be_disabled }
+      describe "when not logged in, 'entered by me' checkbox behavior" do
+        it "is disabled on desktop" do
+          visit(s_path)
+          with_filters_excursion { expect(page.find("#ez-entered-by-me")).to be_disabled }
+        end
+
+        it "is hidden on phones" do
+          with_phone_screen do
+            visit(s_path)
+            with_filters_excursion do
+              expect(page).to have_css("#ez-shared") # js wait
+              expect(page).to_not have_css("#ez-entered-by-me")
+            end
+          end
+        end
       end
     end
 
@@ -501,7 +524,9 @@ describe 'Search page', js: true do
     end
   end
 
-  describe 'tabs' do
+  describe 'tabs on mobile' do
+    before { set_phone_screen }
+    after { set_desktop_screen }
     it 'work' do
       results_tab_label = /0 dances/i
       visit(s_path)
@@ -555,11 +580,18 @@ describe 'Search page', js: true do
     end
   end
 
+  # on phone, filters aren't always visible, so to make the tests work
+  # on both phone and desktop, wrap interactions with the filters in
+  # this helper
   def with_filters_excursion(&block)
-    click_on 'filters'
-    block.call
-    click_on_results_tab
-    expect(page).to have_css('.dances-table-react') # wait for table to pop in before, say, testing for the absence of an element
+    if phone_screen?
+      click_on 'filters'
+      block.call
+      click_on_results_tab
+      expect(page).to have_css('.dances-table-react') # wait for table to pop in before, say, testing for the absence of an element
+    else
+      block.call
+    end
   end
 
   def click_on_results_tab
