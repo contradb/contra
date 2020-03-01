@@ -29,6 +29,8 @@
 ///////////////// SCSS GLOBALS REFERENCED IN OTHER FILES
 $contra-bg: #faf7e0;
 $contra-grey: #F0F0EA;
+$contra-fg: #333333; // note that a lot of color falls through to bootstrap's color, which is also 333333. That should be fixed!
+
 // should probably put the font here, eh? -dm 12-17-2017
 
 
@@ -52,6 +54,7 @@ $contra-grey: #F0F0EA;
 body {
   font-family: 'PT Sans', sans-serif;
   background-color: $contra-bg;
+  color: $contra-fg;
 }
 
 #dances-table, #dances-table-vue, .dances-table-react {

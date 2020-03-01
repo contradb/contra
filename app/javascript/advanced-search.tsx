@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react"
+import React, { useState, useCallback, useMemo } from "react"
 import {
   FetchDataFn,
   sortByParam,
@@ -7,11 +7,15 @@ import {
 } from "./dance-table"
 import Filter from "./filter"
 import useFilter from "use-filter"
+import useWindowSize from "use-window-size"
 import SearchTabs from "./search-tabs"
 import FiltersTab from "./filters-tab"
 import FiguresTab from "./figures-tab"
 import DancesTab from "./dances-tab"
 import ProgramTab from "./program-tab"
+import ToggleProgramTab from "./toggle-program-tab"
+
+const bootstrapMedium992px = 992
 
 export const AdvancedSearch = (): JSX.Element => {
   const [searchDancesJson, setSearchDancesJson] = useState({
@@ -66,8 +70,37 @@ export const AdvancedSearch = (): JSX.Element => {
     />
   )
   const programTab = <ProgramTab />
-  return (
-    <div>
+  const [filtersVisible, setFiltersVisible] = useState<boolean>(true)
+  const [programVisible, setProgramVisible] = useState<boolean>(false)
+  const onProgramToggle = useCallback(
+    () => setProgramVisible(!programVisible),
+    [programVisible, setProgramVisible]
+  )
+
+  if (windowSize.width >= bootstrapMedium992px) {
+    return (
+      <div className="advanced-search-desktop">
+        <div className="filters-desktop">{filtersTab}</div>
+        <div className="main-search-desktop">
+          <div className="main-search-desktop-mainy-main-main">
+            {figuresTab}
+            {dancesTab}
+          </div>
+          {programVisible || (
+            <ToggleProgramTab
+              onToggle={onProgramToggle}
+              open={programVisible}
+            />
+          )}
+        </div>
+        <div className={programVisible ? "" : "hidden"}>
+          <ToggleProgramTab onToggle={onProgramToggle} open={programVisible} />
+          <div className="program-desktop-content">{programTab}</div>
+        </div>
+      </div>
+    )
+  } else {
+    return (
       <SearchTabs
         initialIndex={2}
         tabs={[
@@ -77,8 +110,8 @@ export const AdvancedSearch = (): JSX.Element => {
           { name: "program", body: programTab },
         ]}
       />
-    </div>
-  )
+    )
+  }
 }
 
 export default AdvancedSearch

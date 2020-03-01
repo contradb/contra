@@ -574,6 +574,21 @@ describe 'Search page', js: true do
     end
   end
 
+  describe "side panels on desktop" do
+    it "programs toggle works" do
+      visit(s_path)
+      expect(page).to_not have_content("Coming Eventually!")
+      expect(page).to have_css('button.toggle-program .glyphicon-menu-left')
+      expect(page).to_not have_css('button.toggle-program .glyphicon-menu-right')
+      expect(page).to_not have_css('h2', text: 'program')
+      find('button.toggle-program').click
+      expect(page).to have_content("Coming Eventually!")
+      expect(page).to have_css('button.toggle-program .glyphicon-menu-right')
+      expect(page).to_not have_css('button.toggle-program .glyphicon-menu-left')
+      expect(page).to have_css('h2', text: 'program')
+    end
+  end
+
   def tag_all_dances(tag: FactoryGirl.create(:tag, :verified), user: FactoryGirl.create(:user))
     Dance.all.each do |dance|
       FactoryGirl.create(:dut, dance: dance, tag: tag, user: user)

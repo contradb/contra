@@ -245,3 +245,65 @@ body.welcome-search-body {
     }
   }
 }
+
+.advanced-search-desktop {
+  display: flex;
+
+  .filters-desktop {
+    margin-left: 15px;
+  }
+
+  .main-search-desktop {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    
+    .main-search-desktop-mainy-main-main {
+      margin-left: 15px;
+      margin-right: 15px;
+    }
+  }
+
+  .program-desktop-content {
+    margin-right: 15px;
+  }
+
+  .side-panel-toggle {
+
+    &.side-panel-toggle-closed {
+      // writing-mode: vertical-rl;
+      // transform: matrix3d(0,-1,0,0,    1, 0, 0, 0,   0, 0, 1, 0,   0, -30, 0, 1);
+      // transform-origin: bottom right;
+    }
+    
+    button {
+      // unstyle button begin
+      font-family: inherit;
+      font-size: 100%;
+      line-height: 1.15;
+      margin: 0;
+      // unstyle button end
+
+      background-color: inherit;
+      border: none;
+      h2 {
+        display: inline-block;
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 2rem;
+        line-height: 1.0;
+      }
+    }
+
+    // tab styles (possibly refactor by extracting)
+    padding: 10px 0px;
+    border: thin solid #BBB;
+    border-bottom: none;
+    text-align: center;
+    border-top-left-radius: 0.7em;
+    border-top-right-radius: 0.7em;
+    color: black;
+    background-color: $contra-bg;
+    font-weight: bold;
+  }
+}
