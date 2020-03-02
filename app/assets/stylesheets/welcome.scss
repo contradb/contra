@@ -270,12 +270,6 @@ body.welcome-search-body {
 
   .side-panel-toggle {
 
-    &.side-panel-toggle-closed {
-      // writing-mode: vertical-rl;
-      // transform: matrix3d(0,-1,0,0,    1, 0, 0, 0,   0, 0, 1, 0,   0, -30, 0, 1);
-      // transform-origin: bottom right;
-    }
-    
     button {
       // unstyle button begin
       font-family: inherit;
@@ -291,17 +285,40 @@ body.welcome-search-body {
         margin-top: 0;
         margin-bottom: 0;
         font-size: 2rem;
-        line-height: 1.0;
+        line-height: 1.1;
+        text-align: left;
       }
     }
 
     // tab styles (possibly refactor by extracting)
     padding: 10px 0px;
     border: thin solid #BBB;
-    border-bottom: none;
+
+    &.side-panel-toggle-iconized {
+      margin-top: 15px;
+    }
+
+    &.side-panel-toggle-open {
+      .glyphicon {
+        display: inline;
+      }
+
+      border-bottom: none;
+      border-top-left-radius: 0.7em;
+      border-top-right-radius: 0.7em;
+    }
+
+    &.side-panel-toggle-iconized-right {
+      border-right: none;
+      border-top-left-radius: 0.7em;
+      border-bottom-left-radius: 0.7em;
+    }
+    &.side-panel-toggle-iconized-left {
+      border-left: none;
+      border-top-right-radius: 0.7em;
+      border-bottom-right-radius: 0.7em;
+    }
     text-align: center;
-    border-top-left-radius: 0.7em;
-    border-top-right-radius: 0.7em;
     color: black;
     background-color: $contra-bg;
     font-weight: bold;

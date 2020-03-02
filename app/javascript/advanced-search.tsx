@@ -14,6 +14,8 @@ import FiguresTab from "./figures-tab"
 import DancesTab from "./dances-tab"
 import ProgramTab from "./program-tab"
 import ToggleProgramTab from "./toggle-program-tab"
+import IconizedSideTabToggle from "./iconized-side-tab-toggle"
+import OpenSideTabToggle from "./open-side-tab-toggle"
 
 const bootstrapMedium992px = 992
 
@@ -87,14 +89,11 @@ export const AdvancedSearch = (): JSX.Element => {
             {dancesTab}
           </div>
           {programVisible || (
-            <ToggleProgramTab
-              onToggle={onProgramToggle}
-              open={programVisible}
-            />
+            <IconizedSideTabToggle label="program" onToggle={onProgramToggle} />
           )}
         </div>
         <div className={programVisible ? "" : "hidden"}>
-          <ToggleProgramTab onToggle={onProgramToggle} open={programVisible} />
+          <OpenSideTabToggle label="program" onToggle={onProgramToggle} />
           <div className="program-desktop-content">{programTab}</div>
         </div>
       </div>
