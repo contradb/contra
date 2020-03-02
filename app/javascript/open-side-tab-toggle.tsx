@@ -15,9 +15,9 @@ export const OpenSideTabToggle = ({
       <div className={`side-panel-toggle side-panel-toggle-open`}>
         <button className={buttonClass} onClick={onToggle}>
           <h2>
-            {onRightSide || label}
-            <span className={"glyphicon " + glyphicon} />
             {onRightSide && label}
+            <span className={"glyphicon " + glyphicon} />
+            {onRightSide || label}
           </h2>
         </button>
       </div>
