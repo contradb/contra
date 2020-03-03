@@ -119,10 +119,10 @@ export const AdvancedSearch = (): JSX.Element => {
       <SearchTabs
         initialIndex={2}
         tabs={[
-          { name: "filters", body: filtersTab },
-          { name: "figures", body: figuresTab },
+          { name: "filters", body: filtersTab, margin: true },
+          { name: "figures", body: figuresTab, margin: true },
           { name: dancesTabName, body: dancesTab, loading: loading },
-          { name: "program", body: programTab },
+          { name: "program", body: programTab, margin: true },
         ]}
       />
     )

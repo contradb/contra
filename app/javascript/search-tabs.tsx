@@ -1,7 +1,12 @@
 import * as React from "react"
 import { useState } from "react"
 
-export type SearchTab = { name: string; loading?: boolean; body: JSX.Element }
+export type SearchTab = {
+  name: string
+  loading?: boolean
+  body: JSX.Element
+  margin?: boolean
+}
 
 export const SearchTabs = ({
   tabs,
@@ -34,7 +39,12 @@ export const SearchTabs = ({
       {tabs.map((tab, index) => {
         const maybeHidden = index === selectedIndex ? "" : "hidden"
         return (
-          <div className={maybeHidden} key={index}>
+          <div
+            className={`${maybeHidden} ${
+              tab.margin ? "search-tab-margin" : ""
+            }`}
+            key={index}
+          >
             {tab.body}
           </div>
         )
