@@ -78,12 +78,22 @@ export const AdvancedSearch = (): JSX.Element => {
     () => setProgramVisible(!programVisible),
     [programVisible, setProgramVisible]
   )
+  const onFiltersToggle = useCallback(
+    () => setFiltersVisible(!filtersVisible),
+    [filtersVisible, setFiltersVisible]
+  )
 
   if (windowSize.width >= bootstrapMedium992px) {
     return (
       <div className="advanced-search-desktop">
-        <div className="filters-desktop">{filtersTab}</div>
+        <div className={filtersVisible ? "" : "hidden"}>
+          <OpenSideTabToggle label="filters" onToggle={onFiltersToggle} />
+          <div className="filters-desktop">{filtersTab}</div>
+        </div>
         <div className="main-search-desktop">
+          {filtersVisible || (
+            <IconizedSideTabToggle label="filters" onToggle={onFiltersToggle} />
+          )}
           <div className="main-search-desktop-mainy-main-main">
             {figuresTab}
             {dancesTab}
@@ -94,7 +104,7 @@ export const AdvancedSearch = (): JSX.Element => {
         </div>
         <div className={programVisible ? "" : "hidden"}>
           <OpenSideTabToggle label="program" onToggle={onProgramToggle} />
-          <div className="program-desktop-content">{programTab}</div>
+          <div className="program-desktop">{programTab}</div>
         </div>
       </div>
     )

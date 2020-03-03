@@ -575,17 +575,48 @@ describe 'Search page', js: true do
   end
 
   describe "side panels on desktop" do
-    it "programs toggle works" do
+    it "program toggle works" do
       visit(s_path)
+      expect_program_tab_closed
+      find('button.toggle-program').click
+      expect_program_tab_open
+      find('button.toggle-program').click
+      expect_program_tab_closed
+    end
+
+    def expect_program_tab_closed
       expect(page).to_not have_content("Coming Eventually!")
       expect(page).to have_css('button.toggle-program .glyphicon-menu-left')
       expect(page).to_not have_css('button.toggle-program .glyphicon-menu-right')
       expect(page).to_not have_css('h2', text: 'program')
-      find('button.toggle-program').click
+    end
+
+    def expect_program_tab_open
       expect(page).to have_content("Coming Eventually!")
       expect(page).to have_css('button.toggle-program .glyphicon-menu-right')
       expect(page).to_not have_css('button.toggle-program .glyphicon-menu-left')
       expect(page).to have_css('h2', text: 'program')
+    end
+
+    it "filters toggle works" do
+      visit(s_path)
+      expect_filter_tab_closed
+      find('button.toggle-filters').click
+      expect_filter_tab_open
+      find('button.toggle-filters').click
+      expect_filter_tab_closed
+    end
+
+    def expect_filter_tab_closed
+      expect(page).to have_css("label", text: /not verified/i) # test tab content
+      expect(page).to have_css('button.toggle-filters .glyphicon-menu-left')
+      expect(page).to_not have_css('button.toggle-filters .glyphicon-menu-right')
+    end
+
+    def expect_filter_tab_open
+      expect(page).to_not have_css("label", text: /not verified/i) # test tab content
+      expect(page).to_not have_css('button.toggle-filters .glyphicon-menu-left')
+      expect(page).to have_css('button.toggle-filters .glyphicon-menu-right')
     end
   end
 
