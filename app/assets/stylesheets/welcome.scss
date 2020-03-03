@@ -264,15 +264,21 @@ $desktop-bevel: $desktop-margin / 2;
     display: flex;
     justify-content: space-between;
     width: 100%;
-    
-    .main-search-desktop-mainy-main-main {
-      h1 {
-        text-align: center;
-      }
-      margin-left: $desktop-margin;
-      margin-right: $desktop-margin;
-    }
   }
+
+  .main-search-desktop-ljust {
+    display: flex;
+    width: 100%;
+  }
+
+  .main-search-desktop-mainy-main-main {
+    h1 {
+      text-align: center;
+    }
+    margin-left: $desktop-margin;
+    margin-right: $desktop-margin;
+  }
+
 
   .side-panel-toggle {
 

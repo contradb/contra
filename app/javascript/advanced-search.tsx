@@ -91,13 +91,18 @@ export const AdvancedSearch = (): JSX.Element => {
           <div className="filters-desktop">{filtersTab}</div>
         </div>
         <div className="main-search-desktop">
-          {filtersVisible || (
-            <IconizedSideTabToggle label="filters" onToggle={onFiltersToggle} />
-          )}
-          <div className="main-search-desktop-mainy-main-main">
-            <h1>Search Dances</h1>
-            {figuresTab}
-            {dancesTab}
+          <div className="main-search-desktop-ljust">
+            {filtersVisible || (
+              <IconizedSideTabToggle
+                label="filters"
+                onToggle={onFiltersToggle}
+              />
+            )}
+            <div className="main-search-desktop-mainy-main-main">
+              <h1>Search Dances</h1>
+              {figuresTab}
+              {dancesTab}
+            </div>
           </div>
           {programVisible || (
             <IconizedSideTabToggle label="program" onToggle={onProgramToggle} />
