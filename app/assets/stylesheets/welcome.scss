@@ -263,6 +263,9 @@ body.welcome-search-body {
     width: 100%;
     
     .main-search-desktop-mainy-main-main {
+      h1 {
+        text-align: center;
+      }
       margin-left: 15px;
       margin-right: 15px;
     }
@@ -300,8 +303,6 @@ body.welcome-search-body {
         display: inline;
       }
 
-      border-top-left-radius: 0.7em;
-      border-top-right-radius: 0.7em;
       button {
         width: 100%;
         h2 {
@@ -309,6 +310,18 @@ body.welcome-search-body {
           justify-content: space-between;
         }
       }
+    }
+
+    &.side-panel-toggle-open-left {
+      margin-right: -7.5px;
+      border-top-right-radius: 0.7em;
+      border-bottom-right-radius: 0.7em;
+    }
+
+    &.side-panel-toggle-open-right {
+      margin-left: -7.5px;
+      border-top-left-radius: 0.7em;
+      border-bottom-left-radius: 0.7em;
     }
 
     &.side-panel-toggle-iconized-right {
@@ -325,7 +338,7 @@ body.welcome-search-body {
     }
     text-align: center;
     color: black;
-    background-color: $contra-bg;
+    background-color: white;
     font-weight: bold;
   }
 }
