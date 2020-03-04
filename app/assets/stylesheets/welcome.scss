@@ -319,6 +319,8 @@ $desktop-bevel: $desktop-margin / 2;
 
       button {
         width: 100%;
+        padding-left: $desktop-margin / 2;
+        padding-right: $desktop-margin / 2;
         h2 {
           display: flex;
           justify-content: space-between;
