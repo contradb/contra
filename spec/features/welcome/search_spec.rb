@@ -470,10 +470,12 @@ describe 'Search page', js: true do
         end
       end
 
-      describe "when not logged in, 'entered by me' checkbox behavior" do
+      describe "when not logged in, 'entered by me' checkbox" do
+        let (:entered_by_me_css) { "#ez-entered-by-me" }
+
         it "is disabled on desktop" do
           visit(s_path)
-          with_filters_excursion { expect(page.find("#ez-entered-by-me")).to be_disabled }
+          with_filters_excursion { expect(page.find(entered_by_me_css)).to be_disabled }
         end
 
         it "is hidden on phones" do
@@ -481,7 +483,7 @@ describe 'Search page', js: true do
             visit(s_path)
             with_filters_excursion do
               expect(page).to have_css("#ez-shared") # js wait
-              expect(page).to_not have_css("#ez-entered-by-me")
+              expect(page).to_not have_css(entered_by_me_css)
             end
           end
         end

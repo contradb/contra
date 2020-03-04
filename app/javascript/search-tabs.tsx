@@ -38,13 +38,9 @@ export const SearchTabs = ({
       </div>
       {tabs.map((tab, index) => {
         const maybeHidden = index === selectedIndex ? "" : "hidden"
+        const classes = maybeHidden + (tab.margin ? " search-tab-margin" : "")
         return (
-          <div
-            className={`${maybeHidden} ${
-              tab.margin ? "search-tab-margin" : ""
-            }`}
-            key={index}
-          >
+          <div className={classes} key={index}>
             {tab.body}
           </div>
         )
