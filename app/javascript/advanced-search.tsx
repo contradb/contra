@@ -9,13 +9,11 @@ import Filter from "./filter"
 import useFilter from "use-filter"
 import useWindowSize from "use-window-size"
 import SearchTabs from "./search-tabs"
+import DesktopSearchWithSideTabs from "./desktop-search-with-side-tabs"
 import FiltersTab from "./filters-tab"
 import FiguresTab from "./figures-tab"
 import DancesTab from "./dances-tab"
 import ProgramTab from "./program-tab"
-import ToggleProgramTab from "./toggle-program-tab"
-import IconizedSideTabToggle from "./iconized-side-tab-toggle"
-import OpenSideTabToggle from "./open-side-tab-toggle"
 
 const bootstrapMedium992px = 992
 
@@ -72,48 +70,10 @@ export const AdvancedSearch = (): JSX.Element => {
     />
   )
   const programTab = <ProgramTab />
-  const [filtersVisible, setFiltersVisible] = useState<boolean>(true)
-  const [programVisible, setProgramVisible] = useState<boolean>(false)
-  const onProgramToggle = useCallback(
-    () => setProgramVisible(!programVisible),
-    [programVisible, setProgramVisible]
-  )
-  const onFiltersToggle = useCallback(
-    () => setFiltersVisible(!filtersVisible),
-    [filtersVisible, setFiltersVisible]
-  )
 
   if (windowSize.width >= bootstrapMedium992px) {
-    return (
-      <div className="advanced-search-desktop">
-        <div className={filtersVisible ? "" : "hidden"}>
-          <OpenSideTabToggle label="filters" onToggle={onFiltersToggle} />
-          <div className="filters-desktop">{filtersTab}</div>
-        </div>
-        <div className="main-search-desktop">
-          <div className="main-search-desktop-ljust">
-            {filtersVisible || (
-              <IconizedSideTabToggle
-                label="filters"
-                onToggle={onFiltersToggle}
-              />
-            )}
-            <div className="main-search-desktop-mainy-main-main">
-              <h1>Search Dances</h1>
-              {figuresTab}
-              {dancesTab}
-            </div>
-          </div>
-          {programVisible || (
-            <IconizedSideTabToggle label="program" onToggle={onProgramToggle} />
-          )}
-        </div>
-        <div className={programVisible ? "" : "hidden"}>
-          <OpenSideTabToggle label="program" onToggle={onProgramToggle} />
-          <div className="program-desktop">{programTab}</div>
-        </div>
-      </div>
-    )
+    const tabs = { filtersTab, figuresTab, dancesTab, programTab }
+    return <DesktopSearchWithSideTabs {...tabs} />
   } else {
     return (
       <SearchTabs
