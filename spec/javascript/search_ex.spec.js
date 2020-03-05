@@ -119,8 +119,6 @@ describe("cast", () => {
   })
 })
 
-test("casts", () => {})
-
 describe("ellipsis", () => {
   test("with parameters specified", () => {
     const searchEx = new FigureSearchEx({
@@ -164,4 +162,5 @@ test("copy", () => {
     ["figure", "swing"],
   ])
   expect(original.toLisp()).toEqual(originalLisp)
+  expect(originalLisp[1][1]).toEqual("do si do")
 })
