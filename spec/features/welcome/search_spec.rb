@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe 'Search page', js: true do
   let (:now) { DateTime.now }
+
   it "works" do
     dances = 12.times.map {|i| FactoryGirl.create(:dance, title: "Dance #{i}.", created_at: now - i.days)}
     tag_all_dances
@@ -135,7 +136,7 @@ describe 'Search page', js: true do
           dance.update!(publish: publish, user: user)
         end
         visit(s_path)
-        check 'ez-entered-by-me'
+        check_filter 'ez-entered-by-me'
         click_button 'Sharing'
         dances.each_with_index do |dance, i|
           publish_string = ['private', 'sketchbook', 'everywhere'][i]
@@ -318,7 +319,7 @@ describe 'Search page', js: true do
         call_me = dances.last
         dont_call_me = dances[0, dances.length-2]
         visit(s_path)
-        find('.ez-choreographer-filter').fill_in(with: call_me.choreographer)
+        with_filters_excursion { find('.ez-choreographer-filter').fill_in(with: call_me.choreographer) }
         dont_call_me.each do |dance|
           expect(page).to_not have_content(dance.title)
         end
@@ -331,7 +332,7 @@ describe 'Search page', js: true do
         hard_dance = FactoryGirl.create(:dance, hook: "complicated", title: "hard mcguard" )
         tag_all_dances
         visit(s_path)
-        find('.ez-hook-filter').fill_in(with: "easy")
+        with_filters_excursion { find('.ez-hook-filter').fill_in(with: "easy") }
         expect(page).to_not have_content(hard_dance.title)
         expect(page).to have_content(easy_dance.title)
       end
@@ -343,7 +344,7 @@ describe 'Search page', js: true do
         allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         with_login(user: user) do
           visit(s_path)
-          find('.ez-hook-filter').fill_in(with: "larks")
+          with_filters_excursion { find('.ez-hook-filter').fill_in(with: "larks") }
           expect(page).to_not have_content(wombat_dance.title)
           expect(page).to have_content(lark_dance.title)
         end
@@ -364,13 +365,13 @@ describe 'Search page', js: true do
       it "'verified' and 'not verified' checkboxes work" do
         visit(s_path)
         expect_dances(verified: true, not_verified: false) # the default
-        check 'ez-not-verified'
+        check_filter 'ez-not-verified'
         expect_dances(verified: true, not_verified: true)
-        uncheck 'ez-verified', match: :prefer_exact
+        uncheck_filter 'ez-verified', match: :prefer_exact
         expect_dances(verified: false, not_verified: true)
-        uncheck 'ez-not-verified'
+        uncheck_filter 'ez-not-verified'
         expect_dances(verified: false, not_verified: false)
-        check 'ez-verified', match: :prefer_exact
+        check_filter 'ez-verified', match: :prefer_exact
         expect_dances(verified: true, not_verified: false)
       end
 
@@ -378,27 +379,39 @@ describe 'Search page', js: true do
         with_login(user: user) do
           visit(s_path)
           expect_dances(verified: true) # the default
-          uncheck 'ez-verified', match: :prefer_exact
+          uncheck_filter 'ez-verified', match: :prefer_exact
           expect_dances()
-          check 'ez-not-verified-by-me'
+          check_filter 'ez-not-verified-by-me'
           expect_dances(not_verified_by_me: true)
-          check 'ez-verified-by-me'
+          check_filter 'ez-verified-by-me'
           expect_dances(verified_by_me: true, not_verified_by_me: true)
-          uncheck 'ez-not-verified-by-me'
+          uncheck_filter 'ez-not-verified-by-me'
           expect_dances(verified_by_me: true)
-          uncheck 'ez-verified-by-me'
+          uncheck_filter 'ez-verified-by-me'
           expect_dances()
         end
       end
 
-      it "'verified by me' and 'not verified by me' checkboxes are disabled when not logged in" do
-        visit(s_path)
-        expect(page.find("#ez-verified-by-me")).to be_disabled
-        expect(page.find("#ez-not-verified-by-me")).to be_disabled
+      describe "when not logged in, 'verified by me' and 'not verified by me' checkboxes" do
+        it "are disabled on desktop" do
+          visit(s_path)
+          with_filters_excursion do
+            expect(page.find("#ez-verified-by-me")).to be_disabled
+            expect(page.find("#ez-not-verified-by-me")).to be_disabled
+          end
+        end
+
+        it "are hidden on phones" do
+          with_phone_screen do
+            visit(s_path)
+            with_filters_excursion do
+              expect(page).to have_css("#ez-verified")
+              expect(page).to_not have_css("#ez-verified-by-me")
+              expect(page).to_not have_css("#ez-not-verified-by-me")
+            end
+          end
+        end
       end
-
-      it "'verified by me' and 'not verified by me' checkboxes are hidden when not logged in on phones"
-
       def expect_dances(verified: false,
                         not_verified: false,
                         verified_by_me: false,
@@ -425,15 +438,15 @@ describe 'Search page', js: true do
         with_login(user: user) do
           visit(s_path)
           6.times {|i| expect(page).send(i.in?([2,5]) ? :to : :to_not, have_content(dances[i].title))}
-          check 'ez-sketchbooks'
+          check_filter 'ez-sketchbooks'
           6.times {|i| expect(page).send(i.in?([1,2,4,5]) ? :to : :to_not, have_content(dances[i].title))}
-          uncheck 'ez-shared'
+          uncheck_filter 'ez-shared'
           6.times {|i| expect(page).send(i.in?([1,4]) ? :to : :to_not, have_content(dances[i].title))}
-          check 'ez-entered-by-me'
+          check_filter 'ez-entered-by-me'
           6.times {|i| expect(page).send(i.in?([1,3,4,5]) ? :to : :to_not, have_content(dances[i].title))}
-          uncheck 'ez-sketchbooks'
+          uncheck_filter 'ez-sketchbooks'
           6.times {|i| expect(page).send(i.in?([3,4,5]) ? :to : :to_not, have_content(dances[i].title))}
-          check 'ez-shared'
+          check_filter 'ez-shared'
           6.times {|i| expect(page).send(i.in?([2,3,4,5]) ? :to : :to_not, have_content(dances[i].title))}
         end
       end
@@ -441,8 +454,10 @@ describe 'Search page', js: true do
       it "Admins can use the 'private' checkbox" do
         with_login(admin: true) do
           visit(s_path)
-          expect(page).to have_css(private_checkbox_css)
-          check 'ez-private'
+          with_filters_excursion do
+            expect(page).to have_css(private_checkbox_css)
+            check 'ez-private'
+          end
           6.times {|i| expect(page).send(i.in?([0,2,3,5]) ? :to : :to_not, have_content(dances[i].title))}
         end
       end
@@ -451,13 +466,27 @@ describe 'Search page', js: true do
         with_login(user: user) do
           visit(s_path)
           6.times {|i| expect(page).send(i.in?([2,5]) ? :to : :to_not, have_content(dances[i].title))} # js wait
-          expect(page).to_not have_css(private_checkbox_css)
+          with_filters_excursion { expect(page).to_not have_css(private_checkbox_css) }
         end
       end
 
-      it "'entered by me' checkbox is disabled when not logged in" do
-        visit(s_path)
-        expect(page.find("#ez-entered-by-me")).to be_disabled
+      describe "when not logged in, 'entered by me' checkbox" do
+        let (:entered_by_me_css) { "#ez-entered-by-me" }
+
+        it "is disabled on desktop" do
+          visit(s_path)
+          with_filters_excursion { expect(page.find(entered_by_me_css)).to be_disabled }
+        end
+
+        it "is hidden on phones" do
+          with_phone_screen do
+            visit(s_path)
+            with_filters_excursion do
+              expect(page).to have_css("#ez-shared") # js wait
+              expect(page).to_not have_css(entered_by_me_css)
+            end
+          end
+        end
       end
     end
 
@@ -473,22 +502,23 @@ describe 'Search page', js: true do
         expect(page).to have_content(becket.title)
         expect(page).to have_content(improper.title)
         expect(page).to have_content(wingnut.title)
-        uncheck 'ez-improper'
+        uncheck_filter 'ez-improper'
         expect(page).to_not have_content(improper.title)
         expect(page).to have_content(becket.title)
         expect(page).to have_content(wingnut.title)
-        uncheck 'ez-becket'
+        uncheck_filter 'ez-becket'
         expect(page).to_not have_content(improper.title)
         expect(page).to_not have_content(becket.title)
         expect(page).to have_content(wingnut.title)
-        check 'ez-improper'
+        check_filter 'ez-improper'
         expect(page).to have_content(improper.title)
         expect(page).to_not have_content(becket.title)
         expect(page).to have_content(wingnut.title)
-        check 'ez-becket'
+        check_filter 'ez-becket'
         expect(page).to have_content(improper.title)
-        expect(page).to_not have_content(becket.title)
-        uncheck 'ez-everything-else'
+        expect(page).to have_content(becket.title)
+        expect(page).to have_content(wingnut.title)
+        uncheck_filter 'ez-everything-else'
         expect(page).to_not have_content(wingnut.title)
         expect(page).to have_content(improper.title)
         expect(page).to have_content(becket.title)
@@ -496,9 +526,131 @@ describe 'Search page', js: true do
     end
   end
 
+  describe 'tabs on mobile' do
+    before { set_phone_screen }
+    after { set_desktop_screen }
+    it 'work' do
+      results_tab_label = /0 dances/i
+      visit(s_path)
+      expect(page).to have_css('.search-tabs button.selected', text: results_tab_label)
+      expect(page).to have_css('.search-tabs button.selected', count: 1)
+      expect(page).to have_css('.dances-table-react')           # results page
+      expect(page).to_not have_css('h4', text: 'Choreographer') # filter page
+      expect(page).to_not have_content('Coming Soon!')          # figures page
+      expect(page).to_not have_content('Coming Eventually!')    # program page
+      click_on 'filters'
+      expect(page).to have_css('.search-tabs button.selected', text: 'filters')
+      expect(page).to have_css('.search-tabs button.selected', count: 1)
+      expect(page).to_not have_css('.dances-table-react')       # results page
+      expect(page).to have_css('h4', text: 'Choreographer')     # filter page
+      expect(page).to_not have_content('Coming Soon!')          # figures page
+      expect(page).to_not have_content('Coming Eventually!')    # program page
+      click_on 'figures'
+      expect(page).to have_css('.search-tabs button.selected', text: 'figures')
+      expect(page).to have_css('.search-tabs button.selected', count: 1)
+      expect(page).to_not have_css('.dances-table-react')       # results page
+      expect(page).to_not have_css('h4', text: 'Choreographer') # filter page
+      expect(page).to have_content('Coming Soon!')              # figures page
+      expect(page).to_not have_content('Coming Eventually!')    # program page
+      click_on_results_tab
+      expect(page).to have_css('.search-tabs button.selected', text: results_tab_label)
+      expect(page).to have_css('.search-tabs button.selected', count: 1)
+      expect(page).to have_css('.dances-table-react')           # results page
+      expect(page).to_not have_css('h4', text: 'Choreographer') # filter page
+      expect(page).to_not have_content('Coming Soon!')          # figures page
+      expect(page).to_not have_content('Coming Eventually!')    # program page
+      click_on 'program'
+      expect(page).to have_css('.search-tabs button.selected', text: 'program')
+      expect(page).to have_css('.search-tabs button.selected', count: 1)
+      expect(page).to_not have_css('.dances-table-react')       # results page
+      expect(page).to_not have_css('h4', text: 'Choreographer') # filter page
+      expect(page).to_not have_content('Coming Soon!')          # figures page
+      expect(page).to have_content('Coming Eventually!')        # program page
+    end
+
+    it 'result tab displays number of matches' do
+      %i(dance call_me box_the_gnat_contra).each {|d| FactoryGirl.create(d)}
+      tag_all_dances
+      visit(s_path)
+      expect(page).to have_css('.search-tabs button', text: /3 dances/i)
+    end
+  end
+
+  describe "side panels on desktop" do
+    it "program toggle works" do
+      visit(s_path)
+      expect_program_tab_closed
+      find('button.toggle-program').click
+      expect_program_tab_open
+      find('button.toggle-program').click
+      expect_program_tab_closed
+    end
+
+    def expect_program_tab_closed
+      expect(page).to_not have_content("Coming Eventually!")
+      expect(page).to have_css('button.toggle-program .glyphicon-menu-left')
+      expect(page).to_not have_css('button.toggle-program .glyphicon-menu-right')
+      expect(page).to_not have_css('h2', text: 'program')
+    end
+
+    def expect_program_tab_open
+      expect(page).to have_content("Coming Eventually!")
+      expect(page).to have_css('button.toggle-program .glyphicon-menu-right')
+      expect(page).to_not have_css('button.toggle-program .glyphicon-menu-left')
+      expect(page).to have_css('h2', text: 'program')
+    end
+
+    it "filters toggle works" do
+      visit(s_path)
+      expect_filter_tab_closed
+      find('button.toggle-filters').click
+      expect_filter_tab_open
+      find('button.toggle-filters').click
+      expect_filter_tab_closed
+    end
+
+    def expect_filter_tab_closed
+      expect(page).to have_css("label", text: /not verified/i) # test tab content
+      expect(page).to have_css('button.toggle-filters .glyphicon-menu-left')
+      expect(page).to_not have_css('button.toggle-filters .glyphicon-menu-right')
+    end
+
+    def expect_filter_tab_open
+      expect(page).to_not have_css("label", text: /not verified/i) # test tab content
+      expect(page).to_not have_css('button.toggle-filters .glyphicon-menu-left')
+      expect(page).to have_css('button.toggle-filters .glyphicon-menu-right')
+    end
+  end
+
   def tag_all_dances(tag: FactoryGirl.create(:tag, :verified), user: FactoryGirl.create(:user))
     Dance.all.each do |dance|
       FactoryGirl.create(:dut, dance: dance, tag: tag, user: user)
     end
+  end
+
+  # on phone, filters aren't always visible, so to make the tests work
+  # on both phone and desktop, wrap interactions with the filters in
+  # this helper
+  def with_filters_excursion(&block)
+    if phone_screen?
+      click_on 'filters'
+      block.call
+      click_on_results_tab
+      expect(page).to have_css('.dances-table-react') # wait for table to pop in before, say, testing for the absence of an element
+    else
+      block.call
+    end
+  end
+
+  def click_on_results_tab
+    find('.search-tabs button', text: /[0-9]+ dances?/i).click
+  end
+
+  def check_filter(*check_args)
+    with_filters_excursion { check(*check_args) }
+  end
+
+  def uncheck_filter(*uncheck_args)
+    with_filters_excursion { uncheck(*uncheck_args) }
   end
 end

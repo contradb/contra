@@ -1,9 +1,8 @@
 import * as React from "react"
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect } from "react"
 import { useTable, usePagination, useSortBy } from "react-table"
 import { NaturalNumberEditor } from "./natural-number-editor"
 import Filter from "./filter"
-import useDebounce from "./use-debounce"
 
 // TODO: use rails route helpers
 const choreographerPath = (cid: number): string => {
@@ -17,7 +16,7 @@ const dancePath = (danceId: number): string => {
 }
 
 const ChoreographerCell = (props: any): JSX.Element => {
-  const values: DanceSearchResult = props.row.original // shouldn't I be looking at props.row.values? It only has the accessor'd field in the column definition.
+  const values: SearchDancesDanceJson = props.row.original // shouldn't I be looking at props.row.values? It only has the accessor'd field in the column definition.
   return (
     <a href={choreographerPath(values.choreographer_id)}>
       {values.choreographer_name}
@@ -26,12 +25,12 @@ const ChoreographerCell = (props: any): JSX.Element => {
 }
 
 const UserCell = (props: any): JSX.Element => {
-  const values: DanceSearchResult = props.row.original // shouldn't I be looking at props.row.values? It only has the accessor'd field in the column definition.
+  const values: SearchDancesDanceJson = props.row.original // shouldn't I be looking at props.row.values? It only has the accessor'd field in the column definition.
   return <a href={userPath(values.user_id)}>{values.user_name}</a>
 }
 
 const DanceTitleCell = (props: any): JSX.Element => {
-  const values: DanceSearchResult = props.row.original // shouldn't I be looking at props.row.values? It only has the accessor'd field in the column definition.
+  const values: SearchDancesDanceJson = props.row.original // shouldn't I be looking at props.row.values? It only has the accessor'd field in the column definition.
   return <a href={dancePath(values.id)}>{values.title}</a>
 }
 
@@ -122,7 +121,7 @@ function PaginationSentence({
 function DanceTableTh({
   column,
 }: {
-  column: any // ColumnInstance<DanceSearchResult>
+  column: any // ColumnInstance<SearchDancesDanceJson>
 }): JSX.Element {
   return (
     <th
@@ -164,17 +163,27 @@ export const sortByParam = (sortBy: SortBy): string =>
     .map(sbe => (sbe.id ? sbe.id + (sbe.desc ? "D" : "A") : sbe + "A"))
     .join("")
 
+export type FetchDataFn = ({
+  pageSize,
+  pageIndex,
+  sortBy,
+  filter,
+}: {
+  pageSize: number
+  pageIndex: number
+  sortBy: SortBy
+  filter: Filter
+}) => void
+
 function Table({
-  dancesGetJson,
-  fetchData,
-  loading,
+  searchDancesJson,
+  fetchDataFn,
   pageCount: controlledPageCount,
   filter,
   initialSortBy,
 }: {
-  dancesGetJson: DancesGetJson
-  fetchData: Function
-  loading: boolean
+  searchDancesJson: SearchDancesJson
+  fetchDataFn: FetchDataFn
   pageCount: number
   filter: Filter
   initialSortBy: any // SortBy
@@ -184,7 +193,7 @@ function Table({
 
   const tableOptions = {
     columns: columnDefinitions,
-    data: dancesGetJson.dances,
+    data: searchDancesJson.dances,
     manualPagination: true,
     manualSortBy: true, // after 7.0.0-rc2
     manualSorting: true, // before 7.0.0-rc2
@@ -216,20 +225,17 @@ function Table({
       if (!columnDefinitions[i].show) columns[i].toggleHidden(true)
   }, [columns])
 
-  const debouncedFilter: Filter = useDebounce(filter, {
-    delay: 800,
-    bouncyFirstRun: true,
-  })
-
   // again, need to worry about the return value of this first arg to useEffect
-  useEffect(
-    () => fetchData({ pageIndex, pageSize, sortBy, filter: debouncedFilter }),
-    [fetchData, pageIndex, pageSize, sortBy, debouncedFilter]
-  )
+  useEffect(() => fetchDataFn({ pageIndex, pageSize, sortBy, filter }), [
+    fetchDataFn,
+    pageIndex,
+    pageSize,
+    sortBy,
+    filter,
+  ])
 
   return (
     <>
-      {loading && <div className="floating-loading-indicator">loading...</div>}
       <ColumnVisToggles columns={columns} />
       <table
         {...getTableProps()}
@@ -261,10 +267,11 @@ function Table({
         <div className="form-inline">
           <PaginationSentence
             pageOffset={pageIndex * pageSize}
-            pageCount={dancesGetJson.dances.length}
-            matchCount={dancesGetJson.numberMatching}
+            pageCount={searchDancesJson.dances.length}
+            matchCount={searchDancesJson.numberMatching}
             isFiltered={
-              dancesGetJson.numberMatching !== dancesGetJson.numberSearched
+              searchDancesJson.numberMatching !==
+              searchDancesJson.numberSearched
             }
           />
         </div>
@@ -362,7 +369,7 @@ function TurnPageButton({
   )
 }
 
-interface DanceSearchResult {
+export interface SearchDancesDanceJson {
   id: number
   title: string
   choreographer_id: number
@@ -377,10 +384,10 @@ interface DanceSearchResult {
   figures: string
 }
 
-interface DancesGetJson {
+export interface SearchDancesJson {
   numberSearched: number
   numberMatching: number
-  dances: Array<DanceSearchResult>
+  dances: Array<SearchDancesDanceJson>
 }
 
 const ColumnVisToggles = ({ columns }: { columns: any[] }): JSX.Element => {
@@ -422,43 +429,21 @@ const ColumnVisToggle = ({
   )
 }
 
-function DanceTable({ filter }: { filter: Filter }): JSX.Element {
-  const [dancesGetJson, setDancesGetJson] = useState({
-    dances: [] as DanceSearchResult[],
-    numberSearched: 0,
-    numberMatching: 0,
-  })
-
-  const [pageCount, setPageCount] = React.useState(0)
-  const [loading, setLoading] = React.useState(false)
-  const fetchData = useCallback(({ pageSize, pageIndex, sortBy, filter }) => {
-    setLoading(true)
-    async function fetchData1(): Promise<void> {
-      const offset = pageIndex * pageSize
-      const sort = sortByParam(sortBy)
-      const url = "/api/v1/dances"
-      const headers = { "Content-type": "application/json" }
-      const body = JSON.stringify({
-        count: pageSize,
-        offset: offset,
-        sort_by: sort,
-        filter: filter,
-      })
-      const response = await fetch(url, { method: "POST", headers, body })
-      const json: DancesGetJson = await response.json()
-      setDancesGetJson(json)
-      setPageCount(Math.ceil(json.numberMatching / pageSize))
-      setLoading(false)
-    }
-    fetchData1()
-    // maybe return in-use-ness to prevent a memory leak here?
-  }, [])
-
+export function DanceTable({
+  filter,
+  fetchDataFn,
+  searchDancesJson,
+  pageCount,
+}: {
+  filter: Filter
+  fetchDataFn: FetchDataFn
+  searchDancesJson: SearchDancesJson
+  pageCount: number
+}): JSX.Element {
   return (
     <Table
-      dancesGetJson={dancesGetJson}
-      fetchData={fetchData}
-      loading={loading}
+      searchDancesJson={searchDancesJson}
+      fetchDataFn={fetchDataFn}
       pageCount={pageCount}
       filter={filter}
       initialSortBy={[]}

@@ -5,11 +5,11 @@ import React, { useState, useEffect, useRef } from "react"
 export default function useDebounce<T>(
   value: T,
   {
-    delay = 800,
-    bouncyFirstRun = false,
-  }: { delay: number; bouncyFirstRun: boolean } = {
-    delay: 800,
-    bouncyFirstRun: false,
+    delay = 500,
+    bouncyFirstRun = true,
+  }: { delay?: number; bouncyFirstRun?: boolean } = {
+    delay: 500,
+    bouncyFirstRun: true,
   }
 ): T {
   const [debouncedValue, setDebouncedValue] = useState(value)
