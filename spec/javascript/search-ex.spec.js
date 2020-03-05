@@ -1,5 +1,5 @@
 // run with `yarn test`
-import { SearchEx, FigureSearchEx } from "search_ex.js"
+import { SearchEx, FigureSearchEx } from "search-ex"
 
 describe("x = toLisp of fromLisp of x", () => {
   ;[
