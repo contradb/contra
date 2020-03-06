@@ -59,6 +59,9 @@ class SearchEx {
     // all properties held by any subclass.
     return allProps
   }
+  isNumeric() {
+    return false
+  }
 
   static mutationNameForProp(propertyName) {
     if (propertyName.length >= 1) {
@@ -370,7 +373,11 @@ class CompareSearchEx extends SearchEx {
 }
 registerSearchEx("CompareSearchEx", "comparison")
 
-class NumericEx extends SearchEx {}
+class NumericEx extends SearchEx {
+  isNumeric() {
+    return true
+  }
+}
 
 class ConstantNumericEx extends NumericEx {
   constructor(args) {

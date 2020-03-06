@@ -20,7 +20,7 @@ describe("x = toLisp of fromLisp of x", () => {
     ["constant", 0],
     ["tag", "verified"],
     ["count-matches", ["figure", "*"]],
-  ].forEach(function(lisp, i) {
+  ].forEach(function(lisp) {
     test(JSON.stringify(lisp), () =>
       expect(SearchEx.fromLisp(lisp).toLisp()).toEqual(lisp)
     )
@@ -151,6 +151,7 @@ describe("ellipsis", () => {
     expect(searchEx.toLisp()).toEqual(shortLisp)
   })
 })
+
 test("copy", () => {
   const originalLisp = ["and", ["figure", "do si do"], ["figure", "swing"]]
   const original = SearchEx.fromLisp(originalLisp)
@@ -163,4 +164,36 @@ test("copy", () => {
   ])
   expect(original.toLisp()).toEqual(originalLisp)
   expect(originalLisp[1][1]).toEqual("do si do")
+})
+
+describe("isNumeric", () => {
+  ;[
+    ["figure", "do si do"],
+    ["figure", "swing", "partners", "*", 8],
+    ["formation", "improper"],
+    ["progression"],
+    ["or", ["figure", "do si do"], ["figure", "swing"]],
+    ["and", ["figure", "do si do"], ["figure", "swing"]],
+    ["&", ["progression"], ["figure", "star"]],
+    ["then", ["figure", "do si do"], ["figure", "swing"]],
+    ["no", ["progression"]],
+    ["not", ["figure", "do si do"]],
+    ["all", ["figure", "do si do"]],
+    ["count", ["progression"], ">", 0],
+    ["compare", ["constant", 4], "<", ["constant", 6]],
+  ].forEach(lisp => {
+    test(JSON.stringify(lisp) + " → false", () =>
+      expect(SearchEx.fromLisp(lisp).isNumeric()).toBe(false)
+    )
+  })
+  ;[
+    ["constant", 5],
+    ["constant", 0],
+    ["tag", "verified"],
+    ["count-matches", ["figure", "*"]],
+  ].forEach(lisp => {
+    test(JSON.stringify(lisp) + " → true", () =>
+      expect(SearchEx.fromLisp(lisp).isNumeric()).toBe(true)
+    )
+  })
 })
