@@ -14,6 +14,7 @@ import FiltersTab from "./filters-tab"
 import FiguresTab from "./figures-tab"
 import DancesTab from "./dances-tab"
 import ProgramTab from "./program-tab"
+import { SearchEx } from "./search-ex"
 
 const bootstrapMedium992px = 992
 
@@ -52,7 +53,10 @@ export const AdvancedSearch = (): JSX.Element => {
     },
     []
   )
-  const { filter, dictionary } = useFilter()
+  const [coreFilter, setCoreFilter] = useState<Filter>(
+    SearchEx.default().toLisp()
+  )
+  const { filter, dictionary } = useFilter(coreFilter)
   const windowSize = useWindowSize()
 
   const dancesTabName: string = `${searchDancesJson.numberMatching} dance${
