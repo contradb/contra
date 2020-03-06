@@ -53,17 +53,20 @@ export const AdvancedSearch = (): JSX.Element => {
     },
     []
   )
-  const [coreFilter, setCoreFilter] = useState<Filter>(
-    SearchEx.default().toLisp()
+  const [searchEx, setSearchEx] = useState(SearchEx.default())
+  const { filter, dictionary } = useFilter(
+    useMemo(() => searchEx.toLisp(), [searchEx])
   )
-  const { filter, dictionary } = useFilter(coreFilter)
+
   const windowSize = useWindowSize()
 
   const dancesTabName: string = `${searchDancesJson.numberMatching} dance${
     1 === searchDancesJson.numberMatching ? "" : "s"
   }`
   const filtersTab = <FiltersTab dictionary={dictionary} />
-  const figuresTab = <FiguresTab />
+  const figuresTab = (
+    <FiguresTab searchEx={searchEx} setSearchEx={setSearchEx} />
+  )
   const dancesTab = (
     <DancesTab
       loading={loading}
