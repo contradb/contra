@@ -449,3 +449,6 @@ class CountMatchesNumericEx extends unaryMixin(NumericEx) {
 registerSearchEx("CountMatchesNumericEx")
 
 export { SearchEx, NumericEx, FigureSearchEx }
+
+class ProgressWithSearchEx extends SimpleUnarySearchEx {}
+registerSearchEx("ProgressWithSearchEx")

@@ -110,6 +110,11 @@ describe("cast", () => {
       from: ["constant", 7],
       want: ["count-matches", ["figure", "*"]],
     },
+    {
+      op: "progress with",
+      from: ["not", ["figure", "star"]],
+      want: ["progress with", ["figure", "star"]],
+    },
   ].forEach(function({ from, op, want }, i) {
     const fromEx = SearchEx.fromLisp(from)
     const got = fromEx.castTo(op).toLisp()
@@ -181,6 +186,7 @@ describe("isNumeric", () => {
     ["all", ["figure", "do si do"]],
     ["count", ["progression"], ">", 0],
     ["compare", ["constant", 4], "<", ["constant", 6]],
+    ["progress with", ["figure", "do si do"]],
   ].forEach(lisp => {
     test(JSON.stringify(lisp) + " → false", () =>
       expect(SearchEx.fromLisp(lisp).isNumeric()).toBe(false)

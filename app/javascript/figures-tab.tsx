@@ -18,6 +18,7 @@ const nonNumericOpOptions = [
   "no",
   "not",
   "all",
+  "progress with",
   "compare",
 ].map(makeOpOption)
 
