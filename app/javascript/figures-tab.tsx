@@ -1,25 +1,35 @@
 import React, { Dispatch } from "react"
 import { SearchEx } from "./search-ex"
 
-const makeOpOption = (op: string, i: number) => (
-  <option key={i} value={op}>
-    {op.replace(/-/, " ")}
-  </option>
-)
+const makeOpOption = (op: string, i: number) => {
+  if (op === "____")
+    return (
+      <option key={i} style={{ backgroundColor: "white" }} disabled>
+        ————————
+      </option>
+    )
+  else
+    return (
+      <option key={i} value={op}>
+        {op.replace(/-/, " ")}
+      </option>
+    )
+}
 
 const nonNumericOpOptions = [
   "figure",
-  "formation",
-  "progression",
   "or",
   "and",
-  "&",
   "then",
   "no",
   "not",
   "all",
   "progress with",
+  "____",
+  "&",
+  "progression",
   "compare",
+  "formation",
 ].map(makeOpOption)
 
 const numericOpOptions = ["constant", "tag", "count-matches"].map(makeOpOption)
