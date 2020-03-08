@@ -84,14 +84,15 @@ function registerSearchEx(className, ...props) {
   op = op.replace(/NumericEx$/, "")
   op = op.replace(/FigurewiseAnd/g, "&")
   op = op.replace(/CountMatches/, "count-matches")
+  op = op.replace(/ProgressWith/, "progress with")
   op = op.toLowerCase()
   constructorNameToOp[className] = op
   const constructor = eval(className)
-  opToConstructor[op] = constructor
-  constructor.name2 = className
-  if (!opToConstructor[op]) {
+  if (!constructor) {
     throw new Error("class name " + className + " not found")
   }
+  opToConstructor[op] = constructor
+  constructor.name2 = className
   for (let prop of props) {
     if (!allProps.includes(prop)) {
       allProps.push(prop)

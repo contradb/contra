@@ -41,17 +41,21 @@ export const FiguresTab = ({
   searchEx: SearchEx
   setSearchEx: (se: SearchEx) => void
 }) => (
-  <div>
-    <select
-      value={searchEx.op()}
-      onChange={e => {
-        const op = e.target.value
-        setSearchEx(searchEx.castTo(op))
-      }}
-    >
-      {searchEx.isNumeric() ? numericOpOptions : nonNumericOpOptions}
-    </select>
+  <>
+    Coming Soon!
+    <div className="search-ex">
+      <select
+        value={searchEx.op()}
+        onChange={e => {
+          const op = e.target.value
+          setSearchEx(searchEx.castTo(op))
+        }}
+        className="form-control"
+      >
+        {searchEx.isNumeric() ? numericOpOptions : nonNumericOpOptions}
+      </select>
+    </div>
     {JSON.stringify(searchEx.toLisp())}
-  </div>
+  </>
 )
 export default FiguresTab
