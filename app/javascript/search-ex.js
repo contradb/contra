@@ -2,9 +2,6 @@ import LibFigure from "libfigure/libfigure.js"
 
 // search node class heirarchy goes here
 class SearchEx {
-  constructor({ subexpressions = [] } = {}) {
-    this.subexpressions = subexpressions
-  }
   // subtypes to implement:
   // toLisp()
   // static fromLispHelper(...)
@@ -12,6 +9,26 @@ class SearchEx {
   // static minSubexpressions()
   // static maxSubexpressions()
   // static minUsefulSubexpressions()
+  // 'src' constructor prop
+
+  constructor({
+    src,
+    subexpressions = src ? [...src.subexpressions] : [],
+  } = {}) {
+    this.subexpressions = subexpressions
+  }
+
+  shallowCopy(props) {
+    return new this.constructor({ ...props, src: this })
+  }
+
+  // shallowCopy(props) {
+  //   return new this.constructor({
+  //     ...props,
+  //     subexpressions: props.subexpressions || [...this.subexpressions],
+  //   })
+  // }
+
   op() {
     // Why use `this.constructor.name2` instead of just using `this.constructor.name`?
     // Because the minimizer used in production strips `this.constructor.name`, and it's faster
@@ -51,7 +68,7 @@ class SearchEx {
   }
 
   copy() {
-    // deeeep copy
+    // deeeep copy - am I even used?
     return SearchEx.fromLisp(this.toLisp())
   }
 
@@ -180,11 +197,16 @@ let binaryishMixin = Base =>
 class FigureSearchEx extends nullaryMixin(SearchEx) {
   constructor(args) {
     super(args)
-    const { move, parameters = [] } = args
-    this._move = move || errorMissingParameter("move")
+    const {
+      src,
+      move = src ? src.move : errorMissingParameter("move"),
+      parameters = src ? [...src.parameters] : [],
+    } = args
+    this._move = move
     this.parameters = parameters
     this._ellipsis = parameters && parameters.length > 0
   }
+
   toLisp() {
     if (this.ellipsis) {
       return [this.op(), this.move, ...this.parameters]

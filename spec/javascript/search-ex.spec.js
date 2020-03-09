@@ -171,7 +171,7 @@ test("copy", () => {
   expect(originalLisp[1][1]).toEqual("do si do")
 })
 
-describe("isNumeric", () => {
+describe("isNumeric()", () => {
   ;[
     ["figure", "do si do"],
     ["figure", "swing", "partners", "*", 8],
@@ -201,5 +201,86 @@ describe("isNumeric", () => {
     test(JSON.stringify(lisp) + " → true", () =>
       expect(SearchEx.fromLisp(lisp).isNumeric()).toBe(true)
     )
+  })
+})
+
+describe("replace()", () => {
+  it("depth 0 hit", () => {
+    const oldRoot = SearchEx.fromLisp(["figure", "*"])
+    const oldSub = oldRoot
+    const newSub = SearchEx.fromLisp(["figure", "do si do"])
+    const newRoot = oldRoot.replace(oldSub, newSub)
+    expect(newRoot).toBe(newSub)
+  })
+
+  it("depth 0 miss", () => {
+    const oldRoot = SearchEx.fromLisp(["figure", "*"])
+    const oldSub = SearchEx.fromLisp(["figure", "swing"])
+    const newSub = SearchEx.fromLisp(["figure", "do si do"])
+    const newRoot = oldRoot.replace(oldSub, newSub)
+    expect(newRoot).toBe(oldRoot)
+  })
+
+  it("depth 1 miss", () => {
+    const oldRoot = SearchEx.fromLisp([
+      "&",
+      ["figure", "star"],
+      ["progression"],
+    ])
+    const oldSub = oldRoot.subexpressions[0] // star
+    const newSub = SearchEx.fromLisp(["figure", "do si do"])
+    const newRoot = oldRoot.replace(oldSub, newSub)
+    const expectedLisp = ["&", ["figure", "do si do"], ["progression"]]
+    expect(newRoot.toLisp()).toEqual(expectedLisp)
+    expect(newRoot.subexpressions[1]).toBe(oldRoot.subexpressions[1])
+    expect(newRoot.op).toEqual("&")
+    expect(newRoot.subexpressions[0].op).toEqual("do si do")
+  })
+})
+
+fdescribe("shallow copy", () => {
+  it("'and'", () => {
+    const oldEx = SearchEx.fromLisp(["and", ["progression"]])
+    const newEx = oldEx.shallowCopy({
+      subexpressions: [SearchEx.fromLisp(["figure", "*"])],
+    })
+    expect(oldEx).not.toBe(newEx)
+    expect(newEx.subexpressions).not.toBe(oldEx.subexpressions)
+    expect(newEx.subexpressions).toEqual([SearchEx.fromLisp(["figure", "*"])])
+  })
+
+  describe("'figure'", () => {
+    it("move", () => {
+      const oldEx = SearchEx.fromLisp([
+        "figure",
+        "do si do",
+        "ladles",
+        true,
+        540,
+        8,
+      ])
+      const newEx = oldEx.shallowCopy({ move: "allemande" })
+      expect(newEx.subexpressions).not.toBe(oldEx.subExpressions)
+      expect(newEx.move).toEqual("allemande")
+      expect(newEx.parameters).not.toBe(oldEx.parameters)
+      expect(newEx.parameters).toEqual(["ladles", true, 540, 8])
+    })
+    it("parameters", () => {
+      const oldEx = SearchEx.fromLisp([
+        "figure",
+        "do si do",
+        "ladles",
+        true,
+        540,
+        8,
+      ])
+      const newEx = oldEx.shallowCopy({
+        parameters: ["gentlespoons", true, "*", 8],
+      })
+      expect(newEx.subexpressions).not.toBe(oldEx.subExpressions)
+      expect(newEx.move).toBe(oldEx.move)
+      expect(newEx.parameters).not.toBe(oldEx.parameters)
+      expect(newEx.parameters).toEqual(["gentlespoons", true, "*", 8])
+    })
   })
 })

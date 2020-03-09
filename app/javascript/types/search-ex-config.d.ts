@@ -5,6 +5,7 @@ declare class SearchEx {
   isNumeric(): boolean
   op(): string
   castTo(op: string): SearchEx
+  subexpressions: SearchEx[]
 }
 
 // declare module "*"
