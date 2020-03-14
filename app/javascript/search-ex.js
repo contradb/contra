@@ -76,8 +76,27 @@ class SearchEx {
     // all properties held by any subclass.
     return allProps
   }
+
   isNumeric() {
     return false
+  }
+
+  replace(oldEx, newEx) {
+    if (this === oldEx) return newEx
+    else {
+      for (let i = 0; i < this.subexpressions.length; i++) {
+        const subexpressionOld = this.subexpressions[i]
+        const subexpressionNew = subexpressionOld.replace(oldEx, newEx)
+        if (subexpressionOld !== subexpressionNew) {
+          const newChildren = [...this.subexpressions]
+          newChildren[i] = subexpressionNew
+          for (let j = i + 1; j < this.subexpressions.length; j++)
+            newChildren[j] = this.subexpressions[j].replace(oldEx, newEx)
+          return this.shallowCopy({ subexpressions: newChildren })
+        }
+      }
+      return this
+    }
   }
 
   static mutationNameForProp(propertyName) {
@@ -247,8 +266,9 @@ registerSearchEx("FigureSearchEx", "move", "parameters", "ellipsis")
 class FormationSearchEx extends nullaryMixin(SearchEx) {
   constructor(args) {
     super(args)
-    const { formation } = args
-    this.formation = formation || errorMissingParameter("formation")
+    const { formation, src } = args
+    this.formation =
+      formation || src.formation || errorMissingParameter("formation")
   }
   toLisp() {
     return [this.op(), this.formation]
@@ -312,6 +332,7 @@ registerSearchEx("FigurewiseAndSearchEx")
 class ThenSearchEx extends SimpleBinaryishSearchEx {}
 registerSearchEx("ThenSearchEx")
 
+// obsolete
 class CountSearchEx extends unaryMixin(SearchEx) {
   constructor(args) {
     super(args)
@@ -349,8 +370,9 @@ registerSearchEx("CountSearchEx", "comparison", "number")
 class CompareSearchEx extends SearchEx {
   constructor(args) {
     super(args)
-    const { comparison } = args
-    this.comparison = comparison || errorMissingParameter("comparison")
+    const { comparison, src } = args
+    this.comparison =
+      comparison || src.comparison || errorMissingParameter("comparison")
     if (this.subexpressions.length !== 2) {
       throw new Error(
         `new CompareSearchEx wants exactly 2 subexpressions, but got ${JSON.stringify(
@@ -405,9 +427,14 @@ class NumericEx extends SearchEx {
 class ConstantNumericEx extends NumericEx {
   constructor(args) {
     super(args)
-    let number = args.number
-    if (!number && 0 !== number) errorMissingParameter("number")
-    this.number = number
+    const { number, src } = args
+    if (number || 0 === number) {
+      this.number = number
+    } else if (src && (src.number || 0 === src.number)) {
+      this.number = src.number
+    } else {
+      errorMissingParameter("number")
+    }
   }
   static fromLispHelper(constructor, lisp) {
     return new constructor({ number: lisp[1] })
@@ -433,9 +460,8 @@ registerSearchEx("ConstantNumericEx", "number")
 class TagNumericEx extends NumericEx {
   constructor(args) {
     super(args)
-    let tag = args.tag
-    if (!tag) errorMissingParameter("tag")
-    this.tag = tag
+    const { tag, src } = args
+    this.tag = tag || src.tag || errorMissingParameter("tag")
   }
   static fromLispHelper(constructor, lisp) {
     return new constructor({ tag: lisp[1] })
