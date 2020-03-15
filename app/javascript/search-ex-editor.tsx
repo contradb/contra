@@ -52,6 +52,16 @@ export const SearchExEditor = ({
     >
       {searchEx.isNumeric() ? numericOpOptions : nonNumericOpOptions}
     </select>
+    {searchEx.subexpressions.length && (
+      <div>
+        {searchEx.subexpressions.map(subex => (
+          <SearchExEditor
+            searchEx={subex}
+            setSearchEx={newsub => setSearchEx(searchEx.replace(subex, newsub))}
+          />
+        ))}
+      </div>
+    )}
   </div>
 )
 
