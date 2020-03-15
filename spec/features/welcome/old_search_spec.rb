@@ -5,12 +5,14 @@ require 'rails_helper'
 describe 'Search page', js: true do
   def visit_page_with_testing_query
     visit '/s'
-    expect(page).to have_css('.figure-filter-op', count: 3)
+    select 'and'
+    find_all('.search-ex-op', count: 3).last.select('progression')
+    # ['and', ['figure', '*'], ['progression']]
   end
 
   it 'exercise formation filter' do
     visit_page_with_testing_query
-    all('.figure-filter-op')[1].select('formation')
+    all('.search-ex-op')[1].select('formation')
     select('proper')
     expect(page).to have_text('state.lisp: [ "and", [ "formation", "proper" ], [ "progression" ] ]')
   end
@@ -18,15 +20,15 @@ describe 'Search page', js: true do
   describe 'casts' do
     it "cast from 'and' to 'or'" do
       visit_page_with_testing_query
-      first('.figure-filter-op').select('or')
+      first('.search-ex-op').select('or')
       expect(page).to have_text('state.lisp: [ "or", [ "figure", "*" ], [ "progression" ] ]')
     end
 
     it "cast to 'not'" do
       visit_page_with_testing_query
-      first('.figure-filter-op').select('not')
+      first('.search-ex-op').select('not')
       expect(page).to have_text('state.lisp: [ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]')
-      expect(page).to have_css('.figure-filter-op', count: 4)
+      expect(page).to have_css('.search-ex-op', count: 4)
     end
   end
 
@@ -46,8 +48,8 @@ describe 'Search page', js: true do
 
     it "menu item isn't visible for a subexpression that's required" do
       visit_page_with_testing_query
-      first('.figure-filter-op').select('not')
-      expect(page).to have_css('.figure-filter-op', count: 4)
+      first('.search-ex-op').select('not')
+      expect(page).to have_css('.search-ex-op', count: 4)
       expect(page).to have_text('state.lisp: [ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]')
       all('.figure-filter-menu-hamburger')[1].click
       expect(page).to have_css('.figure-filter-menu')
@@ -64,7 +66,7 @@ describe 'Search page', js: true do
       dances.each {|dance|
         expect(page).to have_link(dance.title, href: dance_path(dance))
       }
-      all('.figure-filter-op')[1].select('formation')
+      all('.search-ex-op')[1].select('formation')
       select('Becket *')
       dances.each do |dance|
         to_or_to_not = dance.start_type.include?("Becket") ? :to : :to_not
@@ -75,8 +77,8 @@ describe 'Search page', js: true do
     it 'count filter' do
       dances
       visit_page_with_testing_query
-      first('.figure-filter-op').select('figure')
-      first('.figure-filter-op').select('number of')
+      first('.search-ex-op').select('figure')
+      first('.search-ex-op').select('number of')
       select('≠')
       select('7')
       matches = 0
@@ -97,8 +99,8 @@ describe 'Search page', js: true do
       1.times { FactoryGirl.create(:dut, tag: verified, dance: call_me) }
       2.times { FactoryGirl.create(:dut, tag: broken, dance: the_rendevouz) }
       visit_page_with_testing_query
-      first('.figure-filter-op').select('compare')
-      find_all('.figure-filter-op', count: 3)[1].select('tag')
+      first('.search-ex-op').select('compare')
+      find_all('.search-ex-op', count: 3)[1].select('tag')
       dances.each do |dance|
         if dance.id == call_me.id
           expect(page).to have_link(dance.title)
@@ -123,8 +125,8 @@ describe 'Search page', js: true do
     it 'count-matches and compare filters' do
       dances
       visit_page_with_testing_query
-      first('.figure-filter-op').select('compare')
-      find_all('.figure-filter-op', count: 3)[1].select('count matches')
+      first('.search-ex-op').select('compare')
+      find_all('.search-ex-op', count: 3)[1].select('count matches')
       select('≠')
       select('7')
       matches = 0
@@ -140,7 +142,7 @@ describe 'Search page', js: true do
     it '& filter' do
       dances
       visit_page_with_testing_query
-      first('.figure-filter-op').select('&')
+      first('.search-ex-op').select('&')
       select('chain')
       expect(page).to have_text('state.lisp: [ "&", [ "figure", "chain" ], [ "progression" ] ]')
       expect(page).to_not have_link('The Rendevouz')

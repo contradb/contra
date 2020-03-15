@@ -2,6 +2,16 @@ import React, { Dispatch } from "react"
 import { SearchEx } from "./search-ex"
 import SearchExEditor from "./search-ex-editor"
 
+const strangely_spaced_out_json_stringify = (thing: any): string => {
+  if (Array.isArray(thing)) {
+    return (
+      "[ " + thing.map(strangely_spaced_out_json_stringify).join(", ") + " ]"
+    )
+  } else {
+    return JSON.stringify(thing)
+  }
+}
+
 export const FiguresTab = ({
   searchEx,
   setSearchEx,
@@ -12,7 +22,7 @@ export const FiguresTab = ({
   <>
     Coming Soon!
     <SearchExEditor searchEx={searchEx} setSearchEx={setSearchEx} />
-    {JSON.stringify(searchEx.toLisp())}
+    state.lisp: {strangely_spaced_out_json_stringify(searchEx.toLisp())}
   </>
 )
 export default FiguresTab
