@@ -10,13 +10,6 @@ describe 'Search page', js: true do
     # ['and', ['figure', '*'], ['progression']]
   end
 
-  it 'exercise formation filter' do
-    visit_page_with_testing_query
-    all('.search-ex-op')[1].select('formation')
-    select('proper')
-    expect(page).to have_text('state.lisp: [ "and", [ "formation", "proper" ], [ "progression" ] ]')
-  end
-
   describe 'casts' do
     it "cast from 'and' to 'or'" do
       visit_page_with_testing_query

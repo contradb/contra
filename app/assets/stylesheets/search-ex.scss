@@ -1,6 +1,31 @@
 // these are react-based search expressions, not the old bootstrap or vue styles for search expressions.
 
 .search-ex {
-  padding: 10px;
-  background-color: purple;
+  padding: 1em;
+  margin-top: 0.25em;
+  border: 1px solid #CCC;
+  border-radius: 1em;
+  &:not(:first-child) {
+    margin-left: 1em;
+  }
+  &:not(:last-child) {
+    margin-right: 1em;
+  }
+  &:first-child:last-child {
+    margin-left: 0em;
+    margin-right: 0em;
+  }
+}
+
+.search-ex-trunk {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search-ex-subexpressions {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  margin-top: 0.75em;           // plus each individual search-ex's top margin, equals 1em
 }

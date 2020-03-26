@@ -21,7 +21,9 @@ export const FiguresTab = ({
 }) => (
   <>
     Coming Soon!
-    <SearchExEditor searchEx={searchEx} setSearchEx={setSearchEx} />
+    <div style={{ display: "flex", justifyContent: "center" }}>
+      <SearchExEditor searchEx={searchEx} setSearchEx={setSearchEx} />
+    </div>
     state.lisp: {strangely_spaced_out_json_stringify(searchEx.toLisp())}
   </>
 )
