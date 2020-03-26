@@ -42,33 +42,37 @@ export const SearchExEditor = ({
   setSearchEx: (se: SearchEx) => void
 }) => (
   <div className="search-ex">
-    <div className="search-ex-trunk">
-      <div className="form-inline">
-        <select
-          value={searchEx.op()}
-          onChange={e => {
-            const op = e.target.value
-            setSearchEx(searchEx.castTo(op))
-          }}
-          className="form-control search-ex-op"
-        >
-          {searchEx.isNumeric() ? numericOpOptions : nonNumericOpOptions}
-        </select>
+    <div className="search-ex-well">
+      <div className="search-ex-trunk">
+        <div className="form-inline">
+          <select
+            value={searchEx.op()}
+            onChange={e => {
+              const op = e.target.value
+              setSearchEx(searchEx.castTo(op))
+            }}
+            className="form-control search-ex-op"
+          >
+            {searchEx.isNumeric() ? numericOpOptions : nonNumericOpOptions}
+          </select>
+        </div>
+        {otherDoodads(searchEx)}
       </div>
-      {otherDoodads(searchEx)}
+      {!searchEx.subexpressions.length ? (
+        ""
+      ) : (
+        <div className="search-ex-subexpressions">
+          {searchEx.subexpressions.map(subex => (
+            <SearchExEditor
+              searchEx={subex}
+              setSearchEx={newsub =>
+                setSearchEx(searchEx.replace(subex, newsub))
+              }
+            />
+          ))}
+        </div>
+      )}
     </div>
-    {!searchEx.subexpressions.length ? (
-      ""
-    ) : (
-      <div className="search-ex-subexpressions">
-        {searchEx.subexpressions.map(subex => (
-          <SearchExEditor
-            searchEx={subex}
-            setSearchEx={newsub => setSearchEx(searchEx.replace(subex, newsub))}
-          />
-        ))}
-      </div>
-    )}
   </div>
 )
 
