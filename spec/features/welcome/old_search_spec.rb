@@ -69,7 +69,11 @@ describe 'Search page', js: true do
   end
 
   describe 'datatable' do
-    let (:dances) {[:dance, :box_the_gnat_contra, :call_me, :you_cant_get_there_from_here].map {|d| FactoryGirl.create(d)}}
+    let (:dances) {
+      ds = [:dance, :box_the_gnat_contra, :call_me, :you_cant_get_there_from_here].map {|d| FactoryGirl.create(d)}
+      tag_all_dances
+      ds
+    }
 
     it 'works (and test formation filter)' do
       dances
@@ -165,7 +169,7 @@ describe 'Search page', js: true do
     describe 'figure filter' do
       it 'move works' do
         dances
-        visit_page_with_testing_query
+        visit '/s'
         select 'chain'
         expect(page).to_not have_link('The Rendevouz')
         expect(page).to have_link('Call Me')
@@ -199,5 +203,11 @@ describe 'Search page', js: true do
 
   def open_ellipsis
     find('.toggle-off').click
+  end
+
+  def tag_all_dances(tag: FactoryGirl.create(:tag, :verified), user: FactoryGirl.create(:user))
+    Dance.all.each do |dance|
+      FactoryGirl.create(:dut, dance: dance, tag: tag, user: user)
+    end
   end
 end

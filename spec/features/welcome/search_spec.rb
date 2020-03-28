@@ -5,7 +5,7 @@ require 'rails_helper'
 describe 'Search page', js: true do
   let (:now) { DateTime.now }
 
-  it "works" do
+  it "displays dances" do
     dances = 12.times.map {|i| FactoryGirl.create(:dance, title: "Dance #{i}.", created_at: now - i.days)}
     tag_all_dances
     visit(s_path)

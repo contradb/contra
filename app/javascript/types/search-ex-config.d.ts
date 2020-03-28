@@ -6,6 +6,7 @@ declare class SearchEx {
   op(): string
   castTo(op: string): SearchEx
   subexpressions: SearchEx[]
+  shallowCopy: (any) => SearchEx
   minSubexpressions: () => number
   maxSubexpressions: () => number
   minUsefulSubexpressions: () => number

@@ -115,11 +115,9 @@ export const SearchExEditor = ({
               </ul>
             </div>
           </div>
-          {otherDoodads(searchEx)}
+          {otherDoodads(searchEx, setSearchEx)}
         </div>
-        {!searchEx.subexpressions.length ? (
-          ""
-        ) : (
+        {0 === searchEx.subexpressions.length ? null : (
           <div className="search-ex-subexpressions">
             {searchEx.subexpressions.map(subex => (
               <SearchExEditor
@@ -137,19 +135,34 @@ export const SearchExEditor = ({
   )
 }
 
-const otherDoodads = (searchEx: SearchEx) => {
+const otherDoodads = (
+  searchEx: SearchEx,
+  setSearchEx: (se: SearchEx) => void
+) => {
   if (searchEx instanceof FigureSearchEx) {
-    return "figures"
+    return (
+      <select
+        className="form-control search-ex-figure"
+        onChange={preventDefaultThen(({ target: { value } }) =>
+          setSearchEx(searchEx.shallowCopy({ move: value }))
+        )}
+      >
+        <option>swing</option>
+        <option>do si do</option>
+        <option>chain</option>
+        <option>circle</option>
+      </select>
+    )
   } else {
     return null
   }
 }
 
-const preventDefaultThen = (funcToCall: () => void) => (event: {
+const preventDefaultThen = (funcToCall: (event: any) => void) => (event: {
   preventDefault: () => void
 }) => {
   event.preventDefault()
-  funcToCall()
+  funcToCall(event)
 }
 
 export default SearchExEditor
