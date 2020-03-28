@@ -99,6 +99,10 @@ class SearchEx {
     }
   }
 
+  remove(oldEx) {
+    return removeHelper(this, oldEx, throwRemoveError)
+  }
+
   static mutationNameForProp(propertyName) {
     if (propertyName.length >= 1) {
       return (
@@ -145,6 +149,32 @@ registerSearchEx("SearchEx", "subexpressions")
 function errorMissingParameter(name) {
   throw new Error('missing parameter "' + name + '"')
 }
+
+const removeHelper = (root, target, rootHit) => {
+  if (root === target) return rootHit()
+  else {
+    const sube = root.subexpressions.map(e =>
+      removeHelper(e, target, constantlyNull)
+    )
+    let different = false
+    for (let i = 0; i < sube.length; i++) {
+      if (root.subexpressions[i] !== sube[i]) {
+        different = true
+        break
+      }
+    }
+    if (different)
+      return root.shallowCopy({ subexpressions: sube.filter(e => e) })
+    else return root
+  }
+  return root
+}
+
+const throwRemoveError = () => {
+  throw new Error("attempt to remove self is not allowed")
+}
+
+const constantlyNull = () => null
 
 let nullaryMixin = Base =>
   class extends Base {

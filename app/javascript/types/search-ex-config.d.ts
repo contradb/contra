@@ -7,6 +7,7 @@ declare class SearchEx {
   castTo(op: string): SearchEx
   subexpressions: SearchEx[]
   replace(from: SearchEx, to: SearchEx): SearchEx
+  remove(target: SearchEx): SearchEx
 }
 
 // declare module "*"

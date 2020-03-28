@@ -285,6 +285,73 @@ describe("replace()", () => {
   })
 })
 
+describe("remove()", () => {
+  it("depth 0 hit", () => {
+    const oldRoot = SearchEx.fromLisp(["figure", "*"])
+    const oldSub = oldRoot
+    expect(() => oldRoot.remove(oldSub)).toThrowError("attempt to remove self")
+  })
+
+  it("depth 0 miss", () => {
+    const oldRoot = SearchEx.fromLisp(["figure", "*"])
+    const oldSub = SearchEx.fromLisp(["figure", "swing"])
+    const newRoot = oldRoot.remove(oldSub)
+    expect(newRoot).toBe(oldRoot)
+  })
+
+  it("depth 1 hit", () => {
+    const oldRoot = SearchEx.fromLisp([
+      "&",
+      ["tag", "verified"],
+      ["figure", "star"],
+      ["progression"],
+    ])
+    const oldSub = oldRoot.subexpressions[1] // star
+    const newRoot = oldRoot.remove(oldSub)
+    const expectedLisp = ["&", ["tag", "verified"], ["progression"]]
+    expect(newRoot.toLisp()).toEqual(expectedLisp)
+    expect(newRoot.subexpressions[0]).toBe(oldRoot.subexpressions[0])
+    expect(newRoot.subexpressions[1]).toBe(oldRoot.subexpressions[2])
+    expect(newRoot.op()).toEqual("&")
+  })
+
+  it("depth 1 miss", () => {
+    const oldRoot = SearchEx.fromLisp([
+      "&",
+      ["tag", "verified"],
+      ["figure", "star"],
+      ["progression"],
+    ])
+    const oldSub = SearchEx.fromLisp(["figure", "star"]) // a different star
+    const expectedLisp = oldRoot.toLisp()
+    const newRoot = oldRoot.remove(oldSub)
+    expect(newRoot.toLisp()).toEqual(expectedLisp)
+    expect(newRoot.subexpressions).toBe(oldRoot.subexpressions)
+    expect(newRoot.op()).toEqual("&")
+  })
+
+  it("depth 2 hit", () => {
+    const oldRoot = SearchEx.fromLisp([
+      "and",
+      ["no", ["figure", "hey"]],
+      ["or", ["figure", "star"]],
+      ["no", ["figure", "circle"]],
+    ])
+    const oldSub = oldRoot.subexpressions[1].subexpressions[0] // star
+    const newRoot = oldRoot.remove(oldSub)
+    const expectedLisp = [
+      "and",
+      ["no", ["figure", "hey"]],
+      ["or"],
+      ["no", ["figure", "circle"]],
+    ]
+    expect(oldSub.move).toBe("star")
+    expect(newRoot.toLisp()).toEqual(expectedLisp)
+    expect(newRoot.subexpressions[0]).toBe(oldRoot.subexpressions[0])
+    expect(newRoot.subexpressions[2]).toBe(oldRoot.subexpressions[2])
+  })
+})
+
 describe("shallowCopy", () => {
   // operators with no instance variables (besides subexpressions)
   for (const op of [
