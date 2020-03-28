@@ -511,3 +511,29 @@ describe("shallowCopy", () => {
     })
   })
 })
+
+describe("withAdditionalSubexpression", () => {
+  it("adds SearchEx.default() with no argument", () => {
+    const elisp = ["and", ["figure", "swing"]]
+    const e = SearchEx.fromLisp(elisp)
+    const e2 = e.withAdditionalSubexpression()
+    expect(e2.toLisp()).toEqual([...elisp, SearchEx.default().toLisp()])
+    expect(e2.subexpressions[0]).toEqual(e.subexpressions[0])
+  })
+
+  it("adds an optional parameter", () => {
+    const elisp = ["and", ["figure", "swing"]]
+    const e = SearchEx.fromLisp(elisp)
+    const extra = SearchEx.fromLisp(["figure", "do si do"])
+    const e2 = e.withAdditionalSubexpression(extra)
+    expect(e2.toLisp()).toEqual([...elisp, extra.toLisp()])
+    expect(e2.subexpressions[0]).toEqual(e.subexpressions[0])
+    expect(e2.subexpressions[1]).toEqual(extra)
+  })
+
+  it("throws when there is no space", () => {
+    const se = SearchEx.fromLisp(["figure", "swing"])
+    const msg = "subexpressions are full"
+    expect(() => se.withAdditionalSubexpression()).toThrowError(msg)
+  })
+})

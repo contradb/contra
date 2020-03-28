@@ -11,6 +11,7 @@ declare class SearchEx {
   minUsefulSubexpressions: () => number
   replace(from: SearchEx, to: SearchEx): SearchEx
   remove(target: SearchEx): SearchEx
+  withAdditionalSubexpression(se?: SearchEx): SearchEx
 }
 
 // declare module "*"

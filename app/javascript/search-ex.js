@@ -103,6 +103,14 @@ class SearchEx {
     return removeHelper(this, oldEx, throwRemoveError)
   }
 
+  withAdditionalSubexpression(e = SearchEx.default()) {
+    if (this.subexpressions.length < this.maxSubexpressions())
+      return this.shallowCopy({
+        subexpressions: [...this.subexpressions, e],
+      })
+    else throw new Error("subexpressions are full")
+  }
+
   static mutationNameForProp(propertyName) {
     if (propertyName.length >= 1) {
       return (
