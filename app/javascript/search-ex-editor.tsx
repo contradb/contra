@@ -48,6 +48,8 @@ export const SearchExEditor = ({
   const subexpressionRemoveFn = hasEnoughChildrenToRemoveOne
     ? (sub: SearchEx) => setSearchEx(searchEx.remove(sub))
     : null
+  const subexpressionsGrowFn = () =>
+    setSearchEx(searchEx.withAdditionalSubexpression())
   return (
     <div className="search-ex">
       <div className="search-ex-well">
@@ -75,9 +77,21 @@ export const SearchExEditor = ({
                 <span className="glyphicon glyphicon-option-vertical"></span>
               </button>
               <ul className="dropdown-menu search-ex-menu-entries">
-                <li>
-                  <a href="#">Action</a>
-                </li>
+                {searchEx.subexpressions.length <
+                  searchEx.maxSubexpressions() && (
+                  <li>
+                    <a
+                      href="#"
+                      className="search-ex-add-subexpression"
+                      onClick={e =>
+                        setSearchEx(searchEx.withAdditionalSubexpression())
+                      }
+                    >
+                      Add
+                    </a>
+                  </li>
+                )}
+
                 <li>
                   <a href="#">Another action</a>
                 </li>
