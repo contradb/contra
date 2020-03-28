@@ -6,6 +6,9 @@ declare class SearchEx {
   op(): string
   castTo(op: string): SearchEx
   subexpressions: SearchEx[]
+  minSubexpressions: () => number
+  maxSubexpressions: () => number
+  minUsefulSubexpressions: () => number
   replace(from: SearchEx, to: SearchEx): SearchEx
   remove(target: SearchEx): SearchEx
 }

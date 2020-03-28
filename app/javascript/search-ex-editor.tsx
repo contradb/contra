@@ -42,77 +42,84 @@ export const SearchExEditor = ({
   searchEx: SearchEx
   setSearchEx: (se: SearchEx) => void
   removeSearchEx: null | ((se: SearchEx) => void)
-}) => (
-  <div className="search-ex">
-    <div className="search-ex-well">
-      <div className="search-ex-trunk">
-        <div className="form-inline">
-          <select
-            value={searchEx.op()}
-            onChange={e => {
-              const op = e.target.value
-              setSearchEx(searchEx.castTo(op))
-            }}
-            className="form-control search-ex-op"
-          >
-            {searchEx.isNumeric() ? numericOpOptions : nonNumericOpOptions}
-          </select>
-
-          <div className="btn-group">
-            <button
-              type="button"
-              className="btn btn-default dropdown-toggle search-ex-menu"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
+}) => {
+  const hasEnoughChildrenToRemoveOne =
+    searchEx.subexpressions.length > searchEx.minSubexpressions()
+  const subexpressionRemoveFn = hasEnoughChildrenToRemoveOne
+    ? (sub: SearchEx) => setSearchEx(searchEx.remove(sub))
+    : null
+  return (
+    <div className="search-ex">
+      <div className="search-ex-well">
+        <div className="search-ex-trunk">
+          <div className="form-inline">
+            <select
+              value={searchEx.op()}
+              onChange={e => {
+                const op = e.target.value
+                setSearchEx(searchEx.castTo(op))
+              }}
+              className="form-control search-ex-op"
             >
-              <span className="glyphicon glyphicon-option-vertical"></span>
-            </button>
-            <ul className="dropdown-menu">
-              <li>
-                <a href="#">Action</a>
-              </li>
-              <li>
-                <a href="#">Another action</a>
-              </li>
-              <li>
-                <a href="#">Something else here</a>
-              </li>
-              <li role="separator" className="divider"></li>
-              {removeSearchEx && (
+              {searchEx.isNumeric() ? numericOpOptions : nonNumericOpOptions}
+            </select>
+
+            <div className="btn-group">
+              <button
+                type="button"
+                className="btn btn-default dropdown-toggle search-ex-menu-toggle"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <span className="glyphicon glyphicon-option-vertical"></span>
+              </button>
+              <ul className="dropdown-menu search-ex-menu-entries">
                 <li>
-                  <a
-                    href="#"
-                    className="search-ex-delete"
-                    onClick={e => removeSearchEx(searchEx)}
-                  >
-                    Delete
-                  </a>
+                  <a href="#">Action</a>
                 </li>
-              )}
-            </ul>
+                <li>
+                  <a href="#">Another action</a>
+                </li>
+                <li>
+                  <a href="#">Something else here</a>
+                </li>
+                <li role="separator" className="divider"></li>
+                {removeSearchEx && (
+                  <li>
+                    <a
+                      href="#"
+                      className="search-ex-delete"
+                      onClick={e => removeSearchEx(searchEx)}
+                    >
+                      Delete
+                    </a>
+                  </li>
+                )}
+              </ul>
+            </div>
           </div>
+          {otherDoodads(searchEx)}
         </div>
-        {otherDoodads(searchEx)}
+        {!searchEx.subexpressions.length ? (
+          ""
+        ) : (
+          <div className="search-ex-subexpressions">
+            {searchEx.subexpressions.map(subex => (
+              <SearchExEditor
+                searchEx={subex}
+                setSearchEx={newsub =>
+                  setSearchEx(searchEx.replace(subex, newsub))
+                }
+                removeSearchEx={subexpressionRemoveFn}
+              />
+            ))}
+          </div>
+        )}
       </div>
-      {!searchEx.subexpressions.length ? (
-        ""
-      ) : (
-        <div className="search-ex-subexpressions">
-          {searchEx.subexpressions.map(subex => (
-            <SearchExEditor
-              searchEx={subex}
-              setSearchEx={newsub =>
-                setSearchEx(searchEx.replace(subex, newsub))
-              }
-              removeSearchEx={sub => setSearchEx(searchEx.remove(sub))}
-            />
-          ))}
-        </div>
-      )}
     </div>
-  </div>
-)
+  )
+}
 
 const otherDoodads = (searchEx: SearchEx) => {
   if (searchEx instanceof FigureSearchEx) {

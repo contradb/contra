@@ -28,15 +28,15 @@ describe 'Search page', js: true do
   describe 'deletion' do
     it "works" do
       visit_page_with_testing_query
-      all('.search-ex-menu')[-1].click
+      all('.search-ex-menu-toggle')[-1].click
       find('a.search-ex-delete').click
       expect(page).to have_text('[ "and", [ "figure", "*" ] ]')
     end
 
     it "menu item isn't visible for the root node" do
       visit_page_with_testing_query
-      first('.figure-filter-menu-hamburger').click
-      expect(page).to_not have_css('.figure-filter-menu-delete')
+      first('.search-ex-menu-toggle').click
+      expect(page).to_not have_css('.search-ex-delete')
     end
 
     it "menu item isn't visible for a subexpression that's required" do
@@ -44,9 +44,9 @@ describe 'Search page', js: true do
       first('.search-ex-op').select('not')
       expect(page).to have_css('.search-ex-op', count: 4)
       expect(page).to have_text('state.lisp: [ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]')
-      all('.figure-filter-menu-hamburger')[1].click
-      expect(page).to have_css('.figure-filter-menu')
-      expect(page).to_not have_css('.figure-filter-menu-delete')
+      all('.search-ex-menu-toggle')[1].click
+      expect(page).to have_css('.search-ex-menu-entries')
+      expect(page).to_not have_css('.search-ex-delete')
     end
   end
 
