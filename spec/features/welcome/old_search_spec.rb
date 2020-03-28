@@ -28,8 +28,8 @@ describe 'Search page', js: true do
   describe 'deletion' do
     it "works" do
       visit_page_with_testing_query
-      all('.figure-filter-menu-hamburger')[-1].click
-      find('a.figure-filter-menu-delete').click
+      all('.search-ex-menu')[-1].click
+      find('a.search-ex-delete').click
       expect(page).to have_text('[ "and", [ "figure", "*" ] ]')
     end
 

@@ -37,9 +37,11 @@ const numericOpOptions = ["constant", "tag", "count-matches"].map(makeOpOption)
 export const SearchExEditor = ({
   searchEx,
   setSearchEx,
+  removeSearchEx,
 }: {
   searchEx: SearchEx
   setSearchEx: (se: SearchEx) => void
+  removeSearchEx: null | ((se: SearchEx) => void)
 }) => (
   <div className="search-ex">
     <div className="search-ex-well">
@@ -55,6 +57,41 @@ export const SearchExEditor = ({
           >
             {searchEx.isNumeric() ? numericOpOptions : nonNumericOpOptions}
           </select>
+
+          <div className="btn-group">
+            <button
+              type="button"
+              className="btn btn-default dropdown-toggle search-ex-menu"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <span className="glyphicon glyphicon-option-vertical"></span>
+            </button>
+            <ul className="dropdown-menu">
+              <li>
+                <a href="#">Action</a>
+              </li>
+              <li>
+                <a href="#">Another action</a>
+              </li>
+              <li>
+                <a href="#">Something else here</a>
+              </li>
+              <li role="separator" className="divider"></li>
+              {removeSearchEx && (
+                <li>
+                  <a
+                    href="#"
+                    className="search-ex-delete"
+                    onClick={e => removeSearchEx(searchEx)}
+                  >
+                    Delete
+                  </a>
+                </li>
+              )}
+            </ul>
+          </div>
         </div>
         {otherDoodads(searchEx)}
       </div>
@@ -68,6 +105,7 @@ export const SearchExEditor = ({
               setSearchEx={newsub =>
                 setSearchEx(searchEx.replace(subex, newsub))
               }
+              removeSearchEx={sub => setSearchEx(searchEx.remove(sub))}
             />
           ))}
         </div>

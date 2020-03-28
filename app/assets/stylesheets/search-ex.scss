@@ -28,6 +28,10 @@
   align-items: center;
 }
 
+.search-ex-op {
+  margin-right: 0.5em; // spacer for ⋮ menu
+}
+
 .search-ex-subexpressions {
   display: flex;
   justify-content: space-evenly;
