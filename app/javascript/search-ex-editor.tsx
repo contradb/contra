@@ -83,9 +83,9 @@ export const SearchExEditor = ({
                     <a
                       href="#"
                       className="search-ex-add-subexpression"
-                      onClick={e =>
+                      onClick={preventDefaultThen(() =>
                         setSearchEx(searchEx.withAdditionalSubexpression())
-                      }
+                      )}
                     >
                       Add
                     </a>
@@ -104,7 +104,9 @@ export const SearchExEditor = ({
                     <a
                       href="#"
                       className="search-ex-delete"
-                      onClick={e => removeSearchEx(searchEx)}
+                      onClick={preventDefaultThen(() =>
+                        removeSearchEx(searchEx)
+                      )}
                     >
                       Delete
                     </a>
@@ -141,6 +143,13 @@ const otherDoodads = (searchEx: SearchEx) => {
   } else {
     return null
   }
+}
+
+const preventDefaultThen = (funcToCall: () => void) => (event: {
+  preventDefault: () => void
+}) => {
+  event.preventDefault()
+  funcToCall()
 }
 
 export default SearchExEditor
