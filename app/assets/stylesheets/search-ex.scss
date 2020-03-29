@@ -32,3 +32,21 @@
   flex-wrap: wrap;
   margin-top: 0.75em;           // plus each individual search-ex's top margin, equals 1em
 }
+
+
+
+// https://stackoverflow.com/questions/21651215/how-make-bootstrap-class-form-inline-work-on-resolutions-768px
+@media (max-width: 767px) {
+  .form-inline.form-inline-even-when-small .form-control {
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+  }
+}
+@media (max-width: 767px) {
+  .form-inline.form-inline-even-when-small .form-group {
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
+  }
+}

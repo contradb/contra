@@ -63,7 +63,7 @@ export const SearchExEditor = ({
     <div className="search-ex">
       <div className="search-ex-well">
         <div className="search-ex-trunk">
-          <div className="form-inline">
+          <div className="form-inline form-inline-even-when-small">
             <select
               value={searchEx.op}
               onChange={e => {
