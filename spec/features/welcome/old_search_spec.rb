@@ -30,7 +30,7 @@ describe 'Search page', js: true do
       visit_page_with_testing_query
       all('.search-ex-menu-toggle')[-1].click
       find('a.search-ex-delete').click
-      expect(page).to have_text('[ "and", [ "figure", "*" ] ]')
+      expect(page).to have_css('#debug-lisp', text: '[ "and", [ "figure", "*" ] ]', visible: false)
     end
 
     it "menu item isn't visible for the root node" do
