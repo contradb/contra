@@ -37,6 +37,7 @@ export const DesktopSearchWithSideTabs = ({
           <div className="main-search-desktop-mainy-main-main">
             <h1>Search Dances</h1>
             {figuresTab}
+            <br />
             {dancesTab}
           </div>
         </div>

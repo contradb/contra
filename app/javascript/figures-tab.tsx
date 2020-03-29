@@ -20,13 +20,14 @@ export const FiguresTab = ({
   setSearchEx: (se: SearchEx) => void
 }) => (
   <>
-    Coming Soon!
     <SearchExEditor
       searchEx={searchEx}
       setSearchEx={setSearchEx}
       removeSearchEx={null}
     />
-    state.lisp: {strangely_spaced_out_json_stringify(searchEx.toLisp())}
+    <div id="debug-lisp" className="hidden">
+      {strangely_spaced_out_json_stringify(searchEx.toLisp())}
+    </div>
   </>
 )
 export default FiguresTab

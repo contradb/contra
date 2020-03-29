@@ -14,13 +14,13 @@ describe 'Search page', js: true do
     it "cast from 'and' to 'or'" do
       visit_page_with_testing_query
       first('.search-ex-op').select('or')
-      expect(page).to have_text('state.lisp: [ "or", [ "figure", "*" ], [ "progression" ] ]')
+      expect(page).to have_css('#debug-lisp', text: '[ "or", [ "figure", "*" ], [ "progression" ] ]', visible: false)
     end
 
     it "cast to 'not'" do
       visit_page_with_testing_query
       first('.search-ex-op').select('not')
-      expect(page).to have_text('state.lisp: [ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]')
+      expect(page).to have_css('#debug-lisp', text: '[ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]', visible: false)
       expect(page).to have_css('.search-ex-op', count: 4)
     end
   end
@@ -43,7 +43,7 @@ describe 'Search page', js: true do
       visit_page_with_testing_query
       first('.search-ex-op').select('not')
       expect(page).to have_css('.search-ex-op', count: 4)
-      expect(page).to have_text('state.lisp: [ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]')
+      expect(page).to have_css('#debug-lisp', text: '[ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]', visible: false)
       all('.search-ex-menu-toggle')[1].click
       expect(page).to have_css('.search-ex-menu-entries')
       expect(page).to_not have_css('.search-ex-delete')
@@ -57,7 +57,7 @@ describe 'Search page', js: true do
       all('.search-ex-menu-toggle').first.click
       find(search_ex_add_subexpression_selector).click
       expect(page).to have_css('.search-ex-op', count: 4)
-      expect(page).to have_text('state.lisp: [ "and", [ "figure", "*" ], [ "progression" ], [ "figure", "*" ] ]')
+      expect(page).to have_css("#debug-lisp", text: '[ "and", [ "figure", "*" ], [ "progression" ], [ "figure", "*" ] ]', visible: false)
     end
 
     it "add subexpression button isn't available if it wouldn't be syntactically valid" do
@@ -159,7 +159,7 @@ describe 'Search page', js: true do
       visit_page_with_testing_query
       first('.search-ex-op').select('&')
       select('chain')
-      expect(page).to have_text('state.lisp: [ "&", [ "figure", "chain" ], [ "progression" ] ]')
+      expect(page).to have_css("#debug-lisp", text: '[ "&", [ "figure", "chain" ], [ "progression" ] ]', visible: false)
       expect(page).to_not have_link('The Rendevouz')
       expect(page).to_not have_link('Call Me')
       expect(page).to_not have_link("You Can't Get There From Here")

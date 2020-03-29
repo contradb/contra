@@ -536,35 +536,35 @@ describe 'Search page', js: true do
       expect(page).to have_css('.search-tabs button.selected', count: 1)
       expect(page).to have_css('.dances-table-react')           # results page
       expect(page).to_not have_css('h4', text: 'Choreographer') # filter page
-      expect(page).to_not have_content('Coming Soon!')          # figures page
+      expect(page).to_not have_css('.search-ex')                # figures page
       expect(page).to_not have_content('Coming Eventually!')    # program page
       click_on 'filters'
       expect(page).to have_css('.search-tabs button.selected', text: 'filters')
       expect(page).to have_css('.search-tabs button.selected', count: 1)
       expect(page).to_not have_css('.dances-table-react')       # results page
       expect(page).to have_css('h4', text: 'Choreographer')     # filter page
-      expect(page).to_not have_content('Coming Soon!')          # figures page
+      expect(page).to_not have_css('.search-ex')                # figures page
       expect(page).to_not have_content('Coming Eventually!')    # program page
       click_on 'figures'
       expect(page).to have_css('.search-tabs button.selected', text: 'figures')
       expect(page).to have_css('.search-tabs button.selected', count: 1)
       expect(page).to_not have_css('.dances-table-react')       # results page
       expect(page).to_not have_css('h4', text: 'Choreographer') # filter page
-      expect(page).to have_content('Coming Soon!')              # figures page
+      expect(page).to have_css('.search-ex')                    # figures page
       expect(page).to_not have_content('Coming Eventually!')    # program page
       click_on_results_tab
       expect(page).to have_css('.search-tabs button.selected', text: results_tab_label)
       expect(page).to have_css('.search-tabs button.selected', count: 1)
       expect(page).to have_css('.dances-table-react')           # results page
       expect(page).to_not have_css('h4', text: 'Choreographer') # filter page
-      expect(page).to_not have_content('Coming Soon!')          # figures page
+      expect(page).to_not have_css('.search-ex')                # figures page
       expect(page).to_not have_content('Coming Eventually!')    # program page
       click_on 'program'
       expect(page).to have_css('.search-tabs button.selected', text: 'program')
       expect(page).to have_css('.search-tabs button.selected', count: 1)
       expect(page).to_not have_css('.dances-table-react')       # results page
       expect(page).to_not have_css('h4', text: 'Choreographer') # filter page
-      expect(page).to_not have_content('Coming Soon!')          # figures page
+      expect(page).to_not have_css('.search-ex')                # figures page
       expect(page).to have_content('Coming Eventually!')        # program page
     end
 
