@@ -23,7 +23,7 @@ export const AdvancedSearch = ({
   dialect,
   tags,
 }: {
-  dialect: any
+  dialect: Dialect
   tags: string[]
 }): JSX.Element => {
   const [searchDancesJson, setSearchDancesJson] = useState({
@@ -104,7 +104,7 @@ export const AdvancedSearch = ({
   }
 }
 
-const provideDialect = (dialect: any, component: JSX.Element) => (
+const provideDialect = (dialect: Dialect, component: JSX.Element) => (
   <DialectContext.Provider value={dialect}>{component}</DialectContext.Provider>
 )
 

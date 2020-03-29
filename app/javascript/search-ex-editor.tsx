@@ -4,7 +4,7 @@ import LibFigure from "./libfigure/libfigure"
 import DialectContext from "./dialect-context"
 
 const moveTermsAndSubstitutionsForSelectMenu: (
-  dialect: any
+  dialect: Dialect
 ) => { term: string; substitution: string }[] =
   LibFigure.moveTermsAndSubstitutionsForSelectMenu
 
@@ -148,7 +148,7 @@ export const SearchExEditor = ({
 const otherDoodads = (
   searchEx: SearchEx,
   setSearchEx: (se: SearchEx) => void,
-  dialect: any
+  dialect: Dialect
 ) => {
   if (searchEx instanceof FigureSearchEx) {
     return (
@@ -173,7 +173,7 @@ const preventDefaultThen = (funcToCall: (event: any) => void) => (event: {
   funcToCall(event)
 }
 
-const moveMenuOptions = (dialect: any) =>
+const moveMenuOptions = (dialect: Dialect) =>
   [
     { term: "*", substitution: "any figure" },
     ...moveTermsAndSubstitutionsForSelectMenu(dialect),

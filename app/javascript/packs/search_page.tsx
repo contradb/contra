@@ -9,7 +9,7 @@ const root = document.getElementById("root")
 const dialectElement: any = document.getElementById("dialect-json")
 const tagsElement: any = document.getElementById("tag-names-json")
 
-const dialect: any = JSON.parse(dialectElement.textContent)
+const dialect: Dialect = JSON.parse(dialectElement.textContent)
 const tags: string[] = JSON.parse(tagsElement.textContent)
 
 ReactDOM.render(<AdvancedSearch dialect={dialect} tags={tags} />, root)
