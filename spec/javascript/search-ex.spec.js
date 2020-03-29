@@ -518,7 +518,7 @@ describe("withAdditionalSubexpression", () => {
     const e = SearchEx.fromLisp(elisp)
     const e2 = e.withAdditionalSubexpression()
     expect(e2.toLisp()).toEqual([...elisp, SearchEx.default().toLisp()])
-    expect(e2.subexpressions[0]).toEqual(e.subexpressions[0])
+    expect(e2.subexpressions[0]).toBe(e.subexpressions[0])
   })
 
   it("adds an optional parameter", () => {
@@ -527,8 +527,8 @@ describe("withAdditionalSubexpression", () => {
     const extra = SearchEx.fromLisp(["figure", "do si do"])
     const e2 = e.withAdditionalSubexpression(extra)
     expect(e2.toLisp()).toEqual([...elisp, extra.toLisp()])
-    expect(e2.subexpressions[0]).toEqual(e.subexpressions[0])
-    expect(e2.subexpressions[1]).toEqual(extra)
+    expect(e2.subexpressions[0]).toBe(e.subexpressions[0])
+    expect(e2.subexpressions[1]).toBe(extra)
   })
 
   it("throws when there is no space", () => {
