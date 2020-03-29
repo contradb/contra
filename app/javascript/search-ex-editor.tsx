@@ -124,7 +124,11 @@ export const SearchExEditor = ({
               </ul>
             </div>
           </div>
-          {otherDoodads(searchEx, setSearchEx, dialect)}
+          <EditorDoodads
+            searchEx={searchEx}
+            setSearchEx={setSearchEx}
+            dialect={dialect}
+          />
         </div>
         {0 === searchEx.subexpressions.length ? null : (
           <div className="search-ex-subexpressions">
@@ -145,11 +149,15 @@ export const SearchExEditor = ({
   )
 }
 
-const otherDoodads = (
-  searchEx: SearchEx,
-  setSearchEx: (se: SearchEx) => void,
+const EditorDoodads = ({
+  searchEx,
+  setSearchEx,
+  dialect,
+}: {
+  searchEx: SearchEx
+  setSearchEx: (se: SearchEx) => void
   dialect: Dialect
-) => {
+}) => {
   if (searchEx instanceof FigureSearchEx) {
     return (
       <select
@@ -158,11 +166,11 @@ const otherDoodads = (
           setSearchEx(searchEx.shallowCopy({ move: value }))
         )}
       >
-        {moveMenuOptions(dialect)}
+        <MoveMenuOptions dialect={dialect} />
       </select>
     )
   } else {
-    return null
+    return <div />
   }
 }
 
@@ -173,14 +181,17 @@ const preventDefaultThen = (funcToCall: (event: any) => void) => (event: {
   funcToCall(event)
 }
 
-const moveMenuOptions = (dialect: Dialect) =>
-  [
-    { term: "*", substitution: "any figure" },
-    ...moveTermsAndSubstitutionsForSelectMenu(dialect),
-  ].map(({ term, substitution }, i) => (
-    <option key={i} value={term}>
-      {substitution}
-    </option>
-  ))
+const MoveMenuOptions = React.memo(({ dialect }: { dialect: Dialect }) => (
+  <>
+    {[
+      { term: "*", substitution: "any figure" },
+      ...moveTermsAndSubstitutionsForSelectMenu(dialect),
+    ].map(({ term, substitution }, i) => (
+      <option key={i} value={term}>
+        {substitution}
+      </option>
+    ))}
+  </>
+))
 
 export default SearchExEditor
