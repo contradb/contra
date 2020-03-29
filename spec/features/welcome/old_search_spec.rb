@@ -28,7 +28,7 @@ describe 'Search page', js: true do
   describe 'deletion' do
     it "works" do
       visit_page_with_testing_query
-      all('.search-ex-menu-toggle')[-1].click
+      all('.search-ex-menu-toggle', count: 3).last.click
       find('a.search-ex-delete').click
       expect(page).to have_css('#debug-lisp', text: '[ "and", [ "figure", "*" ] ]', visible: false)
     end
@@ -44,7 +44,7 @@ describe 'Search page', js: true do
       first('.search-ex-op').select('not')
       expect(page).to have_css('.search-ex-op', count: 4)
       expect(page).to have_css('#debug-lisp', text: '[ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]', visible: false)
-      all('.search-ex-menu-toggle')[1].click
+      all('.search-ex-menu-toggle', count: 4)[1].click
       expect(page).to have_css('.search-ex-menu-entries')
       expect(page).to_not have_css('.search-ex-delete')
     end
@@ -54,7 +54,7 @@ describe 'Search page', js: true do
     let (:search_ex_add_subexpression_selector) { ".search-ex-add-subexpression" }
     it "add subexpression button works" do
       visit_page_with_testing_query
-      all('.search-ex-menu-toggle').first.click
+      all('.search-ex-menu-toggle', count: 3).first.click
       find(search_ex_add_subexpression_selector).click
       expect(page).to have_css('.search-ex-op', count: 4)
       expect(page).to have_css("#debug-lisp", text: '[ "and", [ "figure", "*" ], [ "progression" ], [ "figure", "*" ] ]', visible: false)
@@ -75,13 +75,13 @@ describe 'Search page', js: true do
       ds
     }
 
-    it 'works (and test formation filter)' do
+    xit 'works (and test formation filter)' do
       dances
       visit_page_with_testing_query
       dances.each {|dance|
         expect(page).to have_link(dance.title, href: dance_path(dance))
       }
-      all('.search-ex-op')[1].select('formation')
+      all('.search-ex-op', count: 3)[1].select('formation')
       select('Becket *')
       dances.each do |dance|
         to_or_to_not = dance.start_type.include?("Becket") ? :to : :to_not
@@ -89,7 +89,7 @@ describe 'Search page', js: true do
       end
     end
 
-    it 'count filter' do
+    xit 'count filter' do
       dances
       visit_page_with_testing_query
       first('.search-ex-op').select('figure')
@@ -106,7 +106,7 @@ describe 'Search page', js: true do
       expect(matches).to eq(1)
     end
 
-    it 'tag and compare filters' do
+    xit 'tag and compare filters' do
       verified = FactoryGirl.create(:tag, :verified)
       broken = FactoryGirl.create(:tag, :please_review)
       call_me = dances.find {|dance| dance.title == "Call Me"}
@@ -137,7 +137,7 @@ describe 'Search page', js: true do
       end
     end
 
-    it 'count-matches and compare filters' do
+    xit 'count-matches and compare filters' do
       dances
       visit_page_with_testing_query
       first('.search-ex-op').select('compare')
@@ -177,7 +177,7 @@ describe 'Search page', js: true do
         expect(page).to_not have_link("You Can't Get There From Here")
       end
 
-      it 'parameters' do
+      xit 'parameters' do
         dances
         visit_page_with_testing_query
         select 'circle'
