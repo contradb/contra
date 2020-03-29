@@ -1,16 +1,6 @@
 // these are react-based search expressions, not the old bootstrap or vue styles for search expressions.
 
 .search-ex {
-  &:not(:first-child) {
-    margin-left: 1em;
-  }
-  &:not(:last-child) {
-    margin-right: 1em;
-  }
-  &:first-child:last-child {
-    margin-left: 0em;
-    margin-right: 0em;
-  }
   display: flex;
   justify-content: center;
 }
