@@ -29,7 +29,7 @@ class SearchEx {
   //   })
   // }
 
-  op() {
+  get op() {
     // Why use `this.constructor.name2` instead of just using `this.constructor.name`?
     // Because the minimizer used in production strips `this.constructor.name`, and it's faster
     // to just set name2 than to figure out how to turn off webpack or babel or whatever it is.
@@ -266,9 +266,9 @@ class FigureSearchEx extends nullaryMixin(SearchEx) {
 
   toLisp() {
     if (this.ellipsis) {
-      return [this.op(), this.move, ...this.parameters]
+      return [this.op, this.move, ...this.parameters]
     } else {
-      return [this.op(), this.move]
+      return [this.op, this.move]
     }
   }
   static fromLispHelper(constructor, lisp) {
@@ -309,7 +309,7 @@ class FormationSearchEx extends nullaryMixin(SearchEx) {
       formation || src.formation || errorMissingParameter("formation")
   }
   toLisp() {
-    return [this.op(), this.formation]
+    return [this.op, this.formation]
   }
   static fromLispHelper(constructor, lisp) {
     return new constructor({ formation: lisp[1] })
@@ -322,7 +322,7 @@ registerSearchEx("FormationSearchEx", "formation")
 
 class ProgressionSearchEx extends nullaryMixin(SearchEx) {
   toLisp() {
-    return [this.op()]
+    return [this.op]
   }
   static fromLispHelper(constructor, lisp) {
     return new constructor()
@@ -332,7 +332,7 @@ registerSearchEx("ProgressionSearchEx")
 
 class SimpleUnarySearchEx extends unaryMixin(SearchEx) {
   toLisp() {
-    return [this.op(), this.subexpressions[0].toLisp()]
+    return [this.op, this.subexpressions[0].toLisp()]
   }
   static fromLispHelper(constructor, lisp) {
     return new constructor({ subexpressions: [SearchEx.fromLisp(lisp[1])] })
@@ -342,10 +342,7 @@ class SimpleUnarySearchEx extends unaryMixin(SearchEx) {
 // expressions that take just other SearchEx's and no other things.
 class SimpleBinaryishSearchEx extends binaryishMixin(SearchEx) {
   toLisp() {
-    return [
-      this.op(),
-      ...this.subexpressions.map(searchEx => searchEx.toLisp()),
-    ]
+    return [this.op, ...this.subexpressions.map(searchEx => searchEx.toLisp())]
   }
   static fromLispHelper(constructor, lisp) {
     return new constructor({
@@ -381,7 +378,7 @@ class CountSearchEx extends unaryMixin(SearchEx) {
   }
   toLisp() {
     return [
-      this.op(),
+      this.op,
       this.subexpressions[0].toLisp(),
       this.comparison,
       this.number,
@@ -426,7 +423,7 @@ class CompareSearchEx extends SearchEx {
     return this.subexpressions[1]
   }
   toLisp() {
-    return [this.op(), this.left.toLisp(), this.comparison, this.right.toLisp()]
+    return [this.op, this.left.toLisp(), this.comparison, this.right.toLisp()]
   }
   static fromLispHelper(constructor, lisp) {
     const [_op, left, comparison, right] = lisp
@@ -478,7 +475,7 @@ class ConstantNumericEx extends NumericEx {
     return new constructor({ number: lisp[1] })
   }
   toLisp() {
-    return [this.op(), this.number]
+    return [this.op, this.number]
   }
   static castFrom(searchEx) {
     return new this({ number: 0 })
@@ -505,7 +502,7 @@ class TagNumericEx extends NumericEx {
     return new constructor({ tag: lisp[1] })
   }
   toLisp() {
-    return [this.op(), this.tag]
+    return [this.op, this.tag]
   }
   static castFrom(searchEx) {
     return new this({ tag: "verified" })
@@ -527,7 +524,7 @@ class CountMatchesNumericEx extends unaryMixin(NumericEx) {
     return new constructor({ subexpressions: [SearchEx.fromLisp(lisp[1])] })
   }
   toLisp() {
-    return [this.op(), this.subexpressions[0].toLisp()]
+    return [this.op, this.subexpressions[0].toLisp()]
   }
   static castFrom(searchEx) {
     return new this({ subexpressions: [SearchEx.default()] })

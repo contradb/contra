@@ -241,7 +241,7 @@ describe("replace()", () => {
     expect(newRoot.subexpressions[0]).toBe(oldRoot.subexpressions[0])
     expect(newRoot.subexpressions[1]).toBe(newSub)
     expect(newRoot.subexpressions[2]).toBe(oldRoot.subexpressions[2])
-    expect(newRoot.op()).toEqual("&")
+    expect(newRoot.op).toEqual("&")
   })
 
   it("depth 1 miss", () => {
@@ -257,7 +257,7 @@ describe("replace()", () => {
     const newRoot = oldRoot.replace(oldSub, newSub)
     expect(newRoot.toLisp()).toEqual(expectedLisp)
     expect(newRoot.subexpressions).toBe(oldRoot.subexpressions)
-    expect(newRoot.op()).toEqual("&")
+    expect(newRoot.op).toEqual("&")
   })
   it("depth 2 hit", () => {
     const oldRoot = SearchEx.fromLisp([
@@ -278,7 +278,7 @@ describe("replace()", () => {
     expect(oldSub.move).toBe("star")
     expect(newRoot.toLisp()).toEqual(expectedLisp)
     expect(newRoot.subexpressions[0]).toBe(oldRoot.subexpressions[0])
-    expect(newRoot.subexpressions[1].op()).toEqual("no")
+    expect(newRoot.subexpressions[1].op).toEqual("no")
     expect(newRoot.subexpressions[1].subexpressions[0]).toBe(newSub)
     expect(newRoot.subexpressions[1].subexpressions.length).toBe(1)
     expect(newRoot.subexpressions[2]).toBe(oldRoot.subexpressions[2])
@@ -312,7 +312,7 @@ describe("remove()", () => {
     expect(newRoot.toLisp()).toEqual(expectedLisp)
     expect(newRoot.subexpressions[0]).toBe(oldRoot.subexpressions[0])
     expect(newRoot.subexpressions[1]).toBe(oldRoot.subexpressions[2])
-    expect(newRoot.op()).toEqual("&")
+    expect(newRoot.op).toEqual("&")
   })
 
   it("depth 1 miss", () => {
@@ -327,7 +327,7 @@ describe("remove()", () => {
     const newRoot = oldRoot.remove(oldSub)
     expect(newRoot.toLisp()).toEqual(expectedLisp)
     expect(newRoot.subexpressions).toBe(oldRoot.subexpressions)
-    expect(newRoot.op()).toEqual("&")
+    expect(newRoot.op).toEqual("&")
   })
 
   it("depth 2 hit", () => {
@@ -382,7 +382,7 @@ describe("shallowCopy", () => {
           subexpressions: [figure],
         })
         expect(oldEx).not.toBe(newEx)
-        expect(newEx.op()).toEqual(op)
+        expect(newEx.op).toEqual(op)
         expect(newEx.subexpressions).not.toBe(oldEx.subexpressions)
         expect(newEx.subexpressions).toEqual([figure])
         expect(newEx.subexpressions[0]).toBe(figure)

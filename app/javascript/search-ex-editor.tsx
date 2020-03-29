@@ -65,7 +65,7 @@ export const SearchExEditor = ({
         <div className="search-ex-trunk">
           <div className="form-inline">
             <select
-              value={searchEx.op()}
+              value={searchEx.op}
               onChange={e => {
                 const op = e.target.value
                 setSearchEx(searchEx.castTo(op))
