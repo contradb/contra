@@ -1,5 +1,12 @@
-import React from "react"
+import React, { useContext } from "react"
 import { SearchEx, FigureSearchEx } from "./search-ex"
+import LibFigure from "./libfigure/libfigure"
+import DialectContext from "./dialect-context"
+
+const moveTermsAndSubstitutionsForSelectMenu: (
+  dialect: any
+) => { term: string; substitution: string }[] =
+  LibFigure.moveTermsAndSubstitutionsForSelectMenu
 
 const makeOpOption = (op: string, i: number) => {
   if (op === "____")
@@ -50,6 +57,8 @@ export const SearchExEditor = ({
     : null
   const subexpressionsGrowFn = () =>
     setSearchEx(searchEx.withAdditionalSubexpression())
+  const dialect = useContext(DialectContext)
+
   return (
     <div className="search-ex">
       <div className="search-ex-well">
@@ -115,12 +124,13 @@ export const SearchExEditor = ({
               </ul>
             </div>
           </div>
-          {otherDoodads(searchEx, setSearchEx)}
+          {otherDoodads(searchEx, setSearchEx, dialect)}
         </div>
         {0 === searchEx.subexpressions.length ? null : (
           <div className="search-ex-subexpressions">
-            {searchEx.subexpressions.map(subex => (
+            {searchEx.subexpressions.map((subex, i) => (
               <SearchExEditor
+                key={i}
                 searchEx={subex}
                 setSearchEx={newsub =>
                   setSearchEx(searchEx.replace(subex, newsub))
@@ -137,7 +147,8 @@ export const SearchExEditor = ({
 
 const otherDoodads = (
   searchEx: SearchEx,
-  setSearchEx: (se: SearchEx) => void
+  setSearchEx: (se: SearchEx) => void,
+  dialect: any
 ) => {
   if (searchEx instanceof FigureSearchEx) {
     return (
@@ -147,10 +158,7 @@ const otherDoodads = (
           setSearchEx(searchEx.shallowCopy({ move: value }))
         )}
       >
-        <option>swing</option>
-        <option>do si do</option>
-        <option>chain</option>
-        <option>circle</option>
+        {moveMenuOptions(dialect)}
       </select>
     )
   } else {
@@ -164,5 +172,15 @@ const preventDefaultThen = (funcToCall: (event: any) => void) => (event: {
   event.preventDefault()
   funcToCall(event)
 }
+
+const moveMenuOptions = (dialect: any) =>
+  [
+    { term: "*", substitution: "any figure" },
+    ...moveTermsAndSubstitutionsForSelectMenu(dialect),
+  ].map(({ term, substitution }, i) => (
+    <option key={i} value={term}>
+      {substitution}
+    </option>
+  ))
 
 export default SearchExEditor

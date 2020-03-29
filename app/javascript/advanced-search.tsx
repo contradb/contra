@@ -5,6 +5,7 @@ import {
   SearchDancesDanceJson,
   SearchDancesJson,
 } from "./dance-table"
+import DialectContext from "./dialect-context"
 import Filter from "./filter"
 import useFilter from "use-filter"
 import useWindowSize from "use-window-size"
@@ -18,7 +19,13 @@ import { SearchEx } from "./search-ex"
 
 const bootstrapMedium992px = 992
 
-export const AdvancedSearch = (): JSX.Element => {
+export const AdvancedSearch = ({
+  dialect,
+  tags,
+}: {
+  dialect: any
+  tags: string[]
+}): JSX.Element => {
   const [searchDancesJson, setSearchDancesJson] = useState({
     dances: [] as SearchDancesDanceJson[],
     numberSearched: 0,
@@ -80,9 +87,10 @@ export const AdvancedSearch = (): JSX.Element => {
 
   if (windowSize.width >= bootstrapMedium992px) {
     const tabs = { filtersTab, figuresTab, dancesTab, programTab }
-    return <DesktopSearchWithSideTabs {...tabs} />
+    return provideDialect(dialect, <DesktopSearchWithSideTabs {...tabs} />)
   } else {
-    return (
+    return provideDialect(
+      dialect,
       <SearchTabs
         initialIndex={2}
         tabs={[
@@ -95,5 +103,9 @@ export const AdvancedSearch = (): JSX.Element => {
     )
   }
 }
+
+const provideDialect = (dialect: any, component: JSX.Element) => (
+  <DialectContext.Provider value={dialect}>{component}</DialectContext.Provider>
+)
 
 export default AdvancedSearch
