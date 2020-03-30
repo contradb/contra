@@ -2,6 +2,7 @@
 // don't have to worry about what specific file a variable is defined
 // in.
 
+import { defaultDialect } from "./util.js"
 import { param } from "./param.js"
 import { degreesToWords, anglesForMove } from "./move.js"
 import { chooser, dancerMenuForChooser, dancerChooserNames } from "./chooser.js"
@@ -17,6 +18,7 @@ import {} from "./after-figure.js" // for ... side effect?
 import {} from "./dance.js" // ?? for side effect??
 
 export default {
+  defaultDialect,
   param,
   degreesToWords,
   anglesForMove,

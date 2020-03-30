@@ -5,6 +5,7 @@ import {
   SearchDancesDanceJson,
   SearchDancesJson,
 } from "./dance-table"
+import DialectContext from "./dialect-context"
 import Filter from "./filter"
 import useFilter from "use-filter"
 import useWindowSize from "use-window-size"
@@ -14,10 +15,17 @@ import FiltersTab from "./filters-tab"
 import FiguresTab from "./figures-tab"
 import DancesTab from "./dances-tab"
 import ProgramTab from "./program-tab"
+import { SearchEx } from "./search-ex"
 
 const bootstrapMedium992px = 992
 
-export const AdvancedSearch = (): JSX.Element => {
+export const AdvancedSearch = ({
+  dialect,
+  tags,
+}: {
+  dialect: Dialect
+  tags: string[]
+}): JSX.Element => {
   const [searchDancesJson, setSearchDancesJson] = useState({
     dances: [] as SearchDancesDanceJson[],
     numberSearched: 0,
@@ -52,14 +60,20 @@ export const AdvancedSearch = (): JSX.Element => {
     },
     []
   )
-  const { filter, dictionary } = useFilter()
+  const [searchEx, setSearchEx] = useState(SearchEx.default())
+  const { filter, dictionary } = useFilter(
+    useMemo(() => searchEx.toLisp(), [searchEx])
+  )
+
   const windowSize = useWindowSize()
 
   const dancesTabName: string = `${searchDancesJson.numberMatching} dance${
     1 === searchDancesJson.numberMatching ? "" : "s"
   }`
   const filtersTab = <FiltersTab dictionary={dictionary} />
-  const figuresTab = <FiguresTab />
+  const figuresTab = (
+    <FiguresTab searchEx={searchEx} setSearchEx={setSearchEx} />
+  )
   const dancesTab = (
     <DancesTab
       loading={loading}
@@ -73,9 +87,10 @@ export const AdvancedSearch = (): JSX.Element => {
 
   if (windowSize.width >= bootstrapMedium992px) {
     const tabs = { filtersTab, figuresTab, dancesTab, programTab }
-    return <DesktopSearchWithSideTabs {...tabs} />
+    return provideDialect(dialect, <DesktopSearchWithSideTabs {...tabs} />)
   } else {
-    return (
+    return provideDialect(
+      dialect,
       <SearchTabs
         initialIndex={2}
         tabs={[
@@ -88,5 +103,9 @@ export const AdvancedSearch = (): JSX.Element => {
     )
   }
 }
+
+const provideDialect = (dialect: Dialect, component: JSX.Element) => (
+  <DialectContext.Provider value={dialect}>{component}</DialectContext.Provider>
+)
 
 export default AdvancedSearch

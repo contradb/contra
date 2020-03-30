@@ -3,7 +3,7 @@
 // to the head of your layout file,
 // like app/views/layouts/application.html.erb.
 
-import { SearchEx } from "../search_ex.js"
+import { SearchEx } from "../search-ex"
 import LibFigure from "../libfigure/libfigure.js"
 
 function selectChooserNameOptions(dialect) {

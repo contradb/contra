@@ -177,6 +177,11 @@ module FilterDances
     s.present? ? s : nil
   end
 
+  def self.matching_figures_for_progress_with(filter, dance, filter_env)
+    # macro
+    matching_figures(['&', ['progression'], filter[1]], dance, filter_env)
+  end
+
   def self.matching_figures_for_if(filter, dance, filter_env)
     _op, if_, then_, else_ = filter
     if matching_figures(if_, dance, filter_env)

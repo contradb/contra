@@ -13,7 +13,9 @@ const setterName = (s: string): string => {
   return "set" + first + rest
 }
 
-export default function useFilter(): { filter: Filter; dictionary: object } {
+export default function useFilter(
+  coreFilter: Filter
+): { filter: Filter; dictionary: object } {
   const d: any = {} // dictionary of state values and setters
   const rememberState = (name: string, [value, setter]: [any, any]) => {
     d[name] = value
@@ -100,8 +102,9 @@ export default function useFilter(): { filter: Filter; dictionary: object } {
       formationFilters,
     ]
   )
-  const grandFilter: Filter = useMemo(() => ["if", ezFilter, ["figure", "*"]], [
+  const grandFilter: Filter = useMemo(() => ["if", ezFilter, coreFilter], [
     ezFilter,
+    coreFilter,
   ])
 
   return { filter: grandFilter, dictionary: d }

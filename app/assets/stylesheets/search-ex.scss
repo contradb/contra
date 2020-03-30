@@ -1,0 +1,62 @@
+// these are react-based search expressions, not the old bootstrap or vue styles for search expressions.
+
+.search-ex {
+  &:not(:first-child) {
+    margin-left: 0.5em;
+  }
+  &:not(:last-child) {
+    margin-right: 0.5em;
+  }
+  &:first-child:last-child {
+    margin-left: 0em;
+    margin-right: 0em;
+  }
+  display: flex;
+  justify-content: center;
+}
+
+.search-ex-well {
+  padding: 1em;
+  margin-top: 0.25em;
+  border: 1px solid #CCC;
+  border-radius: 1em;
+}
+
+.search-ex-trunk {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search-ex-op {
+  margin-right: 0.5em; // spacer for ⋮ menu
+}
+
+.search-ex-figure {
+  margin-top: 0.5em;
+}
+
+.search-ex-subexpressions {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  margin-top: 0.75em;           // plus each individual search-ex's top margin, equals 1em
+}
+
+
+
+// https://stackoverflow.com/questions/21651215/how-make-bootstrap-class-form-inline-work-on-resolutions-768px
+@media (max-width: 767px) {
+  .form-inline.form-inline-even-when-small .form-control {
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+  }
+}
+@media (max-width: 767px) {
+  .form-inline.form-inline-even-when-small .form-group {
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
+  }
+}

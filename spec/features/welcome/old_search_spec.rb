@@ -3,70 +3,85 @@
 require 'rails_helper'
 
 describe 'Search page', js: true do
-  it 'exercise formation filter' do
+  def visit_page_with_testing_query
     visit '/s'
-    expect(page).to have_css('.figure-filter-op', count: 3)
-    all('.figure-filter-op')[1].select('formation')
-    select('proper')
-    expect(page).to have_text('state.lisp: [ "and", [ "formation", "proper" ], [ "progression" ] ]')
+    select 'and'
+    find_all('.search-ex-op', count: 3).last.select('progression')
+    # ['and', ['figure', '*'], ['progression']]
   end
 
   describe 'casts' do
     it "cast from 'and' to 'or'" do
-      visit '/s'
-      expect(page).to have_css('.figure-filter-op', count: 3)
-      first('.figure-filter-op').select('or')
-      expect(page).to have_text('state.lisp: [ "or", [ "figure", "*" ], [ "progression" ] ]')
+      visit_page_with_testing_query
+      first('.search-ex-op').select('or')
+      expect(page).to have_css('#debug-lisp', text: '[ "or", [ "figure", "*" ], [ "progression" ] ]', visible: false)
     end
 
     it "cast to 'not'" do
-      visit '/s'
-      expect(page).to have_css('.figure-filter-op', count: 3)
-      first('.figure-filter-op').select('not')
-      expect(page).to have_text('state.lisp: [ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]')
-      expect(page).to have_css('.figure-filter-op', count: 4)
+      visit_page_with_testing_query
+      first('.search-ex-op').select('not')
+      expect(page).to have_css('#debug-lisp', text: '[ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]', visible: false)
+      expect(page).to have_css('.search-ex-op', count: 4)
     end
   end
 
   describe 'deletion' do
     it "works" do
-      visit '/s'
-      expect(page).to have_css('.figure-filter-op', count: 3)
-      all('.figure-filter-menu-hamburger')[-1].click
-      find('a.figure-filter-menu-delete').click
-      expect(page).to have_text('[ "and", [ "figure", "*" ] ]')
+      visit_page_with_testing_query
+      all('.search-ex-menu-toggle', count: 3).last.click
+      find('a.search-ex-delete').click
+      expect(page).to have_css('#debug-lisp', text: '[ "and", [ "figure", "*" ] ]', visible: false)
     end
 
     it "menu item isn't visible for the root node" do
-      visit '/s'
-      expect(page).to have_css('.figure-filter-op', count: 3)
-      first('.figure-filter-menu-hamburger').click
-      expect(page).to_not have_css('.figure-filter-menu-delete')
+      visit_page_with_testing_query
+      first('.search-ex-menu-toggle').click
+      expect(page).to_not have_css('.search-ex-delete')
     end
 
     it "menu item isn't visible for a subexpression that's required" do
+      visit_page_with_testing_query
+      first('.search-ex-op').select('not')
+      expect(page).to have_css('.search-ex-op', count: 4)
+      expect(page).to have_css('#debug-lisp', text: '[ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]', visible: false)
+      all('.search-ex-menu-toggle', count: 4)[1].click
+      expect(page).to have_css('.search-ex-menu-entries')
+      expect(page).to_not have_css('.search-ex-delete')
+    end
+  end
+
+  describe 'adding a subexpression' do
+    let (:search_ex_add_subexpression_selector) { ".search-ex-add-subexpression" }
+    it "add subexpression button works" do
+      visit_page_with_testing_query
+      all('.search-ex-menu-toggle', count: 3).first.click
+      find(search_ex_add_subexpression_selector).click
+      expect(page).to have_css('.search-ex-op', count: 4)
+      expect(page).to have_css("#debug-lisp", text: '[ "and", [ "figure", "*" ], [ "progression" ], [ "figure", "*" ] ]', visible: false)
+    end
+
+    it "add subexpression button isn't available if it wouldn't be syntactically valid" do
       visit '/s'
-      expect(page).to have_css('.figure-filter-op', count: 3)
-      first('.figure-filter-op').select('not')
-      expect(page).to have_css('.figure-filter-op', count: 4)
-      expect(page).to have_text('state.lisp: [ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]')
-      all('.figure-filter-menu-hamburger')[1].click
-      expect(page).to have_css('.figure-filter-menu')
-      expect(page).to_not have_css('.figure-filter-menu-delete')
+      find('.search-ex-menu-toggle').click
+      expect(page).to have_css('.search-ex-menu-entries')
+      expect(page).to_not have_css(search_ex_add_subexpression_selector)
     end
   end
 
   describe 'datatable' do
-    let (:dances) {[:dance, :box_the_gnat_contra, :call_me, :you_cant_get_there_from_here].map {|d| FactoryGirl.create(d)}}
+    let (:dances) {
+      ds = [:dance, :box_the_gnat_contra, :call_me, :you_cant_get_there_from_here].map {|d| FactoryGirl.create(d)}
+      tag_all_dances
+      ds
+    }
 
-    it 'works (and test formation filter)' do
+    xit 'works (and test formation filter)' do
       dances
-      visit '/s'
+      visit_page_with_testing_query
       dances.each {|dance|
         expect(page).to have_link(dance.title, href: dance_path(dance))
       }
-      expect(page).to have_css('.figure-filter-op', count: 3)
-      all('.figure-filter-op')[1].select('formation')
+      all('.search-ex-op', count: 3)[1].select('formation')
       select('Becket *')
       dances.each do |dance|
         to_or_to_not = dance.start_type.include?("Becket") ? :to : :to_not
@@ -74,11 +89,11 @@ describe 'Search page', js: true do
       end
     end
 
-    it 'count filter' do
+    xit 'count filter' do
       dances
-      visit '/s'
-      first('.figure-filter-op').select('figure')
-      first('.figure-filter-op').select('number of')
+      visit_page_with_testing_query
+      first('.search-ex-op').select('figure')
+      first('.search-ex-op').select('number of')
       select('≠')
       select('7')
       matches = 0
@@ -91,16 +106,16 @@ describe 'Search page', js: true do
       expect(matches).to eq(1)
     end
 
-    it 'tag and compare filters' do
+    xit 'tag and compare filters' do
       verified = FactoryGirl.create(:tag, :verified)
       broken = FactoryGirl.create(:tag, :please_review)
       call_me = dances.find {|dance| dance.title == "Call Me"}
       the_rendevouz = dances.find {|dance| dance.title == "The Rendevouz"}
       1.times { FactoryGirl.create(:dut, tag: verified, dance: call_me) }
       2.times { FactoryGirl.create(:dut, tag: broken, dance: the_rendevouz) }
-      visit '/s'
-      first('.figure-filter-op').select('compare')
-      find_all('.figure-filter-op', count: 3)[1].select('tag')
+      visit_page_with_testing_query
+      first('.search-ex-op').select('compare')
+      find_all('.search-ex-op', count: 3)[1].select('tag')
       dances.each do |dance|
         if dance.id == call_me.id
           expect(page).to have_link(dance.title)
@@ -122,11 +137,11 @@ describe 'Search page', js: true do
       end
     end
 
-    it 'count-matches and compare filters' do
+    xit 'count-matches and compare filters' do
       dances
-      visit '/s'
-      first('.figure-filter-op').select('compare')
-      find_all('.figure-filter-op', count: 3)[1].select('count matches')
+      visit_page_with_testing_query
+      first('.search-ex-op').select('compare')
+      find_all('.search-ex-op', count: 3)[1].select('count matches')
       select('≠')
       select('7')
       matches = 0
@@ -141,11 +156,10 @@ describe 'Search page', js: true do
 
     it '& filter' do
       dances
-      visit '/s'
-      expect(page).to have_css('.figure-filter-op', count: 3)
-      first('.figure-filter-op').select('&')
+      visit_page_with_testing_query
+      first('.search-ex-op').select('&')
       select('chain')
-      expect(page).to have_text('state.lisp: [ "&", [ "figure", "chain" ], [ "progression" ] ]')
+      expect(page).to have_css("#debug-lisp", text: '[ "&", [ "figure", "chain" ], [ "progression" ] ]', visible: false)
       expect(page).to_not have_link('The Rendevouz')
       expect(page).to_not have_link('Call Me')
       expect(page).to_not have_link("You Can't Get There From Here")
@@ -163,9 +177,9 @@ describe 'Search page', js: true do
         expect(page).to_not have_link("You Can't Get There From Here")
       end
 
-      it 'parameters' do
+      xit 'parameters' do
         dances
-        visit '/s'
+        visit_page_with_testing_query
         select 'circle'
         open_ellipsis
         select('4 places')
@@ -189,5 +203,11 @@ describe 'Search page', js: true do
 
   def open_ellipsis
     find('.toggle-off').click
+  end
+
+  def tag_all_dances(tag: FactoryGirl.create(:tag, :verified), user: FactoryGirl.create(:user))
+    Dance.all.each do |dance|
+      FactoryGirl.create(:dut, dance: dance, tag: tag, user: user)
+    end
   end
 end

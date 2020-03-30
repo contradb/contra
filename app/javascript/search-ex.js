@@ -2,9 +2,6 @@ import LibFigure from "libfigure/libfigure.js"
 
 // search node class heirarchy goes here
 class SearchEx {
-  constructor({ subexpressions = [] } = {}) {
-    this.subexpressions = subexpressions
-  }
   // subtypes to implement:
   // toLisp()
   // static fromLispHelper(...)
@@ -12,12 +9,26 @@ class SearchEx {
   // static minSubexpressions()
   // static maxSubexpressions()
   // static minUsefulSubexpressions()
-  op() {
+  // 'src' constructor prop
+
+  constructor({
+    src,
+    subexpressions = src ? [...src.subexpressions] : [],
+  } = {}) {
+    this.subexpressions = subexpressions
+  }
+
+  shallowCopy(props) {
+    return new this.constructor({ ...props, src: this })
+  }
+
+  get op() {
     // Why use `this.constructor.name2` instead of just using `this.constructor.name`?
     // Because the minimizer used in production strips `this.constructor.name`, and it's faster
     // to just set name2 than to figure out how to turn off webpack or babel or whatever it is.
     return constructorNameToOp[this.constructor.name2]
   }
+
   static fromLisp(lisp) {
     const constructor = opToConstructor[lisp[0]]
     if (!constructor) {
@@ -34,30 +45,69 @@ class SearchEx {
       return constructor.fromLispHelper(constructor, lisp)
     }
   }
+
   castTo(op) {
     return opToConstructor[op].castFrom(this)
   }
+
   static default() {
     return SearchEx.fromLisp(["figure", "*"])
   }
+
   minSubexpressions() {
     return this.constructor.minSubexpressions()
   }
+
   maxSubexpressions() {
     return this.constructor.maxSubexpressions()
   }
+
   minUsefulSubexpressions() {
     return this.constructor.minUsefulSubexpressions()
   }
 
   copy() {
-    // deeeep copy
+    // deeeep copy - am I even used?
     return SearchEx.fromLisp(this.toLisp())
   }
 
   static allProps() {
     // all properties held by any subclass.
     return allProps
+  }
+
+  isNumeric() {
+    return false
+  }
+
+  replace(oldEx, newEx) {
+    if (this === oldEx) return newEx
+    else {
+      for (let i = 0; i < this.subexpressions.length; i++) {
+        const subexpressionOld = this.subexpressions[i]
+        const subexpressionNew = subexpressionOld.replace(oldEx, newEx)
+        if (subexpressionOld !== subexpressionNew) {
+          const newChildren = [...this.subexpressions]
+          newChildren[i] = subexpressionNew
+          for (let j = i + 1; j < this.subexpressions.length; j++)
+            newChildren[j] = this.subexpressions[j].replace(oldEx, newEx)
+          return this.shallowCopy({ subexpressions: newChildren })
+        }
+      }
+      return this
+    }
+  }
+
+  remove(oldEx) {
+    return removeHelper(this, oldEx, throwRemoveError)
+  }
+
+  withAdditionalSubexpression(e = SearchEx.default()) {
+    if (this.subexpressions.length < this.maxSubexpressions())
+      return this.shallowCopy({
+        subexpressions: [...this.subexpressions, e],
+      })
+    else throw new Error("subexpressions are full")
   }
 
   static mutationNameForProp(propertyName) {
@@ -81,14 +131,15 @@ function registerSearchEx(className, ...props) {
   op = op.replace(/NumericEx$/, "")
   op = op.replace(/FigurewiseAnd/g, "&")
   op = op.replace(/CountMatches/, "count-matches")
+  op = op.replace(/ProgressWith/, "progress with")
   op = op.toLowerCase()
   constructorNameToOp[className] = op
   const constructor = eval(className)
-  opToConstructor[op] = constructor
-  constructor.name2 = className
-  if (!opToConstructor[op]) {
+  if (!constructor) {
     throw new Error("class name " + className + " not found")
   }
+  opToConstructor[op] = constructor
+  constructor.name2 = className
   for (let prop of props) {
     if (!allProps.includes(prop)) {
       allProps.push(prop)
@@ -106,17 +157,46 @@ function errorMissingParameter(name) {
   throw new Error('missing parameter "' + name + '"')
 }
 
+const removeHelper = (root, target, rootHit) => {
+  if (root === target) return rootHit()
+  else {
+    const sube = root.subexpressions.map(e =>
+      removeHelper(e, target, constantlyNull)
+    )
+    let different = false
+    for (let i = 0; i < sube.length; i++) {
+      if (root.subexpressions[i] !== sube[i]) {
+        different = true
+        break
+      }
+    }
+    if (different)
+      return root.shallowCopy({ subexpressions: sube.filter(e => e) })
+    else return root
+  }
+  return root
+}
+
+const throwRemoveError = () => {
+  throw new Error("attempt to remove self is not allowed")
+}
+
+const constantlyNull = () => null
+
 let nullaryMixin = Base =>
   class extends Base {
     static maxSubexpressions() {
       return 0
     }
+
     static minSubexpressions() {
       return 0
     }
+
     static minUsefulSubexpressions() {
       return 0
     }
+
     static castFrom(searchEx) {
       return new this()
     }
@@ -127,15 +207,19 @@ let unaryMixin = Base =>
     static maxSubexpressions() {
       return 1
     }
+
     static minSubexpressions() {
       return 1
     }
+
     static minUsefulSubexpressions() {
       return 1
     }
+
     static castFrom(searchEx) {
       return new this(this.castConstructorDefaults(searchEx))
     }
+
     static castConstructorDefaults(searchEx) {
       return {
         subexpressions:
@@ -151,12 +235,15 @@ let binaryishMixin = Base =>
     static maxSubexpressions() {
       return Infinity
     }
+
     static minSubexpressions() {
       return 0
     }
+
     static minUsefulSubexpressions() {
       return 2
     }
+
     static castFrom(searchEx) {
       if (
         0 === searchEx.minSubexpressions() &&
@@ -176,39 +263,51 @@ let binaryishMixin = Base =>
 class FigureSearchEx extends nullaryMixin(SearchEx) {
   constructor(args) {
     super(args)
-    const { move, parameters = [] } = args
-    this._move = move || errorMissingParameter("move")
+    const {
+      src,
+      move = src ? src.move : errorMissingParameter("move"),
+      parameters = src ? [...src.parameters] : [],
+    } = args
+    this._move = move
     this.parameters = parameters
     this._ellipsis = parameters && parameters.length > 0
   }
+
   toLisp() {
     if (this.ellipsis) {
-      return [this.op(), this.move, ...this.parameters]
+      return [this.op, this.move, ...this.parameters]
     } else {
-      return [this.op(), this.move]
+      return [this.op, this.move]
     }
   }
+
   static fromLispHelper(constructor, lisp) {
     return new constructor({ move: lisp[1], parameters: lisp.slice(2) })
   }
+
   static castFrom(searchEx) {
     return new this({ move: "*" })
   }
+
   get move() {
     return this._move
   }
+
   set move(moveString) {
     this._move = moveString
     this.parameters.length = 0
     this.padMissingParametersWithAsterisks()
   }
+
   get ellipsis() {
     return this._ellipsis
   }
+
   set ellipsis(expanded) {
     this._ellipsis = expanded
     this.padMissingParametersWithAsterisks()
   }
+
   padMissingParametersWithAsterisks() {
     if (this.ellipsis) {
       const formals_length = LibFigure.formalParameters(this.move).length
@@ -221,15 +320,19 @@ registerSearchEx("FigureSearchEx", "move", "parameters", "ellipsis")
 class FormationSearchEx extends nullaryMixin(SearchEx) {
   constructor(args) {
     super(args)
-    const { formation } = args
-    this.formation = formation || errorMissingParameter("formation")
+    const { formation, src } = args
+    this.formation =
+      formation || src.formation || errorMissingParameter("formation")
   }
+
   toLisp() {
-    return [this.op(), this.formation]
+    return [this.op, this.formation]
   }
+
   static fromLispHelper(constructor, lisp) {
     return new constructor({ formation: lisp[1] })
   }
+
   static castFrom(searchEx) {
     return new this({ formation: "improper" })
   }
@@ -238,8 +341,9 @@ registerSearchEx("FormationSearchEx", "formation")
 
 class ProgressionSearchEx extends nullaryMixin(SearchEx) {
   toLisp() {
-    return [this.op()]
+    return [this.op]
   }
+
   static fromLispHelper(constructor, lisp) {
     return new constructor()
   }
@@ -248,8 +352,9 @@ registerSearchEx("ProgressionSearchEx")
 
 class SimpleUnarySearchEx extends unaryMixin(SearchEx) {
   toLisp() {
-    return [this.op(), this.subexpressions[0].toLisp()]
+    return [this.op, this.subexpressions[0].toLisp()]
   }
+
   static fromLispHelper(constructor, lisp) {
     return new constructor({ subexpressions: [SearchEx.fromLisp(lisp[1])] })
   }
@@ -258,11 +363,9 @@ class SimpleUnarySearchEx extends unaryMixin(SearchEx) {
 // expressions that take just other SearchEx's and no other things.
 class SimpleBinaryishSearchEx extends binaryishMixin(SearchEx) {
   toLisp() {
-    return [
-      this.op(),
-      ...this.subexpressions.map(searchEx => searchEx.toLisp()),
-    ]
+    return [this.op, ...this.subexpressions.map(searchEx => searchEx.toLisp())]
   }
+
   static fromLispHelper(constructor, lisp) {
     return new constructor({
       subexpressions: lisp.slice(1).map(SearchEx.fromLisp),
@@ -272,20 +375,26 @@ class SimpleBinaryishSearchEx extends binaryishMixin(SearchEx) {
 
 class NoSearchEx extends SimpleUnarySearchEx {}
 registerSearchEx("NoSearchEx")
+
 class NotSearchEx extends SimpleUnarySearchEx {}
 registerSearchEx("NotSearchEx")
+
 class AllSearchEx extends SimpleUnarySearchEx {}
 registerSearchEx("AllSearchEx")
 
 class AndSearchEx extends SimpleBinaryishSearchEx {}
 registerSearchEx("AndSearchEx")
+
 class OrSearchEx extends SimpleBinaryishSearchEx {}
 registerSearchEx("OrSearchEx")
+
 class FigurewiseAndSearchEx extends SimpleBinaryishSearchEx {}
 registerSearchEx("FigurewiseAndSearchEx")
+
 class ThenSearchEx extends SimpleBinaryishSearchEx {}
 registerSearchEx("ThenSearchEx")
 
+// obsolete
 class CountSearchEx extends unaryMixin(SearchEx) {
   constructor(args) {
     super(args)
@@ -294,14 +403,16 @@ class CountSearchEx extends unaryMixin(SearchEx) {
     number !== undefined || errorMissingParameter("number")
     this.number = number
   }
+
   toLisp() {
     return [
-      this.op(),
+      this.op,
       this.subexpressions[0].toLisp(),
       this.comparison,
       this.number,
     ]
   }
+
   static fromLispHelper(constructor, lisp) {
     const [_op, subexpression, comparison, number] = lisp
     return new constructor({
@@ -310,6 +421,7 @@ class CountSearchEx extends unaryMixin(SearchEx) {
       number: number,
     })
   }
+
   static castConstructorDefaults(searchEx) {
     return {
       comparison: ">",
@@ -323,8 +435,9 @@ registerSearchEx("CountSearchEx", "comparison", "number")
 class CompareSearchEx extends SearchEx {
   constructor(args) {
     super(args)
-    const { comparison } = args
-    this.comparison = comparison || errorMissingParameter("comparison")
+    const { comparison, src } = args
+    this.comparison =
+      comparison || src.comparison || errorMissingParameter("comparison")
     if (this.subexpressions.length !== 2) {
       throw new Error(
         `new CompareSearchEx wants exactly 2 subexpressions, but got ${JSON.stringify(
@@ -333,15 +446,19 @@ class CompareSearchEx extends SearchEx {
       )
     }
   }
+
   get left() {
     return this.subexpressions[0]
   }
+
   get right() {
     return this.subexpressions[1]
   }
+
   toLisp() {
-    return [this.op(), this.left.toLisp(), this.comparison, this.right.toLisp()]
+    return [this.op, this.left.toLisp(), this.comparison, this.right.toLisp()]
   }
+
   static fromLispHelper(constructor, lisp) {
     const [_op, left, comparison, right] = lisp
     return new constructor({
@@ -349,6 +466,7 @@ class CompareSearchEx extends SearchEx {
       subexpressions: [SearchEx.fromLisp(left), SearchEx.fromLisp(right)],
     })
   }
+
   static castFrom(searchEx) {
     return new this({
       comparison: searchEx.comparison || ">",
@@ -358,42 +476,60 @@ class CompareSearchEx extends SearchEx {
       ],
     })
   }
+
   static minSubexpressions() {
     return 2
   }
+
   static maxSubexpressions() {
     return 2
   }
+
   static minUsefulSubexpressions() {
     return 2
   }
 }
 registerSearchEx("CompareSearchEx", "comparison")
 
-class NumericEx extends SearchEx {}
+class NumericEx extends SearchEx {
+  isNumeric() {
+    return true
+  }
+}
 
 class ConstantNumericEx extends NumericEx {
   constructor(args) {
     super(args)
-    let number = args.number
-    if (!number && 0 !== number) errorMissingParameter("number")
-    this.number = number
+    const { number, src } = args
+    if (number || 0 === number) {
+      this.number = number
+    } else if (src && (src.number || 0 === src.number)) {
+      this.number = src.number
+    } else {
+      errorMissingParameter("number")
+    }
   }
+
   static fromLispHelper(constructor, lisp) {
     return new constructor({ number: lisp[1] })
   }
+
   toLisp() {
-    return [this.op(), this.number]
+    return [this.op, this.number]
   }
+
   static castFrom(searchEx) {
     return new this({ number: 0 })
   }
+
   static minSubexpressions() {
     return 0
   }
+
   static maxSubexpressions() {
     return 0
   }
+
   static minUsefulSubexpressions() {
     return 0
   }
@@ -403,25 +539,30 @@ registerSearchEx("ConstantNumericEx", "number")
 class TagNumericEx extends NumericEx {
   constructor(args) {
     super(args)
-    let tag = args.tag
-    if (!tag) errorMissingParameter("tag")
-    this.tag = tag
+    const { tag, src } = args
+    this.tag = tag || src.tag || errorMissingParameter("tag")
   }
+
   static fromLispHelper(constructor, lisp) {
     return new constructor({ tag: lisp[1] })
   }
+
   toLisp() {
-    return [this.op(), this.tag]
+    return [this.op, this.tag]
   }
+
   static castFrom(searchEx) {
     return new this({ tag: "verified" })
   }
+
   static minSubexpressions() {
     return 0
   }
+
   static maxSubexpressions() {
     return 0
   }
+
   static minUsefulSubexpressions() {
     return 0
   }
@@ -432,9 +573,11 @@ class CountMatchesNumericEx extends unaryMixin(NumericEx) {
   static fromLispHelper(constructor, lisp) {
     return new constructor({ subexpressions: [SearchEx.fromLisp(lisp[1])] })
   }
+
   toLisp() {
-    return [this.op(), this.subexpressions[0].toLisp()]
+    return [this.op, this.subexpressions[0].toLisp()]
   }
+
   static castFrom(searchEx) {
     return new this({ subexpressions: [SearchEx.default()] })
   }
@@ -442,3 +585,6 @@ class CountMatchesNumericEx extends unaryMixin(NumericEx) {
 registerSearchEx("CountMatchesNumericEx")
 
 export { SearchEx, NumericEx, FigureSearchEx }
+
+class ProgressWithSearchEx extends SimpleUnarySearchEx {}
+registerSearchEx("ProgressWithSearchEx")

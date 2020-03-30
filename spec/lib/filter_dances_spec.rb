@@ -149,6 +149,11 @@ describe FilterDances do
       expect(titles(filtered)).to contain_exactly("The Rendevouz", "Box the Gnat Contra", "Call Me")
     end
 
+    it 'progress with' do
+      filtered = FilterDances.filter_dances(['progress with', ['figure', 'chain']], dialect: dialect)
+      expect(titles(filtered)).to contain_exactly("Box the Gnat Contra")
+    end
+
     describe 'and' do
       it 'works' do
         filtered = FilterDances.filter_dances(['and', ['figure', 'circle'], ['figure', 'right left through']], dialect: dialect)
