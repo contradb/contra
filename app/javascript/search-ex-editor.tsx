@@ -162,9 +162,9 @@ const EditorDoodads = ({
     return (
       <select
         className="form-control search-ex-figure"
-        onChange={preventDefaultThen(({ target: { value } }) =>
+        onChange={({ target: { value } }) =>
           setSearchEx(searchEx.shallowCopy({ move: value }))
-        )}
+        }
       >
         <MoveMenuOptions dialect={dialect} />
       </select>
