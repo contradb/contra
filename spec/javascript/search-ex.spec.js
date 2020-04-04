@@ -125,65 +125,37 @@ describe("cast", () => {
 })
 
 describe("ellipsis", () => {
-  test("with parameters specified", () => {
+  test("with parameters specified, ellipsis is implicitly true", () => {
     const searchEx = new FigureSearchEx({
       move: "swing",
       parameters: ["*", "*", 8],
     })
     const bigLisp = ["figure", "swing", "*", "*", 8]
-    const shortLisp = ["figure", "swing"]
     expect(searchEx.toLisp()).toEqual(bigLisp)
     expect(searchEx.ellipsis).toEqual(true)
-    searchEx.ellipsis = false
-    expect(searchEx.ellipsis).toEqual(false)
-    expect(searchEx.toLisp()).toEqual(shortLisp)
-    searchEx.ellipsis = true
-    expect(searchEx.ellipsis).toEqual(true)
-    expect(searchEx.toLisp()).toEqual(bigLisp)
   })
 
-  test("with parameters left off", () => {
+  test("with parameters left off, ellipsis is implictly false", () => {
     const searchEx = new FigureSearchEx({ move: "swing" })
-    const bigLisp = ["figure", "swing", "*", "*", "*"]
     const shortLisp = ["figure", "swing"]
-    expect(searchEx.ellipsis).toEqual(false)
-    expect(searchEx.toLisp()).toEqual(shortLisp)
-    searchEx.ellipsis = true
-    expect(searchEx.ellipsis).toEqual(true)
-    expect(searchEx.toLisp()).toEqual(bigLisp)
-    searchEx.ellipsis = false
     expect(searchEx.ellipsis).toEqual(false)
     expect(searchEx.toLisp()).toEqual(shortLisp)
   })
 
-  test("with parameters specified but ellipsis=false", () => {
+  test("with parameters specified and ellipsis specified false", () => {
     const searchEx = new FigureSearchEx({
       move: "swing",
       parameters: ["*", "*", 8],
       ellipsis: false,
     })
-    const bigLisp = ["figure", "swing", "*", "*", 8]
     const shortLisp = ["figure", "swing"]
     expect(searchEx.toLisp()).toEqual(shortLisp)
     expect(searchEx.ellipsis).toEqual(false)
-    searchEx.ellipsis = true
-    expect(searchEx.ellipsis).toEqual(true)
-    expect(searchEx.toLisp()).toEqual(bigLisp)
-    searchEx.ellipsis = false
-    expect(searchEx.ellipsis).toEqual(false)
-    expect(searchEx.toLisp()).toEqual(shortLisp)
   })
 
-  test("with parameters left off but ellipsis=true", () => {
+  test("with parameters left off and ellipsis specified true", () => {
     const searchEx = new FigureSearchEx({ move: "swing", ellipsis: true })
     const bigLisp = ["figure", "swing", "*", "*", "*"]
-    const shortLisp = ["figure", "swing"]
-    expect(searchEx.ellipsis).toEqual(true)
-    expect(searchEx.toLisp()).toEqual(bigLisp)
-    searchEx.ellipsis = false
-    expect(searchEx.ellipsis).toEqual(false)
-    expect(searchEx.toLisp()).toEqual(shortLisp)
-    searchEx.ellipsis = true
     expect(searchEx.ellipsis).toEqual(true)
     expect(searchEx.toLisp()).toEqual(bigLisp)
   })

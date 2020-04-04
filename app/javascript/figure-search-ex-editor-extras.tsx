@@ -11,14 +11,16 @@ export const FigureSearchExEditorExtras = ({
 }) => {
   const dialect = useContext(DialectContext)
   return (
-    <select
-      className="form-control search-ex-figure"
-      onChange={({ target: { value } }) =>
-        setSearchEx(searchEx.shallowCopy({ move: value }))
-      }
-    >
-      <MoveMenuOptions dialect={dialect} />
-    </select>
+    <>
+      <select
+        className="form-control search-ex-figure"
+        onChange={({ target: { value } }) =>
+          setSearchEx(searchEx.shallowCopy({ move: value }))
+        }
+      >
+        <MoveMenuOptions dialect={dialect} />
+      </select>
+    </>
   )
 }
 

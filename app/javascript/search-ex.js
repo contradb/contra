@@ -306,11 +306,6 @@ class FigureSearchEx extends nullaryMixin(SearchEx) {
     return this._ellipsis
   }
 
-  set ellipsis(expanded) {
-    this._ellipsis = expanded
-    this.padMissingParametersWithAsterisks()
-  }
-
   padMissingParametersWithAsterisks() {
     if (this.ellipsis) {
       const formals_length = LibFigure.formalParameters(this.move).length
