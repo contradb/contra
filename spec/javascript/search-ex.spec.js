@@ -142,7 +142,7 @@ describe("ellipsis", () => {
     expect(searchEx.toLisp()).toEqual(bigLisp)
   })
 
-  test("without parameters left off", () => {
+  test("with parameters left off", () => {
     const searchEx = new FigureSearchEx({ move: "swing" })
     const bigLisp = ["figure", "swing", "*", "*", "*"]
     const shortLisp = ["figure", "swing"]
@@ -154,6 +154,38 @@ describe("ellipsis", () => {
     searchEx.ellipsis = false
     expect(searchEx.ellipsis).toEqual(false)
     expect(searchEx.toLisp()).toEqual(shortLisp)
+  })
+
+  test("with parameters specified but ellipsis=false", () => {
+    const searchEx = new FigureSearchEx({
+      move: "swing",
+      parameters: ["*", "*", 8],
+      ellipsis: false,
+    })
+    const bigLisp = ["figure", "swing", "*", "*", 8]
+    const shortLisp = ["figure", "swing"]
+    expect(searchEx.toLisp()).toEqual(shortLisp)
+    expect(searchEx.ellipsis).toEqual(false)
+    searchEx.ellipsis = true
+    expect(searchEx.ellipsis).toEqual(true)
+    expect(searchEx.toLisp()).toEqual(bigLisp)
+    searchEx.ellipsis = false
+    expect(searchEx.ellipsis).toEqual(false)
+    expect(searchEx.toLisp()).toEqual(shortLisp)
+  })
+
+  test("with parameters left off but ellipsis=true", () => {
+    const searchEx = new FigureSearchEx({ move: "swing", ellipsis: true })
+    const bigLisp = ["figure", "swing", "*", "*", "*"]
+    const shortLisp = ["figure", "swing"]
+    expect(searchEx.ellipsis).toEqual(true)
+    expect(searchEx.toLisp()).toEqual(bigLisp)
+    searchEx.ellipsis = false
+    expect(searchEx.ellipsis).toEqual(false)
+    expect(searchEx.toLisp()).toEqual(shortLisp)
+    searchEx.ellipsis = true
+    expect(searchEx.ellipsis).toEqual(true)
+    expect(searchEx.toLisp()).toEqual(bigLisp)
   })
 })
 
@@ -422,6 +454,46 @@ describe("shallowCopy", () => {
       expect(newEx.move).toBe(oldEx.move)
       expect(newEx.parameters).not.toBe(oldEx.parameters)
       expect(newEx.parameters).toEqual(["gentlespoons", true, "*", 8])
+    })
+    describe("ellipsis", () => {
+      it("false", () => {
+        const oldEx = new FigureSearchEx({
+          move: "swing",
+          parameters: ["*", "*", 8],
+        })
+        expect(oldEx.ellipsis).toBe(true)
+        const newEx = oldEx.shallowCopy({ ellipsis: false })
+        expect(newEx.subexpressions).not.toBe(oldEx.subExpressions)
+        expect(newEx.move).toBe(oldEx.move)
+        expect(newEx.parameters).toEqual(oldEx.parameters)
+        expect(newEx.ellipsis).toBe(false)
+      })
+      it("true", () => {
+        const oldEx = new FigureSearchEx({
+          move: "swing",
+        })
+        expect(oldEx.ellipsis).toBe(false)
+        expect(oldEx.parameters).toEqual([])
+        const newEx = oldEx.shallowCopy({ ellipsis: true })
+        expect(newEx.subexpressions).not.toBe(oldEx.subExpressions)
+        expect(newEx.move).toBe(oldEx.move)
+        expect(newEx.parameters).toEqual(["*", "*", "*"])
+        expect(newEx.ellipsis).toBe(true)
+      })
+      it("true copying interesting parameters", () => {
+        const oldEx = new FigureSearchEx({
+          move: "swing",
+          parameters: ["*", "*", 8],
+          ellipsis: false,
+        })
+        expect(oldEx.ellipsis).toBe(false)
+        expect(oldEx.parameters.length).toEqual(3)
+        const newEx = oldEx.shallowCopy({ ellipsis: true })
+        expect(newEx.subexpressions).not.toBe(oldEx.subExpressions)
+        expect(newEx.move).toBe(oldEx.move)
+        expect(newEx.parameters).toEqual(["*", "*", 8])
+        expect(newEx.ellipsis).toBe(true)
+      })
     })
   })
 
