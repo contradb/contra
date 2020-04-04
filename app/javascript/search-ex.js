@@ -270,10 +270,11 @@ class FigureSearchEx extends nullaryMixin(SearchEx) {
       ellipsis = src ? src.ellipsis : parameters && parameters.length > 0,
     } = args
     this._move = move
-    this.parameters = parameters
+    this._parameters = parameters
     this._ellipsis = ellipsis
-    if (0 === parameters.length && ellipsis)
+    if (0 === parameters.length && ellipsis) {
       this.padMissingParametersWithAsterisks()
+    }
   }
 
   toLisp() {
@@ -296,10 +297,8 @@ class FigureSearchEx extends nullaryMixin(SearchEx) {
     return this._move
   }
 
-  set move(moveString) {
-    this._move = moveString
-    this.parameters.length = 0
-    this.padMissingParametersWithAsterisks()
+  get parameters() {
+    return this._parameters
   }
 
   get ellipsis() {

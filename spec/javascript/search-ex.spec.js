@@ -165,7 +165,7 @@ test("copy", () => {
   const originalLisp = ["and", ["figure", "do si do"], ["figure", "swing"]]
   const original = SearchEx.fromLisp(originalLisp)
   const copy = original.copy()
-  copy.subexpressions[0].move = "circle"
+  copy.subexpressions[0]._move = "circle" // hack the type for testing
   expect(copy.toLisp()).toEqual([
     "and",
     ["figure", "circle"],
