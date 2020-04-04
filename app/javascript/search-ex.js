@@ -273,7 +273,11 @@ class FigureSearchEx extends nullaryMixin(SearchEx) {
     this._parameters = parameters
     this._ellipsis = ellipsis
     if (0 === parameters.length && ellipsis) {
-      this.padMissingParametersWithAsterisks()
+      const formals_length = LibFigure.formalParameters(this.move).length
+      this._parameters = [...this.parameters]
+      while (this.parameters.length < formals_length) {
+        this.parameters.push("*")
+      }
     }
   }
 
@@ -303,13 +307,6 @@ class FigureSearchEx extends nullaryMixin(SearchEx) {
 
   get ellipsis() {
     return this._ellipsis
-  }
-
-  padMissingParametersWithAsterisks() {
-    if (this.ellipsis) {
-      const formals_length = LibFigure.formalParameters(this.move).length
-      while (this.parameters.length < formals_length) this.parameters.push("*")
-    }
   }
 }
 registerSearchEx("FigureSearchEx", "move", "parameters", "ellipsis")
