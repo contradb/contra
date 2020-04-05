@@ -3,7 +3,8 @@ declare class SearchEx {
   // static default(): SearchEx
   toLisp(): Filter
   isNumeric(): boolean
-  op: string
+  get op(): string
+  get ellipsis(): boolean
   castTo(op: string): SearchEx
   subexpressions: SearchEx[]
   shallowCopy: (any) => SearchEx

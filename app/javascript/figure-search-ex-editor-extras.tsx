@@ -20,6 +20,13 @@ export const FigureSearchExEditorExtras = ({
       >
         <MoveMenuOptions dialect={dialect} />
       </select>
+      <input
+        type="checkbox"
+        checked={searchEx.ellipsis}
+        onChange={() =>
+          setSearchEx(searchEx.shallowCopy({ ellipsis: !searchEx.ellipsis }))
+        }
+      />
     </>
   )
 }

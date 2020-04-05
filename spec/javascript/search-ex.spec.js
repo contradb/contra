@@ -408,7 +408,7 @@ describe("shallowCopy", () => {
       expect(newEx.subexpressions).not.toBe(oldEx.subExpressions)
       expect(newEx.move).toEqual("allemande")
       expect(newEx.parameters).not.toBe(oldEx.parameters)
-      expect(newEx.parameters).toEqual(["ladles", true, 540, 8])
+      expect(newEx.parameters).toEqual(["*", "*", "*", "*"])
     })
     it("parameters", () => {
       const oldEx = SearchEx.fromLisp([

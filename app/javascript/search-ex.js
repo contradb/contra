@@ -266,16 +266,18 @@ class FigureSearchEx extends nullaryMixin(SearchEx) {
     const {
       src,
       move = src ? src.move : errorMissingParameter("move"),
-      parameters = src ? [...src.parameters] : [],
+      parameters = src && src.move === move ? [...src.parameters] : [],
       ellipsis = src ? src.ellipsis : parameters && parameters.length > 0,
     } = args
     this._move = move
     this._parameters = parameters
     this._ellipsis = ellipsis
+
     if (0 === parameters.length && ellipsis) {
-      const formals_length = LibFigure.formalParameters(this.move).length
+      const formalsLength =
+        this.move === "*" ? 0 : LibFigure.formalParameters(this.move).length
       this._parameters = [...this.parameters]
-      while (this.parameters.length < formals_length) {
+      while (this.parameters.length < formalsLength) {
         this.parameters.push("*")
       }
     }
