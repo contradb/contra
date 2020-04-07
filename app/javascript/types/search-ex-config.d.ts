@@ -16,4 +16,10 @@ declare class SearchEx {
   withAdditionalSubexpression(se?: SearchEx): SearchEx
 }
 
+declare class FigureSearchEx extends SearchEx {
+  get move(): string
+  get parameters(): any[]
+  get ellipsis(): boolean
+}
+
 // declare module "*"

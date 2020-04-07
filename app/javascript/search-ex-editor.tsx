@@ -148,7 +148,7 @@ const EditorExtras = ({
   if (searchEx instanceof FigureSearchEx) {
     return (
       <FigureSearchExEditorExtras
-        searchEx={searchEx}
+        searchEx={searchEx as FigureSearchEx}
         setSearchEx={setSearchEx}
       />
     )
