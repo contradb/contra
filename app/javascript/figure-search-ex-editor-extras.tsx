@@ -43,23 +43,38 @@ export const FigureSearchExEditorExtras = ({
               newParameters[i] = value
               setSearchEx(searchEx.shallowCopy({ parameters: newParameters }))
             }
-            if (presentChooserWithRadio(chooser)) {
-              return (
-                <ChooserRadios
-                  key={i}
+            const label = LibFigure.parameterLabel(searchEx.move, i)
+            return (
+              <div key={i}>
+                <label>{label}</label>
+                <ChooserChooser
                   chooser={chooser}
                   value={parameter}
                   setValue={setValue}
                 />
-              )
-            } else if (presentChooserWithSelect(chooser)) {
-              return <div key={i}>Select chooser</div>
-            } else if (presentChooserWithText(chooser)) {
-              return <div key={i}>Text chooser</div>
-            } else return <div key={i}>Unimplemented chooser</div>
+              </div>
+            )
           })}
     </>
   )
+}
+
+const ChooserChooser = ({
+  chooser,
+  value,
+  setValue,
+}: {
+  chooser: Chooser
+  value: any
+  setValue: (x: any) => void
+}) => {
+  if (presentChooserWithRadio(chooser)) {
+    return <ChooserRadios chooser={chooser} value={value} setValue={setValue} />
+  } else if (presentChooserWithSelect(chooser)) {
+    return <div>Select chooser</div>
+  } else if (presentChooserWithText(chooser)) {
+    return <div>Text chooser</div>
+  } else return <div>Unimplemented chooser</div>
 }
 
 const ChooserRadios = ({
