@@ -33,28 +33,36 @@ export const FigureSearchExEditorExtras = ({
           setSearchEx(searchEx.shallowCopy({ ellipsis: !searchEx.ellipsis }))
         }
       />
-      {skipParams
-        ? null
-        : searchEx.parameters.map((parameter: any, i: number) => {
-            const formalParameter = formalParameters[i]
-            const chooser = formalParameter.ui
-            const setValue = (value: any) => {
-              const newParameters = [...searchEx.parameters]
-              newParameters[i] = value
-              setSearchEx(searchEx.shallowCopy({ parameters: newParameters }))
-            }
-            const label = LibFigure.parameterLabel(searchEx.move, i)
-            return (
-              <div key={i}>
-                <label>{label}</label>
-                <ChooserChooser
-                  chooser={chooser}
-                  value={parameter}
-                  setValue={setValue}
-                />
-              </div>
-            )
-          })}
+      {skipParams ? null : (
+        <table>
+          <tbody>
+            {searchEx.parameters.map((parameter: any, i: number) => {
+              const formalParameter = formalParameters[i]
+              const chooser = formalParameter.ui
+              const setValue = (value: any) => {
+                const newParameters = [...searchEx.parameters]
+                newParameters[i] = value
+                setSearchEx(searchEx.shallowCopy({ parameters: newParameters }))
+              }
+              const label = LibFigure.parameterLabel(searchEx.move, i)
+              return (
+                <tr key={i}>
+                  <td className="chooser-label-text">
+                    <label>{label}</label>
+                  </td>
+                  <td>
+                    <ChooserChooser
+                      chooser={chooser}
+                      value={parameter}
+                      setValue={setValue}
+                    />
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      )}
     </>
   )
 }
