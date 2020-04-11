@@ -152,7 +152,6 @@ const ChooserSelect = ({
       onChange={e => setValue(e.target.value)}
     >
       {options.map((option, i: number) => {
-        console.log(option)
         const [val, label] = Array.isArray(option) ? option : [option, option]
         return (
           <option key={i} value={val}>
