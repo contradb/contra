@@ -55,6 +55,8 @@ export const FigureSearchExEditorExtras = ({
                       chooser={chooser}
                       value={parameter}
                       setValue={setValue}
+                      dialect={dialect}
+                      move={searchEx.move}
                     />
                   </td>
                 </tr>
@@ -71,15 +73,27 @@ const ChooserChooser = ({
   chooser,
   value,
   setValue,
+  dialect,
+  move,
 }: {
   chooser: Chooser
   value: any
   setValue: (x: any) => void
+  dialect: Dialect
+  move: string
 }) => {
   if (presentChooserWithRadio(chooser)) {
     return <ChooserRadios chooser={chooser} value={value} setValue={setValue} />
   } else if (presentChooserWithSelect(chooser)) {
-    return <div>Select chooser</div>
+    return (
+      <ChooserSelect
+        chooser={chooser}
+        value={value}
+        setValue={setValue}
+        dialect={dialect}
+        move={move}
+      />
+    )
   } else if (presentChooserWithText(chooser)) {
     return <div>Text chooser</div>
   } else return <div>Unimplemented chooser</div>
@@ -94,9 +108,7 @@ const ChooserRadios = ({
   value: any
   setValue: (x: any) => void
 }) => {
-  const options: [string, string][] = (radioChooserNameOptions as any)[
-    chooser.name
-  ]
+  const options: [string, string][] = (radioChooserOptions as any)[chooser.name]
   return (
     <div className="flex">
       {options.map(([value2, label], i) => (
@@ -115,7 +127,44 @@ const ChooserRadios = ({
   )
 }
 
-const radioChooserNameOptions = {
+const ChooserSelect = ({
+  chooser,
+  value,
+  setValue,
+  dialect,
+  move,
+}: {
+  chooser: Chooser
+  value: any
+  setValue: (x: any) => void
+  dialect: Dialect
+  move: string
+}) => {
+  const optionsfn: (
+    move: string,
+    d: Dialect
+  ) => Array<string | [string, string]> = selectChooserOptions[chooser.name]
+  const options = optionsfn(move, dialect)
+  return (
+    <select
+      className="form-control"
+      value={value}
+      onChange={e => setValue(e.target.value)}
+    >
+      {options.map((option, i: number) => {
+        console.log(option)
+        const [val, label] = Array.isArray(option) ? option : [option, option]
+        return (
+          <option key={i} value={val}>
+            {label}
+          </option>
+        )
+      })}
+    </select>
+  )
+}
+
+const radioChooserOptions = {
   chooser_boolean: [["*", "*"], [true, "yes"], [false, "no"]],
   chooser_spin: [["*", "*"], [true, "clockwise"], [false, "ccw"]],
   chooser_left_right_spin: [["*", "*"], [true, "left"], [false, "right"]],
@@ -132,10 +181,152 @@ const radioChooserNameOptions = {
   chooser_half_or_full: [["*", "*"], [0.5, "half"], [1.0, "full"]],
 }
 
-const presentChooserWithRadio = (chooser: Chooser) => {
-  return chooser.name in radioChooserNameOptions
+const angleOptions = (move: string, dialect: Dialect) => [
+  "*",
+  ...LibFigure.anglesForMove(move).map((angle: number) => [
+    angle.toString(),
+    LibFigure.degreesToWords(angle, move),
+  ]),
+]
+
+const selectChooserOptions = {
+  chooser_revolutions: angleOptions,
+  chooser_places: angleOptions,
+  chooser_beats: (move: string, dialect: Dialect) => [
+    "*",
+    8,
+    16,
+    0,
+    1,
+    2,
+    3,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    20,
+    24,
+    32,
+    48,
+    64,
+  ],
+  chooser_boolean: (move: string, dialect: Dialect) => [
+    "*",
+    [true, "yes"],
+    [false, "no"],
+  ],
+  chooser_star_grip: (move: string, dialect: Dialect) =>
+    ["*"].concat(
+      LibFigure.wristGrips.map(function(grip: any) {
+        return grip === "" ? ["", "unspecified"] : grip
+      })
+    ),
+  chooser_march_facing: (move: string, dialect: Dialect) => [
+    "*",
+    "forward",
+    "backward",
+    "forward then backward",
+  ],
+  chooser_set_direction: (move: string, dialect: Dialect) => [
+    "*",
+    ["along", "along the set"],
+    ["across", "across the set"],
+    "right diagonal",
+    "left diagonal",
+  ],
+  chooser_set_direction_acrossish: (move: string, dialect: Dialect) => [
+    "*",
+    ["across", "across the set"],
+    "right diagonal",
+    "left diagonal",
+  ],
+  chooser_set_direction_grid: (move: string, dialect: Dialect) => [
+    "*",
+    ["along", "along the set"],
+    ["across", "across the set"],
+  ],
+  chooser_set_direction_figure_8: (move: string, dialect: Dialect) => [
+    "*",
+    "",
+    "above",
+    "below",
+    "across",
+  ],
+  chooser_gate_direction: (move: string, dialect: Dialect) => [
+    "*",
+    ["up", "up the set"],
+    ["down", "down the set"],
+    ["in", "into the set"],
+    ["out", "out of the set"],
+  ],
+  chooser_slice_return: (move: string, dialect: Dialect) => [
+    "*",
+    ["straight", "straight back"],
+    ["diagonal", "diagonal back"],
+    "none",
+  ],
+  chooser_all_or_center_or_outsides: (move: string, dialect: Dialect) => [
+    "*",
+    "all",
+    "center",
+    "outsides",
+  ],
+  chooser_down_the_hall_ender: (move: string, dialect: Dialect) => [
+    "*",
+    ["turn-alone", "turn alone"],
+    ["turn-couple", "turn as a couple"],
+    ["circle", "bend into a ring"],
+    ["cozy", "form a cozy line"],
+    ["cloverleaf", "bend into a cloverleaf"],
+    ["thread-needle", "thread the needle"],
+    ["right-high", "right hand high, left hand low"],
+    ["sliding-doors", "sliding doors"],
+    ["", "unspecified"],
+  ],
+  chooser_zig_zag_ender: (move: string, dialect: Dialect) => [
+    "*",
+    ["", "none"],
+    ["ring", "into a ring"],
+    ["allemande", "training two catch hands"],
+  ],
+  chooser_hey_length: (move: string, dialect: Dialect) => [
+    "*",
+    "full",
+    "half",
+    "less than half",
+    "between half and full",
+  ],
+  chooser_swing_prefix: (move: string, dialect: Dialect) => [
+    "*",
+    "none",
+    "balance",
+    "meltdown",
+  ],
+  ...LibFigure.dancerChooserNames().reduce(
+    (acc: any, chooserName: ChooserName) => {
+      acc[chooserName] = (move: string, dialect: Dialect) =>
+        ["*"].concat(
+          LibFigure.dancerMenuForChooser(LibFigure.chooser(chooserName)).map(
+            (dancers: ChooserName) => [
+              // I guess that dancers has type ChooserName...?
+              dancers,
+              LibFigure.dancerMenuLabel(dancers, dialect),
+            ]
+          )
+        )
+      return acc
+    },
+    {}
+  ),
 }
-const presentChooserWithSelect = (chooser: Chooser) => false
+
+const presentChooserWithRadio = (chooser: Chooser) =>
+  chooser.name in radioChooserOptions
+const presentChooserWithSelect = (chooser: Chooser) =>
+  chooser.name in selectChooserOptions
 const presentChooserWithText = (chooser: Chooser) =>
   chooser.name === "chooser_text"
 
