@@ -31,6 +31,18 @@ declare type ChooserName =
   | "chooser_half_or_full"
   | "chooser_swing_prefix"
   | "chooser_hey_length"
+  | "chooser_dancers"
+  | "chooser_pair"
+  | "chooser_pair_or_everyone"
+  | "chooser_pairc_or_everyone"
+  | "chooser_pairz"
+  | "chooser_pairz_or_unspecified"
+  | "chooser_pairs"
+  | "chooser_pairs_or_ones_or_twos"
+  | "chooser_pairs_or_everyone"
+  | "chooser_dancer"
+  | "chooser_role"
+  | "chooser_hetero"
 
 declare type Chooser = { name: ChooserName }
 
