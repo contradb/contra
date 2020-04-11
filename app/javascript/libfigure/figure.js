@@ -84,7 +84,7 @@ defineFigure(
   ],
   {
     words: allemandeOrbitWords,
-    labels: ["", "allemande", "inner", "outer"],
+    labels: [, "allemande", "inner", "outer"],
   }
 )
 
