@@ -1,4 +1,5 @@
-import React, { useContext } from "react"
+import React, { useState, useEffect, useContext } from "react"
+import useDebounce from "./use-debounce"
 import LibFigure from "./libfigure/libfigure"
 import DialectContext from "./dialect-context"
 import { SearchEx, FigureSearchEx } from "./search-ex"
@@ -180,15 +181,20 @@ const ChooserText = ({
   value: any
   setValue: (x: any) => void
   dialect: Dialect
-}) => (
-  <input
-    className="form-control"
-    type="text"
-    placeholder="any words..."
-    value={value}
-    onChange={e => setValue(e.target.value)}
-  />
-)
+}) => {
+  const [bouncyValue, setBouncyValue] = useState(value)
+  const debouncedValue = useDebounce(bouncyValue)
+  useEffect(() => setValue(debouncedValue), [debouncedValue])
+  return (
+    <input
+      className="form-control"
+      type="text"
+      placeholder="any words..."
+      value={bouncyValue}
+      onChange={e => setBouncyValue(e.target.value)}
+    />
+  )
+}
 
 const radioChooserOptions = {
   chooser_boolean: [["*", "*"], [true, "yes"], [false, "no"]],
