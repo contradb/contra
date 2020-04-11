@@ -129,9 +129,13 @@ module FilterDances
 
   def self.param_passes_filter?(formal_param, dance_param, param_filter)
     if JSLibFigure.parameter_uses_chooser(formal_param, JSLibFigure.chooser('chooser_text'))
-      # substring search
-      keywords = param_filter.split(' ')
-      keywords.any? {|keyword| dance_param.include?(keyword)}
+      if param_filter == ''
+        true
+      else
+        # search for any words
+        keywords = param_filter.split(' ')
+        keywords.any? {|keyword| dance_param.include?(keyword)}
+      end
     elsif JSLibFigure.parameter_uses_chooser(formal_param, JSLibFigure.chooser('chooser_half_or_full'))
       param_filter == '*' || param_filter.to_f === dance_param.to_f
     elsif JSLibFigure.formal_param_is_dancers(formal_param)

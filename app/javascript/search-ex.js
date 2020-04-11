@@ -273,12 +273,13 @@ class FigureSearchEx extends nullaryMixin(SearchEx) {
     this._parameters = parameters
     this._ellipsis = ellipsis
 
-    if (0 === parameters.length && ellipsis) {
-      const formalsLength =
-        this.move === "*" ? 0 : LibFigure.formalParameters(this.move).length
+    if (0 === parameters.length && ellipsis && this.move !== "*") {
+      const formals = LibFigure.formalParameters(this.move)
       this._parameters = [...this.parameters]
-      while (this.parameters.length < formalsLength) {
-        this.parameters.push("*")
+      while (this.parameters.length < formals.length) {
+        const formalIsText =
+          formals[this.parameters.length].ui.name == "chooser_text"
+        this.parameters.push(formalIsText ? "" : "*")
       }
     }
   }

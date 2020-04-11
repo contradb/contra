@@ -466,6 +466,19 @@ describe("shallowCopy", () => {
         expect(newEx.parameters).toEqual(["*", "*", 8])
         expect(newEx.ellipsis).toBe(true)
       })
+
+      it("true, passing text parameters as '' and not '*'", () => {
+        const oldEx = new FigureSearchEx({
+          move: "custom",
+          ellipsis: false,
+        })
+        expect(oldEx.ellipsis).toBe(false)
+        const newEx = oldEx.shallowCopy({ ellipsis: true })
+        expect(newEx.subexpressions).not.toBe(oldEx.subExpressions)
+        expect(newEx.move).toBe(oldEx.move)
+        expect(newEx.parameters).toEqual(["", "*"])
+        expect(newEx.ellipsis).toBe(true)
+      })
     })
   })
 
