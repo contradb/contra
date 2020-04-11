@@ -95,7 +95,14 @@ const ChooserChooser = ({
       />
     )
   } else if (presentChooserWithText(chooser)) {
-    return <div>Text chooser</div>
+    return (
+      <ChooserText
+        chooser={chooser}
+        value={value}
+        setValue={setValue}
+        dialect={dialect}
+      />
+    )
   } else return <div>Unimplemented chooser</div>
 }
 
@@ -162,6 +169,26 @@ const ChooserSelect = ({
     </select>
   )
 }
+
+const ChooserText = ({
+  chooser,
+  value,
+  setValue,
+  dialect,
+}: {
+  chooser: Chooser
+  value: any
+  setValue: (x: any) => void
+  dialect: Dialect
+}) => (
+  <input
+    className="form-control"
+    type="text"
+    placeholder="any words..."
+    value={value}
+    onChange={e => setValue(e.target.value)}
+  />
+)
 
 const radioChooserOptions = {
   chooser_boolean: [["*", "*"], [true, "yes"], [false, "no"]],
