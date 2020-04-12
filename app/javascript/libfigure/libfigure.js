@@ -3,7 +3,7 @@
 // in.
 
 import { defaultDialect } from "./util.js"
-import { param } from "./param.js"
+import { param, wristGrips } from "./param.js"
 import { degreesToWords, anglesForMove } from "./move.js"
 import { chooser, dancerMenuForChooser, dancerChooserNames } from "./chooser.js"
 import {
@@ -20,6 +20,7 @@ import {} from "./dance.js" // ?? for side effect??
 export default {
   defaultDialect,
   param,
+  wristGrips,
   degreesToWords,
   anglesForMove,
   chooser,
