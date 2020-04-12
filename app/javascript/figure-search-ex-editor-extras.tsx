@@ -19,20 +19,22 @@ export const FigureSearchExEditorExtras = ({
     : LibFigure.formalParameters(searchEx.move)
   return (
     <>
-      <select
-        className="form-control search-ex-figure"
-        onChange={({ target: { value } }) =>
-          setSearchEx(searchEx.shallowCopy({ move: value }))
-        }
-      >
-        <MoveMenuOptions dialect={dialect} />
-      </select>
-      <EllipsisToggle
-        checked={searchEx.ellipsis}
-        setChecked={(checked: boolean) =>
-          setSearchEx(searchEx.shallowCopy({ ellipsis: checked }))
-        }
-      />
+      <div className="form-inline form-inline-even-when-small search-ex-figure-row">
+        <select
+          className="form-control"
+          onChange={({ target: { value } }) =>
+            setSearchEx(searchEx.shallowCopy({ move: value }))
+          }
+        >
+          <MoveMenuOptions dialect={dialect} />
+        </select>
+        <EllipsisToggle
+          checked={searchEx.ellipsis}
+          setChecked={(checked: boolean) =>
+            setSearchEx(searchEx.shallowCopy({ ellipsis: checked }))
+          }
+        />
+      </div>
       {skipParams ? null : (
         <table>
           <tbody>

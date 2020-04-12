@@ -32,8 +32,12 @@
   margin-right: 0.5em; // spacer for ⋮ menu
 }
 
-.search-ex-figure {
+.search-ex-figure-row {
   margin-top: 0.5em;
+
+  select {
+    margin-right: 0.5em; // spacer for ... menu
+  }
 }
 
 .search-ex-subexpressions {
