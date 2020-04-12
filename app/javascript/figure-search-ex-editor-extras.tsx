@@ -27,11 +27,10 @@ export const FigureSearchExEditorExtras = ({
       >
         <MoveMenuOptions dialect={dialect} />
       </select>
-      <input
-        type="checkbox"
+      <EllipsisToggle
         checked={searchEx.ellipsis}
-        onChange={() =>
-          setSearchEx(searchEx.shallowCopy({ ellipsis: !searchEx.ellipsis }))
+        setChecked={(checked: boolean) =>
+          setSearchEx(searchEx.shallowCopy({ ellipsis: checked }))
         }
       />
       {skipParams ? null : (
@@ -379,5 +378,20 @@ const moveTermsAndSubstitutionsForSelectMenu: (
   dialect: Dialect
 ) => { term: string; substitution: string }[] =
   LibFigure.moveTermsAndSubstitutionsForSelectMenu
+
+export const EllipsisToggle = ({
+  checked,
+  setChecked,
+}: {
+  checked: boolean
+  setChecked: (checked: boolean) => void
+}) => (
+  <button
+    className={checked ? "btn btn-primary" : "btn btn-default"}
+    onClick={() => setChecked(!checked)}
+  >
+    <span className="glyphicon glyphicon-list" />
+  </button>
+)
 
 export default FigureSearchExEditorExtras
