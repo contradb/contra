@@ -19,53 +19,63 @@ export const FigureSearchExEditorExtras = ({
     : LibFigure.formalParameters(searchEx.move)
   return (
     <>
-      <div className="form-inline form-inline-even-when-small search-ex-figure-row">
-        <select
-          className="form-control"
-          onChange={({ target: { value } }) =>
-            setSearchEx(searchEx.shallowCopy({ move: value }))
-          }
-        >
-          <MoveMenuOptions dialect={dialect} />
-        </select>
-        <EllipsisToggle
-          checked={searchEx.ellipsis}
-          setChecked={(checked: boolean) =>
-            setSearchEx(searchEx.shallowCopy({ ellipsis: checked }))
-          }
-        />
-      </div>
+      <tr>
+        <td>
+          <select
+            className="form-control"
+            onChange={({ target: { value } }) =>
+              setSearchEx(searchEx.shallowCopy({ move: value }))
+            }
+          >
+            <MoveMenuOptions dialect={dialect} />
+          </select>
+        </td>
+        <td>
+          <EllipsisToggle
+            checked={searchEx.ellipsis}
+            setChecked={(checked: boolean) =>
+              setSearchEx(searchEx.shallowCopy({ ellipsis: checked }))
+            }
+          />
+        </td>
+      </tr>
       {skipParams ? null : (
-        <table>
-          <tbody>
-            {searchEx.parameters.map((parameter: any, i: number) => {
-              const formalParameter = formalParameters[i]
-              const chooser = formalParameter.ui
-              const setValue = (value: any) => {
-                const newParameters = [...searchEx.parameters]
-                newParameters[i] = value
-                setSearchEx(searchEx.shallowCopy({ parameters: newParameters }))
-              }
-              const label = LibFigure.parameterLabel(searchEx.move, i)
-              return (
-                <tr key={i}>
-                  <td className="chooser-label-text">
-                    <label>{label}</label>
-                  </td>
-                  <td>
-                    <ChooserChooser
-                      chooser={chooser}
-                      value={parameter}
-                      setValue={setValue}
-                      dialect={dialect}
-                      move={searchEx.move}
-                    />
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
+        <tr>
+          <td colSpan={2}>
+            <table>
+              <tbody>
+                {searchEx.parameters.map((parameter: any, i: number) => {
+                  const formalParameter = formalParameters[i]
+                  const chooser = formalParameter.ui
+                  const setValue = (value: any) => {
+                    const newParameters = [...searchEx.parameters]
+                    newParameters[i] = value
+                    setSearchEx(
+                      searchEx.shallowCopy({ parameters: newParameters })
+                    )
+                  }
+                  const label = LibFigure.parameterLabel(searchEx.move, i)
+                  return (
+                    <tr key={i}>
+                      <td className="chooser-label-text">
+                        <label>{label}</label>
+                      </td>
+                      <td>
+                        <ChooserChooser
+                          chooser={chooser}
+                          value={parameter}
+                          setValue={setValue}
+                          dialect={dialect}
+                          move={searchEx.move}
+                        />
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </td>
+        </tr>
       )}
     </>
   )

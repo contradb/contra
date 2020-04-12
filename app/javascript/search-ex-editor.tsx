@@ -55,70 +55,77 @@ export const SearchExEditor = ({
   return (
     <div className="search-ex">
       <div className="search-ex-well">
-        <div className="search-ex-trunk">
-          <div className="form-inline form-inline-even-when-small">
-            <select
-              value={searchEx.op}
-              onChange={e => {
-                const op = e.target.value
-                setSearchEx(searchEx.castTo(op))
-              }}
-              className="form-control search-ex-op"
-            >
-              {searchEx.isNumeric() ? numericOpOptions : nonNumericOpOptions}
-            </select>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <select
+                  value={searchEx.op}
+                  onChange={e => {
+                    const op = e.target.value
+                    setSearchEx(searchEx.castTo(op))
+                  }}
+                  className="form-control search-ex-op"
+                >
+                  {searchEx.isNumeric()
+                    ? numericOpOptions
+                    : nonNumericOpOptions}
+                </select>
+              </td>
+              <td>
+                <div className="btn-group">
+                  <button
+                    type="button"
+                    className="btn btn-default dropdown-toggle search-ex-menu-toggle"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <span className="glyphicon glyphicon-option-vertical"></span>
+                  </button>
+                  <ul className="dropdown-menu search-ex-menu-entries">
+                    {searchEx.subexpressions.length <
+                      searchEx.maxSubexpressions() && (
+                      <li>
+                        <a
+                          href="#"
+                          className="search-ex-add-subexpression"
+                          onClick={preventDefaultThen(() =>
+                            setSearchEx(searchEx.withAdditionalSubexpression())
+                          )}
+                        >
+                          Add
+                        </a>
+                      </li>
+                    )}
 
-            <div className="btn-group">
-              <button
-                type="button"
-                className="btn btn-default dropdown-toggle search-ex-menu-toggle"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <span className="glyphicon glyphicon-option-vertical"></span>
-              </button>
-              <ul className="dropdown-menu search-ex-menu-entries">
-                {searchEx.subexpressions.length <
-                  searchEx.maxSubexpressions() && (
-                  <li>
-                    <a
-                      href="#"
-                      className="search-ex-add-subexpression"
-                      onClick={preventDefaultThen(() =>
-                        setSearchEx(searchEx.withAdditionalSubexpression())
-                      )}
-                    >
-                      Add
-                    </a>
-                  </li>
-                )}
-
-                <li>
-                  <a href="#">Another action</a>
-                </li>
-                <li>
-                  <a href="#">Something else here</a>
-                </li>
-                <li role="separator" className="divider"></li>
-                {removeSearchEx && (
-                  <li>
-                    <a
-                      href="#"
-                      className="search-ex-delete"
-                      onClick={preventDefaultThen(() =>
-                        removeSearchEx(searchEx)
-                      )}
-                    >
-                      Delete
-                    </a>
-                  </li>
-                )}
-              </ul>
-            </div>
-          </div>
-          <EditorExtras searchEx={searchEx} setSearchEx={setSearchEx} />
-        </div>
+                    <li>
+                      <a href="#">Another action</a>
+                    </li>
+                    <li>
+                      <a href="#">Something else here</a>
+                    </li>
+                    <li role="separator" className="divider"></li>
+                    {removeSearchEx && (
+                      <li>
+                        <a
+                          href="#"
+                          className="search-ex-delete"
+                          onClick={preventDefaultThen(() =>
+                            removeSearchEx(searchEx)
+                          )}
+                        >
+                          Delete
+                        </a>
+                      </li>
+                    )}
+                  </ul>
+                </div>
+              </td>
+            </tr>
+            <EditorExtras searchEx={searchEx} setSearchEx={setSearchEx} />
+          </tbody>
+        </table>
         {0 === searchEx.subexpressions.length ? null : (
           <div className="search-ex-subexpressions">
             {searchEx.subexpressions.map((subex, i) => (
