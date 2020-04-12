@@ -129,7 +129,7 @@ const ChooserRadios = ({
 }) => {
   const options: [string, string][] = (radioChooserOptions as any)[chooser.name]
   return (
-    <div className="flex">
+    <div className="chooser-radio-container">
       {options.map(([value2, label], i) => (
         <label key={i}>
           <input
@@ -137,9 +137,8 @@ const ChooserRadios = ({
             value={value2}
             checked={value === value2}
             onChange={() => setValue(value2)}
-            className="radio-inline"
           />
-          {" " + label}
+          {label}
         </label>
       ))}
     </div>

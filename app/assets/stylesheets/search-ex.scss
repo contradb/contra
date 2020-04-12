@@ -56,6 +56,13 @@
   }
 }
 
-.flex {
+.chooser-radio-container {
   display: flex;
+  align-items: baseline;
+  label input {
+    margin-right: 0.5em;
+  }
+  label + label {
+    margin-left: 1em;
+  }
 }
