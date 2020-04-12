@@ -214,13 +214,13 @@ const radioChooserOptions = {
   chooser_right_left_hand: [["*", "*"], [false, "left"], [true, "right"]],
   chooser_right_left_shoulder: [["*", "*"], [false, "left"], [true, "right"]],
   chooser_slide: [["*", "*"], [true, "left"], [false, "right"]],
-  chooser_slice_increment: [["*", "*"], "couple", "dancer"],
-  chooser_go_back: [
+  chooser_slice_increment: [
     ["*", "*"],
-    [true, "forward &amp; back"],
-    [false, "forward"],
+    ["couple", "couple"],
+    ["dancer", "dancer"],
   ],
-  chooser_give: [["*", "*"], [true, "give &amp; take"], [false, "take"]],
+  chooser_go_back: [["*", "*"], [true, "forward & back"], [false, "forward"]],
+  chooser_give: [["*", "*"], [true, "give & take"], [false, "take"]],
   chooser_half_or_full: [["*", "*"], [0.5, "half"], [1.0, "full"]],
 }
 
