@@ -30,7 +30,6 @@ const nonNumericOpOptions = [
   "&",
   "progression",
   "compare",
-  "formation",
 ].map(makeOpOption)
 
 const numericOpOptions = ["constant", "tag", "count-matches"].map(makeOpOption)
@@ -39,10 +38,12 @@ export const SearchExEditor = ({
   searchEx,
   setSearchEx,
   removeSearchEx,
+  id,
 }: {
   searchEx: SearchEx
   setSearchEx: (se: SearchEx) => void
   removeSearchEx: null | ((se: SearchEx) => void)
+  id?: string
 }) => {
   const hasEnoughChildrenToRemoveOne =
     searchEx.subexpressions.length > searchEx.minSubexpressions()
@@ -53,7 +54,7 @@ export const SearchExEditor = ({
     setSearchEx(searchEx.withAdditionalSubexpression())
 
   return (
-    <div className="search-ex">
+    <div className="search-ex" {...(id ? { id: id } : {})}>
       <div className="search-ex-well">
         <table>
           <tbody>

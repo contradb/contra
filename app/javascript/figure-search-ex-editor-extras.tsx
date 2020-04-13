@@ -22,7 +22,7 @@ export const FigureSearchExEditorExtras = ({
       <tr>
         <td>
           <select
-            className="form-control"
+            className="form-control search-ex-move"
             onChange={({ target: { value } }) =>
               setSearchEx(searchEx.shallowCopy({ move: value }))
             }
@@ -42,7 +42,7 @@ export const FigureSearchExEditorExtras = ({
       {skipParams ? null : (
         <tr>
           <td colSpan={2}>
-            <table>
+            <table className="search-ex-figure-parameters">
               <tbody>
                 {searchEx.parameters.map((parameter: any, i: number) => {
                   const formalParameter = formalParameters[i]
@@ -396,13 +396,15 @@ export const EllipsisToggle = ({
 }: {
   checked: boolean
   setChecked: (checked: boolean) => void
-}) => (
-  <button
-    className={checked ? "btn btn-primary" : "btn btn-default"}
-    onClick={() => setChecked(!checked)}
-  >
-    <span className="glyphicon glyphicon-list" />
-  </button>
-)
+}) => {
+  const classes =
+    "search-ex-toggle-parameters btn " +
+    (checked ? "btn-primary" : "btn-default")
+  return (
+    <button className={classes} onClick={() => setChecked(!checked)}>
+      <span className="glyphicon glyphicon-list" />
+    </button>
+  )
+}
 
 export default FigureSearchExEditorExtras

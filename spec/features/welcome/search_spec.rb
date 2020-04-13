@@ -8,7 +8,7 @@ describe 'Search page', js: true do
   it "displays dances" do
     dances = 12.times.map {|i| FactoryGirl.create(:dance, title: "Dance #{i}.", created_at: now - i.days)}
     tag_all_dances
-    visit(s_path)
+    visit(search_path)
     dances.each_with_index do |dance, i|
       to_probably = i < 10 ? :to : :to_not
       expect(page).send to_probably, have_link(dance.title, href: dance_path(dance))
@@ -30,7 +30,7 @@ describe 'Search page', js: true do
     let! (:dances) { 52.times.map {|i| FactoryGirl.create(:dance, title: "dance-#{i}.", created_at: now - i.hours)} }
     before { tag_all_dances }
     it "turning pages" do
-      visit(s_path)
+      visit(search_path)
       # first page
       10.times {|i| expect(page).to have_link("dance-#{i}.")}
       expect(page).to have_text('Showing 1 to 10 of 52 dances')
@@ -81,7 +81,7 @@ describe 'Search page', js: true do
     end
 
     it "page size select menu" do
-      visit(s_path)
+      visit(search_path)
       expect(page).to have_text("Showing 1 to 10 of 52 dances.")
       select('30')
       expect(page).to have_text("Showing 1 to 30 of 52 dances.")
@@ -98,7 +98,7 @@ describe 'Search page', js: true do
     it "Clicking vis toggles buttons cause columns to disappear" do
       dances
       tag_all_dances
-      visit(s_path)
+      visit(search_path)
       %w[Title Choreographer Formation Hook User Entered].each do |col|
         expect(page).to have_css('.dances-table-react th', text: col)
         expect(page).to have_css('button.toggle-vis-active', text: col)
@@ -135,7 +135,7 @@ describe 'Search page', js: true do
           publish = [:off, :sketchbook, :all][i]
           dance.update!(publish: publish, user: user)
         end
-        visit(s_path)
+        visit(search_path)
         check_filter 'ez-entered-by-me'
         click_button 'Sharing'
         dances.each_with_index do |dance, i|
@@ -149,7 +149,7 @@ describe 'Search page', js: true do
       it 'whole dance' do
         dances
         tag_all_dances
-        visit(s_path)
+        visit(search_path)
         expect(page).to_not have_css(:th, text: "Figures")
         expect(page).to_not have_content('whole dance')
         click_button 'Figures'
@@ -158,13 +158,13 @@ describe 'Search page', js: true do
       end
 
       it 'some matches prints figures' do
-        # TODO: update how we pass the filter when there's a user-facing way to send figure queries
+        # TODO: update how we pass the filter when there's a user-facing way to send figure queries  
         # 4NOW: stub the controller, heh heh -dm 01-30-2020
         expect_any_instance_of(Api::V1::DancesController).to receive(:filter).and_return(['figure', 'circle'])
         # mock
         dances
         tag_all_dances
-        visit(s_path)
+        visit(search_path)
         click_button 'Figures'
         expect(page).to have_css('tr', text: /The Rendevouz.*\n?circle left 4 places\ncircle left 3 places/)
         expect(page).to have_css('tr', text: /Call Me.*\n?circle left 3 places/)
@@ -175,7 +175,7 @@ describe 'Search page', js: true do
         allow_any_instance_of(Api::V1::DancesController).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         dances
         tag_all_dances
-        visit(s_path)
+        visit(search_path)
         click_button 'Figures'
         expect(page).to have_css('tr', text: /The Rendevouz.*\n?ravens do si do 1½/)
       end
@@ -187,7 +187,7 @@ describe 'Search page', js: true do
         dances
         dances.first.update!(hook: 'dreary gyre daytime')
         tag_all_dances
-        visit(s_path)
+        visit(search_path)
         expect(page).to have_content('dreary darcy daytime')
       end
     end
@@ -197,7 +197,7 @@ describe 'Search page', js: true do
     dbsize = 12
     dbsize.times.map {|i| FactoryGirl.create(:dance, created_at: now - i.hours)}
     tag_all_dances
-    visit(s_path)
+    visit(search_path)
     expect(page).to have_content("Showing 1 to 10 of #{dbsize} dances.")
   end
 
@@ -209,7 +209,7 @@ describe 'Search page', js: true do
       }
       dances_sorted = dances.dup.sort_by(&:title)
       tag_all_dances
-      visit(s_path)
+      visit(search_path)
       dances.each_with_index do |dance, i|
         expect(page).send(i < 10 ? :to : :to_not, have_text(dance.title))
       end
@@ -255,7 +255,7 @@ describe 'Search page', js: true do
       dances = titles.map {|title| FactoryGirl.create(:dance, title: title)}
       titles_sorted = titles.dup.sort
       tag_all_dances
-      visit(s_path)
+      visit(search_path)
       find('th', text: 'Title').click
       expect(page).to have_text(Regexp.new(titles_sorted.join('.*\n')))
     end
@@ -266,7 +266,7 @@ describe 'Search page', js: true do
       end
       the_ordered_regexp = Regexp.new(dances.map(&:title).join('(?:.*\n)+'))
       tag_all_dances
-      visit(s_path)
+      visit(search_path)
       click_button 'Figures'
       expect(page).to have_content(the_ordered_regexp) # order is time-sorted
       find('th', text: 'Figures').click
@@ -280,7 +280,7 @@ describe 'Search page', js: true do
         FactoryGirl.create(t, created_at: now - i.hours)
       end
       tag_all_dances
-      visit(s_path)
+      visit(search_path)
       columns = page.find_all(".toggle-vis-active").to_a + page.find_all(".toggle-vis-inactive").to_a
       column_names = columns.map(&:text)
       column_names_not_to_check = ['Figures']
@@ -318,7 +318,7 @@ describe 'Search page', js: true do
       it "works" do
         call_me = dances.last
         dont_call_me = dances[0, dances.length-2]
-        visit(s_path)
+        visit(search_path)
         with_filters_excursion { find('.ez-choreographer-filter').fill_in(with: call_me.choreographer) }
         dont_call_me.each do |dance|
           expect(page).to_not have_content(dance.title)
@@ -331,7 +331,7 @@ describe 'Search page', js: true do
         easy_dance = FactoryGirl.create(:dance, hook: "so easy-peazy", title: "Mr. Toad's Wild Ride")
         hard_dance = FactoryGirl.create(:dance, hook: "complicated", title: "hard mcguard" )
         tag_all_dances
-        visit(s_path)
+        visit(search_path)
         with_filters_excursion { find('.ez-hook-filter').fill_in(with: "easy") }
         expect(page).to_not have_content(hard_dance.title)
         expect(page).to have_content(easy_dance.title)
@@ -343,7 +343,7 @@ describe 'Search page', js: true do
         tag_all_dances
         allow_any_instance_of(User).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         with_login(user: user) do
-          visit(s_path)
+          visit(search_path)
           with_filters_excursion { find('.ez-hook-filter').fill_in(with: "larks") }
           expect(page).to_not have_content(wombat_dance.title)
           expect(page).to have_content(lark_dance.title)
@@ -363,7 +363,7 @@ describe 'Search page', js: true do
       let (:verified_by_me_dance) { dances[2] }
 
       it "'verified' and 'not verified' checkboxes work" do
-        visit(s_path)
+        visit(search_path)
         expect_dances(verified: true, not_verified: false) # the default
         check_filter 'ez-not-verified'
         expect_dances(verified: true, not_verified: true)
@@ -377,7 +377,7 @@ describe 'Search page', js: true do
 
       it "'verified by me' and 'not verified by me' checkboxes work" do
         with_login(user: user) do
-          visit(s_path)
+          visit(search_path)
           expect_dances(verified: true) # the default
           uncheck_filter 'ez-verified', match: :prefer_exact
           expect_dances()
@@ -394,7 +394,7 @@ describe 'Search page', js: true do
 
       describe "when not logged in, 'verified by me' and 'not verified by me' checkboxes" do
         it "are disabled on desktop" do
-          visit(s_path)
+          visit(search_path)
           with_filters_excursion do
             expect(page.find("#ez-verified-by-me")).to be_disabled
             expect(page.find("#ez-not-verified-by-me")).to be_disabled
@@ -403,7 +403,7 @@ describe 'Search page', js: true do
 
         it "are hidden on phones" do
           with_phone_screen do
-            visit(s_path)
+            visit(search_path)
             with_filters_excursion do
               expect(page).to have_css("#ez-verified")
               expect(page).to_not have_css("#ez-verified-by-me")
@@ -436,7 +436,7 @@ describe 'Search page', js: true do
       
       it "shared, sketchbooks, and entered-by-me checkboxes work" do
         with_login(user: user) do
-          visit(s_path)
+          visit(search_path)
           6.times {|i| expect(page).send(i.in?([2,5]) ? :to : :to_not, have_content(dances[i].title))}
           check_filter 'ez-sketchbooks'
           6.times {|i| expect(page).send(i.in?([1,2,4,5]) ? :to : :to_not, have_content(dances[i].title))}
@@ -453,7 +453,7 @@ describe 'Search page', js: true do
 
       it "Admins can use the 'private' checkbox" do
         with_login(admin: true) do
-          visit(s_path)
+          visit(search_path)
           with_filters_excursion do
             expect(page).to have_css(private_checkbox_css)
             check 'ez-private'
@@ -464,7 +464,7 @@ describe 'Search page', js: true do
 
       it "Doesn't clutter the interface with 'private' for regular users" do
         with_login(user: user) do
-          visit(s_path)
+          visit(search_path)
           6.times {|i| expect(page).send(i.in?([2,5]) ? :to : :to_not, have_content(dances[i].title))} # js wait
           with_filters_excursion { expect(page).to_not have_css(private_checkbox_css) }
         end
@@ -474,13 +474,13 @@ describe 'Search page', js: true do
         let (:entered_by_me_css) { "#ez-entered-by-me" }
 
         it "is disabled on desktop" do
-          visit(s_path)
+          visit(search_path)
           with_filters_excursion { expect(page.find(entered_by_me_css)).to be_disabled }
         end
 
         it "is hidden on phones" do
           with_phone_screen do
-            visit(s_path)
+            visit(search_path)
             with_filters_excursion do
               expect(page).to have_css("#ez-shared") # js wait
               expect(page).to_not have_css(entered_by_me_css)
@@ -498,7 +498,7 @@ describe 'Search page', js: true do
         tag_all_dances
         expect(becket.start_type).to eq('Becket ccw')
         expect(improper.start_type).to eq('improper')
-        visit(s_path)
+        visit(search_path)
         expect(page).to have_content(becket.title)
         expect(page).to have_content(improper.title)
         expect(page).to have_content(wingnut.title)
@@ -531,7 +531,7 @@ describe 'Search page', js: true do
     after { set_desktop_screen }
     it 'work' do
       results_tab_label = /0 dances/i
-      visit(s_path)
+      visit(search_path)
       expect(page).to have_css('.search-tabs button.selected', text: results_tab_label)
       expect(page).to have_css('.search-tabs button.selected', count: 1)
       expect(page).to have_css('.dances-table-react')           # results page
@@ -571,14 +571,14 @@ describe 'Search page', js: true do
     it 'result tab displays number of matches' do
       %i(dance call_me box_the_gnat_contra).each {|d| FactoryGirl.create(d)}
       tag_all_dances
-      visit(s_path)
+      visit(search_path)
       expect(page).to have_css('.search-tabs button', text: /3 dances/i)
     end
   end
 
   describe "side panels on desktop" do
     it "program toggle works" do
-      visit(s_path)
+      visit(search_path)
       expect_program_tab_closed
       find('button.toggle-program').click
       expect_program_tab_open
@@ -601,7 +601,7 @@ describe 'Search page', js: true do
     end
 
     it "filters toggle works" do
-      visit(s_path)
+      visit(search_path)
       expect_filter_tab_closed
       find('button.toggle-filters').click
       expect_filter_tab_open
