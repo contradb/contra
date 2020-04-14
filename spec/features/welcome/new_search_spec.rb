@@ -378,41 +378,37 @@ describe 'Welcome page', js: true do
           expect(page).to have_css('#debug-lisp', visible: false, text: '[ "figure", "custom", "apple orange", "*" ]')
         end
 
-        # xxx working here
         it "wrist grip filter works" do
           dances
-          with_retries do
-            visit search_path
-            grip = FactoryGirl.create(:dance_with_a_wrist_grip_star)
+          visit search_path
+          grip = FactoryGirl.create(:dance_with_a_wrist_grip_star)
 
-            select('star')
-            toggle_figure_search_ex_paramters
-            select('unspecified')
+          select('star')
+          toggle_figure_search_ex_paramters
+          select('unspecified')
 
-            expect(page).to_not have_content('The Rendevouz')
-            expect(page).to_not have_content('Box the Gnat Contra')
-            expect(page).to have_content('Call Me')
-            expect(page).to_not have_content(grip.title)
+          expect(page).to_not have_content('The Rendevouz')
+          expect(page).to_not have_content('Box the Gnat Contra')
+          expect(page).to have_content('Call Me')
+          expect(page).to_not have_content(grip.title)
 
-            expect(page).to have_css('#debug-lisp', visible: false, text: '[ "figure","star","*","*","","*"]')
-          end
+          expect(page).to have_css('#debug-lisp', visible: false, text: '[ "figure", "star", "*", "*", "", "*" ]')
         end
 
         it "facing filter works" do
           fb = FactoryGirl.create(:dance_with_a_down_the_hall, march_facing: 'forward then backward')
           f = FactoryGirl.create(:dance_with_a_down_the_hall, march_facing: 'forward')
           b = FactoryGirl.create(:dance_with_a_down_the_hall, march_facing: 'backward')
-          with_retries do
-            visit search_path
+          tag_all_dances
+          visit search_path
 
-            select('down the hall')
-            toggle_figure_search_ex_paramters
-            select('forward then backward')
+          select('down the hall')
+          toggle_figure_search_ex_paramters
+          select('forward then backward')
 
-            expect(page).to_not have_content(f.title)
-            expect(page).to_not have_content(b.title)
-            expect(page).to have_content(fb.title)
-          end
+          expect(page).to_not have_content(f.title)
+          expect(page).to_not have_content(b.title)
+          expect(page).to have_content(fb.title)
         end
 
         it "down the hall ender filter works" do
@@ -420,37 +416,34 @@ describe 'Welcome page', js: true do
           tc = FactoryGirl.create(:dance_with_a_down_the_hall, down_the_hall_ender: 'turn-couple', title: 'dth_couples')
           circle = FactoryGirl.create(:dance_with_a_down_the_hall, down_the_hall_ender: 'circle', title: 'dth_circle')
           unspec = FactoryGirl.create(:dance_with_a_down_the_hall, down_the_hall_ender: '', title: 'dth_unspec')
-          with_retries(15) do
-            visit search_path
+          tag_all_dances
+          visit search_path
 
-            select('down the hall')
-            toggle_figure_search_ex_paramters
-            select('turn as a couple')
-            # select('turn alone') # hard because multiple
-            select('bend into a ring')
-            expect(page).to_not have_content(tc.title)
-            expect(page).to_not have_content(unspec.title)
-            expect(page).to_not have_content(ta.title)
-            expect(page).to have_content(circle.title)
-          end
+          select('down the hall')
+          toggle_figure_search_ex_paramters
+          select('turn as a couple')
+          # select('turn alone') # hard because multiple
+          select('bend into a ring')
+          expect(page).to_not have_content(tc.title)
+          expect(page).to_not have_content(unspec.title)
+          expect(page).to_not have_content(ta.title)
+          expect(page).to have_content(circle.title)
         end
 
         it "half_or_full filter works" do
           poussette = FactoryGirl.create(:dance_with_a_full_poussette)
           dances
-          with_retries do
-            visit search_path
+          visit search_path
 
-            select('poussette')
-            toggle_figure_search_ex_paramters
-            choose('full')
+          select('poussette')
+          toggle_figure_search_ex_paramters
+          choose('full')
 
-            dances.each do |dance|
-              expect(page).to_not have_content(dance.title)
-            end
-            expect(page).to have_content(poussette.title)
-            expect(page).to have_css('#debug-lisp', visible: false, text: '[ "figure","poussette","1","*","*","*","*"]')
+          dances.each do |dance|
+            expect(page).to_not have_content(dance.title)
           end
+          expect(page).to have_content(poussette.title)
+          expect(page).to have_css('#debug-lisp', visible: false, text: '[ "figure", "poussette", 1, "*", "*", "*", "*" ]')
         end
 
         it "hey_length filter works" do
@@ -459,47 +452,45 @@ describe 'Welcome page', js: true do
                          'half',
                          'between half and full',
                          'full']
-          with_retries do
-            visit search_path
+          tag_all_dances
+          visit search_path
 
-            select('hey')
-            toggle_figure_search_ex_paramters
-            hey_dances.each_with_index do |dance, i|
-              hey_length = hey_lengths[i]
-              select(hey_length)
+          select('hey')
+          toggle_figure_search_ex_paramters
+          hey_dances.each_with_index do |dance, i|
+            hey_length = hey_lengths[i]
+            select(hey_length)
 
-              hey_dances.each do |dance2|
-                if dance == dance2
-                  expect(page).to have_content(dance2.title)
-                else
-                  expect(page).to_not have_content(dance2.title)
-                end
+            hey_dances.each do |dance2|
+              if dance == dance2
+                expect(page).to have_content(dance2.title)
+              else
+                expect(page).to_not have_content(dance2.title)
               end
-              expect(find("#figure-query-buffer", visible: false).value).to eq(%{["figure","hey","*","*","*",#{hey_length.inspect},"*","*","*","*","*","*"]})
             end
+            expect(page).to have_css("#debug-lisp", visible: false, text: %Q([ "figure", "hey", "*", "*", "*", #{hey_length.inspect}, "*", "*", "*", "*", "*", "*" ]))
           end
         end
 
         it 'aliases are subsets' do
           do_si_do = FactoryGirl.create(:dance_with_a_do_si_do)
           see_saw = FactoryGirl.create(:dance_with_a_see_saw)
-          with_retries do
-            visit search_path
-            select('see saw')
-            expect(page).to have_content(see_saw.title)
-            expect(page).to_not have_content(do_si_do.title)
-            toggle_figure_search_ex_paramters
-            choose('*')
-            expect(page).to have_content(do_si_do.title)
-            expect(page).to have_content(see_saw.title)
-            expect(page).to have_content("Showing dances with a * do si do *")
-            expect(find(".search-ex-move").value).to eq('do si do')
-            choose('left')
-            expect(page).to have_content(see_saw.title)
-            expect(page).to_not have_content(do_si_do.title)
-            expect(find(".search-ex-move").value).to eq('see saw')
-            expect(page).to have_content("Showing dances with a * see saw *")
-          end
+          tag_all_dances
+          visit search_path
+          select('see saw')
+          expect(page).to have_content(see_saw.title)
+          expect(page).to_not have_content(do_si_do.title)
+          toggle_figure_search_ex_paramters
+          choose('*')
+          expect(page).to have_content(do_si_do.title)
+          expect(page).to have_content(see_saw.title)
+          # expect(page).to have_content("Showing dances with a * do si do *")
+          expect(find(".search-ex-move").value).to eq('do si do')
+          choose('left')
+          expect(page).to have_content(see_saw.title)
+          expect(page).to_not have_content(do_si_do.title)
+          expect(find(".search-ex-move").value).to eq('see saw')
+          # expect(page).to have_content("Showing dances with a * see saw *")
         end
       end
     end
@@ -528,12 +519,10 @@ describe 'Welcome page', js: true do
       it 'figure filter dancers' do
         expect_any_instance_of(WelcomeController).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         with_retries do
-          visit search_path
-          dances
-
           allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
+          dances
+          visit search_path
 
-          expect(page).to_not have_content('Processing...')
           select('almond')
           toggle_figure_search_ex_paramters
           select('ravens')
@@ -542,7 +531,7 @@ describe 'Welcome page', js: true do
           expect(page).to have_content('Box the Gnat Contra')
           expect(page).to_not have_content('Call Me')
           expect(page).to_not have_content(allemande.title)
-          expect(page).to have_css('#debug-lisp', visible: false, text: '[ "figure","allemande","ladles","*","*","*"]')
+          expect(page).to have_css('#debug-lisp', visible: false, text: '[ "figure", "allemande", "ladles", "*", "*", "*" ]')
         end
       end
     end
