@@ -490,7 +490,7 @@ describe 'Welcome page', js: true do
           choose('left')
           expect(page).to have_content(see_saw.title)
           expect(page).to_not have_content(do_si_do.title)
-          expect(find(".search-ex-move").value).to eq('see saw')
+          expect(find(".search-ex-move").value).to eq('do si do')
           # expect(page).to have_content("Showing dances with a * see saw *")
         end
       end
