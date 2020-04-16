@@ -302,6 +302,7 @@ describe 'Welcome page', js: true do
           visit search_path
           select('allemande')
           toggle_figure_search_ex_paramters
+
           expect(page).to have_css("option[value='ladles']")
           expect(page).to have_css("option[value='gentlespoons']")
           expect(page).to have_css("option[value='neighbors']")

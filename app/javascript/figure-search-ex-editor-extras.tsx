@@ -351,13 +351,13 @@ const selectChooserOptions = {
     (acc: any, chooserName: ChooserName) => {
       acc[chooserName] = (move: string, dialect: Dialect) =>
         ["*"].concat(
-          LibFigure.dancerMenuForChooser(LibFigure.chooser(chooserName)).map(
-            (dancers: ChooserName) => [
-              // I guess that dancers has type ChooserName...?
-              dancers,
-              LibFigure.dancerMenuLabel(dancers, dialect),
-            ]
-          )
+          LibFigure.dancerCategoryMenuForChooser(
+            LibFigure.chooser(chooserName)
+          ).map((dancers: ChooserName) => [
+            // I guess that dancers has type ChooserName...?
+            dancers,
+            LibFigure.dancerMenuLabel(dancers, dialect),
+          ])
         )
       return acc
     },
