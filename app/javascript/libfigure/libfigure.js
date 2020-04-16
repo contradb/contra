@@ -5,8 +5,16 @@
 import { defaultDialect } from "./util.js"
 import { param, wristGrips } from "./param.js"
 import { degreesToWords, anglesForMove } from "./move.js"
-import { chooser, dancerMenuForChooser, dancerChooserNames } from "./chooser.js"
 import {
+  chooser,
+  dancerMenuForChooser,
+  dancerCategoryMenuForChooser,
+  dancerChooserNames,
+} from "./chooser.js"
+import {
+  aliasFilter,
+  isAlias,
+  deAliasMove,
   moves,
   moveTermsAndSubstitutionsForSelectMenu,
   formalParameters,
@@ -25,7 +33,11 @@ export default {
   anglesForMove,
   chooser,
   dancerMenuForChooser,
+  dancerCategoryMenuForChooser,
   dancerChooserNames,
+  aliasFilter,
+  deAliasMove,
+  isAlias,
   moves,
   moveTermsAndSubstitutionsForSelectMenu,
   formalParameters,

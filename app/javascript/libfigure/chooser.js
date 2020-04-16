@@ -72,7 +72,7 @@ export const dancerMenuForChooser = function(chooser) {
   return _dancerMenuForChooser[chooser.name]
 }
 
-function dancerCategoryMenuForChooser(chooser) {
+export const dancerCategoryMenuForChooser = function(chooser) {
   return libfigureUniq(dancerMenuForChooser(chooser).map(dancersCategory))
 }
 

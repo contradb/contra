@@ -286,11 +286,11 @@ export const defineFigureAlias = (
   }
 }
 
-function deAliasMove(move) {
+export const deAliasMove = function(move) {
   return defined_events[move].name
 }
 
-function isAlias(move_string) {
+export const isAlias = function(move_string) {
   return defined_events[move_string].name !== move_string
 }
 
@@ -317,7 +317,7 @@ function aliases(move) {
   return acc
 }
 
-function aliasFilter(move_alias_string) {
+export const aliasFilter = function(move_alias_string) {
   if (move_alias_string === deAliasMove(move_alias_string)) {
     throw_up(
       "aliasFilter(someDeAliasedMove) would produce weirdly overly specific filters if we weren't raising this error - it's only defined for move aliases"
