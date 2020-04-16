@@ -479,6 +479,19 @@ describe("shallowCopy", () => {
         expect(newEx.parameters).toEqual(["", "*"])
         expect(newEx.ellipsis).toBe(true)
       })
+
+      it("true, picking up specifics from alias instead of '*'", () => {
+        const oldEx = new FigureSearchEx({
+          move: "see saw",
+          ellipsis: false,
+        })
+        expect(oldEx.ellipsis).toBe(false)
+        const newEx = oldEx.shallowCopy({ ellipsis: true })
+        expect(newEx.subexpressions).not.toBe(oldEx.subExpressions)
+        expect(newEx.move).toBe(oldEx.move)
+        expect(newEx.parameters).toEqual(["*", false, "*", "*"])
+        expect(newEx.ellipsis).toBe(true)
+      })
     })
   })
 
@@ -592,5 +605,40 @@ describe("withAdditionalSubexpression", () => {
     const se = SearchEx.fromLisp(["figure", "swing"])
     const msg = "subexpressions are full"
     expect(() => se.withAdditionalSubexpression()).toThrowError(msg)
+  })
+})
+
+describe("alias parameters can dealias moves", () => {
+  it("move changes if parameters are completely outside of alias", () => {
+    const doSiDo = new FigureSearchEx({
+      move: "see saw",
+      parameters: ["*", true, "*", "*"],
+      ellipsis: true,
+    })
+    expect(doSiDo.move).toBe("do si do")
+  })
+  it("move changes if parameters are broader than alias", () => {
+    const doSiDo = new FigureSearchEx({
+      move: "see saw",
+      parameters: ["*", "*", "*", "*"],
+      ellipsis: true,
+    })
+    expect(doSiDo.move).toBe("do si do")
+  })
+  it("move stays the same if parameters are within specific alias", () => {
+    const doSiDo = new FigureSearchEx({
+      move: "see saw",
+      parameters: ["*", false, "*", "*"],
+      ellipsis: true,
+    })
+    expect(doSiDo.move).toBe("see saw")
+  })
+  it("move stays the same if parameters are within wildcard alias", () => {
+    const doSiDo = new FigureSearchEx({
+      move: "see saw",
+      parameters: ["*", false, "*", 8],
+      ellipsis: true,
+    })
+    expect(doSiDo.move).toBe("see saw")
   })
 })

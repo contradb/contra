@@ -23,6 +23,7 @@ export const FigureSearchExEditorExtras = ({
         <td>
           <select
             className="form-control search-ex-move"
+            value={searchEx.move}
             onChange={({ target: { value } }) =>
               setSearchEx(searchEx.shallowCopy({ move: value }))
             }

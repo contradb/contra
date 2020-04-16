@@ -269,17 +269,36 @@ class FigureSearchEx extends nullaryMixin(SearchEx) {
       parameters = src && src.move === move ? [...src.parameters] : [],
       ellipsis = src ? src.ellipsis : parameters && parameters.length > 0,
     } = args
-    this._move = move
+    const isAlias = move !== "*" && LibFigure.isAlias(move)
+    const aliasFilter = isAlias ? LibFigure.aliasFilter(move) : []
+    let massagedMove = move
+    if (isAlias) {
+      // set move to something less specific, if the params are wider
+      for (let i = 0; i < parameters.length && i < aliasFilter.length; i++) {
+        const parameter = parameters[i]
+        const aliasF = aliasFilter[i]
+        if (parameter != aliasF && aliasF != "*") {
+          massagedMove = LibFigure.deAliasMove(move)
+          break
+        }
+      }
+    }
+    this._move = massagedMove
     this._parameters = parameters
     this._ellipsis = ellipsis
 
+    // initialize parameters
     if (0 === parameters.length && ellipsis && this.move !== "*") {
       const formals = LibFigure.formalParameters(this.move)
       this._parameters = [...this.parameters]
       while (this.parameters.length < formals.length) {
-        const formalIsText =
-          formals[this.parameters.length].ui.name == "chooser_text"
-        this.parameters.push(formalIsText ? "" : "*")
+        if (this.parameters.length < aliasFilter.length) {
+          this.parameters.push(aliasFilter[this.parameters.length])
+        } else {
+          const formalIsText =
+            formals[this.parameters.length].ui.name == "chooser_text"
+          this.parameters.push(formalIsText ? "" : "*")
+        }
       }
     }
   }
