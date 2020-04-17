@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Search page', js: true do
+describe 'advanced search component', js: true do
   let (:now) { DateTime.now }
 
   it "displays dances" do
@@ -158,8 +158,7 @@ describe 'Search page', js: true do
       end
 
       it 'some matches prints figures' do
-        # TODO: update how we pass the filter when there's a user-facing way to send figure queries  
-        # 4NOW: stub the controller, heh heh -dm 01-30-2020
+        # since setting the filter is extensively tested elsewhere, it seems okay to mock it here
         expect_any_instance_of(Api::V1::DancesController).to receive(:filter).and_return(['figure', 'circle'])
         # mock
         dances
@@ -171,6 +170,7 @@ describe 'Search page', js: true do
       end
 
       it 'matches print in dialect' do
+        # since setting the filter is extensively tested elsewhere, it seems okay to mock it here
         expect_any_instance_of(Api::V1::DancesController).to receive(:filter).and_return(['figure', 'do si do'])
         allow_any_instance_of(Api::V1::DancesController).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         dances
@@ -252,7 +252,7 @@ describe 'Search page', js: true do
 
     it "no weird monkey business with client side sorting" do
       titles = ['40 Years of Penguin Pam', "A Crafty Wave", "24th of June"]
-      dances = titles.map {|title| FactoryGirl.create(:dance, title: title)}
+      titles.each {|title| FactoryGirl.create(:dance, title: title)}
       titles_sorted = titles.dup.sort
       tag_all_dances
       visit(search_path)
@@ -276,7 +276,7 @@ describe 'Search page', js: true do
     end
 
     it "sorting all columns (except matching figure) does not give error" do
-      dances = [:dance, :box_the_gnat_contra, :call_me].each_with_index.map do |t, i|
+      [:dance, :box_the_gnat_contra, :call_me].each_with_index.map do |t, i|
         FactoryGirl.create(t, created_at: now - i.hours)
       end
       tag_all_dances
