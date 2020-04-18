@@ -75,7 +75,7 @@ describe "SearchExEditor's search results", js: true do
     expect(page).to have_text('The Rendevouz')
   end
 
-  describe 'figure filter machinantions' do
+  describe 'editing tree shape' do
     it 'the precondition of all these other tests is fulfilled' do
       setup_and_filter
       expect(page).to have_css('.search-ex', count: 2)
@@ -138,6 +138,73 @@ describe "SearchExEditor's search results", js: true do
         expect(page).to have_content('dances with any figure')
       end
     end
+
+    def visit_page_with_testing_query
+      visit '/s'
+      select 'and'
+      find_all('.search-ex-op', count: 3).last.select('progression')
+      # ['and', ['figure', '*'], ['progression']]
+    end
+
+    describe 'casts' do
+      it "cast from 'and' to 'or'" do
+        visit_page_with_testing_query
+        first('.search-ex-op').select('or')
+        expect(page).to have_css('#debug-lisp', text: '[ "or", [ "figure", "*" ], [ "progression" ] ]', visible: false)
+      end
+
+      it "cast to 'not'" do
+        visit_page_with_testing_query
+        first('.search-ex-op').select('not')
+        expect(page).to have_css('#debug-lisp', text: '[ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]', visible: false)
+        expect(page).to have_css('.search-ex-op', count: 4)
+      end
+    end
+
+    describe 'deletion' do
+      it "works" do
+        visit_page_with_testing_query
+        all('.search-ex-menu-toggle', count: 3).last.click
+        find('a.search-ex-delete').click
+        expect(page).to have_css('#debug-lisp', text: '[ "and", [ "figure", "*" ] ]', visible: false)
+      end
+
+      it "menu item isn't visible for the root node" do
+        visit_page_with_testing_query
+        first('.search-ex-menu-toggle').click
+        expect(page).to_not have_css('.search-ex-delete')
+      end
+
+      it "menu item isn't visible for a subexpression that's required" do
+        visit_page_with_testing_query
+        first('.search-ex-op').select('not')
+        expect(page).to have_css('.search-ex-op', count: 4)
+        expect(page).to have_css('#debug-lisp', text: '[ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]', visible: false)
+        all('.search-ex-menu-toggle', count: 4)[1].click
+        expect(page).to have_css('.search-ex-menu-entries')
+        expect(page).to_not have_css('.search-ex-delete')
+      end
+    end
+
+    describe 'adding a subexpression' do
+      let (:search_ex_add_subexpression_selector) { ".search-ex-add-subexpression" }
+      it "add subexpression button works" do
+        visit_page_with_testing_query
+        all('.search-ex-menu-toggle', count: 3).first.click
+        find(search_ex_add_subexpression_selector).click
+        expect(page).to have_css('.search-ex-op', count: 4)
+        expect(page).to have_css("#debug-lisp", text: '[ "and", [ "figure", "*" ], [ "progression" ], [ "figure", "*" ] ]', visible: false)
+      end
+
+      it "add subexpression button isn't available if it wouldn't be syntactically valid" do
+        visit '/s'
+        find('.search-ex-menu-toggle').click
+        expect(page).to have_css('.search-ex-menu-entries')
+        expect(page).to_not have_css(search_ex_add_subexpression_selector)
+      end
+    end
+
+
   end
 
   describe 'FigureSearchEx' do
