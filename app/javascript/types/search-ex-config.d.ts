@@ -1,10 +1,7 @@
-// I really don't understand why this is required, but 'static default()' is not.
 declare class SearchEx {
-  // static default(): SearchEx
   toLisp(): Filter
   isNumeric(): boolean
   get op(): string
-  get ellipsis(): boolean
   castTo(op: string): SearchEx
   subexpressions: SearchEx[]
   shallowCopy: (any) => SearchEx
@@ -21,5 +18,3 @@ declare class FigureSearchEx extends SearchEx {
   get parameters(): any[]
   get ellipsis(): boolean
 }
-
-// declare module "*"

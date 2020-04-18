@@ -244,17 +244,15 @@ describe "SearchExEditors", js: true do
 
     context 'parameters' do
       it "circle 4 places finds only 'The Rendevouz'" do
-        with_retries do
-          dances
-          visit search_path
-          select('circle')
-          toggle_figure_search_ex_paramters
-          select('4 places')
-          expect(page).to_not have_content('Box the Gnat Contra') # no circles
-          expect(page).to_not have_content('Call Me') # has circle left 3 places
-          expect(page).to have_content('The Rendevouz') # has circle left 3 & 4 places
-          expect(page).to have_css("#debug-lisp", visible: false, text: '[ "figure", "circle", "*", "360", "*" ]')
-        end
+        dances
+        visit search_path
+        select('circle')
+        toggle_figure_search_ex_paramters
+        select('4 places')
+        expect(page).to_not have_content('Box the Gnat Contra') # no circles
+        expect(page).to_not have_content('Call Me') # has circle left 3 places
+        expect(page).to have_content('The Rendevouz') # has circle left 3 & 4 places
+        expect(page).to have_css("#debug-lisp", visible: false, text: '[ "figure", "circle", "*", "360", "*" ]')
       end
 
       it "circle right finds only a dance with circle right" do
@@ -564,41 +562,37 @@ describe "SearchExEditors", js: true do
   describe 'dialect' do
     it 'figure filter move' do
       expect_any_instance_of(WelcomeController).to receive(:dialect).and_return(JSLibFigure.test_dialect)
-      with_retries do
-        visit search_path
-        dances
+      visit search_path
+      dances
 
-        expect(page).to_not have_css('option',                  text: exactly('allemande'))
-        expect(page).to     have_css('option[value=allemande]', text: exactly('almond'))
+      expect(page).to_not have_css('option',                  text: exactly('allemande'))
+      expect(page).to     have_css('option[value=allemande]', text: exactly('almond'))
 
-        expect(page).to_not have_css('option',             text: exactly('gyre'))
-        expect(page).to     have_css('option[value=gyre]', text: exactly('darcy'))
+      expect(page).to_not have_css('option',             text: exactly('gyre'))
+      expect(page).to     have_css('option[value=gyre]', text: exactly('darcy'))
 
-        select('almond')
+      select('almond')
 
-        expect(page).to have_content('Box the Gnat Contra')
-        expect(page).to_not have_content('The Rendevouz')
-        expect(page).to_not have_content('Call Me')
-      end
+      expect(page).to have_content('Box the Gnat Contra')
+      expect(page).to_not have_content('The Rendevouz')
+      expect(page).to_not have_content('Call Me')
     end
 
     it 'figure filter dancers' do
       expect_any_instance_of(WelcomeController).to receive(:dialect).and_return(JSLibFigure.test_dialect)
-      with_retries do
-        allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
-        dances
-        visit search_path
+      allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
+      dances
+      visit search_path
 
-        select('almond')
-        toggle_figure_search_ex_paramters
-        select('ravens')
+      select('almond')
+      toggle_figure_search_ex_paramters
+      select('ravens')
 
-        expect(page).to_not have_content('The Rendevouz')
-        expect(page).to have_content('Box the Gnat Contra')
-        expect(page).to_not have_content('Call Me')
-        expect(page).to_not have_content(allemande.title)
-        expect(page).to have_css('#debug-lisp', visible: false, text: '[ "figure", "allemande", "ladles", "*", "*", "*" ]')
-      end
+      expect(page).to_not have_content('The Rendevouz')
+      expect(page).to have_content('Box the Gnat Contra')
+      expect(page).to_not have_content('Call Me')
+      expect(page).to_not have_content(allemande.title)
+      expect(page).to have_css('#debug-lisp', visible: false, text: '[ "figure", "allemande", "ladles", "*", "*", "*" ]')
     end
   end
 

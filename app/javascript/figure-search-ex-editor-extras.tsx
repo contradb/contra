@@ -131,13 +131,13 @@ const ChooserRadios = ({
   const options: [string, string][] = (radioChooserOptions as any)[chooser.name]
   return (
     <div className="chooser-radio-container">
-      {options.map(([value2, label], i) => (
+      {options.map(([radioValue, label], i) => (
         <label key={i}>
           <input
             type="radio"
-            value={value2}
-            checked={value === value2}
-            onChange={() => setValue(value2)}
+            value={radioValue}
+            checked={value === radioValue}
+            onChange={() => setValue(radioValue)}
           />
           {label}
         </label>

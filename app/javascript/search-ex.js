@@ -267,7 +267,7 @@ class FigureSearchEx extends nullaryMixin(SearchEx) {
       src,
       move = src ? src.move : errorMissingParameter("move"),
       parameters = src && src.move === move ? [...src.parameters] : [],
-      ellipsis = src ? src.ellipsis : parameters && parameters.length > 0,
+      ellipsis = src ? src.ellipsis : parameters.length > 0,
     } = args
     const dealiasedMove = this.maybeDealiasMove(move, parameters)
     this._move = dealiasedMove
