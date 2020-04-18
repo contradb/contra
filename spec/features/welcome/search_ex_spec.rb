@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Welcome page', js: true do
+describe "SearchExEditor's search results", js: true do
   let (:dances) {
     dances = [:dance, :box_the_gnat_contra, :call_me].map {|d| FactoryGirl.create(d)}
     tag_all_dances
