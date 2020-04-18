@@ -42,7 +42,6 @@ describe "SearchExEditor's search results", js: true do
 
   it "searches for the problematicly named figure \"Rory O'More\" work" do
     rory = FactoryGirl.create(:dance_with_a_rory_o_more)
-    box = FactoryGirl.create(:box_the_gnat_contra)
     tag_all_dances
     visit search_path
     select "Rory O'More"
@@ -88,14 +87,6 @@ describe "SearchExEditor's search results", js: true do
       expect(page).to have_content('Call Me')
       expect(page).to have_content('Box the Gnat Contra')
       expect(page).to have_content('The Rendevouz')
-    end
-
-    it "changing move changes values" do
-      setup_and_filter
-      select('circle')
-      expect(page).to have_content('The Rendevouz')
-      expect(page).to_not have_content('Box the Gnat Contra')
-      expect(page).to have_content('Call Me')
     end
 
     it "clicking 'add and' inserts a figure filter that responds to change events" do
@@ -149,13 +140,21 @@ describe "SearchExEditor's search results", js: true do
     end
   end
 
-  describe 'figure [...] button' do
-    it "is visible initially, when figure is 'any figure'" do
+  describe 'FigureSearchEx' do
+    it "changing move changes search results" do
+      setup_and_filter
+      select('circle')
+      expect(page).to have_content('The Rendevouz')
+      expect(page).to_not have_content('Box the Gnat Contra')
+      expect(page).to have_content('Call Me')
+    end
+
+    it "[...] is visible initially, when figure is 'any figure'" do
       visit search_path
       expect(page).to have_css('button.search-ex-toggle-parameters', count: 1)
     end
 
-    it 'changing figure filter hides this one but creates two more' do
+    it 'changing figure filter hides this [...] but creates two more [...]' do
       visit search_path
       select('then')
       expect(page).to have_css('button.search-ex-toggle-parameters', count: 2)
@@ -206,7 +205,7 @@ describe "SearchExEditor's search results", js: true do
         expect(page).to have_css('#debug-lisp', visible: false, text: '[ "figure", "circle", false, "*", "*" ]')
       end
 
-      it "A slightly different query is sent if the [...] is clicked" do
+      it "If the [...] is clicked, it explicitly specifies parameters in the query" do
         dances
         visit search_path
         select('circle')
