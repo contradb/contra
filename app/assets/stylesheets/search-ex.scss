@@ -16,31 +16,26 @@
 }
 
 .search-ex-well {
-  padding: 1em;
   margin-top: 0.25em;
+  padding: 0.5em;
   border: 1px solid #CCC;
   border-radius: 1em;
-}
-
-.search-ex-trunk {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.search-ex-op {
-  margin-right: 0.5em; // spacer for ⋮ menu
-}
-
-.search-ex-figure {
-  margin-top: 0.5em;
+  > table {
+    border-spacing: 0.5em;
+    border-collapse: separate;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .search-ex-subexpressions {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
-  margin-top: 0.75em;           // plus each individual search-ex's top margin, equals 1em
+  margin-top: 0em;
+  margin-left: 0.5em;           // plus padding on search-ex-well
+  margin-right: 0.5em;          // plus padding on search-ex-well
+  margin-bottom: 0.5em;         // plus padding on search-ex-well
 }
 
 
@@ -58,5 +53,16 @@
     display: inline-block;
     margin-bottom: 0;
     vertical-align: middle;
+  }
+}
+
+.chooser-radio-container {
+  display: flex;
+  align-items: baseline;
+  label input {
+    margin-right: 0.5em;
+  }
+  label + label {
+    margin-left: 1em;
   }
 }

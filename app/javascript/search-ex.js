@@ -266,11 +266,59 @@ class FigureSearchEx extends nullaryMixin(SearchEx) {
     const {
       src,
       move = src ? src.move : errorMissingParameter("move"),
-      parameters = src ? [...src.parameters] : [],
+      parameters = src && src.move === move ? [...src.parameters] : [],
+      ellipsis = src ? src.ellipsis : parameters.length > 0,
     } = args
-    this._move = move
-    this.parameters = parameters
-    this._ellipsis = parameters && parameters.length > 0
+    const dealiasedMove = this.maybeDealiasMove(move, parameters)
+    this._move = dealiasedMove
+    this._ellipsis = ellipsis
+    this._parameters = this.initialParameters(
+      dealiasedMove,
+      ellipsis,
+      parameters
+    )
+  }
+
+  // private & functional
+  maybeDealiasMove(move, parameters) {
+    const isAlias = move !== "*" && LibFigure.isAlias(move)
+    if (isAlias) {
+      const aliasFilter = LibFigure.aliasFilter(move)
+      // if the parameters have a wider domain than the alias, dealias it
+      for (let i = 0; i < parameters.length && i < aliasFilter.length; i++) {
+        const parameter = parameters[i]
+        const aliasF = aliasFilter[i]
+        if (parameter != aliasF && aliasF != "*")
+          return LibFigure.deAliasMove(move)
+      }
+    }
+    return move
+  }
+
+  // private & functional
+  initialParameters(move, ellipsis, parameters) {
+    if (ellipsis && 0 === parameters.length && move !== "*") {
+      const formals = LibFigure.formalParameters(move)
+      const freshParameters = [...parameters]
+      const isAlias = move !== "*" && LibFigure.isAlias(move)
+      const aliasFilter = isAlias && LibFigure.aliasFilter(move)
+      while (freshParameters.length < formals.length) {
+        const isTextParameter =
+          formals[freshParameters.length].ui.name == "chooser_text"
+        let parameter
+        if (isAlias) {
+          parameter = aliasFilter[freshParameters.length]
+        } else if (isTextParameter) {
+          // Since they may want to search for the literal text '*',
+          // we encode searching for any text as the empty string.
+          parameter = ""
+        } else {
+          parameter = "*"
+        }
+        freshParameters.push(parameter)
+      }
+      return freshParameters
+    } else return parameters
   }
 
   toLisp() {
@@ -293,26 +341,12 @@ class FigureSearchEx extends nullaryMixin(SearchEx) {
     return this._move
   }
 
-  set move(moveString) {
-    this._move = moveString
-    this.parameters.length = 0
-    this.padMissingParametersWithAsterisks()
+  get parameters() {
+    return this._parameters
   }
 
   get ellipsis() {
     return this._ellipsis
-  }
-
-  set ellipsis(expanded) {
-    this._ellipsis = expanded
-    this.padMissingParametersWithAsterisks()
-  }
-
-  padMissingParametersWithAsterisks() {
-    if (this.ellipsis) {
-      const formals_length = LibFigure.formalParameters(this.move).length
-      while (this.parameters.length < formals_length) this.parameters.push("*")
-    }
   }
 }
 registerSearchEx("FigureSearchEx", "move", "parameters", "ellipsis")

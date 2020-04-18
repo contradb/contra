@@ -471,8 +471,7 @@ defineParam("custom_figure", {
   ui: "chooser_text",
   words: wordParamCustom,
 })
-
-var wristGrips = ["", "wrist grip", "hands across"]
+const wristGrips = ["", "wrist grip", "hands across"]
 
 function stringParamStarGrip(value) {
   return "*" === value ? "any grip" : value

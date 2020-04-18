@@ -538,7 +538,7 @@ describe 'Welcome page', js: true do
             expect(page).to have_css('.chooser-label-text', text: 'allemande')
             expect(page).to have_css('.chooser-label-text', text: 'inner')
             expect(page).to have_css('.chooser-label-text', text: 'outer')
-            expect(page).to have_css('.chooser-label-text', text: 'for')
+            expect(page).to have_css('.chooser-label-text', text: 'beats')
           end
         end
 

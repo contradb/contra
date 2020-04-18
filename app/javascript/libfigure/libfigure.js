@@ -3,10 +3,18 @@
 // in.
 
 import { defaultDialect } from "./util.js"
-import { param } from "./param.js"
+import { param, wristGrips } from "./param.js"
 import { degreesToWords, anglesForMove } from "./move.js"
-import { chooser, dancerMenuForChooser, dancerChooserNames } from "./chooser.js"
 import {
+  chooser,
+  dancerMenuForChooser,
+  dancerCategoryMenuForChooser,
+  dancerChooserNames,
+} from "./chooser.js"
+import {
+  aliasFilter,
+  isAlias,
+  deAliasMove,
   moves,
   moveTermsAndSubstitutionsForSelectMenu,
   formalParameters,
@@ -20,11 +28,16 @@ import {} from "./dance.js" // ?? for side effect??
 export default {
   defaultDialect,
   param,
+  wristGrips,
   degreesToWords,
   anglesForMove,
   chooser,
   dancerMenuForChooser,
+  dancerCategoryMenuForChooser,
   dancerChooserNames,
+  aliasFilter,
+  deAliasMove,
+  isAlias,
   moves,
   moveTermsAndSubstitutionsForSelectMenu,
   formalParameters,

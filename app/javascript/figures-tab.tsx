@@ -24,6 +24,7 @@ export const FiguresTab = ({
       searchEx={searchEx}
       setSearchEx={setSearchEx}
       removeSearchEx={null}
+      id="search-ex-root"
     />
     <div id="debug-lisp" className="hidden">
       {strangely_spaced_out_json_stringify(searchEx.toLisp())}

@@ -125,35 +125,39 @@ describe("cast", () => {
 })
 
 describe("ellipsis", () => {
-  test("with parameters specified", () => {
+  test("with parameters specified, ellipsis is implicitly true", () => {
     const searchEx = new FigureSearchEx({
       move: "swing",
       parameters: ["*", "*", 8],
     })
     const bigLisp = ["figure", "swing", "*", "*", 8]
-    const shortLisp = ["figure", "swing"]
     expect(searchEx.toLisp()).toEqual(bigLisp)
     expect(searchEx.ellipsis).toEqual(true)
-    searchEx.ellipsis = false
-    expect(searchEx.ellipsis).toEqual(false)
-    expect(searchEx.toLisp()).toEqual(shortLisp)
-    searchEx.ellipsis = true
-    expect(searchEx.ellipsis).toEqual(true)
-    expect(searchEx.toLisp()).toEqual(bigLisp)
   })
 
-  test("without parameters left off", () => {
+  test("with parameters left off, ellipsis is implictly false", () => {
     const searchEx = new FigureSearchEx({ move: "swing" })
-    const bigLisp = ["figure", "swing", "*", "*", "*"]
     const shortLisp = ["figure", "swing"]
     expect(searchEx.ellipsis).toEqual(false)
     expect(searchEx.toLisp()).toEqual(shortLisp)
-    searchEx.ellipsis = true
+  })
+
+  test("with parameters specified and ellipsis specified false", () => {
+    const searchEx = new FigureSearchEx({
+      move: "swing",
+      parameters: ["*", "*", 8],
+      ellipsis: false,
+    })
+    const shortLisp = ["figure", "swing"]
+    expect(searchEx.toLisp()).toEqual(shortLisp)
+    expect(searchEx.ellipsis).toEqual(false)
+  })
+
+  test("with parameters left off and ellipsis specified true", () => {
+    const searchEx = new FigureSearchEx({ move: "swing", ellipsis: true })
+    const bigLisp = ["figure", "swing", "*", "*", "*"]
     expect(searchEx.ellipsis).toEqual(true)
     expect(searchEx.toLisp()).toEqual(bigLisp)
-    searchEx.ellipsis = false
-    expect(searchEx.ellipsis).toEqual(false)
-    expect(searchEx.toLisp()).toEqual(shortLisp)
   })
 })
 
@@ -161,7 +165,7 @@ test("copy", () => {
   const originalLisp = ["and", ["figure", "do si do"], ["figure", "swing"]]
   const original = SearchEx.fromLisp(originalLisp)
   const copy = original.copy()
-  copy.subexpressions[0].move = "circle"
+  copy.subexpressions[0]._move = "circle" // hack the type for testing
   expect(copy.toLisp()).toEqual([
     "and",
     ["figure", "circle"],
@@ -404,7 +408,7 @@ describe("shallowCopy", () => {
       expect(newEx.subexpressions).not.toBe(oldEx.subExpressions)
       expect(newEx.move).toEqual("allemande")
       expect(newEx.parameters).not.toBe(oldEx.parameters)
-      expect(newEx.parameters).toEqual(["ladles", true, 540, 8])
+      expect(newEx.parameters).toEqual(["*", "*", "*", "*"])
     })
     it("parameters", () => {
       const oldEx = SearchEx.fromLisp([
@@ -422,6 +426,72 @@ describe("shallowCopy", () => {
       expect(newEx.move).toBe(oldEx.move)
       expect(newEx.parameters).not.toBe(oldEx.parameters)
       expect(newEx.parameters).toEqual(["gentlespoons", true, "*", 8])
+    })
+    describe("ellipsis", () => {
+      it("false", () => {
+        const oldEx = new FigureSearchEx({
+          move: "swing",
+          parameters: ["*", "*", 8],
+        })
+        expect(oldEx.ellipsis).toBe(true)
+        const newEx = oldEx.shallowCopy({ ellipsis: false })
+        expect(newEx.subexpressions).not.toBe(oldEx.subExpressions)
+        expect(newEx.move).toBe(oldEx.move)
+        expect(newEx.parameters).toEqual(oldEx.parameters)
+        expect(newEx.ellipsis).toBe(false)
+      })
+      it("true", () => {
+        const oldEx = new FigureSearchEx({
+          move: "swing",
+        })
+        expect(oldEx.ellipsis).toBe(false)
+        expect(oldEx.parameters).toEqual([])
+        const newEx = oldEx.shallowCopy({ ellipsis: true })
+        expect(newEx.subexpressions).not.toBe(oldEx.subExpressions)
+        expect(newEx.move).toBe(oldEx.move)
+        expect(newEx.parameters).toEqual(["*", "*", "*"])
+        expect(newEx.ellipsis).toBe(true)
+      })
+      it("true copying interesting parameters", () => {
+        const oldEx = new FigureSearchEx({
+          move: "swing",
+          parameters: ["*", "*", 8],
+          ellipsis: false,
+        })
+        expect(oldEx.ellipsis).toBe(false)
+        expect(oldEx.parameters.length).toEqual(3)
+        const newEx = oldEx.shallowCopy({ ellipsis: true })
+        expect(newEx.subexpressions).not.toBe(oldEx.subExpressions)
+        expect(newEx.move).toBe(oldEx.move)
+        expect(newEx.parameters).toEqual(["*", "*", 8])
+        expect(newEx.ellipsis).toBe(true)
+      })
+
+      it("true, passing text parameters as '' and not '*'", () => {
+        const oldEx = new FigureSearchEx({
+          move: "custom",
+          ellipsis: false,
+        })
+        expect(oldEx.ellipsis).toBe(false)
+        const newEx = oldEx.shallowCopy({ ellipsis: true })
+        expect(newEx.subexpressions).not.toBe(oldEx.subExpressions)
+        expect(newEx.move).toBe(oldEx.move)
+        expect(newEx.parameters).toEqual(["", "*"])
+        expect(newEx.ellipsis).toBe(true)
+      })
+
+      it("true, picking up specifics from alias instead of '*'", () => {
+        const oldEx = new FigureSearchEx({
+          move: "see saw",
+          ellipsis: false,
+        })
+        expect(oldEx.ellipsis).toBe(false)
+        const newEx = oldEx.shallowCopy({ ellipsis: true })
+        expect(newEx.subexpressions).not.toBe(oldEx.subExpressions)
+        expect(newEx.move).toBe(oldEx.move)
+        expect(newEx.parameters).toEqual(["*", false, "*", "*"])
+        expect(newEx.ellipsis).toBe(true)
+      })
     })
   })
 
@@ -535,5 +605,40 @@ describe("withAdditionalSubexpression", () => {
     const se = SearchEx.fromLisp(["figure", "swing"])
     const msg = "subexpressions are full"
     expect(() => se.withAdditionalSubexpression()).toThrowError(msg)
+  })
+})
+
+describe("alias parameters can dealias moves", () => {
+  it("move changes if parameters are completely outside of alias", () => {
+    const doSiDo = new FigureSearchEx({
+      move: "see saw",
+      parameters: ["*", true, "*", "*"],
+      ellipsis: true,
+    })
+    expect(doSiDo.move).toBe("do si do")
+  })
+  it("move changes if parameters are broader than alias", () => {
+    const doSiDo = new FigureSearchEx({
+      move: "see saw",
+      parameters: ["*", "*", "*", "*"],
+      ellipsis: true,
+    })
+    expect(doSiDo.move).toBe("do si do")
+  })
+  it("move stays the same if parameters are within specific alias", () => {
+    const doSiDo = new FigureSearchEx({
+      move: "see saw",
+      parameters: ["*", false, "*", "*"],
+      ellipsis: true,
+    })
+    expect(doSiDo.move).toBe("see saw")
+  })
+  it("move stays the same if parameters are within wildcard alias", () => {
+    const doSiDo = new FigureSearchEx({
+      move: "see saw",
+      parameters: ["*", false, "*", 8],
+      ellipsis: true,
+    })
+    expect(doSiDo.move).toBe("see saw")
   })
 })
