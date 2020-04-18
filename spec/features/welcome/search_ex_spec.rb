@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe "SearchExEditor's search results", js: true do
+describe "SearchExEditors", js: true do
   let (:dances) {
     dances = [:dance, :box_the_gnat_contra, :call_me].map {|d| FactoryGirl.create(d)}
     tag_all_dances
@@ -139,7 +139,7 @@ describe "SearchExEditor's search results", js: true do
       end
     end
 
-    def visit_page_with_testing_query
+    def visit_page_and_set_figure_and_progression
       visit '/s'
       select 'and'
       find_all('.search-ex-op', count: 3).last.select('progression')
@@ -148,13 +148,13 @@ describe "SearchExEditor's search results", js: true do
 
     describe 'casts' do
       it "cast from 'and' to 'or'" do
-        visit_page_with_testing_query
+        visit_page_and_set_figure_and_progression
         first('.search-ex-op').select('or')
         expect(page).to have_css('#debug-lisp', text: '[ "or", [ "figure", "*" ], [ "progression" ] ]', visible: false)
       end
 
       it "cast to 'not'" do
-        visit_page_with_testing_query
+        visit_page_and_set_figure_and_progression
         first('.search-ex-op').select('not')
         expect(page).to have_css('#debug-lisp', text: '[ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]', visible: false)
         expect(page).to have_css('.search-ex-op', count: 4)
@@ -163,20 +163,20 @@ describe "SearchExEditor's search results", js: true do
 
     describe 'deletion' do
       it "works" do
-        visit_page_with_testing_query
+        visit_page_and_set_figure_and_progression
         all('.search-ex-menu-toggle', count: 3).last.click
         find('a.search-ex-delete').click
         expect(page).to have_css('#debug-lisp', text: '[ "and", [ "figure", "*" ] ]', visible: false)
       end
 
       it "menu item isn't visible for the root node" do
-        visit_page_with_testing_query
+        visit_page_and_set_figure_and_progression
         first('.search-ex-menu-toggle').click
         expect(page).to_not have_css('.search-ex-delete')
       end
 
       it "menu item isn't visible for a subexpression that's required" do
-        visit_page_with_testing_query
+        visit_page_and_set_figure_and_progression
         first('.search-ex-op').select('not')
         expect(page).to have_css('.search-ex-op', count: 4)
         expect(page).to have_css('#debug-lisp', text: '[ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]', visible: false)
@@ -189,7 +189,7 @@ describe "SearchExEditor's search results", js: true do
     describe 'adding a subexpression' do
       let (:search_ex_add_subexpression_selector) { ".search-ex-add-subexpression" }
       it "add subexpression button works" do
-        visit_page_with_testing_query
+        visit_page_and_set_figure_and_progression
         all('.search-ex-menu-toggle', count: 3).first.click
         find(search_ex_add_subexpression_selector).click
         expect(page).to have_css('.search-ex-op', count: 4)
