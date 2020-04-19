@@ -161,7 +161,7 @@ const EditorExtras = ({
       />
     )
   } else {
-    return <div />
+    return null
   }
 }
 
