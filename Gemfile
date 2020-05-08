@@ -10,7 +10,6 @@ gem 'rails', '~> 5.1.0'
 
 gem 'pg'
 
-
 # Use SCSS for stylesheets
 gem 'sassc-rails'
 # Use Uglifier as compressor for JavaScript assets
@@ -36,9 +35,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-group :production do
-  gem 'unicorn'
-end
+gem 'puma'
 
 group :development do
   gem 'web-console' # Access an IRB console on exception pages or by using <%= console %> in views
