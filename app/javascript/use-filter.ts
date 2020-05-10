@@ -13,25 +13,26 @@ const setterName = (s: string): string => {
   return "set" + first + rest
 }
 
+const defaultStates = {
+  choreographer: "",
+  hook: "",
+  verifiedChecked: true,
+  notVerifiedChecked: false,
+  verifiedCheckedByMe: false,
+  notVerifiedCheckedByMe: false,
+  publishAll: true,
+  publishSketchbook: false,
+  publishOff: false,
+  enteredByMe: false,
+  improper: true,
+  becket: true,
+  proper: true,
+  otherFormation: true,
+}
+
 export default function useFilter(
   coreFilter: Filter
 ): { filter: Filter; dictionary: object } {
-  const defaultStates = {
-    choreographer: "",
-    hook: "",
-    verifiedChecked: true,
-    notVerifiedChecked: false,
-    verifiedCheckedByMe: false,
-    notVerifiedCheckedByMe: false,
-    publishAll: true,
-    publishSketchbook: false,
-    publishOff: false,
-    enteredByMe: false,
-    improper: true,
-    becket: true,
-    proper: true,
-    otherFormation: true,
-  }
   const [states, setStates] = useState(defaultStates)
   // loop over keys and make setters,
   const setters: { [index: string]: (newState: boolean | string) => void } = {}
