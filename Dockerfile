@@ -1,6 +1,6 @@
 FROM ruby:2.5-buster
-# docker build -t puma .
-# docker run -p 80:3000 -e  SECRET_KEY_BASE=4dcaf302f09d26f44f0916f02de97e1fe7d61c0b9b1238ed480212f6aee785f963cdabed57699f395920f9467b863289ac24467ab3bcd0561e137411b56c0bd4 puma:latest
+# docker build -t dcmorse1/puma .
+# docker run -p 80:3000 -e  SECRET_KEY_BASE=4dcaf302f09d26f44f0916f02de97e1fe7d61c0b9b1238ed480212f6aee785f963cdabed57699f395920f9467b863289ac24467ab3bcd0561e137411b56c0bd4 dcmorse1/puma:latest
 RUN gem install bundler
 # throw errors if Gemfile has been modified since Gemfile.lock
 RUN bundle config --global frozen 1

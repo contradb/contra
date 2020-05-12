@@ -1,0 +1,16 @@
+# hit this with the shell command:
+# minikube service puma-service
+apiVersion: v1
+kind: Service
+metadata:
+  name: puma-service
+  labels:
+    app: contradb-puma
+spec:
+  type: NodePort
+  ports:
+  - port: 3000
+    nodePort: 30303
+    protocol: TCP
+  selector:
+    app: contradb-puma

@@ -1,0 +1,24 @@
+# replication controller
+# kubectl create -f k8/puma-rc.yml
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: puma-rc
+spec:
+  replicas: 2
+  selector:
+    app: contradb-puma
+  template:
+    metadata:
+      labels:
+        app: contradb-puma
+    spec:
+      containers:
+      - name: puma-pod
+#       image: hello-world
+        image: docker.io/dcmorse1/puma:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: SECRET_KEY_BASE
+          value: "e8d41db0673834d2b6a67c6aa18df61df1cace58703e2e80d5aced75caf4e9fecafbf21b094458483af1fcac7c3f185c964305982c39cef4fa2f273a17e2aff5"
