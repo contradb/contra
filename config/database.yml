@@ -36,6 +36,6 @@ test:
 
 production:
   <<: *postgres
-  username: rails
+  username: <%= ENV['APP_DATABASE_USERNAME'] || 'rails' %>
   password: <%= ENV['APP_DATABASE_PASSWORD'] %>
   database: app_production
