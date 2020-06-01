@@ -642,3 +642,10 @@ describe("alias parameters can dealias moves", () => {
     expect(doSiDo.move).toBe("see saw")
   })
 })
+
+describe("toJson and fromJson", () => {
+  it("works", () => {
+    const searchEx = SearchEx.fromLisp(["figure", "do si do"])
+    expect(SearchEx.fromJson(searchEx.toJson())).toEqual(searchEx)
+  })
+})
