@@ -6,6 +6,7 @@ import {
   getFormationFilters,
 } from "./ez-query-helpers"
 import useDebounce from "./use-debounce"
+import useSessionStorage from "./use-session-storage"
 
 const setterName = (s: string): string => {
   const first = s.charAt(0).toUpperCase()
@@ -13,7 +14,24 @@ const setterName = (s: string): string => {
   return "set" + first + rest
 }
 
-const defaultStates = {
+interface FilterState {
+  choreographer: string
+  hook: string
+  verifiedChecked: boolean
+  notVerifiedChecked: boolean
+  verifiedCheckedByMe: boolean
+  notVerifiedCheckedByMe: boolean
+  publishAll: boolean
+  publishSketchbook: boolean
+  publishOff: boolean
+  enteredByMe: boolean
+  improper: boolean
+  becket: boolean
+  proper: boolean
+  otherFormation: boolean
+}
+
+const defaultFilterState: FilterState = {
   choreographer: "",
   hook: "",
   verifiedChecked: true,
@@ -33,10 +51,16 @@ const defaultStates = {
 export default function useFilter(
   coreFilter: Filter
 ): { filter: Filter; dictionary: object } {
-  const [states, setStates] = useState(defaultStates)
+  const [sessionStorage, setSessionStorage] = useSessionStorage(
+    "filterState",
+    JSON.stringify(defaultFilterState)
+  )
+  const states = JSON.parse(sessionStorage)
+  const setStates = (value: FilterState) =>
+    setSessionStorage(JSON.stringify(value))
   // loop over keys and make setters,
   const setters: { [index: string]: (newState: boolean | string) => void } = {}
-  for (let stateName in defaultStates)
+  for (let stateName in defaultFilterState)
     setters[setterName(stateName)] = newState =>
       setStates({ ...states, [stateName]: newState })
   const d = { ...states, ...setters }
