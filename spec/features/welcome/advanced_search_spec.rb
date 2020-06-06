@@ -626,6 +626,9 @@ describe 'advanced search component', js: true do
 
   describe 'back button' do
       let(:dances) { [:dance, :box_the_gnat_contra, :call_me].map {|name| FactoryGirl.create(name)} }
+      let(:call_me) { dances.last }
+      let(:dont_call_me) { dances[0, dances.length-2] }
+
     it 'SearchEx state is preserved' do
       dances
       tag_all_dances
@@ -656,7 +659,7 @@ describe 'advanced search component', js: true do
       end
     end
 
-    it 'preserves an ez-filter' do
+    it 'preserves a string ez-filter' do
       dances = [:dance, :box_the_gnat_contra, :call_me].map {|name| FactoryGirl.create(name)}
       call_me = dances.last
       dont_call_me = dances[0, dances.length-2]
@@ -675,16 +678,35 @@ describe 'advanced search component', js: true do
       expect(page).to have_content(call_me.title)
     end
 
-    xit 'all filters at least load when back-ed' do
+    it 'preserves a checkbox ez-filter' do
       dances
-      visit '/'
-      filters = page.find('.figure-filter-op').all('option').map {|elt| elt['innerHTML'].gsub('&amp;', '&') }
+      tag_all_dances
+      visit(search_path)
+      uncheck_filter 'ez-improper'
+      click_link(call_me.title)
+      expect(page).to have_css("h1", text: call_me.title)
+      page.go_back
+      with_filters_excursion do
+        expect(find('#ez-improper')).to_not be_checked
+      end
+      dont_call_me.each do |dance|
+        expect(page).to_not have_content(dance.title)
+      end
+      expect(page).to have_content(call_me.title)
+    end
+
+    it 'most filters at least load when back-ed' do
+      dances
+      tag_all_dances
+      visit(search_path)
+      filters = find('.search-ex-op').all('option').reject(&:disabled?).map {|elt| elt['innerHTML'].gsub('&amp;', '&') }.reject {|op| op.in?(['no', 'not', 'compare'])}
       filters.each do |filter|
-        page.select(filter, match: :first)
-        expect(page).to have_text(/Showing \d+ to \d+ of \d+ entries/)
-        page.refresh
-        # when filters are broken on reload, it has an empty table and doesn't show this text:
-        expect(page).to have_text(/Showing \d+ to \d+ of \d+ entries/)
+        select(filter, match: :first)
+        click_link(call_me.title)
+        expect(page).to have_css("h1", text: call_me.title)
+        page.go_back
+        expect(find(".search-ex-op", match: :first).value).to eq(filter)
+        select('figure', match: :first) # restore binops to single node.
       end
     end
   end
