@@ -331,8 +331,8 @@ describe "SearchExEditors", js: true do
 
       it 'labels appear on chooser elements' do
         visit search_path
-        toggle_figure_search_ex_paramters
         select('swing', match: :first)             # swing uses simple label system
+        toggle_figure_search_ex_paramters
         expect(page).to have_css('.chooser-label-text', text: 'who')
         expect(page).to have_css('.chooser-label-text', text: 'prefix')
         expect(page).to have_css('.chooser-label-text', text: 'beats')
