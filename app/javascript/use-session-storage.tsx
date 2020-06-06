@@ -2,9 +2,18 @@
 
 import React, { useState, useEffect } from "react"
 
-// key should not change from invocation to invocation. Put another
-// way, a given callsite of useSessionStorage must always invoke with
-// the same key, in addition to obeying the rules of hooks.
+// useSessionStorage is kinda like useState, but it stores the state
+// in ... session storage!
+//
+// The first parameter, 'key', should be invoked wiht a string literal
+// (a computed value could get sessionStorage state out of sync with
+// useState state)
+//
+// The second parameter is an initializer. Like the parameter to
+// useState, it can be either a value or a zero-parameter function that
+// returns a value. Unlike useState, the value must be a string.
+//
+// like useState, this returns [string, setString]
 function useSessionStorage(
   key: string,
   initializerOrFn: string | (() => string)

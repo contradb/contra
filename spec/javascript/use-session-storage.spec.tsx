@@ -5,8 +5,8 @@ import useSessionStorage from "../../app/javascript/use-session-storage"
 
 const key = "testKeyWhatever"
 
-describe("initializer", () => {
-  it("is a function", () => {
+describe("initializer parameter", () => {
+  it("accepts a function returning a string", () => {
     const initialState = "5"
     const { result } = renderHook(() =>
       useSessionStorage(key, () => initialState)
@@ -14,7 +14,7 @@ describe("initializer", () => {
     expect(result.current[0]).toBe(initialState)
   })
 
-  it("is not a function", () => {
+  it("accepts a string", () => {
     const initialState = "5"
     const { result } = renderHook(() => useSessionStorage(key, initialState))
     expect(result.current[0]).toBe(initialState)
@@ -22,7 +22,7 @@ describe("initializer", () => {
 })
 
 describe("returned setter", () => {
-  it("rerenders when value changes", () => {
+  it("generates a rerender when it detects a change", () => {
     const { result } = renderHook(() => useSessionStorage(key, "5"))
 
     expect(result.current[0]).toBe("5")
@@ -34,7 +34,7 @@ describe("returned setter", () => {
     expect(result.current[0]).toBe("6")
   })
 
-  it("saves the stored value to sessionStorage", () => {
+  it("sets sessionStorage", () => {
     const { result } = renderHook(() => useSessionStorage(key, "5"))
 
     act(() => {
