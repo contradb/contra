@@ -59,7 +59,7 @@ export default function useFilter(
   const setStates = (value: FilterState) =>
     setSessionStorage(JSON.stringify(value))
   // loop over keys and make setters,
-  const setters: { [index: string]: (newState: boolean | string) => void } = {}
+  const setters: { [key: string]: (newState: boolean | string) => void } = {}
   for (let stateName in defaultFilterState)
     setters[setterName(stateName)] = newState =>
       setStates({ ...states, [stateName]: newState })
