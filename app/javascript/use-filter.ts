@@ -6,6 +6,7 @@ import {
   getFormationFilters,
 } from "./ez-query-helpers"
 import useDebounce from "./use-debounce"
+import useSessionStorage from "./use-session-storage"
 
 const setterName = (s: string): string => {
   const first = s.charAt(0).toUpperCase()
@@ -13,28 +14,56 @@ const setterName = (s: string): string => {
   return "set" + first + rest
 }
 
+interface FilterState {
+  choreographer: string
+  hook: string
+  verifiedChecked: boolean
+  notVerifiedChecked: boolean
+  verifiedCheckedByMe: boolean
+  notVerifiedCheckedByMe: boolean
+  publishAll: boolean
+  publishSketchbook: boolean
+  publishOff: boolean
+  enteredByMe: boolean
+  improper: boolean
+  becket: boolean
+  proper: boolean
+  otherFormation: boolean
+}
+
+const defaultFilterState: FilterState = {
+  choreographer: "",
+  hook: "",
+  verifiedChecked: true,
+  notVerifiedChecked: false,
+  verifiedCheckedByMe: false,
+  notVerifiedCheckedByMe: false,
+  publishAll: true,
+  publishSketchbook: false,
+  publishOff: false,
+  enteredByMe: false,
+  improper: true,
+  becket: true,
+  proper: true,
+  otherFormation: true,
+}
+
 export default function useFilter(
   coreFilter: Filter
 ): { filter: Filter; dictionary: object } {
-  const d: any = {} // dictionary of state values and setters
-  const rememberState = (name: string, [value, setter]: [any, any]) => {
-    d[name] = value
-    d[setterName(name)] = setter
-  }
-  rememberState("choreographer", useState(""))
-  rememberState("hook", useState(""))
-  rememberState("verifiedChecked", useState(true))
-  rememberState("notVerifiedChecked", useState(false))
-  rememberState("verifiedCheckedByMe", useState(false))
-  rememberState("notVerifiedCheckedByMe", useState(false))
-  rememberState("publishAll", useState(true))
-  rememberState("publishSketchbook", useState(false))
-  rememberState("publishOff", useState(false))
-  rememberState("enteredByMe", useState(false))
-  rememberState("improper", useState(true))
-  rememberState("becket", useState(true))
-  rememberState("proper", useState(true))
-  rememberState("otherFormation", useState(true))
+  const [sessionStorage, setSessionStorage] = useSessionStorage(
+    "filterState",
+    JSON.stringify(defaultFilterState)
+  )
+  const states = JSON.parse(sessionStorage)
+  const setStates = (value: FilterState) =>
+    setSessionStorage(JSON.stringify(value))
+  // loop over keys and make setters,
+  const setters: { [key: string]: (newState: boolean | string) => void } = {}
+  for (let stateName in defaultFilterState)
+    setters[setterName(stateName)] = newState =>
+      setStates({ ...states, [stateName]: newState })
+  const d = { ...states, ...setters }
 
   const verifiedFilter: Filter = useMemo(
     () =>

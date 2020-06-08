@@ -9,6 +9,7 @@ import DialectContext from "./dialect-context"
 import Filter from "./filter"
 import useFilter from "use-filter"
 import useWindowSize from "use-window-size"
+import useSessionStorage from "./use-session-storage"
 import SearchTabs from "./search-tabs"
 import DesktopSearchWithSideTabs from "./desktop-search-with-side-tabs"
 import FiltersTab from "./filters-tab"
@@ -60,10 +61,18 @@ export const AdvancedSearch = ({
     },
     []
   )
-  const [searchEx, setSearchEx] = useState(SearchEx.default())
-  const { filter, dictionary } = useFilter(
-    useMemo(() => searchEx.toLisp(), [searchEx])
+  const [searchExString, setSearchExString] = useSessionStorage(
+    "searchEx",
+    () => SearchEx.default().toJson()
   )
+  const searchEx = useMemo(() => SearchEx.fromJson(searchExString), [
+    searchExString,
+  ])
+  const setSearchEx = (searchEx: SearchEx) =>
+    setSearchExString(searchEx.toJson())
+
+  const searchExLispMemo = useMemo(() => searchEx.toLisp(), [searchEx])
+  const { filter, dictionary } = useFilter(searchExLispMemo)
 
   const windowSize = useWindowSize()
 

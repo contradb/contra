@@ -318,11 +318,13 @@ describe 'advanced search component', js: true do
       it "works" do
         call_me = dances.last
         dont_call_me = dances[0, dances.length-2]
+        tag_all_dances
         visit(search_path)
-        with_filters_excursion { find('.ez-choreographer-filter').fill_in(with: call_me.choreographer) }
+        with_filters_excursion { find('.ez-choreographer-filter').fill_in(with: call_me.choreographer.name)}
         dont_call_me.each do |dance|
           expect(page).to_not have_content(dance.title)
         end
+        expect(page).to have_content(call_me.title)
       end
     end
 
@@ -622,6 +624,93 @@ describe 'advanced search component', js: true do
     end
   end
 
+  describe 'back button' do
+      let(:dances) { [:dance, :box_the_gnat_contra, :call_me].map {|name| FactoryGirl.create(name)} }
+      let(:call_me) { dances.last }
+      let(:dont_call_me) { dances[0, dances.length-2] }
+
+    it 'SearchEx state is preserved' do
+      dances
+      tag_all_dances
+      visit(search_path)
+
+      select('and')
+      move_selector = '.search-ex-move'
+      all(move_selector).first.select('swing', match: :first)
+      all(move_selector).last.select('allemande')
+      find('.search-ex-toggle-parameters', match: :first).click
+      select('neighbors')
+      expect(page).to have_css('.search-ex', count: 3) # js wait
+      click_link('Box the Gnat Contra')
+      expect(page).to have_css("h1", text: 'Box the Gnat Contra')
+      page.go_back
+      expect(page).to have_css('.search-ex', count: 3) # search ex editors still there
+      expect(page).to have_css(move_selector, count: 2)
+      expect(all(move_selector).first.value).to eq('swing')
+      expect(all(move_selector).last.value).to eq('allemande')
+      expect(page).to have_css('.search-ex-toggle-parameters.btn-primary', count: 1)
+      expect(all(".search-ex-figure-parameters select", match: :first).map(&:value)).to eq(['neighbors', '*', '*'])
+      dances.each do |dance|
+        if dance.title =~ /Box the Gnat/i
+          expect(page).to have_link(dance.title)
+        else
+          expect(page).to_not have_link(dance.title)
+        end
+      end
+    end
+
+    it 'preserves a string ez-filter' do
+      dances = [:dance, :box_the_gnat_contra, :call_me].map {|name| FactoryGirl.create(name)}
+      call_me = dances.last
+      dont_call_me = dances[0, dances.length-2]
+      tag_all_dances
+      visit(search_path)
+      with_filters_excursion { find('.ez-choreographer-filter').fill_in(with: call_me.choreographer.name) }
+      click_link(call_me.title)
+      expect(page).to have_css("h1", text: call_me.title)
+      page.go_back
+      with_filters_excursion do
+        expect(find('.ez-choreographer-filter').value).to eq(call_me.choreographer.name)
+      end
+      dont_call_me.each do |dance|
+        expect(page).to_not have_content(dance.title)
+      end
+      expect(page).to have_content(call_me.title)
+    end
+
+    it 'preserves a checkbox ez-filter' do
+      dances
+      tag_all_dances
+      visit(search_path)
+      uncheck_filter 'ez-improper'
+      click_link(call_me.title)
+      expect(page).to have_css("h1", text: call_me.title)
+      page.go_back
+      with_filters_excursion do
+        expect(find('#ez-improper')).to_not be_checked
+      end
+      dont_call_me.each do |dance|
+        expect(page).to_not have_content(dance.title)
+      end
+      expect(page).to have_content(call_me.title)
+    end
+
+    it 'most filters at least load when back-ed' do
+      dances
+      tag_all_dances
+      visit(search_path)
+      filters = find('.search-ex-op').all('option').reject(&:disabled?).map {|elt| elt['innerHTML'].gsub('&amp;', '&') }.reject {|op| op.in?(['no', 'not', 'compare'])}
+      filters.each do |filter|
+        select(filter, match: :first)
+        click_link(call_me.title)
+        expect(page).to have_css("h1", text: call_me.title)
+        page.go_back
+        expect(find(".search-ex-op", match: :first).value).to eq(filter)
+        select('figure', match: :first) # restore binops to single node.
+      end
+    end
+  end
+
   def tag_all_dances(tag: FactoryGirl.create(:tag, :verified), user: FactoryGirl.create(:user))
     Dance.all.each do |dance|
       FactoryGirl.create(:dut, dance: dance, tag: tag, user: user)
@@ -634,9 +723,10 @@ describe 'advanced search component', js: true do
   def with_filters_excursion(&block)
     if phone_screen?
       click_on 'filters'
-      block.call
+      result = block.call
       click_on_results_tab
       expect(page).to have_css('.dances-table-react') # wait for table to pop in before, say, testing for the absence of an element
+      result
     else
       block.call
     end

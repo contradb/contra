@@ -123,6 +123,14 @@ class SearchEx {
   toString() {
     return `#<${this.constructor.name2} ${JSON.stringify(this.toLisp())}>`
   }
+
+  toJson() {
+    return JSON.stringify(this.toLisp())
+  }
+
+  static fromJson(string) {
+    return SearchEx.fromLisp(JSON.parse(string))
+  }
 }
 
 function registerSearchEx(className, ...props) {

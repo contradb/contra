@@ -11,6 +11,7 @@ declare class SearchEx {
   replace(from: SearchEx, to: SearchEx): SearchEx
   remove(target: SearchEx): SearchEx
   withAdditionalSubexpression(se?: SearchEx): SearchEx
+  toJson(): string
 }
 
 declare class FigureSearchEx extends SearchEx {

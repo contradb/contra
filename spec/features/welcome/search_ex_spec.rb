@@ -233,11 +233,11 @@ describe "SearchExEditors", js: true do
       expect(page).to_not have_css('.search-ex-figure-parameters')
       expect(page).to have_css('.search-ex-toggle-parameters.btn-default')
       expect(page).to_not have_css('.search-ex-toggle-parameters.btn-primary')
-      toggle_figure_search_ex_paramters
+      toggle_figure_search_ex_parameters
       expect(page).to have_css('.search-ex-toggle-parameters.btn-primary')
       expect(page).to_not have_css('.search-ex-toggle-parameters.btn-default')
       expect(page).to have_css('.search-ex-figure-parameters')
-      toggle_figure_search_ex_paramters
+      toggle_figure_search_ex_parameters
       expect(page).to_not have_css('.search-ex-ellipsis.ellipsis-expanded')
       expect(page).to_not have_css('.search-ex-figure-parameters')
     end
@@ -247,7 +247,7 @@ describe "SearchExEditors", js: true do
         dances
         visit search_path
         select('circle')
-        toggle_figure_search_ex_paramters
+        toggle_figure_search_ex_parameters
         select('4 places')
         expect(page).to_not have_content('Box the Gnat Contra') # no circles
         expect(page).to_not have_content('Call Me') # has circle left 3 places
@@ -260,7 +260,7 @@ describe "SearchExEditors", js: true do
         right = FactoryGirl.create(:dance_with_a_circle_right)
         dances
         select('circle')
-        toggle_figure_search_ex_paramters
+        toggle_figure_search_ex_parameters
         choose('right')
 
         expect(page).to_not have_content('The Rendevouz') # has circle left 3 & 4 places
@@ -280,7 +280,7 @@ describe "SearchExEditors", js: true do
         expect(page).to have_content('Call Me') # has circle left 3 places
         expect(page).to have_css("#debug-lisp", visible: false, text: '[ "figure", "circle" ]') # first query
 
-        toggle_figure_search_ex_paramters
+        toggle_figure_search_ex_parameters
 
         expect(page).to have_content('The Rendevouz') # has circle left 3 & 4 places
         expect(page).to_not have_content('Box the Gnat Contra') # no circles
@@ -291,7 +291,7 @@ describe "SearchExEditors", js: true do
       it 'circle has an angle select box with the right options' do
         visit search_path
         select('circle')
-        toggle_figure_search_ex_paramters
+        toggle_figure_search_ex_parameters
         angles = JSLibFigure.angles_for_move('circle')
         too_small_angle = angles.min - 90
         too_big_angle = angles.max + 90
@@ -307,7 +307,7 @@ describe "SearchExEditors", js: true do
         dances
         visit search_path
         select('swing', match: :first)
-        toggle_figure_search_ex_paramters
+        toggle_figure_search_ex_parameters
         select('8', match: :prefer_exact) # '8' is in the menu twice, and also in 'figure 8'
 
         expect(page).to_not have_content('The Rendevouz') # has circle left 3 & 4 places
@@ -320,7 +320,7 @@ describe "SearchExEditors", js: true do
         dances
         visit search_path
         select('swing', match: :first)
-        toggle_figure_search_ex_paramters
+        toggle_figure_search_ex_parameters
         select('none')
 
         expect(page).to_not have_content('The Rendevouz') # has circle left 3 & 4 places
@@ -331,8 +331,8 @@ describe "SearchExEditors", js: true do
 
       it 'labels appear on chooser elements' do
         visit search_path
-        toggle_figure_search_ex_paramters
         select('swing', match: :first)             # swing uses simple label system
+        toggle_figure_search_ex_parameters
         expect(page).to have_css('.chooser-label-text', text: 'who')
         expect(page).to have_css('.chooser-label-text', text: 'prefix')
         expect(page).to have_css('.chooser-label-text', text: 'beats')
@@ -350,7 +350,7 @@ describe "SearchExEditors", js: true do
         allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
 
         select('allemande')
-        toggle_figure_search_ex_paramters
+        toggle_figure_search_ex_parameters
         select('ladles')
 
         expect(page).to_not have_content('The Rendevouz')
@@ -364,7 +364,7 @@ describe "SearchExEditors", js: true do
         dances
         visit search_path
         select('allemande')
-        toggle_figure_search_ex_paramters
+        toggle_figure_search_ex_parameters
 
         expect(page).to have_css("option[value='ladles']")
         expect(page).to have_css("option[value='gentlespoons']")
@@ -393,7 +393,7 @@ describe "SearchExEditors", js: true do
         visit search_path
 
         select('allemande')
-        toggle_figure_search_ex_paramters
+        toggle_figure_search_ex_parameters
         choose('left', exact: true)
 
         expect(page).to_not have_content('The Rendevouz')
@@ -410,7 +410,7 @@ describe "SearchExEditors", js: true do
         visit search_path
 
         select('allemande')
-        toggle_figure_search_ex_paramters
+        toggle_figure_search_ex_parameters
         select('once')
 
         expect(page).to_not have_content('The Rendevouz')
@@ -430,7 +430,7 @@ describe "SearchExEditors", js: true do
         dances
         visit search_path
         select('custom')
-        toggle_figure_search_ex_paramters
+        toggle_figure_search_ex_parameters
         find(".search-ex-figure-parameters input[type=text]").set('apple orange')
         dances.each do |dance|
           expect(page).to_not have_content(dance.title)
@@ -448,7 +448,7 @@ describe "SearchExEditors", js: true do
         grip = FactoryGirl.create(:dance_with_a_wrist_grip_star)
 
         select('star')
-        toggle_figure_search_ex_paramters
+        toggle_figure_search_ex_parameters
         select('unspecified')
 
         expect(page).to_not have_content('The Rendevouz')
@@ -467,7 +467,7 @@ describe "SearchExEditors", js: true do
         visit search_path
 
         select('down the hall')
-        toggle_figure_search_ex_paramters
+        toggle_figure_search_ex_parameters
         select('forward then backward')
 
         expect(page).to_not have_content(f.title)
@@ -484,7 +484,7 @@ describe "SearchExEditors", js: true do
         visit search_path
 
         select('down the hall')
-        toggle_figure_search_ex_paramters
+        toggle_figure_search_ex_parameters
         select('turn as a couple')
         # select('turn alone') # hard because multiple
         select('bend into a ring')
@@ -500,7 +500,7 @@ describe "SearchExEditors", js: true do
         visit search_path
 
         select('poussette')
-        toggle_figure_search_ex_paramters
+        toggle_figure_search_ex_parameters
         choose('full')
 
         dances.each do |dance|
@@ -520,7 +520,7 @@ describe "SearchExEditors", js: true do
         visit search_path
 
         select('hey')
-        toggle_figure_search_ex_paramters
+        toggle_figure_search_ex_parameters
         hey_dances.each_with_index do |dance, i|
           hey_length = hey_lengths[i]
           select(hey_length)
@@ -544,7 +544,7 @@ describe "SearchExEditors", js: true do
         select('see saw')
         expect(page).to have_content(see_saw.title)
         expect(page).to_not have_content(do_si_do.title)
-        toggle_figure_search_ex_paramters
+        toggle_figure_search_ex_parameters
         choose('*')
         expect(page).to have_content(do_si_do.title)
         expect(page).to have_content(see_saw.title)
@@ -585,7 +585,7 @@ describe "SearchExEditors", js: true do
       visit search_path
 
       select('almond')
-      toggle_figure_search_ex_paramters
+      toggle_figure_search_ex_parameters
       select('ravens')
 
       expect(page).to_not have_content('The Rendevouz')
@@ -705,7 +705,7 @@ describe "SearchExEditors", js: true do
     capy_search_ex_node.find('.search-ex-add-subexpression').click
   end
 
-  def toggle_figure_search_ex_paramters(capy_search_ex_node = find("#search-ex-root"))
+  def toggle_figure_search_ex_parameters(capy_search_ex_node = find("#search-ex-root"))
     capy_search_ex_node.find('button.search-ex-toggle-parameters').click
   end
 
