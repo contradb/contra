@@ -33,6 +33,7 @@
     "ts-jest": "^24.2.0",
     "webpack-dev-server": "^3.1.14"
   },
+  "license": "AGPL-3.0-or-later",
   "scripts": {
     "prettier": "prettier",
     "test": "jest"
