@@ -2,7 +2,7 @@ import React from "react"
 import { SearchEx, FigureSearchEx } from "./search-ex"
 import FigureSearchExEditorExtras from "./figure-search-ex-editor-extras"
 
-const makeOpOption = (op: string, i: number) => {
+const makeOpOption = (op: string, i: number): JSX.Element => {
   if (op === "____")
     return (
       <option key={i} style={{ backgroundColor: "white" }} disabled>
@@ -34,6 +34,13 @@ const nonNumericOpOptions = [
 
 const numericOpOptions = ["constant", "tag", "count-matches"].map(makeOpOption)
 
+const preventDefaultThen = (funcToCall: (event: any) => void) => (event: {
+  preventDefault: () => void
+}) => {
+  event.preventDefault()
+  funcToCall(event)
+}
+
 export const SearchExEditor = ({
   searchEx,
   setSearchEx,
@@ -44,14 +51,15 @@ export const SearchExEditor = ({
   setSearchEx: (se: SearchEx) => void
   removeSearchEx: null | ((se: SearchEx) => void)
   id?: string
-}) => {
+}): JSX.Element => {
   const hasEnoughChildrenToRemoveOne =
     searchEx.subexpressions.length > searchEx.minSubexpressions()
   const subexpressionRemoveFn = hasEnoughChildrenToRemoveOne
     ? (sub: SearchEx) => setSearchEx(searchEx.remove(sub))
     : null
-  const subexpressionsGrowFn = () =>
+  const subexpressionsGrowFn = preventDefaultThen(() =>
     setSearchEx(searchEx.withAdditionalSubexpression())
+  )
 
   return (
     <div className="search-ex" {...(id ? { id: id } : {})}>
@@ -91,9 +99,7 @@ export const SearchExEditor = ({
                         <a
                           href="#"
                           className="search-ex-add-subexpression"
-                          onClick={preventDefaultThen(() =>
-                            setSearchEx(searchEx.withAdditionalSubexpression())
-                          )}
+                          onClick={subexpressionsGrowFn}
                         >
                           Add
                         </a>
@@ -152,7 +158,7 @@ const EditorExtras = ({
 }: {
   searchEx: SearchEx
   setSearchEx: (se: SearchEx) => void
-}) => {
+}): JSX.Element | null => {
   if (searchEx instanceof FigureSearchEx) {
     return (
       <FigureSearchExEditorExtras
@@ -163,13 +169,6 @@ const EditorExtras = ({
   } else {
     return null
   }
-}
-
-const preventDefaultThen = (funcToCall: (event: any) => void) => (event: {
-  preventDefault: () => void
-}) => {
-  event.preventDefault()
-  funcToCall(event)
 }
 
 export default SearchExEditor

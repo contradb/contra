@@ -243,6 +243,7 @@ function Table({
       >
         <thead>
           {headerGroups.map((headerGroup: any) => (
+            // eslint-disable-next-line react/jsx-key
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column: any) => (
                 <DanceTableTh column={column} key={column.index} />
@@ -254,8 +255,10 @@ function Table({
           {rows.map((row: any) => {
             prepareRow(row)
             return (
+              // eslint-disable-next-line react/jsx-key
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell: any) => (
+                  // eslint-disable-next-line react/jsx-key
                   <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                 ))}
               </tr>

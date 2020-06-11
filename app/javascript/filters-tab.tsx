@@ -1,9 +1,12 @@
 import React, { useState } from "react"
 import Cookie from "js-cookie"
 import EzCheckboxFilter from "./ez-checkbox-filter"
-import Filter from "./filter"
 
-export const FiltersTab = ({ dictionary }: { dictionary: any }) => {
+export const FiltersTab = ({
+  dictionary,
+}: {
+  dictionary: any
+}): JSX.Element => {
   const d = dictionary
   const [signedIn] = useState(() => Cookie.get("signed_in"))
   const isAdmin = signedIn === "admin"

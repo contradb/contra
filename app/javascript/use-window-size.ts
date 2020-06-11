@@ -14,7 +14,7 @@ export const useWindowSize = (): WH => {
   const [windowSize, setWindowSize] = useState<WH>(getWindowSize())
 
   useEffect(() => {
-    const handleResize = () => setWindowSize(getWindowSize())
+    const handleResize = (): void => setWindowSize(getWindowSize())
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [])

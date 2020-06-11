@@ -1,6 +1,6 @@
 // from https://dev.to/gabe_ragland/debouncing-with-react-hooks-jci
 
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 
 // useSessionStorage is kinda like useState, but it stores the state
 // in ... session storage!
@@ -29,7 +29,7 @@ function useSessionStorage(
   const state = stateAndSetState[0]
   useEffect(() => {
     sessionStorage.setItem(key, state)
-  }, [state])
+  }, [state, key])
   return stateAndSetState
 }
 

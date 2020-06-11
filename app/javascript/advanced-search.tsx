@@ -6,7 +6,6 @@ import {
   SearchDancesJson,
 } from "./dance-table"
 import DialectContext from "./dialect-context"
-import Filter from "./filter"
 import useFilter from "use-filter"
 import useWindowSize from "use-window-size"
 import useSessionStorage from "./use-session-storage"
@@ -22,7 +21,7 @@ const bootstrapMedium992px = 992
 
 export const AdvancedSearch = ({
   dialect,
-  tags,
+  tags, // eslint-disable-line @typescript-eslint/no-unused-vars
 }: {
   dialect: Dialect
   tags: string[]
@@ -47,7 +46,7 @@ export const AdvancedSearch = ({
         const body = JSON.stringify({
           count: pageSize,
           offset: offset,
-          sort_by: sort,
+          sort_by: sort, // eslint-disable-line @typescript-eslint/camelcase
           filter: filter,
         })
         const response = await fetch(url, { method: "POST", headers, body })
@@ -68,7 +67,7 @@ export const AdvancedSearch = ({
   const searchEx = useMemo(() => SearchEx.fromJson(searchExString), [
     searchExString,
   ])
-  const setSearchEx = (searchEx: SearchEx) =>
+  const setSearchEx = (searchEx: SearchEx): void =>
     setSearchExString(searchEx.toJson())
 
   const searchExLispMemo = useMemo(() => searchEx.toLisp(), [searchEx])
@@ -76,7 +75,7 @@ export const AdvancedSearch = ({
 
   const windowSize = useWindowSize()
 
-  const dancesTabName: string = `${searchDancesJson.numberMatching} dance${
+  const dancesTabName = `${searchDancesJson.numberMatching} dance${
     1 === searchDancesJson.numberMatching ? "" : "s"
   }`
   const filtersTab = <FiltersTab dictionary={dictionary} />
@@ -113,7 +112,10 @@ export const AdvancedSearch = ({
   }
 }
 
-const provideDialect = (dialect: Dialect, component: JSX.Element) => (
+const provideDialect = (
+  dialect: Dialect,
+  component: JSX.Element
+): JSX.Element => (
   <DialectContext.Provider value={dialect}>{component}</DialectContext.Provider>
 )
 

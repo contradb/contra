@@ -34,6 +34,10 @@ module.exports = {
     "@typescript-eslint/explicit-function-return-type": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
+    "@typescript-eslint/no-use-before-define": [
+      "error",
+      { functions: false, classes: false, variables: false },
+    ],
   },
   overrides: [
     {
