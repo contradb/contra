@@ -1,6 +1,6 @@
 // from https://dev.to/gabe_ragland/debouncing-with-react-hooks-jci
 
-import React, { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef } from "react"
 
 export default function useDebounce<T>(
   value: T,
@@ -19,15 +19,12 @@ export default function useDebounce<T>(
       isFirstRun.current = false
       setDebouncedValue(value)
     } else {
-      const handler = setTimeout(() => {
-        console.log("setTimeout resolve")
-        setDebouncedValue(value)
-      }, delay)
+      const handler = setTimeout(() => setDebouncedValue(value), delay)
       return () => {
         clearTimeout(handler)
       }
     }
-  }, [value])
+  }, [value, bouncyFirstRun, delay])
 
   return debouncedValue
 }

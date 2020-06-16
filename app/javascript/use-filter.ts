@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useMemo } from "react"
 import Filter from "./filter"
 import {
   getVerifiedFilter,
@@ -56,11 +56,11 @@ export default function useFilter(
     JSON.stringify(defaultFilterState)
   )
   const states = JSON.parse(sessionStorage)
-  const setStates = (value: FilterState) =>
+  const setStates = (value: FilterState): void =>
     setSessionStorage(JSON.stringify(value))
   // loop over keys and make setters,
   const setters: { [key: string]: (newState: boolean | string) => void } = {}
-  for (let stateName in defaultFilterState)
+  for (const stateName in defaultFilterState)
     setters[setterName(stateName)] = newState =>
       setStates({ ...states, [stateName]: newState })
   const d = { ...states, ...setters }

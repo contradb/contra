@@ -10,7 +10,7 @@ export const FigureSearchExEditorExtras = ({
 }: {
   searchEx: FigureSearchEx
   setSearchEx: (se: SearchEx) => void
-}) => {
+}): JSX.Element => {
   const dialect = useContext(DialectContext)
   const moveIsAsterisk = searchEx.move === "*"
   const skipParams = moveIsAsterisk || !searchEx.ellipsis
@@ -48,7 +48,7 @@ export const FigureSearchExEditorExtras = ({
                 {searchEx.parameters.map((parameter: any, i: number) => {
                   const formalParameter = formalParameters[i]
                   const chooser = formalParameter.ui
-                  const setValue = (value: any) => {
+                  const setValue = (value: any): void => {
                     const newParameters = [...searchEx.parameters]
                     newParameters[i] = value
                     setSearchEx(
@@ -94,7 +94,7 @@ const ChooserChooser = ({
   setValue: (x: any) => void
   dialect: Dialect
   move: string
-}) => {
+}): JSX.Element => {
   if (presentChooserWithRadio(chooser)) {
     return <ChooserRadios chooser={chooser} value={value} setValue={setValue} />
   } else if (presentChooserWithSelect(chooser)) {
@@ -108,14 +108,7 @@ const ChooserChooser = ({
       />
     )
   } else if (presentChooserWithText(chooser)) {
-    return (
-      <ChooserText
-        chooser={chooser}
-        value={value}
-        setValue={setValue}
-        dialect={dialect}
-      />
-    )
+    return <ChooserText value={value} setValue={setValue} />
   } else return <div>Unimplemented chooser</div>
 }
 
@@ -127,7 +120,7 @@ const ChooserRadios = ({
   chooser: Chooser
   value: any
   setValue: (x: any) => void
-}) => {
+}): JSX.Element => {
   const options: [string, string][] = (radioChooserOptions as any)[chooser.name]
   return (
     <div className="chooser-radio-container">
@@ -158,7 +151,7 @@ const ChooserSelect = ({
   setValue: (x: any) => void
   dialect: Dialect
   move: string
-}) => {
+}): JSX.Element => {
   const optionsfn: (
     move: string,
     d: Dialect
@@ -183,19 +176,15 @@ const ChooserSelect = ({
 }
 
 const ChooserText = ({
-  chooser,
   value,
   setValue,
-  dialect,
 }: {
-  chooser: Chooser
   value: any
   setValue: (x: any) => void
-  dialect: Dialect
-}) => {
+}): JSX.Element => {
   const [bouncyValue, setBouncyValue] = useState(value)
   const debouncedValue = useDebounce(bouncyValue)
-  useEffect(() => setValue(debouncedValue), [debouncedValue])
+  useEffect(() => setValue(debouncedValue), [debouncedValue, setValue])
   return (
     <input
       className="form-control"
@@ -207,6 +196,7 @@ const ChooserText = ({
   )
 }
 
+/* eslint-disable @typescript-eslint/camelcase */
 const radioChooserOptions = {
   chooser_boolean: [["*", "*"], [true, "yes"], [false, "no"]],
   chooser_spin: [["*", "*"], [true, "clockwise"], [false, "ccw"]],
@@ -223,8 +213,10 @@ const radioChooserOptions = {
   chooser_give: [["*", "*"], [true, "give & take"], [false, "take"]],
   chooser_half_or_full: [["*", "*"], [0.5, "half"], [1.0, "full"]],
 }
+/* eslint-enable @typescript-eslint/camelcase */
 
-const angleOptions = (move: string, dialect: Dialect) => [
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const angleOptions = (move: string, dialect: Dialect): string[] => [
   "*",
   ...LibFigure.anglesForMove(move).map((angle: number) => [
     angle.toString(),
@@ -232,6 +224,7 @@ const angleOptions = (move: string, dialect: Dialect) => [
   ]),
 ]
 
+/* eslint-disable @typescript-eslint/camelcase,@typescript-eslint/no-unused-vars */
 const selectChooserOptions = {
   chooser_revolutions: angleOptions,
   chooser_places: angleOptions,
@@ -365,15 +358,20 @@ const selectChooserOptions = {
     {}
   ),
 }
+/* eslint-enable @typescript-eslint/camelcase,@typescript-eslint/no-unused-vars */
 
-const presentChooserWithRadio = (chooser: Chooser) =>
+const presentChooserWithRadio = (chooser: Chooser): boolean =>
   chooser.name in radioChooserOptions
-const presentChooserWithSelect = (chooser: Chooser) =>
+const presentChooserWithSelect = (chooser: Chooser): boolean =>
   chooser.name in selectChooserOptions
-const presentChooserWithText = (chooser: Chooser) =>
+const presentChooserWithText = (chooser: Chooser): boolean =>
   chooser.name === "chooser_text"
 
-const MoveMenuOptions = React.memo(({ dialect }: { dialect: Dialect }) => (
+const MoveMenuOptionsHelper = ({
+  dialect,
+}: {
+  dialect: Dialect
+}): JSX.Element => (
   <>
     {[
       { term: "*", substitution: "any figure" },
@@ -384,7 +382,8 @@ const MoveMenuOptions = React.memo(({ dialect }: { dialect: Dialect }) => (
       </option>
     ))}
   </>
-))
+)
+const MoveMenuOptions = React.memo(MoveMenuOptionsHelper)
 
 const moveTermsAndSubstitutionsForSelectMenu: (
   dialect: Dialect
@@ -397,7 +396,7 @@ export const EllipsisToggle = ({
 }: {
   checked: boolean
   setChecked: (checked: boolean) => void
-}) => {
+}): JSX.Element => {
   const classes =
     "search-ex-toggle-parameters btn " +
     (checked ? "btn-primary" : "btn-default")

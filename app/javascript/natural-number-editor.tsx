@@ -11,7 +11,7 @@ export function NaturalNumberEditor({
   value: number
   setValue: (n: number) => void
   inputProperties?: { className?: string; [others: string]: any }
-}) {
+}): JSX.Element {
   const [stringValue, setStringValue] = useState(value.toString())
   let className: string
   let inputPropertiesWithoutClassName
