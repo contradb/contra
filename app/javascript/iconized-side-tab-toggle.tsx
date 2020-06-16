@@ -13,9 +13,6 @@ export const IconizedSideTab = ({
     : "side-panel-toggle-iconized-left"
   const buttonClass = label === "program" ? "toggle-program" : "toggle-filters"
   const glyphicon = onRightSide ? "glyphicon-menu-left" : "glyphicon-menu-right"
-  const labelJSX = Array.from({ length: label.length }, (_, i) => (
-    <div key={i}>{label.charAt(i)}</div>
-  ))
   const button = (
     <div>
       <div
@@ -26,7 +23,9 @@ export const IconizedSideTab = ({
             <div>
               <span className={"glyphicon " + glyphicon} />
             </div>
-            {labelJSX}
+            {Array.from({ length: label.length }, (_, i) => (
+              <div key={i}>{label.charAt(i)}</div>
+            ))}
           </h2>
         </button>
       </div>
