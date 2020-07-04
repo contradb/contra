@@ -13,21 +13,37 @@ export const FiltersTab = ({
 
   return (
     <div>
+      <h4>Title:</h4>
+      <input
+        type="text"
+        className="ez-title-filter ez-text-filter form-control"
+        value={d.title}
+        onChange={e => d.setTitle(e.target.value)}
+        title="the name of the dance - optional"
+      />
+      <br />
       <h4>Choreographer:</h4>
       <input
         type="text"
-        className="ez-choreographer-filter form-control"
-        style={{ maxWidth: "15em" }}
+        className="ez-choreographer-filter ez-text-filter form-control"
         value={d.choreographer}
         onChange={e => d.setChoreographer(e.target.value)}
         title="the person who wrote the dance - optional"
       />
       <br />
+      <h4>User:</h4>
+      <input
+        type="text"
+        className="ez-user-filter ez-text-filter form-control"
+        value={d.user}
+        onChange={e => d.setUser(e.target.value)}
+        title="the person who transcribed the dance to contradb - optional"
+      />
+      <br />
       <h4>Hook:</h4>
       <input
         type="text"
-        className="ez-hook-filter form-control"
-        style={{ maxWidth: "15em" }}
+        className="ez-hook-filter ez-text-filter form-control"
         value={d.hook}
         onChange={e => d.setHook(e.target.value)}
         title="search for words in reason the dance is interesting - optional"

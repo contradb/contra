@@ -15,7 +15,9 @@ const setterName = (s: string): string => {
 }
 
 interface FilterState {
+  title: string
   choreographer: string
+  user: string
   hook: string
   verifiedChecked: boolean
   notVerifiedChecked: boolean
@@ -32,7 +34,9 @@ interface FilterState {
 }
 
 const defaultFilterState: FilterState = {
+  title: "",
   choreographer: "",
+  user: "",
   hook: "",
   verifiedChecked: true,
   notVerifiedChecked: false,
@@ -81,12 +85,26 @@ export default function useFilter(
     ]
   )
 
+  const debouncedTitle = useDebounce(d.title)
+
+  const titleFilters: Filter[] = useMemo(
+    () => (debouncedTitle ? [["title", debouncedTitle]] : []),
+    [debouncedTitle]
+  )
+
   const debouncedChoreographer = useDebounce(d.choreographer)
 
   const choreographerFilters: Filter[] = useMemo(
     () =>
       debouncedChoreographer ? [["choreographer", debouncedChoreographer]] : [],
     [debouncedChoreographer]
+  )
+
+  const debouncedUser = useDebounce(d.user)
+
+  const userFilters: Filter[] = useMemo(
+    () => (debouncedUser ? [["user", debouncedUser]] : []),
+    [debouncedUser]
   )
 
   const debouncedHook = useDebounce(d.hook)
@@ -121,12 +139,20 @@ export default function useFilter(
       "and",
       verifiedFilter,
       publishFilter,
-      ...[...choreographerFilters, ...hookFilters, ...formationFilters], // ts being grumpy!
+      ...[
+        ...titleFilters,
+        ...choreographerFilters,
+        ...userFilters,
+        ...hookFilters,
+        ...formationFilters,
+      ], // ts being grumpy!
     ],
     [
       verifiedFilter,
       publishFilter,
+      titleFilters,
       choreographerFilters,
+      userFilters,
       hookFilters,
       formationFilters,
     ]

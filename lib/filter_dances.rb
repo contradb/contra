@@ -268,9 +268,19 @@ module FilterDances
     going_concerns
   end
 
+  def self.matching_figures_for_title(filter, dance, filter_env)
+    title = filter[1].downcase
+    dance.title.downcase.include?(title) ? Set[] : nil
+  end
+
   def self.matching_figures_for_choreographer(filter, dance, filter_env)
     choreographer = filter[1].downcase
     dance.choreographer.name.downcase.include?(choreographer) ? Set[] : nil
+  end
+
+  def self.matching_figures_for_user(filter, dance, filter_env)
+    user = filter[1].downcase
+    dance.user.name.downcase.include?(user) ? Set[] : nil
   end
 
   def self.matching_figures_for_hook(filter, dance, filter_env)

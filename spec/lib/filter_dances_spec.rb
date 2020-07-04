@@ -247,9 +247,23 @@ describe FilterDances do
       end
     end
 
+    describe 'title' do
+      it "works case-insensitively" do
+        filtered = FilterDances.filter_dances(['user', dances.first.user.name.upcase], dialect: dialect)
+        expect(titles(filtered)).to eq([dances.first.title])
+      end
+    end
+
     describe 'choreographer' do
       it "works case-insensitively" do
         filtered = FilterDances.filter_dances(['choreographer', dances.first.choreographer.name.upcase], dialect: dialect)
+        expect(titles(filtered)).to eq([dances.first.title])
+      end
+    end
+
+    describe 'user' do
+      it "works case-insensitively" do
+        filtered = FilterDances.filter_dances(['user', dances.first.user.name.upcase], dialect: dialect)
         expect(titles(filtered)).to eq([dances.first.title])
       end
     end
