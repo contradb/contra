@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import Cookie from "js-cookie"
+import EzTextFilter from "./ez-text-filter"
 import EzCheckboxFilter from "./ez-checkbox-filter"
 
 export const FiltersTab = ({
@@ -12,44 +13,39 @@ export const FiltersTab = ({
   const isAdmin = signedIn === "admin"
 
   return (
-    <div>
-      <h4>Title:</h4>
-      <input
-        type="text"
-        className="ez-title-filter ez-text-filter form-control"
+    <div className="filters-tab">
+      <EzTextFilter
+        name="Title"
+        inputClass="ez-title-filter"
         value={d.title}
-        onChange={e => d.setTitle(e.target.value)}
-        title="the name of the dance - optional"
+        setValue={d.setTitle}
+        toolTip="the name of the dance - optional"
       />
-      <br />
-      <h4>Choreographer:</h4>
-      <input
-        type="text"
-        className="ez-choreographer-filter ez-text-filter form-control"
+      <div className="ez-filter-spacer" />
+      <EzTextFilter
+        name="Choreographer"
+        inputClass="ez-choreographer-filter"
         value={d.choreographer}
-        onChange={e => d.setChoreographer(e.target.value)}
-        title="the person who wrote the dance - optional"
+        setValue={d.setChoreographer}
+        toolTip="the name of the dance - optional"
       />
-      <br />
-      <h4>User:</h4>
-      <input
-        type="text"
-        className="ez-user-filter ez-text-filter form-control"
+      <div className="ez-filter-spacer" />
+      <EzTextFilter
+        name="User"
+        inputClass="ez-user-filter"
         value={d.user}
-        onChange={e => d.setUser(e.target.value)}
-        title="the person who transcribed the dance to contradb - optional"
+        setValue={d.setUser}
+        toolTip="the name of the dance - optional"
       />
-      <br />
-      <h4>Hook:</h4>
-      <input
-        type="text"
-        className="ez-hook-filter ez-text-filter form-control"
+      <div className="ez-filter-spacer" />
+      <EzTextFilter
+        name="Hook"
+        inputClass="ez-hook-filter"
         value={d.hook}
-        onChange={e => d.setHook(e.target.value)}
-        title="search for words in reason the dance is interesting - optional"
+        setValue={d.setHook}
+        toolTip="the name of the dance - optional"
       />
-      <br />
-      <br />
+      <div className="ez-filter-spacer" />
       <h4>Verified:</h4>
       <EzCheckboxFilter
         checked={d.verifiedChecked}
@@ -77,8 +73,7 @@ export const FiltersTab = ({
         name="not verified by me"
         title="search among dances you have not called"
       />
-      <br />
-      <br />
+      <div className="ez-filter-spacer" />
       <h4>Shared:</h4>
       <EzCheckboxFilter
         checked={d.publishAll}
@@ -107,8 +102,7 @@ export const FiltersTab = ({
         name="entered by me"
         title="search among dances you have entered"
       />
-      <br />
-      <br />
+      <div className="ez-filter-spacer" />
       <h4>Formation:</h4>
       <EzCheckboxFilter
         checked={d.improper}
