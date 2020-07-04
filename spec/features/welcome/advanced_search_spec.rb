@@ -312,6 +312,22 @@ describe 'advanced search component', js: true do
   describe "ez-filters" do
     let(:user) { FactoryGirl.create(:user) }
 
+    describe "title" do
+      let(:dances) { [:dance, :box_the_gnat_contra, :call_me].map {|name| FactoryGirl.create(name)} }
+
+      it "works" do
+        call_me = dances.last
+        dont_call_me = dances[0, dances.length-2]
+        tag_all_dances
+        visit(search_path)
+        with_filters_excursion { find('.ez-title-filter').fill_in(with: call_me.title)}
+        dont_call_me.each do |dance|
+          expect(page).to_not have_content(dance.title)
+        end
+        expect(page).to have_content(call_me.title)
+      end
+    end
+
     describe "choreographer" do
       let(:dances) { [:dance, :box_the_gnat_contra, :call_me].map {|name| FactoryGirl.create(name)} }
 
@@ -322,9 +338,25 @@ describe 'advanced search component', js: true do
         visit(search_path)
         with_filters_excursion { find('.ez-choreographer-filter').fill_in(with: call_me.choreographer.name)}
         dont_call_me.each do |dance|
-          expect(page).to_not have_content(dance.title)
+          expect(page).to_not have_content(dance.choreographer.name)
         end
-        expect(page).to have_content(call_me.title)
+        expect(page).to have_content(call_me.choreographer.name)
+      end
+    end
+
+    describe "user" do
+      let(:dances) { [:dance, :box_the_gnat_contra, :call_me].map {|name| FactoryGirl.create(name)} }
+
+      it "works" do
+        call_me = dances.last
+        dont_call_me = dances[0, dances.length-2]
+        tag_all_dances
+        visit(search_path)
+        with_filters_excursion { find('.ez-user-filter').fill_in(with: call_me.user.name)}
+        dont_call_me.each do |dance|
+          expect(page).to_not have_content(dance.user.name)
+        end
+        expect(page).to have_content(call_me.user.name)
       end
     end
 
