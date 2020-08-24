@@ -5,6 +5,11 @@ require 'rails_helper'
 describe 'advanced search component', js: true do
   let (:now) { DateTime.now }
 
+  it "has the navbar" do
+    visit(search_path)
+    scrutinize_layout(page)
+  end
+
   it "displays dances" do
     dances = 12.times.map {|i| FactoryGirl.create(:dance, title: "Dance #{i}.", created_at: now - i.days)}
     tag_all_dances
