@@ -30,13 +30,20 @@ module GloboHelper
 
   def new_dance_button_html(choreographer_id: nil, label: "New Dance")
     link_to(content_tag(:span, new_icon_html() + ' ' + label),
-            new_dance_path({choreographer_id: choreographer_id}), 
+            new_dance_path({choreographer_id: choreographer_id}),
             BUTTON_HTML_ATTR)
   end
   def new_dance_button_green_html(choreographer_id: nil, label: "New Dance")
     link_to(content_tag(:span, new_icon_html() + ' ' + label),
-            new_dance_path({choreographer_id: choreographer_id}), 
+            new_dance_path({choreographer_id: choreographer_id}),
             {class: "btn btn-default btn-md btn-success contra-btn-midpage", type: "button"})
+  end
+  def new_dance_button_titlebar_html(choreographer_id: nil, label: "New Dance")
+    content_tag(:p, class: 'navbar-btn') {
+      link_to(content_tag(:span, new_icon_html() + ' ' + label),
+              new_dance_path({choreographer_id: choreographer_id}),
+              class: "btn btn-default", type: "button")
+    }
   end
   def edit_dance_button_html(dance, label: "Edit Dance")
     link_to(content_tag( :span, edit_icon_html() + ' ' + label ),
@@ -45,23 +52,23 @@ module GloboHelper
   end
   def delete_dance_button_html(dance, label: "Delete Dance")
     link_to(content_tag( :span, delete_icon_html() + ' ' + label ),
-            dance, 
+            dance,
             BUTTON_HTML_ATTR.merge({method: :delete, data: { confirm: "Delete '#{dance.title}?'" }}))
   end
   def copy_dance_button_html(dance, label: "Copy Dance")
     link_to(content_tag( :span, copy_icon_html() + ' ' + label ),
-            new_dance_path(copy_dance_id: dance), 
+            new_dance_path(copy_dance_id: dance),
             BUTTON_HTML_ATTR)
   end
   def new_choreographer_button_html(label: "New Choreographer")
     link_to(content_tag(:span, new_icon_html() + ' ' + label),
-            new_choreographer_path, 
+            new_choreographer_path,
             BUTTON_HTML_ATTR)
   end
 
   def new_program_button_html(label: "New Program")
     link_to(content_tag(:span, new_icon_html() + ' ' + label),
-            new_program_path, 
+            new_program_path,
             BUTTON_HTML_ATTR)
   end
   def edit_program_button_html(program, label: "Edit Program")
@@ -71,18 +78,18 @@ module GloboHelper
   end
   def delete_program_button_html(program, label: "Delete Program")
     link_to(content_tag( :span, delete_icon_html() + ' ' + label ),
-            program, 
+            program,
             BUTTON_HTML_ATTR.merge({method: :delete, data: { confirm: "Delete '#{program.title}?'" }}))
   end
   def copy_program_button_html(program, label: "Copy Program")
     link_to(content_tag( :span, copy_icon_html() + ' ' + label ),
-            new_program_path(copy_program_id: program), 
+            new_program_path(copy_program_id: program),
             BUTTON_HTML_ATTR)
   end
 
   def edit_choreographer_button_html(choreographer, label: "Edit Choreographer")
     link_to(content_tag( :span, edit_icon_html() + ' ' + label ),
-            edit_choreographer_path(choreographer), 
+            edit_choreographer_path(choreographer),
             BUTTON_HTML_ATTR)
   end
 
