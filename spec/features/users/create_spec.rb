@@ -31,8 +31,7 @@ describe 'Creating user from welcome page' do
     choose "user_news_email_false"
     click_button "Sign Up"
     expect(page).to have_content("Welcome! You have signed up successfully")
-    expect(current_url).to eq('http://www.example.com/') # is the splash page
-    expect(page).to have_content("Find Dances")
+    expect(current_path).to eq('/') # is the splash page
     scrutinize_layout page
     user = User.last
     expect(user.email).to eq(user_attrs[:email])
