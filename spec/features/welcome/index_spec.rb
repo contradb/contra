@@ -5,7 +5,7 @@ require 'rails_helper'
 describe 'Welcome page', js: true do
   let (:dances) {[:dance, :box_the_gnat_contra, :call_me].map {|d| FactoryGirl.create(d)}}
   it 'has a link to help on filters' do
-    visit '/'
+    visit jquery_search_path
     expect(page).to have_link('', href: "https://github.com/contradb/contra/blob/master/doc/search.md#advanced-search-on-contradb")
   end
 
@@ -13,7 +13,7 @@ describe 'Welcome page', js: true do
     let (:dance) {FactoryGirl.create(:box_the_gnat_contra, created_at: DateTime.now - 10.years, updated_at: DateTime.now - 1.week, publish: :all)}
     it 'displays dance columns' do
       dance
-      visit '/'
+      visit jquery_search_path
       expect(page).to have_link(dance.title, href: dance_path(dance))
       expect(page).to have_link(dance.choreographer.name, href: choreographer_path(dance.choreographer))
       expect(page).to have_text(dance.start_type)
@@ -29,7 +29,7 @@ describe 'Welcome page', js: true do
       dance1 = FactoryGirl.create(:box_the_gnat_contra, title: "The Middle Dance", created_at: DateTime.now - 1.minute)
       dance2 = FactoryGirl.create(:box_the_gnat_contra, title: "The First Dance")
       dance3 = FactoryGirl.create(:box_the_gnat_contra, title: "The Last Dance", created_at: DateTime.now - 2.minutes)
-      visit '/'
+      visit jquery_search_path
       expect(page).to have_content(dance1.title) # js wait
       txt = page.text
       # check order dance2 dance1 dance3
@@ -41,14 +41,14 @@ describe 'Welcome page', js: true do
       with_login do |user|
         dance2 = FactoryGirl.create(:box_the_gnat_contra, title: "this dance should be visible", publish: :off, user: user)
         dance3 = FactoryGirl.create(:box_the_gnat_contra, title: "this dance should be invisible", publish: :sketchbook)
-        visit '/'
+        visit jquery_search_path
         expect(page).to have_content(dance2.title)
         expect(page).to_not have_content(dance3.title)
       end
     end
 
     it 'figure filter is initially just one figure set to wildcard' do
-      visit '/'
+      visit jquery_search_path
       expect(page).to have_css("#figure-filter-root>.figure-filter-op")
       expect(find("#figure-filter-root>.figure-filter-op").value).to eq('figure')
       expect(page).to have_css("#figure-filter-root>.figure-filter-move")
@@ -56,7 +56,7 @@ describe 'Welcome page', js: true do
     end
 
     it "changing figure filter from 'figure' to 'and' installs two subfilters" do
-      visit '/'
+      visit jquery_search_path
       select('and')
       expect(page).to have_css('.figure-filter', count: 3)
       expect(page).to have_css('.figure-filter-move', count: 2)
@@ -65,7 +65,7 @@ describe 'Welcome page', js: true do
     it "searches for the problematicly named figure \"Rory O'More\" work" do
       rory = FactoryGirl.create(:dance_with_a_rory_o_more)
       box = FactoryGirl.create(:box_the_gnat_contra)
-      visit '/'
+      visit jquery_search_path
       select "Rory O'More"
       expect(page).to_not have_content(box.title) # js wait
       expect(page).to have_content(rory.title)
@@ -76,7 +76,7 @@ describe 'Welcome page', js: true do
       dance
       only_a_swing = FactoryGirl.create(:dance_with_a_swing)
       with_retries do
-        visit '/'
+        visit jquery_search_path
         expect(page).to have_text(only_a_swing.title)
         expect(page).to have_text(dance.title)
         select('not')
@@ -89,7 +89,7 @@ describe 'Welcome page', js: true do
     it "'&' and 'progression' filters work" do
       dances
       with_retries do
-        visit '/'
+        visit jquery_search_path
         select('&')
         select('slide along set', match: :first)
         all('.figure-filter-op').last.select('progression')
@@ -104,7 +104,7 @@ describe 'Welcome page', js: true do
       becket = FactoryGirl.create(:call_me, start_type: 'Becket', title: 'Becket')
       square = FactoryGirl.create(:dance, start_type: 'square dance', title: 'square')
       dances2 = dances + [becket, square]
-      visit '/'
+      visit jquery_search_path
       select 'formation'
 
       select 'improper'
@@ -164,7 +164,7 @@ describe 'Welcome page', js: true do
     describe 'figure filter machinantions' do
       def setup_and_filter
         dances
-        visit '/'
+        visit jquery_search_path
         # get down to (and (filter '*')):
         select('and')
         all('.figure-filter-remove').last.click
@@ -391,18 +391,18 @@ describe 'Welcome page', js: true do
 
     describe 'figure ... button' do
       it "is visible initially, when figure is 'any figure'" do
-        visit '/'
+        visit jquery_search_path
         expect(page).to have_button('...')
       end
 
       it 'changing figure filter hides this one but creates two more' do
-        visit '/'
+        visit jquery_search_path
         select('then')
         expect(page).to have_button('...', count: 2)
       end
 
       it "clicking '...' toggles 'ellipsis-expanded' class" do
-        visit '/'
+        visit jquery_search_path
         select('chain')
         expect(page).to_not have_css('.figure-filter-ellipsis.ellipsis-expanded')
         click_button '...'
@@ -413,13 +413,13 @@ describe 'Welcome page', js: true do
 
       context 'accordion' do
         it 'lurks invisibly' do
-          visit '/'
+          visit jquery_search_path
           expect(page).to_not have_css('.figure-filter-accordion')
           expect(page).to have_css('.figure-filter-accordion', visible: false)
         end
 
         it 'pops forth when clicked' do
-          visit '/'
+          visit jquery_search_path
           select('chain')
           expect(page).to have_css('.figure-filter-accordion', visible: false)
           click_button('...')
@@ -428,7 +428,7 @@ describe 'Welcome page', js: true do
 
         it "circle 4 places finds only 'The Rendevouz'" do
           with_retries do
-            visit '/'
+            visit jquery_search_path
             dances
             select('circle')
             click_button('...')
@@ -443,7 +443,7 @@ describe 'Welcome page', js: true do
 
         it "circle right finds only a dance with circle right" do
           with_retries do
-            visit '/'
+            visit jquery_search_path
             right = FactoryGirl.create(:dance_with_a_circle_right)
             dances
             select('circle')
@@ -461,7 +461,7 @@ describe 'Welcome page', js: true do
         it "A slightly different query is sent if the ... is clicked" do
           dances
           with_retries do
-            visit '/'
+            visit jquery_search_path
             select('circle')
 
             expect(page).to have_content('The Rendevouz') # has circle left 3 & 4 places
@@ -480,7 +480,7 @@ describe 'Welcome page', js: true do
 
         it 'circle has an angle select box with the right options' do
           with_retries do
-            visit '/'
+            visit jquery_search_path
             select('circle')
             click_button('...')
             angles = JSLibFigure.angles_for_move('circle')
@@ -498,7 +498,7 @@ describe 'Welcome page', js: true do
         it "swing for 8 doesn't find 'The Rendevouz', which features only long swings" do
           dances
           with_retries do
-            visit '/'
+            visit jquery_search_path
             select('swing', match: :first)
             click_button('...')
             select('8', match: :prefer_exact) # '8' is in the menu twice, and also in 'figure 8'
@@ -513,7 +513,7 @@ describe 'Welcome page', js: true do
         it "non-balance & swing doesn't find 'The Rendevouz', which features only balance & swings" do
           dances
           with_retries do
-            visit '/'
+            visit jquery_search_path
             select('swing', match: :first)
             click_button('...')
             choose('none')
@@ -526,7 +526,7 @@ describe 'Welcome page', js: true do
         end
 
         it 'labels appear on chooser elements' do
-          visit '/'
+          visit jquery_search_path
           with_retries do
             click_button('...')
             select('swing', match: :first)             # swing uses simple label system
@@ -545,7 +545,7 @@ describe 'Welcome page', js: true do
         it "allemande with ladles finds only 'Box the Gnat'" do
           dances
           with_retries do
-            visit '/'
+            visit jquery_search_path
             allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
 
             select('allemande')
@@ -563,7 +563,7 @@ describe 'Welcome page', js: true do
         it "allemande has the right dancer chooser menu entries" do
           dances
           with_retries do
-            visit '/'
+            visit jquery_search_path
             select('allemande')
             click_button('...')
             expect(page).to have_css("option[value='ladles']")
@@ -590,7 +590,7 @@ describe 'Welcome page', js: true do
         it "allemande with allemande left finds only 'Just Allemande'" do
           dances
           with_retries do
-            visit '/'
+            visit jquery_search_path
             allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
 
             select('allemande')
@@ -608,7 +608,7 @@ describe 'Welcome page', js: true do
         it "allemande once around works" do
           dances
           with_retries do
-            visit '/'
+            visit jquery_search_path
             allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
 
             select('allemande')
@@ -627,7 +627,7 @@ describe 'Welcome page', js: true do
         it "text input keywords work" do
           dances
           with_retries do
-            visit '/'
+            visit jquery_search_path
             apple = FactoryGirl.create(:dance_with_a_custom, custom_text: 'apple', title: 'just apple')
             banana = FactoryGirl.create(:dance_with_a_custom, custom_text: 'banana', title: 'just banana')
             orange = FactoryGirl.create(:dance_with_a_custom, custom_text: 'orange', title: 'just orange')
@@ -651,7 +651,7 @@ describe 'Welcome page', js: true do
         it "wrist grip filter works" do
           dances
           with_retries do
-            visit '/'
+            visit jquery_search_path
             grip = FactoryGirl.create(:dance_with_a_wrist_grip_star)
 
             select('star')
@@ -672,7 +672,7 @@ describe 'Welcome page', js: true do
           f = FactoryGirl.create(:dance_with_a_down_the_hall, march_facing: 'forward')
           b = FactoryGirl.create(:dance_with_a_down_the_hall, march_facing: 'backward')
           with_retries do
-            visit '/'
+            visit jquery_search_path
 
             select('down the hall')
             click_button('...')
@@ -690,7 +690,7 @@ describe 'Welcome page', js: true do
           circle = FactoryGirl.create(:dance_with_a_down_the_hall, down_the_hall_ender: 'circle', title: 'dth_circle')
           unspec = FactoryGirl.create(:dance_with_a_down_the_hall, down_the_hall_ender: '', title: 'dth_unspec')
           with_retries(15) do
-            visit '/'
+            visit jquery_search_path
 
             select('down the hall')
             click_button('...')
@@ -708,7 +708,7 @@ describe 'Welcome page', js: true do
           poussette = FactoryGirl.create(:dance_with_a_full_poussette)
           dances
           with_retries do
-            visit '/'
+            visit jquery_search_path
 
             select('poussette')
             click_button('...')
@@ -729,7 +729,7 @@ describe 'Welcome page', js: true do
                          'between half and full',
                          'full']
           with_retries do
-            visit '/'
+            visit jquery_search_path
 
             select('hey')
             click_button('...')
@@ -753,7 +753,7 @@ describe 'Welcome page', js: true do
           do_si_do = FactoryGirl.create(:dance_with_a_do_si_do)
           see_saw = FactoryGirl.create(:dance_with_a_see_saw)
           with_retries do
-            visit '/'
+            visit jquery_search_path
             select('see saw')
             expect(page).to have_content(see_saw.title)
             expect(page).to_not have_content(do_si_do.title)
@@ -777,7 +777,7 @@ describe 'Welcome page', js: true do
       it 'figure filter move' do
         expect_any_instance_of(WelcomeController).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         with_retries do
-          visit '/'
+          visit jquery_search_path
           dances
 
           expect(page).to_not have_css('option',                  text: exactly('allemande'))
@@ -797,7 +797,7 @@ describe 'Welcome page', js: true do
       it 'figure filter dancers' do
         expect_any_instance_of(WelcomeController).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         with_retries do
-          visit '/'
+          visit jquery_search_path
           dances
 
           allemande = FactoryGirl.create(:dance_with_a_gentlespoons_allemande_left_once)
@@ -818,7 +818,7 @@ describe 'Welcome page', js: true do
       it "displays dialect-transformed hooks" do
         expect_any_instance_of(DancesController).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         dance2 = FactoryGirl.create(:dance, hook: 'hook allemande ladles hook')
-        visit '/'
+        visit jquery_search_path
         expect(page).to have_content('hook almond ravens hook')
         expect(page).to_not have_content(dance2.hook)
       end
@@ -829,7 +829,7 @@ describe 'Welcome page', js: true do
       # that I can't fix right now. https://github.com/contradb/contra/issues/611
       it 'works' do
         dances
-        visit '/'
+        visit jquery_search_path
         select('and')
         expect(page).to have_css('.figure-filter-move', count: 2) # js wait
         all('.figure-filter-move').first.select('swing', match: :first)
@@ -872,7 +872,7 @@ describe 'Welcome page', js: true do
 
       it 'all filters at least load when back-ed' do
         dances
-        visit '/'
+        visit jquery_search_path
         filters = page.find('.figure-filter-op').all('option').map {|elt| elt['innerHTML'].gsub('&amp;', '&') }
         filters.each do |filter|
           page.select(filter, match: :first)
@@ -885,7 +885,7 @@ describe 'Welcome page', js: true do
 
       it 'number of' do
         dances
-        visit '/'
+        visit jquery_search_path
         select('number of')
         select('contra corners') # clear out search results
         expect(page).to_not have_content('Processing')
@@ -919,7 +919,7 @@ describe 'Welcome page', js: true do
 
       it 'decorates subfilters with [x] buttons, conjunctions, and "add or"' do
         dances
-        visit '/'
+        visit jquery_search_path
         select('or')
         click_link(dances.first.title)
         expect(page).to have_css('h1', text: dances.first.title)
@@ -937,7 +937,7 @@ describe 'Welcome page', js: true do
     describe 'columns' do
       it "Clicking vis toggles buttons cause columns to disappear" do
         dances
-        visit '/'
+        visit jquery_search_path
         %w[Title Choreographer Formation Hook User Entered].each do |col|
           expect(page).to have_css('#dances-table th', text: col)
           expect(page).to have_css('button.toggle-vis-active', text: col)
@@ -972,7 +972,7 @@ describe 'Welcome page', js: true do
             publish = [:off, :sketchbook, :all][i]
             publish_string = dance_publish_word(publish)
             dance.update!(publish: publish, user: user)
-            visit '/'
+            visit jquery_search_path
             click_button 'Sharing'
             expect(page).to have_css('tr', text: /#{dance.title}.*#{publish_string}/)
           end
@@ -981,7 +981,7 @@ describe 'Welcome page', js: true do
 
       it 'figures column' do
         dances
-        visit '/'
+        visit jquery_search_path
         expect(page).to_not have_content('whole dance')
         click_button 'Figures'
         expect(page).to have_content('whole dance', count: 3)

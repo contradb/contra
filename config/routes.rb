@@ -26,7 +26,8 @@ Rails.application.routes.draw do
   get 'about' => 'about#index'
   get '/help' => 'help#index'
   get '/s' => 'welcome#search', as: 'search'
-  root 'welcome#index'
+  get '/old-search' => 'welcome#index', as: 'jquery_search'
+  root 'welcome#search'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
