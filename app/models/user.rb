@@ -8,7 +8,8 @@ class User < ApplicationRecord
   has_many :idioms, dependent: :destroy, class_name: 'Idiom::Idiom'
   has_many :duts, dependent: :destroy
 
-  validates :name, length: { in: 4..100 }
+  # spammers are signing up with usernames of 'https://spamsite.com' - disallow '/':
+  validates :name, length: { in: 4..100 }, format: { without: Regexp.new('/'), message: "must not contain the character '/'"}
 
   enum moderation: %w(unknown hermit owner collaborative), _prefix: true
 

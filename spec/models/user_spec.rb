@@ -1,6 +1,16 @@
 require 'rails_helper'
 
 describe User do
+  describe 'validation' do
+    it 'works' do
+      expect(FactoryGirl.build(:user)).to be_valid
+    end
+
+    it 'does not allow slashes' do
+      expect(FactoryGirl.build(:user, name: 'https://spam.com')).to_not be_valid
+    end
+  end
+
   it '#dialect' do
     user = FactoryGirl.build(:user)
     user.idioms.build(FactoryGirl.attributes_for(:move_idiom, term: 'gyre', substitution: 'darcy'))
