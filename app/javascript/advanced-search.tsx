@@ -7,7 +7,7 @@ import {
 } from "./dance-table"
 import DialectContext from "./dialect-context"
 import useFilter from "use-filter"
-import useWindowSize from "use-window-size"
+import { useBootstrap3Breakpoint, Breakpoint } from "use-bootstrap3-breakpoint"
 import useSessionStorage from "./use-session-storage"
 import SearchTabs from "./search-tabs"
 import DesktopSearchWithSideTabs from "./desktop-search-with-side-tabs"
@@ -16,8 +16,6 @@ import FiguresTab from "./figures-tab"
 import DancesTab from "./dances-tab"
 import ProgramTab from "./program-tab"
 import { SearchEx } from "./search-ex"
-
-const bootstrapMedium992px = 992
 
 export const AdvancedSearch = ({
   dialect,
@@ -73,7 +71,7 @@ export const AdvancedSearch = ({
   const searchExLispMemo = useMemo(() => searchEx.toLisp(), [searchEx])
   const { filter, dictionary } = useFilter(searchExLispMemo)
 
-  const windowSize = useWindowSize()
+  const breakpoint = useBootstrap3Breakpoint()
 
   const dancesTabName = `${searchDancesJson.numberMatching} dance${
     1 === searchDancesJson.numberMatching ? "" : "s"
@@ -93,7 +91,7 @@ export const AdvancedSearch = ({
   )
   const programTab = <ProgramTab />
 
-  if (windowSize.width >= bootstrapMedium992px) {
+  if (breakpoint >= Breakpoint.Md) {
     const tabs = { filtersTab, figuresTab, dancesTab, programTab }
     return provideDialect(dialect, <DesktopSearchWithSideTabs {...tabs} />)
   } else {

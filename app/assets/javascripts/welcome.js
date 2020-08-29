@@ -817,7 +817,6 @@ $(document).ready(function() {
     })
   }
 
-  // duplicated code in search.js
   var tinyScreenColumns = ["Title", "Choreographer"]
   var narrowScreenColumns = tinyScreenColumns.concat(["Hook"])
   var wideScreenColumns = narrowScreenColumns.concat([
@@ -827,7 +826,6 @@ $(document).ready(function() {
   ])
   var recentlySeenColumns = null
 
-  // duplicated code in search.js
   function toggleColumnVisForResolution(dataTable, width) {
     var screenColumns =
       width < 400
