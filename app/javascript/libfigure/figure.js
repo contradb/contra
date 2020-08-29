@@ -411,7 +411,7 @@ function doSiDoAlias(figure) {
 function doSiDoGoodBeats(figure) {
   var [who, shoulder, angle, beats] = figure.parameter_values
   var angle_over_beats = angle / beats
-  return beats > 0 && 360 / 8 <= angle_over_beats && angle_over_beats <= 540 / 8
+  return beats > 0 && 360 / 8 <= angle_over_beats && angle_over_beats < 540 / 8
 }
 
 function doSiDoWords(move, pvs, dialect) {
