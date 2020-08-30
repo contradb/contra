@@ -450,10 +450,8 @@ const ColumnVisToggle = ({
 }): JSX.Element => {
   const toggleVisClass = visible ? "toggle-vis-active" : "toggle-vis-inactive"
   const className = "btn btn-xs " + toggleVisClass
-  const onClick = (): void => setVisible(!visible)
-
   return (
-    <button className={className} onClick={onClick}>
+    <button className={className} onClick={() => setVisible(!visible)}>
       {column.Header}
     </button>
   )

@@ -16,18 +16,14 @@ const bootstrap3Resolutions: Record<BreakpointName, number> = {
   lg: 1200,
 }
 
-const enumMap: Record<BreakpointName, Breakpoint> = {
+const stringToEnum: Record<BreakpointName, Breakpoint> = {
   xs: Breakpoint.Xs,
   sm: Breakpoint.Sm,
   md: Breakpoint.Md,
   lg: Breakpoint.Lg,
 }
 
-export const breakpoints: Readonly<Breakpoint[]> = Object.freeze(
-  Object.values(enumMap).sort()
-)
-
 export const useBootstrap3Breakpoint = (): Breakpoint =>
-  enumMap[useBreakpoint(bootstrap3Resolutions, "xs").breakpoint]
+  stringToEnum[useBreakpoint(bootstrap3Resolutions, "xs").breakpoint]
 
 export default useBootstrap3Breakpoint
