@@ -181,12 +181,12 @@ export type FetchDataFn = ({
   filter: Filter
 }) => void
 
-function Table({
+export function DanceTable({
   searchDancesJson,
   fetchDataFn,
   pageCount: controlledPageCount,
   filter,
-  initialSortBy,
+  initialSortBy = [],
   visibleColumns,
   setVisibleColumns,
 }: {
@@ -194,7 +194,7 @@ function Table({
   fetchDataFn: FetchDataFn
   pageCount: number
   filter: Filter
-  initialSortBy: any // SortBy
+  initialSortBy?: any // SortBy
   visibleColumns: boolean[]
   setVisibleColumns: (val: boolean[]) => void
 }): JSX.Element {
@@ -454,34 +454,6 @@ const ColumnVisToggle = ({
     <button className={className} onClick={() => setVisible(!visible)}>
       {column.Header}
     </button>
-  )
-}
-
-export function DanceTable({
-  filter,
-  fetchDataFn,
-  searchDancesJson,
-  pageCount,
-  visibleColumns,
-  setVisibleColumns,
-}: {
-  filter: Filter
-  fetchDataFn: FetchDataFn
-  searchDancesJson: SearchDancesJson
-  pageCount: number
-  visibleColumns: boolean[]
-  setVisibleColumns: (val: boolean[]) => void
-}): JSX.Element {
-  return (
-    <Table
-      searchDancesJson={searchDancesJson}
-      fetchDataFn={fetchDataFn}
-      pageCount={pageCount}
-      filter={filter}
-      initialSortBy={[]}
-      visibleColumns={visibleColumns}
-      setVisibleColumns={setVisibleColumns}
-    />
   )
 }
 
