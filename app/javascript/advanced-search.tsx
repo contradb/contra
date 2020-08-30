@@ -15,6 +15,7 @@ import FiltersTab from "./filters-tab"
 import FiguresTab from "./figures-tab"
 import DancesTab from "./dances-tab"
 import ProgramTab from "./program-tab"
+import { columnDefinitions } from "./dance-table"
 import { SearchEx } from "./search-ex"
 
 export const AdvancedSearch = ({
@@ -73,6 +74,17 @@ export const AdvancedSearch = ({
 
   const breakpoint = useBootstrap3Breakpoint()
 
+  const [hiResVisibleColumns, setHiResVisibleColumns] = useState(
+    columnDefinitions.map(c => c.show && c.show <= Breakpoint.Md)
+  )
+  const [loResVisibleColumns, setLoResVisibleColumns] = useState(
+    columnDefinitions.map(c => c.show && c.show <= Breakpoint.Xs)
+  )
+  const visibleColumns =
+    breakpoint < Breakpoint.Md ? loResVisibleColumns : hiResVisibleColumns
+  const setVisibleColumns =
+    breakpoint < Breakpoint.Md ? setLoResVisibleColumns : setHiResVisibleColumns
+
   const dancesTabName = `${searchDancesJson.numberMatching} dance${
     1 === searchDancesJson.numberMatching ? "" : "s"
   }`
@@ -87,6 +99,8 @@ export const AdvancedSearch = ({
       fetchDataFn={fetchDataFn}
       searchDancesJson={searchDancesJson}
       pageCount={pageCount}
+      visibleColumns={visibleColumns}
+      setVisibleColumns={setVisibleColumns}
     />
   )
   const programTab = <ProgramTab />

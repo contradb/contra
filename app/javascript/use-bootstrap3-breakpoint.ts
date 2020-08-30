@@ -23,6 +23,10 @@ const enumMap: Record<BreakpointName, Breakpoint> = {
   lg: Breakpoint.Lg,
 }
 
+export const breakpoints: Readonly<Breakpoint[]> = Object.freeze(
+  Object.values(enumMap).sort()
+)
+
 export const useBootstrap3Breakpoint = (): Breakpoint =>
   enumMap[useBreakpoint(bootstrap3Resolutions, "xs").breakpoint]
 

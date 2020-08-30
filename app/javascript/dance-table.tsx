@@ -1,8 +1,9 @@
 import * as React from "react"
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { useTable, usePagination, useSortBy } from "react-table"
 import { NaturalNumberEditor } from "./natural-number-editor"
 import Filter from "./filter"
+import { Breakpoint } from "./use-bootstrap3-breakpoint"
 
 // TODO: use rails route helpers
 const choreographerPath = (cid: number): string => {
@@ -57,31 +58,36 @@ type ColumnDefinition = {
   Header: string
   accessor: string
   Cell?: (props: any) => JSX.Element
-  show: boolean
+  show: Breakpoint.Xs | Breakpoint.Md | false
   disableSortBy?: boolean
 }
 
-const columnDefinitions: Array<ColumnDefinition> = [
+export const columnDefinitions: Array<ColumnDefinition> = [
   {
     Header: "Title",
     accessor: "title",
     Cell: DanceTitleCell,
-    show: true,
+    show: Breakpoint.Xs,
   },
   {
     Header: "Choreographer",
     accessor: "choreographer_name",
     Cell: ChoreographerCell,
-    show: true,
+    show: Breakpoint.Xs,
   },
-  { Header: "Hook", accessor: "hook", show: true },
-  { Header: "Formation", accessor: "formation", show: true },
-  { Header: "User", accessor: "user_name", Cell: UserCell, show: true },
+  { Header: "Hook", accessor: "hook", show: Breakpoint.Xs },
+  { Header: "Formation", accessor: "formation", show: Breakpoint.Md },
+  {
+    Header: "User",
+    accessor: "user_name",
+    Cell: UserCell,
+    show: Breakpoint.Md,
+  },
   {
     Header: "Entered",
     accessor: "created_at",
     Cell: CreatedAtDateCell,
-    show: true,
+    show: Breakpoint.Md,
   },
   {
     Header: "Updated",
@@ -181,12 +187,16 @@ function Table({
   pageCount: controlledPageCount,
   filter,
   initialSortBy,
+  visibleColumns,
+  setVisibleColumns,
 }: {
   searchDancesJson: SearchDancesJson
   fetchDataFn: FetchDataFn
   pageCount: number
   filter: Filter
   initialSortBy: any // SortBy
+  visibleColumns: boolean[]
+  setVisibleColumns: (val: boolean[]) => void
 }): JSX.Element {
   // const tableState = useTableState({ pageIndex: 0 })
   // const [{ pageIndex, pageSize }] = tableState
@@ -220,10 +230,12 @@ function Table({
   useEffect(() => {
     if (columnDefinitions.length !== columns.length)
       throw new Error("columns and columnDefinitions are not the same length")
-    // first time through hide the columns that should be born hidden
-    for (let i = 0; i < columns.length; i++)
-      if (!columnDefinitions[i].show) columns[i].toggleHidden(true)
-  }, [columns])
+    for (let i = 0; i < columns.length; i++) {
+      const show = visibleColumns[i]
+      const shown: boolean = columns[i].getToggleHiddenProps().checked
+      if (show !== shown) columns[i].toggleHidden(!show)
+    }
+  }, [columns, visibleColumns])
 
   // again, need to worry about the return value of this first arg to useEffect
   useEffect(() => fetchDataFn({ pageIndex, pageSize, sortBy, filter }), [
@@ -236,7 +248,11 @@ function Table({
 
   return (
     <>
-      <ColumnVisToggles columns={columns} />
+      <ColumnVisToggles
+        columns={columns}
+        visibleColumns={visibleColumns}
+        setVisibleColumns={setVisibleColumns}
+      />
       <table
         {...getTableProps()}
         className="table table-bordered table-hover table-condensed dances-table-react"
@@ -393,7 +409,15 @@ export interface SearchDancesJson {
   dances: Array<SearchDancesDanceJson>
 }
 
-const ColumnVisToggles = ({ columns }: { columns: any[] }): JSX.Element => {
+const ColumnVisToggles = ({
+  columns,
+  visibleColumns,
+  setVisibleColumns,
+}: {
+  columns: any[]
+  visibleColumns: boolean[]
+  setVisibleColumns: (val: boolean[]) => void
+}): JSX.Element => {
   return (
     <div className="table-column-vis-wrap">
       <label>Show columns </label>
@@ -401,7 +425,12 @@ const ColumnVisToggles = ({ columns }: { columns: any[] }): JSX.Element => {
         {columns.map((column, i) => (
           <ColumnVisToggle
             column={column}
-            columnDefinition={columnDefinitions[i]}
+            visible={visibleColumns[i]}
+            setVisible={vis => {
+              const copy = [...visibleColumns]
+              copy[i] = vis
+              setVisibleColumns(copy)
+            }}
             key={i}
           />
         ))}
@@ -412,21 +441,22 @@ const ColumnVisToggles = ({ columns }: { columns: any[] }): JSX.Element => {
 
 const ColumnVisToggle = ({
   column,
-  columnDefinition,
+  visible,
+  setVisible,
 }: {
   column: any
-  columnDefinition: ColumnDefinition
+  visible: boolean
+  setVisible: (vis: boolean) => void
 }): JSX.Element => {
-  const [vis, setVis] = useState(columnDefinition.show)
-  const toggleVisClass = vis ? "toggle-vis-active" : "toggle-vis-inactive"
+  const toggleVisClass = visible ? "toggle-vis-active" : "toggle-vis-inactive"
   const className = "btn btn-xs " + toggleVisClass
-  const onChange = (e: any): void => {
-    const e2 = { ...e, target: { checked: !vis } }
-    setVis(!vis)
-    return column.getToggleHiddenProps().onChange(e2)
+  const onClick = (e: any): void => {
+    const e2 = { ...e, target: { checked: !visible } }
+    setVisible(!visible)
+    return column.getToggleHiddenProps().onChange(e2) // TODO: why not just call toggleVisible?
   }
   return (
-    <button className={className} onClick={onChange}>
+    <button className={className} onClick={onClick}>
       {column.Header}
     </button>
   )
@@ -437,11 +467,15 @@ export function DanceTable({
   fetchDataFn,
   searchDancesJson,
   pageCount,
+  visibleColumns,
+  setVisibleColumns,
 }: {
   filter: Filter
   fetchDataFn: FetchDataFn
   searchDancesJson: SearchDancesJson
   pageCount: number
+  visibleColumns: boolean[]
+  setVisibleColumns: (val: boolean[]) => void
 }): JSX.Element {
   return (
     <Table
@@ -450,6 +484,8 @@ export function DanceTable({
       pageCount={pageCount}
       filter={filter}
       initialSortBy={[]}
+      visibleColumns={visibleColumns}
+      setVisibleColumns={setVisibleColumns}
     />
   )
 }
