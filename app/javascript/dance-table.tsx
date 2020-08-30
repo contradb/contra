@@ -450,11 +450,8 @@ const ColumnVisToggle = ({
 }): JSX.Element => {
   const toggleVisClass = visible ? "toggle-vis-active" : "toggle-vis-inactive"
   const className = "btn btn-xs " + toggleVisClass
-  const onClick = (e: any): void => {
-    const e2 = { ...e, target: { checked: !visible } }
-    setVisible(!visible)
-    return column.getToggleHiddenProps().onChange(e2) // TODO: why not just call toggleVisible?
-  }
+  const onClick = (): void => setVisible(!visible)
+
   return (
     <button className={className} onClick={onClick}>
       {column.Header}
