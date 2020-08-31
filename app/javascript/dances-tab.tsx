@@ -9,12 +9,16 @@ export const DancesTab = ({
   fetchDataFn,
   searchDancesJson,
   pageCount,
+  visibleColumns,
+  setVisibleColumns,
 }: {
   loading: boolean
   filter: Filter
   fetchDataFn: FetchDataFn
   searchDancesJson: SearchDancesJson
   pageCount: number
+  visibleColumns: boolean[]
+  setVisibleColumns: (val: boolean[]) => void
 }): JSX.Element => (
   <>
     {loading && <div className="floating-loading-indicator">loading...</div>}
@@ -23,6 +27,8 @@ export const DancesTab = ({
       fetchDataFn={fetchDataFn}
       searchDancesJson={searchDancesJson}
       pageCount={pageCount}
+      visibleColumns={visibleColumns}
+      setVisibleColumns={setVisibleColumns}
     />
   </>
 )

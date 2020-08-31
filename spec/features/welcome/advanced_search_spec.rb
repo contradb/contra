@@ -100,11 +100,14 @@ describe 'advanced search component', js: true do
 
   describe 'columns' do
     let (:dances) {[:dance, :box_the_gnat_contra, :call_me].map {|d| FactoryGirl.create(d)}}
-    it "Clicking vis toggles buttons cause columns to disappear" do
-      dances
-      tag_all_dances
-      visit(search_path)
-      %w[Title Choreographer Formation Hook User Entered].each do |col|
+    let (:all_columns) {%w[Title Choreographer Hook Formation Updated Sharing Figures User Entered]}
+    let (:columns_visible_xs) {%w[Title Choreographer Hook]}
+    let (:columns_invisible_xs) {all_columns - columns_visible_xs}
+    let (:columns_visible_md) {%w[Title Choreographer Formation Hook User Entered]}
+    let (:columns_invisible_md) {all_columns - columns_visible_md}
+
+    def expect_column_toggles(col, visible: false)
+      if visible
         expect(page).to have_css('.dances-table-react th', text: col)
         expect(page).to have_css('button.toggle-vis-active', text: col)
         expect(page).to_not have_css('button.toggle-vis-inactive', text: col)
@@ -116,8 +119,7 @@ describe 'advanced search component', js: true do
         expect(page).to have_css('.dances-table-react th', text: col)
         expect(page).to have_css('button.toggle-vis-active', text: col)
         expect(page).to_not have_css('button.toggle-vis-inactive', text: col)
-      end
-      %w[Updated Sharing Figures].each do |col|
+      else
         expect(page).to_not have_css('.dances-table-react th', text: col)
         expect(page).to_not have_css('button.toggle-vis-active', text: col)
         expect(page).to  have_css('button.toggle-vis-inactive', text: col)
@@ -129,6 +131,55 @@ describe 'advanced search component', js: true do
         expect(page).to_not have_css('.dances-table-react th', text: col)
         expect(page).to have_css('button.toggle-vis-inactive', text: col)
         expect(page).to_not have_css('button.toggle-vis-active', text: col)
+      end
+    end
+
+    it "Clicking vis toggles buttons cause columns to disappear (desktop)" do
+      dances
+      tag_all_dances
+      visit(search_path)
+      columns_visible_md.each do |col|
+        expect_column_toggles(col, visible: true)
+      end
+      columns_invisible_md.each do |col|
+        expect_column_toggles(col, visible: false)
+      end
+    end
+
+    it "Clicking vis toggles buttons cause columns to disappear (mobile)" do
+      dances
+      tag_all_dances
+      with_phone_screen do
+        visit(search_path)
+        columns_visible_xs.each do |col|
+          expect_column_toggles(col, visible: true)
+        end
+        columns_invisible_xs.each do |col|
+          expect_column_toggles(col, visible: false)
+        end
+      end
+    end
+
+    it "small and large resolution column toggles don't share visibility state" do
+      dances
+      tag_all_dances
+      visit(search_path)
+      all_columns.each {|col| click_button col} # invert everything
+
+      with_phone_screen do
+        columns_visible_xs.each do |col|
+          expect_column_toggles(col, visible: true)
+        end
+        columns_invisible_xs.each do |col|
+          expect_column_toggles(col, visible: false)
+        end
+      end
+
+      columns_invisible_md.each do |col|
+        expect_column_toggles(col, visible: true)
+      end
+      columns_visible_md.each do |col|
+        expect_column_toggles(col, visible: false)
       end
     end
 

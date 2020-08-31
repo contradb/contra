@@ -13,7 +13,8 @@
     "react-dom": "^16.11.0",
     "react-table": "^7.0.0-rc.15",
     "ts-loader": "^6.2.1",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "use-breakpoint": "^1.1.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
