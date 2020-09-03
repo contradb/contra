@@ -204,7 +204,25 @@ describe "SearchExEditors", js: true do
       end
     end
 
-
+    describe "copy and paste" do
+      it 'copy paste works, even if the page unloads and reloads' do
+        dances
+        visit '/s'
+        select 'then'
+        expect(page).to have_text('The Rendevouz')
+        find_all('.search-ex-move', count: 2).first.select('hey')
+        find_all('.search-ex-move', count: 2).last.select('swing', match: :first)
+        expect(page).to_not have_text('The Rendevouz')
+        find_all('.search-ex-menu-toggle', count: 3).last.click
+        find('.search-ex-copy').click
+        click_link('Call Me')
+        expect(page).to have_css('h1', text: 'Call Me')
+        page.go_back
+        find_all('.search-ex-menu-toggle', count: 3)[1].click
+        find('.search-ex-paste').click
+        expect(page).to have_css("#debug-lisp", visible: false, text: '[ "then", [ "figure", "swing" ], [ "figure", "swing" ] ]')
+      end
+    end
   end
 
   describe 'FigureSearchEx' do
