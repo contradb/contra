@@ -205,7 +205,7 @@ describe "SearchExEditors", js: true do
     end
 
     describe "copy and paste" do
-      it 'copy paste works, even if the page unloads and reloads' do
+      it 'copy and paste work, even if the page unloads and reloads' do
         dances
         visit '/s'
         select 'then'

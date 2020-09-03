@@ -111,7 +111,7 @@ export const SearchExEditor = ({
                       <a
                         href="#"
                         className="search-ex-copy"
-                        onClick={() => copy(searchEx)}
+                        onClick={preventDefaultThen(() => copy(searchEx))}
                       >
                         Copy
                       </a>
@@ -120,10 +120,10 @@ export const SearchExEditor = ({
                       <a
                         href="#"
                         className="search-ex-paste"
-                        onClick={() => {
+                        onClick={preventDefaultThen(() => {
                           const s1 = paste()
                           s1 && setSearchEx(s1)
-                        }}
+                        })}
                       >
                         Paste
                       </a>
