@@ -222,6 +222,22 @@ describe "SearchExEditors", js: true do
         find('.search-ex-paste').click
         expect(page).to have_css("#debug-lisp", visible: false, text: '[ "then", [ "figure", "swing" ], [ "figure", "swing" ] ]')
       end
+
+      it 'cut and paste work' do
+        dances
+        visit '/s'
+        select 'then'
+        expect(page).to have_text('The Rendevouz')
+        find_all('.search-ex-move', count: 2).first.select('hey')
+        find_all('.search-ex-move', count: 2).last.select('swing', match: :first)
+        expect(page).to_not have_text('The Rendevouz')
+        find_all('.search-ex-menu-toggle', count: 3)[1].click
+        find('.search-ex-cut').click
+        expect(page).to have_css("#debug-lisp", visible: false, text: '[ "then", [ "figure", "swing" ] ]')
+        find_all('.search-ex-menu-toggle', count: 2).last.click
+        find('.search-ex-paste').click
+        expect(page).to have_css("#debug-lisp", visible: false, text: '[ "then", [ "figure", "hey" ] ]')
+      end
     end
   end
 

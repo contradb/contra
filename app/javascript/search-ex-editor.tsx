@@ -134,6 +134,18 @@ export const SearchExEditor = ({
                         <li>
                           <a
                             href="#"
+                            className="search-ex-cut"
+                            onClick={preventDefaultThen(() => {
+                              copy(searchEx)
+                              removeSearchEx(searchEx)
+                            })}
+                          >
+                            Cut
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            href="#"
                             className="search-ex-delete"
                             onClick={preventDefaultThen(() =>
                               removeSearchEx(searchEx)
