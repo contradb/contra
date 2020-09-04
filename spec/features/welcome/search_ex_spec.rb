@@ -204,7 +204,67 @@ describe "SearchExEditors", js: true do
       end
     end
 
+    describe "copy and paste" do
+      it 'copy and paste work, even if the page unloads and reloads' do
+        dances
+        visit '/s'
+        select 'then'
+        expect(page).to have_text('The Rendevouz')
+        find_all('.search-ex-move', count: 2).first.select('hey')
+        find_all('.search-ex-move', count: 2).last.select('swing', match: :first)
+        expect(page).to_not have_text('The Rendevouz')
+        find_all('.search-ex-menu-toggle', count: 3).last.click
+        find('.search-ex-copy').click
+        click_link('Call Me')
+        expect(page).to have_css('h1', text: 'Call Me')
+        page.go_back
+        find_all('.search-ex-menu-toggle', count: 3)[1].click
+        find('.search-ex-paste').click
+        expect(page).to have_css("#debug-lisp", visible: false, text: '[ "then", [ "figure", "swing" ], [ "figure", "swing" ] ]')
+      end
 
+      it 'cut and paste work' do
+        dances
+        visit '/s'
+        select 'then'
+        expect(page).to have_text('The Rendevouz')
+        find_all('.search-ex-move', count: 2).first.select('hey')
+        find_all('.search-ex-move', count: 2).last.select('swing', match: :first)
+        expect(page).to_not have_text('The Rendevouz')
+        find_all('.search-ex-menu-toggle', count: 3)[1].click
+        find('.search-ex-cut').click
+        expect(page).to have_css("#debug-lisp", visible: false, text: '[ "then", [ "figure", "swing" ] ]')
+        find_all('.search-ex-menu-toggle', count: 2).last.click
+        find('.search-ex-paste').click
+        expect(page).to have_css("#debug-lisp", visible: false, text: '[ "then", [ "figure", "hey" ] ]')
+      end
+
+      it 'you can not mix non-numeric search-exes with numeric search-exes' do
+        dances
+        visit '/s'
+        select 'compare'
+        find_all('.search-ex-op', count: 3)[1].select('count matches')
+        find_all('.search-ex-op', count: 4)[3].select('count matches')
+        find_all('.search-ex-move', count: 2).first.select('swing', match: :first)
+        find_all('.search-ex-move', count: 2).last.select('allemande')
+        start_ex = '[ "compare", [ "count-matches", [ "figure", "swing" ] ], ">", [ "count-matches", [ "figure", "allemande" ] ] ]'
+        expect(page).to have_css("#debug-lisp", visible: false, text: start_ex)
+        find_all('.search-ex-menu-toggle', count: 5).first.click
+        find('.search-ex-copy').click # non-numeric search-ex
+        find_all('.search-ex-menu-toggle', count: 5)[1].click
+        find('.search-ex-paste').click # numeric search-ex
+        # it should have no effect:
+        expect(page).to have_css("#debug-lisp", visible: false, text: start_ex)
+
+        find_all('.search-ex-menu-toggle', count: 5)[1].click
+        find('.search-ex-copy').click # numeric search-ex
+        find_all('.search-ex-menu-toggle', count: 5)[3].click
+        find('.search-ex-paste').click # numeric search-ex
+        end_ex = '[ "compare", [ "count-matches", [ "figure", "swing" ] ], ">", [ "count-matches", [ "figure", "swing" ] ] ]'
+        expect(page).to have_css("#debug-lisp", visible: false, text: end_ex)
+      end
+
+    end
   end
 
   describe 'FigureSearchEx' do

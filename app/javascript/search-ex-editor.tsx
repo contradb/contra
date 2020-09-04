@@ -1,6 +1,7 @@
 import React from "react"
 import { SearchEx, FigureSearchEx } from "./search-ex"
 import FigureSearchExEditorExtras from "./figure-search-ex-editor-extras"
+import { copy, paste } from "./search-ex-clipboard"
 
 const makeOpOption = (op: string, i: number): JSX.Element => {
   if (op === "____")
@@ -107,24 +108,55 @@ export const SearchExEditor = ({
                     )}
 
                     <li>
-                      <a href="#">Another action</a>
+                      <a
+                        href="#"
+                        className="search-ex-copy"
+                        onClick={preventDefaultThen(() => copy(searchEx))}
+                      >
+                        Copy
+                      </a>
                     </li>
                     <li>
-                      <a href="#">Something else here</a>
+                      <a
+                        href="#"
+                        className="search-ex-paste"
+                        onClick={preventDefaultThen(() => {
+                          const s1 = paste()
+                          s1 &&
+                            s1.isNumeric() === searchEx.isNumeric() &&
+                            setSearchEx(s1)
+                        })}
+                      >
+                        Paste
+                      </a>
                     </li>
-                    <li role="separator" className="divider"></li>
                     {removeSearchEx && (
-                      <li>
-                        <a
-                          href="#"
-                          className="search-ex-delete"
-                          onClick={preventDefaultThen(() =>
-                            removeSearchEx(searchEx)
-                          )}
-                        >
-                          Delete
-                        </a>
-                      </li>
+                      <>
+                        <li role="separator" className="divider"></li>
+                        <li>
+                          <a
+                            href="#"
+                            className="search-ex-cut"
+                            onClick={preventDefaultThen(() => {
+                              copy(searchEx)
+                              removeSearchEx(searchEx)
+                            })}
+                          >
+                            Cut
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            href="#"
+                            className="search-ex-delete"
+                            onClick={preventDefaultThen(() =>
+                              removeSearchEx(searchEx)
+                            )}
+                          >
+                            Delete
+                          </a>
+                        </li>
+                      </>
                     )}
                   </ul>
                 </div>
