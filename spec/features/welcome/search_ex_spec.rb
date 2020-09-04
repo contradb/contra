@@ -238,6 +238,32 @@ describe "SearchExEditors", js: true do
         find('.search-ex-paste').click
         expect(page).to have_css("#debug-lisp", visible: false, text: '[ "then", [ "figure", "hey" ] ]')
       end
+
+      it 'you can not mix non-numeric search-exes with numeric search-exes' do
+        dances
+        visit '/s'
+        select 'compare'
+        find_all('.search-ex-op', count: 3)[1].select('count matches')
+        find_all('.search-ex-op', count: 4)[3].select('count matches')
+        find_all('.search-ex-move', count: 2).first.select('swing', match: :first)
+        find_all('.search-ex-move', count: 2).last.select('allemande')
+        start_ex = '[ "compare", [ "count-matches", [ "figure", "swing" ] ], ">", [ "count-matches", [ "figure", "allemande" ] ] ]'
+        expect(page).to have_css("#debug-lisp", visible: false, text: start_ex)
+        find_all('.search-ex-menu-toggle', count: 5).first.click
+        find('.search-ex-copy').click # non-numeric search-ex
+        find_all('.search-ex-menu-toggle', count: 5)[1].click
+        find('.search-ex-paste').click # numeric search-ex
+        # it should have no effect:
+        expect(page).to have_css("#debug-lisp", visible: false, text: start_ex)
+
+        find_all('.search-ex-menu-toggle', count: 5)[1].click
+        find('.search-ex-copy').click # numeric search-ex
+        find_all('.search-ex-menu-toggle', count: 5)[3].click
+        find('.search-ex-paste').click # numeric search-ex
+        end_ex = '[ "compare", [ "count-matches", [ "figure", "swing" ] ], ">", [ "count-matches", [ "figure", "swing" ] ] ]'
+        expect(page).to have_css("#debug-lisp", visible: false, text: end_ex)
+      end
+
     end
   end
 

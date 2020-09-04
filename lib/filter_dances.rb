@@ -337,7 +337,7 @@ module FilterDances
       matches = matching_figures(subfilter, dance, filter_env)
       matches ? matches.length : 0
     else
-      raise "I do not know how to evaluate #{nex.first} expressions."
+      raise "I do not know how to evaluate #{nex.first} expressions to a number."
     end
   end
 

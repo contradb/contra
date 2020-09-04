@@ -122,7 +122,9 @@ export const SearchExEditor = ({
                         className="search-ex-paste"
                         onClick={preventDefaultThen(() => {
                           const s1 = paste()
-                          s1 && setSearchEx(s1)
+                          s1 &&
+                            s1.isNumeric() === searchEx.isNumeric() &&
+                            setSearchEx(s1)
                         })}
                       >
                         Paste
