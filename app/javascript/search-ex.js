@@ -80,6 +80,10 @@ class SearchEx {
     return false
   }
 
+  infixOptions() {
+    return undefined
+  }
+
   replace(oldEx, newEx) {
     if (this === oldEx) return newEx
     else {
@@ -474,6 +478,8 @@ class CountSearchEx extends unaryMixin(SearchEx) {
 }
 registerSearchEx("CountSearchEx", "comparison", "number")
 
+const comparisons = ["=", "≠", ">", "<", "≥", "≤"]
+
 class CompareSearchEx extends SearchEx {
   constructor(args) {
     super(args)
@@ -495,6 +501,10 @@ class CompareSearchEx extends SearchEx {
 
   get right() {
     return this.subexpressions[1]
+  }
+
+  infixOptions() {
+    return comparisons
   }
 
   toLisp() {
