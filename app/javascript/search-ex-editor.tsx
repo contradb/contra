@@ -41,7 +41,6 @@ const nonNumericOpOptions = [
   "progress with",
   "____",
   "&",
-  "progression",
   "compare",
 ].map(makeOpOption)
 

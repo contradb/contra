@@ -381,17 +381,6 @@ class FormationSearchEx extends nullaryMixin(SearchEx) {
 }
 registerSearchEx("FormationSearchEx", "formation")
 
-class ProgressionSearchEx extends nullaryMixin(SearchEx) {
-  toLisp() {
-    return [this.op]
-  }
-
-  static fromLispHelper(constructor, lisp) {
-    return new constructor()
-  }
-}
-registerSearchEx("ProgressionSearchEx")
-
 class SimpleUnarySearchEx extends unaryMixin(SearchEx) {
   toLisp() {
     return [this.op, this.subexpressions[0].toLisp()]

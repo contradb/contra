@@ -63,12 +63,12 @@ describe "SearchExEditors", js: true do
     expect(page).to have_text(dance.title) # because it has a figure that's not a swing
   end
 
-  it "'&' and 'progression' filters work" do
+  it "'&' and 'progress with' filters work" do
     dances
     visit search_path
     select('&')
     select('slide along set', match: :first)
-    all('.search-ex-op').last.select('progression')
+    all('.search-ex-op').last.select('progress with') # any figure
     expect(page).to have_text('The Rendevouz')
     expect(page).to_not have_text('Box the Gnat Contra')
     expect(page).to_not have_text('Call Me')
@@ -139,47 +139,47 @@ describe "SearchExEditors", js: true do
       end
     end
 
-    def visit_page_and_set_figure_and_progression
+    def visit_page_and_set_figures
       visit '/s'
       select 'and'
-      find_all('.search-ex-op', count: 3).last.select('progression')
-      # ['and', ['figure', '*'], ['progression']]
+      find_all('.search-ex-move', count: 2).last.select('allemande orbit')
+      # ['and', ['figure', '*'], ['figure', 'allemande orbit']]
     end
 
     describe 'casts' do
       it "cast from 'and' to 'or'" do
-        visit_page_and_set_figure_and_progression
+        visit_page_and_set_figures
         first('.search-ex-op').select('or')
-        expect(page).to have_css('#debug-lisp', text: '[ "or", [ "figure", "*" ], [ "progression" ] ]', visible: false)
+        expect(page).to have_css('#debug-lisp', text: '[ "or", [ "figure", "*" ], [ "figure", "allemande orbit" ] ]', visible: false)
       end
 
       it "cast to 'not'" do
-        visit_page_and_set_figure_and_progression
+        visit_page_and_set_figures
         first('.search-ex-op').select('not')
-        expect(page).to have_css('#debug-lisp', text: '[ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]', visible: false)
+        expect(page).to have_css('#debug-lisp', text: '[ "not", [ "and", [ "figure", "*" ], [ "figure", "allemande orbit" ] ] ]', visible: false)
         expect(page).to have_css('.search-ex-op', count: 4)
       end
     end
 
     describe 'deletion' do
       it "works" do
-        visit_page_and_set_figure_and_progression
+        visit_page_and_set_figures
         all('.search-ex-menu-toggle', count: 3).last.click
         find('a.search-ex-delete').click
         expect(page).to have_css('#debug-lisp', text: '[ "and", [ "figure", "*" ] ]', visible: false)
       end
 
       it "menu item isn't visible for the root node" do
-        visit_page_and_set_figure_and_progression
+        visit_page_and_set_figures
         first('.search-ex-menu-toggle').click
         expect(page).to_not have_css('.search-ex-delete')
       end
 
       it "menu item isn't visible for a subexpression that's required" do
-        visit_page_and_set_figure_and_progression
+        visit_page_and_set_figures
         first('.search-ex-op').select('not')
         expect(page).to have_css('.search-ex-op', count: 4)
-        expect(page).to have_css('#debug-lisp', text: '[ "not", [ "and", [ "figure", "*" ], [ "progression" ] ] ]', visible: false)
+        expect(page).to have_css('#debug-lisp', text: '[ "not", [ "and", [ "figure", "*" ], [ "figure", "allemande orbit" ] ] ]', visible: false)
         all('.search-ex-menu-toggle', count: 4)[1].click
         expect(page).to have_css('.search-ex-menu-entries')
         expect(page).to_not have_css('.search-ex-delete')
@@ -189,11 +189,11 @@ describe "SearchExEditors", js: true do
     describe 'adding a subexpression' do
       let (:search_ex_add_subexpression_selector) { ".search-ex-add-subexpression" }
       it "add subexpression button works" do
-        visit_page_and_set_figure_and_progression
+        visit_page_and_set_figures
         all('.search-ex-menu-toggle', count: 3).first.click
         find(search_ex_add_subexpression_selector).click
         expect(page).to have_css('.search-ex-op', count: 4)
-        expect(page).to have_css("#debug-lisp", text: '[ "and", [ "figure", "*" ], [ "progression" ], [ "figure", "*" ] ]', visible: false)
+        expect(page).to have_css("#debug-lisp", text: '[ "and", [ "figure", "*" ], [ "figure", "allemande orbit" ], [ "figure", "*" ] ]', visible: false)
       end
 
       it "add subexpression button isn't available if it wouldn't be syntactically valid" do
