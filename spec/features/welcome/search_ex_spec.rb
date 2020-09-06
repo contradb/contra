@@ -623,6 +623,7 @@ describe "SearchExEditors", js: true do
     it 'works' do
       get_there = FactoryGirl.create(:you_cant_get_there_from_here)
       dances
+      all_dances = dances + [get_there]
       visit search_path
       select('compare')
       select('≠')
@@ -632,6 +633,11 @@ describe "SearchExEditors", js: true do
       find_all('.search-ex-move', count: 2).last.select('swing', match: :first)
       expect(page).to_not have_content(get_there.title)
       dances.each {|dance| expect(page).to have_content(dance.title)}
+      find_all('.search-ex-op', count: 5)[1].select('constant')
+      find('.constant-numeric-value').fill_in(with: 2)
+      all_dances.each {|dance| expect(page).to_not have_content(dance.title)}
+      find('.constant-numeric-value').fill_in(with: 1)
+      all_dances.each {|dance| expect(page).to have_content(dance.title)}
     end
   end
 

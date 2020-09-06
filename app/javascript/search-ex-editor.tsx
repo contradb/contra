@@ -1,6 +1,12 @@
 import React from "react"
-import { SearchEx, FigureSearchEx, CompareSearchEx } from "./search-ex"
+import {
+  SearchEx,
+  FigureSearchEx,
+  CompareSearchEx,
+  ConstantNumericEx,
+} from "./search-ex"
 import FigureSearchExEditorExtras from "./figure-search-ex-editor-extras"
+import ConstantNumericExEditorExtras from "./constant-numeric-ex-editor-extras"
 import { copy, paste } from "./search-ex-clipboard"
 
 const makeOpOption = (op: string, i: number): JSX.Element => {
@@ -221,6 +227,13 @@ const EditorExtras = ({
         setSearchEx={setSearchEx}
       />
     )
+  } else if (isConstantNumericEx(searchEx)) {
+    return (
+      <ConstantNumericExEditorExtras
+        searchEx={searchEx}
+        setSearchEx={setSearchEx}
+      />
+    )
   } else {
     return null
   }
@@ -258,4 +271,9 @@ export const isFigureSearchEx = (
   searchEx: SearchEx
 ): searchEx is FigureSearchEx => !!(searchEx as FigureSearchEx).move
 
+export const isConstantNumericEx = (
+  searchEx: SearchEx
+): searchEx is ConstantNumericEx => {
+  return typeof (searchEx as ConstantNumericEx).number === "number"
+}
 export default SearchExEditor

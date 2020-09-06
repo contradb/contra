@@ -24,3 +24,9 @@ declare class CompareSearchEx extends SearchEx {
   comparison: "=" | "≠" | ">" | "<" | "≥" | "≤"
   comparisonOptions(): string[]
 }
+
+declare class NumericSearchEx extends SearchEx {}
+
+declare class ConstantNumericEx extends NumericSearchEx {
+  number: number
+}

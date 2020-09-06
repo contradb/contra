@@ -1,7 +1,7 @@
 import LibFigure from "libfigure/libfigure.js"
 
 // search node class heirarchy goes here
-class SearchEx {
+export class SearchEx {
   // subtypes to implement:
   // toLisp()
   // static fromLispHelper(...)
@@ -268,7 +268,7 @@ let binaryishMixin = Base =>
     }
   }
 
-class FigureSearchEx extends nullaryMixin(SearchEx) {
+export class FigureSearchEx extends nullaryMixin(SearchEx) {
   constructor(args) {
     super(args)
     const {
@@ -539,13 +539,13 @@ export class CompareSearchEx extends SearchEx {
 }
 registerSearchEx("CompareSearchEx", "comparison")
 
-class NumericEx extends SearchEx {
+export class NumericEx extends SearchEx {
   isNumeric() {
     return true
   }
 }
 
-class ConstantNumericEx extends NumericEx {
+export class ConstantNumericEx extends NumericEx {
   constructor(args) {
     super(args)
     const { number, src } = args
@@ -631,8 +631,6 @@ class CountMatchesNumericEx extends unaryMixin(NumericEx) {
   }
 }
 registerSearchEx("CountMatchesNumericEx")
-
-export { SearchEx, NumericEx, FigureSearchEx }
 
 class ProgressWithSearchEx extends SimpleUnarySearchEx {}
 registerSearchEx("ProgressWithSearchEx")
