@@ -179,9 +179,7 @@ export const SearchExEditor = ({
                 />
               )
               if (i === 1) {
-                const infixOptions = searchEx.infixOptions()
-                if (infixOptions) {
-                  const compareSearchEx: CompareSearchEx = searchEx as CompareSearchEx
+                if (isCompareSearchEx(searchEx)) {
                   const setValue = (value: string): void =>
                     setSearchEx(
                       searchEx.shallowCopy({
@@ -191,9 +189,9 @@ export const SearchExEditor = ({
                   return (
                     <React.Fragment key={1}>
                       <InfixSelect
-                        value={compareSearchEx.comparison}
+                        value={searchEx.comparison}
                         setValue={setValue}
-                        options={infixOptions}
+                        options={searchEx.comparisonOptions()}
                       />
                       {child}
                     </React.Fragment>
@@ -249,5 +247,11 @@ const InfixSelect = ({
     </select>
   </div>
 )
+
+// this really belongs in search-ex.js, but can't go there because its too typescripty
+export const isCompareSearchEx = (
+  searchEx: SearchEx
+): searchEx is CompareSearchEx =>
+  !!(searchEx as CompareSearchEx).comparisonOptions
 
 export default SearchExEditor

@@ -208,37 +208,10 @@ describe("isNumeric()", () => {
   })
 })
 
-describe("infixOptions", () => {
-  it("compare.infixOptions() → ≥, ≤, ≠, =, >, or <", () => {
-    const lisp = ["compare", ["constant", 4], "<", ["constant", 6]]
-    const searchEx = SearchEx.fromLisp(lisp)
-    expect(searchEx.infixOptions()).toEqual(["=", "≠", ">", "<", "≥", "≤"])
-  })
-  ;[
-    ["figure", "do si do"],
-    ["figure", "swing", "partners", "*", 8],
-    ["formation", "improper"],
-    ["progression"],
-    ["or", ["figure", "do si do"], ["figure", "swing"]],
-    ["and", ["figure", "do si do"], ["figure", "swing"]],
-    ["&", ["progression"], ["figure", "star"]],
-    ["then", ["figure", "do si do"], ["figure", "swing"]],
-    ["no", ["progression"]],
-    ["not", ["figure", "do si do"]],
-    ["all", ["figure", "do si do"]],
-    ["count", ["progression"], ">", 0],
-    ["progress with", ["figure", "do si do"]],
-    ["constant", 5],
-    ["constant", 0],
-    ["tag", "verified"],
-    ["count-matches", ["figure", "*"]],
-  ]
-    .map(SearchEx.fromLisp)
-    .forEach(searchEx => {
-      it(`${searchEx}.infixOptions() → undefined`, () => {
-        expect(searchEx.infixOptions()).toBe(undefined)
-      })
-    })
+it("CompareSearchEx#comparisonOptions() → ≥, ≤, ≠, =, >, or <", () => {
+  const lisp = ["compare", ["constant", 4], "<", ["constant", 6]]
+  const searchEx = SearchEx.fromLisp(lisp)
+  expect(searchEx.comparisonOptions()).toEqual(["=", "≠", ">", "<", "≥", "≤"])
 })
 
 describe("replace()", () => {

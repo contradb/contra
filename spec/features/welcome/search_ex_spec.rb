@@ -630,7 +630,6 @@ describe "SearchExEditors", js: true do
       find_all('.search-ex-op', count: 4).last.select('count matches')
       find_all('.search-ex-move', count: 2).first.select('allemande')
       find_all('.search-ex-move', count: 2).last.select('swing', match: :first)
-      save_screenshot('/tmp/foo.png')
       expect(page).to_not have_content(get_there.title)
       dances.each {|dance| expect(page).to have_content(dance.title)}
     end

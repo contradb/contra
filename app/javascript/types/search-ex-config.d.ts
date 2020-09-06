@@ -1,7 +1,6 @@
 declare class SearchEx {
   toLisp(): Filter
   isNumeric(): boolean
-  infixOptions(): undefined | string[]
   get op(): string
   castTo(op: string): SearchEx
   subexpressions: SearchEx[]
@@ -23,4 +22,5 @@ declare class FigureSearchEx extends SearchEx {
 
 declare class CompareSearchEx extends SearchEx {
   comparison: "=" | "≠" | ">" | "<" | "≥" | "≤"
+  comparisonOptions(): string[]
 }

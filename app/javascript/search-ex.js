@@ -80,10 +80,6 @@ class SearchEx {
     return false
   }
 
-  infixOptions() {
-    return undefined
-  }
-
   replace(oldEx, newEx) {
     if (this === oldEx) return newEx
     else {
@@ -503,7 +499,7 @@ export class CompareSearchEx extends SearchEx {
     return this.subexpressions[1]
   }
 
-  infixOptions() {
+  comparisonOptions() {
     return comparisons
   }
 
