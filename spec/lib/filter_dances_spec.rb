@@ -206,31 +206,6 @@ describe FilterDances do
       end
     end
 
-    describe 'count' do
-      let (:all_titles) { dances.map(&:title) }
-
-      def filtered_titles(comparison, number)
-        titles(FilterDances.filter_dances(['count', ['figure', 'circle'], comparison, number.to_s], dialect: dialect))
-      end
-
-      it '≥ 2' do
-        expect(filtered_titles('≥', 2)).to eq(['The Rendevouz'])
-      end
-
-      it '< 2' do
-        expect(filtered_titles('<', 2)).to contain_exactly(*(all_titles - ['The Rendevouz']))
-      end
-
-      it '≠ 1' do
-        expect(filtered_titles('≠', 1)).to contain_exactly(*(all_titles - ['Call Me']))
-      end
-
-      it '= 1' do
-        expect(filtered_titles('=', 1)).to eq(['Call Me'])
-      end
-
-    end
-
     describe 'compare' do
       let (:all_titles) { dances.map(&:title) }
 

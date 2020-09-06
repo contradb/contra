@@ -303,19 +303,6 @@ module FilterDances
                                   '>' => :'>',
                                   '<' => :'<'}.freeze
 
-  def self.matching_figures_for_count(filter, dance, filter_env)
-    _filter, subfilter, comparison_str, number_string = filter
-    m = matching_figures(subfilter, dance, filter_env)
-    m_count = m.nil? ? 0 : m.length
-    comparison = COMPARISON_STRING_TO_RUBY_OP.fetch(comparison_str)
-    number = number_string.to_i
-    if m_count.public_send(comparison, number) # for example 'count >= 3'
-      m || Set[]
-    else
-      nil
-    end
-  end
-
   def self.matching_figures_for_compare(filter, dance, filter_env)
     _filter, left, comparison_str, right = filter
     l = eval_numeric_ex(left, dance, filter_env)

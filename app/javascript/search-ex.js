@@ -436,44 +436,6 @@ registerSearchEx("FigurewiseAndSearchEx")
 class ThenSearchEx extends SimpleBinaryishSearchEx {}
 registerSearchEx("ThenSearchEx")
 
-// obsolete
-class CountSearchEx extends unaryMixin(SearchEx) {
-  constructor(args) {
-    super(args)
-    const { comparison, number } = args
-    this.comparison = comparison || errorMissingParameter("comparison")
-    number !== undefined || errorMissingParameter("number")
-    this.number = number
-  }
-
-  toLisp() {
-    return [
-      this.op,
-      this.subexpressions[0].toLisp(),
-      this.comparison,
-      this.number,
-    ]
-  }
-
-  static fromLispHelper(constructor, lisp) {
-    const [_op, subexpression, comparison, number] = lisp
-    return new constructor({
-      subexpressions: [SearchEx.fromLisp(subexpression)],
-      comparison: comparison,
-      number: number,
-    })
-  }
-
-  static castConstructorDefaults(searchEx) {
-    return {
-      comparison: ">",
-      number: 0,
-      ...super.castConstructorDefaults(searchEx),
-    }
-  }
-}
-registerSearchEx("CountSearchEx", "comparison", "number")
-
 const comparisons = ["=", "≠", ">", "<", "≥", "≤"]
 
 export class CompareSearchEx extends SearchEx {

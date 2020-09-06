@@ -14,7 +14,6 @@ describe("x = toLisp of fromLisp of x", () => {
     ["no", ["progression"]],
     ["not", ["figure", "do si do"]],
     ["all", ["figure", "do si do"]],
-    ["count", ["progression"], ">", 0],
     ["compare", ["constant", 4], "<", ["constant", 6]],
     ["constant", 5],
     ["constant", 0],
@@ -86,17 +85,6 @@ describe("cast", () => {
       op: "all",
       from: ["or", ["figure", "swing"], ["figure", "chain"]],
       want: ["all", ["or", ["figure", "swing"], ["figure", "chain"]]],
-    },
-    { op: "count", from: ["and"], want: ["count", ["and"], ">", 0] },
-    {
-      op: "count",
-      from: ["no", ["figure", "*"]],
-      want: ["count", ["figure", "*"], ">", 0],
-    },
-    {
-      op: "count",
-      from: ["or", ["figure", "swing"], ["figure", "chain"]],
-      want: ["count", ["or", ["figure", "swing"], ["figure", "chain"]], ">", 0],
     },
     {
       op: "compare",
@@ -188,7 +176,6 @@ describe("isNumeric()", () => {
     ["no", ["progression"]],
     ["not", ["figure", "do si do"]],
     ["all", ["figure", "do si do"]],
-    ["count", ["progression"], ">", 0],
     ["compare", ["constant", 4], "<", ["constant", 6]],
     ["progress with", ["figure", "do si do"]],
   ].forEach(lisp => {
