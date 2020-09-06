@@ -9,19 +9,25 @@ import FigureSearchExEditorExtras from "./figure-search-ex-editor-extras"
 import ConstantNumericExEditorExtras from "./constant-numeric-ex-editor-extras"
 import { copy, paste } from "./search-ex-clipboard"
 
-const makeOpOption = (op: string, i: number): JSX.Element => {
+const makeOpOption = (
+  op: string | { label: string; searchEx: string },
+  i: number
+): JSX.Element => {
   if (op === "____")
     return (
       <option key={i} style={{ backgroundColor: "white" }} disabled>
         ————————
       </option>
     )
-  else
+  else {
+    const label = typeof op === "string" ? op.replace(/-/, " ") : op.label
+    const searchExClass = typeof op === "string" ? op : op.searchEx
     return (
-      <option key={i} value={op}>
-        {op.replace(/-/, " ")}
+      <option key={i} value={searchExClass}>
+        {label}
       </option>
     )
+  }
 }
 
 const nonNumericOpOptions = [
@@ -39,7 +45,11 @@ const nonNumericOpOptions = [
   "compare",
 ].map(makeOpOption)
 
-const numericOpOptions = ["constant", "tag", "count-matches"].map(makeOpOption)
+const numericOpOptions = [
+  { label: "number", searchEx: "constant" },
+  "count-matches",
+  { label: "count verified tags", searchEx: "tag" },
+].map(makeOpOption)
 
 const preventDefaultThen = (funcToCall: (event: any) => void) => (event: {
   preventDefault: () => void
@@ -276,4 +286,11 @@ export const isConstantNumericEx = (
 ): searchEx is ConstantNumericEx => {
   return typeof (searchEx as ConstantNumericEx).number === "number"
 }
+
+export const isTagNumericEx = (
+  searchEx: SearchEx
+): searchEx is ConstantNumericEx => {
+  return typeof (searchEx as ConstantNumericEx).number === "number"
+}
+
 export default SearchExEditor

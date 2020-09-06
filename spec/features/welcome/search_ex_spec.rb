@@ -247,7 +247,7 @@ describe "SearchExEditors", js: true do
         find_all('.search-ex-op', count: 4)[3].select('count matches')
         find_all('.search-ex-move', count: 2).first.select('swing', match: :first)
         find_all('.search-ex-move', count: 2).last.select('allemande')
-        start_ex = '[ "compare", [ "count-matches", [ "figure", "swing" ] ], ">", [ "count-matches", [ "figure", "allemande" ] ] ]'
+        start_ex = '[ "compare", [ "count-matches", [ "figure", "swing" ] ], "=", [ "count-matches", [ "figure", "allemande" ] ] ]'
         expect(page).to have_css("#debug-lisp", visible: false, text: start_ex)
         find_all('.search-ex-menu-toggle', count: 5).first.click
         find('.search-ex-copy').click # non-numeric search-ex
@@ -260,7 +260,7 @@ describe "SearchExEditors", js: true do
         find('.search-ex-copy').click # numeric search-ex
         find_all('.search-ex-menu-toggle', count: 5)[3].click
         find('.search-ex-paste').click # numeric search-ex
-        end_ex = '[ "compare", [ "count-matches", [ "figure", "swing" ] ], ">", [ "count-matches", [ "figure", "swing" ] ] ]'
+        end_ex = '[ "compare", [ "count-matches", [ "figure", "swing" ] ], "=", [ "count-matches", [ "figure", "swing" ] ] ]'
         expect(page).to have_css("#debug-lisp", visible: false, text: end_ex)
       end
 
@@ -624,20 +624,30 @@ describe "SearchExEditors", js: true do
       get_there = FactoryGirl.create(:you_cant_get_there_from_here)
       dances
       all_dances = dances + [get_there]
+      FactoryGirl.create(:dut, dance: get_there, tag: Tag.find_by!(name: 'verified'))
       visit search_path
       select('compare')
       select('≠')
+      # count matches
       find_all('.search-ex-op', count: 3)[1].select('count matches')
       find_all('.search-ex-op', count: 4).last.select('count matches')
       find_all('.search-ex-move', count: 2).first.select('allemande')
       find_all('.search-ex-move', count: 2).last.select('swing', match: :first)
       expect(page).to_not have_content(get_there.title)
       dances.each {|dance| expect(page).to have_content(dance.title)}
-      find_all('.search-ex-op', count: 5)[1].select('constant')
+
+      # constant
+      find_all('.search-ex-op', count: 5)[1].select('number')
       find('.constant-numeric-value').fill_in(with: 2)
       all_dances.each {|dance| expect(page).to_not have_content(dance.title)}
       find('.constant-numeric-value').fill_in(with: 1)
       all_dances.each {|dance| expect(page).to have_content(dance.title)}
+
+      # verified count
+      find_all('.search-ex-op', count: 4)[1].select('count verified tags')
+      select('=')
+      dances.each {|dance| expect(page).to_not have_content(dance.title)}
+      expect(page).to have_content(get_there.title)
     end
   end
 
