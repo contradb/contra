@@ -20,3 +20,7 @@ declare class FigureSearchEx extends SearchEx {
   get parameters(): any[]
   get ellipsis(): boolean
 }
+
+declare class CompareSearchEx extends SearchEx {
+  comparison: "=" | "≠" | ">" | "<" | "≥" | "≤"
+}

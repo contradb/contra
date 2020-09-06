@@ -36,6 +36,10 @@
   margin-left: 0.5em;           // plus padding on search-ex-well
   margin-right: 0.5em;          // plus padding on search-ex-well
   margin-bottom: 0.5em;         // plus padding on search-ex-well
+  > .search-ex-infix-centerer {
+    display: flex;
+    align-items: center;
+  }
 }
 
 

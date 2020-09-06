@@ -1,5 +1,5 @@
 import React from "react"
-import { SearchEx, FigureSearchEx } from "./search-ex"
+import { SearchEx, FigureSearchEx, CompareSearchEx } from "./search-ex"
 import FigureSearchExEditorExtras from "./figure-search-ex-editor-extras"
 import { copy, paste } from "./search-ex-clipboard"
 
@@ -63,7 +63,7 @@ export const SearchExEditor = ({
   )
 
   return (
-    <div className="search-ex" {...(id ? { id: id } : {})}>
+    <div className="search-ex" {...(id ? { id } : {})}>
       <div className="search-ex-well">
         <table>
           <tbody>
@@ -167,16 +167,41 @@ export const SearchExEditor = ({
         </table>
         {0 === searchEx.subexpressions.length ? null : (
           <div className="search-ex-subexpressions">
-            {searchEx.subexpressions.map((subex, i) => (
-              <SearchExEditor
-                key={i}
-                searchEx={subex}
-                setSearchEx={newsub =>
-                  setSearchEx(searchEx.replace(subex, newsub))
+            {searchEx.subexpressions.map((subex, i) => {
+              const child = (
+                <SearchExEditor
+                  key={i}
+                  searchEx={subex}
+                  setSearchEx={newsub =>
+                    setSearchEx(searchEx.replace(subex, newsub))
+                  }
+                  removeSearchEx={subexpressionRemoveFn}
+                />
+              )
+              if (i === 1) {
+                const infixOptions = searchEx.infixOptions()
+                if (infixOptions) {
+                  const compareSearchEx: CompareSearchEx = searchEx as CompareSearchEx
+                  const setValue = (value: string): void =>
+                    setSearchEx(
+                      searchEx.shallowCopy({
+                        comparison: value,
+                      })
+                    )
+                  return (
+                    <React.Fragment key={1}>
+                      <InfixSelect
+                        value={compareSearchEx.comparison}
+                        setValue={setValue}
+                        options={infixOptions}
+                      />
+                      {child}
+                    </React.Fragment>
+                  )
                 }
-                removeSearchEx={subexpressionRemoveFn}
-              />
-            ))}
+              }
+              return child
+            })}
           </div>
         )}
       </div>
@@ -202,5 +227,27 @@ const EditorExtras = ({
     return null
   }
 }
+
+const InfixSelect = ({
+  value,
+  setValue,
+  options,
+}: {
+  value: string
+  setValue: (s: string) => void
+  options: string[]
+}): JSX.Element => (
+  <div className="search-ex-infix-centerer">
+    <select
+      className="form-control search-ex-infix"
+      value={value}
+      onChange={e => setValue(e.target.value)}
+    >
+      {options.map(op => (
+        <option key={op}>{op}</option>
+      ))}
+    </select>
+  </div>
+)
 
 export default SearchExEditor

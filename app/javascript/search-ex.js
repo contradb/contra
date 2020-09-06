@@ -480,7 +480,7 @@ registerSearchEx("CountSearchEx", "comparison", "number")
 
 const comparisons = ["=", "≠", ">", "<", "≥", "≤"]
 
-class CompareSearchEx extends SearchEx {
+export class CompareSearchEx extends SearchEx {
   constructor(args) {
     super(args)
     const { comparison, src } = args
@@ -521,7 +521,7 @@ class CompareSearchEx extends SearchEx {
 
   static castFrom(searchEx) {
     return new this({
-      comparison: searchEx.comparison || ">",
+      comparison: searchEx.comparison || comparisons[0],
       subexpressions: [
         new ConstantNumericEx({ number: 0 }),
         new ConstantNumericEx({ number: 0 }),

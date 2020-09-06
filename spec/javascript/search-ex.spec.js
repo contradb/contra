@@ -101,7 +101,7 @@ describe("cast", () => {
     {
       op: "compare",
       from: ["progression"],
-      want: ["compare", ["constant", 0], ">", ["constant", 0]],
+      want: ["compare", ["constant", 0], "=", ["constant", 0]],
     },
     { op: "constant", from: ["tag", "verified"], want: ["constant", 0] },
     { op: "tag", from: ["constant", 7], want: ["tag", "verified"] },
