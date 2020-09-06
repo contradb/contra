@@ -214,10 +214,10 @@ const EditorExtras = ({
   searchEx: SearchEx
   setSearchEx: (se: SearchEx) => void
 }): JSX.Element | null => {
-  if (searchEx instanceof FigureSearchEx) {
+  if (isFigureSearchEx(searchEx)) {
     return (
       <FigureSearchExEditorExtras
-        searchEx={searchEx as FigureSearchEx}
+        searchEx={searchEx}
         setSearchEx={setSearchEx}
       />
     )
@@ -248,10 +248,14 @@ const InfixSelect = ({
   </div>
 )
 
-// this really belongs in search-ex.js, but can't go there because its too typescripty
+// these really belongs in search-ex.js, but can't go there because its too typescripty
 export const isCompareSearchEx = (
   searchEx: SearchEx
 ): searchEx is CompareSearchEx =>
   !!(searchEx as CompareSearchEx).comparisonOptions
+
+export const isFigureSearchEx = (
+  searchEx: SearchEx
+): searchEx is FigureSearchEx => !!(searchEx as FigureSearchEx).move
 
 export default SearchExEditor
