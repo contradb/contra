@@ -271,22 +271,13 @@ const InfixSelect = ({
 )
 
 // these really belongs in search-ex.js, but can't go there because its too typescripty
-export const isCompareSearchEx = (
-  searchEx: SearchEx
-): searchEx is CompareSearchEx =>
+const isCompareSearchEx = (searchEx: SearchEx): searchEx is CompareSearchEx =>
   !!(searchEx as CompareSearchEx).comparisonOptions
 
-export const isFigureSearchEx = (
-  searchEx: SearchEx
-): searchEx is FigureSearchEx => !!(searchEx as FigureSearchEx).move
+const isFigureSearchEx = (searchEx: SearchEx): searchEx is FigureSearchEx =>
+  !!(searchEx as FigureSearchEx).move
 
-export const isConstantNumericEx = (
-  searchEx: SearchEx
-): searchEx is ConstantNumericEx => {
-  return typeof (searchEx as ConstantNumericEx).number === "number"
-}
-
-export const isTagNumericEx = (
+const isConstantNumericEx = (
   searchEx: SearchEx
 ): searchEx is ConstantNumericEx => {
   return typeof (searchEx as ConstantNumericEx).number === "number"
