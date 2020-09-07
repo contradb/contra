@@ -21,9 +21,9 @@ export type Filter =
   | ["hook", string]
   | ["count", Filter, Comparison, number]
   | ["compare", NumericFilter, Comparison, NumericFilter]
-  | ["my tag", string]
+  | ["my-tag", string]
   | ["publish", "all" | "sketchbook" | "off"]
-  | ["by me"]
+  | ["by-me"]
 
 export type NumericFilter =
   | ["constant", number]

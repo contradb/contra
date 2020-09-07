@@ -6,15 +6,13 @@ describe("x = toLisp of fromLisp of x", () => {
     ["figure", "do si do"],
     ["figure", "swing", "partners", "*", 8],
     ["formation", "improper"],
-    ["progression"],
     ["or", ["figure", "do si do"], ["figure", "swing"]],
     ["and", ["figure", "do si do"], ["figure", "swing"]],
-    ["&", ["progression"], ["figure", "star"]],
+    ["&", ["figure", "do si do"], ["figure", "star"]],
     ["then", ["figure", "do si do"], ["figure", "swing"]],
-    ["no", ["progression"]],
+    ["no", ["figure", "do si do"]],
     ["not", ["figure", "do si do"]],
     ["all", ["figure", "do si do"]],
-    ["count", ["progression"], ">", 0],
     ["compare", ["constant", 4], "<", ["constant", 6]],
     ["constant", 5],
     ["constant", 0],
@@ -31,24 +29,24 @@ describe("cast", () => {
   ;[
     {
       op: "then",
-      from: ["progression"],
-      want: ["then", ["progression"], ["figure", "*"]],
+      from: ["figure", "do si do"],
+      want: ["then", ["figure", "do si do"], ["figure", "*"]],
     },
     {
       op: "then",
-      from: ["not", ["progression"]],
-      want: ["then", ["not", ["progression"]], ["figure", "*"]],
+      from: ["not", ["figure", "do si do"]],
+      want: ["then", ["not", ["figure", "do si do"]], ["figure", "*"]],
     },
     { op: "then", from: ["and"], want: ["then"] },
     {
       op: "then",
-      from: ["and", ["progression"]],
-      want: ["then", ["progression"]],
+      from: ["and", ["figure", "do si do"]],
+      want: ["then", ["figure", "do si do"]],
     },
     {
       op: "then",
-      from: ["and", ["progression"], ["figure", "chain"]],
-      want: ["then", ["progression"], ["figure", "chain"]],
+      from: ["and", ["figure", "do si do"], ["figure", "chain"]],
+      want: ["then", ["figure", "do si do"], ["figure", "chain"]],
     },
     {
       op: "and",
@@ -57,7 +55,6 @@ describe("cast", () => {
     },
     { op: "figure", from: ["and"], want: ["figure", "*"] },
     { op: "formation", from: ["and"], want: ["formation", "improper"] },
-    { op: "progression", from: ["and"], want: ["progression"] },
     { op: "no", from: ["and"], want: ["no", ["and"]] },
     { op: "no", from: ["not", ["figure", "*"]], want: ["no", ["figure", "*"]] },
     {
@@ -87,21 +84,11 @@ describe("cast", () => {
       from: ["or", ["figure", "swing"], ["figure", "chain"]],
       want: ["all", ["or", ["figure", "swing"], ["figure", "chain"]]],
     },
-    { op: "count", from: ["and"], want: ["count", ["and"], ">", 0] },
     {
-      op: "count",
-      from: ["no", ["figure", "*"]],
-      want: ["count", ["figure", "*"], ">", 0],
-    },
-    {
-      op: "count",
-      from: ["or", ["figure", "swing"], ["figure", "chain"]],
-      want: ["count", ["or", ["figure", "swing"], ["figure", "chain"]], ">", 0],
-    },
-    {
+      // TODO: complicate this
       op: "compare",
-      from: ["progression"],
-      want: ["compare", ["constant", 0], ">", ["constant", 0]],
+      from: ["figure", "do si do"],
+      want: ["compare", ["constant", 0], "=", ["constant", 0]],
     },
     { op: "constant", from: ["tag", "verified"], want: ["constant", 0] },
     { op: "tag", from: ["constant", 7], want: ["tag", "verified"] },
@@ -111,9 +98,9 @@ describe("cast", () => {
       want: ["count-matches", ["figure", "*"]],
     },
     {
-      op: "progress with",
+      op: "progress-with",
       from: ["not", ["figure", "star"]],
-      want: ["progress with", ["figure", "star"]],
+      want: ["progress-with", ["figure", "star"]],
     },
   ].forEach(function({ from, op, want }, i) {
     const fromEx = SearchEx.fromLisp(from)
@@ -180,17 +167,15 @@ describe("isNumeric()", () => {
     ["figure", "do si do"],
     ["figure", "swing", "partners", "*", 8],
     ["formation", "improper"],
-    ["progression"],
     ["or", ["figure", "do si do"], ["figure", "swing"]],
     ["and", ["figure", "do si do"], ["figure", "swing"]],
-    ["&", ["progression"], ["figure", "star"]],
+    ["&", ["figure", "do si do"], ["figure", "star"]],
     ["then", ["figure", "do si do"], ["figure", "swing"]],
-    ["no", ["progression"]],
+    ["no", ["figure", "do si do"]],
     ["not", ["figure", "do si do"]],
     ["all", ["figure", "do si do"]],
-    ["count", ["progression"], ">", 0],
     ["compare", ["constant", 4], "<", ["constant", 6]],
-    ["progress with", ["figure", "do si do"]],
+    ["progress-with", ["figure", "do si do"]],
   ].forEach(lisp => {
     test(JSON.stringify(lisp) + " → false", () =>
       expect(SearchEx.fromLisp(lisp).isNumeric()).toBe(false)
@@ -206,6 +191,12 @@ describe("isNumeric()", () => {
       expect(SearchEx.fromLisp(lisp).isNumeric()).toBe(true)
     )
   })
+})
+
+it("CompareSearchEx#comparisonOptions() → ≥, ≤, ≠, =, >, or <", () => {
+  const lisp = ["compare", ["constant", 4], "<", ["constant", 6]]
+  const searchEx = SearchEx.fromLisp(lisp)
+  expect(searchEx.comparisonOptions()).toEqual(["=", "≠", ">", "<", "≥", "≤"])
 })
 
 describe("replace()", () => {
@@ -230,7 +221,7 @@ describe("replace()", () => {
       "&",
       ["tag", "verified"],
       ["figure", "star"],
-      ["progression"],
+      ["figure", "swing"],
     ])
     const oldSub = oldRoot.subexpressions[1] // star
     const newSub = SearchEx.fromLisp(["figure", "do si do"])
@@ -239,7 +230,7 @@ describe("replace()", () => {
       "&",
       ["tag", "verified"],
       ["figure", "do si do"],
-      ["progression"],
+      ["figure", "swing"],
     ]
     expect(newRoot.toLisp()).toEqual(expectedLisp)
     expect(newRoot.subexpressions[0]).toBe(oldRoot.subexpressions[0])
@@ -253,7 +244,7 @@ describe("replace()", () => {
       "&",
       ["tag", "verified"],
       ["figure", "star"],
-      ["progression"],
+      ["figure", "swing"],
     ])
     const oldSub = SearchEx.fromLisp(["figure", "star"]) // a different star
     const newSub = SearchEx.fromLisp(["figure", "do si do"])
@@ -308,11 +299,11 @@ describe("remove()", () => {
       "&",
       ["tag", "verified"],
       ["figure", "star"],
-      ["progression"],
+      ["figure", "swing"],
     ])
     const oldSub = oldRoot.subexpressions[1] // star
     const newRoot = oldRoot.remove(oldSub)
-    const expectedLisp = ["&", ["tag", "verified"], ["progression"]]
+    const expectedLisp = ["&", ["tag", "verified"], ["figure", "swing"]]
     expect(newRoot.toLisp()).toEqual(expectedLisp)
     expect(newRoot.subexpressions[0]).toBe(oldRoot.subexpressions[0])
     expect(newRoot.subexpressions[1]).toBe(oldRoot.subexpressions[2])
@@ -324,7 +315,7 @@ describe("remove()", () => {
       "&",
       ["tag", "verified"],
       ["figure", "star"],
-      ["progression"],
+      ["figure", "swing"],
     ])
     const oldSub = SearchEx.fromLisp(["figure", "star"]) // a different star
     const expectedLisp = oldRoot.toLisp()
@@ -366,13 +357,12 @@ describe("shallowCopy", () => {
     "or",
     "&",
     "then",
-    "progression",
     "count-matches",
-    "progress with",
+    "progress-with",
   ]) {
     describe(op, () => {
       it("copies", () => {
-        const oldEx = SearchEx.fromLisp([op, ["progression"]])
+        const oldEx = SearchEx.fromLisp([op, ["figure", "swing"]])
         const newEx = oldEx.shallowCopy()
         expect(oldEx).not.toBe(newEx)
         expect(newEx.subexpressions).toEqual(oldEx.subexpressions)
@@ -381,7 +371,7 @@ describe("shallowCopy", () => {
 
       it("takes arg", () => {
         const figure = SearchEx.fromLisp(["figure", "*"])
-        const oldEx = SearchEx.fromLisp([op, ["progression"]])
+        const oldEx = SearchEx.fromLisp([op, ["figure", "swing"]])
         const newEx = oldEx.shallowCopy({
           subexpressions: [figure],
         })

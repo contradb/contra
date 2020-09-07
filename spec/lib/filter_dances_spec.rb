@@ -149,8 +149,8 @@ describe FilterDances do
       expect(titles(filtered)).to contain_exactly("The Rendevouz", "Box the Gnat Contra", "Call Me")
     end
 
-    it 'progress with' do
-      filtered = FilterDances.filter_dances(['progress with', ['figure', 'chain']], dialect: dialect)
+    it 'progress-with' do
+      filtered = FilterDances.filter_dances(['progress-with', ['figure', 'chain']], dialect: dialect)
       expect(titles(filtered)).to contain_exactly("Box the Gnat Contra")
     end
 
@@ -204,31 +204,6 @@ describe FilterDances do
         filtered = FilterDances.filter_dances(['then', ['figure', 'swing'], ['not', ['or', ['figure', 'circle'], ['figure', 'right left through']]]], dialect: dialect)
         expect(titles(filtered)).to contain_exactly('The Rendevouz', 'Box the Gnat Contra')
       end
-    end
-
-    describe 'count' do
-      let (:all_titles) { dances.map(&:title) }
-
-      def filtered_titles(comparison, number)
-        titles(FilterDances.filter_dances(['count', ['figure', 'circle'], comparison, number.to_s], dialect: dialect))
-      end
-
-      it '≥ 2' do
-        expect(filtered_titles('≥', 2)).to eq(['The Rendevouz'])
-      end
-
-      it '< 2' do
-        expect(filtered_titles('<', 2)).to contain_exactly(*(all_titles - ['The Rendevouz']))
-      end
-
-      it '≠ 1' do
-        expect(filtered_titles('≠', 1)).to contain_exactly(*(all_titles - ['Call Me']))
-      end
-
-      it '= 1' do
-        expect(filtered_titles('=', 1)).to eq(['Call Me'])
-      end
-
     end
 
     describe 'compare' do
@@ -331,11 +306,11 @@ describe FilterDances do
       end
     end
 
-    describe 'by me' do
+    describe 'by-me' do
       it 'works' do
         dances = [ :off, :sketchbook, :all ].map.each_with_index {|publish, i| FactoryGirl.create(:dance, publish: publish, user: user, title: "Dance-#{i}")}
         dances << FactoryGirl.create(:dance)
-        filter = ['by me']
+        filter = ['by-me']
         filtered = FilterDances.filter_dances(filter, dialect: dialect, user: user)
         expect(titles(filtered)).to contain_exactly(*dances.select {|d| d.user_id == user.id}.map(&:title))
       end

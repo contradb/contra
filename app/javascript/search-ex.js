@@ -1,7 +1,7 @@
 import LibFigure from "libfigure/libfigure.js"
 
 // search node class heirarchy goes here
-class SearchEx {
+export class SearchEx {
   // subtypes to implement:
   // toLisp()
   // static fromLispHelper(...)
@@ -139,7 +139,7 @@ function registerSearchEx(className, ...props) {
   op = op.replace(/NumericEx$/, "")
   op = op.replace(/FigurewiseAnd/g, "&")
   op = op.replace(/CountMatches/, "count-matches")
-  op = op.replace(/ProgressWith/, "progress with")
+  op = op.replace(/ProgressWith/, "progress-with")
   op = op.toLowerCase()
   constructorNameToOp[className] = op
   const constructor = eval(className)
@@ -268,7 +268,7 @@ let binaryishMixin = Base =>
     }
   }
 
-class FigureSearchEx extends nullaryMixin(SearchEx) {
+export class FigureSearchEx extends nullaryMixin(SearchEx) {
   constructor(args) {
     super(args)
     const {
@@ -381,17 +381,6 @@ class FormationSearchEx extends nullaryMixin(SearchEx) {
 }
 registerSearchEx("FormationSearchEx", "formation")
 
-class ProgressionSearchEx extends nullaryMixin(SearchEx) {
-  toLisp() {
-    return [this.op]
-  }
-
-  static fromLispHelper(constructor, lisp) {
-    return new constructor()
-  }
-}
-registerSearchEx("ProgressionSearchEx")
-
 class SimpleUnarySearchEx extends unaryMixin(SearchEx) {
   toLisp() {
     return [this.op, this.subexpressions[0].toLisp()]
@@ -436,45 +425,9 @@ registerSearchEx("FigurewiseAndSearchEx")
 class ThenSearchEx extends SimpleBinaryishSearchEx {}
 registerSearchEx("ThenSearchEx")
 
-// obsolete
-class CountSearchEx extends unaryMixin(SearchEx) {
-  constructor(args) {
-    super(args)
-    const { comparison, number } = args
-    this.comparison = comparison || errorMissingParameter("comparison")
-    number !== undefined || errorMissingParameter("number")
-    this.number = number
-  }
+const comparisons = ["=", "≠", ">", "<", "≥", "≤"]
 
-  toLisp() {
-    return [
-      this.op,
-      this.subexpressions[0].toLisp(),
-      this.comparison,
-      this.number,
-    ]
-  }
-
-  static fromLispHelper(constructor, lisp) {
-    const [_op, subexpression, comparison, number] = lisp
-    return new constructor({
-      subexpressions: [SearchEx.fromLisp(subexpression)],
-      comparison: comparison,
-      number: number,
-    })
-  }
-
-  static castConstructorDefaults(searchEx) {
-    return {
-      comparison: ">",
-      number: 0,
-      ...super.castConstructorDefaults(searchEx),
-    }
-  }
-}
-registerSearchEx("CountSearchEx", "comparison", "number")
-
-class CompareSearchEx extends SearchEx {
+export class CompareSearchEx extends SearchEx {
   constructor(args) {
     super(args)
     const { comparison, src } = args
@@ -497,6 +450,10 @@ class CompareSearchEx extends SearchEx {
     return this.subexpressions[1]
   }
 
+  comparisonOptions() {
+    return comparisons
+  }
+
   toLisp() {
     return [this.op, this.left.toLisp(), this.comparison, this.right.toLisp()]
   }
@@ -511,7 +468,7 @@ class CompareSearchEx extends SearchEx {
 
   static castFrom(searchEx) {
     return new this({
-      comparison: searchEx.comparison || ">",
+      comparison: searchEx.comparison || comparisons[0],
       subexpressions: [
         new ConstantNumericEx({ number: 0 }),
         new ConstantNumericEx({ number: 0 }),
@@ -533,13 +490,13 @@ class CompareSearchEx extends SearchEx {
 }
 registerSearchEx("CompareSearchEx", "comparison")
 
-class NumericEx extends SearchEx {
+export class NumericEx extends SearchEx {
   isNumeric() {
     return true
   }
 }
 
-class ConstantNumericEx extends NumericEx {
+export class ConstantNumericEx extends NumericEx {
   constructor(args) {
     super(args)
     const { number, src } = args
@@ -625,8 +582,6 @@ class CountMatchesNumericEx extends unaryMixin(NumericEx) {
   }
 }
 registerSearchEx("CountMatchesNumericEx")
-
-export { SearchEx, NumericEx, FigureSearchEx }
 
 class ProgressWithSearchEx extends SimpleUnarySearchEx {}
 registerSearchEx("ProgressWithSearchEx")
