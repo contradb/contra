@@ -98,9 +98,9 @@ describe("cast", () => {
       want: ["count-matches", ["figure", "*"]],
     },
     {
-      op: "progress with",
+      op: "progress-with",
       from: ["not", ["figure", "star"]],
-      want: ["progress with", ["figure", "star"]],
+      want: ["progress-with", ["figure", "star"]],
     },
   ].forEach(function({ from, op, want }, i) {
     const fromEx = SearchEx.fromLisp(from)
@@ -175,7 +175,7 @@ describe("isNumeric()", () => {
     ["not", ["figure", "do si do"]],
     ["all", ["figure", "do si do"]],
     ["compare", ["constant", 4], "<", ["constant", 6]],
-    ["progress with", ["figure", "do si do"]],
+    ["progress-with", ["figure", "do si do"]],
   ].forEach(lisp => {
     test(JSON.stringify(lisp) + " → false", () =>
       expect(SearchEx.fromLisp(lisp).isNumeric()).toBe(false)
@@ -358,7 +358,7 @@ describe("shallowCopy", () => {
     "&",
     "then",
     "count-matches",
-    "progress with",
+    "progress-with",
   ]) {
     describe(op, () => {
       it("copies", () => {

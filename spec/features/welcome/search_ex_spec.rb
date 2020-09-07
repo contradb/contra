@@ -63,7 +63,7 @@ describe "SearchExEditors", js: true do
     expect(page).to have_text(dance.title) # because it has a figure that's not a swing
   end
 
-  it "'&' and 'progress with' filters work" do
+  it "'&' and 'progress-with' filters work" do
     dances
     visit search_path
     select('&')

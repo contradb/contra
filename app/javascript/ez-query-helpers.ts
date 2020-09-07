@@ -32,11 +32,11 @@ export const getVerifiedFilter = ({
     if (nvbm) {
       return matchEverything
     } else {
-      v || r.push(["my tag", "verified"])
+      v || r.push(["my-tag", "verified"])
     }
   } else {
     if (nvbm) {
-      r.push(["no", ["my tag", "verified"]])
+      r.push(["no", ["my-tag", "verified"]])
     } else {
       // do nothing
     }
@@ -59,7 +59,7 @@ export const getPublishFilter = ({
   const allFilters: Filter[] = all ? [["publish", "all"]] : []
   const sbkFilters: Filter[] = sbk ? [["publish", "sketchbook"]] : []
   const offFilters: Filter[] = off ? [["publish", "off"]] : []
-  const byMeFilters: Filter[] = byMe ? [["by me"]] : []
+  const byMeFilters: Filter[] = byMe ? [["by-me"]] : []
   const filters: Filter[] = [
     ...byMeFilters,
     ...allFilters,

@@ -33,14 +33,14 @@ describe("getVerifiedFilter", () => {
   it("vbm => my-tag", () => {
     expect(getVerifiedFilter({ ...offs, vbm: true })).toEqual([
       "or",
-      ["my tag", "verified"],
+      ["my-tag", "verified"],
     ])
   })
 
   it("nvbm => no my-tag", () => {
     expect(getVerifiedFilter({ ...offs, nvbm: true })).toEqual([
       "or",
-      ["no", ["my tag", "verified"]],
+      ["no", ["my-tag", "verified"]],
     ])
   })
 
@@ -87,20 +87,20 @@ describe("getPublishFilter", () => {
     ])
   })
 
-  it("all & sketchbook & byMe => [or [by me] [publish all] [publish sketchbook]]", () => {
+  it("all & sketchbook & byMe => [or [by-me] [publish all] [publish sketchbook]]", () => {
     expect(
       getPublishFilter({ all: true, sketchbook: true, byMe: true })
-    ).toEqual(["or", ["by me"], ["publish", "all"], ["publish", "sketchbook"]])
+    ).toEqual(["or", ["by-me"], ["publish", "all"], ["publish", "sketchbook"]])
   })
 
-  it("byMe => [by me]", () => {
-    expect(getPublishFilter({ byMe: true })).toEqual(["by me"])
+  it("byMe => [by-me]", () => {
+    expect(getPublishFilter({ byMe: true })).toEqual(["by-me"])
   })
 
-  it("all & byMe => [or [by me] [publish all]]", () => {
+  it("all & byMe => [or [by-me] [publish all]]", () => {
     expect(getPublishFilter({ all: true, byMe: true })).toEqual([
       "or",
-      ["by me"],
+      ["by-me"],
       ["publish", "all"],
     ])
   })

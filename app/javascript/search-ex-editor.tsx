@@ -38,7 +38,7 @@ const nonNumericOpOptions = [
   "no",
   "not",
   "all",
-  "progress with",
+  "progress-with",
   "____",
   "&",
   "compare",

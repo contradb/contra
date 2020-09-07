@@ -139,7 +139,7 @@ function registerSearchEx(className, ...props) {
   op = op.replace(/NumericEx$/, "")
   op = op.replace(/FigurewiseAnd/g, "&")
   op = op.replace(/CountMatches/, "count-matches")
-  op = op.replace(/ProgressWith/, "progress with")
+  op = op.replace(/ProgressWith/, "progress-with")
   op = op.toLowerCase()
   constructorNameToOp[className] = op
   const constructor = eval(className)

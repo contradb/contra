@@ -98,7 +98,7 @@ module FilterDances
          when '&'
            'figurewise_and'
          else
-           operator.gsub(' ', '_')
+           operator.gsub('-', '_')
          end
     fn = :"matching_figures_for_#{nm}"
     raise "#{operator.inspect} is not a valid operator in #{filter.inspect}" unless self.respond_to?(fn, true)

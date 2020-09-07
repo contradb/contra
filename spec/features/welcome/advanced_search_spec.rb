@@ -793,7 +793,7 @@ describe 'advanced search component', js: true do
         click_link(call_me.title)
         expect(page).to have_css("h1", text: call_me.title)
         page.go_back
-        expect(find(".search-ex-op", match: :first).value).to eq(filter)
+        expect(find(".search-ex-op", match: :first).value.gsub(/-/, ' ')).to eq(filter)
         select('figure', match: :first) # restore binops to single node.
       end
     end
