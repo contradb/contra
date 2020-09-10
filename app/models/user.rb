@@ -31,6 +31,10 @@ class User < ApplicationRecord
     name.gsub(/[a-z]([a-z])[a-z]/, '\1')
   end
 
+  def destroy_if_deadbeat
+    self.destroy if dances.length.zero? && idioms.length.zero? && programs.length.zero? && duts.length.zero?
+  end
+
   private
   def idioms_to_h(idioms)
     h = {}
