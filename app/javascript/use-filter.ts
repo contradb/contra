@@ -52,13 +52,21 @@ const defaultFilterState: FilterState = {
   otherFormation: true,
 }
 
+const defaultFilterString = JSON.stringify(defaultFilterState)
+
 export default function useFilter(
   coreFilter: Filter
-): { filter: Filter; dictionary: object } {
+): {
+  filter: Filter
+  dictionary: object
+  clearFilter: () => void
+  isFilterClear: boolean
+} {
   const [sessionStorage, setSessionStorage] = useSessionStorage(
     "filterState",
-    JSON.stringify(defaultFilterState)
+    defaultFilterString
   )
+  const clearFilter = (): void => setSessionStorage(defaultFilterString)
   const states = JSON.parse(sessionStorage)
   const setStates = (value: FilterState): void =>
     setSessionStorage(JSON.stringify(value))
@@ -68,6 +76,8 @@ export default function useFilter(
     setters[setterName(stateName)] = newState =>
       setStates({ ...states, [stateName]: newState })
   const d = { ...states, ...setters }
+
+  const isFilterClear = wellIsTheFilterClear(states)
 
   const verifiedFilter: Filter = useMemo(
     () =>
@@ -162,5 +172,14 @@ export default function useFilter(
     coreFilter,
   ])
 
-  return { filter: grandFilter, dictionary: d }
+  return { filter: grandFilter, dictionary: d, clearFilter, isFilterClear }
+}
+
+const wellIsTheFilterClear = (filter: FilterState): boolean => {
+  for (const key in defaultFilterState) {
+    if ((filter as any)[key] !== (defaultFilterState as any)[key]) {
+      return false
+    }
+  }
+  return true
 }

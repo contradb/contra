@@ -799,6 +799,15 @@ describe 'advanced search component', js: true do
     end
   end
 
+  describe "reset button" do
+    it "works" do
+      visit(search_path)
+      expect(page).to_not have_button('Clear Search')
+      check_filter 'ez-sketchbooks'
+      expect(page).to have_button('Clear Search')
+    end
+  end
+
   def tag_all_dances(tag: FactoryGirl.create(:tag, :verified), user: FactoryGirl.create(:user))
     Dance.all.each do |dance|
       FactoryGirl.create(:dut, dance: dance, tag: tag, user: user)

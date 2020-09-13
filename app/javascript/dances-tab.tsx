@@ -11,6 +11,8 @@ export const DancesTab = ({
   pageCount,
   visibleColumns,
   setVisibleColumns,
+  clear,
+  isClear,
 }: {
   loading: boolean
   filter: Filter
@@ -19,9 +21,12 @@ export const DancesTab = ({
   pageCount: number
   visibleColumns: boolean[]
   setVisibleColumns: (val: boolean[]) => void
+  clear: () => void
+  isClear: boolean
 }): JSX.Element => (
   <>
     {loading && <div className="floating-loading-indicator">loading...</div>}
+    <ClearSearchButton clear={clear} isClear={isClear} />
     <DanceTable
       filter={filter}
       fetchDataFn={fetchDataFn}
@@ -31,6 +36,22 @@ export const DancesTab = ({
       setVisibleColumns={setVisibleColumns}
     />
   </>
+)
+
+const ClearSearchButton = ({
+  clear,
+  isClear,
+}: {
+  clear: () => void
+  isClear: boolean
+}): JSX.Element => (
+  <button
+    className="btn btn-default"
+    onClick={clear}
+    style={isClear ? { visibility: "hidden" } : {}}
+  >
+    Clear Search
+  </button>
 )
 
 export default DancesTab

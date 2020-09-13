@@ -31,8 +31,8 @@ export const AdvancedSearch = ({
     numberMatching: 0,
   })
 
-  const [loading, setLoading] = React.useState(false)
-  const [pageCount, setPageCount] = React.useState(0)
+  const [loading, setLoading] = useState(false)
+  const [pageCount, setPageCount] = useState(0)
 
   const fetchDataFn: FetchDataFn = useCallback(
     ({ pageSize, pageIndex, sortBy, filter }) => {
@@ -70,7 +70,9 @@ export const AdvancedSearch = ({
     setSearchExString(searchEx.toJson())
 
   const searchExLispMemo = useMemo(() => searchEx.toLisp(), [searchEx])
-  const { filter, dictionary } = useFilter(searchExLispMemo)
+  const { filter, dictionary, clearFilter, isFilterClear } = useFilter(
+    searchExLispMemo
+  )
 
   const breakpoint = useBootstrap3Breakpoint()
 
@@ -101,6 +103,8 @@ export const AdvancedSearch = ({
       pageCount={pageCount}
       visibleColumns={visibleColumns}
       setVisibleColumns={setVisibleColumns}
+      clear={clearFilter}
+      isClear={isFilterClear}
     />
   )
   const programTab = <ProgramTab />
