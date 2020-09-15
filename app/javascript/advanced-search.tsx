@@ -61,13 +61,15 @@ export const AdvancedSearch = ({
   )
   const [searchExString, setSearchExString] = useSessionStorage(
     "searchEx",
-    () => SearchEx.default().toJson()
+    searchExDefaultJson
   )
+  const isSearchExClear = searchExString === searchExDefaultJson
   const searchEx = useMemo(() => SearchEx.fromJson(searchExString), [
     searchExString,
   ])
   const setSearchEx = (searchEx: SearchEx): void =>
     setSearchExString(searchEx.toJson())
+  const clearSearchEx = (): void => setSearchEx(SearchEx.default())
 
   const searchExLispMemo = useMemo(() => searchEx.toLisp(), [searchEx])
   const { filter, dictionary, clearFilter, isFilterClear } = useFilter(
@@ -103,8 +105,11 @@ export const AdvancedSearch = ({
       pageCount={pageCount}
       visibleColumns={visibleColumns}
       setVisibleColumns={setVisibleColumns}
-      clear={clearFilter}
-      isClear={isFilterClear}
+      isClear={isFilterClear && isSearchExClear}
+      clear={() => {
+        clearFilter()
+        clearSearchEx()
+      }}
     />
   )
   const programTab = <ProgramTab />
@@ -127,6 +132,8 @@ export const AdvancedSearch = ({
     )
   }
 }
+
+const searchExDefaultJson = SearchEx.default().toJson()
 
 const provideDialect = (
   dialect: Dialect,
