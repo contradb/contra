@@ -1,6 +1,7 @@
 import React from "react"
 import { SearchEx } from "./search-ex"
 import SearchExEditor from "./search-ex-editor"
+import ClearTabButton from "./clear-tab-button"
 
 const strangelySpacedOutJsonStringify = (thing: any): string => {
   if (Array.isArray(thing)) {
@@ -13,11 +14,18 @@ const strangelySpacedOutJsonStringify = (thing: any): string => {
 export const FiguresTab = ({
   searchEx,
   setSearchEx,
+  isClear,
+  clear,
 }: {
   searchEx: SearchEx
   setSearchEx: (se: SearchEx) => void
+  isClear: boolean
+  clear: () => void
 }): JSX.Element => (
   <>
+    <div className="text-align-center">
+      <ClearTabButton name="Search" clear={clear} isClear={isClear} />
+    </div>
     <SearchExEditor
       searchEx={searchEx}
       setSearchEx={setSearchEx}

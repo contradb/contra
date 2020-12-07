@@ -92,9 +92,20 @@ export const AdvancedSearch = ({
   const dancesTabName = `${searchDancesJson.numberMatching} dance${
     1 === searchDancesJson.numberMatching ? "" : "s"
   }`
-  const filtersTab = <FiltersTab dictionary={dictionary} />
+  const filtersTab = (
+    <FiltersTab
+      dictionary={dictionary}
+      isClear={isFilterClear}
+      clear={clearFilter}
+    />
+  )
   const figuresTab = (
-    <FiguresTab searchEx={searchEx} setSearchEx={setSearchEx} />
+    <FiguresTab
+      searchEx={searchEx}
+      setSearchEx={setSearchEx}
+      isClear={isSearchExClear}
+      clear={clearSearchEx}
+    />
   )
   const dancesTab = (
     <DancesTab
@@ -105,11 +116,6 @@ export const AdvancedSearch = ({
       pageCount={pageCount}
       visibleColumns={visibleColumns}
       setVisibleColumns={setVisibleColumns}
-      isClear={isFilterClear && isSearchExClear}
-      clear={() => {
-        clearFilter()
-        clearSearchEx()
-      }}
     />
   )
   const programTab = <ProgramTab />
