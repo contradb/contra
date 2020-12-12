@@ -18,6 +18,8 @@ import ProgramTab from "./program-tab"
 import { columnDefinitions } from "./dance-table"
 import { SearchEx } from "./search-ex"
 
+const searchExDefaultJson = SearchEx.default().toJson()
+
 export const AdvancedSearch = ({
   dialect,
   tags, // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -138,8 +140,6 @@ export const AdvancedSearch = ({
     )
   }
 }
-
-const searchExDefaultJson = SearchEx.default().toJson()
 
 const provideDialect = (
   dialect: Dialect,
