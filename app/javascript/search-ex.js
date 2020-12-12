@@ -51,7 +51,7 @@ export class SearchEx {
   }
 
   static default() {
-    return SearchEx.fromLisp(["figure", "*"])
+    return defaultSearchEx
   }
 
   minSubexpressions() {
@@ -585,3 +585,5 @@ registerSearchEx("CountMatchesNumericEx")
 
 class ProgressWithSearchEx extends SimpleUnarySearchEx {}
 registerSearchEx("ProgressWithSearchEx")
+
+const defaultSearchEx = SearchEx.fromLisp(["figure", "*"])

@@ -639,3 +639,10 @@ describe("toJson and fromJson", () => {
     expect(SearchEx.fromJson(searchEx.toJson())).toEqual(searchEx)
   })
 })
+
+describe("SearchEx.default()", () => {
+  it("returns [figure *]", () =>
+    expect(SearchEx.default()).toEqual(SearchEx.fromLisp(["figure", "*"])))
+  it("returns identical things each invocation", () =>
+    expect(SearchEx.default()).toBe(SearchEx.default()))
+})

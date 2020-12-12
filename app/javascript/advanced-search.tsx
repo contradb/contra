@@ -18,6 +18,8 @@ import ProgramTab from "./program-tab"
 import { columnDefinitions } from "./dance-table"
 import { SearchEx } from "./search-ex"
 
+const searchExDefaultJson = SearchEx.default().toJson()
+
 export const AdvancedSearch = ({
   dialect,
   tags, // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -31,8 +33,8 @@ export const AdvancedSearch = ({
     numberMatching: 0,
   })
 
-  const [loading, setLoading] = React.useState(false)
-  const [pageCount, setPageCount] = React.useState(0)
+  const [loading, setLoading] = useState(false)
+  const [pageCount, setPageCount] = useState(0)
 
   const fetchDataFn: FetchDataFn = useCallback(
     ({ pageSize, pageIndex, sortBy, filter }) => {
@@ -61,16 +63,20 @@ export const AdvancedSearch = ({
   )
   const [searchExString, setSearchExString] = useSessionStorage(
     "searchEx",
-    () => SearchEx.default().toJson()
+    searchExDefaultJson
   )
+  const isSearchExClear = searchExString === searchExDefaultJson
   const searchEx = useMemo(() => SearchEx.fromJson(searchExString), [
     searchExString,
   ])
   const setSearchEx = (searchEx: SearchEx): void =>
     setSearchExString(searchEx.toJson())
+  const clearSearchEx = (): void => setSearchEx(SearchEx.default())
 
   const searchExLispMemo = useMemo(() => searchEx.toLisp(), [searchEx])
-  const { filter, dictionary } = useFilter(searchExLispMemo)
+  const { filter, dictionary, clearFilter, isFilterClear } = useFilter(
+    searchExLispMemo
+  )
 
   const breakpoint = useBootstrap3Breakpoint()
 
@@ -88,9 +94,20 @@ export const AdvancedSearch = ({
   const dancesTabName = `${searchDancesJson.numberMatching} dance${
     1 === searchDancesJson.numberMatching ? "" : "s"
   }`
-  const filtersTab = <FiltersTab dictionary={dictionary} />
+  const filtersTab = (
+    <FiltersTab
+      dictionary={dictionary}
+      isClear={isFilterClear}
+      clear={clearFilter}
+    />
+  )
   const figuresTab = (
-    <FiguresTab searchEx={searchEx} setSearchEx={setSearchEx} />
+    <FiguresTab
+      searchEx={searchEx}
+      setSearchEx={setSearchEx}
+      isClear={isSearchExClear}
+      clear={clearSearchEx}
+    />
   )
   const dancesTab = (
     <DancesTab

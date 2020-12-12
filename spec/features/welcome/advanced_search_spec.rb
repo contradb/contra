@@ -206,32 +206,29 @@ describe 'advanced search component', js: true do
         dances
         tag_all_dances
         visit(search_path)
-        expect(page).to_not have_css(:th, text: "Figures")
+        expect(page).to_not have_css('th', text: "Figures")
         expect(page).to_not have_content('whole dance')
         click_button 'Figures'
-        expect(page).to have_css(:th, text: "Figures") # js wait
+        expect(page).to have_css('th', text: "Figures") # js wait
         expect(page).to have_content('whole dance', count: 3)
       end
 
       it 'some matches prints figures' do
-        # since setting the filter is extensively tested elsewhere, it seems okay to mock it here
-        expect_any_instance_of(Api::V1::DancesController).to receive(:filter).and_return(['figure', 'circle'])
-        # mock
         dances
         tag_all_dances
         visit(search_path)
+        select('circle')
         click_button 'Figures'
         expect(page).to have_css('tr', text: /The Rendevouz.*\n?circle left 4 places\ncircle left 3 places/)
         expect(page).to have_css('tr', text: /Call Me.*\n?circle left 3 places/)
       end
 
       it 'matches print in dialect' do
-        # since setting the filter is extensively tested elsewhere, it seems okay to mock it here
-        expect_any_instance_of(Api::V1::DancesController).to receive(:filter).and_return(['figure', 'do si do'])
         allow_any_instance_of(Api::V1::DancesController).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         dances
         tag_all_dances
         visit(search_path)
+        select('do si do')
         click_button 'Figures'
         expect(page).to have_css('tr', text: /The Rendevouz.*\n?ravens do si do 1½/)
       end
@@ -796,6 +793,32 @@ describe 'advanced search component', js: true do
         expect(find(".search-ex-op", match: :first).value.gsub(/-/, ' ')).to eq(filter)
         select('figure', match: :first) # restore binops to single node.
       end
+    end
+  end
+
+  describe "Clear buttons" do
+    it "Clear Filters button works on ez-filters" do
+      visit(search_path)
+      expect(page).to_not have_button('Clear Filters')
+      check_filter 'ez-sketchbooks'
+      expect(page).to have_button('Clear Filters')
+
+      click_button('Clear Filters')
+
+      expect(page).to_not have_button('Clear Filters')
+      expect(page).to have_field('ez-sketchbooks', checked: false)
+    end
+
+    it "Clear Search works on the SearchExEditor" do
+      visit(search_path)
+      expect(page).to_not have_button('Clear Search')
+      select('do si do')
+      expect(page).to have_button('Clear Search')
+
+      click_button('Clear Search')
+
+      expect(page).to_not have_button('Clear Search')
+      expect(find('.search-ex-move').value).to eq('*')
     end
   end
 

@@ -2,11 +2,16 @@ import React, { useState } from "react"
 import Cookie from "js-cookie"
 import EzTextFilter from "./ez-text-filter"
 import EzCheckboxFilter from "./ez-checkbox-filter"
+import ClearTabButton from "./clear-tab-button"
 
 export const FiltersTab = ({
   dictionary,
+  isClear,
+  clear,
 }: {
   dictionary: any
+  isClear: boolean
+  clear: () => void
 }): JSX.Element => {
   const d = dictionary
   const [signedIn] = useState(() => Cookie.get("signed_in"))
@@ -14,6 +19,7 @@ export const FiltersTab = ({
 
   return (
     <div className="filters-tab">
+      <ClearTabButton name="Filters" clear={clear} isClear={isClear} />
       <EzTextFilter
         name="Title"
         inputClass="ez-title-filter"
