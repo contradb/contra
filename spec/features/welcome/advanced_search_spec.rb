@@ -206,10 +206,10 @@ describe 'advanced search component', js: true do
         dances
         tag_all_dances
         visit(search_path)
-        expect(page).to_not have_css(:th, text: "Figures")
+        expect(page).to_not have_css('th', text: "Figures")
         expect(page).to_not have_content('whole dance')
         click_button 'Figures'
-        expect(page).to have_css(:th, text: "Figures") # js wait
+        expect(page).to have_css('th', text: "Figures") # js wait
         expect(page).to have_content('whole dance', count: 3)
       end
 
