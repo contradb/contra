@@ -799,20 +799,20 @@ describe 'advanced search component', js: true do
     end
   end
 
-  describe "reset button" do
-    it "works on ez-filters" do
+  describe "Clear buttons" do
+    it "Clear Filters button works on ez-filters" do
       visit(search_path)
-      expect(page).to_not have_button('Clear Search')
+      expect(page).to_not have_button('Clear Filters')
       check_filter 'ez-sketchbooks'
-      expect(page).to have_button('Clear Search')
+      expect(page).to have_button('Clear Filters')
 
-      click_button('Clear Search')
+      click_button('Clear Filters')
 
-      expect(page).to_not have_button('Clear Search')
+      expect(page).to_not have_button('Clear Filters')
       expect(page).to have_field('ez-sketchbooks', checked: false)
     end
 
-    it "works on the SearchExEditor" do
+    it "Clear Search works on the SearchExEditor" do
       visit(search_path)
       expect(page).to_not have_button('Clear Search')
       select('do si do')
