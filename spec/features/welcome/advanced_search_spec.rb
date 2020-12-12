@@ -214,24 +214,21 @@ describe 'advanced search component', js: true do
       end
 
       it 'some matches prints figures' do
-        # since setting the filter is extensively tested elsewhere, it seems okay to mock it here
-        expect_any_instance_of(Api::V1::DancesController).to receive(:filter).and_return(['figure', 'circle'])
-        # mock
         dances
         tag_all_dances
         visit(search_path)
+        select('circle')
         click_button 'Figures'
         expect(page).to have_css('tr', text: /The Rendevouz.*\n?circle left 4 places\ncircle left 3 places/)
         expect(page).to have_css('tr', text: /Call Me.*\n?circle left 3 places/)
       end
 
       it 'matches print in dialect' do
-        # since setting the filter is extensively tested elsewhere, it seems okay to mock it here
-        expect_any_instance_of(Api::V1::DancesController).to receive(:filter).and_return(['figure', 'do si do'])
         allow_any_instance_of(Api::V1::DancesController).to receive(:dialect).and_return(JSLibFigure.test_dialect)
         dances
         tag_all_dances
         visit(search_path)
+        select('do si do')
         click_button 'Figures'
         expect(page).to have_css('tr', text: /The Rendevouz.*\n?ravens do si do 1½/)
       end
