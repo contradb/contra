@@ -1,0 +1,3 @@
+rspec ./spec/features/welcome/search_ex_spec.rb:92 # SearchExEditors editing tree shape clicking 'add and' inserts a figure filter that responds to change events
+rspec ./spec/features/welcome/search_ex_spec.rb:104 # SearchExEditors editing tree shape changing from 'and' to 'figure' purges subfilters and installs a new working move select
+rspec ./spec/features/welcome/search_ex_spec.rb:271 # SearchExEditors FigureSearchEx changing move changes search results
