@@ -26,3 +26,7 @@ yarn-debug.log*
 yarn-debug.log*
 .yarn-integrity
 /public/assets
+/terraform/.terraform
+/terraform/.terraform.lock.hcl
+/terraform/*.tfplan
+/terraform/terraform.tfstate*
