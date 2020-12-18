@@ -26,7 +26,9 @@ sudo service nginx stop
 sudo service unicorn_contra stop; 
 git pull
 get_latest_ruby
-bundle install --deployment --without development test
+bundle config set --local deployment true
+bundle config set --local without 'development test'
+bundle install
 EXECJS_RUNTIME=Node bundle exec rake assets:precompile
 bin/rake db:migrate
 sudo service unicorn_contra start
