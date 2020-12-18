@@ -9,15 +9,23 @@ then
   exit 1
 fi
 
+function get_latest_ruby () {
+  # update definitions:
+  cd ~/.rbenv/plugins/ruby-build
+  git pull
+  cd -
+  rbenv install --skip-existing `cat .ruby-version`
+  rbenv local `cat .ruby-version`
+  gem install bundler # bundler should be built in starting in 2.7!
+}
+
 set -e
 set -x
 cd $HOME/contra
 sudo service nginx stop
 sudo service unicorn_contra stop; 
 git pull
-# cd ~/.rbenv/plugins/ruby-build && git pull && cd -
-# rbenv install --skip-existing `cat .ruby-version`
-# gem install bundler
+get_latest_ruby
 bundle install --deployment --without development test
 EXECJS_RUNTIME=Node bundle exec rake assets:precompile
 bin/rake db:migrate
