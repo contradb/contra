@@ -116,6 +116,7 @@ GEM
     json (1.8.6)
     kgio (2.11.0)
     libv8 (6.7.288.46.1)
+    libv8 (6.7.288.46.1-x86_64-linux)
     loofah (2.4.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -265,6 +266,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86_64-linux
 
 DEPENDENCIES
   actionview-encoded_mail_to
@@ -302,4 +304,4 @@ DEPENDENCIES
   webpacker (~> 4.x)
 
 BUNDLED WITH
-   2.1.4
+   2.2.1
