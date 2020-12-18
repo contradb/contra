@@ -23,7 +23,7 @@ set -e
 set -x
 cd $HOME/contra
 sudo service nginx stop
-sudo service unicorn_contra stop; 
+sudo service unicorn_contra stop;
 git pull
 get_latest_ruby
 bundle config set --local deployment true
