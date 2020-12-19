@@ -27,9 +27,6 @@ gem 'jquery-ui-rails'
 # this fixed some turbolinks bugs, but didn't play with angular
 # gem 'jquery-turbolinks'
 
-# bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0', group: :doc
-
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
