@@ -29,6 +29,8 @@ jobs:
         run: |
           gem install bundler
           bundle install --jobs 4 --retry 3
+      - name: Run yarn install
+        run: yarn install
       - name: Setup Database
         env:
           RAILS_ENV: test
