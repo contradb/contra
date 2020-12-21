@@ -8,7 +8,8 @@ postgres: &postgres
   # host was set to "localhost" (no quotes), but rails console production
   # needed it to be empty string, as per 
   # http://stackoverflow.com/questions/32186349/rails-console-no-password-supply-error
-  host: ""
+  # CONTRADB_DATABASE_HOST only set on github actions:
+  host: <%= ENV['CONTRADB_DATABASE_HOST'] || "" %>
   password: "balance+swing"
 
 sqlite: &sqlite

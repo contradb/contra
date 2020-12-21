@@ -11,6 +11,10 @@ jobs:
         image: postgres:11.6
         ports: ["5432:5432"]
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        env:
+          POSTGRES_DB: contratest
+          POSTGRES_USER: rails
+          POSTGRES_PASSWORD: "balance+swing"
 
     steps:
       - uses: actions/checkout@v1
@@ -28,16 +32,11 @@ jobs:
       - name: Setup Database
         env:
           RAILS_ENV: test
-          PGHOST: localhost
-          PGUSER: rails
-          PGDATABASE: contratest
-          PGPASSWORD: "balance+swing"
-          POSTGRES_PASSWORD: "balance+swing"
+          CONTRADB_DATABASE_HOST: localhost
         run: bin/rails db:create db:schema:load
 
       - name: Build and test with rspec
         env:
           RAILS_ENV: test
-          PGHOST: localhost
-          PGUSER: postgres
+          CONTRADB_DATABASE_HOST: localhost
         run: bundle exec rspec spec
