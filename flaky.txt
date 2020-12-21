@@ -1,3 +1,12 @@
 rspec ./spec/features/welcome/search_ex_spec.rb:92 # SearchExEditors editing tree shape clicking 'add and' inserts a figure filter that responds to change events
 rspec ./spec/features/welcome/search_ex_spec.rb:104 # SearchExEditors editing tree shape changing from 'and' to 'figure' purges subfilters and installs a new working move select
 rspec ./spec/features/welcome/search_ex_spec.rb:271 # SearchExEditors FigureSearchEx changing move changes search results
+rspec ./spec/features/welcome/search_ex_spec.rb:450 # SearchExEditors FigureSearchEx parameters allemande with allemande left finds only 'Just Allemande'
+rspec ./spec/features/welcome/search_ex_spec.rb:538 # SearchExEditors FigureSearchEx parameters down the hall ender filter works
+rspec ./spec/features/welcome/advanced_search_spec.rb:186 # advanced search component columns published column cells
+rspec ./spec/features/welcome/advanced_search_spec.rb:541 # advanced search component ez-filters shared Admins can use the 'private' checkbox
+rspec ./spec/features/welcome/search_ex_spec.rb:92 # SearchExEditors editing tree shape clicking 'add and' inserts a figure filter that responds to change events
+rspec ./spec/features/welcome/search_ex_spec.rb:104 # SearchExEditors editing tree shape changing from 'and' to 'figure' purges subfilters and installs a new working move select
+rspec ./spec/features/welcome/search_ex_spec.rb:467 # SearchExEditors FigureSearchEx parameters allemande once around works
+rspec ./spec/features/welcome/search_ex_spec.rb:538 # SearchExEditors FigureSearchEx parameters down the hall ender filter works
+
