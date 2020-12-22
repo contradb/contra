@@ -65,10 +65,14 @@ jobs:
         env:
           RAILS_ENV: test
           CONTRADB_DATABASE_HOST: localhost
-        run: bin/rails db:create db:schema:load
+        run: |
+          bundle config path vendor/bundle
+          bin/rails db:create db:schema:load
 
       - name: rspec tests
         env:
           RAILS_ENV: test
           CONTRADB_DATABASE_HOST: localhost
-        run: bundle exec rspec spec
+        run: |
+          bundle config path vendor/bundle
+          bundle exec rspec spec
