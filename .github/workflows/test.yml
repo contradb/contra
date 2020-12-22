@@ -1,4 +1,4 @@
-name: CI RSpec Tests
+name: Test
 
 on: [push]
 
