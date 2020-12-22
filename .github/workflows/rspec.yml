@@ -34,14 +34,14 @@ jobs:
 
       - name: cache gem install bundler
         uses: actions/cache@v2
-        id: cache-gem-install-bundler
+        id: cache-gem-install-bundler2
         with:
           path: ~/.bundle
-          key: ${{ runner.os }}-bundler
+          key: ${{ runner.os }}-bundler2
 
       - name: gem install bundler
-        if: steps.cache-gem-install-bundler.outputs.cache-hit != 'true'
-        run: gem install bundler
+        if: steps.cache-gem-install-bundler2.outputs.cache-hit != 'true'
+        run: gem install bundler -v 2.2.2
 
       - name: cache bundle-install
         uses: actions/cache@v2
