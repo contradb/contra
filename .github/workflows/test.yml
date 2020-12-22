@@ -45,7 +45,7 @@ jobs:
         run: sudo apt-get -yqq install libpq-dev
 
       - name: gem install bundler
-        run: gem install bundler -v 2.2.2
+        run: gem install bundler
 
       - name: cache bundle-install
         uses: actions/cache@v2
