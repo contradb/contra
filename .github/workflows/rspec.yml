@@ -32,6 +32,13 @@ jobs:
       - name: install postgres client
         run: sudo apt-get -yqq install libpq-dev
 
+      - name: cache bundler itself
+        uses: actions/cache@v2
+        id: cache-bundler-itself
+        with:
+          path: ~/.bundle
+          key: ${{ runner.os }}-bundler
+
       - name: cache gems
         uses: actions/cache@v2
         id: cache-gems
@@ -50,7 +57,7 @@ jobs:
           #   ${{ runner.os }}-
 
       - name: bundle install
-        if: steps.cache-gems.outputs.cache-hit != 'true'
+        if: steps.cache-bundler-itself.outputs.cache-hit != 'true' || steps.cache-gems.outputs.cache-hit != 'true'
         run: |
           gem install bundler
           bundle install --jobs 4 --retry 3
