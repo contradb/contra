@@ -61,7 +61,6 @@ jobs:
           #   ${{ runner.os }}-
 
       - name: bundle install
-        if: steps.cache-gem-install-bundler2.outputs.cache-hit != 'true' || steps.cache-bundle-install.outputs.cache-hit != 'true'
         run: bundle install --jobs 4 --retry 3
 
       - name: initialize database
