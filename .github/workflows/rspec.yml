@@ -57,7 +57,10 @@ jobs:
           CONTRADB_DATABASE_HOST: localhost
         run: bin/rails db:create db:schema:load
 
-      - name: run rspec tests
+      - name: jest tests
+        run: yarn test
+
+      - name: rspec tests
         env:
           RAILS_ENV: test
           CONTRADB_DATABASE_HOST: localhost
