@@ -18,6 +18,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+
+      - name: yarn install
+        run: yarn install
+
+      - name: jest tests
+        run: yarn test
+
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: 2.6.6
@@ -48,17 +55,11 @@ jobs:
           gem install bundler
           bundle install --jobs 4 --retry 3
 
-      - name: yarn install
-        run: yarn install
-
       - name: initialize database
         env:
           RAILS_ENV: test
           CONTRADB_DATABASE_HOST: localhost
         run: bin/rails db:create db:schema:load
-
-      - name: jest tests
-        run: yarn test
 
       - name: rspec tests
         env:
