@@ -1,0 +1,78 @@
+name: Test
+
+on: [push]
+
+
+
+jobs:
+  build:
+    name: continuous integration
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:11.6
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        env:
+          POSTGRES_DB: contratest
+          POSTGRES_USER: runner
+          POSTGRES_PASSWORD: "balance+swing"
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: cache yarn install
+        uses: actions/cache@v2
+        id: cache-yarn-install
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-2
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: yarn install
+        if: steps.cache-yarn-install.outputs.cache-hit != 'true'
+        run: yarn install
+
+      - name: jest tests
+        run: yarn test
+
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.6.6
+
+      - name: install postgres client
+        run: sudo apt-get -yqq install libpq-dev
+
+      - name: gem install bundler
+        run: gem install bundler -v 2.2.2
+
+      - name: cache bundle-install
+        uses: actions/cache@v2
+        id: cache-bundle-install
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}-5
+          restore-keys: ${{ runner.os }}-gems-
+
+      - name: bundle install
+        if: steps.cache-bundle-install.outputs.cache-hit != 'true'
+        run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+
+      - name: initialize database
+        env:
+          RAILS_ENV: test
+          CONTRADB_DATABASE_HOST: localhost
+        run: |
+          bundle config path vendor/bundle
+          bin/rails db:create db:schema:load
+
+      - name: rspec tests
+        env:
+          RAILS_ENV: test
+          CONTRADB_DATABASE_HOST: localhost
+        run: |
+          bundle config path vendor/bundle
+          bundle exec rspec spec
