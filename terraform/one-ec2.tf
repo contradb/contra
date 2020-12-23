@@ -1,4 +1,3 @@
-new-one.tf
 
 # Paste these three secrets into bash from https://atc-ad.awsapps.com/start#/ :
 # export AWS_ACCESS_KEY_ID=...
@@ -8,6 +7,9 @@ new-one.tf
 # export AWS_DEFAULT_REGION=us-east-1
 variable "ssh_public_key_path" {
   default = "/Users/morsed/.ssh/contradb-terraform.pub"
+}
+variable "ssh_private_key_path" {
+  default = "/Users/morsed/.ssh/contradb-terraform"
 }
 
 provider "aws" {}
@@ -36,9 +38,20 @@ resource "aws_instance" "contradb" {
     Name = "contradb"
   }
 
+  connection {
+    type = "ssh"
+    host = self.public_ip
+    user = "ec2-user"
+    private_key = file(var.ssh_private_key_path)
+  }
+
+  provisioner "remote-exec" {
+    inline = ["echo hello world"]
+  }
+
   key_name = aws_key_pair.contradb_terraform.key_name
 
-  security_groups = [aws_security_group.allow_ssh.id]
+  vpc_security_group_ids = [aws_security_group.allow_ssh.id]
   # delete_on_termination = eventually false, but for now true is aok
   # might need a aws_network_interface, but probably can get away with the network_interface block
 }
@@ -51,12 +64,20 @@ resource "aws_key_pair" "contradb_terraform" {
 resource "aws_security_group" "allow_ssh" {
   name        = "allow_ssh"
   description = "Allow ssh inbound traffic"
+  vpc_id = aws_default_vpc.default.id
 
   ingress {
     description = "ssh"
     from_port   = 22
     to_port     = 22
-    protocol    = "-1"
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    description = "ssh"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "udp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -71,6 +92,8 @@ resource "aws_security_group" "allow_ssh" {
     Name = "allow_ssh"
   }
 }
+
+resource "aws_default_vpc" "default" {}
 
 output "ip" {
   value = aws_instance.contradb.public_ip
