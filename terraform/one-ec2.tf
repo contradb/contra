@@ -1,4 +1,7 @@
-
+# After running this, 
+# ssh -i ~/.ssh/contradb-terraform ubuntu@ec2-54-209-110-198.compute-1.amazonaws.com
+# worked for me. -dm
+#
 # Paste these three secrets into bash from https://atc-ad.awsapps.com/start#/ :
 # export AWS_ACCESS_KEY_ID=...
 # export AWS_SECRET_KEY_ID=...
@@ -71,13 +74,6 @@ resource "aws_security_group" "allow_ssh" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    description = "ssh"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "udp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
