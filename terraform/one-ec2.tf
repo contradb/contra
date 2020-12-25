@@ -33,12 +33,12 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-resource "aws_instance" "contradb" {
+resource "aws_instance" "server" {
   ami = data.aws_ami.ubuntu.id
   instance_type = "t2.nano"
-  key_name = aws_key_pair.contradb_terraform.key_name
+  key_name = aws_key_pair.contra_key.key_name
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
-  subnet_id = aws_subnet.subnet-uno.id
+  subnet_id = aws_subnet.web.id
 
   tags = {
     Name = "contradb"
@@ -59,7 +59,7 @@ resource "aws_instance" "contradb" {
   # might need a aws_network_interface, but probably can get away with the network_interface block
 }
 
-resource "aws_key_pair" "contradb_terraform" {
+resource "aws_key_pair" "contra_key" {
   key_name   = "contradb-terraform-key"
   public_key = file(var.ssh_public_key_path)
 }
@@ -67,7 +67,7 @@ resource "aws_key_pair" "contradb_terraform" {
 resource "aws_security_group" "allow_ssh" {
   name        = "allow_ssh"
   description = "Allow ssh inbound traffic"
-  vpc_id = aws_vpc.the-vpc.id
+  vpc_id = aws_vpc.contra_vpc.id
 
   ingress {
     description = "ssh"
@@ -89,41 +89,41 @@ resource "aws_security_group" "allow_ssh" {
   }
 }
 
-resource "aws_vpc" "the-vpc" {
+resource "aws_vpc" "contra_vpc" {
   cidr_block = "10.0.0.0/16"
   enable_dns_hostnames = true
   enable_dns_support = true
 }
 
-resource "aws_eip" "ip-test-env" {
-  instance = aws_instance.contradb.id
+resource "aws_eip" "web_ip" {
+  instance = aws_instance.server.id
   vpc = true
 }
 
-resource "aws_subnet" "subnet-uno" {
-  cidr_block = cidrsubnet(aws_vpc.the-vpc.cidr_block, 3, 1)
-  vpc_id = aws_vpc.the-vpc.id
+resource "aws_subnet" "web" {
+  cidr_block = cidrsubnet(aws_vpc.contra_vpc.cidr_block, 3, 1)
+  vpc_id = aws_vpc.contra_vpc.id
   availability_zone = "us-east-1a"
 }
-resource "aws_route_table" "route-table-test-env" {
-  vpc_id = aws_vpc.the-vpc.id
+resource "aws_route_table" "table" {
+  vpc_id = aws_vpc.contra_vpc.id
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.test-env-gw.id
+    gateway_id = aws_internet_gateway.gateway.id
   }
 }
-resource "aws_route_table_association" "subnet-association" {
-  subnet_id      = aws_subnet.subnet-uno.id
-  route_table_id = aws_route_table.route-table-test-env.id
+resource "aws_route_table_association" "subnet_association" {
+  subnet_id      = aws_subnet.web.id
+  route_table_id = aws_route_table.table.id
 }
 
-resource "aws_internet_gateway" "test-env-gw" {
-  vpc_id = aws_vpc.the-vpc.id
+resource "aws_internet_gateway" "gateway" {
+  vpc_id = aws_vpc.contra_vpc.id
 }
 
 output "ip" {
-  value = aws_eip.ip-test-env.public_ip
+  value = aws_eip.web_ip.public_ip
 }
 output "domain" {
-  value = aws_eip.ip-test-env.public_dns
+  value = aws_eip.web_ip.public_dns
 }
