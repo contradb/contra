@@ -40,13 +40,16 @@ export AWS_SESSION_TOKEN=... (sometimes, depending on your account setup)
 
 ## Decide if you want a domain name.
 
-If you do want a domain name, you may have to buy one or use
-one. Later you'll need to configure your registrar, see 'Finish DNS'
-below.
+If you do want a domain name, you may need to buy one. Later you'll need some extra steps marked "DNS-only"
 
 If you don't want a domain name, you'll access the program by raw ip
 address or aws' patented even-harder-than-ip-addresses-to-remember
 domain names.
+
+
+## DNS-only: Configure TTL for testing
+
+In [dns.tf] there's a ttl. Set it something short like 60 seconds while you're getting domains set up the first time. 
 
 
 ## Install Terraform
@@ -79,9 +82,29 @@ Where `[123.45.67.89]` is your instance's ip address. Accept the
 changed fingerprint and *welcome to your sever!* Type `exit` to quit.
 
 
-## Finish DNS
+## DNS-only: Finish DNS
 
 Go to your registrar and add the nameservers that Terraform told you about after the apply.
+
+
+I'd test it with
+
+```
+nslookup contradb-example.com
+```
+
+If that doesn't work, then consider
+
+```
+nslookup contradb-example.com aws-ns1.amazon.com
+```
+
+Where `aws-ns1.amazon.com` is the first of the nameservers you got
+back from the terraform output. If that _still_doesn't work, wait 15
+minutes and try again.
+
+Lastly, restore the TTL in [dns.tf] so it doesn't bust its own cache
+every 60 seconds. How about 3600?
 
 
 ### Note to offical-pants admins:
