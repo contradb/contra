@@ -1,18 +1,3 @@
-# terraform plan -out=the.tfplan -var=domain_name=contradb.org
-#
-# contradb.org notes:
-# https://ap.www.namecheap.com/domains/domaincontrolpanel/contradb.org/domain
-# Nameservers > Custom Dns
-# was
-#   ns1.digitalocean.com
-#   ns2.digitalocean.com
-#   ns3.digitalocean.com
-# now
-#   ns-1125.awsdns-12.org
-#   ns-1730.awsdns-24.co.uk
-#   ns-370.awsdns-46.com
-#   ns-790.awsdns-34.net
-
 variable "domain_name" {
   default = null
   type = string

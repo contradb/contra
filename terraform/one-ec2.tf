@@ -1,13 +1,3 @@
-# After running this, 
-# ssh -i ~/.ssh/contradb-terraform ubuntu@ec2-54-209-110-198.compute-1.amazonaws.com
-# worked for me. -dm
-#
-# Paste these three secrets into bash from https://atc-ad.awsapps.com/start#/ :
-# export AWS_ACCESS_KEY_ID=...
-# export AWS_SECRET_KEY_ID=...
-# export AWS_SESSION_TOKEN=...
-# and also:
-# export AWS_DEFAULT_REGION=us-east-1
 variable "ssh_public_key_path" {
   default = "~/.ssh/contradb-terraform.pub"
 }
