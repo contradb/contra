@@ -12,8 +12,7 @@ buddy, you shoulda seen it _before!_ :D
 
 - AWS account
 - some budget - these servers aren't free
-- a linux/mac-like system to execute the commands below (or the
-  wherewithall to translate them to your OS)
+- a bash-like shell such as is easily found on Linux or Mac to execute some commands
 
 
 ## Keypair
@@ -49,7 +48,7 @@ domain names.
 
 ## DNS-only: Configure TTL for testing
 
-In [dns.tf] there's a ttl. Set it something short like 60 seconds while you're getting domains set up the first time. 
+In [dns.tf](dns.tf) there's a ttl. Set it something short like 60 seconds while you're getting domains set up the first time.
 
 
 ## Install Terraform
@@ -100,13 +99,13 @@ nslookup contradb-example.com aws-ns1.amazon.com
 ```
 
 Where `aws-ns1.amazon.com` is the first of the nameservers you got
-back from the terraform output. If that _still_doesn't work,
+back from the terraform output. If that _still_ doesn't work,
 something's wrong with this terraform code, because we hired
 `aws-ns1.amazon.com` to say the IP address of our server, darn it! If
 it did work, then maybe your local dns just hasn't refreshed it's
 cache yet. Wait 20 minutes and try again.
 
-Lastly, restore the TTL in [dns.tf] so it doesn't bust its own cache
+Lastly, restore the TTL in [dns.tf](dns.tf) so it doesn't bust its own cache
 every 60 seconds. How about 3600?
 
 
