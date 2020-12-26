@@ -100,8 +100,11 @@ nslookup contradb-example.com aws-ns1.amazon.com
 ```
 
 Where `aws-ns1.amazon.com` is the first of the nameservers you got
-back from the terraform output. If that _still_doesn't work, wait 15
-minutes and try again.
+back from the terraform output. If that _still_doesn't work,
+something's wrong with this terraform code, because we hired
+`aws-ns1.amazon.com` to say the IP address of our server, darn it! If
+it did work, then maybe your local dns just hasn't refreshed it's
+cache yet. Wait 20 minutes and try again.
 
 Lastly, restore the TTL in [dns.tf] so it doesn't bust its own cache
 every 60 seconds. How about 3600?
