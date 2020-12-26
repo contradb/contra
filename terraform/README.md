@@ -1,12 +1,24 @@
 # Rent hosting on Amazon Web Services (AWS)
 
 Because hosting ContraDB requires a lot of sub-programs, we use a
-program called _Terraform_ to rent the stuff we need in a reproducible
-fashion.
+program called _Terraform_ to rent the stuff we need in a reliable way.
+
+This document details how to go about standing up your own contradb,
+accessible to the world. If you think this is complicated _now_,
+buddy, you shoulda seen it _before!_ :D
+
+
+## Prerequisites:
+
+- AWS account
+- some budget - these servers aren't free
+- a linux/mac-like system to execute the commands below (or the
+  wherewithall to translate them to your OS)
+
 
 ## Keypair
 
-Setup a public/private keypair in ~/.ssh/contradb-terraform
+Setup a public/private keypair in `~/.ssh/contradb-terraform` and `~/.ssh/contradb-terraform.pub`.
 
 
 ## AWS Environment Variables
@@ -25,17 +37,22 @@ export AWS_SECRET_ACCESS_KEY=...
 export AWS_SESSION_TOKEN=... (sometimes, depending on your account setup)
 ```
 
-## Decide if you want a domain
 
-If you don't, you'll access the program by raw ip address or aws'
-patented even-harder-than-ip-addresses-to-remember domain names.
+## Decide if you want a domain name.
 
-If you do, you'll need access to configure your registrar, see 'Finish DNS' below
+If you do want a domain name, you may have to buy one or use
+one. Later you'll need to configure your registrar, see 'Finish DNS'
+below.
+
+If you don't want a domain name, you'll access the program by raw ip
+address or aws' patented even-harder-than-ip-addresses-to-remember
+domain names.
 
 
 ## Install Terraform
 
 These instructions were written with version 0.14.3.
+
 
 ## Terraform it up
 
@@ -49,7 +66,8 @@ Obviously replace `example.com` with your domain. If you don't want a domain, om
 
 You'll get a bunch of outputs from Terraform. You'll want to save them
 somewhere for as long as the installation is live (though if you lose
-them they're also recoverable from the AWS web console.)
+them they're also recoverable from the AWS web console).
+
 
 ## Test ssh
 
@@ -58,17 +76,18 @@ ssh -i ~/.ssh/contradb-terraform ubuntu@[123.45.67.89]
 ```
 
 Where `[123.45.67.89]` is your instance's ip address. Accept the
-changed fingerprint and: welcome to your sever! Type `exit` to quit.
+changed fingerprint and *welcome to your sever!* Type `exit` to quit.
+
 
 ## Finish DNS
 
 Go to your registrar and add the nameservers that Terraform told you about after the apply.
 
-## Dear offical-pants admins:
 
-The domains are hosted by [namecheap.com](https://namecheap.com),
-username `dcmorse` and here is a handy link to the [Namecheap
-dashboard](https://ap.www.namecheap.com/dashboard).
+### Note to offical-pants admins:
+
+The domain `contradb.com` is hosted by namecheap.com. Here is a handy link
+to the [namecheap dashboard](https://ap.www.namecheap.com/dashboard).
 
 ## TODO
 
