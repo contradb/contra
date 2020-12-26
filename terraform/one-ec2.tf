@@ -9,10 +9,10 @@
 # and also:
 # export AWS_DEFAULT_REGION=us-east-1
 variable "ssh_public_key_path" {
-  default = "/Users/morsed/.ssh/contradb-terraform.pub"
+  default = "~/.ssh/contradb-terraform.pub"
 }
 variable "ssh_private_key_path" {
-  default = "/Users/morsed/.ssh/contradb-terraform"
+  default = "~/.ssh/contradb-terraform"
 }
 
 provider "aws" {}
