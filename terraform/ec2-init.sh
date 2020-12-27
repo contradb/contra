@@ -2,6 +2,9 @@
 
 # Hi! I'm the script that runs on a freshly minted ec2 ubuntu 20.04 instance
 
+# log all these commands
+set -x
+
 # crash if any command fails
 set -e
 
