@@ -1,0 +1,33 @@
+#!/usr/bin/bash
+
+# install asdf version manager
+
+# running as user ubuntu
+
+cd ~/contra
+
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.0
+
+. ~/.asdf/asdf.sh
+echo . \~/.asdf/asdf.sh               >> ~/.bashrc # not idempotent
+# echo . \~/.asdf/completions/asdf.bash >> ~/.bashrc # not idempotent
+
+asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+asdf plugin-add ruby https://github.com/asdf-vm/asdf-ruby.git
+
+bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+
+
+# ruby dependencies
+sudo apt-get install -y autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm6 libgdbm-dev libdb-dev
+
+# avoid time-wasting ruby documentation
+# ...for ruby binary
+export RUBY_CONFIGURE_OPTS=--disable-install-doc
+# ...and for gems
+echo "gem: --no-document" > ~/.gemrc
+
+asdf install
+
+
+

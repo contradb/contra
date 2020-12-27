@@ -1,0 +1,12 @@
+#!/usr/bin/bash
+
+# install bundler and bundle install
+
+set -e
+
+cd ~/contra
+
+gem install bundler
+bundle config set --local deployment true
+bundle config set --local without 'development test'
+bundle install --retry 3

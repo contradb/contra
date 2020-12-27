@@ -24,7 +24,7 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_instance" "server" {
   ami = data.aws_ami.ubuntu.id
-  instance_type = "t2.nano"
+  instance_type = "t2.micro"
   key_name = aws_key_pair.contra_key.key_name
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
   subnet_id = aws_subnet.web.id
@@ -33,19 +33,10 @@ resource "aws_instance" "server" {
     Name = "contradb"
   }
 
-#   connection {
-#     type = "ssh"
-#     host = self.public_ip
-#     user = "ec2-user"
-#     private_key = file(var.ssh_private_key_path)
-#   }
 
-#   provisioner "remote-exec" {
-#     inline = ["echo hello world"]
-#   }
+  user_data = file('ec2-init.sh')
 
   # delete_on_termination = eventually false, but for now true is aok
-  # might need a aws_network_interface, but probably can get away with the network_interface block
 }
 
 resource "aws_key_pair" "contra_key" {
