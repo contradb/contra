@@ -1,11 +1,11 @@
-# Rent hosting on Amazon Web Services (AWS)
+# HOWTO install this repo's code on Amazon Web Services (AWS)
 
 Because hosting ContraDB requires a lot of sub-programs, we use a
 program called _Terraform_ to rent the stuff we need in a reliable way.
 
 This document details how to go about standing up your own contradb,
 accessible to the world. If you think this is complicated _now_,
-buddy, you shoulda seen it _before!_ :D
+buddy, you shoulda seen it _before!_
 
 
 ## Prerequisites:
