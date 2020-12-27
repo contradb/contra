@@ -17,6 +17,7 @@ apt-get install -y postgresql postgresql-contrib libpq-dev
 
 # git clone contradb
 # TODO clone the default branch instead of the terraform branch
+cd ~ubuntu
 sudo -u ubuntu git clone https://github.com/contradb/contra.git --branch terraform
 
 # done with root stuff?
