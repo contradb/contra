@@ -34,7 +34,7 @@ resource "aws_instance" "server" {
   }
 
 
-  user_data = file('ec2-init.sh')
+  user_data = file("ec2-init.sh")
 
   # delete_on_termination = eventually false, but for now true is aok
 }
