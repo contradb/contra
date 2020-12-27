@@ -74,11 +74,13 @@ them they're also recoverable from the AWS web console).
 ## Test ssh
 
 ```
-ssh -i ~/.ssh/contradb-terraform ubuntu@[123.45.67.89]
+ssh -i ~/.ssh/contradb-terraform ubuntu@ec2-52-3-67-40.compute-1.amazonaws.com
 ```
 
-Where `[123.45.67.89]` is your instance's ip address. Accept the
-changed fingerprint and *welcome to your sever!* Type `exit` to quit.
+Where the placeholder `ec2-52-3-67-40.compute-1.amazonaws.com` is
+replaced with the `domain` output from terraform. Accept the
+unfamiliar fingerprint and *welcome to your sever!* Type `exit` to
+quit.
 
 
 ## DNS-only: Finish DNS
