@@ -8,7 +8,9 @@ set -x
 # crash if any command fails
 set -e
 
-# yarn
+cd ~ubuntu/contra
+
+# install yarn
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 apt-get update
@@ -18,16 +20,7 @@ apt-get install -y --no-install-recommends yarn
 # postgres
 apt-get install -y postgresql postgresql-contrib libpq-dev
 
-# git clone contradb
-# TODO clone the default branch instead of the terraform branch
-cd ~ubuntu
-sudo -u ubuntu git clone https://github.com/contradb/contra.git --branch terraform
-
-# done with root stuff?
-cd ~ubuntu/contra
-
 # TODO Loop over stuff in init-ec2.d/ directory and run it as user ubuntu
 # but for now
 sudo -u ubuntu terraform/ec2-init.d/asdf
 sudo -u ubuntu terraform/ec2-init.d/gems
-
