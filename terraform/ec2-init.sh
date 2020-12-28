@@ -23,4 +23,4 @@ apt-get install -y postgresql postgresql-contrib libpq-dev
 # TODO Loop over stuff in init-ec2.d/ directory and run it as user ubuntu
 # but for now
 sudo -u ubuntu terraform/ec2-init.d/asdf
-sudo -u ubuntu terraform/ec2-init.d/gems
+sudo -s -u ubuntu terraform/ec2-init.d/gems
