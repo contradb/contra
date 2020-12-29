@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 
 
   def index
-    @users = User.all.order "LOWER(name)"
+    @users = User.all.order Arel.sql("lower(name)")
     @show_newsletter_mailto = current_user&.admin?
     @current_user = current_user
   end

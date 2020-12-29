@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   has_many :dances, dependent: :destroy
-  has_many :programs, -> { order "LOWER(title)" }, dependent: :destroy
+  has_many :programs, -> { order Arel.sql("lower(title)") }, dependent: :destroy
   has_many :idioms, dependent: :destroy, class_name: 'Idiom::Idiom'
   has_many :duts, dependent: :destroy
 

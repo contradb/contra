@@ -9,7 +9,7 @@ class Dance < ApplicationRecord
   has_many :duts, dependent: :destroy
   has_many :tags, through: :duts
 
-  scope :alphabetical, ->() { order "LOWER(title)" }
+  scope :alphabetical, ->() { order Arel.sql("lower(title)") }
 
   enum publish: [ :off, :sketchbook, :all ], _prefix: true
 
