@@ -3,6 +3,9 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-angucomplete-alt'
 end
 
+gem 'bootsnap'
+gem 'listen'
+
 gem 'angularjs-rails', '~> 1.4', '>= 1.4.7'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
