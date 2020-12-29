@@ -356,18 +356,29 @@ $(document).ready(function() {
     })
 
   // change gyre with a dialog box
-  $("#dialect-gyre-modal-form")
-    .on("ajax:error", function() {
-      $(".alert").html("Bummer! Error setting gyre from modal.")
+  $("#dialect-gyre-modal-form").submit(function(e) {
+    // This implementation used to use the ujs events like everything else in this file
+    // (see git history)
+    // but upon upgrade to Rails 5.2 it insisted on rendering the returned JSON as a web page.
+    // It seems related to the accept header changing from json to html.
+    // There appears to be no way to change it with rails form helpers.
+    // So we use jquery instead. Sigh. -dm 12-29-2020
+    var form = $(this)
+    form.closest(".modal").modal("toggle") // hide dialog
+    $.post({
+      url: form.attr("action"),
+      dataType: "json",
+      data: form.serializeArray(),
     })
-    .on("ajax:success", function(e, idioms, status, xhr) {
-      rebuildIdiomsList(idioms)
-    })
-    .submit(function(e) {
-      $(this)
-        .closest(".modal")
-        .modal("toggle") // hide dialog
-    })
+      .done(rebuildIdiomsList)
+      .fail(function(xhr, status, errorThrown) {
+        $(".alert").html("Bummer! Error setting gyre from modal.")
+        console.error("Error: " + errorThrown)
+        console.error("Status: " + status)
+        console.dir(xhr)
+      })
+    return false
+  })
 
   $(".dialect-express-role-radio")
     .on("ajax:error", function() {
