@@ -26,10 +26,10 @@
 @import "angucomplete-alt";
 @import "dataTables/bootstrap/3/jquery.dataTables.bootstrap";
 
-///////////////// SCSS GLOBALS REFERENCED IN OTHER FILES
+///////////////// SCSS GLOBALS (unsuccessfully*) REFERENCED IN OTHER FILES (*as of rails 5.2)
 $contra-bg: #faf7e0;
 $contra-grey: #F0F0EA;
-$contra-fg: #333333; // note that a lot of color falls through to bootstrap's color, which is also 333333. That should be fixed!
+$contra-fg: #333333;
 
 // should probably put the font here, eh? -dm 12-17-2017
 

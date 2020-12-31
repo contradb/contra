@@ -135,7 +135,6 @@ describe 'Dialect page', js: true do
   end
 
   describe 'gyre' do
-
     it "'substitute...' button and dialog work" do
       with_login do |user|
         visit '/dialect'

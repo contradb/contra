@@ -1,5 +1,5 @@
 class Choreographer < ApplicationRecord
-  has_many :dances, -> { order "LOWER(title)" }
+  has_many :dances, -> { order Arel.sql("lower(title)") }
 
   validates :name, length: { in: 4..100 }
 

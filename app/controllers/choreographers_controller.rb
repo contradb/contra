@@ -3,7 +3,7 @@ class ChoreographersController < ApplicationController
   before_action :set_choreographer, only: [:show, :edit, :update, :destroy]
 
   def index
-    @choreographers = Choreographer.all.order "LOWER(name)"
+    @choreographers = Choreographer.all.order Arel.sql("lower(name)")
     @show_admin_actions = current_user&.admin?
     @user = current_user
   end
