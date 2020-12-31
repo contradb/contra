@@ -1,4 +1,4 @@
-# Test Regime for Contradb
+# Test Plan for Contradb
 
 ## Users
 1. login works
