@@ -227,7 +227,7 @@ This feature is scheduled for decommisioning, so don't worry too much about it.
 
 ## Preferences
 
-Log in as whatever user
+Log in as the user created in User creation.
 
 1. go to [User Name] > Account menu item
 1. verify that Update Notifications saves the radio button values
