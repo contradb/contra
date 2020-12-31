@@ -2,63 +2,66 @@
 
 ## Users
 1. login works
-  1. `signed in successfully` notification
-  1. upper right corner menu changes
-  1. search filter `verified` and `shared` options are enabled
+   1. `signed in successfully` notification
+   1. upper right corner menu changes
+   1. search filter `verified` and `shared` options are enabled
 1. logout
-  1. `signed out successfully` notification
-  1. search filter `verified` and `shared options` are disabled
-  1. `new dance` redirects to login
+   1. `signed out successfully` notification
+   1. search filter `verified` and `shared options` are disabled
+   1. `new dance` redirects to login
 1. create
-  1. `sign up` menu item clicks
-  1. `Public Data Handling` saves form values
-  1. `No email` saves form values
+   1. `sign up` menu item clicks
+   1. `Public Data Handling` saves form values
+   1. `No email` saves form values
 1. edit
-  1. verify form values from 'create'
-  1. `Update Notifications` saves form values
-  1. `Update Identity` changes pw
+   1. verify form values from 'create'
+   1. `Update Notifications` saves form values
+   1. `Update Identity` changes pw
 1. password reminder
-  1. works `FAIL51`
-  1. button looks okay `FAIL51`
+   1. works `FAIL51`
+   1. button looks okay `FAIL51`
 1. admin user
-  1. can see ~1535 dances when setting verified & not verified, and sketchbooks and private, versus ~1225 as unlogged-in user
-  1. can edit & save another user's dance
-  1. can edit choreographer
-  1. edit choreographer Publish select has correct styling `FAIL`
+   1. can see ~1535 dances when setting verified & not verified, and sketchbooks and private, versus ~1225 as unlogged-in user
+   1. can edit & save another user's dance
+   1. can edit choreographer
+   1. edit choreographer Publish select has correct styling `FAIL`
 
-## Dance Search (logged out)
+## Dance Search
+
+start while logged out
+
 1. filters without login
-  1. ~269 dances
-  1. Title = "Baby" finds ~3 dances (The Baby Yoda, Becketize the Baby, The Baby Rose)
-  1. Clear Filters clears out Title
-  1. Choreographer "Hemphill" finds ~5 verified and ~32 all dances
-  1. `Clear Filters` clears out Choreographer
-  1. verified and not verified: ~1225 dances
-  1. `Clear Filters` reverts to `verified` only.
-  1. User "Gray" finds ~16 dances
-  1. `Clear Filters` clears out user
-  1. Hook "easy" finds ~7 dances
-  1. `Clear Filters` clears out Hook
-  1. not verified (only): ~954 dances
-  1. verified & not verified at once: ~1161 dances
-  1. `Clear Filters` clears out verification
-  1. +sketchbooks adds ~2 dances
-  1. `Clear Filters` clears out sketchbooks
-  1. only check `becket`: ~87 dances
-  1. `Clear Filters` clears out formations
+   1. ~269 dances
+   1. Title = "Baby" finds ~3 dances (The Baby Yoda, Becketize the Baby, The Baby Rose)
+   1. Clear Filters clears out Title
+   1. Choreographer "Hemphill" finds ~5 verified and ~32 all dances
+   1. `Clear Filters` clears out Choreographer
+   1. verified and not verified: ~1225 dances
+   1. `Clear Filters` reverts to `verified` only.
+   1. User "Gray" finds ~16 dances
+   1. `Clear Filters` clears out user
+   1. Hook "easy" finds ~7 dances
+   1. `Clear Filters` clears out Hook
+   1. not verified (only): ~954 dances
+   1. verified & not verified at once: ~1161 dances
+   1. `Clear Filters` clears out verification
+   1. +sketchbooks adds ~2 dances
+   1. `Clear Filters` clears out sketchbooks
+   1. only check `becket`: ~87 dances
+   1. `Clear Filters` clears out formations
 1. filters with login (d_morse@_____.com user account)
-  1. verified by me: ~3 dances
-  1. not verified by me (only): ~1158 dances
-  1. `Clear Filters`
-  1. entered by me (uncheck shared): ~10 dances
-  1. `Clear Filters`
-  1. `logout`
+   1. verified by me: ~3 dances
+   1. not verified by me (only): ~1158 dances
+   1. `Clear Filters`
+   1. entered by me (uncheck shared): ~10 dances
+   1. `Clear Filters`
+   1. `logout`
 1. SearchEx
-  1. Figure > Any Figure: ~269 dances
-  1. Figure > do si do: ~76 dances
-  1. chain then hey: ~21 dances
-  1. copy 'chain' and paste it onto 'hey', to make `chain then chain`: ~2 dances - `Clear Search` sends things back to Figure > Any Figure
-  1. Figure > chain > who = gentlespoons = ~4 dances
+   1. Figure > Any Figure: ~269 dances
+   1. Figure > do si do: ~76 dances
+   1. chain then hey: ~21 dances
+   1. copy 'chain' and paste it onto 'hey', to make `chain then chain`: ~2 dances - `Clear Search` sends things back to Figure > Any Figure
+   1. Figure > chain > who = gentlespoons = ~4 dances
 
 ## Dance View
 
@@ -71,7 +74,7 @@
 1. 64 beats?
 1. Zebra-striping per A1/A2/B1/B2?
 1. thin grey borders on table cells
-1. text looks like:
+1. text and notes look like:
 
 ```
 A1 	16 	neighbors balance & swing
@@ -82,37 +85,32 @@ B1 	8 	gentlespoons allemande left 1½
 B2 	8 	balance & petronella
   	4 	balance the ring
   	4 	partners California twirl ⁋
-```
 
-1. Notes:
-
-```
 Cooked up with the breakfast crew.
 Chance Dance, the All you can Eat Contra Dance Weekend
-```
 
 1. Database
-  1. user Allison Jonjak
-  1. shared everywhere
-  1. Copy button prompts for login
-    1. login to proceed
-  1. Copy button goes to dance editor with the dance loaded (click back)
-  1. navigate back to dance (back button doesn't work as I expect)
-  1. `✔ verified (1)` badge
-  1. toggle is off
-  1. have text "1 user has called this transcription"
-  1. temporarily toggle `off` -> `on`
-    1. flash of clock icon instead of `✔`
-    1. badge becomes (2)
-    1. toggle is blue and says 'on'
-  1. mailto link to datadactyl@somedomain.com (different on prod)
-  1. click the mailto link
-    1. subject is "contradb dance problem"
-    1. body is "Dear datadactyl, I see a problem with  'Chance Dance Scrambled Eggs' (http://localhost:3000/dances/419) transcribed by Allison Jonjak. The problem is "
-  1. toggle Validation off > on > off
-    1. highlights `promenade` and `next neighbors` in preamble
-    1. highlights `promenade` in A2
-  1. dialect is tested elsewhere...
+   1. user Allison Jonjak
+   1. shared everywhere
+   1. Copy button prompts for login
+      1. login to proceed
+   1. Copy button goes to dance editor with the dance loaded (click back)
+   1. navigate back to dance (back button doesn't work as I expect)
+   1. `✔ verified (1)` badge
+   1. toggle is off
+   1. have text "1 user has called this transcription"
+   1. temporarily toggle `off` -> `on`
+      1. flash of clock icon instead of `✔`
+      1. badge becomes (2)
+      1. toggle is blue and says 'on'
+   1. mailto link to datadactyl@somedomain.com (different on prod)
+   1. click the mailto link
+      1. subject is "contradb dance problem"
+      1. body is "Dear datadactyl, I see a problem with  'Chance Dance Scrambled Eggs' (http://localhost:3000/dances/419) transcribed by Allison Jonjak. The problem is "
+   1. toggle Validation off > on > off
+      1. highlights `promenade` and `next neighbors` in preamble
+      1. highlights `promenade` in A2
+   1. dialect is tested elsewhere...
 
 ## Dialect Editor
 Log in as d_morse@_____.com
@@ -177,21 +175,21 @@ This feature is scheduled for decommisioning, so don't worry too much about it.
 ## Programs
 
 1. Programs Index
-  1. Click 'Programs' menu item leads to a huge list of programs
-  1. Click '01.16.18-State College, Pa (band Smash the Windows)' by Karl Senseman
+   1. Click 'Programs' menu item leads to a huge list of programs
+   1. Click '01.16.18-State College, Pa (band Smash the Windows)' by Karl Senseman
 1. Programs View
-  1. has a table of contents with hyperlinks.
-  1. Click "Dean's Valentine" in the TOC and it jumps downpage to that dance
-  1. "Dean's Valentine" entry says it's not published in red
-  1. "Another Easy One" has dance figures
-  1. "Another Easy One" introduces moves: down the hall, up the hall, right left through
-  1. toggle validation and verify that lingo lines appear on "neighbors" in the last figure of The Baby Rose
-  1. We could do more extensive testing of dialects here, but it uses
-    the same code to render dances as dance show, so we rely on that
-    testing.
+   1. has a table of contents with hyperlinks.
+   1. Click "Dean's Valentine" in the TOC and it jumps downpage to that dance
+   1. "Dean's Valentine" entry says it's not published in red
+   1. "Another Easy One" has dance figures
+   1. "Another Easy One" introduces moves: down the hall, up the hall, right left through
+   1. toggle validation and verify that lingo lines appear on "neighbors" in the last figure of The Baby Rose
+   1. We could do more extensive testing of dialects here, but it uses
+     the same code to render dances as dance show, so we rely on that
+     testing.
 
 1. Programs Editor
-  1. this feature is scheduled for rewrite, and nobody's programming so I'm skipping the test regime for now.
+   1. this feature is scheduled for rewrite, and nobody's programming so I'm skipping the test regime for now.
 
 ## Choreographers
 
@@ -200,31 +198,31 @@ This feature is scheduled for decommisioning, so don't worry too much about it.
 1. click "Bob Crawford"
 1. note "The Baby Yoda" appears as the only dance
 1. click "New Dance"
-  1. when prompted log in as an administrator
-  1. verify that the new dance is by "Bob Crawford"
+   1. when prompted log in as an administrator
+   1. verify that the new dance is by "Bob Crawford"
 1. return to Bob's choreographer page.
 1. click the "Edit Choreographer" button
-  1. change name to Robert Crawford
-  1. change the publish to "Always"
-  1. Save Choreographer
-  1. Note the changed name and the changed publish of Always
-  1. Click through to The Baby Yoda and verify that his name changed there too.
-  1. Click back
-  1. click "Edit Choreographer" again and change everything back
+   1. change name to Robert Crawford
+   1. change the publish to "Always"
+   1. Save Choreographer
+   1. Note the changed name and the changed publish of Always
+   1. Click through to The Baby Yoda and verify that his name changed there too.
+   1. Click back
+   1. click "Edit Choreographer" again and change everything back
 
 ## Online Documentation
 
 1. About
-  1. click "About" menu item
-  1. read the text and think if it makes sense
-  1. Verify that it mentions it's licensed under AGPL3
-  1. AGPL3 licence hyperlink works
-  1. source code hyperlink to github works
-  1. click the "here's a little documentation" link to visit the ..
+   1. click "About" menu item
+   1. read the text and think if it makes sense
+   1. Verify that it mentions it's licensed under AGPL3
+   1. AGPL3 licence hyperlink works
+   1. source code hyperlink to github works
+   1. click the "here's a little documentation" link to visit the ..
 1. Help
-  1. read the text and think if it makes sense
-  1. is the contact information up-to-date?
-  1. does clicking identities launch the mailer with the right To: address? (the one mentioned in mouseover, currently Dave)
+   1. read the text and think if it makes sense
+   1. is the contact information up-to-date?
+   1. does clicking identities launch the mailer with the right To: address? (the one mentioned in mouseover, currently Dave)
 
 ## Preferences
 
