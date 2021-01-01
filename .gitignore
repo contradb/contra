@@ -30,3 +30,6 @@ yarn-debug.log*
 /terraform/.terraform.lock.hcl
 /terraform/*.tfplan
 /terraform/terraform.tfstate*
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key

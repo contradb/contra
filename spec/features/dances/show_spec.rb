@@ -35,9 +35,9 @@ describe 'Showing dances' do
   end
 
   describe "displays data integrity curator email" do
-    let (:email) { Rails.application.secrets.admin_data_maven_mail }
+    let (:email) { Rails.application.credentials.admin.fetch(:data_maven).fetch(:email) }
     let (:link_href) { /^mailto:#{hex_encode(email)}/ }
-    let (:email_sentence) { "please report problems to #{Rails.application.secrets.admin_data_maven_mail}." }
+    let (:email_sentence) { "please report problems to #{Rails.application.credentials.admin.fetch(:data_maven).fetch(:email)}." }
 
     it 'on the page' do
       dance = FactoryGirl.create(:dance)

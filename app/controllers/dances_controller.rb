@@ -30,13 +30,13 @@ class DancesController < ApplicationController
     @copied_title = copy_dance.title if copy_dance
     @dance.set_text_to_dialect(dialect)
     @choreographer = params[:choreographer_id] ? Choreographer.find(params[:choreographer_id]) : @dance.choreographer
-    @admin_email = Rails.application.secrets.admin_gmail_username
+    @admin_email = Rails.application.credentials.admin.fetch(:help_desk).fetch(:email)
   end
 
   def edit
     @dance.set_text_to_dialect(dialect)
     @choreographer = params[:choreographer_id] ? Choreographer.find(params[:choreographer_id]) : @dance.choreographer
-    @admin_email = Rails.application.secrets.admin_gmail_username
+    @admin_email = Rails.application.credentials.admin.fetch(:help_desk).fetch(:email)
   end
 
   def create
