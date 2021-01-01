@@ -2,6 +2,18 @@
 
 #cloud-config
 
+
+write_files:
+- content: |
+    # bash config written by terraform and cloud init
+    export CONTRADB_DOMAIN=${contradb_domain_fetcher}
+  path: /tmp/skel/provisioned_env.d/contradb-domain
+  permissions: '0755'
+# because write_files fires before user creation, and will create files as root,
+# we can't create anything in /home/ubuntu yet. We create it in /tmp/skel now
+# and copy it below.
+
+
 # run commands
 # default: none
 # runcmd contains a list of either lists or a string
@@ -16,6 +28,10 @@
 # Note, that the list has to be proper yaml, so you have to quote
 # any characters yaml would eat (':' can be problematic)
 runcmd:
+ - chown -R ubuntu.ubuntu /tmp/skel
+ - find /tmp/skel -type d -exec chmod 770 {} \;
+ - cp -R --preserve mode,ownership /tmp/skel/* /home/ubuntu/
+ - echo "for f in ~/provisioned_env.d/*; do . $f ; done" >> /home/ubuntu/.bashrc
  - sudo -u ubuntu git clone "https://github.com/contradb/contra.git" --branch terraform /home/ubuntu/contra
  - /home/ubuntu/contra/terraform/ec2-init.sh
  

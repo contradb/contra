@@ -6,6 +6,10 @@ set -e
 
 cd ~/contra
 
+# put 'gem' in the PATH
+# (this wasn't yet part of .bashrc when .bashrc last ran)
+. ~/provisioned_env.d/asdf
+
 gem install bundler
 bundle config set --local deployment true
 bundle config set --local without 'development test'

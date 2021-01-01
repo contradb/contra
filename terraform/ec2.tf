@@ -34,10 +34,14 @@ resource "aws_instance" "server" {
   }
 
 
-  user_data = file("ec2-init.yml")
+  user_data = templatefile("ec2-init.yml.tpl", {
+    contradb_domain_fetcher = null == var.domain_name ? "`curl http://169.254.169.254/latest/meta-data/public-hostname`" : var.domain_name
+  })
 
   # delete_on_termination = eventually false, but for now true is aok
 }
+
+
 
 resource "aws_key_pair" "contra_key" {
   key_name   = "contradb-terraform-key"
