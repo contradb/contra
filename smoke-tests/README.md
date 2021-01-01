@@ -7,23 +7,24 @@
    1. search filter `verified` and `shared` options are enabled
 1. logout
    1. `signed out successfully` notification
-   1. search filter `verified` and `shared options` are disabled
+   1. search filters `verified by me`, `not verified by me`, and `entered by me` are disabled
    1. `new dance` redirects to login
 1. create
    1. `sign up` menu item clicks
+   1. partially filled out new user info retains data through failed submission
    1. `Public Data Handling` saves form values
    1. `No email` saves form values
+   1. consider the User Agreement
 1. edit
-   1. verify form values from 'create'
+   1. use [your name]>account menu to verify form values were retained from 'create'
    1. `Update Notifications` saves form values
    1. `Update Identity` changes pw
-1. password reminder
-   1. works `FAIL51`
-   1. button looks okay `FAIL51`
+1. Forgot Password?
+   1. works `FAIL52`
 1. admin user
    1. can see ~1535 dances when setting verified & not verified, and sketchbooks and private, versus ~1225 as unlogged-in user
    1. can edit & save another user's dance
-   1. can edit choreographer
+   1. can edit choreographer's list
    1. edit choreographer Publish select has correct styling `FAIL`
 
 ## Dance Search
@@ -31,6 +32,7 @@
 start while logged out
 
 1. filters without login
+   1. Click `next page` button successfully sends to further results
    1. ~269 dances
    1. Title = "Baby" finds ~3 dances (The Baby Yoda, Becketize the Baby, The Baby Rose)
    1. Clear Filters clears out Title
