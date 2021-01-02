@@ -5,6 +5,14 @@ variable "ssh_private_key_path" {
   default = "~/.ssh/contradb-terraform"
 }
 
+variable "rails_master_key_path" {
+  default = "../config/master.key"
+  type = string
+  description = <<EOF
+Rails master key, used for decrypting secrets. Typically stored in
+$RAILS_ROOT/config/master.key. Shared among contradb team members.
+EOF
+}
 
 data "aws_ami" "ubuntu" {
   most_recent = true
@@ -33,15 +41,13 @@ resource "aws_instance" "server" {
     Name = "contradb"
   }
 
-
   user_data = templatefile("ec2-init.yml.tpl", {
     contradb_domain_fetcher = null == var.domain_name ? "`curl http://169.254.169.254/latest/meta-data/public-hostname`" : var.domain_name
+    rails_master_key = file(var.rails_master_key_path)
   })
 
   # delete_on_termination = eventually false, but for now true is aok
 }
-
-
 
 resource "aws_key_pair" "contra_key" {
   key_name   = "contradb-terraform-key"

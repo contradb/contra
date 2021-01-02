@@ -12,7 +12,9 @@ write_files:
 # because write_files fires before user creation, and will create files as root,
 # we can't create anything in /home/ubuntu yet. We create it in /tmp/skel now
 # and copy it below.
-
+- content: ${rails_master_key}
+  path: /tmp/master.key
+  permissions: '0600'
 
 # run commands
 # default: none
@@ -33,6 +35,8 @@ runcmd:
  - cp -R --preserve mode,ownership /tmp/skel/* /home/ubuntu/
  - echo "for f in ~/provisioned_env.d/*; do . \$f ; done" >> /home/ubuntu/.bashrc
  - sudo -u ubuntu git clone "https://github.com/contradb/contra.git" --branch terraform /home/ubuntu/contra
+ - mv /tmp/master.key /home/ubuntu/contra/config
+ - chown ubuntu.ubuntu /home/ubuntu/contra/config/master.key
  - /home/ubuntu/contra/terraform/ec2-init.sh
  
  # - [ ls, -l, / ]
