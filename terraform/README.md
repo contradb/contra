@@ -66,9 +66,9 @@ terraform apply the.tfplan
 ```
 Obviously replace `example.com` with your domain. If you don't want a domain, omit the whole `-var=...` argument.
 
-You'll get a bunch of outputs from Terraform. You'll want to save them
-somewhere for as long as the installation is live (though if you lose
-them they're also recoverable from the AWS web console).
+You'll get a bunch of outputs from Terraform. You'll need them
+later. You can read them out again with the command `terraform
+output`.
 
 
 ## Test ssh
