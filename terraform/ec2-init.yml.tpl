@@ -31,7 +31,7 @@ runcmd:
  - chown -R ubuntu.ubuntu /tmp/skel
  - find /tmp/skel -type d -exec chmod 770 {} \;
  - cp -R --preserve mode,ownership /tmp/skel/* /home/ubuntu/
- - echo "for f in ~/provisioned_env.d/*; do . $f ; done" >> /home/ubuntu/.bashrc
+ - echo "for f in ~/provisioned_env.d/*; do . \$f ; done" >> /home/ubuntu/.bashrc
  - sudo -u ubuntu git clone "https://github.com/contradb/contra.git" --branch terraform /home/ubuntu/contra
  - /home/ubuntu/contra/terraform/ec2-init.sh
  
