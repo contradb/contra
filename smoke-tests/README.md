@@ -7,23 +7,24 @@
    1. search filter `verified` and `shared` options are enabled
 1. logout
    1. `signed out successfully` notification
-   1. search filter `verified` and `shared options` are disabled
+   1. search filters `verified by me`, `not verified by me`, and `entered by me` are disabled
    1. `new dance` redirects to login
 1. create
    1. `sign up` menu item clicks
+   1. partially filled out new user info retains data through failed submission
    1. `Public Data Handling` saves form values
    1. `No email` saves form values
+   1. consider the User Agreement
 1. edit
-   1. verify form values from 'create'
+   1. use [your name]>account menu to verify form values were retained from 'create'
    1. `Update Notifications` saves form values
    1. `Update Identity` changes pw
-1. password reminder
-   1. works `FAIL51`
-   1. button looks okay `FAIL51`
+1. Forgot Password?
+   1. works `FAIL52`
 1. admin user
    1. can see ~1535 dances when setting verified & not verified, and sketchbooks and private, versus ~1225 as unlogged-in user
    1. can edit & save another user's dance
-   1. can edit choreographer
+   1. can edit choreographer's list
    1. edit choreographer Publish select has correct styling `FAIL`
 
 ## Dance Search
@@ -31,29 +32,28 @@
 start while logged out
 
 1. filters without login
+   1. Click `next page` button successfully sends to further results
    1. ~269 dances
    1. Title = "Baby" finds ~3 dances (The Baby Yoda, Becketize the Baby, The Baby Rose)
-   1. Clear Filters clears out Title
+   1. `Clear Filters` clears out Title
    1. Choreographer "Hemphill" finds ~5 verified and ~32 all dances
    1. `Clear Filters` clears out Choreographer
-   1. verified and not verified: ~1225 dances
-   1. `Clear Filters` reverts to `verified` only.
    1. User "Gray" finds ~16 dances
    1. `Clear Filters` clears out user
    1. Hook "easy" finds ~7 dances
    1. `Clear Filters` clears out Hook
    1. not verified (only): ~954 dances
    1. verified & not verified at once: ~1161 dances
-   1. `Clear Filters` clears out verification
+   1. `Clear Filters` reverts to `verified` only.
    1. +sketchbooks adds ~2 dances
    1. `Clear Filters` clears out sketchbooks
    1. only check `becket`: ~87 dances
    1. `Clear Filters` clears out formations
-1. filters with login (d_morse@_____.com user account)
-   1. verified by me: ~3 dances
-   1. not verified by me (only): ~1158 dances
+1. user-specific filters work?
+   1. verified by me: Ned ~21 dances; Dave~3 dances
+   1. not verified by me (only): Ned ~1140 dances; Dave~1158 dances
    1. `Clear Filters`
-   1. entered by me (uncheck shared): ~10 dances
+   1. entered by me (uncheck shared): Ned ~5 dances; Dave~10 dances
    1. `Clear Filters`
    1. `logout`
 1. SearchEx
@@ -67,7 +67,7 @@ start while logged out
 
 1. go to dance 419 "Chance Dance Scrambled Eggs"
 1. title = Chance Dance Scrambled Eggs
-1. hook = "chainsow promenade to next neighbors"
+1. hook = "chainsaw promenade to next neighbors"
 1. by = Jim Hemphill
 1. by-hyperlink works?
 1. formation = improper?
@@ -77,14 +77,14 @@ start while logged out
 1. text and notes look like:
 
 ```
-A1 	16 	neighbors balance & swing
+A1    16 neighbors balance & swing
 A2 	8 	chainsaw promenade left
-  	8 	chainsaw promenade back to the right
+  	   8 	chainsaw promenade back to the right
 B1 	8 	gentlespoons allemande left 1½
-  	8 	partners swing, end in a ring
+    	8 	partners swing, end in a ring
 B2 	8 	balance & petronella
-  	4 	balance the ring
-  	4 	partners California twirl ⁋
+      4 	balance the ring
+      4 	partners California twirl ⁋
 
 Cooked up with the breakfast crew.
 Chance Dance, the All you can Eat Contra Dance Weekend
@@ -104,7 +104,7 @@ Chance Dance, the All you can Eat Contra Dance Weekend
       1. flash of clock icon instead of `✔`
       1. badge becomes (2)
       1. toggle is blue and says 'on'
-   1. mailto link to datadactyl@somedomain.com (different on prod)
+   1. mailto link to ContraDB.admonsterator@gmail.com
    1. click the mailto link
       1. subject is "contradb dance problem"
       1. body is "Dear datadactyl, I see a problem with  'Chance Dance Scrambled Eggs' (http://localhost:3000/dances/419) transcribed by Allison Jonjak. The problem is "
@@ -114,15 +114,15 @@ Chance Dance, the All you can Eat Contra Dance Weekend
    1. dialect is tested elsewhere...
 
 ## Dialect Editor
-Log in as d_morse@_____.com
+Log in
 
-1. "Dave Morse > dialect" looks okay
+1. "[TestUser] > dialect" is default, can be changed.
 1. click "show..." button under Advanced & "Restore Default Dialect" button
 1. "larks & robins" makes 8 entries
 1. "Face to Face Turn for Two" "substitute" button and enter "%S shoulder round" makes a 9th entry
 1. "substitute for a move"> "Rory O'More" makes a 10th entry. Set it to "Rory Amore" and blur the text field. The pencil icon should flash as a clock, then turn to a check.
 1. click ContraDB in upper left corner to return to main search page.
-1. search for "Rory Amore and shoulder round" and check 'not verified'
+1. SearchEx `and`: figure `Rory Amore` and figure `shoulder round` and check 'not verified'
 1. click "Going our Opposite Waves" by Jim Hemphill
 1. A1 should start with "robins pull by right" and contain "Rory Amore right"
 1. click "Copy"
@@ -134,7 +134,7 @@ The set-up to this is the Dialect Editor section above
 1. change title from "Going Our Opposite Waves variation" to "Smoke Test"
 1. change choreographer from "Jim Hemphill" to "Dave Morse". Tab complete around the word "Dave".
 1. change the formation to "improper". Tab complete should be there.
-1. click the first figure, and add a note of ", larks chill, gentlespoons begone, men twirl". Lingo lines should change the rendered text to underlinke "larks" and red-strikethrough "gentlespoons" and "men". Also check that the leading comma comes immediately after the word "chill".
+1. click the first figure, and add a note of ", larks chill, gentlespoons begone, men twirl". Lingo lines should change the rendered text to underlined "larks" and red-strikethrough "gentlespoons" and "men". Also check that the leading comma comes immediately after the word "right".
 1. in the notes, add the same text:  ", larks chill, gentlespoons begone, men twirl. There won't be any lingo lines, but the spellchecker might underline "gentlespoons".
 1. Figures +Add a swing. It should pop in in the A1
 1. on the C1 "partners swing", hit the ⋮ menu and "Add Progression". The ⁋ symbol should appear.
