@@ -4,6 +4,12 @@
 
 POSTGRES_PASSWORD=$1
 
+if [ -z "$POSTGRES_PASSWORD" ]
+then
+  1>&2 echo "expected required argument POSTGRES_PASSWORD"
+  exit 1
+fi
+
 cd ~/contra
 
 sed -i "s/CONTRADB_PRODUCTION_PASSWORD_GOES_HERE/$POSTGRES_PASSWORD/g" config/database.yml
