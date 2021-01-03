@@ -4,6 +4,8 @@
 
 POSTGRES_PASSWORD=$1
 
+set -e
+
 if [ -z "$POSTGRES_PASSWORD" ]
 then
   1>&2 echo "expected required argument POSTGRES_PASSWORD"
@@ -15,4 +17,10 @@ cd ~/contra
 sed -i "s/CONTRADB_PRODUCTION_PASSWORD_GOES_HERE/$POSTGRES_PASSWORD/g" config/database.yml
 
 echo "export RAILS_ENV=production" > ~/provisioned_env.d/rails
+export RAILS_ENV=production
 
+bin/rails db:create
+psql contraprod < /tmp/contraprod.sql
+rm /tmp/contraprod.sql
+
+# TODO start the servers...

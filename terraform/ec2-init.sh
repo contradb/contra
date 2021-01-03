@@ -26,6 +26,6 @@ sudo -u postgres psql -c "CREATE USER ubuntu WITH CREATEDB PASSWORD '$POSTGRES_P
 
 # TODO Loop over stuff in init-ec2.d/ directory and run it as user ubuntu
 # but for now
-sudo -u ubuntu terraform/ec2-init.d/rails $POSTGRES_PASSWORD
 sudo -u ubuntu terraform/ec2-init.d/asdf
 sudo -s -u ubuntu terraform/ec2-init.d/gems
+sudo -u ubuntu terraform/ec2-init.d/rails $POSTGRES_PASSWORD

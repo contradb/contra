@@ -15,6 +15,11 @@ write_files:
 - content: ${rails_master_key}
   path: /tmp/master.key
   permissions: '0600'
+- content !!binary |
+    ${database}
+  path: /tmp/production.sql
+  encoding: gzip
+  permissions: '0555'
 
 # run commands
 # default: none

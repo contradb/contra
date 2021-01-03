@@ -15,6 +15,11 @@ $RAILS_ROOT/config/master.key. Shared among contradb team members.
 EOF
 }
 
+variable "database_path" {
+  type = string
+  description = "path to .sql file for initializing the database on the new server"
+}
+
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -46,6 +51,7 @@ resource "aws_instance" "server" {
     postgres_password = random_password.postgres.result
     contradb_domain_fetcher = null == var.domain_name ? "`curl http://169.254.169.254/latest/meta-data/public-hostname`" : var.domain_name
     rails_master_key = file(var.rails_master_key_path)
+    database = base64gzip(file(var.database_path))
   })
 
   # delete_on_termination = eventually false, but for now true is aok
