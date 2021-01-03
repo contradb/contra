@@ -60,7 +60,7 @@ def set_desktop_screen
   Thread.current[:screen_mode] = nil
 end
 
-Capybara.server = :webrick
+Capybara.server = :puma
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are

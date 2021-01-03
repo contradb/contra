@@ -12,7 +12,7 @@ gem 'angularjs-rails', '~> 1.4', '>= 1.4.7'
 gem 'rails', '~> 5.2.0'
 
 gem 'pg'
-
+gem 'puma'
 
 # Use SCSS for stylesheets
 gem 'sassc-rails'
@@ -35,10 +35,6 @@ gem 'jquery-ui-rails'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-
-group :production do
-  gem 'unicorn'
-end
 
 group :development do
   gem 'web-console' # Access an IRB console on exception pages or by using <%= console %> in views
