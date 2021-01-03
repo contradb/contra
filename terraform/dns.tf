@@ -17,6 +17,9 @@ locals {
 resource "aws_route53_zone" "zone" {
   count = local.domain_count
   name = var.domain_name
+  tags = {
+    Name = "contradb"
+  }
 }
 
 resource "aws_route53_record" "record" {

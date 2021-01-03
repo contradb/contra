@@ -1,6 +1,7 @@
 variable "ssh_public_key_path" {
   default = "~/.ssh/contradb-terraform.pub"
 }
+
 variable "ssh_private_key_path" {
   default = "~/.ssh/contradb-terraform"
 }
@@ -53,6 +54,9 @@ resource "aws_instance" "server" {
 resource "aws_key_pair" "contra_key" {
   key_name   = "contradb-terraform-key"
   public_key = file(var.ssh_public_key_path)
+  tags = {
+    Name = "contradb"
+  }
 }
 
 resource "aws_security_group" "allow_ssh" {
@@ -76,7 +80,7 @@ resource "aws_security_group" "allow_ssh" {
   }
 
   tags = {
-    Name = "allow_ssh"
+    Name = "contradb"
   }
 }
 
@@ -88,6 +92,7 @@ resource "random_password" "postgres" {
 output "ip" {
   value = aws_eip.web_ip.public_ip
 }
+
 output "domain" {
   value = aws_eip.web_ip.public_dns
 }
