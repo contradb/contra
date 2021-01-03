@@ -20,7 +20,9 @@ echo "export RAILS_ENV=production" > ~/provisioned_env.d/rails
 export RAILS_ENV=production
 
 bin/rails db:create
-psql contraprod < /tmp/contraprod.sql
-rm /tmp/contraprod.sql
+
+# TODO find some other way to get this file here...
+# psql contraprod < /tmp/contraprod.sql
+# rm /tmp/contraprod.sql
 
 # TODO start the servers...
