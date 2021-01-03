@@ -37,7 +37,7 @@ runcmd:
  - sudo -u ubuntu git clone "https://github.com/contradb/contra.git" --branch terraform /home/ubuntu/contra
  - mv /tmp/master.key /home/ubuntu/contra/config
  - chown ubuntu.ubuntu /home/ubuntu/contra/config/master.key
- - /home/ubuntu/contra/terraform/ec2-init.sh
+ - /home/ubuntu/contra/terraform/ec2-init.sh '${postgres_password}'
  
  # - [ ls, -l, / ]
  # - [ sh, -xc, "echo $(date) ': hello world!'" ]

@@ -37,6 +37,5 @@ test:
 
 production:
   <<: *postgres
-  username: rails
-  password: <%= ENV['APP_DATABASE_PASSWORD'] %>
-  database: app_production
+  password: CONTRADB_PRODUCTION_PASSWORD_GOES_HERE
+  database: contraprod

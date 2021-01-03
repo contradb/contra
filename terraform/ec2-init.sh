@@ -1,6 +1,9 @@
 #!/usr/bin/bash
 
 # Hi! I'm the script that runs on a freshly minted ec2 ubuntu 20.04 instance
+# I take an argument:
+
+POSTGRES_PASSWORD=$1
 
 # log all these commands
 set -x
@@ -19,8 +22,10 @@ apt-get install -y --no-install-recommends yarn
 
 # postgres
 apt-get install -y postgresql postgresql-contrib libpq-dev
+sudo -u postgres psql -c "CREATE USER ubuntu WITH CREATEDB PASSWORD '$POSTGRES_PASSWORD';"
 
 # TODO Loop over stuff in init-ec2.d/ directory and run it as user ubuntu
 # but for now
+sudo -u ubuntu terraform/ec2-init.d/rails $POSTGRES_PASSWORD
 sudo -u ubuntu terraform/ec2-init.d/asdf
 sudo -s -u ubuntu terraform/ec2-init.d/gems

@@ -42,6 +42,7 @@ resource "aws_instance" "server" {
   }
 
   user_data = templatefile("ec2-init.yml.tpl", {
+    postgres_password = random_password.postgres.result
     contradb_domain_fetcher = null == var.domain_name ? "`curl http://169.254.169.254/latest/meta-data/public-hostname`" : var.domain_name
     rails_master_key = file(var.rails_master_key_path)
   })
@@ -77,6 +78,11 @@ resource "aws_security_group" "allow_ssh" {
   tags = {
     Name = "allow_ssh"
   }
+}
+
+resource "random_password" "postgres" {
+  length = 26
+  special = false
 }
 
 output "ip" {
