@@ -21,7 +21,7 @@ resource "aws_eip" "web_ip" {
 resource "aws_subnet" "web" {
   cidr_block = cidrsubnet(aws_vpc.contra_vpc.cidr_block, 3, 1)
   vpc_id = aws_vpc.contra_vpc.id
-  availability_zone = "us-east-1a"
+  availability_zone = "us-east-2a"
   tags = {
     Name = "contradb"
   }

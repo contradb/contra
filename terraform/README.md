@@ -25,7 +25,7 @@ Setup a public/private keypair in `~/.ssh/contradb-terraform` and `~/.ssh/contra
 Choose a region:
 
 ```
-export AWS_DEFAULT_REGION=us-east-1
+export AWS_DEFAULT_REGION=us-east-2
 ```
 
 Choose an account you have control over, and figure out how to set these variables' values correctly:

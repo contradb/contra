@@ -6,14 +6,14 @@ variable "ssh_private_key_path" {
   default = "~/.ssh/contradb-terraform"
 }
 
-variable "rails_master_key_path" {
-  default = "../config/master.key"
-  type = string
-  description = <<EOF
-Rails master key, used for decrypting secrets. Typically stored in
-$RAILS_ROOT/config/master.key. Shared among contradb team members.
-EOF
-}
+# variable "rails_master_key_path" {
+#   default = "../config/master.key"
+#   type = string
+#   description = <<EOF
+# Rails master key, used for decrypting secrets. Typically stored in
+# $RAILS_ROOT/config/master.key. Shared among contradb team members.
+# EOF
+# }
 
 # variable "database_path" {
 #   type = string

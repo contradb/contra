@@ -23,6 +23,8 @@ bin/rails db:create
 
 # TODO find some other way to get this file here...
 # psql contraprod < /tmp/contraprod.sql
+# currently thinking: terraform ssh provisioner since I don't want to build a new image every day (so not packer)
+# and not cloud-init, since it can't handle the file size
 # rm /tmp/contraprod.sql
 
 # TODO start the servers...
