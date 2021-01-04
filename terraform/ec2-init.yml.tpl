@@ -12,9 +12,9 @@ write_files:
 # because write_files fires before user creation, and will create files as root,
 # we can't create anything in /home/ubuntu yet. We create it in /tmp/skel now
 # and copy it below.
-- content: ${rails_master_key}
-  path: /tmp/master.key
-  permissions: '0600'
+# - content: ${rails_master_key}
+#   path: /tmp/master.key
+#   permissions: '0600'
 
 # run commands
 # default: none
@@ -30,13 +30,14 @@ write_files:
 # Note, that the list has to be proper yaml, so you have to quote
 # any characters yaml would eat (':' can be problematic)
 runcmd:
- - chown -R ubuntu.ubuntu /tmp/skel
+ # - chown -R ubuntu.ubuntu /tmp/skel
  - find /tmp/skel -type d -exec chmod 770 {} \;
  - cp -R --preserve mode,ownership /tmp/skel/* /home/ubuntu/
  - echo "for f in ~/provisioned_env.d/*; do . \$f ; done" >> /home/ubuntu/.bashrc
- - sudo -u ubuntu git clone "https://github.com/contradb/contra.git" --branch terraform /home/ubuntu/contra
- - mv /tmp/master.key /home/ubuntu/contra/config
- - chown ubuntu.ubuntu /home/ubuntu/contra/config/master.key
+ # TODO: checkout & pull the current branch to make sure we're up-to-date, so we can use amis
+ # - sudo -u ubuntu git clone "https://github.com/contradb/contra.git" --branch terraform /home/ubuntu/contra
+ # - mv /tmp/master.key /home/ubuntu/contra/config
+ # - chown ubuntu.ubuntu /home/ubuntu/contra/config/master.key
  - /home/ubuntu/contra/terraform/ec2-init.sh '${postgres_password}'
  
  # - [ ls, -l, / ]
