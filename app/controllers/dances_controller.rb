@@ -1,4 +1,5 @@
 require 'dialect_reverser'
+require 'email_vault'
 
 class DancesController < ApplicationController
   before_action :set_dance, only: [:destroy, :update, :show, :edit]
@@ -30,13 +31,13 @@ class DancesController < ApplicationController
     @copied_title = copy_dance.title if copy_dance
     @dance.set_text_to_dialect(dialect)
     @choreographer = params[:choreographer_id] ? Choreographer.find(params[:choreographer_id]) : @dance.choreographer
-    @admin_email = Rails.application.credentials.admin.fetch(:help_desk).fetch(:email)
+    @admin_email = EmailVault.get(:help_desk, :email)
   end
 
   def edit
     @dance.set_text_to_dialect(dialect)
     @choreographer = params[:choreographer_id] ? Choreographer.find(params[:choreographer_id]) : @dance.choreographer
-    @admin_email = Rails.application.credentials.admin.fetch(:help_desk).fetch(:email)
+    @admin_email = EmailVault.get(:help_desk, :email)
   end
 
   def create
