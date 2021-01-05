@@ -48,11 +48,11 @@ resource "aws_instance" "server" {
     Name = "contradb"
   }
 
-  user_data = templatefile("ec2-init.yml.tpl", {
-    postgres_password = random_password.postgres.result
-    contradb_domain_fetcher = null == var.domain_name ? "`curl http://169.254.169.254/latest/meta-data/public-hostname`" : var.domain_name
-    # rails_master_key = file(var.rails_master_key_path)
-  })
+  # user_data = templatefile("ec2-init.yml.tpl", {
+  #   postgres_password = random_password.postgres.result
+  #   contradb_domain_fetcher = null == var.domain_name ? "`curl http://169.254.169.254/latest/meta-data/public-hostname`" : var.domain_name
+  #   # rails_master_key = file(var.rails_master_key_path)
+  # })
 
 
   # delete_on_termination = eventually false, but for now true is aok
@@ -64,15 +64,31 @@ resource "aws_eip" "web_ip" {
   tags = {
     Name = "contradb"
   }
+  connection {
+    type     = "ssh"
+    user     = "ubuntu"
+    private_key = file(var.ssh_private_key_path)
+    host = self.public_dns
+  }
   provisioner "file" {
     source = var.database_path
     destination = "/home/ubuntu/db.sql"
-    connection {
-      type     = "ssh"
-      user     = "ubuntu"
-      private_key = file(var.ssh_private_key_path)
-      host = self.public_dns
-    }
+  }
+  provisioner "file" {
+    destination = "/home/rails/provisioned_env.d/contradb-domain"
+    content = "export CONTRADB_DOMAIN=${contradb_domain_fetcher}"
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "chown -R rails.rails /home/rails/provisioned_env.d/",
+      "echo "for f in ~/provisioned_env.d/*; do . \$f ; done" >> /home/rails/.bashrc",
+      <<EOF
+sudo -u postgres psql -c "CREATE USER rails WITH CREATEDB PASSWORD '${random_password.postgres.result}';"
+EOF
+      ,
+      "sudo -s -u rails ~rails/contra/terraform/ec2-init.d/rails ${random_password.postgres.result}",
+  
+    ]
   }
 }
 
