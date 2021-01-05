@@ -75,13 +75,15 @@ resource "aws_eip" "web_ip" {
     destination = "/home/ubuntu/db.sql"
   }
   provisioner "file" {
-    destination = "/home/rails/provisioned_env.d/contradb-domain"
-    content = "export CONTRADB_DOMAIN=${contradb_domain_fetcher}"
+    destination = "/tmp/contradb-domain"
+    content = "export CONTRADB_DOMAIN=${null == var.domain_name ? "`curl http://169.254.169.254/latest/meta-data/public-hostname`" : var.domain_name}"
   }
   provisioner "remote-exec" {
     inline = [
-      "chown -R rails.rails /home/rails/provisioned_env.d/",
-      "echo "for f in ~/provisioned_env.d/*; do . \$f ; done" >> /home/rails/.bashrc",
+      "sudo -s -u rails mkdir /home/rails/provisioned_env.d/",
+      "sudo -s -u rails mv /tmp/contradb-domain /home/rails/provisioned_env.d/",
+      # "chown -R rails.rails /home/rails/provisioned_env.d/",
+      "echo 'for f in ~/provisioned_env.d/*; do . $f ; done' >> /home/rails/.bashrc",
       <<EOF
 sudo -u postgres psql -c "CREATE USER rails WITH CREATEDB PASSWORD '${random_password.postgres.result}';"
 EOF
