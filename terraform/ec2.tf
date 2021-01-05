@@ -6,14 +6,14 @@ variable "ssh_private_key_path" {
   default = "~/.ssh/contradb-terraform"
 }
 
-# variable "rails_master_key_path" {
-#   default = "../config/master.key"
-#   type = string
-#   description = <<EOF
-# Rails master key, used for decrypting secrets. Typically stored in
-# $RAILS_ROOT/config/master.key. Shared among contradb team members.
-# EOF
-# }
+variable "rails_master_key_path" {
+  default = "../config/master.key"
+  type = string
+  description = <<EOF
+Rails master key, used for decrypting secrets. Typically stored in
+$RAILS_ROOT/config/master.key. Shared among contradb team members.
+EOF
+}
 
 variable "database_path" {
   type = string
@@ -48,13 +48,6 @@ resource "aws_instance" "server" {
     Name = "contradb"
   }
 
-  # user_data = templatefile("ec2-init.yml.tpl", {
-  #   postgres_password = random_password.postgres.result
-  #   contradb_domain_fetcher = null == var.domain_name ? "`curl http://169.254.169.254/latest/meta-data/public-hostname`" : var.domain_name
-  #   # rails_master_key = file(var.rails_master_key_path)
-  # })
-
-
   # delete_on_termination = eventually false, but for now true is aok
 }
 
@@ -78,6 +71,10 @@ resource "aws_eip" "web_ip" {
     destination = "/home/ubuntu/provisioned_env.d/contradb-domain"
     content = "export CONTRADB_DOMAIN=${null == var.domain_name ? "`curl http://169.254.169.254/latest/meta-data/public-hostname`" : var.domain_name}"
   }
+  provisioner "file" {
+    source = var.rails_master_key_path
+    destination = "/home/ubuntu/contra/config/master.key"
+  }
   provisioner "remote-exec" {
     inline = [
       "echo 'for f in ~/provisioned_env.d/*; do . $f ; done' >> ~/.bashrc",
@@ -86,7 +83,6 @@ sudo -u postgres psql -c "CREATE USER ubuntu WITH CREATEDB PASSWORD '${random_pa
 EOF
       ,
       "~ubuntu/contra/terraform/ec2-init.d/rails ${random_password.postgres.result}",
-  
     ]
   }
 }
