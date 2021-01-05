@@ -15,7 +15,6 @@ cd ~rails/contra
 
 
 # postgres
-apt-get install -y postgresql postgresql-contrib libpq-dev
 sudo -u postgres psql -c "CREATE USER rails WITH CREATEDB PASSWORD '$POSTGRES_PASSWORD';"
 
 # asdf and gems are moving to packer build time

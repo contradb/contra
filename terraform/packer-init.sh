@@ -14,6 +14,13 @@ sudo apt-get update
 # install without node, since we'll install that via asdf later
 sudo apt-get install -y --no-install-recommends yarn
 
+# required for building ruby
+sudo apt-get install -y autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm6 libgdbm-dev libdb-dev
+
+# required for postgres (and also compilation of ruby?)
+apt-get install -y postgresql postgresql-contrib libpq-dev
+
+
 # add 'rails' user
 sudo adduser --system --group rails
 sudo -u rails mkdir /home/rails/provisioned_env.d/
