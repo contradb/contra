@@ -19,7 +19,11 @@ sed -i "s/CONTRADB_PRODUCTION_PASSWORD_GOES_HERE/$POSTGRES_PASSWORD/g" config/da
 echo "export RAILS_ENV=production" > ~/provisioned_env.d/rails
 export RAILS_ENV=production
 
+echo "SO FAR SO GOOD"
+>&2 echo "SO FAR SO GOOD"
 bin/rails db:create
+>&2 echo "DONE"
+echo DONE
 
 # TODO find some other way to get this file here...
 # psql contraprod < /tmp/contraprod.sql
