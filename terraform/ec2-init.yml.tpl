@@ -12,7 +12,7 @@ write_files:
 
 runcmd:
  - chown -R rails.rails /home/rails/provisioned_env.d/
- - echo "for f in ~/provisioned_env.d/*; do . \$f ; done" >> /home/ubuntu/.bashrc
+ - echo "for f in ~/provisioned_env.d/*; do . \$f ; done" >> /home/rails/.bashrc
  # TODO: checkout & pull the current branch to make sure we're up-to-date, so we can use amis
  # - sudo -u ubuntu git clone "https://github.com/contradb/contra.git" --branch terraform /home/ubuntu/contra
  # - mv /tmp/master.key /home/ubuntu/contra/config
