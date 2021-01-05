@@ -88,11 +88,4 @@ build {
       "sudo /tmp/packer-init.sh ${var.branch}"
     ]
   }
-  # provisioner "file" {
-  #   destination = "/home/rails/dbs/"
-  #   source      = local.database_path
-  # }
-  # provisioner "shell" {
-  #   script = "./example.sh"
-  # }
 }

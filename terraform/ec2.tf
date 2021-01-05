@@ -38,7 +38,7 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_instance" "server" {
   # ami = data.aws_ami.ubuntu.id
-  ami = "ami-0f3ce5bd8aad74de0"
+  ami = "ami-0f0630b83c69a8a37"
   instance_type = "t2.micro"
   key_name = aws_key_pair.contra_key.key_name
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
@@ -75,20 +75,17 @@ resource "aws_eip" "web_ip" {
     destination = "/home/ubuntu/db.sql"
   }
   provisioner "file" {
-    destination = "/tmp/contradb-domain"
+    destination = "/home/ubuntu/provisioned_env.d/contradb-domain"
     content = "export CONTRADB_DOMAIN=${null == var.domain_name ? "`curl http://169.254.169.254/latest/meta-data/public-hostname`" : var.domain_name}"
   }
   provisioner "remote-exec" {
     inline = [
-      "sudo -s -u rails mkdir /home/rails/provisioned_env.d/",
-      "sudo -s -u rails mv /tmp/contradb-domain /home/rails/provisioned_env.d/",
-      # "chown -R rails.rails /home/rails/provisioned_env.d/",
-      "echo 'for f in ~/provisioned_env.d/*; do . $f ; done' >> /home/rails/.bashrc",
+      "echo 'for f in ~/provisioned_env.d/*; do . $f ; done' >> ~/.bashrc",
       <<EOF
-sudo -u postgres psql -c "CREATE USER rails WITH CREATEDB PASSWORD '${random_password.postgres.result}';"
+sudo -u postgres psql -c "CREATE USER ubuntu WITH CREATEDB PASSWORD '${random_password.postgres.result}';"
 EOF
       ,
-      "sudo -s -u rails ~rails/contra/terraform/ec2-init.d/rails ${random_password.postgres.result}",
+      "~ubuntu/contra/terraform/ec2-init.d/rails ${random_password.postgres.result}",
   
     ]
   }
