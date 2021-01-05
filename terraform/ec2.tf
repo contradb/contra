@@ -15,10 +15,10 @@ variable "ssh_private_key_path" {
 # EOF
 # }
 
-# variable "database_path" {
-#   type = string
-#   description = "path to .sql file for initializing the database on the new server"
-# }
+variable "database_path" {
+  type = string
+  description = "path to .sql file for initializing the database on the new server"
+}
 
 data "aws_ami" "ubuntu" {
   most_recent = true
@@ -54,8 +54,28 @@ resource "aws_instance" "server" {
     # rails_master_key = file(var.rails_master_key_path)
   })
 
+
   # delete_on_termination = eventually false, but for now true is aok
 }
+
+resource "aws_eip" "web_ip" {
+  instance = aws_instance.server.id
+  vpc = true
+  tags = {
+    Name = "contradb"
+  }
+  provisioner "file" {
+    source = var.database_path
+    destination = "/home/ubuntu/db.sql"
+    connection {
+      type     = "ssh"
+      user     = "ubuntu"
+      private_key = file(var.ssh_private_key_path)
+      host = self.public_dns
+    }
+  }
+}
+
 
 resource "aws_key_pair" "contra_key" {
   key_name   = "contradb-terraform-key"
