@@ -51,17 +51,16 @@ resource "aws_instance" "server" {
   # delete_on_termination = eventually false, but for now true is aok
 }
 
-resource "aws_eip" "web_ip" {
-  instance = aws_instance.server.id
-  vpc = true
-  tags = {
-    Name = "contradb"
+resource "null_resource" "server" {
+  triggers = {
+    server = aws_instance.server.id
   }
+
   connection {
     type     = "ssh"
     user     = "ubuntu"
     private_key = file(var.ssh_private_key_path)
-    host = self.public_dns
+    host = aws_eip.web_ip.public_dns
   }
   provisioner "file" {
     source = var.database_path
@@ -69,7 +68,7 @@ resource "aws_eip" "web_ip" {
   }
   provisioner "file" {
     destination = "/home/ubuntu/provisioned_env.d/contradb-domain"
-    content = "export CONTRADB_DOMAIN=${null == var.domain_name ? "`curl http://169.254.169.254/latest/meta-data/public-hostname`" : var.domain_name}"
+    content = "export CONTRADB_DOMAIN=${null == var.domain_name ? "`curl --max-time 5 --silent http://169.254.169.254/latest/meta-data/public-hostname`" : var.domain_name}"
   }
   provisioner "file" {
     source = var.rails_master_key_path
@@ -77,7 +76,6 @@ resource "aws_eip" "web_ip" {
   }
   provisioner "remote-exec" {
     inline = [
-      "echo 'for f in ~/provisioned_env.d/*; do . $f ; done' >> ~/.bashrc",
       <<EOF
 sudo -u postgres psql -c "CREATE USER ubuntu WITH CREATEDB PASSWORD '${random_password.postgres.result}';"
 EOF
@@ -86,7 +84,6 @@ EOF
     ]
   }
 }
-
 
 resource "aws_key_pair" "contra_key" {
   key_name   = "contradb-terraform-key"

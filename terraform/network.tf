@@ -10,6 +10,14 @@ resource "aws_vpc" "contra_vpc" {
   }
 }
 
+resource "aws_eip" "web_ip" {
+  instance = aws_instance.server.id
+  vpc = true
+  tags = {
+    Name = "contradb"
+  }
+}
+
 resource "aws_subnet" "web" {
   cidr_block = cidrsubnet(aws_vpc.contra_vpc.cidr_block, 3, 1)
   vpc_id = aws_vpc.contra_vpc.id
