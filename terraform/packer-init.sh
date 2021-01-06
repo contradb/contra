@@ -32,8 +32,11 @@ apt-get install -y postgresql postgresql-contrib libpq-dev
 
 sudo -u ubuntu mkdir /home/ubuntu/provisioned_env.d/
 sudo -u ubuntu touch /home/ubuntu/provisioned_env.d/noop # so that shell glob expansion finds something, and doesn't just lay an * egg
-echo 'for f in ~/provisioned_env.d/*; do . $f ; done' >> /home/ubuntu/.profile
 
+# The first line of bashrc is before the interactive shell check kicks out non-interactive shells.
+# ssh'ed scripts into the machine are neither interactive nor login, but they need to run this line
+# so this is the only place to put this I see.
+sudo -u ubuntu sed -i '1s|^|for f in ~/provisioned_env.d/*; do\n  . $f\ndone\n|' /home/ubuntu/.bashrc
 
 sudo -u ubuntu git clone 'https://github.com/contradb/contra.git' --branch $BRANCH /home/ubuntu/contra
 

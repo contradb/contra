@@ -38,7 +38,7 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_instance" "server" {
   # ami = data.aws_ami.ubuntu.id
-  ami = "ami-0cee913e691bf5ab8"
+  ami = "ami-0a04ce654737ac327"
   instance_type = "t2.micro"
   key_name = aws_key_pair.contra_key.key_name
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
