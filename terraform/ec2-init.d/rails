@@ -20,13 +20,9 @@ sed -i "s/CONTRADB_PRODUCTION_PASSWORD_GOES_HERE/$POSTGRES_PASSWORD/g" config/da
 echo "export RAILS_ENV=production" > ~/provisioned_env.d/rails
 export RAILS_ENV=production
 
+git pull                        # in case the ami was old
+
 bin/rails db:create
 psql contraprod < ~/db.sql
-
-# TODO find some other way to get this file here...
-# psql contraprod < /tmp/contraprod.sql
-# currently thinking: terraform ssh provisioner since I don't want to build a new image every day (so not packer)
-# and not cloud-init, since it can't handle the file size
-# rm /tmp/contraprod.sql
 
 # TODO start the servers...
