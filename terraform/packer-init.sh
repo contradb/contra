@@ -37,8 +37,9 @@ echo 'for f in ~/provisioned_env.d/*; do . $f ; done' >> ~/.profile
 
 sudo -u ubuntu git clone 'https://github.com/contradb/contra.git' --branch $BRANCH /home/ubuntu/contra
 
-git config advice.detachedHead false # rubybuild plugin, part of asdf, otherwise vomits on packer build log
+sudo -u ubuntu git config --global advice.detachedHead false # rubybuild plugin, part of asdf, otherwise vomits on packer build log
 
 sudo -s -u ubuntu /home/ubuntu/contra/terraform/ec2-init.d/asdf
 sudo -s -u ubuntu /home/ubuntu/contra/terraform/ec2-init.d/gems
 
+sudo -u ubuntu git config --global advice.detachedHead true # restore default

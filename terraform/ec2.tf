@@ -38,7 +38,7 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_instance" "server" {
   # ami = data.aws_ami.ubuntu.id
-  ami = "ami-0f0630b83c69a8a37"
+  ami = "ami-0cee913e691bf5ab8"
   instance_type = "t2.micro"
   key_name = aws_key_pair.contra_key.key_name
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
@@ -68,7 +68,7 @@ resource "null_resource" "server" {
   }
   provisioner "file" {
     destination = "/home/ubuntu/provisioned_env.d/contradb-domain"
-    content = "export CONTRADB_DOMAIN=${null == var.domain_name ? "`curl --max-time 5 --silent http://169.254.169.254/latest/meta-data/public-hostname`" : var.domain_name}"
+    content = "export CONTRADB_DOMAIN=$${CONTRADB_DOMAIN:-${null == var.domain_name ? "`curl --max-time 5 --silent http://169.254.169.254/latest/meta-data/public-hostname`" : var.domain_name}}"
   }
   provisioner "file" {
     source = var.rails_master_key_path
