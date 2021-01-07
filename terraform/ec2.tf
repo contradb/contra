@@ -80,6 +80,8 @@ resource "null_resource" "server" {
 sudo -u postgres psql -c "CREATE USER ubuntu WITH CREATEDB PASSWORD '${random_password.postgres.result}';"
 EOF
       ,
+      "cd contra && git pull",
+      "echo got to here, calling ec2-init.d/rails",
       "~ubuntu/contra/terraform/ec2-init.d/rails ${random_password.postgres.result}",
     ]
   }

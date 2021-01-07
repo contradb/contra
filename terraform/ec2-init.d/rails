@@ -20,8 +20,6 @@ sed -i "s/CONTRADB_PRODUCTION_PASSWORD_GOES_HERE/$POSTGRES_PASSWORD/g" config/da
 echo "export RAILS_ENV=production" > ~/provisioned_env.d/rails
 export RAILS_ENV=production
 
-git pull                        # in case the ami was old
-
 bin/rails db:create
 psql contraprod < ~/db.sql
 
