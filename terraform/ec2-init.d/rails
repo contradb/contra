@@ -25,4 +25,7 @@ git pull                        # in case the ami was old
 bin/rails db:create
 psql contraprod < ~/db.sql
 
+
+EXECJS_RUNTIME=Node bundle exec rake assets:precompile
+
 # TODO start the servers...
