@@ -29,6 +29,10 @@ sudo apt-get install -y autoconf bison build-essential libssl-dev libyaml-dev li
 # required for postgres (and also compilation of ruby?)
 apt-get install -y postgresql postgresql-contrib libpq-dev
 
+apt-get install -y nginx
+
+# for puma pipe
+sudo -u ubuntu mkdir -p /home/ubuntu/run/
 
 sudo -u ubuntu mkdir /home/ubuntu/provisioned_env.d/
 sudo -u ubuntu touch /home/ubuntu/provisioned_env.d/noop # so that shell glob expansion finds something, and doesn't just lay an * egg
