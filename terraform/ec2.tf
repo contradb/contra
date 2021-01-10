@@ -38,7 +38,7 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_instance" "server" {
   # ami = data.aws_ami.ubuntu.id
-  ami = "ami-0a04ce654737ac327"
+  ami = "ami-002c6ee88bc46eba5"
   instance_type = "t2.micro"
   key_name = aws_key_pair.contra_key.key_name
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
@@ -49,6 +49,13 @@ resource "aws_instance" "server" {
   }
 
   # delete_on_termination = eventually false, but for now true is aok
+}
+
+data "template_file" "nginx_site_config" {
+  template = file("${path.module}/nginx.tpl")
+  vars = {
+    domain_name = "contradb.org"
+  }
 }
 
 resource "null_resource" "server" {
@@ -74,14 +81,19 @@ resource "null_resource" "server" {
     source = var.rails_master_key_path
     destination = "/home/ubuntu/contra/config/master.key"
   }
+  provisioner "file" {
+    content = file("${path.module}/nginx.tpl") # template_file.nginx_site_config.rendered
+    destination = "/home/ubuntu/etc-nginx-sites-avaiable-contradb" # "/etc/nginx/sites-available/contradb"
+  }
   provisioner "remote-exec" {
     inline = [
       <<EOF
 sudo -u postgres psql -c "CREATE USER ubuntu WITH CREATEDB PASSWORD '${random_password.postgres.result}';"
 EOF
       ,
+      "sudo cp /home/ubuntu/etc-nginx-sites-avaiable-contradb /etc/nginx/sites-available/contradb",
+      "sudo ln -s /etc/nginx/sites-available/contradb /etc/nginx/sites-enabled/contradb",
       "cd contra && git pull",
-      "echo got to here, calling ec2-init.d/rails",
       "~ubuntu/contra/terraform/ec2-init.d/rails ${random_password.postgres.result}",
     ]
   }
@@ -132,3 +144,5 @@ output "ip" {
 output "domain" {
   value = aws_eip.web_ip.public_dns
 }
+
+
