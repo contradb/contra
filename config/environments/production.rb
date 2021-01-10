@@ -1,6 +1,6 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-  config.domain = ENV.fetch('CONTRADB_DOMAIN')
+  config.domain = ENV.fetch('CONTRADB_DOMAIN') unless ENV['BUILDING_PACKER_IMAGE']
   config.action_mailer.default_url_options = {host: config.domain}
   
   # Code is not reloaded between requests.
@@ -18,7 +18,7 @@ Rails.application.configure do
   
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
   # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
-  config.require_master_key = true
+  config.require_master_key = !ENV['BUILDING_PACKER_IMAGE']
   
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
@@ -84,8 +84,8 @@ Rails.application.configure do
     address:              'smtp.gmail.com',
     port:                 587,
     domain:               'gmail.com',
-    user_name:            Rails.application.credentials.admin.fetch(:daemon).fetch(:username),
-    password:             Rails.application.credentials.admin.fetch(:daemon).fetch(:password),
+    user_name:            Rails.application.credentials.admin&.dig(:daemon, :username) || ENV['BUILDING_PACKER_IMAGE'] || (raise "secrets must be defined by now"),
+    password:             Rails.application.credentials.admin&.dig(:daemon, :password) || ENV['BUILDING_PACKER_IMAGE'] || (raise "secrets must be defined by now"),
     authentication:       :login,
     enable_starttls_auto: true
   }

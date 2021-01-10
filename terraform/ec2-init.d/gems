@@ -14,3 +14,7 @@ gem install bundler
 bundle config set --local deployment true
 bundle config set --local without 'development test'
 bundle install --retry 3
+
+# experimental: try precompiling assets. We may get a fresh git pull
+# later, but I think it's make(1)-like and will recycle this work
+RAILS_ENV=production BUILDING_PACKER_IMAGE=yep EXECJS_RUNTIME=Node bundle exec rake assets:precompile
