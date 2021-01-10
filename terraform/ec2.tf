@@ -54,7 +54,7 @@ resource "aws_instance" "server" {
 data "template_file" "nginx_site_config" {
   template = file("${path.module}/nginx.tpl")
   vars = {
-    domain_name = "contradb.org"
+    domain_name = null == var.domain_name ? "" : var.domain_name
   }
 }
 
@@ -82,7 +82,7 @@ resource "null_resource" "server" {
     destination = "/home/ubuntu/contra/config/master.key"
   }
   provisioner "file" {
-    content = file("${path.module}/nginx.tpl") # template_file.nginx_site_config.rendered
+    content = data.template_file.nginx_site_config.rendered
     destination = "/home/ubuntu/etc-nginx-sites-avaiable-contradb" # "/etc/nginx/sites-available/contradb"
   }
   provisioner "remote-exec" {
@@ -91,8 +91,10 @@ resource "null_resource" "server" {
 sudo -u postgres psql -c "CREATE USER ubuntu WITH CREATEDB PASSWORD '${random_password.postgres.result}';"
 EOF
       ,
+      "sudo rm /etc/nginx/sites-enabled/default",
       "sudo cp /home/ubuntu/etc-nginx-sites-avaiable-contradb /etc/nginx/sites-available/contradb",
       "sudo ln -s /etc/nginx/sites-available/contradb /etc/nginx/sites-enabled/contradb",
+      "sudo systemctl reload nginx",
       "cd contra && git pull",
       "~ubuntu/contra/terraform/ec2-init.d/rails ${random_password.postgres.result}",
     ]

@@ -4,7 +4,7 @@ upstream app {
 }
 
 # from https://www.digitalocean.com/community/tutorials/how-to-redirect-www-to-non-www-with-nginx-on-ubuntu-14-04
-%{ if domain_name != null ~}
+%{ if domain_name != "" ~}
 server {
     server_name www.${domain_name};
     return 301 $scheme://${domain_name}$request_uri;
@@ -14,7 +14,7 @@ server {
 server {
   listen 80 default_server;
   root /home/ubuntu/contra/public;
-  server_name ${domain_name == null ? "" : domain_name};
+  server_name ${domain_name == "" : "\"\"" : domain_name};
   index index.htm index.html;
 
   location / {
