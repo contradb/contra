@@ -29,7 +29,7 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_instance" "server" {
   # ami = data.aws_ami.ubuntu.id
-  ami = "ami-04b4acbb5fbeddf8f"
+  ami = "ami-0dde71fb699607743"
   instance_type = "t2.micro"
   key_name = aws_key_pair.contra_key.key_name
   vpc_security_group_ids = [
@@ -86,7 +86,7 @@ EOF
       "sudo cp /home/ubuntu/etc-nginx-sites-avaiable-contradb /etc/nginx/sites-available/contradb",
       "sudo ln -s /etc/nginx/sites-available/contradb /etc/nginx/sites-enabled/contradb",
       "sudo systemctl reload nginx",
-      "cd contra && git pull",
+      "umask 027 && cd contra && git pull",
       "~ubuntu/contra/terraform/ec2-init.d/rails ${random_password.postgres.result}",
     ]
   }

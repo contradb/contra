@@ -4,12 +4,14 @@
 
 # running as user ubuntu
 
+umask 027
+
 cd ~/contra
 
 git clone --quiet https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.0
 
 . ~/.asdf/asdf.sh
-echo . "~/.asdf/asdf.sh" > ~/provisioned_env.d/asdf
+echo . "/home/ubuntu/.asdf/asdf.sh" > ~/provisioned_env.d/asdf
 
 asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git
 asdf plugin-add ruby https://github.com/asdf-vm/asdf-ruby.git

@@ -94,7 +94,7 @@ build {
     inline = [
       "sudo chown root.root /tmp/packer-init.sh",
       "sudo chmod u+x /tmp/packer-init.sh",
-      "sudo /tmp/packer-init.sh ${var.branch}"
+      "sudo /tmp/packer-init.sh ${var.branch}",
     ]
   }
 }

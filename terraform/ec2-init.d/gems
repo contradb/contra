@@ -4,6 +4,8 @@
 
 set -e
 
+umask 027
+
 cd ~/contra
 
 # put 'gem' in the PATH
