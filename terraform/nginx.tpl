@@ -14,7 +14,7 @@ server {
 server {
   listen 80 default_server;
   root /home/ubuntu/contra/public;
-  server_name ${domain_name == "" : "\"\"" : domain_name};
+  server_name ${domain_name == "" ? "\"\"" : domain_name};
   index index.htm index.html;
 
   location / {

@@ -1,3 +1,7 @@
+# build with
+# cd contra/terraform
+# packer build ./packer.json.pkr.hcl
+
 variable "aws_access_key" {
   type    = string
   default = "${env("AWS_ACCESS_KEY_ID")}"
@@ -79,6 +83,11 @@ build {
   provisioner "file" {
     destination = "/tmp/packer-init.sh"
     source      = "./packer-init.sh"
+  }
+
+  provisioner "file" {
+    destination = "/home/ubuntu/master.key"
+    source      = "../config/master.key"
   }
 
   provisioner "shell" {

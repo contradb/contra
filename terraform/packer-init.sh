@@ -43,6 +43,8 @@ sudo -u ubuntu touch /home/ubuntu/provisioned_env.d/noop # so that shell glob ex
 sudo -u ubuntu sed -i '1s|^|for f in ~/provisioned_env.d/*; do\n  . $f\ndone\n\n|' /home/ubuntu/.bashrc
 
 sudo -u ubuntu git clone 'https://github.com/contradb/contra.git' --branch $BRANCH /home/ubuntu/contra
+mv /home/ubuntu/master.key /home/ubuntu/contra/config/master.key
+chmod 600 /home/ubuntu/contra/config/master.key
 
 sudo -u ubuntu git config --global advice.detachedHead false # rubybuild plugin, part of asdf, otherwise vomits on packer build log
 

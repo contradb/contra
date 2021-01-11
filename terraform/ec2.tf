@@ -6,15 +6,6 @@ variable "ssh_private_key_path" {
   default = "~/.ssh/contradb-terraform"
 }
 
-variable "rails_master_key_path" {
-  default = "../config/master.key"
-  type = string
-  description = <<EOF
-Rails master key, used for decrypting secrets. Typically stored in
-$RAILS_ROOT/config/master.key. Shared among contradb team members.
-EOF
-}
-
 variable "database_path" {
   type = string
   description = "path to .sql file for initializing the database on the new server"
@@ -76,10 +67,6 @@ resource "null_resource" "server" {
   provisioner "file" {
     destination = "/home/ubuntu/provisioned_env.d/contradb-domain"
     content = "export CONTRADB_DOMAIN=$${CONTRADB_DOMAIN:-${null == var.domain_name ? "`curl --max-time 5 --silent http://169.254.169.254/latest/meta-data/public-hostname`" : var.domain_name}}"
-  }
-  provisioner "file" {
-    source = var.rails_master_key_path
-    destination = "/home/ubuntu/contra/config/master.key"
   }
   provisioner "file" {
     content = data.template_file.nginx_site_config.rendered
