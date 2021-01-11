@@ -32,7 +32,11 @@ resource "aws_instance" "server" {
   ami = "ami-04b4acbb5fbeddf8f"
   instance_type = "t2.micro"
   key_name = aws_key_pair.contra_key.key_name
-  vpc_security_group_ids = [aws_security_group.allow_ssh.id]
+  vpc_security_group_ids = [
+    aws_security_group.allow_ssh.id,
+    aws_security_group.allow_web.id,
+    aws_security_group.allow_outbound.id,
+  ]
   subnet_id = aws_subnet.web.id
 
   tags = {
@@ -108,6 +112,42 @@ resource "aws_security_group" "allow_ssh" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = {
+    Name = "contradb"
+  }
+}
+
+resource "aws_security_group" "allow_web" {
+   name        = "allow_web"
+  description = "Allow web inbound traffic"
+  vpc_id = aws_vpc.contra_vpc.id
+
+  ingress {
+    description = "http"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "https"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "contradb"
+  }
+}
+
+resource "aws_security_group" "allow_outbound" {
+   name        = "allow_outbound"
+  description = "Allow all outbound traffic"
+  vpc_id = aws_vpc.contra_vpc.id
 
   egress {
     from_port   = 0
