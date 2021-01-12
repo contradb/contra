@@ -1,5 +1,0 @@
-#!/usr/bin/bash
-
-. "$(dirname "$0")/../provisioned-env.sh"
-
-exec "$@"
