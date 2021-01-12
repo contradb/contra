@@ -41,8 +41,9 @@ sudo -u ubuntu -g rails chmod -R go-w /home/ubuntu/provisioned_env.d/
 # The first line of bashrc is before the interactive shell check kicks out non-interactive shells.
 # ssh'ed scripts into the machine are neither interactive nor login, but they need to run this line
 # so this is the only place to put this I see.
-sudo -u ubuntu -g rails sed -i '1s|^|for f in /home/ubuntu/provisioned_env.d/*; do\n  . $f\ndone\n\n|' /home/ubuntu/.bashrc
-# TODO make a file provisned_env.sh mode 640 and instead call that. That has this.
+sudo -u ubuntu -g rails sed -i '1s|^|. provisioned_env.sh\n\n|' /home/ubuntu/.bashrc
+sudo -u ubuntu -g rails bash -c "echo 'for f in /home/ubuntu/provisioned_env.d/*; do  . \$f ; done' > /home/ubuntu/provisioned_env.sh"
+sudo -u ubuntu -g rails chmod 755 /home/ubuntu/provisioned_env.sh
 
 sudo -u ubuntu -g rails git clone 'https://github.com/contradb/contra.git' --branch $BRANCH /home/ubuntu/contra
 sudo -u ubuntu -g rails chmod -R go-w /home/ubuntu/contra
