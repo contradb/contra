@@ -24,5 +24,7 @@ rm /tmp/asdf1337
 
 cd ~ubuntu/contra
 sg ubuntu "bash -c 'umask 002 && . /home/ubuntu/provisioned_env.sh && asdf install'"
+chmod -R g+w /opt/asdf/installs/ruby/ /opt/asdf/shims
+
 
 
