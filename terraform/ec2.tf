@@ -29,7 +29,7 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_instance" "server" {
   # ami = data.aws_ami.ubuntu.id
-  ami = "ami-0bc2e32781f237306"
+  ami = "ami-02d55879f2915245b"
   instance_type = "t2.micro"
   key_name = aws_key_pair.contra_key.key_name
   vpc_security_group_ids = [
@@ -87,7 +87,7 @@ EOF
       "sudo ln -s /etc/nginx/sites-available/contradb /etc/nginx/sites-enabled/contradb",
       "sudo systemctl reload nginx",
       "umask 027 && cd contra && git pull",
-      "install --mode 644 /home/ubuntu/contra/terraform/puma.service /etc/systemd/system/puma.service",
+      "sudo install --mode 644 /home/ubuntu/contra/terraform/puma.service /etc/systemd/system/puma.service",
       "~ubuntu/contra/terraform/ec2-init.d/rails ${random_password.postgres.result}",
     ]
   }
