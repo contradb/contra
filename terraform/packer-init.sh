@@ -52,9 +52,9 @@ sudo -u ubuntu -g rails chmod -R go-w /home/ubuntu/contra
 mv /home/ubuntu/master.key /home/ubuntu/contra/config/master.key
 chmod 600 /home/ubuntu/contra/config/master.key
 
-sudo -u ubuntu -g rails git config --global advice.detachedHead false # rubybuild plugin, part of asdf, otherwise vomits on packer build log
+git config --global advice.detachedHead false
 
-sudo -s -u ubuntu -g rails /home/ubuntu/contra/terraform/ec2-init.d/asdf
+/home/ubuntu/contra/terraform/ec2-init.d/asdf
 sudo -s -u ubuntu -g rails /home/ubuntu/contra/terraform/ec2-init.d/gems
 
-sudo -u ubuntu -g rails git config --global advice.detachedHead true # restore default
+git config --global advice.detachedHead true

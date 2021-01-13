@@ -2,29 +2,21 @@
 
 # install asdf version manager
 
-# running as user ubuntu
+# running as root user
 
 umask 027
-
-cd ~/contra
-
-git clone --quiet https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.0
-
-. ~/.asdf/asdf.sh
-echo . "/home/ubuntu/.asdf/asdf.sh" > ~/provisioned_env.d/asdf
-
+git clone --quiet https://github.com/asdf-vm/asdf.git /opt/asdf --branch v0.8.0
+export ASDF_DATA_DIR=/opt/asdf
+. /opt/asdf/asdf.sh
 asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git
 asdf plugin-add ruby https://github.com/asdf-vm/asdf-ruby.git
-
-bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
-
-# avoid time-wasting ruby documentation
-# ...for ruby binary
+bash /opt/asdf/plugins/nodejs/bin/import-release-team-keyring
 export RUBY_CONFIGURE_OPTS=--disable-install-doc
-# ...and for gems
 echo "gem: --no-document" > ~/.gemrc
-
+cd ~ubuntu/contra
 asdf install
 
-
-
+# source me in provisioned_env.d
+echo ". /opt/asdf/asdf.sh" > /tmp/asdf1337
+install -m 755 -u ubuntu -g ubuntu /tmp/asdf1337 /home/ubuntu/provisioned_env.d/asdf
+rm /tmp/asdf1337
