@@ -50,7 +50,8 @@ sudo -u ubuntu -g rails chmod 755 /home/ubuntu/provisioned_env.sh
 sudo -u ubuntu -g rails git clone 'https://github.com/contradb/contra.git' --branch $BRANCH /home/ubuntu/contra
 
 sudo -u ubuntu -g rails mkdir /home/ubuntu/contra/tmp
-sudo -u ubuntu -g rails chmod 770 /home/ubuntu/contra/tmp
+sudo chgrp rails  /home/ubuntu/contra/log
+sudo -u ubuntu -g rails chmod 770 /home/ubuntu/contra/tmp /home/ubuntu/contra/log
 sudo install -o ubuntu -g rails --mode 640 /home/ubuntu/master.key /home/ubuntu/contra/config/master.key
 
 
