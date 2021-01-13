@@ -48,9 +48,11 @@ sudo -u ubuntu -g rails bash -c "echo 'for f in /home/ubuntu/provisioned_env.d/*
 sudo -u ubuntu -g rails chmod 755 /home/ubuntu/provisioned_env.sh
 
 sudo -u ubuntu -g rails git clone 'https://github.com/contradb/contra.git' --branch $BRANCH /home/ubuntu/contra
-sudo -u ubuntu -g rails chmod -R go-w /home/ubuntu/contra
-mv /home/ubuntu/master.key /home/ubuntu/contra/config/master.key
-chmod 600 /home/ubuntu/contra/config/master.key
+
+sudo -u ubuntu -g rails mkdir /home/ubuntu/contra/tmp
+sudo -u ubuntu -g rails chmod 770 /home/ubuntu/contra/tmp
+sudo install -o ubuntu -g rails --mode 640 /home/ubuntu/master.key /home/ubuntu/contra/config/master.key
+
 
 sudo -u ubuntu -g rails git config --global advice.detachedHead false # rubybuild plugin, part of asdf, otherwise vomits on packer build log
 
