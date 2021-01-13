@@ -4,7 +4,7 @@
 
 # running as root user
 
-umask 027
+umask 022
 git clone --quiet https://github.com/asdf-vm/asdf.git /opt/asdf --branch v0.8.0
 export ASDF_DATA_DIR=/opt/asdf
 . /opt/asdf/asdf.sh
@@ -18,5 +18,7 @@ asdf install
 
 # source me in provisioned_env.d
 echo ". /opt/asdf/asdf.sh" > /tmp/asdf1337
-install -m 755 -u ubuntu -g ubuntu /tmp/asdf1337 /home/ubuntu/provisioned_env.d/asdf
+echo "export ASDF_DATA_DIR=/opt/asdf" >> /tmp/asdf1337
+
+install -m 755 -o ubuntu -g ubuntu /tmp/asdf1337 /home/ubuntu/provisioned_env.d/asdf
 rm /tmp/asdf1337
