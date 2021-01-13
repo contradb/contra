@@ -2,4 +2,6 @@
 
 . "$(dirname "$0")/../../provisioned_env.sh"
 
+cd "$(dirname "$0")/.."
+
 exec "$@"

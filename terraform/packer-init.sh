@@ -36,7 +36,7 @@ sudo -u ubuntu -g rails chmod ug=rwx /home/ubuntu/run/
 
 sudo -u ubuntu -g rails mkdir /home/ubuntu/provisioned_env.d/
 sudo -u ubuntu -g rails touch /home/ubuntu/provisioned_env.d/noop # so that shell glob expansion finds something, and doesn't just lay an * egg
-sudo -u ubuntu -g rails bash -c 'bash -c 'echo export PATH="\${PATH}:/home/ubuntu/contra/bin" > /home/ubuntu/provisioned_env.d/binstubs'
+sudo -u ubuntu -g rails bash -c 'echo export PATH="\${PATH}:/home/ubuntu/contra/bin" > /home/ubuntu/provisioned_env.d/binstubs'
 
 sudo -u ubuntu -g rails chmod -R go-w /home/ubuntu/provisioned_env.d/
 
