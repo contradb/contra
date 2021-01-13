@@ -13,12 +13,16 @@ asdf plugin-add ruby https://github.com/asdf-vm/asdf-ruby.git
 bash /opt/asdf/plugins/nodejs/bin/import-release-team-keyring
 export RUBY_CONFIGURE_OPTS=--disable-install-doc
 echo "gem: --no-document" > ~/.gemrc
-cd ~ubuntu/contra
-asdf install
 
 # source me in provisioned_env.d
-echo ". /opt/asdf/asdf.sh" > /tmp/asdf1337
-echo "export ASDF_DATA_DIR=/opt/asdf" >> /tmp/asdf1337
+echo "export ASDF_DATA_DIR=/opt/asdf" > /tmp/asdf1337
+echo ". /opt/asdf/asdf.sh" >> /tmp/asdf1337
 
 install -m 755 -o ubuntu -g ubuntu /tmp/asdf1337 /home/ubuntu/provisioned_env.d/asdf
 rm /tmp/asdf1337
+
+
+cd ~ubuntu/contra
+sg ubuntu "bash -c 'umask 002 && . /home/ubuntu/provisioned_env.sh && asdf install'"
+
+

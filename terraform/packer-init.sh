@@ -43,7 +43,7 @@ sudo -u ubuntu -g rails chmod -R go-w /home/ubuntu/provisioned_env.d/
 # The first line of bashrc is before the interactive shell check kicks out non-interactive shells.
 # ssh-ed scripts into the machine are neither interactive nor login, but they need to run this line
 # so this is the only place to put this I see.
-sudo -u ubuntu -g rails sed -i '1s|^|. provisioned_env.sh\n\n|' /home/ubuntu/.bashrc
+sudo -u ubuntu -g rails sed -i '1s|^|. ~/provisioned_env.sh\n\n|' /home/ubuntu/.bashrc
 sudo -u ubuntu -g rails bash -c "echo 'for f in /home/ubuntu/provisioned_env.d/*; do  . \$f ; done' > /home/ubuntu/provisioned_env.sh"
 sudo -u ubuntu -g rails chmod 755 /home/ubuntu/provisioned_env.sh
 
@@ -55,7 +55,6 @@ chmod 600 /home/ubuntu/contra/config/master.key
 git config --global advice.detachedHead false
 
 /home/ubuntu/contra/terraform/ec2-init.d/asdf
-# skip this to figure out what's wrong with gems
-# sudo -s -u ubuntu -g rails /home/ubuntu/contra/terraform/ec2-init.d/gems
+/home/ubuntu/contra/terraform/ec2-init.d/gems
 
 git config --global advice.detachedHead true
