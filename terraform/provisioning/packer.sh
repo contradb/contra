@@ -2,7 +2,11 @@
 
 BRANCH=$1
 
-# runs as root in a random directory
+# Runs as root in an unpredictable, random directory
+#
+# This script checks out the contradb repo,
+# and installs as much software as it can without knowing the final domain name or database replica.
+# see ../packer.json.pkr.hcl for the only caller.
 
 set -e
 set -x
@@ -44,6 +48,7 @@ sudo -u ubuntu -g rails chmod -R go-w /home/ubuntu/rails-env.d/
 # ssh'ed scripts into the machine are neither interactive nor login, but they need to run this line
 # so this is the only place to put this I see.
 sudo -u ubuntu -g rails sed -i '1s|^|. /home/ubuntu/rails-env.sh\n\n|' /home/ubuntu/.bashrc
+
 sudo -u ubuntu -g rails bash -c "echo 'for f in /home/ubuntu/rails-env.d/*; do  . \$f ; done' > /home/ubuntu/rails-env.sh"
 sudo -u ubuntu -g rails chmod 755 /home/ubuntu/rails-env.sh
 
