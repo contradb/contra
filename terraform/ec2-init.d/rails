@@ -9,6 +9,8 @@ POSTGRES_PASSWORD=$1
 set -e
 set -x
 
+. /home/ubuntu/provisioned_env.sh
+
 if [ -z "$POSTGRES_PASSWORD" ]
 then
   1>&2 echo "expected required argument POSTGRES_PASSWORD"
