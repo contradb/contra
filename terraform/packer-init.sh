@@ -57,7 +57,7 @@ sudo install -o ubuntu -g rails --mode 640 /home/ubuntu/master.key /home/ubuntu/
 
 sudo -u ubuntu -g rails git config --global advice.detachedHead false # rubybuild plugin, part of asdf, otherwise vomits on packer build log
 
-sudo -s -u ubuntu -g rails /home/ubuntu/contra/terraform/ec2-init.d/asdf
-sudo -s -u ubuntu -g rails /home/ubuntu/contra/terraform/ec2-init.d/gems
+sudo -s -u ubuntu -g rails /home/ubuntu/contra/terraform/provisioning/asdf
+sudo -s -u ubuntu -g rails /home/ubuntu/contra/terraform/provisioning/gems
 
 sudo -u ubuntu -g rails git config --global advice.detachedHead true # restore default
