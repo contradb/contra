@@ -9,7 +9,7 @@ POSTGRES_PASSWORD=$1
 set -e
 set -x
 
-. /home/ubuntu/provisioned_env.sh
+. /home/ubuntu/rails-env.sh
 
 if [ -z "$POSTGRES_PASSWORD" ]
 then
@@ -23,7 +23,7 @@ cd ~/contra
 
 sed -i "s/CONTRADB_PRODUCTION_PASSWORD_GOES_HERE/$POSTGRES_PASSWORD/g" config/database.yml
 
-echo "export RAILS_ENV=production" > ~/provisioned_env.d/rails
+echo "export RAILS_ENV=production" > ~/rails-env.d/rails
 export RAILS_ENV=production
 
 bin/rails db:create

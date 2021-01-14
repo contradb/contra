@@ -69,7 +69,7 @@ resource "null_resource" "server" {
     destination = "/home/ubuntu/db.sql"
   }
   provisioner "file" {
-    destination = "/home/ubuntu/provisioned_env.d/contradb-domain"
+    destination = "/home/ubuntu/rails-env.d/contradb-domain"
     content = "export CONTRADB_DOMAIN=$${CONTRADB_DOMAIN:-${null == var.domain_name ? "`curl --max-time 5 --silent http://169.254.169.254/latest/meta-data/public-hostname`" : var.domain_name}}"
   }
   provisioner "file" {

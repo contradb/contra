@@ -34,18 +34,18 @@ apt-get install -y nginx
 sudo -u ubuntu -g rails mkdir -p /home/ubuntu/run/
 sudo -u ubuntu -g rails chmod ug=rwx /home/ubuntu/run/
 
-sudo -u ubuntu -g rails mkdir /home/ubuntu/provisioned_env.d/
-sudo -u ubuntu -g rails touch /home/ubuntu/provisioned_env.d/noop # so that shell glob expansion finds something, and doesn't just lay an * egg
-sudo -u ubuntu -g rails bash -c 'echo export PATH="\${PATH}:/home/ubuntu/contra/bin" > /home/ubuntu/provisioned_env.d/binstubs'
+sudo -u ubuntu -g rails mkdir /home/ubuntu/rails-env.d/
+sudo -u ubuntu -g rails touch /home/ubuntu/rails-env.d/noop # so that shell glob expansion finds something, and doesn't just lay an * egg
+sudo -u ubuntu -g rails bash -c 'echo export PATH="\${PATH}:/home/ubuntu/contra/bin" > /home/ubuntu/rails-env.d/binstubs'
 
-sudo -u ubuntu -g rails chmod -R go-w /home/ubuntu/provisioned_env.d/
+sudo -u ubuntu -g rails chmod -R go-w /home/ubuntu/rails-env.d/
 
 # The first line of bashrc is before the interactive shell check kicks out non-interactive shells.
 # ssh'ed scripts into the machine are neither interactive nor login, but they need to run this line
 # so this is the only place to put this I see.
-sudo -u ubuntu -g rails sed -i '1s|^|. /home/ubuntu/provisioned_env.sh\n\n|' /home/ubuntu/.bashrc
-sudo -u ubuntu -g rails bash -c "echo 'for f in /home/ubuntu/provisioned_env.d/*; do  . \$f ; done' > /home/ubuntu/provisioned_env.sh"
-sudo -u ubuntu -g rails chmod 755 /home/ubuntu/provisioned_env.sh
+sudo -u ubuntu -g rails sed -i '1s|^|. /home/ubuntu/rails-env.sh\n\n|' /home/ubuntu/.bashrc
+sudo -u ubuntu -g rails bash -c "echo 'for f in /home/ubuntu/rails-env.d/*; do  . \$f ; done' > /home/ubuntu/rails-env.sh"
+sudo -u ubuntu -g rails chmod 755 /home/ubuntu/rails-env.sh
 
 sudo -u ubuntu -g rails git clone 'https://github.com/contradb/contra.git' --branch $BRANCH /home/ubuntu/contra
 

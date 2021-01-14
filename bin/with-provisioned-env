@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-. "$(dirname "$0")/../../provisioned_env.sh"
+. "$(dirname "$0")/../../rails-env.sh"
 
 cd "$(dirname "$0")/.."
 
