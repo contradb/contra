@@ -81,6 +81,7 @@ resource "null_resource" "server" {
       <<EOF
 sudo -u postgres psql -c "CREATE USER contradbd WITH CREATEDB PASSWORD '${random_password.postgres.result}';"
 sudo -u postgres psql -c "CREATE USER ubuntu WITH CREATEDB PASSWORD '${random_password.postgres.result}';"
+sudo -u postgres psql contraprod -c "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO contradbd;"
 EOF
       ,
       "sudo rm /etc/nginx/sites-enabled/default",
@@ -88,8 +89,10 @@ EOF
       "sudo ln -s /etc/nginx/sites-available/contradb /etc/nginx/sites-enabled/contradb",
       "sudo systemctl reload nginx",
       "umask 022 && cd /home/ubuntu/contra && git pull --no-edit",
+      "sudo -g rails /home/ubuntu/contra/terraform/ec2-init.d/rails ${random_password.postgres.result}",
       "sudo install --mode 644 /home/ubuntu/contra/terraform/puma.service /etc/systemd/system/puma.service",
-      "~ubuntu/contra/terraform/ec2-init.d/rails ${random_password.postgres.result}",
+      "sudo systemctl enable puma",
+      "sudo systemctl start puma",
     ]
   }
 }
