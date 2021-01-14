@@ -37,6 +37,6 @@ test:
 
 production:
   <<: *postgres
-  username: contradbd
+  # the username can be either ubuntu or contradbd, both same pw
   password: CONTRADB_PRODUCTION_PASSWORD_GOES_HERE
   database: contraprod
