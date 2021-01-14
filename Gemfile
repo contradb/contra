@@ -13,6 +13,7 @@ gem 'rails', '~> 5.2.0'
 
 gem 'pg'
 gem 'puma'
+gem 'sd_notify'
 
 # Use SCSS for stylesheets
 gem 'sassc-rails'
@@ -54,7 +55,6 @@ group :test do
   gem 'capybara'
   gem 'capybara-selenium'
 end
-
 
 # Babel JS cross-compiler http://nandovieira.com/using-es2015-with-asset-pipeline-on-ruby-on-rails
 # gem 'sprockets', '~> 4.x'

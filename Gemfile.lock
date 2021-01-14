@@ -229,6 +229,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
+    sd_notify (0.1.0)
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
@@ -304,6 +305,7 @@ DEPENDENCIES
   redcarpet
   rspec-rails
   sassc-rails
+  sd_notify
   spring
   spring-commands-rspec
   sprockets
@@ -314,4 +316,4 @@ DEPENDENCIES
   webpacker (~> 4.x)
 
 BUNDLED WITH
-   2.2.3
+   2.2.4
