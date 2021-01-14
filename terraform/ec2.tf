@@ -29,7 +29,7 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_instance" "server" {
   # ami = data.aws_ami.ubuntu.id
-  ami = "ami-0edcb5cc19ae26da4"
+  ami = "ami-0638a7db22dd9f713"
   instance_type = "t2.micro"
   key_name = aws_key_pair.contra_key.key_name
   vpc_security_group_ids = [
@@ -80,6 +80,7 @@ resource "null_resource" "server" {
     inline = [
       <<EOF
 sudo -u postgres psql -c "CREATE USER contradbd WITH CREATEDB PASSWORD '${random_password.postgres.result}';"
+sudo -u postgres psql -c "CREATE USER ubuntu WITH CREATEDB PASSWORD '${random_password.postgres.result}';"
 EOF
       ,
       "sudo rm /etc/nginx/sites-enabled/default",
