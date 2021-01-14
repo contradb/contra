@@ -89,7 +89,7 @@ EOF
       "sudo systemctl reload nginx",
       "umask 022 && cd /home/ubuntu/contra && git pull --no-edit",
       "sudo -g rails /home/ubuntu/contra/terraform/ec2-init.d/rails ${random_password.postgres.result}",
-      "sudo -u postgres psql contraprod -c 'GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO contradbd;'",
+      "sudo -u postgres psql contraprod -c 'GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO contradbd; GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO contradbd;'",
       "sudo install --mode 644 /home/ubuntu/contra/terraform/puma.service /etc/systemd/system/puma.service",
       "sudo systemctl enable puma",
       "sudo systemctl start puma",
