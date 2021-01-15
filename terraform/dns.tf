@@ -31,6 +31,15 @@ resource "aws_route53_record" "record" {
   ttl = "60"
 }
 
+resource "aws_route53_record" "www" {
+  zone_id = aws_route53_zone.zone[count.index].id
+  name = "www"
+  count = local.domain_count
+  records = [aws_route53_record.record[count.index].name]
+  type = "CNAME"
+  ttl = "5"
+}
+
 output "name_servers" {
   value = var.domain_name == null ? [] : aws_route53_zone.zone[0].name_servers
 }
