@@ -13,6 +13,8 @@ then
   exit 1
 fi
 
+set -x
+set -e
 
 sudo snap install core
 sudo snap refresh core
