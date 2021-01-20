@@ -46,8 +46,15 @@ resource "aws_instance" "server" {
   # delete_on_termination = eventually false, but for now true is aok
 }
 
-data "template_file" "nginx_site_config" {
-  template = file("${path.module}/nginx.tpl")
+data "template_file" "nginx_site_config_no_ssl" {
+  template = file("${path.module}/nginx-no-ssl.tpl")
+  vars = {
+    domain_name = null == var.domain_name ? "" : var.domain_name
+  }
+}
+
+data "template_file" "nginx_site_config_certbot" {
+  template = file("${path.module}/nginx-certbot.tpl")
   vars = {
     domain_name = null == var.domain_name ? "" : var.domain_name
   }
@@ -73,8 +80,12 @@ resource "null_resource" "server" {
     content = "export CONTRADB_DOMAIN=$${CONTRADB_DOMAIN:-${null == var.domain_name ? "`curl --max-time 5 --silent http://169.254.169.254/latest/meta-data/public-hostname`" : var.domain_name}}"
   }
   provisioner "file" {
-    content = data.template_file.nginx_site_config.rendered
-    destination = "/home/ubuntu/etc-nginx-sites-avaiable-contradb" # "/etc/nginx/sites-available/contradb"
+    content = data.template_file.nginx_site_config_no_ssl.rendered
+    destination = "/home/ubuntu/etc-nginx-sites-avaiable-contradb-no-ssl"
+  }
+  provisioner "file" {
+    content = data.template_file.nginx_site_config_certbot.rendered
+    destination = "/home/ubuntu/etc-nginx-sites-avaiable-contradb-certbot"
   }
   provisioner "remote-exec" {
     inline = [
@@ -84,8 +95,9 @@ sudo -u postgres psql -c "CREATE USER ubuntu WITH CREATEDB PASSWORD '${random_pa
 EOF
       ,
       "sudo rm /etc/nginx/sites-enabled/default",
-      "sudo cp /home/ubuntu/etc-nginx-sites-avaiable-contradb /etc/nginx/sites-available/contradb",
-      "sudo ln -s /etc/nginx/sites-available/contradb /etc/nginx/sites-enabled/contradb",
+      "sudo cp /home/ubuntu/etc-nginx-sites-avaiable-contradb-no-ssl /etc/nginx/sites-available/contradb-no-ssl",
+      "sudo cp /home/ubuntu/etc-nginx-sites-avaiable-contradb-certbot /etc/nginx/sites-available/contradb-certbot",
+      "sudo ln -s /etc/nginx/sites-available/contradb-no-ssl /etc/nginx/sites-enabled/contradb",
       "sudo systemctl reload nginx",
       "umask 022 && cd /home/ubuntu/contra && git pull --no-edit",
       "sudo -g rails /home/ubuntu/contra/terraform/provisioning/rails ${random_password.postgres.result}",

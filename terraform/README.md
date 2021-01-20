@@ -13,6 +13,7 @@ buddy, you shoulda seen it _before!_
 - AWS account
 - some budget - these servers aren't free
 - a bash-like shell such as is easily found on Linux or Mac to execute some commands
+- optional: control of a free domain name, like `contradb.com`.
 
 
 ## Keypair
@@ -116,7 +117,22 @@ every 60 seconds. How about 3600?
 The domain `contradb.com` is hosted by namecheap.com. Here is a handy link
 to the [namecheap dashboard](https://ap.www.namecheap.com/dashboard).
 
-## TODO
+## DNS-only: Install ssl certificate
 
-This guide doesn't actually install ContraDB yet, it just rents the infrastructure.
-Future expansion will install rails, postgres, and a https certificate.
+Ssh in again. Maybe this time you can use:
+
+```
+ssh ubuntu@contradb-example.com /home/ubuntu/contra/terraform/provisioning/certbot.sh your.email@mail.com
+```
+
+where:
+
+- `contradb-example.com` gets replaced with your real domain
+- `your.email@mail.com` gets replace with the email of the person letsencrypt sends emergency email to (I use my best email address)
+
+
+## Test
+
+Visit the site and make sure it works.
+
+
