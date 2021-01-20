@@ -27,28 +27,9 @@ variable "branch" {
   default = "terraform"
 }
 
-variable "database_path" {
-  type =  string
-  default = null
-  description = <<EOF
-path to the .sql file to initialize the instance to. By default looks
-at the highest file of the form
-~/priv/contradb/contradb-2021-12-34.sql" because that's where the
-contradb-backup program stores its nightlies.
-EOF
-}
-
-variable "sql_backup_dir" {
-  type = string
-  default = "/home/dm/priv/contradb"
-}
-
 # "timestamp" template function replacement
 locals {
   timestamp = regex_replace(timestamp(), "[- TZ:]", "")
-
-  tmp_database_paths = fileset(var.sql_backup_dir, "contradb-[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*.sql")
-  database_path = null != var.database_path ? var.database_path : "${var.sql_backup_dir}/${element (sort(local.tmp_database_paths), length(local.tmp_database_paths) - 1)}"
 }
 
 # source blocks are generated from your builders; a source can be referenced in

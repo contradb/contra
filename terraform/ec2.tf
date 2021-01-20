@@ -7,9 +7,33 @@ variable "ssh_private_key_path" {
 }
 
 variable "database_path" {
-  type = string
-  description = "path to .sql file for initializing the database on the new server"
+  type =  string
+  default = null
+  description = <<EOF
+path to the .sql file to initialize the instance to. By default looks
+at the highest file of the form
+~/priv/contradb/contradb-2021-12-34.sql" because that's where the
+contradb-backup program stores its nightlies.
+EOF
 }
+
+variable "database_archive_dir" {
+  type = string
+  default = null
+  description = <<EOF
+If database_path isn't used, then database_archive_dir specifies where
+to look for database images and pick the newest based on the
+filenames.
+"~/priv/contradb" is the default.
+EOF
+}
+
+locals {
+  database_archive_dir = null == var.database_archive_dir ? pathexpand("~/priv/contradb") : var.database_archive_dir
+  tmp_database_paths = fileset(local.database_archive_dir, "contradb-[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*.sql")
+  database_path = null != var.database_path ? var.database_path : "${local.database_archive_dir}/${element (sort(local.tmp_database_paths), length(local.tmp_database_paths) - 1)}"
+}
+
 
 data "aws_ami" "ubuntu" {
   most_recent = true
@@ -72,7 +96,7 @@ resource "null_resource" "server" {
     host = aws_eip.web_ip.public_dns
   }
   provisioner "file" {
-    source = var.database_path
+    source = local.database_path
     destination = "/home/ubuntu/db.sql"
   }
   provisioner "file" {
