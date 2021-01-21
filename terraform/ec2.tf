@@ -1,3 +1,9 @@
+variable "ami" {
+  type = string
+  default = "ami-0c417ea44719574e4"
+  description = "Amazon ami to use - you get this by running packer, see terraform/README.md for details"
+}
+
 variable "ssh_public_key_path" {
   default = "~/.ssh/contradb-terraform.pub"
 }
@@ -35,25 +41,8 @@ locals {
 }
 
 
-data "aws_ami" "ubuntu" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["099720109477"] # Canonical
-}
-
 resource "aws_instance" "server" {
-  # ami = data.aws_ami.ubuntu.id
-  ami = "ami-0cadefbce6cf35925"
+  ami = var.ami
   instance_type = "t2.micro"
   key_name = aws_key_pair.contra_key.key_name
   vpc_security_group_ids = [

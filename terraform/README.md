@@ -1,7 +1,8 @@
 # HOWTO install this repo's code on Amazon Web Services (AWS)
 
 Because hosting ContraDB requires a lot of sub-programs, we use a
-program called _Terraform_ to rent the stuff we need in a reliable way.
+programs called _Packer_ and _Terraform_ to rent the stuff we need in
+a reliable way.
 
 This document details how to go about standing up your own contradb,
 accessible to the world. If you think this is complicated _now_,
@@ -14,6 +15,7 @@ buddy, you shoulda seen it _before!_
 - some budget - these servers aren't free
 - a bash-like shell such as is easily found on Linux or Mac to execute some commands
 - optional: control of a free domain name, like `contradb.com`.
+
 
 
 ## Keypair
@@ -36,6 +38,29 @@ export AWS_ACCESS_KEY_ID=...
 export AWS_SECRET_ACCESS_KEY=...
 export AWS_SESSION_TOKEN=... (sometimes, depending on your account setup)
 ```
+
+
+## Install packer
+
+See Hashicorp's packer page for instructions. This guide was written against Packer 1.6.6.
+
+## Build a packer image
+
+If you're an offical-pants admin, then you may be able to skip this
+step, since you should have access to our prebuilt amis. Note that if
+there've been a lot of code changes since the last packer build, and
+the code is relatively stable, it might save time to rebuild a new
+packer ami anyway, since the asset compilation may be slowing down ec2
+provisioning, but packer 'bakes in' the latest.
+
+```
+cd contra/terraform
+packer build ./packer.json.pkr.hcl
+```
+
+This'll take 20 minutes or so, and spit out an ami id, like
+`ami-0c417ea44719574e4`. Note this, you'll need it for terraform.
+
 
 
 ## Decide if you want a domain name.
@@ -62,10 +87,11 @@ These instructions were written with version 0.14.3.
 ```
 cd contra/terraform
 terraform init
-terraform plan -var=domain_name=example.com -out=the.tfplan
+terraform plan -var=domain_name=example.com var=ami=ami-SavedFromTheStepAbove -out=the.tfplan
 terraform apply the.tfplan
 ```
 Obviously replace `example.com` with your domain. If you don't want a domain, omit the whole `-var=...` argument.
+And replace `ami-SavedFromTheStepAbove` with the ami id from the packer step. 
 
 You'll get a bunch of outputs from Terraform. You'll need them
 later. You can read them out again with the command `terraform
