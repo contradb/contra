@@ -82,16 +82,43 @@ In [dns.tf](dns.tf) there's a ttl. Set it something short like 60 seconds while 
 These instructions were written with version 0.14.3.
 
 
-## Terraform it up
+## Terraform init
+
+First:
 
 ```
 cd contra/terraform
+```
+
+Then confirm you've set the AWS environment variables `AWS_ACCESS_KEY_ID` etc as instructed above. Then you've got to download plugins and figure out where to store terraform state, so...
+
+
+### if you're an official-pants admin wanting to change production...
+
+do
+
+```
+terraform init -backend-config=contradb.tfbackend
+```
+
+### Or if you're a hobbyist and want to get it working for just you...
+
+```
+rm s3-backend.tf
 terraform init
+```
+
+## Terraform it up
+
+```
 terraform plan -var=domain_name=example.com var=ami=ami-SavedFromTheStepAbove -out=the.tfplan
 terraform apply the.tfplan
 ```
 Obviously replace `example.com` with your domain. If you don't want a domain, omit the whole `-var=...` argument.
 And replace `ami-SavedFromTheStepAbove` with the ami id from the packer step. 
+
+The contents of `contradb.tfbackend` assume you're an official-pants admin, and have access to "our" production terraform state. Unless you want to mess with 
+
 
 You'll get a bunch of outputs from Terraform. You'll need them
 later. You can read them out again with the command `terraform
