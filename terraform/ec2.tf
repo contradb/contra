@@ -1,3 +1,9 @@
+variable "branch" {
+  description = "git branch"
+  type = string
+  default = "terraform" # TODO: change to master
+}
+
 variable "ssh_public_key_path" {
   default = "~/.ssh/contradb-terraform.pub"
 }
@@ -112,7 +118,7 @@ EOF
       "sudo cp /home/ubuntu/etc-nginx-sites-avaiable-contradb-certbot /etc/nginx/sites-available/contradb-certbot",
       "sudo ln -s /etc/nginx/sites-available/contradb-no-ssl /etc/nginx/sites-enabled/contradb",
       "sudo systemctl reload nginx",
-      "umask 022 && cd /home/ubuntu/contra && git pull --no-edit",
+      "umask 022 && cd /home/ubuntu/contra && git fetch && git checkout ${var.branch} && git pull --no-edit",
       "sudo -g rails /home/ubuntu/contra/terraform/provisioning/rails ${random_password.postgres.result}",
       "sudo -u postgres psql contraprod -c 'GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO contradbd; GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO contradbd;'",
       "sudo install --mode 644 /home/ubuntu/contra/terraform/puma.service /etc/systemd/system/puma.service",
