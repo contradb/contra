@@ -1,0 +1,13 @@
+#!/usr/bin/bash
+
+if ! which jq > /dev/null; then
+  >&2 echo "jq is not installed but I need it to deal with json. Running `sudo apt install jq` will probably fix this."
+  exit 1
+fi;
+
+set -e
+
+MANIFEST_JSON_PATH="$(dirname "$0")/packer-manifest.json"
+AMI_ID=$(jq .builds[0].artifact_id $MANIFEST_JSON_PATH | sed 's/^"\(.*\)"$/\1/' | cut -d : -f 2)
+
+jq -n --arg ami_id "$AMI_ID" '{"ami_id":$ami_id}'

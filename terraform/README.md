@@ -58,9 +58,14 @@ cd contra/terraform
 packer build ./packer.json.pkr.hcl
 ```
 
-This'll take 20 minutes or so, and spit out an ami id, like
-`ami-0c417ea44719574e4`. Note this, you'll need it for terraform.
+This'll take 20 minutes or so, and overwrite the file
+`contra/terraform/packer-manifest.json`. Down below, terraform will
+read the `ami` field from `packer-manifest.json` using the helper
+script `contra/terraform/packer-ami-id`.
 
+Hobbyists will not want to _merge_ changes to `packer-manifest.json`
+to upstream in github. We're saving that file for the canonical
+installation of contradb.com.
 
 
 ## Decide if you want a domain name.
@@ -111,11 +116,10 @@ terraform init
 ## Terraform it up
 
 ```
-terraform plan -var=domain_name=example.com var=ami=ami-SavedFromTheStepAbove -out=the.tfplan
+terraform plan -var=domain_name=example.com -out=the.tfplan
 terraform apply the.tfplan
 ```
 Obviously replace `example.com` with your domain. If you don't want a domain, omit the whole `-var=...` argument.
-And replace `ami-SavedFromTheStepAbove` with the ami id from the packer step. 
 
 The contents of `contradb.tfbackend` assume you're an official-pants admin, and have access to "our" production terraform state. Unless you want to mess with 
 

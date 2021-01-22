@@ -1,6 +1,8 @@
 # build with
-# cd contra/terraform
-# packer build ./packer.json.pkr.hcl
+#   cd contra/terraform
+#   packer build ./packer.json.pkr.hcl
+# check syntax with
+#   packer validate ./packer.json.pkr.hcl
 
 variable "aws_access_key" {
   type    = string
@@ -77,5 +79,10 @@ build {
       "sudo chmod u+x /tmp/packer.sh",
       "sudo /tmp/packer.sh ${var.branch}",
     ]
+  }
+
+  post-processor "manifest" {
+    output = "packer-manifest.json"
+    strip_path = true
   }
 }

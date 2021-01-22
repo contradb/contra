@@ -1,9 +1,3 @@
-variable "ami" {
-  type = string
-  default = "ami-0c417ea44719574e4"
-  description = "Amazon ami to use - you get this by running packer, see terraform/README.md for details"
-}
-
 variable "ssh_public_key_path" {
   default = "~/.ssh/contradb-terraform.pub"
 }
@@ -34,15 +28,21 @@ filenames.
 EOF
 }
 
+
+data "external" "packer_ami_id" {
+  program = ["${path.module}/packer-ami-id"]
+}
+
+
 locals {
   database_archive_dir = null == var.database_archive_dir ? pathexpand("~/priv/contradb") : var.database_archive_dir
   tmp_database_paths = fileset(local.database_archive_dir, "contradb-[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*.sql")
   database_path = null != var.database_path ? var.database_path : "${local.database_archive_dir}/${element (sort(local.tmp_database_paths), length(local.tmp_database_paths) - 1)}"
+  ami_id = data.external.packer_ami_id.result.ami_id
 }
 
-
 resource "aws_instance" "server" {
-  ami = var.ami
+  ami = local.ami_id
   instance_type = "t2.micro"
   key_name = aws_key_pair.contra_key.key_name
   vpc_security_group_ids = [
