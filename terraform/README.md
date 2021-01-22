@@ -60,8 +60,7 @@ packer build ./packer.json.pkr.hcl
 
 This'll take 20 minutes or so, and overwrite the file
 `contra/terraform/packer-manifest.json`. Down below, terraform will
-read the `ami` field from `packer-manifest.json` using the helper
-script `contra/terraform/packer-ami-id`.
+read the `ami` field from `packer-manifest.json`.
 
 Hobbyists will not want to _merge_ changes to `packer-manifest.json`
 to upstream in github. We're saving that file for the canonical
