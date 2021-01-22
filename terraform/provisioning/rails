@@ -31,7 +31,8 @@ psql contraprod < ~/db.sql
 
 EXECJS_RUNTIME=Node bundle exec rake assets:precompile
 rm -rf /home/ubuntu/contra/tmp/* # clear bootsnap cache so contradbd can write it
-ls -al /home/ubuntu/log/ > /tmp/logls1
+ls -al /home/ubuntu/contra/log/
+ls -al /home/ubuntu/contra/log/ > /tmp/logls
 chmod ug+rw /home/ubuntu/contra/log/*
 chgrp rails /home/ubuntu/contra/log/*
 
