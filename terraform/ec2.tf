@@ -1,45 +1,3 @@
-variable "branch" {
-  description = "git branch"
-  type = string
-  default = "terraform" # TODO: change to master
-}
-
-variable "ssh_public_key_path" {
-  default = "~/.ssh/contradb-terraform.pub"
-}
-
-variable "ssh_private_key_path" {
-  default = "~/.ssh/contradb-terraform"
-}
-
-variable "database_path" {
-  type =  string
-  default = null
-  description = <<EOF
-path to the .sql file to initialize the instance to. By default looks
-at the highest file of the form
-~/priv/contradb/contradb-2021-12-34.sql" because that's where the
-contradb-backup program stores its nightlies.
-EOF
-}
-
-variable "database_archive_dir" {
-  type = string
-  default = null
-  description = <<EOF
-If database_path isn't used, then database_archive_dir specifies where
-to look for database images and pick the newest based on the
-filenames.
-"~/priv/contradb" is the default.
-EOF
-}
-
-data "external" "packer_ami_id" {
-  program = ["${path.module}/packer-ami-id"]
-}
-
-
-
 locals {
   database_archive_dir = null == var.database_archive_dir ? pathexpand("~/priv/contradb") : var.database_archive_dir
   tmp_database_paths = fileset(local.database_archive_dir, "contradb-[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*.sql")
@@ -202,13 +160,3 @@ resource "random_password" "postgres" {
   length = 26
   special = false
 }
-
-output "ip" {
-  value = aws_eip.web_ip.public_ip
-}
-
-output "domain" {
-  value = aws_eip.web_ip.public_dns
-}
-
-
