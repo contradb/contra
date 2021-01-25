@@ -1,6 +1,6 @@
 # HOWTO install this repo's code on Amazon Web Services (AWS)
 
-Because hosting ContraDB requires a lot of sub-programs, we use a
+Because hosting ContraDB requires a lot of sub-programs, we use
 programs called _Packer_ and _Terraform_ to rent the stuff we need in
 a reliable way.
 
@@ -97,6 +97,8 @@ cd contra/terraform
 Then confirm you've set the AWS environment variables `AWS_ACCESS_KEY_ID` etc as instructed above. Then you've got to download plugins and figure out where to store terraform state, so...
 
 
+Next we need to decide how Terraform will store its state. There are two main cases:
+
 ### if you're an official-pants admin wanting to change production...
 
 do
@@ -105,7 +107,9 @@ do
 terraform init -backend-config=contradb.tfbackend
 ```
 
-### Or if you're a hobbyist and want to get it working for just you...
+### If you wanna try it out in your own sandbox...
+
+you can store state on your local harddrive with:
 
 ```
 rm s3-backend.tf
@@ -120,12 +124,11 @@ terraform apply the.tfplan
 ```
 Obviously replace `example.com` with your domain. If you don't want a domain, omit the whole `-var=...` argument.
 
-The contents of `contradb.tfbackend` assume you're an official-pants admin, and have access to "our" production terraform state. Unless you want to mess with 
+The contents of `contradb.tfbackend` assume you're an official-pants admin, and have access to "our" production terraform state. So you could delete contradb if you're not careful. 
 
 
-You'll get a bunch of outputs from Terraform. You'll need them
-later. You can read them out again with the command `terraform
-output`.
+When you run terraform apply, you'll get a bunch of outputs from
+Terraform. Note them, you'll need them later.
 
 
 ## Test ssh
@@ -158,10 +161,13 @@ nslookup contradb-example.com aws-ns1.amazon.com
 ```
 
 Where `aws-ns1.amazon.com` is the first of the nameservers you got
-back from the terraform output. If that _still_ doesn't work,
-something's wrong with this terraform code, because we hired
-`aws-ns1.amazon.com` to say the IP address of our server, darn it! If
-it did work, then maybe your local dns just hasn't refreshed it's
+back from the terraform output. 
+
+If that _still_ doesn't work, something's wrong with this terraform
+code, because we hired `aws-ns1.amazon.com` to say the IP address of
+our server, darn it!
+
+If it did work, then maybe your local dns just hasn't refreshed it's
 cache yet. Wait 20 minutes and try again.
 
 Lastly, restore the TTL in [dns.tf](dns.tf) so it doesn't bust its own cache

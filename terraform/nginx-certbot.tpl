@@ -3,12 +3,6 @@ upstream app {
     server unix:/home/ubuntu/run/puma.sock fail_timeout=0;
 }
 
-# from https://www.digitalocean.com/community/tutorials/how-to-redirect-www-to-non-www-with-nginx-on-ubuntu-14-04
-# server {
-#     server_name www.${domain_name};
-#     return 301 https://${domain_name}$request_uri;
-# }
-
 server {
   root /home/ubuntu/contra/public;
 %{ if domain_name == "" ~}
@@ -26,8 +20,6 @@ server {
     try_files $uri/index.html $uri.html $uri @app;
   }
 
-  # doesn't appear to serve the fingerprinted assets the way I want it to - Dave Morse contradb
-  # see https://github.com/dcmorse/contra/issues/24
   location ~ ^/assets/ {
     expires 1y;
     add_header Cache-Control public;

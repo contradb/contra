@@ -34,4 +34,4 @@ rm -rf /home/ubuntu/contra/tmp/* # clear bootsnap cache so contradbd can write i
 chmod ug+rw /home/ubuntu/contra/log/*
 chgrp rails /home/ubuntu/contra/log/*
 
-# TODO start the servers...
+

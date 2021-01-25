@@ -21,8 +21,6 @@ server {
     try_files $uri/index.html $uri.html $uri @app;
   }
 
-  # doesn't appear to serve the fingerprinted assets the way I want it to - Dave Morse contradb
-  # see https://github.com/dcmorse/contra/issues/24
   location ~ ^/assets/ {
     expires 1y;
     add_header Cache-Control public;
