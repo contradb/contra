@@ -1,5 +1,21 @@
 # Test Plan for Contradb
 
+## URLs
+
+All these links should redirect to [https://contradb.com](https://contradb.com):
+
+1. [https://contradb.com](https://contradb.com)
+1. [https://www.contradb.com](https://www.contradb.com)
+1. [http://contradb.com](http://contradb.com)
+1. [http://www.contradb.com](http://www.contradb.com)
+
+All these links should redirect to [https://contradb.com/about](https://contradb.com/about):
+
+1. [https://contradb.com/about](https://contradb.com/about)
+1. [https://www.contradb.com/about](https://www.contradb.com/about)
+1. [http://contradb.com/about](http://contradb.com/about)
+1. [http://www.contradb.com/about](http://www.contradb.com/about)
+
 ## Users
 1. login works
    1. `signed in successfully` notification
