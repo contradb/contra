@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
-    # bucket = "morsed-tf-state"
-    # key    = "contradb.tfstate"
-    # region = "us-east-2"
+    # this is typically configured by passing the
+    # -backend-config=production.tfbackend flag to terraform init,
+    # see ./README.md for details
   }
 }

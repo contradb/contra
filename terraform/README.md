@@ -104,7 +104,7 @@ Next we need to decide how Terraform will store its state. There are two main ca
 do
 
 ```
-terraform init -backend-config=contradb.tfbackend
+terraform init -backend-config=production.tfbackend
 ```
 
 ### If you wanna try it out in your own sandbox...
@@ -124,7 +124,7 @@ terraform apply the.tfplan
 ```
 Obviously replace `example.com` with your domain. If you don't want a domain, omit the whole `-var=...` argument.
 
-The contents of `contradb.tfbackend` assume you're an official-pants admin, and have access to "our" production terraform state. So you could delete contradb if you're not careful. 
+The contents of `production.tfbackend` assume you're an official-pants admin, and have access to "our" production terraform state. So you could delete contradb with some poor decision making. (Of course, if you don't have the AWS secrets, you're not going to be able to do that accidentally).
 
 
 When you run terraform apply, you'll get a bunch of outputs from
