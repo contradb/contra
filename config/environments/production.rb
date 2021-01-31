@@ -51,8 +51,8 @@ Rails.application.configure do
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
   
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  # TODO change back to true when ssl actually works
-  config.force_ssl = false
+  # TODO fix to CONTRA_DOMAIN CONTRADB_DOMAIN being set should make this true:
+  config.force_ssl = true
   
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
