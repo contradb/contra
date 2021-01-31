@@ -57,6 +57,9 @@ server {
   if ($host = ${domain_name}) {
       return 301 https://$host$request_uri;
   } # managed by Certbot
+  if ($host = www.${domain_name}) {
+      return 301 https://$host$request_uri;
+  } # managed by Certbot
 
 
   listen   80;
