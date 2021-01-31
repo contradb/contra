@@ -2,7 +2,8 @@ locals {
   database_archive_dir = null == var.database_archive_dir ? pathexpand("~/priv/contradb") : var.database_archive_dir
   tmp_database_paths = fileset(local.database_archive_dir, "contradb-[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*.sql")
   database_path = null != var.database_path ? var.database_path : "${local.database_archive_dir}/${element (sort(local.tmp_database_paths), length(local.tmp_database_paths) - 1)}"
-  region_and_ami_id = jsondecode(file("${path.module}/packer-manifest.json")).builds[0].artifact_id
+  packer_manifest = jsondecode(file("${path.module}/packer-manifest.json"))
+  region_and_ami_id = local.packer_manifest.builds[length(tolist(local.packer_manifest.builds)) - 1].artifact_id
   ami_id = regex(":(.+)$", local.region_and_ami_id)[0]
 }
 
