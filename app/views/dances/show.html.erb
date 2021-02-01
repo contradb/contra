@@ -44,11 +44,11 @@
           <% if @dance.publish_all? && @dance.user_id != current_user&.id %>
             <hr class='panel-hr-contra'>
             please report problems to
-            <%= mail_to(Rails.application.secrets.admin_data_maven_mail,
-                        Rails.application.secrets.admin_data_maven_mail,
+            <%= mail_to(EmailVault.get(:data_maven, :email),
+                        EmailVault.get(:data_maven, :email),
                         encode: 'hex',
                         subject: "contradb dance problem",
-                        body: "Dear #{Rails.application.secrets.admin_data_maven_name}, I see a problem with '#{@dance.title}' (#{dance_url(@dance)}) transcribed by #{@dance.user.name}. The problem is ") %>.
+                        body: "Dear #{EmailVault.get(:data_maven, :name)}, I see a problem with '#{@dance.title}' (#{dance_url(@dance)}) transcribed by #{@dance.user.name}. The problem is ") %>.
           <% end %>
         </div>
         <div class="panel-heading panel-heading-mid-panel-hack">

@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+. "$(dirname "$0")/../../rails-env.sh"
+
+cd "$(dirname "$0")/.."
+
+exec "$@"

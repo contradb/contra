@@ -1,0 +1,31 @@
+#!/usr/bin/bash
+
+# install asdf version manager
+
+# running as user ubuntu
+
+umask 022
+
+cd ~/contra
+
+git clone --quiet https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.0
+
+. ~/.asdf/asdf.sh
+echo "export ASDF_DATA_DIR=/home/ubuntu/.asdf" > ~/rails-env.d/asdf
+echo ". /home/ubuntu/.asdf/asdf.sh" >> ~/rails-env.d/asdf
+
+asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+asdf plugin-add ruby https://github.com/asdf-vm/asdf-ruby.git
+
+bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+
+# avoid time-wasting ruby documentation
+# ...for ruby binary
+export RUBY_CONFIGURE_OPTS=--disable-install-doc
+# ...and for gems
+echo "gem: --no-document" > ~/.gemrc
+
+asdf install
+
+
+

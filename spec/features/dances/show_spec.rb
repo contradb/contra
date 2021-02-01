@@ -1,5 +1,6 @@
 # coding: utf-8
 require 'rails_helper'
+require 'email_vault'
 
 describe 'Showing dances' do
   include DancesHelper
@@ -35,9 +36,9 @@ describe 'Showing dances' do
   end
 
   describe "displays data integrity curator email" do
-    let (:email) { Rails.application.secrets.admin_data_maven_mail }
+    let (:email) { EmailVault.get(:data_maven, :email) }
     let (:link_href) { /^mailto:#{hex_encode(email)}/ }
-    let (:email_sentence) { "please report problems to #{Rails.application.secrets.admin_data_maven_mail}." }
+    let (:email_sentence) { "please report problems to #{EmailVault.get(:data_maven, :email)}." }
 
     it 'on the page' do
       dance = FactoryGirl.create(:dance)
@@ -69,7 +70,7 @@ describe 'Showing dances' do
       # This tries to emulate the 'hex' encoding on rails mailto helper.
       # It probably won't work for some strings.
       s.each_char.map { |c|
-        if c =~ /[a-z]/i
+        if c =~ /[a-z_]/i
           '%' + c.ord.to_s(16)
         else
           c

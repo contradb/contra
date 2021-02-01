@@ -1,0 +1,37 @@
+#!/usr/bin/bash
+
+# configure rails
+
+# running as user ubuntu group rails
+
+POSTGRES_PASSWORD=$1
+
+set -e
+set -x
+
+. /home/ubuntu/rails-env.sh
+
+if [ -z "$POSTGRES_PASSWORD" ]
+then
+  1>&2 echo "expected required argument POSTGRES_PASSWORD"
+  exit 1
+fi
+
+umask 022
+
+cd ~/contra
+
+sed -i "s/CONTRADB_PRODUCTION_PASSWORD_GOES_HERE/$POSTGRES_PASSWORD/g" config/database.yml
+
+echo "export RAILS_ENV=production" > ~/rails-env.d/rails
+export RAILS_ENV=production
+
+bin/rails db:create
+psql contraprod < ~/db.sql
+
+EXECJS_RUNTIME=Node bundle exec rake assets:precompile
+rm -rf /home/ubuntu/contra/tmp/* # clear bootsnap cache so contradbd can write it
+chmod ug+rw /home/ubuntu/contra/log/*
+chgrp rails /home/ubuntu/contra/log/*
+
+

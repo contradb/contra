@@ -13,6 +13,12 @@ call them from their phone or print outs.
 
 This library is released under the AGPL, see COPYING for details.
 
+## Building your own personal production server
+
+See [terraform/README.md](terraform/README.md) for details on
+installing contradb in the cloud with Terraform and Amazon Web
+Services.
+
 ## Development
 
 Contact us for help. Getting contradb running locally is a 397-step

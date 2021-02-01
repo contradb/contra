@@ -12,7 +12,8 @@ gem 'angularjs-rails', '~> 1.4', '>= 1.4.7'
 gem 'rails', '~> 5.2.0'
 
 gem 'pg'
-
+gem 'puma'
+gem 'sd_notify'
 
 # Use SCSS for stylesheets
 gem 'sassc-rails'
@@ -36,10 +37,6 @@ gem 'jquery-ui-rails'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-group :production do
-  gem 'unicorn'
-end
-
 group :development do
   gem 'web-console' # Access an IRB console on exception pages or by using <%= console %> in views
   gem "spring"
@@ -58,7 +55,6 @@ group :test do
   gem 'capybara'
   gem 'capybara-selenium'
 end
-
 
 # Babel JS cross-compiler http://nandovieira.com/using-es2015-with-asset-pipeline-on-ruby-on-rails
 # gem 'sprockets', '~> 4.x'

@@ -1,0 +1,3 @@
+bucket = "contradb-terraform-state"
+key    = "production.tfstate"
+region = "us-east-2"

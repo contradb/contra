@@ -37,6 +37,8 @@ test:
 
 production:
   <<: *postgres
-  username: rails
-  password: <%= ENV['APP_DATABASE_PASSWORD'] %>
-  database: app_production
+  # The username can be either ubuntu or contradbd, both same pw
+  # but it seems that psql just knows we're authentic by our user id,
+  # and doesn't care about the password.
+  password: CONTRADB_PRODUCTION_PASSWORD_GOES_HERE
+  database: contraprod
