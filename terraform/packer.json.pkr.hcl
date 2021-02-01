@@ -26,7 +26,7 @@ variable "region" {
 
 variable "branch" {
   type    = string
-  default = "terraform"
+  default = "master"
 }
 
 # "timestamp" template function replacement

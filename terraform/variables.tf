@@ -13,7 +13,7 @@ EOF
 variable "branch" {
   description = "git branch"
   type = string
-  default = "terraform" # TODO: change to master
+  default = "master"
 }
 
 variable "ssh_public_key_path" {
