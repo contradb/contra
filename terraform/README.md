@@ -109,6 +109,8 @@ terraform init -backend-config=production.tfbackend
 
 ### If you wanna try it out in your own sandbox...
 
+Say you've downloaded the code to try to run it, or you are trying to
+set up a temporary 'staging' environment that can't hurt contradb.com:
 you can store state on your local harddrive with:
 
 ```
