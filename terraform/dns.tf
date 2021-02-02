@@ -16,7 +16,7 @@ resource "aws_route53_record" "record" {
   records = [aws_eip.web_ip.public_ip]
   zone_id = aws_route53_zone.zone[count.index].id
   type = "A"
-  ttl = "60"
+  ttl = "3600"
 }
 
 resource "aws_route53_record" "www" {
@@ -25,5 +25,5 @@ resource "aws_route53_record" "www" {
   count = local.domain_count
   records = [aws_route53_record.record[count.index].name]
   type = "CNAME"
-  ttl = "5"
+  ttl = "3600"
 }
