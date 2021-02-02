@@ -31,7 +31,7 @@ if [ ! -f /usr/bin/certbot ]; then
   sudo ln -s /snap/bin/certbot /usr/bin/certbot
 fi
 sudo cp /etc/nginx/sites-available/contradb-no-ssl /etc/nginx/sites-available/contradb-no-ssl.bak
-sudo certbot certonly -d "$CONTRADB_DOMAIN" --nginx -n -m "$CERT_OWNER_EMAIL" --agree-tos
+sudo certbot certonly -d "$CONTRADB_DOMAIN" -d "www.$CONTRADB_DOMAIN" --nginx -n -m "$CERT_OWNER_EMAIL" --agree-tos
 sudo systemctl stop nginx
 sudo rm /etc/nginx/sites-enabled/contradb
 sudo ln -s /etc/nginx/sites-available/contradb-certbot /etc/nginx/sites-enabled/contradb
