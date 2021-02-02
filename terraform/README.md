@@ -186,7 +186,7 @@ to the [namecheap dashboard](https://ap.www.namecheap.com/dashboard).
 Ssh in again. Maybe this time you can use:
 
 ```
-ssh ubuntu@contradb-example.com /home/ubuntu/contra/terraform/provisioning/certbot.sh your.email@mail.com
+ssh ubuntu@contradb-example.com /home/ubuntu/contra/terraform/provisioning/certbot.sh your.email@mail.com contradb-example.com
 ```
 
 where:
