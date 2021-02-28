@@ -1,3 +1,3 @@
 #!/bin/bash
 
-pg_dump app_production > contradb-$(date -u +%Y-%m-%d).sql
+pg_dump contraprod > contradb-$(date -u +%Y-%m-%d).sql
