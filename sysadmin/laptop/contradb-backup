@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -e
-set -x
 
 if [ -z "$HOME" ]
 then
@@ -31,6 +30,7 @@ else
   ssh -i ~/.ssh/contradb-terraform "$contradb_user_and_host" contra/sysadmin/cloud/contradb-backup
   scp -i ~/.ssh/contradb-terraform "$contradb_user_and_host:$backup_sql" "$backup_dir"
 fi
-rsync -e 'ssh -i ~/.ssh/contradb-terraform' -r --exclude letsencrypt/live/ "$contradb_user_and_host:/etc/letsencrypt" "$backup_dir"
+# It's suddenly hard to ssh this directory. What's so important in this directory? If I can regen the server: not much, I don't think. 
+# rsync -e 'ssh -i ~/.ssh/contradb-terraform' -r --exclude letsencrypt/live/ "$contradb_user_and_host:/etc/letsencrypt" "$backup_dir"
 
 exit 0
