@@ -1,13 +1,6 @@
 #!/bin/bash
 
 set -e
-# set -x
-
-if [ -z "$CONTRADB_IP" ]
-then
-  echo "\$CONTRADB_IP is not set"
-  exit 1
-fi
 
 if [ -z "$HOME" ]
 then
@@ -15,16 +8,29 @@ then
   exit 1
 fi
 
+if [ -z "$AWS_ACCESS_KEY_ID" ]
+then
+  echo "\$AWS_ACCESS_KEY_ID is not set. Perhaps source ~/.contradb-aws"
+  exit 1
+fi
+
+
 backup_sql="contradb-$(date -u +%Y-%m-%d).sql"
 backup_dir="$HOME/priv/contradb"
+contradb_repo="$HOME/contra"
+
+pushd "$contradb_repo/terraform"
+contradb_user_and_host=ubuntu@$(terraform output domain | sed s/\"//g)
+popd
+
 if [[ -r "$backup_dir/$backup_sql" && -s "$backup_dir/$backup_sql" ]]
 then
   echo "$backup-dir/$backup_sql already exists"
 else
-  ssh "rails@$CONTRADB_IP" bin/contradb-backup
-  scp "rails@$CONTRADB_IP:$backup_sql" "$backup_dir"
+  ssh -i ~/.ssh/contradb-terraform "$contradb_user_and_host" contra/sysadmin/cloud/contradb-backup
+  scp -i ~/.ssh/contradb-terraform "$contradb_user_and_host:$backup_sql" "$backup_dir"
 fi
-
-rsync -r --exclude letsencrypt/live/ "root@$CONTRADB_IP:/etc/letsencrypt" "$backup_dir"
+# It's suddenly hard to ssh this directory. What's so important in this directory? If I can regen the server: not much, I don't think. 
+# rsync -e 'ssh -i ~/.ssh/contradb-terraform' -r --exclude letsencrypt/live/ "$contradb_user_and_host:/etc/letsencrypt" "$backup_dir"
 
 exit 0
