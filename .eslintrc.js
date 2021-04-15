@@ -17,6 +17,7 @@ module.exports = {
     "prettier",
   ],
   rules: {
+    "@typescript-eslint/no-unused-vars": [1, { "argsIgnorePattern": "^(_|meh)",  "varsIgnorePattern": "^_" }],
     "@typescript-eslint/member-delimiter-style": [
       "error",
       {
