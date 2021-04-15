@@ -17,16 +17,19 @@ import DancesTab from "./dances-tab"
 import ProgramTab from "./program-tab"
 import { columnDefinitions } from "./dance-table"
 import { SearchEx } from "./search-ex"
+import { DragDropContext, DropResult } from "react-beautiful-dnd"
 
 const searchExDefaultJson = SearchEx.default().toJson()
 
-export const AdvancedSearch = ({
-  dialect,
-  tags, // eslint-disable-line @typescript-eslint/no-unused-vars
-}: {
+type AdvancedSearchProps = {
   dialect: Dialect
   tags: string[]
-}): JSX.Element => {
+}
+
+const AdvancedSearchInternal = ({
+  dialect,
+  tags, // eslint-disable-line @typescript-eslint/no-unused-vars
+}: AdvancedSearchProps): JSX.Element => {
   const [searchDancesJson, setSearchDancesJson] = useState({
     dances: [] as SearchDancesDanceJson[],
     numberSearched: 0,
@@ -128,6 +131,7 @@ export const AdvancedSearch = ({
   } else {
     return provideDialect(
       dialect,
+
       <SearchTabs
         initialIndex={2}
         tabs={[
@@ -147,5 +151,14 @@ const provideDialect = (
 ): JSX.Element => (
   <DialectContext.Provider value={dialect}>{component}</DialectContext.Provider>
 )
+
+// move to own file?
+const onDragEnd = (_result: DropResult): void => undefined
+const provideDragDropContext = (component: JSX.Element): JSX.Element => (
+  <DragDropContext onDragEnd={onDragEnd}>{component}</DragDropContext>
+)
+
+export const AdvancedSearch = (props: AdvancedSearchProps): JSX.Element =>
+  provideDragDropContext(<AdvancedSearchInternal {...props} />)
 
 export default AdvancedSearch
