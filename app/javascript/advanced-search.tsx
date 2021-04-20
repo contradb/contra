@@ -17,7 +17,7 @@ import DancesTab from "./dances-tab"
 import ProgramTab from "./program-tab"
 import { columnDefinitions } from "./dance-table"
 import { SearchEx } from "./search-ex"
-import { DragDropContext, DropResult } from "react-beautiful-dnd"
+import { ProgramEditorDragDropContext } from "./components/program-editor-drag-drop-context"
 
 const searchExDefaultJson = SearchEx.default().toJson()
 
@@ -152,13 +152,10 @@ const provideDialect = (
   <DialectContext.Provider value={dialect}>{component}</DialectContext.Provider>
 )
 
-// move to own file?
-const onDragEnd = (_result: DropResult): void => undefined
-const provideDragDropContext = (component: JSX.Element): JSX.Element => (
-  <DragDropContext onDragEnd={onDragEnd}>{component}</DragDropContext>
+export const AdvancedSearch = (props: AdvancedSearchProps): JSX.Element => (
+  <ProgramEditorDragDropContext>
+    <AdvancedSearchInternal {...props} />
+  </ProgramEditorDragDropContext>
 )
-
-export const AdvancedSearch = (props: AdvancedSearchProps): JSX.Element =>
-  provideDragDropContext(<AdvancedSearchInternal {...props} />)
 
 export default AdvancedSearch

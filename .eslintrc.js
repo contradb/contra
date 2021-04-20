@@ -39,6 +39,7 @@ module.exports = {
       "error",
       { functions: false, classes: false, variables: false },
     ],
+    "react/prop-types": [2, { ignore: ['children'] }],
   },
   overrides: [
     {

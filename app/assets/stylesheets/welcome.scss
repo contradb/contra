@@ -378,3 +378,11 @@ $desktop-bevel: $desktop-margin / 2;
   margin-top: 4px;
   margin-bottom: 4px;
 }
+
+.draggable-activity {
+  min-width: 10em;
+  border: 1px solid #ccc;
+  background-color: white;
+  margin: 5px 0px;
+  padding: 2px;
+}

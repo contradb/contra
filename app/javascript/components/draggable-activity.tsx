@@ -11,6 +11,7 @@ export const DraggableActivity = ({ activity, index }: Props): JSX.Element => (
   <Draggable draggableId={activity.id.toString()} index={index}>
     {(provided: DraggableProvided) => (
       <div
+        className="draggable-activity"
         {...provided.draggableProps}
         {...provided.dragHandleProps}
         ref={provided.innerRef}
