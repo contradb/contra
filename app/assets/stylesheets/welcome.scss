@@ -2,7 +2,7 @@ $icon-font-path: "bootstrap/"; /* https://stackoverflow.com/questions/25227622/e
 @import "bootstrap";
 
 $contra-bg: #faf7e0;
-$contra-grey: #F0F0EA;
+$contra-grey: #f0f0ea;
 $contra-fg: #333333;
 
 .welcome-index-content {
@@ -28,7 +28,8 @@ $contra-fg: #333333;
   position: relative;
   margin-bottom: 0.7em;
 
-  label {   /* hide search label, use a placeholder instead */
+  label {
+    /* hide search label, use a placeholder instead */
     visibility: hidden;
     input {
       visibility: visible;
@@ -40,15 +41,14 @@ $contra-fg: #333333;
   input {
     margin-bottom: 1em;
     width: 100%;
-    margin-top: -20px;          /* WEIRD 1of2 move above our normal box! */
+    margin-top: -20px; /* WEIRD 1of2 move above our normal box! */
     margin-left: 0px;
-    @extend .input-lg           /* overwrite too-small .input-sm provided by datatables */
-}
-
+    @extend .input-lg           /* overwrite too-small .input-sm provided by datatables */;
+  }
 }
 
 #dances-table_wrapper {
-  margin-top: 29px;             /* WEIRD 2of2 make space above normal box! */
+  margin-top: 29px; /* WEIRD 2of2 make space above normal box! */
 }
 
 /* figure filters */
@@ -100,9 +100,8 @@ $contra-fg: #333333;
   display: none;
 }
 
-
 .figure-filter .ellipsis-expanded {
-   @extend .btn-primary;
+  @extend .btn-primary;
 }
 
 .figure-filter-accordion {
@@ -110,7 +109,7 @@ $contra-fg: #333333;
   tr {
     min-height: 34px;
     div.radio {
-      display: block;           /* Bootstrap why aren't you stacking them without this? */
+      display: block; /* Bootstrap why aren't you stacking them without this? */
       line-height: 34px;
     }
   }
@@ -119,7 +118,7 @@ $contra-fg: #333333;
 .chooser-label-text {
   text-align: right;
   vertical-align: top;
-  line-height: 34px;            /* sync to form-control */
+  line-height: 34px; /* sync to form-control */
   /* display: inline-block; */
   padding-right: 2em;
 }
@@ -151,7 +150,7 @@ select.chooser-argument {
 // Position radios and checkboxes better
 .chooser-argument input[type="radio"],
 .chooser-argument input[type="checkbox"] {
-  margin-top: 0px;              /* override 4px in bootstrap */
+  margin-top: 0px; /* override 4px in bootstrap */
 }
 
 .pagination {
@@ -181,7 +180,7 @@ select.chooser-argument {
   padding: 0.5em;
   border-radius: 0.7em;
   border: 3px dashed black;
-  z-index: 1
+  z-index: 1;
 }
 
 .dance-table-th div {
@@ -190,14 +189,14 @@ select.chooser-argument {
   align-items: center;
 }
 
-
 // zero out the size of everything between the menubar and the content
 body.welcome-search-body {
   .navbar {
     margin-bottom: 0px;
   }
 
-  #notice, #alert {
+  #notice,
+  #alert {
     padding: 0px;
     margin-bottom: 0px;
   }
@@ -206,14 +205,13 @@ body.welcome-search-body {
 .search-tabs {
   position: sticky;
   top: 0px;
-  z-index: 1;                   // fix undesired overlapping behavior with react-table's sorting indicators
+  z-index: 1; // fix undesired overlapping behavior with react-table's sorting indicators
   display: flex;
   width: 100%;
   justify-content: space-between;
   background-color: $contra-grey;
 
   button {
-
     // unstyle button begin
     font-family: inherit;
     font-size: 100%;
@@ -222,7 +220,7 @@ body.welcome-search-body {
     // unstyle button end
 
     padding: 10px 0px;
-    border: thin solid #BBB;
+    border: thin solid #bbb;
     flex-grow: 1;
     display: block;
     text-align: center;
@@ -238,7 +236,6 @@ body.welcome-search-body {
       background-color: $contra-bg;
       border-bottom: none;
     }
-
 
     position: relative;
     .photobomb {
@@ -289,9 +286,7 @@ $desktop-bevel: $desktop-margin / 2;
     margin-right: $desktop-margin;
   }
 
-
   .side-panel-toggle {
-
     button {
       // unstyle button begin
       font-family: inherit;
@@ -312,7 +307,7 @@ $desktop-bevel: $desktop-margin / 2;
     }
 
     padding: 10px 0px;
-    border: thin solid #BBB;
+    border: thin solid #bbb;
 
     margin-top: $desktop-margin;
 
