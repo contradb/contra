@@ -27,6 +27,10 @@ const onDragEnd = (
   programs: Program[],
   setPrograms: (ps: Program[]) => void
 ) => ({ destination, source }: DropResult): void => {
+  console.log("TODO here to enable dnd from dances to program", {
+    source,
+    destination,
+  })
   if (!destination) return
   if (
     destination.droppableId === source.droppableId &&

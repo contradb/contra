@@ -4,6 +4,8 @@ import { useTable, usePagination, useSortBy } from "react-table"
 import { NaturalNumberEditor } from "./natural-number-editor"
 import Filter from "./filter"
 import { Breakpoint } from "./use-bootstrap3-breakpoint"
+import { Droppable } from "react-beautiful-dnd"
+import { DragHandleCell } from "./components/search-table/drag-handle-cell"
 
 // TODO: use rails route helpers
 const choreographerPath = (cid: number): string => {
@@ -102,6 +104,12 @@ export const columnDefinitions: Array<ColumnDefinition> = [
     show: false,
     Cell: MatchingFiguresHtmlCell,
     disableSortBy: true,
+  },
+  {
+    Header: "DnD",
+    accessor: "id",
+    Cell: DragHandleCell,
+    show: Breakpoint.Xs,
   },
 ]
 
@@ -253,35 +261,43 @@ export function DanceTable({
         visibleColumns={visibleColumns}
         setVisibleColumns={setVisibleColumns}
       />
-      <table
-        {...getTableProps()}
-        className="table table-bordered table-hover table-condensed dances-table-react"
-      >
-        <thead>
-          {headerGroups.map((headerGroup: any) => (
-            // eslint-disable-next-line react/jsx-key
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column: any) => (
-                <DanceTableTh column={column} key={column.index} />
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row: any) => {
-            prepareRow(row)
-            return (
-              // eslint-disable-next-line react/jsx-key
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell: any) => (
+
+      <Droppable droppableId="dance-table" isDropDisabled={true}>
+        {({ droppableProps, placeholder, innerRef: droppableRef }) => (
+          <div ref={droppableRef} {...droppableProps}>
+            {placeholder}
+            <table
+              {...getTableProps()}
+              className="table table-bordered table-hover table-condensed dances-table-react"
+            >
+              <thead>
+                {headerGroups.map((headerGroup: any) => (
                   // eslint-disable-next-line react/jsx-key
-                  <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  <tr {...headerGroup.getHeaderGroupProps()}>
+                    {headerGroup.headers.map((column: any) => (
+                      <DanceTableTh column={column} key={column.index} />
+                    ))}
+                  </tr>
                 ))}
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+              </thead>
+              <tbody {...getTableBodyProps()}>
+                {rows.map((row: any) => {
+                  prepareRow(row)
+                  return (
+                    // eslint-disable-next-line react/jsx-key
+                    <tr {...row.getRowProps()}>
+                      {row.cells.map((cell: any) => (
+                        // eslint-disable-next-line react/jsx-key
+                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      ))}
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Droppable>
       <div className="dance-table-footer">
         <div className="form-inline">
           <PaginationSentence

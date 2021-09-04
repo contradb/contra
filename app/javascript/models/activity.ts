@@ -1,7 +1,9 @@
 export interface Activity {
   index: number
-  id: number // negative if it hasn't been saved to the DB yet?
+  id: ActivityId
   danceId?: number
   text: string
 }
+
+export type ActivityId = number
 

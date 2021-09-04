@@ -1,5 +1,6 @@
 import * as React from "react"
 import { Draggable, DraggableProvided } from "react-beautiful-dnd"
+import { activityDraggableId } from "../drag-and-drop-util"
 import { Activity } from "../models/activity"
 
 interface Props {
@@ -8,7 +9,7 @@ interface Props {
 }
 
 export const DraggableActivity = ({ activity, index }: Props): JSX.Element => (
-  <Draggable draggableId={activity.id.toString()} index={index}>
+  <Draggable draggableId={activityDraggableId(activity.id)} index={index}>
     {(provided: DraggableProvided) => (
       <div
         className="draggable-activity"
