@@ -18,17 +18,20 @@ import ProgramTab from "./program-tab"
 import { columnDefinitions } from "./dance-table"
 import { SearchEx } from "./search-ex"
 import { ProgramEditorDragDropContext } from "./components/program-editor-drag-drop-context"
+import { Dance } from "./models/dance"
 
 const searchExDefaultJson = SearchEx.default().toJson()
 
 type AdvancedSearchProps = {
   dialect: Dialect
   tags: string[]
+  setDanceSearchResults: (dances: Array<Dance>) => void
 }
 
 const AdvancedSearchInternal = ({
   dialect,
   tags, // eslint-disable-line @typescript-eslint/no-unused-vars
+  setDanceSearchResults,
 }: AdvancedSearchProps): JSX.Element => {
   const [searchDancesJson, setSearchDancesJson] = useState({
     dances: [] as SearchDancesDanceJson[],
@@ -121,6 +124,7 @@ const AdvancedSearchInternal = ({
       pageCount={pageCount}
       visibleColumns={visibleColumns}
       setVisibleColumns={setVisibleColumns}
+      setDanceSearchResults={setDanceSearchResults}
     />
   )
   const programTab = <ProgramTab />
@@ -152,10 +156,18 @@ const provideDialect = (
   <DialectContext.Provider value={dialect}>{component}</DialectContext.Provider>
 )
 
-export const AdvancedSearch = (props: AdvancedSearchProps): JSX.Element => (
-  <ProgramEditorDragDropContext>
-    <AdvancedSearchInternal {...props} />
-  </ProgramEditorDragDropContext>
-)
+export const AdvancedSearch = (
+  props: Omit<AdvancedSearchProps, "setDanceSearchResults">
+): JSX.Element => {
+  const [danceSearchResults, setDanceSearchResults] = useState<Dance[]>([])
+  return (
+    <ProgramEditorDragDropContext danceSearchResults={danceSearchResults}>
+      <AdvancedSearchInternal
+        setDanceSearchResults={setDanceSearchResults}
+        {...props}
+      />
+    </ProgramEditorDragDropContext>
+  )
+}
 
 export default AdvancedSearch

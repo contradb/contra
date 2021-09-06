@@ -2,6 +2,7 @@ import * as React from "react"
 
 import { DanceTable, FetchDataFn, SearchDancesJson } from "./dance-table"
 import Filter from "./filter"
+import { Dance } from "./models/dance"
 
 export const DancesTab = ({
   loading,
@@ -11,6 +12,7 @@ export const DancesTab = ({
   pageCount,
   visibleColumns,
   setVisibleColumns,
+  setDanceSearchResults,
 }: {
   loading: boolean
   filter: Filter
@@ -19,6 +21,7 @@ export const DancesTab = ({
   pageCount: number
   visibleColumns: boolean[]
   setVisibleColumns: (val: boolean[]) => void
+  setDanceSearchResults: (dances: Array<Dance>) => void
 }): JSX.Element => (
   <>
     {loading && <div className="floating-loading-indicator">loading...</div>}
@@ -29,6 +32,7 @@ export const DancesTab = ({
       pageCount={pageCount}
       visibleColumns={visibleColumns}
       setVisibleColumns={setVisibleColumns}
+      setDanceSearchResults={setDanceSearchResults}
     />
   </>
 )

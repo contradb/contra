@@ -3,7 +3,7 @@ import { useContext } from "react"
 import { Droppable } from "react-beautiful-dnd"
 import { DraggableActivity } from "./components/draggable-activity"
 import { Context } from "./components/program-editor-drag-drop-context"
-import { Activity } from "./models/activity"
+import { Activity, activityReactKey } from "./models/activity"
 
 export const ProgramTab = (): JSX.Element => {
   const [{ activities }] = useContext(Context)
@@ -14,7 +14,7 @@ export const ProgramTab = (): JSX.Element => {
           {activities.map((activity: Activity, index: number) => (
             <DraggableActivity
               activity={activity}
-              key={activity.id}
+              key={activityReactKey(activity)}
               index={index}
             />
           ))}

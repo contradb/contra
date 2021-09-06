@@ -6,6 +6,7 @@ import Filter from "./filter"
 import { Breakpoint } from "./use-bootstrap3-breakpoint"
 import { Droppable } from "react-beautiful-dnd"
 import { DragHandleCell } from "./components/search-table/drag-handle-cell"
+import { Dance } from "./models/dance"
 
 // TODO: use rails route helpers
 const choreographerPath = (cid: number): string => {
@@ -197,6 +198,7 @@ export function DanceTable({
   initialSortBy = [],
   visibleColumns,
   setVisibleColumns,
+  setDanceSearchResults,
 }: {
   searchDancesJson: SearchDancesJson
   fetchDataFn: FetchDataFn
@@ -205,6 +207,7 @@ export function DanceTable({
   initialSortBy?: any // SortBy
   visibleColumns: boolean[]
   setVisibleColumns: (val: boolean[]) => void
+  setDanceSearchResults: (dances: Array<Dance>) => void
 }): JSX.Element {
   // const tableState = useTableState({ pageIndex: 0 })
   // const [{ pageIndex, pageSize }] = tableState
@@ -234,6 +237,10 @@ export function DanceTable({
     rows,
     state: { sortBy, pageIndex, pageSize },
   } = useTable(tableOptions, useSortBy, usePagination)
+
+  useEffect(() => {
+    setDanceSearchResults(rows.map((row: any) => row.original))
+  }, [rows, setDanceSearchResults])
 
   useEffect(() => {
     if (columnDefinitions.length !== columns.length)

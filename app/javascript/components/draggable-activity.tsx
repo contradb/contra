@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const DraggableActivity = ({ activity, index }: Props): JSX.Element => (
-  <Draggable draggableId={activityDraggableId(activity.id)} index={index}>
+  <Draggable draggableId={activityDraggableId(activity)} index={index}>
     {(provided: DraggableProvided) => (
       <div
         className="draggable-activity"
@@ -17,7 +17,7 @@ export const DraggableActivity = ({ activity, index }: Props): JSX.Element => (
         {...provided.dragHandleProps}
         ref={provided.innerRef}
       >
-        <b>{activity.danceId}</b> {activity.text}
+        <b>{activity.dance?.title}</b> {activity.text}
       </div>
     )}
   </Draggable>
