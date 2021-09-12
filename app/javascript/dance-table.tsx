@@ -58,7 +58,7 @@ const MatchingFiguresHtmlCell = (props: any /* Cell */): JSX.Element => (
 )
 
 type ColumnDefinition = {
-  Header: string
+  Header: React.ReactNode
   accessor: string
   Cell?: (props: any) => JSX.Element
   show: Breakpoint.Xs | Breakpoint.Md | false
@@ -107,10 +107,11 @@ export const columnDefinitions: Array<ColumnDefinition> = [
     disableSortBy: true,
   },
   {
-    Header: "DnD",
+    Header: <span className="glyphicon glyphicon-share-alt"></span>,
     accessor: "id",
     Cell: DragHandleCell,
     show: Breakpoint.Xs,
+    disableSortBy: true,
   },
 ]
 

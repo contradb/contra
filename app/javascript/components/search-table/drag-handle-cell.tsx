@@ -12,11 +12,12 @@ export const DragHandleCell = (props: any): JSX.Element => {
     <Draggable index={index} draggableId={danceDraggableId(danceId)}>
       {(provided: DraggableProvided) => (
         <div
+          className={"drag-handle-cell"}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
         >
-          {danceDraggableId(danceId)}
+          <span className="glyphicon glyphicon-move"></span>
         </div>
       )}
     </Draggable>

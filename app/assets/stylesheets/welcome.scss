@@ -386,3 +386,8 @@ $desktop-bevel: $desktop-margin / 2;
   margin: 5px 0px;
   padding: 2px;
 }
+
+.drag-handle-cell {
+  display: flex;
+  justify-content: center;
+}
