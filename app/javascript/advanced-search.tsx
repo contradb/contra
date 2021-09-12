@@ -142,7 +142,12 @@ const AdvancedSearchInternal = ({
           { name: "filters", body: filtersTab, margin: true },
           { name: "figures", body: figuresTab, margin: true },
           { name: dancesTabName, body: dancesTab, loading: loading },
-          { name: "program", body: programTab, margin: true },
+          {
+            name: "program",
+            body: programTab,
+            margin: true,
+            isDroppable: true,
+          },
         ]}
       />
     )
