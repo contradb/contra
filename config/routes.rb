@@ -77,6 +77,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       post 'dances' => "dances#index"
+      post 'programs' => "programs#index"
     end
   end
 end

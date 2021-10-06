@@ -2,4 +2,8 @@
 <div id="root">
 <div id='dialect-json'><%= @dialect_json %></div>
 <div id='tag-names-json'><%= @tag_names_json %></div>
-
+<div style='display: none' id='dialect-authenticity-token-seed'>
+  <%= form_with(model: Idiom::Idiom.new, url: idioms_path) do |f| %>
+    <%= f.submit('Save') %>
+  <% end %>
+</div>

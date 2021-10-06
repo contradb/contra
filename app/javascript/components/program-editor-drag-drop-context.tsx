@@ -1,9 +1,15 @@
-import React, { createContext, FunctionComponent, useState } from "react"
+import React, {
+  createContext,
+  FunctionComponent,
+  useState,
+  useEffect,
+} from "react"
 import { DragDropContext, DropResult } from "react-beautiful-dnd"
 import { Activity } from "../models/activity"
 import { Dance } from "../models/dance"
-import { index, NumericIndex, reindex } from "../models/numeric-index"
+import { index } from "../models/numeric-index"
 import { Program } from "../models/program"
+import { webApi } from "../services/webApi"
 
 let uniqIndex = 0
 const mintIndex = (): number => ++uniqIndex
@@ -14,20 +20,7 @@ const defaultPrograms: Program[] = [
     title: "new program",
     activities: index(
       [
-        { id: 456, dance: { id: 7, title: "Box the Gnat" }, text: "" },
-        { id: undefined, dance: { id: 24, title: "Butter" }, text: "" },
-        { id: 457, text: "Waltz" },
-        { id: 458, text: "Break" },
-        {
-          id: 459,
-          dance: { id: 8, title: "Triple Mud Pig" },
-          text: "",
-        },
-        {
-          id: 460,
-          dance: { id: 1000, title: "The Baby Rose" },
-          text: "",
-        },
+        { id: 14, dance: { id: 1, title: "the Rendevouz" }, text: "" },
         { id: 461, text: "Waltz" },
       ].map(a => ({ ...a, interimDraggableId: mintInterimDraggableId() }))
     ),
@@ -87,6 +80,10 @@ export const ProgramEditorDragDropContext: FunctionComponent<
   ProgramEditorDragDropContextInterface
 > = ({ children, danceSearchResults }) => {
   const [programs, setPrograms] = useState<Program[]>(defaultPrograms)
+  useEffect(() => {
+    console.log({ program: programs[0] })
+    webApi.savePrograms(programs) // todo: worry about rejection
+  }, [programs])
   return (
     <Context.Provider value={programs}>
       <DragDropContext
