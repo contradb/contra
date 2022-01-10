@@ -413,8 +413,7 @@ function moveProp(move_or_nil, property_name, default_value) {
     return default_value
   }
 }
-
-function stringInDialect(str, dialect) {
+const stringInDialect = (str, dialect) => {
   if (textInDialect(dialect)) {
     return str
   } else {

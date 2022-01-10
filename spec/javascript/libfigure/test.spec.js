@@ -52,6 +52,7 @@ describe('linkLineWords()', () => {
   const d = testDialect;
   test('', () => expect(lingoLineWords('foomenfoo', d).toHtml()).toEqual('foomenfoo'));
   test('', () => expect(lingoLineWords('foo men foo', d).toHtml()).toEqual('foo <s>men</s> foo'));
+  test('', () => expect(lingoLineWords('http://veino.com/blog?p=2175', d).toHtml()).toEqual('http://veino.com/blog?p=2175'));
   test('', () => expect(lingoLineWords('foo women foo', d).toHtml()).toEqual('foo <s>women</s> foo'));
   test('', () => expect(lingoLineWords('men men', d).toHtml()).toEqual('<s>men</s> <s>men</s>'));
   test('', () => expect(lingoLineWords('men salarymen men men', d).toHtml()).toEqual('<s>men</s> salarymen <s>men</s> <s>men</s>'));
