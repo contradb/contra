@@ -1,6 +1,6 @@
 variable "domain_name" {
-  default = null
-  type = string
+  default     = null
+  type        = string
   description = <<EOF
 Leave null for no domain. 
 The domain name to configure to point to the server, e.g. 'contradb.com'.
@@ -12,8 +12,8 @@ EOF
 
 variable "branch" {
   description = "git branch"
-  type = string
-  default = "master"
+  type        = string
+  default     = "master"
 }
 
 variable "ssh_public_key_path" {
@@ -25,8 +25,8 @@ variable "ssh_private_key_path" {
 }
 
 variable "database_path" {
-  type =  string
-  default = null
+  type        = string
+  default     = null
   description = <<EOF
 path to the .sql file to initialize the instance to. By default looks
 at the highest file of the form
@@ -36,8 +36,8 @@ EOF
 }
 
 variable "database_archive_dir" {
-  type = string
-  default = null
+  type        = string
+  default     = null
   description = <<EOF
 If database_path isn't used, then database_archive_dir specifies where
 to look for database images and pick the newest based on the
