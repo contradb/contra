@@ -16,6 +16,22 @@ variable "branch" {
   default     = "master"
 }
 
+variable "environment_tag" {
+  description = <<EOF
+  Tag applied to aws resources, e.g. 'staging' or 'production'. 
+  'production' is not actually currently used in production, 
+  because production predates the option.
+
+  This has no effect on how rails or linux behave, and is not visible to them.
+  EOF
+  type        = string
+  default     = "dev"
+}
+
+variable "ssh_public_key_title" {
+  default = "contradb-terraform-key"
+}
+
 variable "ssh_public_key_path" {
   default = "~/.ssh/contradb-terraform.pub"
 }

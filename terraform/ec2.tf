@@ -89,7 +89,7 @@ EOF
 }
 
 resource "aws_key_pair" "contra_key" {
-  key_name   = "contradb-terraform-key"
+  key_name   = var.ssh_public_key_title
   public_key = file(var.ssh_public_key_path)
   tags = {
     Name = "contradb"

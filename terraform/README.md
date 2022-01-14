@@ -1,5 +1,6 @@
 # HOWTO install this repo's code on Amazon Web Services (AWS)
 
+
 Because hosting ContraDB requires a lot of sub-programs, we use
 programs called _Packer_ and _Terraform_ to rent the stuff we need in
 a reliable way.
@@ -107,6 +108,8 @@ do
 terraform init -backend-config=production.tfbackend
 ```
 
+The contents of `production.tfbackend` assume you're an official-pants admin, and have access to "our" production terraform state. So you could delete contradb with some poor decision making. Of course, if you don't have the AWS secrets, you're not going to be able to do that accidentally.
+
 ### If you wanna try it out in your own sandbox...
 
 Say you've downloaded the code to try to run it, or you are trying to
@@ -126,8 +129,9 @@ terraform apply the.tfplan
 ```
 Obviously replace `example.com` with your domain. If you don't want a domain, omit the whole `-var=...` argument.
 
-The contents of `production.tfbackend` assume you're an official-pants admin, and have access to "our" production terraform state. So you could delete contradb with some poor decision making. (Of course, if you don't have the AWS secrets, you're not going to be able to do that accidentally).
+Consider adding the flag `-var="environment_tag=production"` -- see the documentation for that variable for details. 
 
+Consider adding the flag `-var-file=staging.tfvars` if you want a 2nd environment on the same aws account.
 
 When you run terraform apply, you'll get a bunch of outputs from
 Terraform. Note them, you'll need them later.
@@ -138,12 +142,20 @@ Terraform. Note them, you'll need them later.
 ```
 ssh -i ~/.ssh/contradb-terraform ubuntu@ec2-52-3-67-40.compute-1.amazonaws.com
 ```
+Note that the keyname might be contradb-terraform-staging if you're using `staging.tfvars`
 
 Where the placeholder `ec2-52-3-67-40.compute-1.amazonaws.com` is
 replaced with the `domain` output from terraform. Accept the
 unfamiliar fingerprint and *welcome to your sever!* Type `exit` to
 quit.
 
+## No-DNS: Finish config
+
+`~/contra/config/environments/production` needs
+```
+config.force_ssl = false
+```
+Find the line that sets it true and change it. 
 
 ## DNS-only: Finish DNS
 
