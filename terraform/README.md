@@ -1,6 +1,5 @@
 # HOWTO install this repo's code on Amazon Web Services (AWS)
 
-
 Because hosting ContraDB requires a lot of sub-programs, we use
 programs called _Packer_ and _Terraform_ to rent the stuff we need in
 a reliable way.
@@ -9,6 +8,9 @@ This document details how to go about standing up your own contradb,
 accessible to the world. If you think this is complicated _now_,
 buddy, you shoulda seen it _before!_
 
+If you just need to do a minor code touch-up on an existing instance -
+bypassing the probably headachuous downtimes of DNS reassignment -
+have a look at [REDEPLOY.md](./REDEPLOY.md)
 
 ## Prerequisites:
 
@@ -17,12 +19,9 @@ buddy, you shoulda seen it _before!_
 - a bash-like shell such as is easily found on Linux or Mac to execute some commands
 - optional: control of a free domain name, like `contradb.com`.
 
-
-
 ## Keypair
 
 Setup a public/private keypair in `~/.ssh/contradb-terraform` and `~/.ssh/contradb-terraform.pub`.
-
 
 ## AWS Environment Variables
 
@@ -39,7 +38,6 @@ export AWS_ACCESS_KEY_ID=...
 export AWS_SECRET_ACCESS_KEY=...
 export AWS_SESSION_TOKEN=... (sometimes, depending on your account setup)
 ```
-
 
 ## Install packer
 
@@ -67,7 +65,6 @@ Hobbyists will not want to _merge_ changes to `packer-manifest.json`
 to upstream in github. We're saving that file for the canonical
 installation of contradb.com.
 
-
 ## Decide if you want a domain name.
 
 If you do want a domain name, you may need to buy one. Later you'll need some extra steps marked "DNS-only"
@@ -76,16 +73,13 @@ If you don't want a domain name, you'll access the program by raw ip
 address or aws' patented even-harder-than-ip-addresses-to-remember
 domain names.
 
-
 ## DNS-only: Configure TTL for testing
 
 In [dns.tf](dns.tf) there's a ttl. Set it something short like 60 seconds while you're getting domains set up the first time.
 
-
 ## Install Terraform
 
 These instructions were written with version 0.14.3.
-
 
 ## Terraform init
 
@@ -96,7 +90,6 @@ cd contra/terraform
 ```
 
 Then confirm you've set the AWS environment variables `AWS_ACCESS_KEY_ID` etc as instructed above. Then you've got to download plugins and figure out where to store terraform state, so...
-
 
 Next we need to decide how Terraform will store its state. There are two main cases:
 
@@ -127,40 +120,46 @@ terraform init
 terraform plan -var=domain_name=example.com -out=the.tfplan
 terraform apply the.tfplan
 ```
+
 Obviously replace `example.com` with your domain. If you don't want a domain, omit the whole `-var=...` argument.
 
-Consider adding the flag `-var="environment_tag=production"` -- see the documentation for that variable for details. 
+Consider adding the flag `-var="environment_tag=production"` -- see the documentation for that variable for details.
 
 Consider adding the flag `-var-file=staging.tfvars` if you want a 2nd environment on the same aws account.
 
 When you run terraform apply, you'll get a bunch of outputs from
 Terraform. Note them, you'll need them later.
 
-
 ## Test ssh
 
 ```
 ssh -i ~/.ssh/contradb-terraform ubuntu@ec2-52-3-67-40.compute-1.amazonaws.com
 ```
+
 Note that the keyname might be contradb-terraform-staging if you're using `staging.tfvars`
 
 Where the placeholder `ec2-52-3-67-40.compute-1.amazonaws.com` is
 replaced with the `domain` output from terraform. Accept the
-unfamiliar fingerprint and *welcome to your sever!* Type `exit` to
+unfamiliar fingerprint and _welcome to your sever!_ Type `exit` to
 quit.
 
 ## No-DNS: Finish config
 
 `~/contra/config/environments/production` needs
+
 ```
 config.force_ssl = false
 ```
-Find the line that sets it true and change it. 
+
+Find the line that sets it true and change it. Then run:
+
+```
+sudo systemctl restart puma
+```
 
 ## DNS-only: Finish DNS
 
 Go to your registrar and add the nameservers that Terraform told you about after the apply.
-
 
 I'd test it with
 
@@ -175,7 +174,7 @@ nslookup contradb-example.com aws-ns1.amazon.com
 ```
 
 Where `aws-ns1.amazon.com` is the first of the nameservers you got
-back from the terraform output. 
+back from the terraform output.
 
 If that _still_ doesn't work, something's wrong with this terraform
 code, because we hired `aws-ns1.amazon.com` to say the IP address of
@@ -186,7 +185,6 @@ cache yet. Wait 20 minutes and try again.
 
 Lastly, restore the TTL in [dns.tf](dns.tf) so it doesn't bust its own cache
 every 60 seconds. How about 3600?
-
 
 ### Note to offical-pants admins:
 
@@ -204,11 +202,8 @@ ssh ubuntu@contradb-example.com /home/ubuntu/contra/terraform/provisioning/certb
 where:
 
 - `contradb-example.com` gets replaced with your real domain
-- `your.email@mail.com` gets replace with the email of the person letsencrypt sends emergency email to (I use my best email address)
-
+- `your.email@mail.com` gets replaced with the email of the person letsencrypt sends emergency email to (I use my best email address)
 
 ## Test
 
 Visit the site and make sure it works.
-
-

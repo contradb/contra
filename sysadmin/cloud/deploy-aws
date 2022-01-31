@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# wip script for deploying production on aws - takes no args
+# you should probably run contradb-backup before running this
+
+if [ -z "$HOME" ]
+then
+  echo "\$HOME is not set"
+  exit 1
+fi
+
+
+set -e
+set -x
+cd $HOME/contra
+sudo systemctl stop nginx
+sudo systemctl stop puma
+git pull
+# used to update the ruby version here, but not ported to asdf, meh, just build a new instance
+bundle config set --local deployment true
+bundle config set --local without 'development test'
+bundle install
+sudo rm -rf /home/ubuntu/contra/tmp/*
+cat  << EOF | sudo -g rails bash -s
+set -e
+. ../rails-env.sh
+export EXECJS_RUNTIME=Node
+bin/yarn install --check-files
+bin/bundle exec rake assets:precompile
+bin/rake db:migrate
+EOF
+sudo systemctl start puma
+sudo service start nginx
+
