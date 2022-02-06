@@ -127,6 +127,12 @@ Consider adding the flag `-var="environment_tag=production"` -- see the document
 
 Consider adding the flag `-var-file=staging.tfvars` if you want a 2nd environment on the same aws account.
 
+For prod, Dave, the plan command you'll want is probably:
+
+```
+terraform plan -var=domain_name=contradb.com -var="environment_tag=production" -out=the.tfplan
+```
+
 When you run terraform apply, you'll get a bunch of outputs from
 Terraform. Note them, you'll need them later.
 
