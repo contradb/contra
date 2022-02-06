@@ -30,5 +30,5 @@ bin/bundle exec rake assets:precompile
 bin/rake db:migrate
 EOF
 sudo systemctl start puma
-sudo service start nginx
+sudo systemctl start nginx
 
