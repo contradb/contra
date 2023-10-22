@@ -1,0 +1,10 @@
+{
+  "id": <%= @dance.id.to_json.html_safe %>,
+  "title": <%= @dance.title.to_json.html_safe %>,
+  "choreographer_name": <%= @dance.choreographer.name.to_json.html_safe %>,
+  "start_type": <%= @dance.start_type.to_json.html_safe %>,
+  "preamble": <%= @dance.preamble.to_json.html_safe %>,
+  "figures": <%= @dance.figures_json.html_safe %>,
+  "notes": <%= @dance.notes.to_json.html_safe %>,
+  "hook": <%= @dance.hook.to_json.html_safe %>
+}
