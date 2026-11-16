@@ -3,6 +3,7 @@ require 'spec_helper'
 
 describe "copyright file" do
   it "copyrights the right years" do
-    expect(open('COPYRIGHT').read).to include("Copyright #{(2015..Date.today.year).to_a.join(',')} David Morse")
+    years = [*2015..2022, *2026..Date.today.year]
+    expect(open('COPYRIGHT').read).to include("Copyright #{years.join(',')} David Morse")
   end
 end
