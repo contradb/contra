@@ -123,7 +123,7 @@ Database configuration is pretty simple and should be handled by
 migrations. Creating a Postgres user is [handled in the wiki](https://github.com/contradb/contra/wiki/Postgres-for-contradb-dev).
 If you've come this far, maybe it's time to contact the project for a db replica so you can test against real data, but if you want to create your own empty DB:
 
-1. run `rake db:seed` to create the special choreographer 'Unknown'
+1. run `rake db:seed` to create the special choreographer 'Unknown' and the 'verified' tag.
 2. The first user you create through the website has super special
    powers.
 
