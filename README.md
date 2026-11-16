@@ -44,6 +44,8 @@ outdated by the time you read this.
 
 ### Install rbenv to manage versions of ruby https://github.com/rbenv/rbenv
 
+After rbenv I also had to install a plugin: `git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build`.
+
 ### `cd contra`
 
 ### get the proper version from `.ruby-version` and install it
@@ -52,17 +54,22 @@ outdated by the time you read this.
 rbenv install $(cat .ruby-version)
 ```
 
-I had to also do `sudo apt install gcc make` to get a C compiler and the `make` build tool. Apt is a package manager similar to brew.
+I had to also do `sudo apt install gcc g++ make` to get a C compiler and the `make` build tool. Apt is a package manager similar to brew.
 
 ### `gem install bundler`
 
 ### `bundle install`
 
-I had to run `sudo apt install g++` for a C++ compiler.
-
 Then I errored out for lack of postgres, so I did a detour:
 
 ### Install Postgres
+
+```
+sudo apt install libpq-dev
+```
+then choose
+
+#### Option 1: local
 
 For my OS I followed https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-20-04 , basically:
 
@@ -70,11 +77,45 @@ For my OS I followed https://www.digitalocean.com/community/tutorials/how-to-ins
 sudo apt install postgresql postgresql-contrib
 ```
 
-Then I had to also install `libpq-dev` for whatever reason.
+
+#### Option 2: containerized
+
+I use Rancher Desktop and claude wrote me this command:
+
+```
+docker run -d --name contra-postgres -p 127.0.0.1:5432:5432 -e POSTGRES_USER=$USER -e POSTGRES_PASSWORD='balance+swing' -e POSTGRES_DB=contradev -v contra_postgres_data:/var/lib/postgresql/data postgres:12
+```
+
+I chose postgres 12 because that's what's in prod at time of writing, and I wanted to match for image compatibility. 
+
+After that, you have to tell Rails where to find the db. Put 
+```
+export CONTRADB_DATABASE_HOST=localhost
+```
+in your .bashrc or `<root>/.envrc` if you're a fancy direnv user like me. Also if you're fancy: `direnv allow`. Well actually I had to also add this to .envrc:
+```
+if [[ -n ${NODE_VERSIONS:-} ]]; then
+  use node
+fi
+```
+And in  `~/.config/direnv/direnvrc`:
+```
+export NODE_VERSIONS="$HOME/.nvm/versions/node"
+export NODE_VERSION_PREFIX="v"
+```
+This is a janky setup depending on both nvm and direnv. Probably better to just put it in your .bashrc!
+
+### JS setup
+
+I had to go install node and yarn to get this to work. I already had `nvm` installed, so 
+```
+nvm install 14.15.3
+nvm use # references .nvmrc version
+npm install -g yarn@1.22.22
+yarn install --check-files
+```
 
 ### Run `bin/rails server`
-
-Okay, I had to go install yarn to get this to work, then run `yarn install --check-files`.
 
 ### Configure Postgres
 

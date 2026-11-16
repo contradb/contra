@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 source 'https://rails-assets.org' do
   gem 'rails-assets-angucomplete-alt'
+  gem 'rails-assets-angular'   # dependency of angucomplete-alt; listed here so Bundler fetches it from rails-assets.org
 end
 
 gem 'bootsnap'
