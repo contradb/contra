@@ -151,6 +151,12 @@ To change things correctly edit the code that lives in `app/javascript`. Then ru
 
 ## Testing
 
+You'll need to create the test database:
+```
+RAILS_ENV=test bin/rails db:create db:schema:load
+```
+IIRC you don't seed the test db, individual tests create any setup they rely on. 
+
 ```
 bin/rspec
 ```
