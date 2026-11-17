@@ -49,12 +49,12 @@ describe 'Creating dances', js: true do
       fill_in('note', with: 'hastily')
       expect(page).to have_content('partners right hand balance & box the gnat hastily')
       click_on 'Save Dance'
+      expect(page).to have_content('Dance was successfully created')
 
       dance = Dance.last
 
       expect(dance.title).to eql('Rover McGrover')
-      expect(current_path).to eq dance_path(dance.id)
-      expect(page).to have_content('Dance was successfully created')
+      expect(page).to have_current_path(dance_path(dance.id))
       expect(page).to have_content('partners right hand balance & box the gnat hastily')
     end
   end

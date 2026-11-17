@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from "react"
+import React, { useState, useCallback, useMemo, useRef } from "react"
 import {
   FetchDataFn,
   sortByParam,
@@ -36,8 +36,13 @@ export const AdvancedSearch = ({
   const [loading, setLoading] = useState(false)
   const [pageCount, setPageCount] = useState(0)
 
+  // Responses can arrive out of order (e.g. typing "12" fires requests for
+  // "1" and "12"). Only the most recent request may update the table.
+  const latestRequestId = useRef(0)
+
   const fetchDataFn: FetchDataFn = useCallback(
     ({ pageSize, pageIndex, sortBy, filter }) => {
+      const requestId = ++latestRequestId.current
       setLoading(true)
       async function fetchData1(): Promise<void> {
         const offset = pageIndex * pageSize
@@ -52,6 +57,9 @@ export const AdvancedSearch = ({
         })
         const response = await fetch(url, { method: "POST", headers, body })
         const json: SearchDancesJson = await response.json()
+        if (requestId !== latestRequestId.current) {
+          return // a newer request has been made; drop this stale response
+        }
         setSearchDancesJson(json)
         setPageCount(Math.ceil(json.numberMatching / pageSize))
         setLoading(false)

@@ -9,4 +9,5 @@ rspec ./spec/features/welcome/search_ex_spec.rb:92 # SearchExEditors editing tre
 rspec ./spec/features/welcome/search_ex_spec.rb:104 # SearchExEditors editing tree shape changing from 'and' to 'figure' purges subfilters and installs a new working move select
 rspec ./spec/features/welcome/search_ex_spec.rb:467 # SearchExEditors FigureSearchEx parameters allemande once around works
 rspec ./spec/features/welcome/search_ex_spec.rb:538 # SearchExEditors FigureSearchEx parameters down the hall ender filter works
-
+rspec ./spec/features/welcome/search_ex_spec.rb:318 # SearchExEditors FigureSearchEx parameters circle right finds only a dance with circle right
+rspec ./spec/features/welcome/search_ex_spec.rb:333 # SearchExEditors FigureSearchEx parameters If the [...] is clicked, it explicitly specifies parameters in the query
